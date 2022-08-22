@@ -16,27 +16,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ws
+package io.github.realyusufismail.ydwk.ws.handle
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ObjectNode
-import io.github.realyusufismail.ydwkimpl.YDWKImpl
+import io.github.realyusufismail.ydwk.impl.YDWKImpl
+import io.github.realyusufismail.ydwk.ws.WebSocketManager
+import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
+import io.github.realyusufismail.ydwk.ws.util.OpCode
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-class ConnectSystem(
+class ConnectHandler(
     private var ydwk: YDWKImpl,
     private var token: String,
-    private var intent: Int
+    private var intent: List<GateWayIntent>
 ) : WebSocketManager(ydwk, token, intent) {
     private val logger: Logger = LoggerFactory.getLogger(javaClass) as Logger
 
     fun identify() {
+        logger.info(GateWayIntent.calculateBitmask(intent.toList()).toString())
         // event data
         val d: ObjectNode =
             ydwk.objectNode
                 .put("token", token)
-                .put("intents", intent)
+                .put("intents", GateWayIntent.calculateBitmask(intent.toList()))
                 .set(
                     "properties",
                     ydwk.objectNode
@@ -44,10 +48,15 @@ class ConnectSystem(
                         .put("browser", "YDWK")
                         .put("device", "YDWK"))
 
-        val json: JsonNode = ydwk.objectNode.put("op", 2).set("d", d)
+        val json: JsonNode = ydwk.objectNode.put("op", OpCode.IDENTIFY.getCode()).set("d", d)
         webSocket?.sendText(json.toString())
-        logger.info("Connected to Discord")
     }
 
-    fun resume() {}
+    fun resume() {
+        val json = ydwk.objectNode.put("token", token).put("session_id", sessionId).put("seq", seq)
+
+        val identify: ObjectNode = ydwk.objectNode.put("op", OpCode.RESUME.getCode()).set("d", json)
+
+        webSocket?.sendText(identify.toString())
+    }
 }

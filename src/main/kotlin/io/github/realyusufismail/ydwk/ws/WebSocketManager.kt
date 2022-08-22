@@ -16,11 +16,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ws
+package io.github.realyusufismail.ydwk.ws
 
 import com.neovisionaries.ws.client.*
 import io.github.realyusufismail.ydwk.YDWKInfo
-import io.github.realyusufismail.ydwkimpl.YDWKImpl
+import io.github.realyusufismail.ydwk.impl.YDWKImpl
+import io.github.realyusufismail.ydwk.ws.handle.ConnectHandler
+import io.github.realyusufismail.ydwk.ws.handle.MessageHandler
+import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
 import java.io.IOException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -28,13 +31,14 @@ import org.slf4j.LoggerFactory
 open class WebSocketManager(
     private var ydwk: YDWKImpl,
     private var token: String,
-    private var intent: Int
+    private var intent: List<GateWayIntent>
 ) : WebSocketAdapter(), WebSocketListener {
     private val logger: Logger = LoggerFactory.getLogger(javaClass) as Logger
     // Tha main websocket
     protected var webSocket: WebSocket? = null
-    protected var resumeUrl: String? = null
+    private var resumeUrl: String? = null
     protected var sessionId: String? = null
+    protected var seq: Int? = null
 
     init {
         connect()
@@ -78,9 +82,9 @@ open class WebSocketManager(
         }
 
         if (sessionId == null) {
-            ConnectSystem(ydwk, token, intent).identify()
+            ConnectHandler(ydwk, token, intent).identify()
         } else {
-            ConnectSystem(ydwk, token, intent).resume()
+            ConnectHandler(ydwk, token, intent).resume()
         }
     }
 
@@ -89,7 +93,9 @@ open class WebSocketManager(
         logger.error("Error connecting to websocket", cause)
     }
 
-    override fun onTextMessage(websocket: WebSocket, text: String) {}
+    override fun onTextMessage(websocket: WebSocket, text: String) {
+        MessageHandler(ydwk, token, intent).handleMessage(text)
+    }
 
     @Throws(Exception::class)
     override fun onDisconnected(
