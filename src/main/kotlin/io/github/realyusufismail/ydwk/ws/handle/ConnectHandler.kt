@@ -27,7 +27,8 @@ import io.github.realyusufismail.ydwk.ws.util.OpCode
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-class ConnectHandler(ydwk: YDWKImpl, token : String, intent : List<GateWayIntent>) : WebSocketManager(ydwk, token, intent) {
+class ConnectHandler(ydwk: YDWKImpl, token: String, intent: List<GateWayIntent>) :
+    WebSocketManager(ydwk, token, intent) {
     private val logger: Logger = LoggerFactory.getLogger(javaClass) as Logger
 
     fun identify() {

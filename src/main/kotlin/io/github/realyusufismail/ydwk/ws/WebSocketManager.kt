@@ -43,7 +43,7 @@ open class WebSocketManager(
     protected var heartbeatStartTime: Long = 0
 
     @Synchronized
-    fun connect() : WebSocketManager {
+    fun connect(): WebSocketManager {
         val url: String =
             (resumeUrl
                 ?: YDWKInfo.DISCORD_GATEWAY_URL.toString()) +
@@ -52,8 +52,8 @@ open class WebSocketManager(
 
         try {
             val webSocketFactory = WebSocketFactory()
-            if (webSocketFactory.socketTimeout > 0) webSocketFactory.socketTimeout =
-                1000.coerceAtLeast(webSocketFactory.socketTimeout)
+            if (webSocketFactory.socketTimeout > 0)
+                webSocketFactory.socketTimeout = 1000.coerceAtLeast(webSocketFactory.socketTimeout)
             else webSocketFactory.socketTimeout = 10000
 
             webSocket =

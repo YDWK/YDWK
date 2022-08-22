@@ -19,7 +19,6 @@
 package io.github.realyusufismail.ydwk.ws.handle
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.realyusufismail.ydwk.YDWK
 import io.github.realyusufismail.ydwk.impl.YDWKImpl
 import io.github.realyusufismail.ydwk.ws.WebSocketManager
 import io.github.realyusufismail.ydwk.ws.util.CloseCode
@@ -32,7 +31,8 @@ import java.util.concurrent.TimeUnit
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-class MessageHandler(ydwk: YDWKImpl, token : String, intent : List<GateWayIntent>) : WebSocketManager(ydwk, token, intent) {
+class MessageHandler(ydwk: YDWKImpl, token: String, intent: List<GateWayIntent>) :
+    WebSocketManager(ydwk, token, intent) {
     private val logger: Logger = LoggerFactory.getLogger(javaClass) as Logger
 
     fun handleMessage(message: String) {
@@ -45,26 +45,21 @@ class MessageHandler(ydwk: YDWKImpl, token : String, intent : List<GateWayIntent
     }
 
     private fun onEvent(payload: JsonNode) {
-        val s: Int? = if (payload.hasNonNull("s")) payload.get("s").asInt() else null
-        if (s != null) seq = s
-
-        val d: JsonNode = payload.get("d")
-        val op: Int? = if (payload.hasNonNull("op")) payload.get("op").asInt() else null
-
-        if (op != null) onOpCode(op, d)
-
-        val t: String? = if (payload.hasNonNull("t")) payload.get("t").asText() else null
-        if (t != null) onEventType(t, d)
+        logger.info("Received message: {}", payload)
     }
 
     private fun onOpCode(opCode: Int, d: JsonNode) {
-        val op: OpCode = OpCode.fromCode(opCode)
-        when (op) {
+        when (val op: OpCode = OpCode.fromCode(opCode)) {
             OpCode.HELLO -> {
                 logger.debug("Received " + op.name)
                 val heartbeatInterval: Int = d.get("heartbeat_interval").asInt()
                 sendHeartbeat(heartbeatInterval)
             }
+            OpCode.HEARTBEAT -> {
+                logger.debug("Received " + op.name)
+                sendHeartbeat()
+            }
+            OpCode.HEARTBEAT_ACK -> logger.debug("Heartbeat acknowledged")
             else -> {
                 logger.error("Unknown opcode: $opCode")
             }
@@ -83,38 +78,35 @@ class MessageHandler(ydwk: YDWKImpl, token : String, intent : List<GateWayIntent
             .scheduleAtFixedRate(
                 object : TimerTask() {
                     override fun run() {
-
-                        if (webSocket == null) {
-                            logger.debug("WebSocket is null, cancelling timer")
-                            cancel()
-                            return
-                        }
-
-                        val s: Int? = if (seq != null) seq else null
-
-                        val heartbeat: JsonNode =
-                            ydwk.objectMapper
-                                .createObjectNode()
-                                .put("op", OpCode.HEARTBEAT.getCode())
-                                .put("d", s)
-
-                        if (heartbeatsMissed >= 2) {
-                            heartbeatsMissed = 0
-                            logger.warn("Heartbeat missed, will attempt to reconnect")
-                            webSocket?.disconnect(CloseCode.RECONNECT.code, "ZOMBIE CONNECTION")
-                        } else {
-                            heartbeatsMissed += 1
-                            webSocket?.sendText(heartbeat.toString())
-                            heartbeatStartTime = System.currentTimeMillis()
-                            logger.debug("Sent heartbeat")
-                        }
+                        sendHeartbeat()
                     }
                 },
                 0,
                 TimeUnit.SECONDS.toMillis(heartbeatInterval.toLong()))
     }
 
-    private fun onEventType(eventType: String, d: JsonNode) {
+    private fun sendHeartbeat() {
+        if (webSocket == null) {
+            logger.debug("WebSocket is null, cancelling timer")
+            return
+        }
 
+        val s: Int? = if (seq != null) seq else null
+
+        val heartbeat: JsonNode =
+            ydwk.objectMapper.createObjectNode().put("op", OpCode.HEARTBEAT.getCode()).put("d", s)
+
+        if (heartbeatsMissed >= 2) {
+            heartbeatsMissed = 0
+            logger.warn("Heartbeat missed, will attempt to reconnect")
+            webSocket?.disconnect(CloseCode.RECONNECT.code, "ZOMBIE CONNECTION")
+        } else {
+            heartbeatsMissed += 1
+            webSocket?.sendText(heartbeat.toString())
+            heartbeatStartTime = System.currentTimeMillis()
+            logger.debug("Sent heartbeat")
+        }
     }
+
+    private fun onEventType(eventType: String, d: JsonNode) {}
 }
