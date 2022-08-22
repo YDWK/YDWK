@@ -40,7 +40,7 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-annotations:2.13.3")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.13.3")
     //logger
-    implementation("ch.qos.logback:logback-classic:1.3.0-alpha16")
+    implementation("ch.qos.logback:logback-classic:1.3.0-beta0")
     implementation("ch.qos.logback:logback-core:1.3.0-alpha16")
     implementation("uk.org.lidalia:sysout-over-slf4j:1.0.2")
     //.env
