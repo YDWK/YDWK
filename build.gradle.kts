@@ -42,7 +42,7 @@ dependencies {
     //logger
     implementation("ch.qos.logback:logback-classic:1.3.0-alpha16")
     implementation("ch.qos.logback:logback-core:1.3.0-alpha16")
-    implementation("org.slf4j:slf4j-api:2.0.0-beta1")
+    implementation("org.slf4j:slf4j-api:2.0.0")
     //.env
     implementation("io.github.yusufsdiscordbot:config:1.0.4")
     //ws and https
