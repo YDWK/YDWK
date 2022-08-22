@@ -16,8 +16,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwkimpl
+package io.github.realyusufismail.ydwk
 
-import io.github.realyusufismail.ydwk.YDWK
+enum class YDWKInfo(private val url: String) {
+    DISCORD_GATEWAY_URL("wss://gateway.discord.gg/"),
+    DISCORD_GATEWAY_VERSION("?v=10"),
+    JSON_ENCODING("&encoding=json"),
+    DISCORD_REST_URL("https://discord.com/api"),
+    DISCORD_REST_VERSION("/v10");
 
-class YDWKImpl : YDWK {}
+    override fun toString(): String {
+        return url
+    }
+
+    companion object {
+        fun get(info: YDWKInfo): String {
+            return info.toString()
+        }
+    }
+}
