@@ -40,13 +40,13 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-annotations:2.13.3")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.13.3")
     //logger
-    implementation("org.apache.logging.log4j:log4j-core:2.18.0")
-    implementation("org.apache.logging.log4j:log4j-api:2.18.0")
-    implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.18.0")
+    implementation("ch.qos.logback:logback-classic:1.3.0-alpha16")
+    implementation("ch.qos.logback:logback-core:1.3.0-alpha16")
+    implementation("org.slf4j:slf4j-api:2.0.0-beta1")
     //.env
     implementation("io.github.yusufsdiscordbot:config:1.0.4")
     //ws and https
-    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.10")
     implementation("com.neovisionaries:nv-websocket-client:2.14")
     //other
     implementation("com.google.guava:guava:31.1-jre")

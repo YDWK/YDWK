@@ -18,4 +18,8 @@
  */ 
 package io.github.realyusufismail.ydwk
 
-interface YDWK {}
+import com.fasterxml.jackson.databind.node.ObjectNode
+
+interface YDWK {
+    val objectNode: ObjectNode
+}

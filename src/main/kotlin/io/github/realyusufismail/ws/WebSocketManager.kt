@@ -19,22 +19,25 @@
 package io.github.realyusufismail.ws
 
 import com.neovisionaries.ws.client.*
-import io.github.realyusufismail.ydwk.YDWK
 import io.github.realyusufismail.ydwk.YDWKInfo
 import io.github.realyusufismail.ydwkimpl.YDWKImpl
 import java.io.IOException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-open class WebSocketManager(private var ydwk : YDWKImpl, private var token: String) : WebSocketAdapter(), WebSocketListener {
-    private var logger: Logger = LoggerFactory.getLogger(WebSocketManager::class.java)
+open class WebSocketManager(
+    private var ydwk: YDWKImpl,
+    private var token: String,
+    private var intent: Int
+) : WebSocketAdapter(), WebSocketListener {
+    private val logger: Logger = LoggerFactory.getLogger(javaClass) as Logger
     // Tha main websocket
-    private var webSocket: WebSocket? = null
-    private var resumeUrl: String? = null
-    private var sessionId: String? = null
+    protected var webSocket: WebSocket? = null
+    protected var resumeUrl: String? = null
+    protected var sessionId: String? = null
 
     init {
-       connect()
+        connect()
     }
 
     @Synchronized
@@ -68,12 +71,25 @@ open class WebSocketManager(private var ydwk : YDWKImpl, private var token: Stri
 
     @Throws(Exception::class)
     override fun onConnected(websocket: WebSocket, headers: Map<String, List<String>>) {
+        if (sessionId == null) {
+            logger.info("Connected to gateway")
+        } else {
+            logger.info("Resuming session$sessionId")
+        }
 
+        if (sessionId == null) {
+            ConnectSystem(ydwk, token, intent).identify()
+        } else {
+            ConnectSystem(ydwk, token, intent).resume()
+        }
+    }
+
+    @Throws(Exception::class)
+    override fun onConnectError(websocket: WebSocket, cause: WebSocketException) {
+        logger.error("Error connecting to websocket", cause)
     }
 
     override fun onTextMessage(websocket: WebSocket, text: String) {}
-    @Throws(Exception::class)
-    override fun onConnectError(websocket: WebSocket, cause: WebSocketException) {}
 
     @Throws(Exception::class)
     override fun onDisconnected(

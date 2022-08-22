@@ -18,6 +18,11 @@
  */ 
 package io.github.realyusufismail.ydwkimpl
 
+import com.fasterxml.jackson.databind.node.JsonNodeFactory
+import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.realyusufismail.ydwk.YDWK
 
-class YDWKImpl : YDWK {}
+class YDWKImpl : YDWK {
+    override val objectNode: ObjectNode
+        get() = JsonNodeFactory.instance.objectNode()
+}
