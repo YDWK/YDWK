@@ -27,20 +27,15 @@ import io.github.realyusufismail.ydwk.ws.util.OpCode
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-class ConnectHandler(
-    private var ydwk: YDWKImpl,
-    private var token: String,
-    private var intent: List<GateWayIntent>
-) : WebSocketManager(ydwk, token, intent) {
+class ConnectHandler(ydwk: YDWKImpl, token : String, intent : List<GateWayIntent>) : WebSocketManager(ydwk, token, intent) {
     private val logger: Logger = LoggerFactory.getLogger(javaClass) as Logger
 
     fun identify() {
-        logger.info(GateWayIntent.calculateBitmask(intent.toList()).toString())
         // event data
         val d: ObjectNode =
             ydwk.objectNode
                 .put("token", token)
-                .put("intents", GateWayIntent.calculateBitmask(intent.toList()))
+                .put("intents", GateWayIntent.calculateBitmask(intents.toList()))
                 .set(
                     "properties",
                     ydwk.objectNode

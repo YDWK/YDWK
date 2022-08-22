@@ -19,18 +19,20 @@
 package io.github.realyusufismail.ydwk.ws.handle
 
 import com.fasterxml.jackson.databind.JsonNode
+import io.github.realyusufismail.ydwk.YDWK
 import io.github.realyusufismail.ydwk.impl.YDWKImpl
 import io.github.realyusufismail.ydwk.ws.WebSocketManager
+import io.github.realyusufismail.ydwk.ws.util.CloseCode
 import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
 import io.github.realyusufismail.ydwk.ws.util.OpCode
+import java.net.Socket
+import java.net.SocketException
+import java.util.*
+import java.util.concurrent.TimeUnit
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-class MessageHandler(
-    private var ydwk: YDWKImpl,
-    private var token: String,
-    private var intent: List<GateWayIntent>
-) : WebSocketManager(ydwk, token, intent) {
+class MessageHandler(ydwk: YDWKImpl, token : String, intent : List<GateWayIntent>) : WebSocketManager(ydwk, token, intent) {
     private val logger: Logger = LoggerFactory.getLogger(javaClass) as Logger
 
     fun handleMessage(message: String) {
@@ -69,7 +71,50 @@ class MessageHandler(
         }
     }
 
-    private fun sendHeartbeat(heartbeatInterval: Int) {}
+    private fun sendHeartbeat(heartbeatInterval: Int) {
+        try {
+            val rawSocket: Socket? = webSocket?.socket
+            if (rawSocket != null) rawSocket.soTimeout = heartbeatInterval + 10000
+        } catch (ex: SocketException) {
+            logger.warn("Failed to setup timeout for socket", ex)
+        }
 
-    private fun onEventType(eventType: String, d: JsonNode) {}
+        Timer()
+            .scheduleAtFixedRate(
+                object : TimerTask() {
+                    override fun run() {
+
+                        if (webSocket == null) {
+                            logger.debug("WebSocket is null, cancelling timer")
+                            cancel()
+                            return
+                        }
+
+                        val s: Int? = if (seq != null) seq else null
+
+                        val heartbeat: JsonNode =
+                            ydwk.objectMapper
+                                .createObjectNode()
+                                .put("op", OpCode.HEARTBEAT.getCode())
+                                .put("d", s)
+
+                        if (heartbeatsMissed >= 2) {
+                            heartbeatsMissed = 0
+                            logger.warn("Heartbeat missed, will attempt to reconnect")
+                            webSocket?.disconnect(CloseCode.RECONNECT.code, "ZOMBIE CONNECTION")
+                        } else {
+                            heartbeatsMissed += 1
+                            webSocket?.sendText(heartbeat.toString())
+                            heartbeatStartTime = System.currentTimeMillis()
+                            logger.debug("Sent heartbeat")
+                        }
+                    }
+                },
+                0,
+                TimeUnit.SECONDS.toMillis(heartbeatInterval.toLong()))
+    }
+
+    private fun onEventType(eventType: String, d: JsonNode) {
+
+    }
 }

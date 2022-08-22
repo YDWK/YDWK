@@ -29,9 +29,9 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 open class WebSocketManager(
-    private var ydwk: YDWKImpl,
-    private var token: String,
-    private var intent: List<GateWayIntent>
+    protected var ydwk: YDWKImpl,
+    protected var token: String,
+    protected var intents: List<GateWayIntent>
 ) : WebSocketAdapter(), WebSocketListener {
     private val logger: Logger = LoggerFactory.getLogger(javaClass) as Logger
     // Tha main websocket
@@ -39,13 +39,11 @@ open class WebSocketManager(
     private var resumeUrl: String? = null
     protected var sessionId: String? = null
     protected var seq: Int? = null
-
-    init {
-        connect()
-    }
+    protected var heartbeatsMissed: Int = 0
+    protected var heartbeatStartTime: Long = 0
 
     @Synchronized
-    fun connect() {
+    fun connect() : WebSocketManager {
         val url: String =
             (resumeUrl
                 ?: YDWKInfo.DISCORD_GATEWAY_URL.toString()) +
@@ -54,12 +52,9 @@ open class WebSocketManager(
 
         try {
             val webSocketFactory = WebSocketFactory()
-            when {
-                webSocketFactory.socketTimeout > 0 ->
-                    webSocketFactory.socketTimeout =
-                        1000.coerceAtLeast(webSocketFactory.socketTimeout)
-                else -> webSocketFactory.socketTimeout = 10000
-            }
+            if (webSocketFactory.socketTimeout > 0) webSocketFactory.socketTimeout =
+                1000.coerceAtLeast(webSocketFactory.socketTimeout)
+            else webSocketFactory.socketTimeout = 10000
 
             webSocket =
                 webSocketFactory
@@ -71,6 +66,7 @@ open class WebSocketManager(
             resumeUrl = null
             throw RuntimeException(e)
         }
+        return this
     }
 
     @Throws(Exception::class)
@@ -82,9 +78,9 @@ open class WebSocketManager(
         }
 
         if (sessionId == null) {
-            ConnectHandler(ydwk, token, intent).identify()
+            ConnectHandler(ydwk, token, intents).identify()
         } else {
-            ConnectHandler(ydwk, token, intent).resume()
+            ConnectHandler(ydwk, token, intents).resume()
         }
     }
 
@@ -94,7 +90,7 @@ open class WebSocketManager(
     }
 
     override fun onTextMessage(websocket: WebSocket, text: String) {
-        MessageHandler(ydwk, token, intent).handleMessage(text)
+        MessageHandler(ydwk, token, intents).handleMessage(text)
     }
 
     @Throws(Exception::class)
@@ -105,5 +101,7 @@ open class WebSocketManager(
         closedByServer: Boolean
     ) {}
 
-    override fun onError(websocket: WebSocket, cause: WebSocketException) {}
+    override fun onError(websocket: WebSocket, cause: WebSocketException) {
+        logger.error("Error connecting to websocket", cause)
+    }
 }
