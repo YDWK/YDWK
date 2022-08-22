@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.realyusufismail.ydwk.impl.YDWKImpl
 import io.github.realyusufismail.ydwk.ws.WebSocketManager
 import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
+import io.github.realyusufismail.ydwk.ws.util.OpCode
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -31,22 +32,44 @@ class MessageHandler(
     private var intent: List<GateWayIntent>
 ) : WebSocketManager(ydwk, token, intent) {
     private val logger: Logger = LoggerFactory.getLogger(javaClass) as Logger
-    private var payload: JsonNode? = null
 
     fun handleMessage(message: String) {
         try {
-            payload = ydwk.objectMapper.readTree(message)
+            val payload = ydwk.objectMapper.readTree(message)
+            onEvent(payload)
         } catch (e: Exception) {
             logger.error("Error while handling message", e)
         }
     }
 
-    fun onEvent() {
-        if (payload == null) {
-            logger.error("Payload is null, try again")
-            return
-        }
+    private fun onEvent(payload: JsonNode) {
+        val s: Int? = if (payload.hasNonNull("s")) payload.get("s").asInt() else null
+        if (s != null) seq = s
 
-        
+        val d: JsonNode = payload.get("d")
+        val op: Int? = if (payload.hasNonNull("op")) payload.get("op").asInt() else null
+
+        if (op != null) onOpCode(op, d)
+
+        val t: String? = if (payload.hasNonNull("t")) payload.get("t").asText() else null
+        if (t != null) onEventType(t, d)
     }
+
+    private fun onOpCode(opCode: Int, d: JsonNode) {
+        val op: OpCode = OpCode.fromCode(opCode)
+        when (op) {
+            OpCode.HELLO -> {
+                logger.debug("Received " + op.name)
+                val heartbeatInterval: Int = d.get("heartbeat_interval").asInt()
+                sendHeartbeat(heartbeatInterval)
+            }
+            else -> {
+                logger.error("Unknown opcode: $opCode")
+            }
+        }
+    }
+
+    private fun sendHeartbeat(heartbeatInterval: Int) {}
+
+    private fun onEventType(eventType: String, d: JsonNode) {}
 }
