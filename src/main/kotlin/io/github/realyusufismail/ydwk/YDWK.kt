@@ -28,4 +28,6 @@ interface YDWK {
     val objectMapper: ObjectMapper
 
     val webSocketManager: WebSocketManager?
+
+    fun shutdown()
 }

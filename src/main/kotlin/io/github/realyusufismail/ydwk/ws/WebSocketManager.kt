@@ -31,10 +31,7 @@ import java.io.IOException
 import java.net.Socket
 import java.net.SocketException
 import java.net.SocketTimeoutException
-import java.util.concurrent.Executors
-import java.util.concurrent.Future
-import java.util.concurrent.ScheduledExecutorService
-import java.util.concurrent.TimeUnit
+import java.util.concurrent.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -126,14 +123,6 @@ open class WebSocketManager(
         }
     }
 
-    private fun onEvent(payload: JsonNode) {
-        val d: JsonNode? = if (payload.hasNonNull("d")) payload.get("d") else null
-        val opCode: Int = payload.get("op").asInt()
-        if (d != null) {
-            onOpCode(opCode, d, payload)
-        }
-    }
-
     @Throws(Exception::class)
     override fun onDisconnected(
         websocket: WebSocket,
@@ -142,6 +131,37 @@ open class WebSocketManager(
         closedByServer: Boolean
     ) {
         connected = false
+
+        val closeCode: CloseCode =
+            when {
+                serverCloseFrame != null -> {
+                    CloseCode.from(serverCloseFrame.closeCode)
+                }
+                clientCloseFrame != null -> {
+                    CloseCode.from(clientCloseFrame.closeCode)
+                }
+                else -> {
+                    CloseCode.UNKNOWN
+                }
+            }
+        logger.info(
+            "Disconnected from gateway, code: ${closeCode.code} reason: ${closeCode.reason}")
+
+        if (heartbeatThread != null) {
+            heartbeatThread!!.cancel(false)
+        }
+
+        if (closeCode.isReconnect() || closeCode == CloseCode.UNKNOWN || !scheduler.isShutdown) {
+            try {
+                scheduler.schedule({ connect() }, 10, TimeUnit.SECONDS)
+            } catch (e: RejectedExecutionException) {
+                logger.error("Error while reconnecting", e)
+                invalidate()
+                TODO("Add shutdown event")
+            }
+        } else {
+            TODO("When creating events, add a shutdown event here")
+        }
     }
 
     override fun onError(websocket: WebSocket, cause: WebSocketException) {
@@ -185,13 +205,20 @@ open class WebSocketManager(
         webSocket?.sendText(identify.toString())
     }
 
+    private fun onEvent(payload: JsonNode) {
+        val d: JsonNode? = if (payload.hasNonNull("d")) payload.get("d") else null
+        val opCode: Int = payload.get("op").asInt()
+        if (d != null) {
+            onOpCode(opCode, d, payload)
+        }
+    }
+
     private fun onOpCode(opCode: Int, d: JsonNode, rawJson: JsonNode) {
         when (val op: OpCode = OpCode.fromCode(opCode)) {
             DISPATCH -> {
                 seq = rawJson.get("s").asInt()
-                val event: String = d.get("t").asText()
+                val event: String = rawJson.get("t").asText()
                 onEventType(event, d)
-                TODO("Not yet implemented")
             }
             HEARTBEAT -> {
                 logger.debug("Received " + op.name)
@@ -273,5 +300,18 @@ open class WebSocketManager(
         }
     }
 
-    private fun onEventType(eventType: String, d: JsonNode) {}
+    private fun onEventType(eventType: String, d: JsonNode) {
+        TODO("Not yet implemented")
+    }
+
+    private fun invalidate() {
+        sessionId = null
+        resumeUrl = null
+    }
+
+    fun shutdown() {
+        heartbeatThread?.cancel(true)
+        webSocket?.disconnect()
+        logger.info("Disconnected from websocket")
+    }
 }

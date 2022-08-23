@@ -27,15 +27,28 @@ import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
 
 class YDWKImpl : YDWK {
 
+    /** Used to create a json object. */
     override val objectNode: ObjectNode
         get() = JsonNodeFactory.instance.objectNode()
 
+    /** Used to parse json, i.e convert plain text json to Jackson classes such as JsonNode. */
     override val objectMapper: ObjectMapper
         get() = ObjectMapper()
 
     override var webSocketManager: WebSocketManager? = null
         private set
 
+    /** Used to shut down the websocket manager */
+    override fun shutdown() {
+        webSocketManager?.shutdown()
+    }
+
+    /**
+     * Used to start the websocket manager
+     *
+     * @param token The token of the bot which is used to authenticate the bot.
+     * @param intents The gateway intent which will decide what events are sent by discord.
+     */
     fun setWebSocketManager(token: String, intents: List<GateWayIntent>) {
         this.webSocketManager = WebSocketManager(this, token, intents).connect()
     }
