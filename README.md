@@ -18,3 +18,22 @@ A discord wrapper made in kotlin(Not related to YDW)
 - [ ] Create entities
 - [ ] Handle Rest API
 
+
+## Getting started
+
+Add the following to your `build.gradle`:
+
+```gradle
+dependencies {
+    compile 'io.github.realyusufismail:ydwk:${project.version}'
+}
+```
+To create a default bot, add the following to your main class:
+
+```kotlin
+fun main() {
+    createDefaultBot("TOKEN")
+}
+```
+
+A default bot has all to recommend gateway intents.

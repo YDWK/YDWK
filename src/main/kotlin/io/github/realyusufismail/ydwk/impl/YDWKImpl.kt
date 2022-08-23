@@ -22,11 +22,21 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.realyusufismail.ydwk.YDWK
+import io.github.realyusufismail.ydwk.ws.WebSocketManager
+import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
 
 class YDWKImpl : YDWK {
+
     override val objectNode: ObjectNode
         get() = JsonNodeFactory.instance.objectNode()
 
     override val objectMapper: ObjectMapper
         get() = ObjectMapper()
+
+    override var webSocketManager: WebSocketManager? = null
+        private set
+
+    fun setWebSocketManager(token: String, intents: List<GateWayIntent>) {
+        this.webSocketManager = WebSocketManager(this, token, intents).connect()
+    }
 }

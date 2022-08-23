@@ -18,14 +18,17 @@
  */ 
 package io.github.realyusufismail.ydwk
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.node.ObjectNode
-import io.github.realyusufismail.ydwk.ws.WebSocketManager
+import io.github.realyusufismail.ydwk.impl.YDWKImpl
+import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
 
-interface YDWK {
-    val objectNode: ObjectNode
+fun createDefaultBot(token: String): YDWK {
+    val ydwk = YDWKImpl()
+    ydwk.setWebSocketManager(token, GateWayIntent.getAllIntents())
+    return ydwk
+}
 
-    val objectMapper: ObjectMapper
-
-    val webSocketManager: WebSocketManager?
+fun createCustomBot(token: String, intents: List<GateWayIntent>): YDWK {
+    val ydwk = YDWKImpl()
+    ydwk.setWebSocketManager(token, intents)
+    return ydwk
 }

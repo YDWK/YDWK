@@ -39,15 +39,15 @@ import org.slf4j.LoggerFactory
 
 open class WebSocketManager(
     protected var ydwk: YDWKImpl,
-    protected var token: String,
-    protected var intents: List<GateWayIntent>
+    private var token: String,
+    private var intents: List<GateWayIntent>
 ) : WebSocketAdapter(), WebSocketListener {
     private val logger: Logger = LoggerFactory.getLogger(javaClass) as Logger
     // Tha main websocket
-    protected var webSocket: WebSocket? = null
+    private var webSocket: WebSocket? = null
     private var resumeUrl: String? = null
-    protected var sessionId: String? = null
-    protected var seq: Int? = null
+    private var sessionId: String? = null
+    private var seq: Int? = null
     private var heartbeatsMissed: Int = 0
     private var heartbeatStartTime: Long = 0
     @Volatile protected var heartbeatThread: Future<*>? = null
@@ -76,7 +76,8 @@ open class WebSocketManager(
                     .connect()
         } catch (e: IOException) {
             resumeUrl = null
-            throw RuntimeException(e)
+            logger.error("Failed to connect to gateway, will try again in 10 seconds", e)
+            scheduler.schedule({ connect() }, 10, TimeUnit.SECONDS)
         }
         return this
     }
@@ -204,6 +205,7 @@ open class WebSocketManager(
             OpCode.INVALID_SESSION -> {
                 logger.debug("Received " + op.name)
                 if (rawJson.get("d").asBoolean()) {
+                    logger.info("Invalid session, reconnecting")
                     identify()
                 } else {
                     logger.error("Invalid session")
