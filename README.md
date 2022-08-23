@@ -23,7 +23,7 @@ A discord wrapper made in kotlin(Not related to YDW)
 
 Add the following to your `build.gradle`:
 
-```gradle.kts
+```gradle
 dependencies {
     implementation("io.github.realyusufismail:ydwk:${project.version}")
 }
