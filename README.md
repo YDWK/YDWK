@@ -4,10 +4,13 @@
 # YDWK
 A discord wrapper made in kotlin(Not related to YDW)
 
-## In progress
-- [ ] Connect to gateway - in progress
+## In progress and to be done
+- [x] Connect to gateway
+- [ ] Handle all op codes - in progress
 - [ ] Handle events
 - [ ] Parse json
+- [ ] Handle reconnect and resuming
+- [ ] Handle rate limiting in websocket
 
 ## Future Features
 - [ ] Handle slash commands

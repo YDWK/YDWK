@@ -19,10 +19,10 @@
 package io.github.realyusufismail.ydwk.ws
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.node.ObjectNode
 import com.neovisionaries.ws.client.*
 import io.github.realyusufismail.ydwk.YDWKInfo
 import io.github.realyusufismail.ydwk.impl.YDWKImpl
-import io.github.realyusufismail.ydwk.ws.handle.ConnectHandler
 import io.github.realyusufismail.ydwk.ws.util.CloseCode
 import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
 import io.github.realyusufismail.ydwk.ws.util.OpCode
@@ -84,16 +84,25 @@ open class WebSocketManager(
     @Throws(Exception::class)
     override fun onConnected(websocket: WebSocket, headers: Map<String, List<String>>) {
         if (sessionId == null) {
-            logger.info("Connected to gateway")
+            logger.info(
+                """
+                
+                   _____                                         _                _     _              __     __  _____   __          __  _  __
+                  / ____|                                       | |              | |   | |             \ \   / / |  __ \  \ \        / / | |/ /
+                 | |        ___    _ __    _ __     ___    ___  | |_    ___    __| |   | |_    ___      \ \_/ /  | |  | |  \ \  /\  / /  | ' / 
+                 | |       / _ \  | '_ \  | '_ \   / _ \  / __| | __|  / _ \  / _` |   | __|  / _ \      \   /   | |  | |   \ \/  \/ /   |  <  
+                 | |____  | (_) | | | | | | | | | |  __/ | (__  | |_  |  __/ | (_| |   | |_  | (_) |      | |    | |__| |    \  /\  /    | . \ 
+                  \_____|  \___/  |_| |_| |_| |_|  \___|  \___|  \__|  \___|  \__,_|    \__|  \___/       |_|    |_____/      \/  \/     |_|\_\
+            """.trimIndent())
         } else {
             logger.info("Resuming session$sessionId")
         }
 
         connected = true
         if (sessionId == null) {
-            ConnectHandler(ydwk, token, intents).identify()
+            identify()
         } else {
-            ConnectHandler(ydwk, token, intents).resume()
+            resume()
         }
     }
 
@@ -119,7 +128,7 @@ open class WebSocketManager(
         val d: JsonNode? = if (payload.hasNonNull("d")) payload.get("d") else null
         val opCode: Int = payload.get("op").asInt()
         if (d != null) {
-            onOpCode(opCode, d)
+            onOpCode(opCode, d, payload)
         }
     }
 
@@ -149,8 +158,36 @@ open class WebSocketManager(
         }
     }
 
-    private fun onOpCode(opCode: Int, d: JsonNode) {
+    fun identify() {
+        // event data
+        val d: ObjectNode =
+            ydwk.objectNode
+                .put("token", token)
+                .put("intents", GateWayIntent.calculateBitmask(intents.toList()))
+                .set(
+                    "properties",
+                    ydwk.objectNode
+                        .put("os", System.getProperty("os.name"))
+                        .put("browser", "YDWK")
+                        .put("device", "YDWK"))
+
+        val json: JsonNode = ydwk.objectNode.put("op", OpCode.IDENTIFY.code).set("d", d)
+        webSocket?.sendText(json.toString())
+    }
+
+    fun resume() {
+        val json = ydwk.objectNode.put("token", token).put("session_id", sessionId).put("seq", seq)
+
+        val identify: ObjectNode = ydwk.objectNode.put("op", OpCode.RESUME.code).set("d", json)
+
+        webSocket?.sendText(identify.toString())
+    }
+
+    private fun onOpCode(opCode: Int, d: JsonNode, rawJson: JsonNode) {
         when (val op: OpCode = OpCode.fromCode(opCode)) {
+            OpCode.DISPATCH -> {
+                seq = rawJson.get("s").asInt()
+            }
             OpCode.HELLO -> {
                 logger.debug("Received " + op.name)
                 val heartbeatInterval: Int = d.get("heartbeat_interval").asInt()
@@ -163,6 +200,16 @@ open class WebSocketManager(
             OpCode.HEARTBEAT_ACK -> {
                 heartbeatsMissed = 0
                 logger.debug("Heartbeat acknowledged")
+            }
+            OpCode.INVALID_SESSION -> {
+                logger.debug("Received " + op.name)
+                if (rawJson.get("d").asBoolean()) {
+                    identify()
+                } else {
+                    logger.error("Invalid session")
+                    resumeUrl = null
+                    sessionId = null
+                }
             }
             else -> {
                 logger.error("Unknown opcode: $opCode")
