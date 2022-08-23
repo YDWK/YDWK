@@ -44,14 +44,14 @@ class ConnectHandler(ydwk: YDWKImpl, token: String, intent: List<GateWayIntent>)
                         .put("browser", "YDWK")
                         .put("device", "YDWK"))
 
-        val json: JsonNode = ydwk.objectNode.put("op", OpCode.IDENTIFY.getCode()).set("d", d)
+        val json: JsonNode = ydwk.objectNode.put("op", OpCode.IDENTIFY.code).set("d", d)
         webSocket?.sendText(json.toString())
     }
 
     fun resume() {
         val json = ydwk.objectNode.put("token", token).put("session_id", sessionId).put("seq", seq)
 
-        val identify: ObjectNode = ydwk.objectNode.put("op", OpCode.RESUME.getCode()).set("d", json)
+        val identify: ObjectNode = ydwk.objectNode.put("op", OpCode.RESUME.code).set("d", json)
 
         webSocket?.sendText(identify.toString())
     }

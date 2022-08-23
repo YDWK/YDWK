@@ -18,7 +18,7 @@
  */ 
 package io.github.realyusufismail.ydwk.ws.util
 
-enum class OpCode {
+enum class OpCode(val code: Int, val send: Boolean = true, val receive: Boolean = false) {
     /** An event was dispatched. */
     DISPATCH(0, false),
     /** Fired periodically by the client to keep the connection alive. */
@@ -44,32 +44,6 @@ enum class OpCode {
     /** For future use or unknown opcodes. */
     UNKNOWN(-1, false, false);
 
-    private var code: Int
-    private var send: Boolean
-    private var receive: Boolean
-
-    constructor(code: Int, send: Boolean, receive: Boolean) {
-        this.code = code
-        this.send = send
-        this.receive = receive
-    }
-
-    constructor(code: Int, send: Boolean) {
-        this.code = code
-        this.send = send
-        this.receive = false
-    }
-
-    constructor(code: Int) {
-        this.code = code
-        this.send = true
-        this.receive = true
-    }
-
-    fun getCode(): Int {
-        return code
-    }
-
     fun isSend(): Boolean {
         return send
     }
@@ -81,7 +55,7 @@ enum class OpCode {
     companion object {
         fun fromCode(code: Int): OpCode {
             for (opCode in values()) {
-                if (opCode.getCode() == code) {
+                if (opCode.code == code) {
                     return opCode
                 }
             }

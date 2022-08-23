@@ -18,13 +18,22 @@
  */ 
 package io.github.realyusufismail.ydwk.ws
 
+import com.fasterxml.jackson.databind.JsonNode
 import com.neovisionaries.ws.client.*
 import io.github.realyusufismail.ydwk.YDWKInfo
 import io.github.realyusufismail.ydwk.impl.YDWKImpl
 import io.github.realyusufismail.ydwk.ws.handle.ConnectHandler
-import io.github.realyusufismail.ydwk.ws.handle.MessageHandler
+import io.github.realyusufismail.ydwk.ws.util.CloseCode
 import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
+import io.github.realyusufismail.ydwk.ws.util.OpCode
 import java.io.IOException
+import java.net.Socket
+import java.net.SocketException
+import java.net.SocketTimeoutException
+import java.util.concurrent.Executors
+import java.util.concurrent.Future
+import java.util.concurrent.ScheduledExecutorService
+import java.util.concurrent.TimeUnit
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -39,8 +48,11 @@ open class WebSocketManager(
     private var resumeUrl: String? = null
     protected var sessionId: String? = null
     protected var seq: Int? = null
-    protected var heartbeatsMissed: Int = 0
-    protected var heartbeatStartTime: Long = 0
+    private var heartbeatsMissed: Int = 0
+    private var heartbeatStartTime: Long = 0
+    @Volatile protected var heartbeatThread: Future<*>? = null
+    private val scheduler: ScheduledExecutorService = Executors.newScheduledThreadPool(1)
+    private var connected = false
 
     @Synchronized
     fun connect(): WebSocketManager {
@@ -77,6 +89,7 @@ open class WebSocketManager(
             logger.info("Resuming session$sessionId")
         }
 
+        connected = true
         if (sessionId == null) {
             ConnectHandler(ydwk, token, intents).identify()
         } else {
@@ -90,7 +103,24 @@ open class WebSocketManager(
     }
 
     override fun onTextMessage(websocket: WebSocket, text: String) {
-        MessageHandler(ydwk, token, intents).handleMessage(text)
+        handleMessage(text)
+    }
+
+    private fun handleMessage(message: String) {
+        try {
+            val payload = ydwk.objectMapper.readTree(message)
+            onEvent(payload)
+        } catch (e: Exception) {
+            logger.error("Error while handling message", e)
+        }
+    }
+
+    private fun onEvent(payload: JsonNode) {
+        val d: JsonNode? = if (payload.hasNonNull("d")) payload.get("d") else null
+        val opCode: Int = payload.get("op").asInt()
+        if (d != null) {
+            onOpCode(opCode, d)
+        }
     }
 
     @Throws(Exception::class)
@@ -99,9 +129,95 @@ open class WebSocketManager(
         serverCloseFrame: WebSocketFrame?,
         clientCloseFrame: WebSocketFrame?,
         closedByServer: Boolean
-    ) {}
+    ) {
+        connected = false
+    }
 
     override fun onError(websocket: WebSocket, cause: WebSocketException) {
-        logger.error("Error connecting to websocket", cause)
+        when (cause.cause) {
+            is SocketTimeoutException -> {
+                heartbeatThread?.cancel(true)
+                logger.error(
+                    "Socket timeout due to {}", (cause.cause as SocketTimeoutException).message)
+            }
+            is IOException -> {
+                logger.error("IO error {}", (cause.cause as IOException).message)
+            }
+            else -> {
+                logger.error("Unknown error", cause)
+            }
+        }
     }
+
+    private fun onOpCode(opCode: Int, d: JsonNode) {
+        when (val op: OpCode = OpCode.fromCode(opCode)) {
+            OpCode.HELLO -> {
+                logger.debug("Received " + op.name)
+                val heartbeatInterval: Int = d.get("heartbeat_interval").asInt()
+                sendHeartbeat(heartbeatInterval)
+            }
+            OpCode.HEARTBEAT -> {
+                logger.debug("Received " + op.name)
+                sendHeartbeat()
+            }
+            OpCode.HEARTBEAT_ACK -> {
+                heartbeatsMissed = 0
+                logger.debug("Heartbeat acknowledged")
+            }
+            else -> {
+                logger.error("Unknown opcode: $opCode")
+            }
+        }
+    }
+
+    private fun sendHeartbeat(heartbeatInterval: Int) {
+        try {
+            if (webSocket != null) {
+                val rawSocket: Socket = webSocket!!.socket
+                if (rawSocket != null)
+                    rawSocket.soTimeout = heartbeatInterval + 10000 // setup a timeout when we miss
+            } else {
+                logger.error("WebSocket is null")
+            }
+            // heartbeats
+        } catch (ex: SocketException) {
+            logger.warn("Failed to setup timeout for socket", ex)
+        }
+
+        heartbeatThread =
+            scheduler.scheduleAtFixedRate(
+                {
+                    if (connected) {
+                        sendHeartbeat()
+                    } else {
+                        logger.info("Not sending heartbeat because not connected")
+                    }
+                },
+                0,
+                heartbeatInterval.toLong(),
+                TimeUnit.MILLISECONDS)
+    }
+
+    private fun sendHeartbeat() {
+        if (webSocket == null) {
+            throw IllegalStateException("WebSocket is not connected")
+        }
+
+        val s: Int? = if (seq != null) seq else null
+
+        val heartbeat: JsonNode =
+            ydwk.objectMapper.createObjectNode().put("op", OpCode.HEARTBEAT.code).put("d", s)
+
+        if (heartbeatsMissed >= 2) {
+            heartbeatsMissed = 0
+            logger.warn("Heartbeat missed, will attempt to reconnect")
+            webSocket?.disconnect(CloseCode.RECONNECT.code, "ZOMBIE CONNECTION")
+        } else {
+            heartbeatsMissed += 1
+            webSocket?.sendText(heartbeat.toString())
+            heartbeatStartTime = System.currentTimeMillis()
+        }
+    }
+
+    private fun onEventType(eventType: String, d: JsonNode) {}
 }

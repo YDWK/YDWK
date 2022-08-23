@@ -42,28 +42,7 @@ enum class GateWayIntent(final var value: Int, final var privileged: Boolean) {
 
     companion object {
         fun from(value: Int): GateWayIntent {
-            return when (value) {
-                0 -> GUILDS
-                1 -> GUILD_MEMBERS
-                2 -> GUILD_BANS
-                3 -> GUILD_EMOJIS_AND_STICKERS
-                4 -> GUILD_INTEGRATIONS
-                5 -> GUILD_WEBHOOKS
-                6 -> GUILD_INVITES
-                7 -> GUILD_VOICE_STATES
-                8 -> GUILD_PRESENCES
-                9 -> GUILD_MESSAGES
-                10 -> GUILD_MESSAGE_REACTIONS
-                11 -> GUILD_MESSAGE_TYPING
-                12 -> DIRECT_MESSAGES
-                13 -> DIRECT_MESSAGE_REACTIONS
-                14 -> DIRECT_MESSAGE_TYPING
-                15 -> MESSAGE_CONTENT
-                16 -> GUILD_SCHEDULED_EVENTS
-                20 -> AUTO_MODERATION_CONFIGURATION
-                21 -> CHANNEL_STATS
-                else -> UNKNOWN
-            }
+            return values().firstOrNull { it.value == value } ?: UNKNOWN
         }
 
         fun calculateBitmask(intents: List<GateWayIntent>): Int {
