@@ -26,6 +26,7 @@ import io.github.realyusufismail.ydwk.impl.YDWKImpl
 import io.github.realyusufismail.ydwk.ws.util.CloseCode
 import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
 import io.github.realyusufismail.ydwk.ws.util.OpCode
+import io.github.realyusufismail.ydwk.ws.util.OpCode.*
 import java.io.IOException
 import java.net.Socket
 import java.net.SocketException
@@ -159,7 +160,7 @@ open class WebSocketManager(
         }
     }
 
-    fun identify() {
+    private fun identify() {
         // event data
         val d: ObjectNode =
             ydwk.objectNode
@@ -172,37 +173,32 @@ open class WebSocketManager(
                         .put("browser", "YDWK")
                         .put("device", "YDWK"))
 
-        val json: JsonNode = ydwk.objectNode.put("op", OpCode.IDENTIFY.code).set("d", d)
+        val json: JsonNode = ydwk.objectNode.put("op", IDENTIFY.code).set("d", d)
         webSocket?.sendText(json.toString())
     }
 
-    fun resume() {
+    private fun resume() {
         val json = ydwk.objectNode.put("token", token).put("session_id", sessionId).put("seq", seq)
 
-        val identify: ObjectNode = ydwk.objectNode.put("op", OpCode.RESUME.code).set("d", json)
+        val identify: ObjectNode = ydwk.objectNode.put("op", RESUME.code).set("d", json)
 
         webSocket?.sendText(identify.toString())
     }
 
     private fun onOpCode(opCode: Int, d: JsonNode, rawJson: JsonNode) {
         when (val op: OpCode = OpCode.fromCode(opCode)) {
-            OpCode.DISPATCH -> {
+            DISPATCH -> {
                 seq = rawJson.get("s").asInt()
+                val event: String = d.get("t").asText()
+                onEventType(event, d)
+                TODO("Not yet implemented")
             }
-            OpCode.HELLO -> {
-                logger.debug("Received " + op.name)
-                val heartbeatInterval: Int = d.get("heartbeat_interval").asInt()
-                sendHeartbeat(heartbeatInterval)
-            }
-            OpCode.HEARTBEAT -> {
+            HEARTBEAT -> {
                 logger.debug("Received " + op.name)
                 sendHeartbeat()
             }
-            OpCode.HEARTBEAT_ACK -> {
-                heartbeatsMissed = 0
-                logger.debug("Heartbeat acknowledged")
-            }
-            OpCode.INVALID_SESSION -> {
+            RECONNECT -> TODO("Need to implement reconnect")
+            INVALID_SESSION -> {
                 logger.debug("Received " + op.name)
                 if (rawJson.get("d").asBoolean()) {
                     logger.info("Invalid session, reconnecting")
@@ -212,6 +208,15 @@ open class WebSocketManager(
                     resumeUrl = null
                     sessionId = null
                 }
+            }
+            HELLO -> {
+                logger.debug("Received " + op.name)
+                val heartbeatInterval: Int = d.get("heartbeat_interval").asInt()
+                sendHeartbeat(heartbeatInterval)
+            }
+            HEARTBEAT_ACK -> {
+                heartbeatsMissed = 0
+                logger.debug("Heartbeat acknowledged")
             }
             else -> {
                 logger.error("Unknown opcode: $opCode")
@@ -255,7 +260,7 @@ open class WebSocketManager(
         val s: Int? = if (seq != null) seq else null
 
         val heartbeat: JsonNode =
-            ydwk.objectMapper.createObjectNode().put("op", OpCode.HEARTBEAT.code).put("d", s)
+            ydwk.objectMapper.createObjectNode().put("op", HEARTBEAT.code).put("d", s)
 
         if (heartbeatsMissed >= 2) {
             heartbeatsMissed = 0
