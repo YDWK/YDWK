@@ -36,4 +36,4 @@ fun main() {
 }
 ```
 
-A default bot has all to recommend gateway intents.
+A default bot has all the recommend gateway intents.
