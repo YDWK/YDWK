@@ -355,8 +355,7 @@ open class WebSocketManager(
             EventNames.VOICE_STATE_UPDATE -> TODO()
             EventNames.VOICE_SERVER_UPDATE -> TODO()
             EventNames.WEBHOOKS_UPDATE -> TODO()
-            EventNames.UNKNOWN -> TODO()
-            else -> {
+            EventNames.UNKNOWN -> {
                 logger.error("Unknown event type: $eventType")
             }
         }
