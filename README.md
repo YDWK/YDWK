@@ -9,7 +9,6 @@ You might ask why should i use this wrapper when there is already a kotlin wrapp
 - This wrapper aims to be as simple and as fast as possible while still being easy to use and understand
 - This is built to be similar to discord.js
 - I will stick to the same naming as in the discord api for consistency
-- I will also have everything in one place compared to Kord
 
 ## In progress and to be done
 - [x] Connect to gateway
