@@ -6,9 +6,9 @@ A discord wrapper made in kotlin(Not related to YDW)
 
 ## In progress and to be done
 - [x] Connect to gateway
+- [x] Parse json
 - [ ] Handle all op codes - in progress
 - [ ] Handle events
-- [ ] Parse json
 - [ ] Handle reconnect and resuming
 - [ ] Handle rate limiting in websocket
 

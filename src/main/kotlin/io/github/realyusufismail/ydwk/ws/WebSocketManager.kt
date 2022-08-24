@@ -24,6 +24,7 @@ import com.neovisionaries.ws.client.*
 import io.github.realyusufismail.ydwk.YDWKInfo
 import io.github.realyusufismail.ydwk.impl.YDWKImpl
 import io.github.realyusufismail.ydwk.ws.util.CloseCode
+import io.github.realyusufismail.ydwk.ws.util.EventNames
 import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
 import io.github.realyusufismail.ydwk.ws.util.OpCode
 import io.github.realyusufismail.ydwk.ws.util.OpCode.*
@@ -301,7 +302,64 @@ open class WebSocketManager(
     }
 
     private fun onEventType(eventType: String, d: JsonNode) {
-        TODO("Not yet implemented")
+        when (EventNames.fromString(eventType)) {
+            EventNames.CHANNEL_UPDATE -> TODO()
+            EventNames.HELLO -> TODO()
+            EventNames.READY -> TODO()
+            EventNames.RESUMED -> TODO()
+            EventNames.RECONNECT -> TODO()
+            EventNames.INVALID_SESSION -> TODO()
+            EventNames.APPLICATION_COMMAND_PERMISSIONS_UPDATE -> TODO()
+            EventNames.CHANNEL_CREATE -> TODO()
+            EventNames.CHANNEL_DELETE -> TODO()
+            EventNames.CHANNEL_PINS_UPDATE -> TODO()
+            EventNames.THREAD_CREATE -> TODO()
+            EventNames.THREAD_UPDATE -> TODO()
+            EventNames.THREAD_DELETE -> TODO()
+            EventNames.THREAD_LIST_SYNC -> TODO()
+            EventNames.THREAD_MEMBERS_UPDATE -> TODO()
+            EventNames.GUILD_CREATE -> TODO()
+            EventNames.GUILD_UPDATE -> TODO()
+            EventNames.GUILD_DELETE -> TODO()
+            EventNames.GUILD_BAN_ADD -> TODO()
+            EventNames.GUILD_BAN_REMOVE -> TODO()
+            EventNames.GUILD_EMOJIS_UPDATE -> TODO()
+            EventNames.GUILD_INTEGRATIONS_UPDATE -> TODO()
+            EventNames.GUILD_MEMBER_ADD -> TODO()
+            EventNames.GUILD_MEMBER_REMOVE -> TODO()
+            EventNames.GUILD_MEMBER_UPDATE -> TODO()
+            EventNames.GUILD_ROLE_CREATE -> TODO()
+            EventNames.GUILD_ROLE_UPDATE -> TODO()
+            EventNames.GUILD_ROLE_DELETE -> TODO()
+            EventNames.GUILD_SCHEDULED_EVENT_CREATE -> TODO()
+            EventNames.GUILD_SCHEDULED_EVENT_UPDATE -> TODO()
+            EventNames.GUILD_SCHEDULED_EVENT_DELETE -> TODO()
+            EventNames.GUILD_SCHEDULED_EVENT_USER_ADD -> TODO()
+            EventNames.GUILD_SCHEDULED_EVENT_USER_REMOVE -> TODO()
+            EventNames.INTEGRATION_CREATE -> TODO()
+            EventNames.INTEGRATION_UPDATE -> TODO()
+            EventNames.INTEGRATION_DELETE -> TODO()
+            EventNames.INTERACTION_CREATE -> TODO()
+            EventNames.INVITE_CREATE -> TODO()
+            EventNames.INVITE_DELETE -> TODO()
+            EventNames.MESSAGE_CREATE -> TODO()
+            EventNames.MESSAGE_UPDATE -> TODO()
+            EventNames.MESSAGE_DELETE -> TODO()
+            EventNames.MESSAGE_DELETE_BULK -> TODO()
+            EventNames.MESSAGE_REACTION_ADD -> TODO()
+            EventNames.MESSAGE_REACTION_REMOVE -> TODO()
+            EventNames.MESSAGE_REACTION_REMOVE_ALL -> TODO()
+            EventNames.PRESENCE_UPDATE -> TODO()
+            EventNames.TYPING_START -> TODO()
+            EventNames.USER_UPDATE -> TODO()
+            EventNames.VOICE_STATE_UPDATE -> TODO()
+            EventNames.VOICE_SERVER_UPDATE -> TODO()
+            EventNames.WEBHOOKS_UPDATE -> TODO()
+            EventNames.UNKNOWN -> TODO()
+            else -> {
+                logger.error("Unknown event type: $eventType")
+            }
+        }
     }
 
     private fun invalidate() {
