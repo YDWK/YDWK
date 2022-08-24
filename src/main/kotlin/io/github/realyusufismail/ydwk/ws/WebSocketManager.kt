@@ -52,7 +52,7 @@ open class WebSocketManager(
     @Volatile protected var heartbeatThread: Future<*>? = null
     private val scheduler: ScheduledExecutorService = Executors.newScheduledThreadPool(1)
     private var connected = false
-    private var alreadySentConnectMessageOnce : Boolean = false
+    private var alreadySentConnectMessageOnce: Boolean = false
 
     @Synchronized
     fun connect(): WebSocketManager {
@@ -215,7 +215,7 @@ open class WebSocketManager(
     private fun onEvent(payload: JsonNode) {
         logger.debug("Received event {}", payload.toString())
 
-        val s : Int? = if(payload.hasNonNull("s")) payload.get("s").asInt() else null
+        val s: Int? = if (payload.hasNonNull("s")) payload.get("s").asInt() else null
         if (s != null) {
             seq = s
         }
@@ -266,7 +266,8 @@ open class WebSocketManager(
         try {
             if (webSocket != null) {
                 val rawSocket: Socket = webSocket!!.socket
-                rawSocket.soTimeout = (heartbeatInterval + 10000).toInt() // setup a timeout when we miss
+                rawSocket.soTimeout =
+                    (heartbeatInterval + 10000).toInt() // setup a timeout when we miss
             } else {
                 logger.error("WebSocket is null")
             }
