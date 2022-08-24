@@ -14,8 +14,8 @@ You might ask why should i use this wrapper when there is already a kotlin wrapp
 ## In progress and to be done
 - [x] Connect to gateway
 - [x] Parse json
-- [ ] Handle all op codes - in progress
-- [ ] Handle events
+- [x] Handle all op codes
+- [ ] Handle events - In progress
 - [ ] Handle reconnect and resuming
 - [ ] Handle rate limiting in websocket
 

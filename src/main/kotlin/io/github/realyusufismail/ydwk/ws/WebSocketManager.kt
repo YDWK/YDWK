@@ -235,7 +235,15 @@ open class WebSocketManager(
                 logger.debug("Received $opCode")
                 sendHeartbeat()
             }
-            RECONNECT -> TODO("Need to implement reconnect")
+            RECONNECT -> {
+                logger.debug("Received $opCode")
+                logger.info("Reconnecting due to $opCode")
+                if (sessionId != null) {
+                    resume()
+                } else {
+                    identify()
+                }
+            }
             INVALID_SESSION -> {
                 logger.debug("Received $opCode")
                 if (rawJson.get("d").asBoolean()) {
