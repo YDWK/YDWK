@@ -52,6 +52,7 @@ open class WebSocketManager(
     @Volatile protected var heartbeatThread: Future<*>? = null
     private val scheduler: ScheduledExecutorService = Executors.newScheduledThreadPool(1)
     private var connected = false
+    private var alreadySentConnectMessageOnce : Boolean = false
 
     @Synchronized
     fun connect(): WebSocketManager {
@@ -84,8 +85,9 @@ open class WebSocketManager(
     @Throws(Exception::class)
     override fun onConnected(websocket: WebSocket, headers: Map<String, List<String>>) {
         if (sessionId == null) {
-            logger.info(
-                """
+            if (!alreadySentConnectMessageOnce) {
+                logger.info(
+                    """
                 
                    _____                                         _                _     _              __     __  _____   __          __  _  __
                   / ____|                                       | |              | |   | |             \ \   / / |  __ \  \ \        / / | |/ /
@@ -94,6 +96,10 @@ open class WebSocketManager(
                  | |____  | (_) | | | | | | | | | |  __/ | (__  | |_  |  __/ | (_| |   | |_  | (_) |      | |    | |__| |    \  /\  /    | . \ 
                   \_____|  \___/  |_| |_| |_| |_|  \___|  \___|  \__|  \___|  \__,_|    \__|  \___/       |_|    |_____/      \/  \/     |_|\_\
             """.trimIndent())
+                alreadySentConnectMessageOnce = true
+            } else {
+                logger.info("Reconnected to gateway")
+            }
         } else {
             logger.info("Resuming session$sessionId")
         }
@@ -207,27 +213,31 @@ open class WebSocketManager(
     }
 
     private fun onEvent(payload: JsonNode) {
-        val d: JsonNode? = if (payload.hasNonNull("d")) payload.get("d") else null
-        val opCode: Int = payload.get("op").asInt()
-        if (d != null) {
-            onOpCode(opCode, d, payload)
+        logger.debug("Received event {}", payload.toString())
+
+        val s : Int? = if(payload.hasNonNull("s")) payload.get("s").asInt() else null
+        if (s != null) {
+            seq = s
         }
+
+        val d: JsonNode = payload.get("d")
+        val opCode: Int = payload.get("op").asInt()
+        onOpCode(opCode, d, payload)
     }
 
     private fun onOpCode(opCode: Int, d: JsonNode, rawJson: JsonNode) {
-        when (val op: OpCode = OpCode.fromCode(opCode)) {
+        when (OpCode.fromCode(opCode)) {
             DISPATCH -> {
-                seq = rawJson.get("s").asInt()
                 val event: String = rawJson.get("t").asText()
                 onEventType(event, d)
             }
             HEARTBEAT -> {
-                logger.debug("Received " + op.name)
+                logger.debug("Received $opCode")
                 sendHeartbeat()
             }
             RECONNECT -> TODO("Need to implement reconnect")
             INVALID_SESSION -> {
-                logger.debug("Received " + op.name)
+                logger.debug("Received $opCode")
                 if (rawJson.get("d").asBoolean()) {
                     logger.info("Invalid session, reconnecting")
                     identify()
@@ -238,13 +248,13 @@ open class WebSocketManager(
                 }
             }
             HELLO -> {
-                logger.debug("Received " + op.name)
-                val heartbeatInterval: Int = d.get("heartbeat_interval").asInt()
+                logger.debug("Received $opCode")
+                val heartbeatInterval: Long = d.get("heartbeat_interval").asLong()
                 sendHeartbeat(heartbeatInterval)
             }
             HEARTBEAT_ACK -> {
-                heartbeatsMissed = 0
                 logger.debug("Heartbeat acknowledged")
+                heartbeatsMissed = 0
             }
             else -> {
                 logger.error("Unknown opcode: $opCode")
@@ -252,12 +262,11 @@ open class WebSocketManager(
         }
     }
 
-    private fun sendHeartbeat(heartbeatInterval: Int) {
+    private fun sendHeartbeat(heartbeatInterval: Long) {
         try {
             if (webSocket != null) {
                 val rawSocket: Socket = webSocket!!.socket
-                if (rawSocket != null)
-                    rawSocket.soTimeout = heartbeatInterval + 10000 // setup a timeout when we miss
+                rawSocket.soTimeout = (heartbeatInterval + 10000).toInt() // setup a timeout when we miss
             } else {
                 logger.error("WebSocket is null")
             }
@@ -276,7 +285,7 @@ open class WebSocketManager(
                     }
                 },
                 0,
-                heartbeatInterval.toLong(),
+                heartbeatInterval,
                 TimeUnit.MILLISECONDS)
     }
 
@@ -290,13 +299,14 @@ open class WebSocketManager(
         val heartbeat: JsonNode =
             ydwk.objectMapper.createObjectNode().put("op", HEARTBEAT.code).put("d", s)
 
+        logger.info(heartbeat.toString())
         if (heartbeatsMissed >= 2) {
             heartbeatsMissed = 0
             logger.warn("Heartbeat missed, will attempt to reconnect")
-            webSocket?.disconnect(CloseCode.RECONNECT.code, "ZOMBIE CONNECTION")
+            webSocket!!.disconnect(CloseCode.RECONNECT.code, "ZOMBIE CONNECTION")
         } else {
             heartbeatsMissed += 1
-            webSocket?.sendText(heartbeat.toString())
+            webSocket!!.sendText(heartbeat.toString())
             heartbeatStartTime = System.currentTimeMillis()
         }
     }
