@@ -24,6 +24,7 @@ You might ask why should i use this wrapper when there is already a kotlin wrapp
 - [ ] Caching
 - [ ] Create entities
 - [ ] Handle Rest API
+- [ ] Handle sending events
 
 
 ## Getting started
