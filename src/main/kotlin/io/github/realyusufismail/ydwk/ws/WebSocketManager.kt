@@ -322,14 +322,24 @@ open class WebSocketManager(
 
     private fun onEventType(eventType: String, d: JsonNode) {
         when (EventNames.fromString(eventType)) {
-            EventNames.CHANNEL_UPDATE -> TODO()
-            EventNames.HELLO -> TODO()
-            EventNames.READY -> TODO()
+            EventNames.HELLO -> {
+                // do nothing
+            }
+            EventNames.READY -> {
+                //get ride of ?v=
+                val libraryVersion = YDWKInfo.DISCORD_GATEWAY_VERSION.toString().substring(2)
+                if (libraryVersion != d.get("v").asText()) {
+                    logger.warn("Using library version {} but discord is using {}", libraryVersion, d.get("v").asText())
+                }
+
+
+            }
             EventNames.RESUMED -> TODO()
             EventNames.RECONNECT -> TODO()
             EventNames.INVALID_SESSION -> TODO()
             EventNames.APPLICATION_COMMAND_PERMISSIONS_UPDATE -> TODO()
             EventNames.CHANNEL_CREATE -> TODO()
+            EventNames.CHANNEL_UPDATE -> TODO()
             EventNames.CHANNEL_DELETE -> TODO()
             EventNames.CHANNEL_PINS_UPDATE -> TODO()
             EventNames.THREAD_CREATE -> TODO()
