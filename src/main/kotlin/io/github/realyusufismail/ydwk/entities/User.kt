@@ -20,7 +20,49 @@ package io.github.realyusufismail.ydwk.entities
 
 import io.github.realyusufismail.ydwk.entities.util.GenericEntity
 import io.github.realyusufismail.ydwk.util.SnowFlake
+import java.awt.Color
 
 interface User : SnowFlake, GenericEntity {
+
+    /** The user's username, not unique across the platform */
     val name: String
+
+    /** The user's 4-digit discord-tag */
+    val discriminator: String
+
+    /** The user's avatar hash */
+    val avatar: String?
+
+    /** Whether the user belongs to an OAuth2 application */
+    val bot: Boolean
+
+    /** Whether the user is an Official Discord System user (part of the urgent message system) */
+    val system: Boolean
+
+    /** Whether the user has two factor enabled on their account */
+    val mfaEnabled: Boolean
+
+    /** The user's banner hash */
+    val banner: String?
+
+    /** The user's banner color encoded as an integer representation of hexadecimal color code */
+    val accentColor: Color?
+
+    /** The user's chosen language option */
+    val locale: String?
+
+    /** Whether the email on this account has been verified */
+    val verified: Boolean?
+
+    /** The user's email */
+    val email: String?
+
+    /** The flags on a user's account */
+    val flags: Int?
+
+    /** The type of Nitro subscription on a user's account */
+    val premiumType: Int?
+
+    /** The public flags on a user's account */
+    val publicFlags: Int?
 }

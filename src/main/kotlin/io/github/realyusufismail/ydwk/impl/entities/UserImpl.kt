@@ -21,11 +21,51 @@ package io.github.realyusufismail.ydwk.impl.entities
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.realyusufismail.ydwk.YDWK
 import io.github.realyusufismail.ydwk.entities.User
+import java.awt.Color
 
 open class UserImpl(private val json: JsonNode, private val id: Long, override val ydwk: YDWK) :
     User {
     override val name: String
         get() = json["name"].asText()
+
+    override val discriminator: String
+        get() = json["discriminator"].asText()
+
+    override val avatar: String?
+        get() = json.get("avatar").asText()
+
+    override val bot: Boolean
+        get() = json.get("bot").asBoolean()
+
+    override val system: Boolean
+        get() = json.get("system").asBoolean()
+
+    override val mfaEnabled: Boolean
+        get() = json.get("mfa_enabled").asBoolean()
+
+    override val banner: String?
+        get() = json.get("banner").asText()
+
+    override val accentColor: Color?
+        get() = json.get("accent_color").asInt().let { Color(it) }
+
+    override val locale: String?
+        get() = json.get("locale").asText()
+
+    override val verified: Boolean?
+        get() = json.get("verified").asBoolean()
+
+    override val email: String?
+        get() = json.get("email").asText()
+
+    override val flags: Int?
+        get() = json.get("flags").asInt()
+
+    override val premiumType: Int?
+        get() = json.get("premium_type").asInt()
+
+    override val publicFlags: Int?
+        get() = json.get("public_flags").asInt()
 
     override fun getIdLong(): Long {
         return id
