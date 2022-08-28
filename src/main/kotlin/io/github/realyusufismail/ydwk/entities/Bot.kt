@@ -18,4 +18,8 @@
  */ 
 package io.github.realyusufismail.ydwk.entities
 
-interface Bot : User {}
+interface Bot : User {
+
+    /** The user's email */
+    val email: String
+}

@@ -22,4 +22,8 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.realyusufismail.ydwk.YDWK
 import io.github.realyusufismail.ydwk.entities.Bot
 
-class BotImpl(json: JsonNode, id: Long, ydwk: YDWK) : UserImpl(json, id, ydwk), Bot {}
+class BotImpl(json: JsonNode, id: Long, ydwk: YDWK) : UserImpl(json, id, ydwk), Bot {
+
+    override val email: String
+        get() = json["email"].asText()
+}

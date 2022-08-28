@@ -54,9 +54,6 @@ interface User : SnowFlake, GenericEntity {
     /** Whether the email on this account has been verified */
     val verified: Boolean?
 
-    /** The user's email */
-    val email: String?
-
     /** The flags on a user's account */
     val flags: Int?
 

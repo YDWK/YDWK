@@ -23,8 +23,7 @@ import io.github.realyusufismail.ydwk.YDWK
 import io.github.realyusufismail.ydwk.entities.User
 import java.awt.Color
 
-open class UserImpl(private val json: JsonNode, private val id: Long, override val ydwk: YDWK) :
-    User {
+open class UserImpl(val json: JsonNode, private val id: Long, override val ydwk: YDWK) : User {
     override val name: String
         get() = json["name"].asText()
 
@@ -54,9 +53,6 @@ open class UserImpl(private val json: JsonNode, private val id: Long, override v
 
     override val verified: Boolean?
         get() = json.get("verified").asBoolean()
-
-    override val email: String?
-        get() = json.get("email").asText()
 
     override val flags: Int?
         get() = json.get("flags").asInt()
