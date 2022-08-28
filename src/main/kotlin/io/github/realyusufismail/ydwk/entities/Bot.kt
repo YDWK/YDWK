@@ -16,18 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.impl.entities
+package io.github.realyusufismail.ydwk.entities
 
-import com.fasterxml.jackson.databind.JsonNode
-import io.github.realyusufismail.ydwk.YDWK
-import io.github.realyusufismail.ydwk.entities.User
-
-open class UserImpl(private val json: JsonNode, private val id: Long, override val ydwk: YDWK) :
-    User {
-    override val name: String
-        get() = json["name"].asText()
-
-    override fun getIdLong(): Long {
-        return id
-    }
-}
+interface Bot : User {}
