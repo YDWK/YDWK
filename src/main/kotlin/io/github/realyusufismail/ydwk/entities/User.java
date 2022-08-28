@@ -1,4 +1,7 @@
 package io.github.realyusufismail.ydwk.entities;
 
-public interface User {
+import io.github.realyusufismail.ydwk.entities.util.GenericEntity;
+import io.github.realyusufismail.ydwk.util.SnowFlake;
+
+public interface User extends SnowFlake, GenericEntity {
 }

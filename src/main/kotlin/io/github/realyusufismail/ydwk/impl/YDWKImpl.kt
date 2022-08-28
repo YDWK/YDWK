@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.realyusufismail.ydwk.YDWK
+import io.github.realyusufismail.ydwk.entities.Bot
 import io.github.realyusufismail.ydwk.ws.WebSocketManager
 import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
 
@@ -43,6 +44,9 @@ class YDWKImpl : YDWK {
         webSocketManager?.shutdown()
     }
 
+    override var bot: Bot? = null
+        private set
+
     /**
      * Used to start the websocket manager
      *
@@ -51,5 +55,14 @@ class YDWKImpl : YDWK {
      */
     fun setWebSocketManager(token: String, intents: List<GateWayIntent>) {
         this.webSocketManager = WebSocketManager(this, token, intents).connect()
+    }
+
+    /**
+     * Used to set the bot
+     *
+     * @param bot The bot which is used to send messages to discord.
+     */
+    fun setBot(bot: Bot) {
+        this.bot = bot
     }
 }

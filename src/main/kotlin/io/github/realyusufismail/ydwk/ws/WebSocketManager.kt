@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import com.neovisionaries.ws.client.*
 import io.github.realyusufismail.ydwk.YDWKInfo
 import io.github.realyusufismail.ydwk.impl.YDWKImpl
+import io.github.realyusufismail.ydwk.impl.entities.BotImpl
 import io.github.realyusufismail.ydwk.ws.util.CloseCode
 import io.github.realyusufismail.ydwk.ws.util.EventNames
 import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
@@ -334,6 +335,10 @@ open class WebSocketManager(
                         libraryVersion,
                         d.get("v").asText())
                 }
+
+                sessionId = d.get("session_id").asText()
+                resumeUrl = d.get("resume_gateway_url").asText()
+                ydwk.setBot(BotImpl(d.get("user"), d.get("user").asLong(), ydwk))
             }
             EventNames.RESUMED -> TODO()
             EventNames.RECONNECT -> TODO()

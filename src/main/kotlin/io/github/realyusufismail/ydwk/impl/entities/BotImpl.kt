@@ -16,21 +16,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk
+package io.github.realyusufismail.ydwk.impl.entities
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.node.ObjectNode
+import com.fasterxml.jackson.databind.JsonNode
+import io.github.realyusufismail.ydwk.YDWK
 import io.github.realyusufismail.ydwk.entities.Bot
-import io.github.realyusufismail.ydwk.ws.WebSocketManager
 
-interface YDWK {
-    val objectNode: ObjectNode
-
-    val objectMapper: ObjectMapper
-
-    val webSocketManager: WebSocketManager?
-
-    fun shutdown()
-
-    val bot: Bot?
-}
+class BotImpl(json: JsonNode, id: Long, ydwk: YDWK) : UserImpl(json, id, ydwk), Bot {}

@@ -1,5 +1,5 @@
 package io.github.realyusufismail.ydwk.entities;
 
-public interface Bot {
+public interface Bot extends User {
 
 }

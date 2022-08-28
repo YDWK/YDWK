@@ -30,12 +30,12 @@ interface SnowFlake {
         return SnowFlakeReg(id)
     }
 
-    /** @return The core string of this api. */
+    /** @return The id of an object as a string */
     fun getId(): String {
         return getIdLong().toString()
     }
 
-    /** @return The core long of this api. */
+    /** @return The id of an object as a long */
     @NotNull fun getIdLong(): Long
 }
 
