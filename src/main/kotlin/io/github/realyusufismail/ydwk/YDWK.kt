@@ -43,7 +43,7 @@ interface YDWK {
     val application: Application?
 
     /** Used to get information about when the bot logged in. */
-    val isLoggedIn: LoggedIn?
+    val loggedInStatus: LoggedIn?
 
     /** Used to shut down the websocket manager */
     fun shutdown()

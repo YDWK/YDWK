@@ -48,7 +48,7 @@ class YDWKImpl : YDWK {
     override var application: Application? = null
         private set
 
-    override var isLoggedIn: LoggedIn? = null
+    override var loggedInStatus: LoggedIn? = null
         private set
 
     /**
@@ -85,6 +85,6 @@ class YDWKImpl : YDWK {
      * @param loggedIn The logged in status which is used to send messages to discord.
      */
     fun setLoggedIn(loggedIn: LoggedIn) {
-        this.isLoggedIn = loggedIn
+        this.loggedInStatus = loggedIn
     }
 }

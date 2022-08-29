@@ -20,9 +20,28 @@ package io.github.realyusufismail.ydwk.ws.util.impl
 
 import io.github.realyusufismail.ydwk.ws.util.LoggedIn
 import java.time.Duration
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 
 class LoggedInImpl(
     override val loggedIn: Boolean,
     override var loggedInTime: Duration?,
     override var disconnectionTime: Duration?
-) : LoggedIn
+) : LoggedIn {
+
+    override fun subscribe(function: (LoggedIn) -> Unit) {
+        // if logged in then call function and return the logged in time
+        if (loggedIn) {
+            function(this).also {
+                loggedInTime =
+                    Duration.of(
+                        Instant.now().minus(loggedInTime!!).toEpochMilli(), ChronoUnit.MILLIS)
+            }
+            return
+        }
+
+        // if not logged in then return the disconnection time
+        disconnectionTime?.let { function(this) }
+        TODO("broken")
+    }
+}

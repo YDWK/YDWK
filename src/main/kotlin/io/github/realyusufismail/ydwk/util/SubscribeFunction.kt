@@ -16,19 +16,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.ws.util
+package io.github.realyusufismail.ydwk.util
 
-import io.github.realyusufismail.ydwk.util.SubscribeFunction
-import java.time.Duration
-
-interface LoggedIn : SubscribeFunction<LoggedIn> {
-
-    /** Weather the bot is logged in or not. */
-    val loggedIn: Boolean
-
-    /** If the bot is logged in, this will return the time when the bot logged in. */
-    var loggedInTime: Duration?
-
-    /** If the bot disconnected, this will return the time when the bot disconnected. */
-    var disconnectionTime: Duration?
+interface SubscribeFunction<T> {
+    fun subscribe(function: (T) -> Unit)
 }

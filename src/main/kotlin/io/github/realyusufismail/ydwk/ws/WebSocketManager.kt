@@ -31,8 +31,6 @@ import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
 import io.github.realyusufismail.ydwk.ws.util.OpCode
 import io.github.realyusufismail.ydwk.ws.util.OpCode.*
 import io.github.realyusufismail.ydwk.ws.util.impl.LoggedInImpl
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import java.io.IOException
 import java.net.Socket
 import java.net.SocketException
@@ -41,6 +39,8 @@ import java.time.Duration
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.*
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 open class WebSocketManager(
     protected var ydwk: YDWKImpl,
@@ -254,7 +254,6 @@ open class WebSocketManager(
             }
             RECONNECT -> {
                 logger.debug("Received $opCode")
-                logger.info("Reconnecting due to $opCode")
                 if (sessionId != null) {
                     resume()
                 } else {
@@ -325,7 +324,6 @@ open class WebSocketManager(
         val heartbeat: JsonNode =
             ydwk.objectMapper.createObjectNode().put("op", HEARTBEAT.code).put("d", s)
 
-        logger.info(heartbeat.toString())
         if (heartbeatsMissed >= 2) {
             heartbeatsMissed = 0
             logger.warn("Heartbeat missed, will attempt to reconnect")
@@ -344,7 +342,7 @@ open class WebSocketManager(
             }
             EventNames.READY -> {
                 // get ride of ?v=
-                val libraryVersion = YDWKInfo.DISCORD_GATEWAY_VERSION.toString().substring(2)
+                val libraryVersion = YDWKInfo.DISCORD_GATEWAY_VERSION.toString().substring(3)
                 if (libraryVersion != d.get("v").asText()) {
                     logger.warn(
                         "Using library version {} but discord is using {}",
