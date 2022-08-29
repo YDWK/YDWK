@@ -342,9 +342,9 @@ open class WebSocketManager(
 
                 sessionId = d.get("session_id").asText()
                 resumeUrl = d.get("resume_gateway_url").asText()
-                ydwk.setBot(BotImpl(d.get("user"), d.get("user").asLong(), ydwk))
-                ydwk.setApplication(
-                    ApplicationImpl(d.get("application"), d.get("application").asLong(), ydwk))
+                ydwk.bot = BotImpl(d.get("user"), d.get("user").asLong(), ydwk)
+                ydwk.application =
+                    ApplicationImpl(d.get("application"), d.get("application").asLong(), ydwk)
             }
             EventNames.RESUMED -> TODO()
             EventNames.RECONNECT -> TODO()
