@@ -20,17 +20,31 @@ package io.github.realyusufismail.ydwk
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
+import io.github.realyusufismail.ydwk.entities.Application
 import io.github.realyusufismail.ydwk.entities.Bot
 import io.github.realyusufismail.ydwk.ws.WebSocketManager
+import io.github.realyusufismail.ydwk.ws.util.LoggedIn
 
 interface YDWK {
+
+    /** Used to create a json object. */
     val objectNode: ObjectNode
 
+    /** Used to parse json, i.e convert plain text json to Jackson classes such as JsonNode. */
     val objectMapper: ObjectMapper
 
+    /** This is where the websocket is created. */
     val webSocketManager: WebSocketManager?
 
-    fun shutdown()
-
+    /** Used to get the properties of the bot. */
     val bot: Bot?
+
+    /** Used to get the properties of the application. */
+    val application: Application?
+
+    /** Used to get information about when the bot logged in. */
+    val isLoggedIn: LoggedIn?
+
+    /** Used to shut down the websocket manager */
+    fun shutdown()
 }

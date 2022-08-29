@@ -16,13 +16,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.entities.util
+package io.github.realyusufismail.ydwk.ws.util.impl
 
-import com.fasterxml.jackson.databind.JsonNode
-import io.github.realyusufismail.ydwk.YDWK
+import io.github.realyusufismail.ydwk.ws.util.LoggedIn
+import java.time.Duration
 
-interface GenericEntity {
-    val ydwk: YDWK
-
-    val json: JsonNode
-}
+class LoggedInImpl(
+    override val loggedIn: Boolean,
+    override var loggedInTime: Duration?,
+    override var disconnectionTime: Duration?
+) : LoggedIn

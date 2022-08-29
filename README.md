@@ -14,6 +14,7 @@ You might ask why should i use this wrapper when there is already a kotlin wrapp
 - [x] Connect to gateway
 - [x] Parse json
 - [x] Handle all op codes
+- [ ] Create entities - in progress
 - [ ] Handle events - In progress
 - [ ] Handle reconnect and resuming
 - [ ] Handle rate limiting in websocket
@@ -21,7 +22,6 @@ You might ask why should i use this wrapper when there is already a kotlin wrapp
 ## Future Features
 - [ ] Handle slash commands
 - [ ] Caching
-- [ ] Create entities
 - [ ] Handle Rest API
 - [ ] Handle sending events
 

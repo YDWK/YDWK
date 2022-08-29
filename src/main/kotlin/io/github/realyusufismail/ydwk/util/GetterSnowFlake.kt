@@ -16,13 +16,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.entities.util
+package io.github.realyusufismail.ydwk.util
 
-import com.fasterxml.jackson.databind.JsonNode
-import io.github.realyusufismail.ydwk.YDWK
+interface GetterSnowFlake {
+    val asLong: Long
 
-interface GenericEntity {
-    val ydwk: YDWK
+    val asString: String
+        get() = asLong.toString()
 
-    val json: JsonNode
+    companion object {
+        fun of(id: Long): GetterSnowFlake {
+            return object : GetterSnowFlake {
+                override val asLong: Long = id
+            }
+        }
+    }
 }

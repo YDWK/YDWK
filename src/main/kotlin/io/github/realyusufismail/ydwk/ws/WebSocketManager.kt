@@ -23,19 +23,24 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import com.neovisionaries.ws.client.*
 import io.github.realyusufismail.ydwk.YDWKInfo
 import io.github.realyusufismail.ydwk.impl.YDWKImpl
+import io.github.realyusufismail.ydwk.impl.entities.ApplicationImpl
 import io.github.realyusufismail.ydwk.impl.entities.BotImpl
 import io.github.realyusufismail.ydwk.ws.util.CloseCode
 import io.github.realyusufismail.ydwk.ws.util.EventNames
 import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
 import io.github.realyusufismail.ydwk.ws.util.OpCode
 import io.github.realyusufismail.ydwk.ws.util.OpCode.*
+import io.github.realyusufismail.ydwk.ws.util.impl.LoggedInImpl
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import java.io.IOException
 import java.net.Socket
 import java.net.SocketException
 import java.net.SocketTimeoutException
+import java.time.Duration
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 import java.util.concurrent.*
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 open class WebSocketManager(
     protected var ydwk: YDWKImpl,
@@ -165,17 +170,24 @@ open class WebSocketManager(
             } catch (e: RejectedExecutionException) {
                 logger.error("Error while reconnecting", e)
                 invalidate()
+                ydwk.setLoggedIn(
+                    LoggedInImpl(
+                        false, null, Duration.of(Instant.now().toEpochMilli(), ChronoUnit.MILLIS)))
                 TODO("Add shutdown event")
             }
         } else {
+            ydwk.setLoggedIn(
+                LoggedInImpl(
+                    false, null, Duration.of(Instant.now().toEpochMilli(), ChronoUnit.MILLIS)))
             TODO("When creating events, add a shutdown event here")
         }
     }
 
     override fun onError(websocket: WebSocket, cause: WebSocketException) {
+        ydwk.setLoggedIn(
+            LoggedInImpl(false, null, Duration.of(Instant.now().toEpochMilli(), ChronoUnit.MILLIS)))
         when (cause.cause) {
             is SocketTimeoutException -> {
-                heartbeatThread?.cancel(true)
                 logger.error(
                     "Socket timeout due to {}", (cause.cause as SocketTimeoutException).message)
             }
@@ -203,6 +215,8 @@ open class WebSocketManager(
 
         val json: JsonNode = ydwk.objectNode.put("op", IDENTIFY.code).set("d", d)
         webSocket?.sendText(json.toString())
+        ydwk.setLoggedIn(
+            LoggedInImpl(true, Duration.of(Instant.now().toEpochMilli(), ChronoUnit.MILLIS), null))
     }
 
     private fun resume() {
@@ -211,6 +225,8 @@ open class WebSocketManager(
         val identify: ObjectNode = ydwk.objectNode.put("op", RESUME.code).set("d", json)
 
         webSocket?.sendText(identify.toString())
+        ydwk.setLoggedIn(
+            LoggedInImpl(true, Duration.of(Instant.now().toEpochMilli(), ChronoUnit.MILLIS), null))
     }
 
     private fun onEvent(payload: JsonNode) {
@@ -339,6 +355,8 @@ open class WebSocketManager(
                 sessionId = d.get("session_id").asText()
                 resumeUrl = d.get("resume_gateway_url").asText()
                 ydwk.setBot(BotImpl(d.get("user"), d.get("user").asLong(), ydwk))
+                ydwk.setApplication(
+                    ApplicationImpl(d.get("application"), d.get("application").asLong(), ydwk))
             }
             EventNames.RESUMED -> TODO()
             EventNames.RECONNECT -> TODO()

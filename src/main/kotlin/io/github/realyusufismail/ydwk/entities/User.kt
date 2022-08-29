@@ -19,13 +19,11 @@
 package io.github.realyusufismail.ydwk.entities
 
 import io.github.realyusufismail.ydwk.entities.util.GenericEntity
+import io.github.realyusufismail.ydwk.util.NameAbleEntity
 import io.github.realyusufismail.ydwk.util.SnowFlake
 import java.awt.Color
 
-interface User : SnowFlake, GenericEntity {
-
-    /** The user's username, not unique across the platform */
-    val name: String
+interface User : SnowFlake, GenericEntity, NameAbleEntity {
 
     /** The user's 4-digit discord-tag */
     val discriminator: String

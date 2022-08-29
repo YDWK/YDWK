@@ -22,29 +22,33 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.realyusufismail.ydwk.YDWK
+import io.github.realyusufismail.ydwk.entities.Application
 import io.github.realyusufismail.ydwk.entities.Bot
 import io.github.realyusufismail.ydwk.ws.WebSocketManager
 import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
+import io.github.realyusufismail.ydwk.ws.util.LoggedIn
 
 class YDWKImpl : YDWK {
 
-    /** Used to create a json object. */
     override val objectNode: ObjectNode
         get() = JsonNodeFactory.instance.objectNode()
 
-    /** Used to parse json, i.e convert plain text json to Jackson classes such as JsonNode. */
     override val objectMapper: ObjectMapper
         get() = ObjectMapper()
 
     override var webSocketManager: WebSocketManager? = null
         private set
 
-    /** Used to shut down the websocket manager */
     override fun shutdown() {
         webSocketManager?.shutdown()
     }
 
     override var bot: Bot? = null
+        private set
+    override var application: Application? = null
+        private set
+
+    override var isLoggedIn: LoggedIn? = null
         private set
 
     /**
@@ -64,5 +68,23 @@ class YDWKImpl : YDWK {
      */
     fun setBot(bot: Bot) {
         this.bot = bot
+    }
+
+    /**
+     * Used to set the application
+     *
+     * @param application The application which is used to send messages to discord.
+     */
+    fun setApplication(application: Application) {
+        this.application = application
+    }
+
+    /**
+     * Used to set the logged in status
+     *
+     * @param loggedIn The logged in status which is used to send messages to discord.
+     */
+    fun setLoggedIn(loggedIn: LoggedIn) {
+        this.isLoggedIn = loggedIn
     }
 }

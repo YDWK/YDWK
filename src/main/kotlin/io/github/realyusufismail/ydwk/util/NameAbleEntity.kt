@@ -16,13 +16,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.entities.util
+package io.github.realyusufismail.ydwk.util
 
-import com.fasterxml.jackson.databind.JsonNode
-import io.github.realyusufismail.ydwk.YDWK
+import java.util.*
 
-interface GenericEntity {
-    val ydwk: YDWK
+interface NameAbleEntity : Formattable {
+    /** @return the name of the entity */
+    fun getName(): String
 
-    val json: JsonNode
+    fun format(format: String): String {
+        return String.format(format, this)
+    }
+
+    override fun formatTo(formatter: Formatter?, flags: Int, width: Int, precision: Int) {
+        formatter?.format("%s", getName())
+    }
 }

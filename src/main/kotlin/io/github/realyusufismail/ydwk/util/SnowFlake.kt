@@ -23,7 +23,7 @@ import org.jetbrains.annotations.NotNull
 interface SnowFlake {
 
     fun of(string: String): SnowFlake {
-        return SnowFlakeReg(java.lang.Long.parseUnsignedLong(string))
+        return SnowFlakeReg(string.toLong())
     }
 
     fun of(id: Long): SnowFlake {

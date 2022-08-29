@@ -16,13 +16,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.entities.util
+package io.github.realyusufismail.ydwk.ws.util
 
-import com.fasterxml.jackson.databind.JsonNode
-import io.github.realyusufismail.ydwk.YDWK
+import java.time.Duration
 
-interface GenericEntity {
-    val ydwk: YDWK
+interface LoggedIn {
+    /** Weather the bot is logged in or not. */
+    val loggedIn: Boolean
 
-    val json: JsonNode
+    /** If the bot is logged in, this will return the time when the bot logged in. */
+    var loggedInTime: Duration?
+
+    /** If the bot disconnected, this will return the time when the bot disconnected. */
+    var disconnectionTime: Duration?
 }

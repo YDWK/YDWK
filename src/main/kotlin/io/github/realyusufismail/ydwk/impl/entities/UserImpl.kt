@@ -22,11 +22,10 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.realyusufismail.ydwk.YDWK
 import io.github.realyusufismail.ydwk.entities.User
 import java.awt.Color
+import java.util.*
 
-open class UserImpl(val json: JsonNode, private val id: Long, override val ydwk: YDWK) : User {
-    override val name: String
-        get() = json["name"].asText()
-
+open class UserImpl(override val json: JsonNode, private val id: Long, override val ydwk: YDWK) :
+    User {
     override val discriminator: String
         get() = json["discriminator"].asText()
 
@@ -65,5 +64,13 @@ open class UserImpl(val json: JsonNode, private val id: Long, override val ydwk:
 
     override fun getIdLong(): Long {
         return id
+    }
+
+    override fun getName(): String {
+        return json["username"].asText()
+    }
+
+    override fun formatTo(formatter: Formatter?, flags: Int, width: Int, precision: Int) {
+        formatter?.format("%s#%s", getName(), discriminator)
     }
 }
