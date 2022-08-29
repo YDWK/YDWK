@@ -16,15 +16,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.impl.event
+package io.github.realyusufismail.ydwk.impl.event.handle
 
-import io.github.realyusufismail.ydwk.ws.util.EventNames
-
-/** Used to send an event. */
-interface DiscordEvents {
-    companion object {
-        fun on(event: EventNames, unit: (Any) -> Unit) {
-            return
-        }
-    }
+interface IEventSender {
+    fun fireEvent(event: Any)
 }

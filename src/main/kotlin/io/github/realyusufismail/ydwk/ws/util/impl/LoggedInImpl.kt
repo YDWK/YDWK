@@ -20,14 +20,13 @@ package io.github.realyusufismail.ydwk.ws.util.impl
 
 import io.github.realyusufismail.ydwk.ws.util.LoggedIn
 import io.github.realyusufismail.ydwk.ws.util.formatInstant
-import java.time.Duration
 import java.time.Instant
 
 class LoggedInImpl(
     override val loggedIn: Boolean,
 ) : LoggedIn {
-    var loggedInInstant: Instant? = null
-    var disconnectedInstant: Instant? = null
+    private var loggedInInstant: Instant? = null
+    private var disconnectedInstant: Instant? = null
 
     override var loggedInTime: String? = null
         get() {
@@ -44,38 +43,6 @@ class LoggedInImpl(
             }
             return null
         }
-
-    override fun subscribe(function: (LoggedIn) -> Unit) {
-        // if logged in then call function and return the logged in time
-        when {
-            loggedIn -> {
-                function(this)
-                return
-            }
-            loggedInTime != null -> {
-                // if logged in time is not null then calculate the duration between now and the
-                // logged in time
-                val duration = Duration.between(loggedInInstant!!, Instant.now())
-                // if the duration is greater than the threshold then call the function
-                if (duration.toMinutes() > THRESHOLD) {
-                    function(this)
-                }
-            }
-            else -> {
-                // if not logged in then return null
-                return
-            }
-        }
-    }
-
-    companion object {
-        const val THRESHOLD = 5
-
-        // change duration to Instant
-        fun Duration.toInstant(): Instant {
-            return Instant.ofEpochMilli(this.toMillis())
-        }
-    }
 
     /** Used to set the logged in time */
     fun setLoggedInTime(): LoggedIn {

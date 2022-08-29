@@ -16,16 +16,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.ws.util
+package io.github.realyusufismail.ydwk.impl.event.events
 
-interface LoggedIn {
+import io.github.realyusufismail.ydwk.YDWK
+import io.github.realyusufismail.ydwk.impl.event.Event
 
-    /** Weather the bot is logged in or not. */
-    val loggedIn: Boolean
-
-    /** If the bot is logged in, this will return the time when the bot logged in. */
-    var loggedInTime: String?
-
-    /** If the bot disconnected, this will return the time when the bot disconnected. */
-    var disconnectionTime: String?
+class ReadyEvent(
+    override val ydwk: YDWK,
+    amountOfAvailableGuilds: Int,
+    unAvailableGuildsAmount: Int
+) : Event {
+    val totalGuildsAmount = amountOfAvailableGuilds + unAvailableGuildsAmount
 }

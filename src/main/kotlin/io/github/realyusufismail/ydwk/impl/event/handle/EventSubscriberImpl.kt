@@ -16,8 +16,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.util
+package io.github.realyusufismail.ydwk.impl.event.handle
 
-interface SubscribeFunction<T> {
-    fun subscribe(function: (T) -> Unit)
+import io.github.realyusufismail.ydwk.impl.event.Event
+
+class EventSubscriberImpl : EventSubscriber {
+    override fun <EventName : Event> onEvent(event: Class<EventName>, param: (EventName) -> Unit) {
+        // hmm not sure if this is the best way to do this
+        TODO("Not yet implemented")
+    }
 }

@@ -19,12 +19,14 @@
 package io.github.realyusufismail.ydwk.ws
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.neovisionaries.ws.client.*
 import io.github.realyusufismail.ydwk.YDWKInfo
 import io.github.realyusufismail.ydwk.impl.YDWKImpl
 import io.github.realyusufismail.ydwk.impl.entities.ApplicationImpl
 import io.github.realyusufismail.ydwk.impl.entities.BotImpl
+import io.github.realyusufismail.ydwk.impl.event.events.ReadyEvent
 import io.github.realyusufismail.ydwk.ws.util.CloseCode
 import io.github.realyusufismail.ydwk.ws.util.EventNames
 import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
@@ -345,6 +347,20 @@ open class WebSocketManager(
                 ydwk.bot = BotImpl(d.get("user"), d.get("user").asLong(), ydwk)
                 ydwk.application =
                     ApplicationImpl(d.get("application"), d.get("application").asLong(), ydwk)
+                val guilds: ArrayNode = d.get("guilds") as ArrayNode
+
+                var availableGuildsAmount: Int = 0
+                var unAvailableGuildsAmount: Int = 0
+
+                for (guild in guilds) {
+                    if (!guild.get("unavailable").asBoolean()) {
+                        availableGuildsAmount += 1
+                    } else {
+                        unAvailableGuildsAmount += 1
+                    }
+                }
+
+                ydwk.fireEvent(ReadyEvent(ydwk, availableGuildsAmount, unAvailableGuildsAmount))
             }
             EventNames.RESUMED -> TODO()
             EventNames.RECONNECT -> TODO()
