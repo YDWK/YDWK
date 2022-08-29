@@ -47,8 +47,6 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.10")
     implementation("com.neovisionaries:nv-websocket-client:2.14")
     //other
-    implementation("com.google.guava:guava:31.1-jre")
-    implementation("io.reactivex.rxjava3:rxjava:3.1.5")
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.7.10")
 }
 
