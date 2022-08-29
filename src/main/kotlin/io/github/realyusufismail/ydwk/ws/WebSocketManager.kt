@@ -57,7 +57,7 @@ open class WebSocketManager(
     private var heartbeatStartTime: Long = 0
     @Volatile protected var heartbeatThread: Future<*>? = null
     private val scheduler: ScheduledExecutorService = Executors.newScheduledThreadPool(1)
-    private var connected = false
+    var connected = false
     private var alreadySentConnectMessageOnce: Boolean = false
 
     @Synchronized

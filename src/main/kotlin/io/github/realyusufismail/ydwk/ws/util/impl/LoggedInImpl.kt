@@ -21,7 +21,6 @@ package io.github.realyusufismail.ydwk.ws.util.impl
 import io.github.realyusufismail.ydwk.ws.util.LoggedIn
 import java.time.Duration
 import java.time.Instant
-import java.time.temporal.ChronoUnit
 
 class LoggedInImpl(
     override val loggedIn: Boolean,
@@ -31,17 +30,33 @@ class LoggedInImpl(
 
     override fun subscribe(function: (LoggedIn) -> Unit) {
         // if logged in then call function and return the logged in time
-        if (loggedIn) {
-            function(this).also {
-                loggedInTime =
-                    Duration.of(
-                        Instant.now().minus(loggedInTime!!).toEpochMilli(), ChronoUnit.MILLIS)
+        when {
+            loggedIn -> {
+                function(this)
+                return
             }
-            return
+            loggedInTime != null -> {
+                // if logged in time is not null then calculate the duration between now and the
+                // logged in time
+                val duration = Duration.between(Instant.now(), loggedInTime!!.toInstant())
+                // if the duration is greater than the threshold then call the function
+                if (duration.toMinutes() > THRESHOLD) {
+                    function(this)
+                }
+            }
+            else -> {
+                // if not logged in then return null
+                return
+            }
         }
+    }
 
-        // if not logged in then return the disconnection time
-        disconnectionTime?.let { function(this) }
-        TODO("broken")
+    companion object {
+        const val THRESHOLD = 5
+
+        // change duration to Instant
+        fun Duration.toInstant(): Instant {
+            return Instant.ofEpochMilli(this.toMillis())
+        }
     }
 }

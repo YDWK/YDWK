@@ -51,6 +51,15 @@ class YDWKImpl : YDWK {
     override var loggedInStatus: LoggedIn? = null
         private set
 
+    @get:Synchronized
+    override val waitForConnection: YDWK
+        get() {
+            while (webSocketManager?.connected == false) {
+                Thread.sleep(100)
+            }
+            return this
+        }
+
     /**
      * Used to start the websocket manager
      *

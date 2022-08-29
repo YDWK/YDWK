@@ -45,6 +45,9 @@ interface YDWK {
     /** Used to get information about when the bot logged in. */
     val loggedInStatus: LoggedIn?
 
+    /** Used to indicated that bot has connected to the websocket. */
+    val waitForConnection: YDWK
+
     /** Used to shut down the websocket manager */
     fun shutdown()
 }
