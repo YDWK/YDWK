@@ -35,9 +35,6 @@ import java.io.IOException
 import java.net.Socket
 import java.net.SocketException
 import java.net.SocketTimeoutException
-import java.time.Duration
-import java.time.Instant
-import java.time.temporal.ChronoUnit
 import java.util.concurrent.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -57,7 +54,7 @@ open class WebSocketManager(
     private var heartbeatStartTime: Long = 0
     @Volatile protected var heartbeatThread: Future<*>? = null
     private val scheduler: ScheduledExecutorService = Executors.newScheduledThreadPool(1)
-    var connected = false
+    @get:Synchronized @set:Synchronized var connected = false
     private var alreadySentConnectMessageOnce: Boolean = false
 
     @Synchronized
@@ -170,22 +167,17 @@ open class WebSocketManager(
             } catch (e: RejectedExecutionException) {
                 logger.error("Error while reconnecting", e)
                 invalidate()
-                ydwk.setLoggedIn(
-                    LoggedInImpl(
-                        false, null, Duration.of(Instant.now().toEpochMilli(), ChronoUnit.MILLIS)))
+                ydwk.setLoggedIn(LoggedInImpl(false).setDisconnectedTime())
                 TODO("Add shutdown event")
             }
         } else {
-            ydwk.setLoggedIn(
-                LoggedInImpl(
-                    false, null, Duration.of(Instant.now().toEpochMilli(), ChronoUnit.MILLIS)))
+            ydwk.setLoggedIn(LoggedInImpl(false).setDisconnectedTime())
             TODO("When creating events, add a shutdown event here")
         }
     }
 
     override fun onError(websocket: WebSocket, cause: WebSocketException) {
-        ydwk.setLoggedIn(
-            LoggedInImpl(false, null, Duration.of(Instant.now().toEpochMilli(), ChronoUnit.MILLIS)))
+        ydwk.setLoggedIn(LoggedInImpl(false).setDisconnectedTime())
         when (cause.cause) {
             is SocketTimeoutException -> {
                 logger.error(
@@ -215,8 +207,7 @@ open class WebSocketManager(
 
         val json: JsonNode = ydwk.objectNode.put("op", IDENTIFY.code).set("d", d)
         webSocket?.sendText(json.toString())
-        ydwk.setLoggedIn(
-            LoggedInImpl(true, Duration.of(Instant.now().toEpochMilli(), ChronoUnit.MILLIS), null))
+        ydwk.setLoggedIn(LoggedInImpl(false).setLoggedInTime())
     }
 
     private fun resume() {
@@ -225,8 +216,7 @@ open class WebSocketManager(
         val identify: ObjectNode = ydwk.objectNode.put("op", RESUME.code).set("d", json)
 
         webSocket?.sendText(identify.toString())
-        ydwk.setLoggedIn(
-            LoggedInImpl(true, Duration.of(Instant.now().toEpochMilli(), ChronoUnit.MILLIS), null))
+        ydwk.setLoggedIn(LoggedInImpl(false).setLoggedInTime())
     }
 
     private fun onEvent(payload: JsonNode) {

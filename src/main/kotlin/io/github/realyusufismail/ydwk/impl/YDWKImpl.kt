@@ -27,8 +27,11 @@ import io.github.realyusufismail.ydwk.entities.Bot
 import io.github.realyusufismail.ydwk.ws.WebSocketManager
 import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
 import io.github.realyusufismail.ydwk.ws.util.LoggedIn
+import org.slf4j.LoggerFactory
 
 class YDWKImpl : YDWK {
+    // logger
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     override val objectNode: ObjectNode
         get() = JsonNodeFactory.instance.objectNode()
@@ -54,8 +57,24 @@ class YDWKImpl : YDWK {
     @get:Synchronized
     override val waitForConnection: YDWK
         get() {
-            while (webSocketManager?.connected == false) {
-                Thread.sleep(100)
+            val ws = webSocketManager
+            if (ws == null) {
+                throw IllegalStateException("WebSocketManager is not initialized")
+            } else {
+                while (!ws.connected) {
+                    try {
+                        Thread.sleep(100)
+                    } catch (e: InterruptedException) {
+                        logger.error("Error while waiting for connection", e)
+                    } finally {
+                        if (ws.connected) {
+                            logger.info("WebSocketManager connected")
+                        } else {
+                            logger.info("WebSocketManager not connected, retrying")
+                            waitForConnection
+                        }
+                    }
+                }
             }
             return this
         }
