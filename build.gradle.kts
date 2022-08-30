@@ -39,7 +39,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.3")
     //logger
     implementation("ch.qos.logback:logback-classic:1.4.0")
-    implementation("ch.qos.logback:logback-core:1.3.0-alpha16")
+    implementation("ch.qos.logback:logback-core:1.4.0")
     implementation("uk.org.lidalia:sysout-over-slf4j:1.0.2")
     //.env
     implementation("io.github.yusufsdiscordbot:config:1.0.4")
