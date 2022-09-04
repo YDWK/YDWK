@@ -22,7 +22,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.realyusufismail.ydwk.entities.Application
 import io.github.realyusufismail.ydwk.entities.Bot
-import io.github.realyusufismail.ydwk.impl.event.handle.EventSubscriber
 import io.github.realyusufismail.ydwk.ws.WebSocketManager
 import io.github.realyusufismail.ydwk.ws.util.LoggedIn
 
@@ -49,8 +48,11 @@ interface YDWK {
     /** Used to indicated that bot has connected to the websocket. */
     val waitForConnection: YDWK
 
-    /** Used to send and receive an event. */
-    val eventSubscriber: EventSubscriber
+    /** Used to add an event listener. */
+    fun addEventAdapter(vararg eventAdapters: Any)
+
+    /** Used to remove an event listener. */
+    fun removeEventAdapter(vararg eventAdapters: Any)
 
     /** Used to shut down the websocket manager */
     fun shutdown()

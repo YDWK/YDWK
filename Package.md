@@ -1,8 +1,24 @@
 
 
-# Module ydwk
+# Module YDWK
 
 A discord wrapper made in kotlin
+
+## In progress and to be done
+- [x] Connect to gateway
+- [x] Parse json
+- [x] Handle all op codes
+- [ ] Create entities - in progress
+- [ ] Handle events - In progress
+- [ ] Handle reconnect and resuming
+- [ ] Handle rate limiting in websocket
+
+## Future Features
+- [ ] Handle slash commands
+- [ ] Caching
+- [ ] Handle Rest API
+- [ ] Handle sending events
+
 
 ## Installation
 
@@ -22,8 +38,18 @@ fun main() {
 }
 ```
 
-A default bot has all the recommend gateway intents.
+A default bot has all to recommend gateway intents.
 
 ## Getting started
 
-Not yet implemented
+To use an event, add the following to your main class:
+
+```kotlin
+fun main() {
+    val ydwk =
+        createDefaultBot("TOKEN")
+
+    //example
+    ydwk.onEvent<ReadyEvent> { c -> println("Total amount of guilds: ${c.totalGuildsAmount}") }
+}
+```

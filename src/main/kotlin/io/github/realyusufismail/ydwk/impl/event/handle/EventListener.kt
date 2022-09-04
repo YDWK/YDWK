@@ -20,9 +20,6 @@ package io.github.realyusufismail.ydwk.impl.event.handle
 
 import io.github.realyusufismail.ydwk.impl.event.Event
 
-class EventSubscriberImpl : EventSubscriber {
-    override fun <EventName : Event> onEvent(event: Class<EventName>, param: (EventName) -> Unit) {
-        // hmm not sure if this is the best way to do this
-        TODO("Not yet implemented")
-    }
+fun interface EventListener {
+    suspend fun onEvent(event: Event)
 }

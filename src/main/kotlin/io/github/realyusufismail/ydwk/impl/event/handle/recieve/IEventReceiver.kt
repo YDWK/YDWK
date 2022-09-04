@@ -16,12 +16,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.impl.event.handle
+package io.github.realyusufismail.ydwk.impl.event.handle.recieve
 
-class EventSender : IEventSender {
-    var eventReceivers: MutableList<EventSubscriber> = mutableListOf()
+import io.github.realyusufismail.ydwk.impl.event.Event
 
-    override fun fireEvent(event: Any) {
-        TODO("Not yet implemented")
-    }
+@FunctionalInterface
+interface IEventReceiver {
+    /**
+     * Used to receive an event
+     *
+     * @param event The event to be received
+     */
+    fun onEvent(event: Event)
 }

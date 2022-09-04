@@ -18,9 +18,18 @@
  */ 
 package io.github.realyusufismail.ydwk.impl.event.handle
 
+import io.github.realyusufismail.ydwk.YDWK
 import io.github.realyusufismail.ydwk.impl.event.Event
 
-@FunctionalInterface
-interface EventSubscriber {
-    fun <EventName : Event> onEvent(event: Class<EventName>, param: (EventName) -> Unit)
+inline fun <reified EventName : Event> YDWK.onEvent(
+    crossinline block: suspend EventListener.(EventName) -> Unit
+): EventListener {
+    return object : EventListener {
+            override suspend fun onEvent(event: Event) {
+                if (event is EventName) {
+                    block(event)
+                }
+            }
+        }
+        .also { addEventAdapter(it) }
 }
