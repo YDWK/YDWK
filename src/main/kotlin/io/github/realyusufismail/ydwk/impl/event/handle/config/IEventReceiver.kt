@@ -16,9 +16,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.impl.event.handle.recieve
+package io.github.realyusufismail.ydwk.impl.event.handle.config
 
-interface IEventReceiverConfig {
+interface IEventReceiver {
     /** Add an event receiver to the list of event receivers */
     fun addEventReceiver(eventReceiver: Any)
 

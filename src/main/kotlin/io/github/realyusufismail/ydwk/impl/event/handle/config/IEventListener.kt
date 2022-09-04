@@ -16,16 +16,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.impl.event.handle.recieve
+package io.github.realyusufismail.ydwk.impl.event.handle.config
 
 import io.github.realyusufismail.ydwk.impl.event.Event
 
-@FunctionalInterface
-interface IEventReceiver {
-    /**
-     * Used to receive an event
-     *
-     * @param event The event to be received
-     */
-    fun onEvent(event: Event)
+fun interface IEventListener {
+    suspend fun onEvent(event: Event)
+
+    fun cancelEvent() {}
 }

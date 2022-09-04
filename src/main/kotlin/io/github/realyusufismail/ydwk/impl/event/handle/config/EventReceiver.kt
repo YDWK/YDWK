@@ -16,14 +16,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.impl.event.handle.recieve
+package io.github.realyusufismail.ydwk.impl.event.handle.config
 
 import io.github.realyusufismail.ydwk.impl.event.Event
 
-class EventReceiver : IEventReceiverConfig {
+class EventReceiver : IEventReceiver {
     // Null as there is no default value for this parameter
     var event: Event? = null
-    var eventReceivers: MutableList<IEventReceiver> = ArrayList()
+    var eventReceivers: MutableList<IEvent> = ArrayList()
 
     fun receive(event: Event) {
         this.event = event
@@ -34,7 +34,7 @@ class EventReceiver : IEventReceiverConfig {
 
     /** Add an event receiver to the list of event receivers */
     override fun addEventReceiver(eventReceiver: Any) {
-        if (eventReceiver is IEventReceiver) {
+        if (eventReceiver is IEvent) {
             eventReceivers.add(eventReceiver)
         } else {
             throw IllegalArgumentException("EventReceiver must be instance of IEventReceiver")
@@ -43,7 +43,7 @@ class EventReceiver : IEventReceiverConfig {
 
     /** Remove an event receiver from the list of event receivers */
     override fun removeEventReceiver(eventReceiver: Any) {
-        if (eventReceiver is IEventReceiver) {
+        if (eventReceiver is IEvent) {
             eventReceivers.remove(eventReceiver)
         } else {
             throw IllegalArgumentException("EventReceiver must be instance of IEventReceiver")

@@ -59,6 +59,7 @@ dependencies {
     implementation("com.neovisionaries:nv-websocket-client:2.14")
     //other
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.7.10")
+    api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 }
 
 tasks.test {

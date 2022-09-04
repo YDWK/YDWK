@@ -16,10 +16,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.impl.event.handle
+package io.github.realyusufismail.ydwk.impl.event.handle.config
 
 import io.github.realyusufismail.ydwk.impl.event.Event
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 
-fun interface EventListener {
-    suspend fun onEvent(event: Event)
+class EventListener(scope: CoroutineScope = getDefaultScope()) :
+    IEventListener, CoroutineScope by scope {
+    override suspend fun onEvent(event: Event) {
+        TODO("Not yet implemented")
+    }
+}
+
+fun getDefaultScope(): CoroutineScope {
+    return CoroutineScope(Dispatchers.Default)
 }
