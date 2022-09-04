@@ -1,3 +1,5 @@
+
+
 # YDWK A discord wrapper made in kotlin
 
 ## Installation
@@ -20,4 +22,5 @@ fun main() {
 A default bot has all the recommend gateway intents.
 
 ## Getting started
+
 Not yet available
