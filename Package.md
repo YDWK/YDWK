@@ -27,7 +27,3 @@ A default bot has all the recommend gateway intents.
 ## Getting started
 
 Not yet implemented
-
-# Package io.github.realyusufismail.ydwk.entities
-
-contains all the entities
