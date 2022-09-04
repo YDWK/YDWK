@@ -1,6 +1,6 @@
 
 
-# Module YDWK
+# Module ydwk
 
 A discord wrapper made in kotlin
 
