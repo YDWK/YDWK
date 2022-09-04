@@ -204,7 +204,7 @@ signing {
 
 tasks.getByName("dokkaHtml", DokkaTask::class) {
     dokkaSourceSets.configureEach {
-        includes.from("packages.md")
+        includes.from("Package.md")
         jdkVersion.set(17)
         sourceLink {
             localDirectory.set(file("src/main/kotlin"))
@@ -213,8 +213,6 @@ tasks.getByName("dokkaHtml", DokkaTask::class) {
         }
 
         pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
-            noStdlibLink.set(true)
-            noJdkLink.set(true)
             footerMessage = "Copyright © 2022 Yusuf Arfan Ismail and other YDWK contributors."
         }
     }
