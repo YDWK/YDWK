@@ -1,9 +1,20 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.dokka.base.DokkaBase
+import org.jetbrains.dokka.base.DokkaBaseConfiguration
+import org.jetbrains.dokka.gradle.DokkaTask
+import java.net.URL
+
+buildscript {
+    dependencies {
+        classpath("org.jetbrains.dokka:dokka-base:1.7.10")
+    }
+}
 
 plugins {
     kotlin("jvm") version "1.7.10"
     kotlin("plugin.allopen") version "1.7.10"
     id("com.diffplug.spotless") version "6.10.0"
+    id("org.jetbrains.dokka") version "1.7.10"
     application
     `maven-publish`
     signing
@@ -190,3 +201,22 @@ signing {
         sign(publishing.publications["mavenJava"])
     }
 }
+
+tasks.getByName("dokkaHtml", DokkaTask::class) {
+    dokkaSourceSets.configureEach {
+        includes.from("packages.md")
+        jdkVersion.set(17)
+        sourceLink {
+            localDirectory.set(file("src/main/kotlin"))
+            remoteUrl.set(URL("https://github.com/RealYusufIsmail/YDWK/tree/master/src/main/kotlin"))
+            remoteLineSuffix.set("#L")
+        }
+
+        pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
+            noStdlibLink.set(true)
+            noJdkLink.set(true)
+            footerMessage = "Copyright © 2022 Yusuf Arfan Ismail and other YDWK contributors."
+        }
+    }
+}
+
