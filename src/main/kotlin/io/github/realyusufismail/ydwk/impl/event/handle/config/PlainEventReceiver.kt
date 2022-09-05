@@ -20,32 +20,21 @@ package io.github.realyusufismail.ydwk.impl.event.handle.config
 
 import io.github.realyusufismail.ydwk.impl.event.Event
 
-class EventReceiver : IEventReceiver {
-    // Null as there is no default value for this parameter
-    var event: Event? = null
-    var eventReceivers: MutableList<IEvent> = ArrayList()
+class PlainEventReceiver(private val eventReceiver: IEventReceiver) : IEventReceiver {
+
+    override fun addEventReceiver(eventReceiver: Any) {
+        this.eventReceiver.addEventReceiver(eventReceiver)
+    }
+
+    override fun removeEventReceiver(eventReceiver: Any) {
+        this.eventReceiver.removeEventReceiver(eventReceiver)
+    }
 
     override fun handleEvent(event: Event) {
-        for (eventReceiver in eventReceivers) {
-            eventReceiver.onEvent(event)
-        }
-    }
-
-    /** Add an event receiver to the list of event receivers */
-    override fun addEventReceiver(eventReceiver: Any) {
-        if (eventReceiver is IEvent) {
-            eventReceivers.add(eventReceiver)
-        } else {
-            throw IllegalArgumentException("EventReceiver must be instance of IEventReceiver")
-        }
-    }
-
-    /** Remove an event receiver from the list of event receivers */
-    override fun removeEventReceiver(eventReceiver: Any) {
-        if (eventReceiver is IEvent) {
-            eventReceivers.remove(eventReceiver)
-        } else {
-            throw IllegalArgumentException("EventReceiver must be instance of IEventReceiver")
+        try {
+            this.eventReceiver.handleEvent(event)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 }

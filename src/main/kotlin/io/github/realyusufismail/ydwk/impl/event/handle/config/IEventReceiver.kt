@@ -18,10 +18,15 @@
  */ 
 package io.github.realyusufismail.ydwk.impl.event.handle.config
 
+import io.github.realyusufismail.ydwk.impl.event.Event
+
 interface IEventReceiver {
     /** Add an event receiver to the list of event receivers */
     fun addEventReceiver(eventReceiver: Any)
 
     /** Remove an event receiver from the list of event receivers */
     fun removeEventReceiver(eventReceiver: Any)
+
+    /** Handles the event when received */
+    fun handleEvent(event: Event)
 }

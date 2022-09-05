@@ -20,11 +20,12 @@ package io.github.realyusufismail.ydwk.impl.event.handle
 
 import io.github.realyusufismail.ydwk.YDWK
 import io.github.realyusufismail.ydwk.impl.event.Event
+import io.github.realyusufismail.ydwk.impl.event.handle.config.EventListener
 import io.github.realyusufismail.ydwk.impl.event.handle.config.IEventListener
 
-inline fun <reified EventName : Event> YDWK.onEvent(
-    crossinline block: suspend IEventListener.(EventName) -> Unit
+inline fun <reified EventClass : Event> YDWK.onEvent(
+    crossinline block: suspend IEventListener.(EventClass) -> Unit
 ): IEventListener {
-    // return (eventReceiver as IEventListener).reg(block)
-    return null!!
+    // for some reason can not be cast
+    return (eventReceiver as EventListener).onEvent(block)
 }
