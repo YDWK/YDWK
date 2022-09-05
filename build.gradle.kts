@@ -47,7 +47,7 @@ repositories {
 
 dependencies {
     //json
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.3")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.4")
     //logger
     implementation("ch.qos.logback:logback-classic:1.4.0")
     implementation("ch.qos.logback:logback-core:1.4.0")
