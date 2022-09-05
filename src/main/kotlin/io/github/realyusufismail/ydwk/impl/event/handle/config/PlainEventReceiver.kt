@@ -20,7 +20,7 @@ package io.github.realyusufismail.ydwk.impl.event.handle.config
 
 import io.github.realyusufismail.ydwk.impl.event.Event
 
-class PlainEventReceiver(private val eventReceiver: IEventReceiver) : IEventReceiver {
+class PlainEventReceiver(val eventReceiver: IEventReceiver) : IEventReceiver {
 
     override fun addEventReceiver(eventReceiver: Any) {
         this.eventReceiver.addEventReceiver(eventReceiver)

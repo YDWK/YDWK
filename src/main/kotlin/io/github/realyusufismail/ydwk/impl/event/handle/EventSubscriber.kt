@@ -27,5 +27,9 @@ inline fun <reified EventClass : Event> YDWK.onEvent(
     crossinline block: suspend IEventListener.(EventClass) -> Unit
 ): IEventListener {
     // for some reason can not be cast
-    return (eventReceiver as EventListener).onEvent(block)
+    if (eventReceiver is EventListener) {
+        return (eventReceiver as EventListener).onEvent(block)
+    } else {
+        throw IllegalStateException("EventReceiver can not be cast to EventListener")
+    }
 }

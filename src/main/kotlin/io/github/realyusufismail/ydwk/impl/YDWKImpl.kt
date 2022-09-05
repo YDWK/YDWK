@@ -26,6 +26,7 @@ import io.github.realyusufismail.ydwk.entities.Application
 import io.github.realyusufismail.ydwk.entities.Bot
 import io.github.realyusufismail.ydwk.impl.event.Event
 import io.github.realyusufismail.ydwk.impl.event.handle.config.EventReceiver
+import io.github.realyusufismail.ydwk.impl.event.handle.config.IEventReceiver
 import io.github.realyusufismail.ydwk.impl.event.handle.config.PlainEventReceiver
 import io.github.realyusufismail.ydwk.ws.WebSocketManager
 import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
@@ -35,7 +36,7 @@ import org.slf4j.LoggerFactory
 class YDWKImpl : YDWK {
     // logger
     private val logger = LoggerFactory.getLogger(javaClass)
-    override val eventReceiver: PlainEventReceiver = PlainEventReceiver(EventReceiver())
+    private val eventReceiverImpl: PlainEventReceiver = PlainEventReceiver(EventReceiver())
 
     override val objectNode: ObjectNode
         get() = JsonNodeFactory.instance.objectNode()
@@ -106,16 +107,18 @@ class YDWKImpl : YDWK {
             return this
         }
 
+    override var eventReceiver: IEventReceiver = eventReceiverImpl.eventReceiver
+
     override fun addEvent(vararg eventAdapters: Any) {
-        eventReceiver.addEventReceiver(eventAdapters)
+        eventReceiverImpl.addEventReceiver(eventAdapters)
     }
 
     override fun removeEvent(vararg eventAdapters: Any) {
-        eventReceiver.removeEventReceiver(eventAdapters)
+        eventReceiverImpl.removeEventReceiver(eventAdapters)
     }
 
     fun fireEvent(event: Event) {
-        eventReceiver.handleEvent(event)
+        eventReceiverImpl.handleEvent(event)
     }
 
     /**

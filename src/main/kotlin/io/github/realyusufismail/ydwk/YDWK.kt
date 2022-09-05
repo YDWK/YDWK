@@ -50,7 +50,7 @@ interface YDWK {
     val waitForConnection: YDWK
 
     /** Used to get the event receiver. */
-    val eventReceiver: IEventReceiver
+    var eventReceiver: IEventReceiver
 
     /** Used to add an event listener. */
     fun addEvent(vararg eventAdapters: Any)
