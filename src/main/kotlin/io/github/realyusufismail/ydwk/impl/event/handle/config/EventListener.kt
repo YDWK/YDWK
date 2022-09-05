@@ -25,8 +25,10 @@ import kotlinx.coroutines.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-class EventListener(scope: CoroutineScope = getDefaultScope()) :
+/**
+open class EventListener(scope: CoroutineScope = getDefaultScope()) :
     IEventReceiver, CoroutineScope by scope {
+
     private val log: Logger = LoggerFactory.getLogger(EventListener::class.java)
     private val listeners = CopyOnWriteArrayList<Any>()
 
@@ -101,3 +103,4 @@ fun getDefaultScope(): CoroutineScope {
             CoroutineExceptionHandler { _, throwable -> throw throwable } +
             EmptyCoroutineContext)
 }
+ */

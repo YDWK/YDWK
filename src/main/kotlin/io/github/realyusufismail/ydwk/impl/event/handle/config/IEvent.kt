@@ -20,12 +20,14 @@ package io.github.realyusufismail.ydwk.impl.event.handle.config
 
 import io.github.realyusufismail.ydwk.impl.event.Event
 
-@FunctionalInterface
 interface IEvent {
     /**
      * Used to receive an event
      *
      * @param event The event to be received
      */
-    fun onEvent(event: Event)
+    suspend fun onEvent(event: Event)
+
+    /** Used to cancel an event */
+    fun cancelEvent() {}
 }

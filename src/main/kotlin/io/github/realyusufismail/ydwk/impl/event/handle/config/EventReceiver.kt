@@ -19,16 +19,31 @@
 package io.github.realyusufismail.ydwk.impl.event.handle.config
 
 import io.github.realyusufismail.ydwk.impl.event.Event
+import kotlin.coroutines.EmptyCoroutineContext
+import kotlinx.coroutines.*
 
-class EventReceiver : IEventReceiver {
+class EventReceiver(scope: CoroutineScope = getDefaultScope()) :
+    IEventReceiver, CoroutineScope by scope {
     // Null as there is no default value for this parameter
     var event: Event? = null
     var eventReceivers: MutableList<IEvent> = ArrayList()
 
     override fun handleEvent(event: Event) {
-        for (eventReceiver in eventReceivers) {
-            eventReceiver.onEvent(event)
+        launch {
+            for (eventReceiver in eventReceivers) {
+                if (eventReceiver is IEventReceiver) {
+                    try {
+                        handle(eventReceiver, event)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
         }
+    }
+
+    private suspend fun handle(eventReceiver: IEvent, event: Event) {
+        eventReceiver.onEvent(event)
     }
 
     /** Add an event receiver to the list of event receivers */
@@ -48,4 +63,12 @@ class EventReceiver : IEventReceiver {
             throw IllegalArgumentException("EventReceiver must be instance of IEventReceiver")
         }
     }
+}
+
+fun getDefaultScope(): CoroutineScope {
+    return CoroutineScope(
+        Dispatchers.Default +
+            SupervisorJob() +
+            CoroutineExceptionHandler { _, throwable -> throw throwable } +
+            EmptyCoroutineContext)
 }

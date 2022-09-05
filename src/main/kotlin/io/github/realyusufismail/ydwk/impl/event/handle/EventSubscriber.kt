@@ -20,16 +20,20 @@ package io.github.realyusufismail.ydwk.impl.event.handle
 
 import io.github.realyusufismail.ydwk.YDWK
 import io.github.realyusufismail.ydwk.impl.event.Event
-import io.github.realyusufismail.ydwk.impl.event.handle.config.EventListener
-import io.github.realyusufismail.ydwk.impl.event.handle.config.IEventListener
+import io.github.realyusufismail.ydwk.impl.event.handle.config.*
 
 inline fun <reified EventClass : Event> YDWK.onEvent(
-    crossinline block: suspend IEventListener.(EventClass) -> Unit
-): IEventListener {
-    // for some reason can not be cast
-    if (eventReceiver is EventListener) {
-        return (eventReceiver as EventListener).onEvent(block)
-    } else {
-        throw IllegalStateException("EventReceiver can not be cast to EventListener")
-    }
+    crossinline block: suspend IEvent.(EventClass) -> Unit
+): IEvent {
+    return object : IEvent {
+            override fun cancelEvent() {
+                removeEvent(this)
+            }
+            override suspend fun onEvent(event: Event) {
+                if (event is EventClass) {
+                    block(event)
+                }
+            }
+        }
+        .also { addEvent(it) }
 }
