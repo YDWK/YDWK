@@ -25,15 +25,5 @@ import io.github.realyusufismail.ydwk.impl.event.handle.config.*
 inline fun <reified EventClass : Event> YDWK.onEvent(
     crossinline block: suspend IEvent.(EventClass) -> Unit
 ): IEvent {
-    return object : IEvent {
-            override fun cancelEvent() {
-                removeEvent(this)
-            }
-            override suspend fun onEvent(event: Event) {
-                if (event is EventClass) {
-                    block(event)
-                }
-            }
-        }
-        .also { addEvent(it) }
+    return (getEventReceiver() as EventListener).onEvent(block)
 }

@@ -25,7 +25,6 @@ import kotlinx.coroutines.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-/**
 open class EventListener(scope: CoroutineScope = getDefaultScope()) :
     IEventReceiver, CoroutineScope by scope {
 
@@ -33,14 +32,20 @@ open class EventListener(scope: CoroutineScope = getDefaultScope()) :
     private val listeners = CopyOnWriteArrayList<Any>()
 
     override fun handleEvent(event: Event) {
+        log.info("Received event: $event")
         launch {
+            log.info("Dispatching event: $event")
             for (listener in listeners) {
-                if (listener is IEventListener) {
+                if (listener is IEvent) {
+                    // TODO : Not reaching here
                     try {
+                        log.info("Dispatching event: $event to listener: $listener")
                         runListener(listener, event)
                     } catch (e: Exception) {
                         log.error("Error while handling event", e)
                     }
+                } else {
+                    log.error("Listener is not an event")
                 }
             }
         }
@@ -48,7 +53,6 @@ open class EventListener(scope: CoroutineScope = getDefaultScope()) :
 
     private suspend fun runListener(listener: Any, event: Event) {
         when (listener) {
-            is IEventListener -> listener.onEvent(event)
             is IEvent -> listener.onEvent(event)
             else ->
                 throw IllegalArgumentException("Listener must implement IEventListener or IEvent")
@@ -58,7 +62,6 @@ open class EventListener(scope: CoroutineScope = getDefaultScope()) :
     override fun addEventReceiver(eventReceiver: Any) {
         listeners.add(
             when (eventReceiver) {
-                is IEventListener -> eventReceiver
                 is IEvent -> eventReceiver
                 else ->
                     throw IllegalArgumentException(
@@ -69,7 +72,6 @@ open class EventListener(scope: CoroutineScope = getDefaultScope()) :
     override fun removeEventReceiver(eventReceiver: Any) {
         listeners.remove(
             when (eventReceiver) {
-                is IEventListener -> eventReceiver
                 is IEvent -> eventReceiver
                 else ->
                     throw IllegalArgumentException(
@@ -78,9 +80,9 @@ open class EventListener(scope: CoroutineScope = getDefaultScope()) :
     }
 
     inline fun <reified EventClass : Event> onEvent(
-        crossinline block: suspend IEventListener.(EventClass) -> Unit
-    ): IEventListener {
-        return object : IEventListener {
+        crossinline block: suspend IEvent.(EventClass) -> Unit
+    ): IEvent {
+        return object : IEvent {
 
                 override fun cancelEvent() {
                     removeEventReceiver(this)
@@ -103,4 +105,3 @@ fun getDefaultScope(): CoroutineScope {
             CoroutineExceptionHandler { _, throwable -> throw throwable } +
             EmptyCoroutineContext)
 }
- */
