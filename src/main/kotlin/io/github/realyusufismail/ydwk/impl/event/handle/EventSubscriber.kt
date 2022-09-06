@@ -27,5 +27,5 @@ import io.github.realyusufismail.ydwk.impl.event.handle.normal.*
 inline fun <reified EventClass : Event> YDWK.onEvent(
     crossinline block: suspend ICoroutineEvent.(EventClass) -> Unit
 ): ICoroutineEvent {
-    return (getEventReceiver() as CoroutineEvent).onEvent(block)
+    return (eventReceiver as CoroutineEvent).onEvent(block)
 }

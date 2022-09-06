@@ -49,6 +49,9 @@ interface YDWK {
     /** Used to indicated that bot has connected to the websocket. */
     val waitForConnection: YDWK
 
+    /** Used to get the event receiver. */
+    val eventReceiver: IEventReceiver
+
     /** Used to add an event listener. */
     fun addEvent(vararg eventAdapters: Any)
 
@@ -57,7 +60,4 @@ interface YDWK {
 
     /** Used to shut down the websocket manager */
     fun shutdown()
-
-    /** Used to get the event receiver. */
-    fun getEventReceiver(): IEventReceiver
 }

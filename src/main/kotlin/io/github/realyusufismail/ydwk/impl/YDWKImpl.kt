@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory
 class YDWKImpl : YDWK {
     // logger
     private val logger = LoggerFactory.getLogger(javaClass)
-    private val eventReceiver: EventReceiver = EventReceiver()
+    private val eventReceiverImpl: EventReceiver = EventReceiver()
 
     override val objectNode: ObjectNode
         get() = JsonNodeFactory.instance.objectNode()
@@ -48,10 +48,6 @@ class YDWKImpl : YDWK {
 
     override fun shutdown() {
         webSocketManager?.shutdown()
-    }
-
-    override fun getEventReceiver(): IEventReceiver {
-        return eventReceiver
     }
 
     override var bot: Bot? = null
@@ -109,17 +105,19 @@ class YDWKImpl : YDWK {
             }
             return this
         }
+    override val eventReceiver: IEventReceiver
+        get() = eventReceiverImpl
 
     override fun addEvent(vararg eventAdapters: Any) {
-        eventReceiver.addEventReceiver(eventAdapters)
+        eventReceiverImpl.addEventReceiver(eventAdapters)
     }
 
     override fun removeEvent(vararg eventAdapters: Any) {
-        eventReceiver.removeEventReceiver(eventAdapters)
+        eventReceiverImpl.removeEventReceiver(eventAdapters)
     }
 
     fun fireEvent(event: Event) {
-        eventReceiver.handleEvent(event)
+        eventReceiverImpl.handleEvent(event)
     }
 
     /**
