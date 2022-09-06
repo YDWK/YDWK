@@ -16,11 +16,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.impl.event.handle.config
+package io.github.realyusufismail.ydwk.impl.event.handle.coroutine
 
 import io.github.realyusufismail.ydwk.impl.event.Event
 
-interface IEvent {
+interface ICoroutineEvent {
     /**
      * Used to receive an event
      *

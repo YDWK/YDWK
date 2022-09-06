@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.impl.event.handle.config
+package io.github.realyusufismail.ydwk.impl.event.handle
 
 import io.github.realyusufismail.ydwk.impl.event.Event
 

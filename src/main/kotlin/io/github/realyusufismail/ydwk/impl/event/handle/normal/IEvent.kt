@@ -16,16 +16,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.impl.event.handle
+package io.github.realyusufismail.ydwk.impl.event.handle.normal
 
-import io.github.realyusufismail.ydwk.YDWK
 import io.github.realyusufismail.ydwk.impl.event.Event
-import io.github.realyusufismail.ydwk.impl.event.handle.coroutine.CoroutineEvent
-import io.github.realyusufismail.ydwk.impl.event.handle.coroutine.ICoroutineEvent
-import io.github.realyusufismail.ydwk.impl.event.handle.normal.*
 
-inline fun <reified EventClass : Event> YDWK.onEvent(
-    crossinline block: suspend ICoroutineEvent.(EventClass) -> Unit
-): ICoroutineEvent {
-    return (getEventReceiver() as CoroutineEvent).onEvent(block)
+@FunctionalInterface
+interface IEvent {
+    /**
+     * Used to receive an event
+     *
+     * @param event The event to be received
+     */
+    fun onEvent(event: Event)
 }

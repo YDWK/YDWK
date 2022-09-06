@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.realyusufismail.ydwk.entities.Application
 import io.github.realyusufismail.ydwk.entities.Bot
-import io.github.realyusufismail.ydwk.impl.event.handle.config.IEventReceiver
+import io.github.realyusufismail.ydwk.impl.event.handle.IEventReceiver
 import io.github.realyusufismail.ydwk.ws.WebSocketManager
 import io.github.realyusufismail.ydwk.ws.util.LoggedIn
 
