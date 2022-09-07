@@ -22,7 +22,10 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.realyusufismail.ydwk.entities.Application
 import io.github.realyusufismail.ydwk.entities.Bot
-import io.github.realyusufismail.ydwk.impl.event.handle.IEventReceiver
+import io.github.realyusufismail.ydwk.impl.event.Event
+import io.github.realyusufismail.ydwk.impl.event.handle.coroutine.CoroutineEvent
+import io.github.realyusufismail.ydwk.impl.event.handle.coroutine.ICoroutineEvent
+import io.github.realyusufismail.ydwk.impl.event.handle.normal.IEventReciever
 import io.github.realyusufismail.ydwk.ws.WebSocketManager
 import io.github.realyusufismail.ydwk.ws.util.LoggedIn
 
@@ -50,7 +53,7 @@ interface YDWK {
     val waitForConnection: YDWK
 
     /** Used to get the event receiver. */
-    val eventReceiver: IEventReceiver
+    val eventReceiver: IEventReciever
 
     /** Used to add an event listener. */
     fun addEvent(vararg eventAdapters: Any)
@@ -60,4 +63,10 @@ interface YDWK {
 
     /** Used to shut down the websocket manager */
     fun shutdown()
+}
+
+inline fun <reified EventClass : Event> YDWK.onEvent(
+    crossinline block: suspend ICoroutineEvent.(EventClass) -> Unit
+): ICoroutineEvent {
+    return (eventReceiver as CoroutineEvent).onEvent(block)
 }

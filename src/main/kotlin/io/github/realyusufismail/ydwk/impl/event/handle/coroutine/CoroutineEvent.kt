@@ -19,7 +19,7 @@
 package io.github.realyusufismail.ydwk.impl.event.handle.coroutine
 
 import io.github.realyusufismail.ydwk.impl.event.Event
-import io.github.realyusufismail.ydwk.impl.event.handle.IEventReceiver
+import io.github.realyusufismail.ydwk.impl.event.handle.normal.IEventReciever
 import java.util.concurrent.CopyOnWriteArrayList
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.*
@@ -27,28 +27,25 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 open class CoroutineEvent(scope: CoroutineScope = getDefaultScope()) :
-    IEventReceiver, CoroutineScope by scope {
+    IEventReciever, CoroutineScope by scope {
 
     private val log: Logger = LoggerFactory.getLogger(CoroutineEvent::class.java)
     private val listeners = CopyOnWriteArrayList<ICoroutineEvent>()
 
     override fun handleEvent(event: Event) {
         launch {
-                for (listener in listeners) {
-                    try {
-                        runListener(listener, event)
-                    } catch (e: Exception) {
-                        log.error("Error while handling event", e)
-                    }
+            for (listener in listeners) {
+                try {
+                    runListener(listener, event)
+                } catch (e: Exception) {
+                    log.error("Error while handling event", e)
                 }
             }
-            .takeIf { !it.isCompleted }
-            ?.invokeOnCompletion {
-                if (it != null) {
-                    log.error("Error while handling event", it)
-                }
-            }
+        }
     }
+
+    override val eventReceiverConfig: IEventReciever
+        get() = this
 
     private suspend fun runListener(listener: Any, event: Event) {
         when (listener) {
@@ -78,9 +75,7 @@ open class CoroutineEvent(scope: CoroutineScope = getDefaultScope()) :
             })
     }
 
-    /**
-     * Used to receive an event
-     */
+    /** Used to receive an event */
     inline fun <reified EventClass : Event> onEvent(
         crossinline block: suspend ICoroutineEvent.(EventClass) -> Unit
     ): ICoroutineEvent {

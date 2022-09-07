@@ -20,12 +20,6 @@ package io.github.realyusufismail.ydwk.impl.event.handle.normal
 
 import io.github.realyusufismail.ydwk.impl.event.Event
 
-@FunctionalInterface
-interface IEvent {
-    /**
-     * Used to receive an event
-     *
-     * @param event The event to be received
-     */
+fun interface IEvent {
     fun onEvent(event: Event)
 }
