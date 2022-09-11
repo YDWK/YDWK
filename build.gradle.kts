@@ -32,7 +32,7 @@ extra.apply {
     set("dev_email", "yusufgamer222@gmail.com")
     set("dev_organization", "RealYusufIsmail")
     set("dev_organization_url", "https://github.com/RealYusufIsmail")
-    set("gpl_name", "GNU Library General Public License version 3")
+    set("gpl_name", "Apache-2.0 license")
     set("gpl_url", "https://github.com/RealYusufIsmail/YDWK/blob/master/LICENSE")
     // Make sure we have a default for initial configuration evaluation
     set("isReleaseVersion", "false")
@@ -145,7 +145,7 @@ publishing {
             pom {
                 name.set(extra["name"] as String)
                 description.set(extra["description"] as String)
-                url.set("https://github.com/RealYusufIsmail/YDW-Kotlin")
+                url.set("https://github.com/RealYusufIsmail/YDWK")
                 licenses {
                     license {
                         name.set(extra["gpl_name"] as String)
