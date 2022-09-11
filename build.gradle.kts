@@ -162,9 +162,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection.set("https://github.com/RealYusufIsmail/YDW-Kotlin.git")
-                    developerConnection.set("scm:git:ssh://git@github.com/RealYusufIsmail/YDW-Kotlin.git")
-                    url.set("github.com/RealYusufIsmail/YDW-Kotlin")
+                    connection.set("https://github.com/RealYusufIsmail/YDWK.git")
+                    developerConnection.set("scm:git:ssh://git@github.com/RealYusufIsmail/YDWK.git")
+                    url.set("github.com/RealYusufIsmail/YDWK")
                 }
             }
         }
@@ -184,9 +184,9 @@ publishing {
                     //change roject.hasProperty('ossrhUsername') ? ossrhUsername : "Unknown user" to kotlin
 
                     //: Type mismatch: inferred type is Any but String? was expected
-                    val username =
+                    username =
                         if (project.hasProperty("ossrhUsername")) project.property("ossrhUsername") as String else "Unknown user"
-                    val password =
+                    password =
                         if (project.hasProperty("ossrhPassword")) project.property("ossrhPassword") as String else "Unknown password"
                 }
             }
