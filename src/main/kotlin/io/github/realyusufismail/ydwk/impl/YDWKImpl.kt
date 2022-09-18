@@ -25,8 +25,8 @@ import io.github.realyusufismail.ydwk.YDWK
 import io.github.realyusufismail.ydwk.entities.Application
 import io.github.realyusufismail.ydwk.entities.Bot
 import io.github.realyusufismail.ydwk.impl.event.Event
-import io.github.realyusufismail.ydwk.impl.event.handle.normal.EventReceiver
-import io.github.realyusufismail.ydwk.impl.event.handle.normal.IEventReciever
+import io.github.realyusufismail.ydwk.impl.event.recieve.EventReceiver
+import io.github.realyusufismail.ydwk.impl.event.recieve.IEventReceiver
 import io.github.realyusufismail.ydwk.ws.WebSocketManager
 import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
 import io.github.realyusufismail.ydwk.ws.util.LoggedIn
@@ -105,7 +105,7 @@ class YDWKImpl : YDWK {
             return this
         }
 
-    override val eventReceiver: IEventReciever
+    override val eventReceiver: IEventReceiver
         get() = EventReceiver()
 
     override fun addEvent(vararg eventAdapters: Any) {

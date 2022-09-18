@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.realyusufismail.ydwk.entities.Application
 import io.github.realyusufismail.ydwk.entities.Bot
-import io.github.realyusufismail.ydwk.impl.event.handle.normal.IEventReciever
+import io.github.realyusufismail.ydwk.impl.event.recieve.IEventReceiver
 import io.github.realyusufismail.ydwk.ws.WebSocketManager
 import io.github.realyusufismail.ydwk.ws.util.LoggedIn
 
@@ -50,7 +50,7 @@ interface YDWK {
     val waitForConnection: YDWK
 
     /** Used to get the event receiver. */
-    val eventReceiver: IEventReciever
+    val eventReceiver: IEventReceiver
 
     /** Used to add an event listener. */
     fun addEvent(vararg eventAdapters: Any)

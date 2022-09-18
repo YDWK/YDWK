@@ -33,13 +33,13 @@ import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
 import io.github.realyusufismail.ydwk.ws.util.OpCode
 import io.github.realyusufismail.ydwk.ws.util.OpCode.*
 import io.github.realyusufismail.ydwk.ws.util.impl.LoggedInImpl
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import java.io.IOException
 import java.net.Socket
 import java.net.SocketException
 import java.net.SocketTimeoutException
 import java.util.concurrent.*
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 open class WebSocketManager(
     protected var ydwk: YDWKImpl,

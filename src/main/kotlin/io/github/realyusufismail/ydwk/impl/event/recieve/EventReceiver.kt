@@ -16,11 +16,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.impl.event.handle.normal
+package io.github.realyusufismail.ydwk.impl.event.recieve
 
 import io.github.realyusufismail.ydwk.impl.event.Event
 
-class EventReceiver : IEventReciever {
+class EventReceiver : IEventReceiver {
     // Null as there is no default value for this parameter
     var event: Event? = null
     var eventReceivers: MutableList<IEvent> = ArrayList()
@@ -34,9 +34,6 @@ class EventReceiver : IEventReciever {
             }
         }
     }
-
-    override val eventReceiverConfig: IEventReciever
-        get() = this
 
     override fun addEventReceiver(eventReceiver: Any) {
         if (eventReceiver is IEvent) {
