@@ -26,7 +26,7 @@ extra.apply {
     set("name", "YDWK")
     set("description", "YDWK (Yusuf's Discord Wrapper Kotlin) My own Discord Wrapper in Kotlin")
     set("group", "io.github.realyusufismail")
-    set("version", "0.0.1")
+    set("version", "1.0.0")
     set("dev_id", "yusuf")
     set("dev_name", "Yusuf Ismail")
     set("dev_email", "yusufgamer222@gmail.com")
@@ -35,7 +35,7 @@ extra.apply {
     set("gpl_name", "Apache-2.0 license")
     set("gpl_url", "https://github.com/RealYusufIsmail/YDWK/blob/master/LICENSE")
     // Make sure we have a default for initial configuration evaluation
-    set("isReleaseVersion", "false")
+    set("isReleaseVersion", false)
 }
 
 group = "io.github.realyusufismail"
