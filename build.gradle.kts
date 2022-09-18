@@ -26,7 +26,7 @@ extra.apply {
     set("name", "YDWK")
     set("description", "YDWK (Yusuf's Discord Wrapper Kotlin) My own Discord Wrapper in Kotlin")
     set("group", "io.github.realyusufismail")
-    set("version", "1.0.0")
+    set("version", "0.0.1")
     set("dev_id", "yusuf")
     set("dev_name", "Yusuf Ismail")
     set("dev_email", "yusufgamer222@gmail.com")
@@ -39,7 +39,7 @@ extra.apply {
 }
 
 group = "io.github.realyusufismail"
-version = "1.0-SNAPSHOT"
+version = "0.0.1-SNAPSHOT"
 
 repositories {
     mavenCentral()
