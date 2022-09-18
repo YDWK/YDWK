@@ -18,15 +18,17 @@
  */ 
 package io.github.realyusufismail.ydwk.impl.event.recieve.util
 
+import com.fasterxml.jackson.module.kotlin.isKotlinClass
 import java.util.*
+import kotlin.reflect.KClass
 
 class ClassWalker
-private constructor(private val clazz: Class<*>, private val end: Class<*> = Any::class.java) :
-    Iterable<Class<*>?> {
-    override fun iterator(): MutableIterator<Class<*>?> {
-        return object : MutableIterator<Class<*>?> {
-            private val done: MutableSet<Class<*>> = HashSet()
-            private val work: Deque<Class<*>> = LinkedList()
+private constructor(private val clazz: KClass<*>, private val end: KClass<*> = Any::class) :
+    Iterable<KClass<*>> {
+    override fun iterator(): MutableIterator<KClass<*>> {
+        return object : MutableIterator<KClass<*>> {
+            private val done: MutableSet<KClass<*>> = HashSet()
+            private val work: Deque<KClass<*>> = LinkedList()
 
             init {
                 work.addLast(clazz)
@@ -37,14 +39,22 @@ private constructor(private val clazz: Class<*>, private val end: Class<*> = Any
                 return !work.isEmpty()
             }
 
-            override fun next(): Class<*> {
+            override fun next(): KClass<*> {
                 val current = work.removeFirst()
                 done.add(current)
-                for (parent in current.interfaces) {
+                for (parent in current.nestedClasses) {
                     if (!done.contains(parent)) work.addLast(parent)
                 }
-                val parent = current.superclass
-                if (parent != null && !done.contains(parent)) work.addLast(parent)
+                // cast to Any to avoid kotlin compiler bug
+
+                if (current.java.isKotlinClass()) {
+                    val parent =
+                        current.supertypes.firstOrNull { it.classifier is KClass<*> }?.classifier
+                            as KClass<*>?
+                    if (parent != null && !done.contains(parent)) work.addLast(parent)
+                } else {
+                    throw UnsupportedOperationException("Java classes are not supported")
+                }
                 return current
             }
 
@@ -56,11 +66,11 @@ private constructor(private val clazz: Class<*>, private val end: Class<*> = Any
     }
 
     companion object {
-        fun range(start: Class<*>, end: Class<*>): ClassWalker {
+        fun range(start: KClass<*>, end: KClass<*>): ClassWalker {
             return ClassWalker(start, end)
         }
 
-        fun walk(start: Class<*>): ClassWalker {
+        fun walk(start: KClass<*>): ClassWalker {
             return ClassWalker(start)
         }
     }

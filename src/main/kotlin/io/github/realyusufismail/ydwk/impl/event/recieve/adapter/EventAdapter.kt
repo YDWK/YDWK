@@ -19,23 +19,33 @@
 package io.github.realyusufismail.ydwk.impl.event.recieve.adapter
 
 import io.github.realyusufismail.ydwk.impl.event.Event
+import io.github.realyusufismail.ydwk.impl.event.events.ReadyEvent
 import io.github.realyusufismail.ydwk.impl.event.recieve.IEvent
 import io.github.realyusufismail.ydwk.impl.event.recieve.util.ClassWalker
 import io.github.realyusufismail.ydwk.impl.event.update.IEventUpdate
 import java.lang.invoke.MethodHandle
 import java.lang.invoke.MethodHandles
 import java.lang.invoke.MethodType
+import java.rmi.UnexpectedException
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
+import kotlin.reflect.KClass
 
 /**
  * Inspired from JDA's
  * [ListenersAdapter](https://github.com/DV8FromTheWorld/JDA/blob/master/src/main/java/net/dv8tion/jda/api/hooks/ListenerAdapter.java)
  */
 abstract class EventAdapter : IEvent {
-    fun onBasicEvent(event: Event?) {}
-    fun onBasicUpdate(eventUpdate: IEventUpdate<*, *>?) {}
+
+    /** Listens to all events */
+    fun onBasicEvent(event: Event) {}
+
+    /** Listens to all event updates */
+    fun onBasicUpdate(eventUpdate: IEventUpdate<*, *>) {}
+
+    /** Listens to ready event */
+    fun onReady(event: ReadyEvent) {}
 
     /**
      * This method is called when an event is received.
@@ -45,48 +55,53 @@ abstract class EventAdapter : IEvent {
     override fun onEvent(event: Event) {
         onBasicEvent(event)
         if (event is IEventUpdate<*, *>) onBasicUpdate(event as IEventUpdate<*, *>)
-        for (clazz in ClassWalker.range(event.javaClass, Event::class.java)) {
-            if (unresolved!!.contains(clazz)) continue
-            val mh = methods.computeIfAbsent(clazz) { clazz: Class<*> -> findMethod(clazz) }
-            if (mh == null) {
-                if (clazz != null) {
-                    unresolved!!.add(clazz)
+        for (clazz in ClassWalker.range(event::class, Event::class)) {
+            val ur = unresolved
+            if (ur != null) {
+                if (ur.contains(clazz)) continue
+                val mh = methods.computeIfAbsent(clazz) { clazz: KClass<*> -> findMethod(clazz) }
+                if (mh == null) {
+                    if (clazz != null) {
+                        ur.add(clazz)
+                    }
+                    continue
                 }
-                continue
-            }
-            try {
-                mh.invoke(this, event)
-            } catch (throwable: Throwable) {
-                if (throwable is RuntimeException) throw throwable
-                if (throwable is Error) throw throwable
-                throw IllegalStateException(throwable)
+                try {
+                    mh.invoke(this, event)
+                } catch (throwable: Throwable) {
+                    if (throwable is RuntimeException) throw throwable
+                    if (throwable is Error) throw throwable
+                    throw IllegalStateException(throwable)
+                }
+            } else {
+                throw UnexpectedException("unresolved is null")
             }
         }
     }
 
     companion object {
         private val lookup = MethodHandles.lookup()
-        private val methods: ConcurrentMap<Class<*>, MethodHandle?> = ConcurrentHashMap()
-        private var unresolved: MutableSet<Class<*>>? = null
+        private val methods: ConcurrentMap<KClass<*>, MethodHandle?> = ConcurrentHashMap()
+        private var unresolved: MutableSet<KClass<*>>? = null
 
         init {
             unresolved = ConcurrentHashMap.newKeySet()
             unresolved?.let {
                 Collections.addAll(
                     it,
-                    Any::class.java, // Objects aren't events
-                    Event::class.java, // onEvent is final and would never be found
-                    IEventUpdate::class.java, // onBasicUpdate has already been called
-                    Event::class.java // onBasicEvent has already been called
+                    Any::class, // Objects aren't events
+                    Event::class, // onEvent is final and would never be found
+                    IEventUpdate::class, // onBasicUpdate has already been called
+                    Event::class // onBasicEvent has already been called
                     )
             }
         }
 
-        private fun findMethod(clazz: Class<*>): MethodHandle? {
+        private fun findMethod(clazz: KClass<*>): MethodHandle? {
             var name = clazz.simpleName
-            val type = MethodType.methodType(Void.TYPE, clazz)
+            val type = MethodType.methodType(Void.TYPE, clazz.java)
             try {
-                name = "on" + name.substring(0, name.length - "Event".length)
+                name = "on" + name!!.substring(0, name.length - "Event".length)
                 return lookup.findVirtual(EventAdapter::class.java, name, type)
             } catch (
                 ignored: NoSuchMethodException) {} // this means this is probably a custom event!
