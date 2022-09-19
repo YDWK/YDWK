@@ -401,7 +401,7 @@ open class WebSocketManager(
             EventNames.INVITE_CREATE -> TODO()
             EventNames.INVITE_DELETE -> TODO()
             EventNames.MESSAGE_CREATE -> TODO()
-            EventNames.MESSAGE_UPDATE -> TODO() 
+            EventNames.MESSAGE_UPDATE -> TODO()
             EventNames.MESSAGE_DELETE -> TODO()
             EventNames.MESSAGE_DELETE_BULK -> TODO()
             EventNames.MESSAGE_REACTION_ADD -> TODO()

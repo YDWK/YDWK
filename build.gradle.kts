@@ -57,7 +57,6 @@ dependencies {
     //ws and https
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.10")
     implementation("com.neovisionaries:nv-websocket-client:2.14")
-    implementation("net.sf.trove4j:trove4j:3.0.3")
     //kotlin
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.7.10")
     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
