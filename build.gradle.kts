@@ -13,7 +13,7 @@ buildscript {
 plugins {
     kotlin("jvm") version "1.7.10"
     kotlin("plugin.allopen") version "1.7.10"
-    id("com.diffplug.spotless") version "6.10.0"
+    id("com.diffplug.spotless") version "6.11.0"
     id("org.jetbrains.dokka") version "1.7.10"
     application
     `maven-publish`
@@ -49,8 +49,8 @@ dependencies {
     //json
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.4")
     //logger
-    implementation("ch.qos.logback:logback-classic:1.4.0")
-    implementation("ch.qos.logback:logback-core:1.4.0")
+    implementation("ch.qos.logback:logback-classic:1.4.1")
+    implementation("ch.qos.logback:logback-core:1.4.1")
     implementation("uk.org.lidalia:sysout-over-slf4j:1.0.2")
     //.env
     implementation("io.github.yusufsdiscordbot:config:1.0.4")
