@@ -63,4 +63,10 @@ interface Application : SnowFlake, NameAbleEntity, GenericEntity {
 
     /** The cover image hash. */
     var coverImage: String?
+
+    /** The application's public flags. */
+    var flags: Int?
+
+    /** The application's tags. */
+    var tags: Array<String>?
 }

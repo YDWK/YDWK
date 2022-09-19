@@ -20,9 +20,9 @@ package io.github.realyusufismail.ydwk
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
-import io.github.realyusufismail.ydwk.cache.Cache
 import io.github.realyusufismail.ydwk.entities.Application
 import io.github.realyusufismail.ydwk.entities.Bot
+import io.github.realyusufismail.ydwk.entities.application.PartialApplication
 import io.github.realyusufismail.ydwk.event.recieve.IEventReceiver
 import io.github.realyusufismail.ydwk.ws.WebSocketManager
 import io.github.realyusufismail.ydwk.ws.util.LoggedIn
@@ -40,6 +40,9 @@ interface YDWK {
 
     /** Used to get the properties of the bot. */
     val bot: Bot?
+
+    /** A Used to get some application properties sent by discord's Ready event. */
+    var partialApplication: PartialApplication?
 
     /** Used to get the properties of the application. */
     val application: Application?
@@ -61,9 +64,6 @@ interface YDWK {
 
     /** Used to shut down the websocket manager */
     fun shutdown()
-
-    /** Used to store or remove data from the cache. */
-    val cache: Cache
 }
 
 /**

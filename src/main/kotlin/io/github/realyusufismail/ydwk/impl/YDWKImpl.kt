@@ -26,6 +26,7 @@ import io.github.realyusufismail.ydwk.cache.Cache
 import io.github.realyusufismail.ydwk.cache.PerpetualCache
 import io.github.realyusufismail.ydwk.entities.Application
 import io.github.realyusufismail.ydwk.entities.Bot
+import io.github.realyusufismail.ydwk.entities.application.PartialApplication
 import io.github.realyusufismail.ydwk.event.Event
 import io.github.realyusufismail.ydwk.event.recieve.EventReceiver
 import io.github.realyusufismail.ydwk.event.recieve.IEventReceiver
@@ -37,6 +38,7 @@ import org.slf4j.LoggerFactory
 class YDWKImpl : YDWK {
     // logger
     val logger = LoggerFactory.getLogger(javaClass)
+    val cache: Cache = PerpetualCache()
 
     override val objectNode: ObjectNode
         get() = JsonNodeFactory.instance.objectNode()
@@ -51,9 +53,6 @@ class YDWKImpl : YDWK {
         webSocketManager?.shutdown()
     }
 
-    override val cache: Cache
-        get() = PerpetualCache()
-
     override var bot: Bot? = null
         get() {
             while (field == null) {
@@ -63,6 +62,22 @@ class YDWKImpl : YDWK {
                     e.printStackTrace()
                 }
             } // wait for bot to be set
+            return field
+        }
+
+    override var partialApplication: PartialApplication? = null
+        get() {
+            while (field == null) {
+                try {
+                    Thread.sleep(1000)
+                } catch (e: InterruptedException) {
+                    e.printStackTrace()
+                } finally {
+                    if (field == null) {
+                        logger.error("Partial Application is null")
+                    }
+                }
+            } // wait for application to be set
             return field
         }
 

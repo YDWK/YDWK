@@ -27,32 +27,40 @@ import java.util.*
 open class UserImpl(
     final override val json: JsonNode,
     private val id: Long,
-    override val ydwk: YDWK
+    override val ydwk: YDWK,
 ) : User {
     override var discriminator: String = json["discriminator"].asText()
 
-    override var avatar: String? = json["avatar"].asText()
+    override var avatar: String = json["avatar"].asText()
 
     override val bot: Boolean
         get() = json.get("bot").asBoolean()
 
-    override var system: Boolean = json["system"].asBoolean()
+    override var system: Boolean? = if (json.has("system")) json["system"].asBoolean() else null
 
-    override var mfaEnabled: Boolean = json["mfa_enabled"].asBoolean()
+    override var mfaEnabled: Boolean? =
+        if (json.has("mfa_enabled")) json["mfa_enabled"].asBoolean() else null
 
-    override var banner: String? = json["banner"].asText()
+    // if null return null else return the string
+    override var banner: String? =
+        if (json.hasNonNull("banner")) json.get("banner").asText() else null
 
-    override var accentColor: Color? = Color(json["accent_color"].asInt())
+    override var accentColor: Color? =
+        if (json.hasNonNull("accent_color")) Color(json.get("accent_color").asInt()) else null
 
-    override var locale: String? = json["locale"].asText()
+    override var locale: String? =
+        if (json.hasNonNull("locale")) json.get("locale").asText() else null
 
-    override var verified: Boolean? = json["verified"].asBoolean(false)
+    override var verified: Boolean? =
+        if (json.hasNonNull("verified")) json.get("verified").asBoolean() else null
 
-    override var flags: Int? = json["flags"].asInt()
+    override var flags: Int? = if (json.hasNonNull("flags")) json.get("flags").asInt() else null
 
-    override var premiumType: Int? = json["premium_type"].asInt()
+    override var premiumType: Int? =
+        if (json.hasNonNull("premium_type")) json.get("premium_type").asInt() else null
 
-    override var publicFlags: Int? = json["public_flags"].asInt()
+    override var publicFlags: Int? =
+        if (json.hasNonNull("public_flags")) json.get("public_flags").asInt() else null
 
     override fun getIdLong(): Long {
         return id

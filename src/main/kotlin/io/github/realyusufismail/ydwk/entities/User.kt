@@ -29,16 +29,16 @@ interface User : SnowFlake, GenericEntity, NameAbleEntity {
     var discriminator: String
 
     /** The user's avatar hash */
-    var avatar: String?
+    var avatar: String
 
     /** Whether the user belongs to an OAuth2 application */
-    val bot: Boolean
+    val bot: Boolean?
 
     /** Whether the user is an Official Discord System user (part of the urgent message system) */
-    var system: Boolean
+    var system: Boolean?
 
     /** Whether the user has two factor enabled on their account */
-    var mfaEnabled: Boolean
+    var mfaEnabled: Boolean?
 
     /** The user's banner hash */
     var banner: String?

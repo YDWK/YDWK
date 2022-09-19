@@ -28,31 +28,50 @@ import java.net.URL
 class ApplicationImpl(override val json: JsonNode, private val id: Long, override val ydwk: YDWK) :
     Application {
 
-    override var icon: String? = json["icon"].asText()
+    override var icon: String? = if (json.hasNonNull("icon")) json["icon"].asText() else null
 
     override var description: String = json["description"].asText()
 
-    override var rpcOrigins: Array<String>? = json["rpc_origins"].map { it.asText() }.toTypedArray()
+    override var rpcOrigins: Array<String>? =
+        if (json.hasNonNull("rpc_origins")) json["rpc_origins"].asText().split(",").toTypedArray()
+        else null
 
     override var botPublic: Boolean = json["bot_public"].asBoolean()
 
     override var botRequireCodeGrant: Boolean = json["bot_require_code_grant"].asBoolean()
 
-    override var botTermsOfService: URL? = URL(json["terms_of_service_url"].asText())
+    override var botTermsOfService: URL? =
+        if (json.hasNonNull("terms_of_service_url")) URL(json["terms_of_service_url"].asText())
+        else null
 
-    override var botPrivacyPolicy: URL? = URL(json["privacy_policy_url"].asText())
+    override var botPrivacyPolicy: URL? =
+        if (json.hasNonNull("privacy_policy_url")) URL(json["privacy_policy_url"].asText())
+        else null
 
-    override var botOwner: User? = UserImpl(json["owner"], json["owner"].get("id").asLong(), ydwk)
+    override var botOwner: User? =
+        if (json.hasNonNull("owner"))
+            UserImpl(json["owner"], json["owner"].get("id").asLong(), ydwk)
+        else null
 
-    override var verifyKey: String? = json["verify_key"].asText()
+    override var verifyKey: String? =
+        if (json.hasNonNull("verify_key")) json["verify_key"].asText() else null
 
-    override var guildId: GetterSnowFlake? = GetterSnowFlake.of(json["guild_id"].asLong())
+    override var guildId: GetterSnowFlake? =
+        if (json.hasNonNull("guild_id")) GetterSnowFlake.of(json["guild_id"].asLong()) else null
 
-    override var gameSdkId: GetterSnowFlake? = GetterSnowFlake.of(json.get("game_sdk_id").asLong())
+    override var gameSdkId: GetterSnowFlake? =
+        if (json.hasNonNull("game_sdk_id")) GetterSnowFlake.of(json["game_sdk_id"].asLong())
+        else null
 
-    override var slug: String? = json["slug"].asText()
+    override var slug: String? = if (json.hasNonNull("slug")) json["slug"].asText() else null
 
-    override var coverImage: String? = json["cover_image"].asText()
+    override var coverImage: String? =
+        if (json.hasNonNull("cover_image")) json["cover_image"].asText() else null
+
+    override var flags: Int? = if (json.hasNonNull("flags")) json["flags"].asInt() else null
+
+    override var tags: Array<String>? =
+        if (json.hasNonNull("tags")) json["tags"].asText().split(",").toTypedArray() else null
 
     override fun getIdLong(): Long {
         return id

@@ -16,30 +16,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.cache
+package io.github.realyusufismail.ydwk.impl.entities.application
 
-/**
- * This is the implementation of the [Cache] interface that uses a [Map] to store and retrieve data.
- */
-class PerpetualCache : Cache {
-    private val cache = HashMap<Long, Any>()
+import com.fasterxml.jackson.databind.JsonNode
+import io.github.realyusufismail.ydwk.YDWK
+import io.github.realyusufismail.ydwk.entities.application.PartialApplication
 
-    override val size: Int
-        get() = cache.size
+class PartialApplicationImpl(
+    override val json: JsonNode,
+    private val id: Long,
+    override val ydwk: YDWK
+) : PartialApplication {
 
-    override fun set(key: Long, value: Any) {
-        this.cache[key] = value
-    }
+    override var flags: Int = json.get("flags").asInt()
 
-    override fun get(key: Long): Any? {
-        return cache[key]
-    }
-
-    override fun remove(key: Long): Any? {
-        return cache.remove(key)
-    }
-
-    override fun clear() {
-        cache.clear()
+    override fun getIdLong(): Long {
+        return id
     }
 }

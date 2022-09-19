@@ -1,0 +1,37 @@
+{
+  "t" : "READY",
+  "s" : 1,
+  "op" : 0,
+  "d" : {
+    "v" : 10,
+    "user_settings" : { },
+    "user" : {
+      "verified" : true,
+      "username" : "YDBK",
+      "mfa_enabled" : true,
+      "id" : "1000488596295401643",
+      "flags" : 0,
+      "email" : null,
+      "discriminator" : "5098",
+      "bot" : true,
+      "avatar" : null
+    },
+    "session_type" : "normal",
+    "session_id" : "6a26d7ad4d76a1f2e7abe87d236670cf",
+    "resume_gateway_url" : "wss://gateway.discord.gg",
+    "relationships" : [ ],
+    "private_channels" : [ ],
+    "presences" : [ ],
+    "guilds" : [ {
+      "unavailable" : true,
+      "id" : "938122131949097052"
+    } ],
+    "guild_join_requests" : [ ],
+    "geo_ordered_rtc_regions" : [ "rotterdam", "milan", "stockholm", "madrid", "finland" ],
+    "application" : {
+      "id" : "1000488596295401643",
+      "flags" : 565248
+    },
+    "_trace" : [ "[\"gateway-prd-main-d1bq\",{\"micros\":132242,\"calls\":[\"id_created\",{\"micros\":592,\"calls\":[]},\"session_lookup_time\",{\"micros\":255,\"calls\":[]},\"session_lookup_finished\",{\"micros\":11,\"calls\":[]},\"discord-sessions-green-prd-2-130\",{\"micros\":130295,\"calls\":[\"start_session\",{\"micros\":71613,\"calls\":[\"discord-api-6bcb86d44c-5bqql\",{\"micros\":66045,\"calls\":[\"get_user\",{\"micros\":9747},\"get_guilds\",{\"micros\":3851},\"send_scheduled_deletion_message\",{\"micros\":27},\"guild_join_requests\",{\"micros\":1677},\"authorized_ip_coro\",{\"micros\":19}]}]},\"starting_guild_connect\",{\"micros\":27,\"calls\":[]},\"presence_started\",{\"micros\":370,\"calls\":[]},\"guilds_started\",{\"micros\":71,\"calls\":[]},\"guilds_connect\",{\"micros\":1,\"calls\":[]},\"presence_connect\",{\"micros\":58188,\"calls\":[]},\"connect_finished\",{\"micros\":58192,\"calls\":[]},\"build_ready\",{\"micros\":20,\"calls\":[]},\"optimize_ready\",{\"micros\":1,\"calls\":[]},\"split_ready\",{\"micros\":0,\"calls\":[]},\"clean_ready\",{\"micros\":1,\"calls\":[]}]}]}]" ]
+  }
+}

@@ -25,8 +25,8 @@ import com.neovisionaries.ws.client.*
 import io.github.realyusufismail.ydwk.YDWKInfo
 import io.github.realyusufismail.ydwk.event.events.ReadyEvent
 import io.github.realyusufismail.ydwk.impl.YDWKImpl
-import io.github.realyusufismail.ydwk.impl.entities.ApplicationImpl
 import io.github.realyusufismail.ydwk.impl.entities.BotImpl
+import io.github.realyusufismail.ydwk.impl.entities.application.PartialApplicationImpl
 import io.github.realyusufismail.ydwk.impl.handler.handlers.UserUpdateHandler
 import io.github.realyusufismail.ydwk.ws.util.CloseCode
 import io.github.realyusufismail.ydwk.ws.util.EventNames
@@ -130,6 +130,7 @@ open class WebSocketManager(
     private fun handleMessage(message: String) {
         try {
             val payload = ydwk.objectMapper.readTree(message)
+            // logger.info("Received payload: ${payload.toPrettyString()}")
             onEvent(payload)
         } catch (e: Exception) {
             logger.error("Error while handling message", e)
@@ -345,9 +346,17 @@ open class WebSocketManager(
 
                 sessionId = d.get("session_id").asText()
                 resumeUrl = d.get("resume_gateway_url").asText()
-                ydwk.bot = BotImpl(d.get("user"), d.get("user").asLong(), ydwk)
-                ydwk.application =
-                    ApplicationImpl(d.get("application"), d.get("application").asLong(), ydwk)
+
+                val bot = BotImpl(d.get("user"), d.get("user").get("id").asLong(), ydwk)
+                ydwk.bot = bot
+                ydwk.cache[d.get("user").get("id").asLong()] = bot
+
+                val partialApplication =
+                    PartialApplicationImpl(
+                        d.get("application"), d.get("application").get("id").asLong(), ydwk)
+                ydwk.partialApplication = partialApplication
+                ydwk.cache[d.get("application").get("id").asLong()] = partialApplication
+
                 val guilds: ArrayNode = d.get("guilds") as ArrayNode
 
                 var availableGuildsAmount: Int = 0
@@ -365,7 +374,10 @@ open class WebSocketManager(
             }
             EventNames.RESUMED -> TODO()
             EventNames.RECONNECT -> TODO()
-            EventNames.INVALID_SESSION -> TODO()
+            EventNames.INVALID_SESSION -> {
+                sessionId = null
+                resumeUrl = null
+            }
             EventNames.APPLICATION_COMMAND_PERMISSIONS_UPDATE -> TODO()
             EventNames.CHANNEL_CREATE -> TODO()
             EventNames.CHANNEL_UPDATE -> TODO()
