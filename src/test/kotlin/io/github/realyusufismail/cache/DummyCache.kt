@@ -16,13 +16,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.impl.entities
+package io.github.realyusufismail.ws.io.github.realyusufismail.cache
 
-import com.fasterxml.jackson.databind.JsonNode
-import io.github.realyusufismail.ydwk.YDWK
-import io.github.realyusufismail.ydwk.entities.Bot
+import io.github.realyusufismail.ydwk.cache.Cache
 
-class BotImpl(json: JsonNode, id: Long, ydwk: YDWK) : UserImpl(json, id, ydwk), Bot {
+class DummyCache : Cache {
+    private val dummyMap = HashMap<Long, Any>()
 
-    override var email: String = json["email"].asText()
+    override val size: Int
+        get() = dummyMap.size
+
+    override fun set(key: Long, value: Any) {
+        dummyMap[key] = value
+    }
+
+    override fun get(key: Long): Any? {
+        return dummyMap[key]
+    }
+
+    override fun remove(key: Long): Any? {
+        return dummyMap.remove(key)
+    }
+
+    override fun clear() {
+        dummyMap.clear()
+    }
 }

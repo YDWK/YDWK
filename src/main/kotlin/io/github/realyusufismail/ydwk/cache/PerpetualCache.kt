@@ -16,10 +16,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.impl.event
+package io.github.realyusufismail.ydwk.cache
 
-import io.github.realyusufismail.ydwk.YDWK
+/**
+ * This is the implementation of the [Cache] interface that uses a [Map] to store and retrieve data.
+ */
+class PerpetualCache : Cache {
+    private val cache = HashMap<Long, Any>()
 
-interface Event {
-    val ydwk: YDWK
+    override val size: Int
+        get() = cache.size
+
+    override fun set(key: Long, value: Any) {
+        this.cache[key] = value
+    }
+
+    override fun get(key: Long): Any? {
+        return cache[key]
+    }
+
+    override fun remove(key: Long): Any? {
+        return cache.remove(key)
+    }
+
+    override fun clear() {
+        cache.clear()
+    }
 }

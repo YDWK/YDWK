@@ -16,13 +16,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.impl.event.recieve.adapter
+package io.github.realyusufismail.ydwk.event.recieve.adapter
 
-import io.github.realyusufismail.ydwk.impl.event.Event
-import io.github.realyusufismail.ydwk.impl.event.events.ReadyEvent
-import io.github.realyusufismail.ydwk.impl.event.recieve.IEvent
-import io.github.realyusufismail.ydwk.impl.event.recieve.util.ClassWalker
-import io.github.realyusufismail.ydwk.impl.event.update.IEventUpdate
+import io.github.realyusufismail.ydwk.event.Event
+import io.github.realyusufismail.ydwk.event.events.ReadyEvent
+import io.github.realyusufismail.ydwk.event.recieve.IEvent
+import io.github.realyusufismail.ydwk.event.recieve.util.ClassWalker
+import io.github.realyusufismail.ydwk.event.update.IEventUpdate
 import java.lang.invoke.MethodHandle
 import java.lang.invoke.MethodHandles
 import java.lang.invoke.MethodType
@@ -36,6 +36,7 @@ import kotlin.reflect.KClass
  * Inspired from JDA's
  * [ListenersAdapter](https://github.com/DV8FromTheWorld/JDA/blob/master/src/main/java/net/dv8tion/jda/api/hooks/ListenerAdapter.java)
  */
+@Suppress("UNUSED")
 abstract class EventAdapter : IEvent {
 
     /** Listens to all events */
@@ -61,9 +62,7 @@ abstract class EventAdapter : IEvent {
                 if (ur.contains(clazz)) continue
                 val mh = methods.computeIfAbsent(clazz) { clazz: KClass<*> -> findMethod(clazz) }
                 if (mh == null) {
-                    if (clazz != null) {
-                        ur.add(clazz)
-                    }
+                    ur.add(clazz)
                     continue
                 }
                 try {

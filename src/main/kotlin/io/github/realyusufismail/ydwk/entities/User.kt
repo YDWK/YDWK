@@ -26,38 +26,38 @@ import java.awt.Color
 interface User : SnowFlake, GenericEntity, NameAbleEntity {
 
     /** The user's 4-digit discord-tag */
-    val discriminator: String
+    var discriminator: String
 
     /** The user's avatar hash */
-    val avatar: String?
+    var avatar: String
 
     /** Whether the user belongs to an OAuth2 application */
-    val bot: Boolean
+    val bot: Boolean?
 
     /** Whether the user is an Official Discord System user (part of the urgent message system) */
-    val system: Boolean
+    var system: Boolean?
 
     /** Whether the user has two factor enabled on their account */
-    val mfaEnabled: Boolean
+    var mfaEnabled: Boolean?
 
     /** The user's banner hash */
-    val banner: String?
+    var banner: String?
 
     /** The user's banner color encoded as an integer representation of hexadecimal color code */
-    val accentColor: Color?
+    var accentColor: Color?
 
     /** The user's chosen language option */
-    val locale: String?
+    var locale: String?
 
     /** Whether the email on this account has been verified */
-    val verified: Boolean?
+    var verified: Boolean?
 
     /** The flags on a user's account */
-    val flags: Int?
+    var flags: Int?
 
     /** The type of Nitro subscription on a user's account */
-    val premiumType: Int?
+    var premiumType: Int?
 
     /** The public flags on a user's account */
-    val publicFlags: Int?
+    var publicFlags: Int?
 }

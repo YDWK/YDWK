@@ -11,9 +11,6 @@ You might ask why should i use this wrapper when there is already a kotlin wrapp
 - I will stick to the same naming as in the discord api for consistency
 
 ## In progress and to be done
-- [x] Connect to gateway
-- [x] Parse json
-- [x] Handle all op codes
 - [ ] Create entities - in progress
 - [ ] Handle events - In progress
 - [ ] Handle reconnect and resuming
@@ -21,10 +18,14 @@ You might ask why should i use this wrapper when there is already a kotlin wrapp
 
 ## Future Features
 - [ ] Handle slash commands
-- [ ] Caching
 - [ ] Handle Rest API
 - [ ] Handle sending events
 
+## Implemented
+- [x] Connect to gateway
+- [x] Parse json
+- [x] Handle all op codes
+- [x] Caching
 
 ## Getting started
 

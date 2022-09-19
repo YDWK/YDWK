@@ -16,13 +16,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.impl.event.update
+package io.github.realyusufismail.ydwk.event
 
-interface IEventUpdate<YDWK, V> {
+import io.github.realyusufismail.ydwk.YDWK
 
+interface Event {
     val ydwk: YDWK
-
-    val oldValue: V
-
-    val newValue: V
 }

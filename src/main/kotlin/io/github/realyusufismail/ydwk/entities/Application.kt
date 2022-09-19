@@ -26,41 +26,47 @@ import java.net.URL
 
 interface Application : SnowFlake, NameAbleEntity, GenericEntity {
     /** The icon hash of the application. */
-    val icon: String?
+    var icon: String?
 
     /** The description of the application. */
-    val description: String
+    var description: String
 
     /** An array of rpc origin urls, if rpc is enabled. */
-    val rpcOrigins: Array<String>?
+    var rpcOrigins: Array<String>?
 
     /** If the bot can only be added by the bot owner. */
-    val botPublic: Boolean
+    var botPublic: Boolean
 
     /** If the bot will only join upon completion of the full oauth2 code grant flow */
-    val botRequireCodeGrant: Boolean
+    var botRequireCodeGrant: Boolean
 
     /** The bots terms of service. */
-    val botTermsOfService: URL?
+    var botTermsOfService: URL?
 
     /** The bots privacy policy. */
-    val botPrivacyPolicy: URL?
+    var botPrivacyPolicy: URL?
 
     /** The owner of the bot. */
-    val botOwner: User?
+    var botOwner: User?
 
     /** The hex encoded key for verification in interactions and the GameSDK's GetTicket */
-    val verifyKey: String?
+    var verifyKey: String?
 
     /** The id of the guild this application is for. */
-    val guildId: GetterSnowFlake?
+    var guildId: GetterSnowFlake?
 
     /** The game sdk id of the application. */
-    val gameSdkId: GetterSnowFlake?
+    var gameSdkId: GetterSnowFlake?
 
     /** The url of the slug for the application. */
-    val slug: String?
+    var slug: String?
 
     /** The cover image hash. */
-    val coverImage: String?
+    var coverImage: String?
+
+    /** The application's public flags. */
+    var flags: Int?
+
+    /** The application's tags. */
+    var tags: Array<String>?
 }

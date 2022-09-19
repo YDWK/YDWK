@@ -16,15 +16,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.impl.event.events
+package io.github.realyusufismail.ydwk.impl.handler
 
-import io.github.realyusufismail.ydwk.YDWK
-import io.github.realyusufismail.ydwk.impl.event.Event
+import com.fasterxml.jackson.databind.JsonNode
+import io.github.realyusufismail.ydwk.impl.YDWKImpl
 
-class ReadyEvent(
-    override val ydwk: YDWK,
-    amountOfAvailableGuilds: Int,
-    unAvailableGuildsAmount: Int
-) : Event {
-    val totalGuildsAmount = amountOfAvailableGuilds + unAvailableGuildsAmount
+abstract class Handler(val ydwk: YDWKImpl, val json: JsonNode) {
+    abstract fun start()
 }

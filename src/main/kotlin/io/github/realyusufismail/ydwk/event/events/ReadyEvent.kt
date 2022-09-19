@@ -16,13 +16,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.impl.entities
+package io.github.realyusufismail.ydwk.event.events
 
-import com.fasterxml.jackson.databind.JsonNode
 import io.github.realyusufismail.ydwk.YDWK
-import io.github.realyusufismail.ydwk.entities.Bot
+import io.github.realyusufismail.ydwk.event.Event
 
-class BotImpl(json: JsonNode, id: Long, ydwk: YDWK) : UserImpl(json, id, ydwk), Bot {
-
-    override var email: String = json["email"].asText()
+class ReadyEvent(
+    override val ydwk: YDWK,
+    amountOfAvailableGuilds: Int,
+    unAvailableGuildsAmount: Int
+) : Event {
+    val totalGuildsAmount = amountOfAvailableGuilds + unAvailableGuildsAmount
 }

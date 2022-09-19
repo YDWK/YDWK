@@ -16,13 +16,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.impl.entities
+package io.github.realyusufismail.ws.io.github.realyusufismail.cache.user
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.realyusufismail.ydwk.YDWK
-import io.github.realyusufismail.ydwk.entities.Bot
 
-class BotImpl(json: JsonNode, id: Long, ydwk: YDWK) : UserImpl(json, id, ydwk), Bot {
+class DummyUserImpl(val json: JsonNode) : DummyUser {
 
-    override var email: String = json["email"].asText()
+    override fun getIdLong(): Long {
+        return json.get("id").asLong()
+    }
+
+    override var name: String = json.get("name").asText()
 }

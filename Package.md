@@ -5,9 +5,6 @@
 A discord wrapper made in kotlin
 
 ## In progress and to be done
-- [x] Connect to gateway
-- [x] Parse json
-- [x] Handle all op codes
 - [ ] Create entities - in progress
 - [ ] Handle events - In progress
 - [ ] Handle reconnect and resuming
@@ -15,9 +12,14 @@ A discord wrapper made in kotlin
 
 ## Future Features
 - [ ] Handle slash commands
-- [ ] Caching
 - [ ] Handle Rest API
 - [ ] Handle sending events
+
+## Implemented
+- [x] Connect to gateway
+- [x] Parse json
+- [x] Handle all op codes
+- [x] Caching
 
 
 ## Installation
@@ -48,8 +50,5 @@ To use an event, add the following to your main class:
 fun main() {
     val ydwk =
         createDefaultBot("TOKEN")
-
-    //example
-    ydwk.onEvent<ReadyEvent> { c -> println("Total amount of guilds: ${c.totalGuildsAmount}") }
 }
 ```

@@ -22,11 +22,14 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.realyusufismail.ydwk.YDWK
+import io.github.realyusufismail.ydwk.cache.Cache
+import io.github.realyusufismail.ydwk.cache.PerpetualCache
 import io.github.realyusufismail.ydwk.entities.Application
 import io.github.realyusufismail.ydwk.entities.Bot
-import io.github.realyusufismail.ydwk.impl.event.Event
-import io.github.realyusufismail.ydwk.impl.event.recieve.EventReceiver
-import io.github.realyusufismail.ydwk.impl.event.recieve.IEventReceiver
+import io.github.realyusufismail.ydwk.entities.application.PartialApplication
+import io.github.realyusufismail.ydwk.event.Event
+import io.github.realyusufismail.ydwk.event.recieve.EventReceiver
+import io.github.realyusufismail.ydwk.event.recieve.IEventReceiver
 import io.github.realyusufismail.ydwk.ws.WebSocketManager
 import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
 import io.github.realyusufismail.ydwk.ws.util.LoggedIn
@@ -34,7 +37,8 @@ import org.slf4j.LoggerFactory
 
 class YDWKImpl : YDWK {
     // logger
-    private val logger = LoggerFactory.getLogger(javaClass)
+    val logger = LoggerFactory.getLogger(javaClass)
+    val cache: Cache = PerpetualCache()
 
     override val objectNode: ObjectNode
         get() = JsonNodeFactory.instance.objectNode()
@@ -58,6 +62,22 @@ class YDWKImpl : YDWK {
                     e.printStackTrace()
                 }
             } // wait for bot to be set
+            return field
+        }
+
+    override var partialApplication: PartialApplication? = null
+        get() {
+            while (field == null) {
+                try {
+                    Thread.sleep(1000)
+                } catch (e: InterruptedException) {
+                    e.printStackTrace()
+                } finally {
+                    if (field == null) {
+                        logger.error("Partial Application is null")
+                    }
+                }
+            } // wait for application to be set
             return field
         }
 

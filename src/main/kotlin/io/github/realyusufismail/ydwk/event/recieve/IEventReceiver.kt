@@ -16,13 +16,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.impl.entities
+package io.github.realyusufismail.ydwk.event.recieve
 
-import com.fasterxml.jackson.databind.JsonNode
-import io.github.realyusufismail.ydwk.YDWK
-import io.github.realyusufismail.ydwk.entities.Bot
+import io.github.realyusufismail.ydwk.event.Event
 
-class BotImpl(json: JsonNode, id: Long, ydwk: YDWK) : UserImpl(json, id, ydwk), Bot {
-
-    override var email: String = json["email"].asText()
+interface IEventReceiver {
+    fun addEventReceiver(eventReceiver: Any)
+    fun removeEventReceiver(eventReceiver: Any)
+    fun handleEvent(event: Event)
 }

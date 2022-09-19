@@ -40,4 +40,4 @@ bin/
 .DS_Store
 
 ### Testing ###
-*src/test/kotlin/
+src/test/kotlin/Test.kt
