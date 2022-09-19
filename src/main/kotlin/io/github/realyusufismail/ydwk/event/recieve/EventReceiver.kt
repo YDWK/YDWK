@@ -16,9 +16,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.impl.event.recieve
+package io.github.realyusufismail.ydwk.event.recieve
 
-import io.github.realyusufismail.ydwk.impl.event.Event
+import io.github.realyusufismail.ydwk.event.Event
 
 class EventReceiver : IEventReceiver {
     // Null as there is no default value for this parameter

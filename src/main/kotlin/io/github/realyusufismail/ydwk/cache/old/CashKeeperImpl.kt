@@ -16,13 +16,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.impl.entities
+package io.github.realyusufismail.ydwk.cache.old
 
-import com.fasterxml.jackson.databind.JsonNode
-import io.github.realyusufismail.ydwk.YDWK
-import io.github.realyusufismail.ydwk.entities.Bot
+import gnu.trove.map.TLongObjectMap
+import gnu.trove.map.hash.TLongObjectHashMap
+import kotlin.reflect.KClass
 
-class BotImpl(json: JsonNode, id: Long, ydwk: YDWK) : UserImpl(json, id, ydwk), Bot {
+class CashKeeperImpl<OBJECT : KClass<OBJECT>>(private val objectAsClass: KClass<OBJECT>) :
+    CashKeeper<OBJECT> {
+    val map: TLongObjectMap<OBJECT> = TLongObjectHashMap()
 
-    override var email: String = json["email"].asText()
+    override val asArray: Array<OBJECT>
+        get() = TODO("Not yet implemented")
+
+    override fun get(id: Long): OBJECT? {
+        return map[id]
+    }
 }

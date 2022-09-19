@@ -22,13 +22,13 @@ import java.util.*
 
 interface NameAbleEntity : Formattable {
     /** @return the name of the entity */
-    fun getName(): String
+    var name: String
 
     fun format(format: String): String {
         return String.format(format, this)
     }
 
     override fun formatTo(formatter: Formatter?, flags: Int, width: Int, precision: Int) {
-        formatter?.format("%s", getName())
+        formatter?.format("%s", name)
     }
 }

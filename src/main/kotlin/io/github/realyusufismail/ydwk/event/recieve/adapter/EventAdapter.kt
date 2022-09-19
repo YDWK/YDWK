@@ -16,13 +16,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.impl.event.recieve.adapter
+package io.github.realyusufismail.ydwk.event.recieve.adapter
 
-import io.github.realyusufismail.ydwk.impl.event.Event
-import io.github.realyusufismail.ydwk.impl.event.events.ReadyEvent
-import io.github.realyusufismail.ydwk.impl.event.recieve.IEvent
-import io.github.realyusufismail.ydwk.impl.event.recieve.util.ClassWalker
-import io.github.realyusufismail.ydwk.impl.event.update.IEventUpdate
+import io.github.realyusufismail.ydwk.event.Event
+import io.github.realyusufismail.ydwk.event.events.ReadyEvent
+import io.github.realyusufismail.ydwk.event.recieve.IEvent
+import io.github.realyusufismail.ydwk.event.recieve.util.ClassWalker
+import io.github.realyusufismail.ydwk.event.update.IEventUpdate
 import java.lang.invoke.MethodHandle
 import java.lang.invoke.MethodHandles
 import java.lang.invoke.MethodType

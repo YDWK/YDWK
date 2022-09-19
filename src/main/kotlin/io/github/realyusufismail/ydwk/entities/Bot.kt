@@ -21,5 +21,5 @@ package io.github.realyusufismail.ydwk.entities
 interface Bot : User {
 
     /** The user's email */
-    val email: String
+    var email: String
 }

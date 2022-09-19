@@ -16,12 +16,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.impl.event.recieve
+package io.github.realyusufismail.ydwk.event.update
 
-import io.github.realyusufismail.ydwk.impl.event.Event
+interface IEventUpdate<YDWK, V> {
 
-interface IEventReceiver {
-    fun addEventReceiver(eventReceiver: Any)
-    fun removeEventReceiver(eventReceiver: Any)
-    fun handleEvent(event: Event)
+    val ydwk: YDWK
+
+    val oldValue: V
+
+    val newValue: V
 }

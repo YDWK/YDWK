@@ -16,15 +16,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.impl.event.events
+package io.github.realyusufismail.ydwk.event
 
 import io.github.realyusufismail.ydwk.YDWK
-import io.github.realyusufismail.ydwk.impl.event.Event
 
-class ReadyEvent(
-    override val ydwk: YDWK,
-    amountOfAvailableGuilds: Int,
-    unAvailableGuildsAmount: Int
-) : Event {
-    val totalGuildsAmount = amountOfAvailableGuilds + unAvailableGuildsAmount
+interface Event {
+    val ydwk: YDWK
 }

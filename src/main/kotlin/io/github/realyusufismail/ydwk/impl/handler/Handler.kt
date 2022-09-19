@@ -16,10 +16,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.impl.event.recieve
+package io.github.realyusufismail.ydwk.impl.handler
 
-import io.github.realyusufismail.ydwk.impl.event.Event
+import com.fasterxml.jackson.databind.JsonNode
+import io.github.realyusufismail.ydwk.impl.YDWKImpl
 
-fun interface IEvent {
-    fun onEvent(event: Event)
+abstract class Handler(val ydwk: YDWKImpl, val json: JsonNode) {
+    abstract fun start()
 }

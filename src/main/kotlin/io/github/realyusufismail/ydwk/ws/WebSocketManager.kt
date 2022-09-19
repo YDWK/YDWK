@@ -23,10 +23,11 @@ import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.neovisionaries.ws.client.*
 import io.github.realyusufismail.ydwk.YDWKInfo
+import io.github.realyusufismail.ydwk.event.events.ReadyEvent
 import io.github.realyusufismail.ydwk.impl.YDWKImpl
 import io.github.realyusufismail.ydwk.impl.entities.ApplicationImpl
 import io.github.realyusufismail.ydwk.impl.entities.BotImpl
-import io.github.realyusufismail.ydwk.impl.event.events.ReadyEvent
+import io.github.realyusufismail.ydwk.impl.handler.handlers.UserUpdateHandler
 import io.github.realyusufismail.ydwk.ws.util.CloseCode
 import io.github.realyusufismail.ydwk.ws.util.EventNames
 import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
@@ -400,7 +401,7 @@ open class WebSocketManager(
             EventNames.INVITE_CREATE -> TODO()
             EventNames.INVITE_DELETE -> TODO()
             EventNames.MESSAGE_CREATE -> TODO()
-            EventNames.MESSAGE_UPDATE -> TODO()
+            EventNames.MESSAGE_UPDATE -> TODO() 
             EventNames.MESSAGE_DELETE -> TODO()
             EventNames.MESSAGE_DELETE_BULK -> TODO()
             EventNames.MESSAGE_REACTION_ADD -> TODO()
@@ -408,7 +409,7 @@ open class WebSocketManager(
             EventNames.MESSAGE_REACTION_REMOVE_ALL -> TODO()
             EventNames.PRESENCE_UPDATE -> TODO()
             EventNames.TYPING_START -> TODO()
-            EventNames.USER_UPDATE -> TODO()
+            EventNames.USER_UPDATE -> UserUpdateHandler(ydwk, d).start()
             EventNames.VOICE_STATE_UPDATE -> TODO()
             EventNames.VOICE_SERVER_UPDATE -> TODO()
             EventNames.WEBHOOKS_UPDATE -> TODO()

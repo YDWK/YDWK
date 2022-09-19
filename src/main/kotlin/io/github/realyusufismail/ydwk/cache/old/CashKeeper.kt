@@ -16,13 +16,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.impl.entities
+package io.github.realyusufismail.ydwk.cache.old
 
-import com.fasterxml.jackson.databind.JsonNode
-import io.github.realyusufismail.ydwk.YDWK
-import io.github.realyusufismail.ydwk.entities.Bot
+interface CashKeeper<Class> {
 
-class BotImpl(json: JsonNode, id: Long, ydwk: YDWK) : UserImpl(json, id, ydwk), Bot {
+    val asArray: Array<Class>
 
-    override var email: String = json["email"].asText()
+    fun get(id: Long): Class?
+
+    fun get(id: String) {
+        get(id.toLong())
+    }
 }

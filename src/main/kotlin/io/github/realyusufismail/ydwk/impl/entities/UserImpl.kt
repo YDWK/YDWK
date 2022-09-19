@@ -24,53 +24,43 @@ import io.github.realyusufismail.ydwk.entities.User
 import java.awt.Color
 import java.util.*
 
-open class UserImpl(override val json: JsonNode, private val id: Long, override val ydwk: YDWK) :
-    User {
-    override val discriminator: String
-        get() = json["discriminator"].asText()
+open class UserImpl(
+    final override val json: JsonNode,
+    private val id: Long,
+    override val ydwk: YDWK
+) : User {
+    override var discriminator: String = json["discriminator"].asText()
 
-    override val avatar: String?
-        get() = json.get("avatar").asText()
+    override var avatar: String? = json["avatar"].asText()
 
     override val bot: Boolean
         get() = json.get("bot").asBoolean()
 
-    override val system: Boolean
-        get() = json.get("system").asBoolean()
+    override var system: Boolean = json["system"].asBoolean()
 
-    override val mfaEnabled: Boolean
-        get() = json.get("mfa_enabled").asBoolean()
+    override var mfaEnabled: Boolean = json["mfa_enabled"].asBoolean()
 
-    override val banner: String?
-        get() = json.get("banner").asText()
+    override var banner: String? = json["banner"].asText()
 
-    override val accentColor: Color?
-        get() = json.get("accent_color").asInt().let { Color(it) }
+    override var accentColor: Color? = Color(json["accent_color"].asInt())
 
-    override val locale: String?
-        get() = json.get("locale").asText()
+    override var locale: String? = json["locale"].asText()
 
-    override val verified: Boolean?
-        get() = json.get("verified").asBoolean()
+    override var verified: Boolean? = json["verified"].asBoolean(false)
 
-    override val flags: Int?
-        get() = json.get("flags").asInt()
+    override var flags: Int? = json["flags"].asInt()
 
-    override val premiumType: Int?
-        get() = json.get("premium_type").asInt()
+    override var premiumType: Int? = json["premium_type"].asInt()
 
-    override val publicFlags: Int?
-        get() = json.get("public_flags").asInt()
+    override var publicFlags: Int? = json["public_flags"].asInt()
 
     override fun getIdLong(): Long {
         return id
     }
 
-    override fun getName(): String {
-        return json["username"].asText()
-    }
+    override var name: String = json["username"].asText()
 
     override fun formatTo(formatter: Formatter?, flags: Int, width: Int, precision: Int) {
-        formatter?.format("%s#%s", getName(), discriminator)
+        formatter?.format("%s#%s", name, discriminator)
     }
 }
