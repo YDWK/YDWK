@@ -36,6 +36,7 @@ import kotlin.reflect.KClass
  * Inspired from JDA's
  * [ListenersAdapter](https://github.com/DV8FromTheWorld/JDA/blob/master/src/main/java/net/dv8tion/jda/api/hooks/ListenerAdapter.java)
  */
+@Suppress("UNUSED")
 abstract class EventAdapter : IEvent {
 
     /** Listens to all events */
@@ -61,9 +62,7 @@ abstract class EventAdapter : IEvent {
                 if (ur.contains(clazz)) continue
                 val mh = methods.computeIfAbsent(clazz) { clazz: KClass<*> -> findMethod(clazz) }
                 if (mh == null) {
-                    if (clazz != null) {
-                        ur.add(clazz)
-                    }
+                    ur.add(clazz)
                     continue
                 }
                 try {

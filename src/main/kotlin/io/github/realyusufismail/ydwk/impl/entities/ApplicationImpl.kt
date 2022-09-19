@@ -28,50 +28,35 @@ import java.net.URL
 class ApplicationImpl(override val json: JsonNode, private val id: Long, override val ydwk: YDWK) :
     Application {
 
-    override val icon: String
-        get() = json.get("icon").asText()
+    override var icon: String? = json["icon"].asText()
 
-    override val description: String
-        get() = json.get("description").asText()
+    override var description: String = json["description"].asText()
 
-    override val rpcOrigins: Array<String>
-        get() = json.get("rpc_origins").map { it.asText() }.toTypedArray()
+    override var rpcOrigins: Array<String>? = json["rpc_origins"].map { it.asText() }.toTypedArray()
 
-    override val botPublic: Boolean
-        get() = json.get("bot_public").asBoolean()
+    override var botPublic: Boolean = json["bot_public"].asBoolean()
 
-    override val botRequireCodeGrant: Boolean
-        get() = json.get("bot_require_code_grant").asBoolean()
+    override var botRequireCodeGrant: Boolean = json["bot_require_code_grant"].asBoolean()
 
-    override val botTermsOfService: URL
-        get() = URL(json.get("terms_of_service_url").asText())
+    override var botTermsOfService: URL? = URL(json["terms_of_service_url"].asText())
 
-    override val botPrivacyPolicy: URL
-        get() = URL(json.get("privacy_policy_url").asText())
+    override var botPrivacyPolicy: URL? = URL(json["privacy_policy_url"].asText())
 
-    override val botOwner: User
-        get() = UserImpl(json.get("owner"), id, ydwk)
+    override var botOwner: User? = UserImpl(json["owner"], json["owner"].get("id").asLong(), ydwk)
 
-    override val verifyKey: String
-        get() = json.get("verify_key").asText()
+    override var verifyKey: String? = json["verify_key"].asText()
 
-    override val guildId: GetterSnowFlake
-        get() = GetterSnowFlake.of(json.get("guild_id").asLong())
+    override var guildId: GetterSnowFlake? = GetterSnowFlake.of(json["guild_id"].asLong())
 
-    override val gameSdkId: GetterSnowFlake
-        get() = GetterSnowFlake.of(json.get("primary_sku_id").asLong())
+    override var gameSdkId: GetterSnowFlake? = GetterSnowFlake.of(json.get("game_sdk_id").asLong())
 
-    override val slug: String
-        get() = json.get("slug").asText()
+    override var slug: String? = json["slug"].asText()
 
-    override val coverImage: String
-        get() = json.get("cover_image").asText()
+    override var coverImage: String? = json["cover_image"].asText()
 
     override fun getIdLong(): Long {
         return id
     }
 
-    override fun getName(): String {
-        return json.get("name").asText()
-    }
+    override var name: String = json["name"].asText()
 }
