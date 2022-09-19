@@ -13,7 +13,7 @@ buildscript {
 plugins {
     kotlin("jvm") version "1.7.10"
     kotlin("plugin.allopen") version "1.7.10"
-    id("com.diffplug.spotless") version "6.10.0"
+    id("com.diffplug.spotless") version "6.11.0"
     id("org.jetbrains.dokka") version "1.7.10"
     application
     `maven-publish`
