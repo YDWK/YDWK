@@ -18,8 +18,11 @@
  */ 
 package io.github.realyusufismail.ydwk.entities.guild
 
+import io.github.realyusufismail.ydwk.entities.User
 import io.github.realyusufismail.ydwk.entities.util.GenericEntity
 import io.github.realyusufismail.ydwk.util.NameAbleEntity
-import io.github.realyusufismail.ydwk.util.SnowFlake
 
-interface Guild : SnowFlake, NameAbleEntity, GenericEntity {}
+interface Member : NameAbleEntity, GenericEntity {
+
+    val user: User
+}
