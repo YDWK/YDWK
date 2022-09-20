@@ -23,6 +23,7 @@ import io.github.realyusufismail.ws.io.github.realyusufismail.cache.user.DummyUs
 import java.nio.file.Files
 import java.util.Objects
 import kotlin.io.path.Path
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
@@ -44,26 +45,8 @@ class CacheTester {
 
         val cachedUser = cache[user.getIdLong()] as DummyUserImpl
 
-        if (Objects.deepEquals(user, cachedUser)) {
-            println("User is cached")
-        } else {
-            println("User is not cached")
-        }
-
-        if (!Objects.deepEquals(user.getIdLong(), cachedUser.getIdLong())) {
-            println("User ID is not cached")
-        } else {
-            println("User ID is cached")
-        }
-
-        if (!Objects.deepEquals(user.name, cachedUser.name)) {
-            println("User name is not cached")
-        } else {
-            println("User name is cached")
-        }
-
-        // Assertions.assertEquals(user.getIdLong(), cachedUser.getIdLong(), "User ID is not equal")
-        // Assertions.assertEquals(user.name, cachedUser.name, "User name is not equal")
+        Assertions.assertEquals(user.getIdLong(), cachedUser.getIdLong(), "User ID is not equal")
+        Assertions.assertEquals(user.name, cachedUser.name, "User name is not equal")
 
         val newUserJson =
             ObjectMapper()
@@ -77,12 +60,7 @@ class CacheTester {
             user.name = newName
         }
 
-        if (Objects.deepEquals(user.name, cachedUser.name)) {
-            println("User name is cached")
-        } else {
-            println("User name is not cached")
-        }
-
-        // Assertions.assertEquals(user.name, cachedUser.name, "User name is not equal")
+        Assertions.assertNotEquals(oldName, newName, "User name is equal")
+        Assertions.assertEquals(user.name, cachedUser.name, "User name is not equal")
     }
 }
