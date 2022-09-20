@@ -37,7 +37,7 @@ class UserUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
             ydwk.logger.warn(
                 "UserUpdateHandler: User with id ${userJson.get("id").asLong()} not found in cache, will add it")
             val user = UserImpl(json, json.get("id").asLong(), ydwk)
-            ydwk.cache[user.getIdLong()] = user
+            ydwk.cache[user.idAsLong] = user
             return
         }
 

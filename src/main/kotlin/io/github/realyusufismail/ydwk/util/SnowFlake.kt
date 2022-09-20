@@ -18,8 +18,6 @@
  */ 
 package io.github.realyusufismail.ydwk.util
 
-import org.jetbrains.annotations.NotNull
-
 interface SnowFlake {
 
     fun of(string: String): SnowFlake {
@@ -31,16 +29,11 @@ interface SnowFlake {
     }
 
     /** @return The id of an object as a string */
-    fun getId(): String {
-        return getIdLong().toString()
-    }
+    val id: String
+        get() = idAsLong.toString()
 
     /** @return The id of an object as a long */
-    @NotNull fun getIdLong(): Long
+    val idAsLong: Long
 }
 
-internal class SnowFlakeReg(private val id: Long) : SnowFlake {
-    override fun getIdLong(): Long {
-        return id
-    }
-}
+internal class SnowFlakeReg(override val idAsLong: Long) : SnowFlake

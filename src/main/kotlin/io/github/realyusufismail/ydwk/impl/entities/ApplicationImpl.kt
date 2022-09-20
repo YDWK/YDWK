@@ -25,8 +25,11 @@ import io.github.realyusufismail.ydwk.entities.User
 import io.github.realyusufismail.ydwk.util.GetterSnowFlake
 import java.net.URL
 
-class ApplicationImpl(override val json: JsonNode, private val id: Long, override val ydwk: YDWK) :
-    Application {
+class ApplicationImpl(
+    override val json: JsonNode,
+    override val idAsLong: Long,
+    override val ydwk: YDWK
+) : Application {
 
     override var icon: String? = if (json.hasNonNull("icon")) json["icon"].asText() else null
 
@@ -72,10 +75,6 @@ class ApplicationImpl(override val json: JsonNode, private val id: Long, overrid
 
     override var tags: Array<String>? =
         if (json.hasNonNull("tags")) json["tags"].asText().split(",").toTypedArray() else null
-
-    override fun getIdLong(): Long {
-        return id
-    }
 
     override var name: String = json["name"].asText()
 }

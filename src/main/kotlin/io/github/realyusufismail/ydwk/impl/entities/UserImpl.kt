@@ -26,7 +26,7 @@ import java.util.*
 
 open class UserImpl(
     final override val json: JsonNode,
-    private val id: Long,
+    override val idAsLong: Long,
     override val ydwk: YDWK,
 ) : User {
     override var discriminator: String = json["discriminator"].asText()
@@ -61,10 +61,6 @@ open class UserImpl(
 
     override var publicFlags: Int? =
         if (json.hasNonNull("public_flags")) json.get("public_flags").asInt() else null
-
-    override fun getIdLong(): Long {
-        return id
-    }
 
     override var name: String = json["username"].asText()
 
