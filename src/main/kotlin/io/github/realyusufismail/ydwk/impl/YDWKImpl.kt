@@ -23,6 +23,8 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.realyusufismail.ydwk.YDWK
 import io.github.realyusufismail.ydwk.cache.Cache
+import io.github.realyusufismail.ydwk.cache.MemberCache
+import io.github.realyusufismail.ydwk.cache.MemberCacheImpl
 import io.github.realyusufismail.ydwk.cache.PerpetualCache
 import io.github.realyusufismail.ydwk.entities.Application
 import io.github.realyusufismail.ydwk.entities.Bot
@@ -33,12 +35,14 @@ import io.github.realyusufismail.ydwk.event.recieve.IEventReceiver
 import io.github.realyusufismail.ydwk.ws.WebSocketManager
 import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
 import io.github.realyusufismail.ydwk.ws.util.LoggedIn
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 class YDWKImpl : YDWK {
     // logger
-    val logger = LoggerFactory.getLogger(javaClass)
+    val logger: Logger = LoggerFactory.getLogger(javaClass)
     val cache: Cache = PerpetualCache()
+    val memberCache: MemberCache = MemberCacheImpl()
 
     override val objectNode: ObjectNode
         get() = JsonNodeFactory.instance.objectNode()
@@ -117,7 +121,7 @@ class YDWKImpl : YDWK {
                             logger.info("WebSocketManager connected")
                         } else {
                             logger.info("WebSocketManager not connected, retrying")
-                            waitForConnection
+                            waitForConnection // retry
                         }
                     }
                 }

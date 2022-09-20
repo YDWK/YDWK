@@ -19,27 +19,22 @@
 package io.github.realyusufismail.ydwk.cache
 
 /**
- * This is the implementation of the [Cache] interface that uses a [Map] to store and retrieve data.
+ * Discord's Member do not have a unique ID, so we need to use a combination of the guild ID and the
+ * user ID
  */
-open class PerpetualCache : Cache {
-    protected val cache = HashMap<Long, Any>()
-
-    override val size: Int
-        get() = cache.size
-
-    override fun set(key: Long, value: Any) {
-        this.cache[key] = value
+class MemberCacheImpl : MemberCache, PerpetualCache() {
+    override fun set(userId: Long, guildId: Long, value: Any) {
+        val memberId: Long = userId + guildId
+        this[memberId] = value
     }
 
-    override fun get(key: Long): Any? {
-        return cache[key]
+    override fun get(userId: Long, guildId: Long): Any? {
+        val memberId: Long = userId + guildId
+        return this[memberId]
     }
 
-    override fun remove(key: Long): Any? {
-        return cache.remove(key)
-    }
-
-    override fun clear() {
-        cache.clear()
+    override fun remove(userId: Long, guildId: Long) {
+        val memberId: Long = userId + guildId
+        this.remove(memberId)
     }
 }
