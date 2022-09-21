@@ -18,6 +18,8 @@
  */ 
 package io.github.realyusufismail.ydwk.cache
 
+import io.github.realyusufismail.ydwk.entities.guild.Member
+
 interface MemberCache : Cache {
     /**
      * Used to add a new item to the cache
@@ -26,7 +28,7 @@ interface MemberCache : Cache {
      * @param guildId The guild id of the member
      * @param value The value of the item
      */
-    operator fun set(userId: Long, guildId: Long, value: Any)
+    operator fun set(userId: Long, guildId: Long, value: Member)
 
     /**
      * Used to get an item from the cache

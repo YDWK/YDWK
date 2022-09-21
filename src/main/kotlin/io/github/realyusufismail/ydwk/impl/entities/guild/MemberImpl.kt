@@ -20,8 +20,8 @@ package io.github.realyusufismail.ydwk.impl.entities.guild
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.realyusufismail.ydwk.YDWK
+import io.github.realyusufismail.ydwk.entities.Guild
 import io.github.realyusufismail.ydwk.entities.User
-import io.github.realyusufismail.ydwk.entities.guild.Guild
 import io.github.realyusufismail.ydwk.entities.guild.Member
 import io.github.realyusufismail.ydwk.impl.entities.UserImpl
 import io.github.realyusufismail.ydwk.util.formatZonedDateTime

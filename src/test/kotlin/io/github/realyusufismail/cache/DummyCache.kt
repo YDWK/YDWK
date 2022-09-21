@@ -45,4 +45,8 @@ class DummyCache : Cache {
     override fun clear() {
         dummyMap.clear()
     }
+
+    override fun values(): MutableCollection<Any> {
+        return dummyMap.values
+    }
 }

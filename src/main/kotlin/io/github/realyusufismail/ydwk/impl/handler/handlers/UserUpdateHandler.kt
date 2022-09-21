@@ -62,52 +62,94 @@ class UserUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
         }
 
         val oldSystem = user.system
-        val newSystem = userJson.get("system").asBoolean()
-        if (oldSystem != newSystem) {
-            user.system = newSystem
+        val newSystem = userJson.get("system")
+        when {
+            oldSystem == null && newSystem != null -> user.system = newSystem.asBoolean()
+            oldSystem != null && newSystem != null ->
+                if (!Objects.deepEquals(oldSystem, newSystem.asBoolean())) {
+                    user.system = newSystem.asBoolean()
+                }
+            else -> user.system = null
         }
 
         val oldMfaEnabled = user.mfaEnabled
-        val newMfaEnabled = userJson.get("mfa_enabled").asBoolean()
-        if (oldMfaEnabled != newMfaEnabled) {
-            user.mfaEnabled = newMfaEnabled
+        val newMfaEnabled = userJson.get("mfa_enabled")
+        when {
+            oldMfaEnabled == null && newMfaEnabled != null ->
+                user.mfaEnabled = newMfaEnabled.asBoolean()
+            oldMfaEnabled != null && newMfaEnabled != null ->
+                if (!Objects.deepEquals(oldMfaEnabled, newMfaEnabled)) {
+                    user.mfaEnabled = newMfaEnabled.asBoolean()
+                }
+            else -> user.mfaEnabled = null
         }
 
         val oldBanner = user.banner
         val newBanner = userJson.get("banner").asText()
-
-        if (!Objects.deepEquals(oldBanner, newBanner)) {
-            user.banner = newBanner
+        when {
+            oldBanner == null && newBanner != null -> user.banner = newBanner
+            oldBanner != null && newBanner != null ->
+                if (!Objects.deepEquals(oldBanner, newBanner)) {
+                    user.banner = newBanner
+                }
+            else -> user.banner = null
         }
 
         val oldAccentColor = user.accentColor
-        val newAccentColor = Color(userJson.get("accent_color").asInt())
-        if (!Objects.deepEquals(oldAccentColor, newAccentColor)) {
-            user.accentColor = newAccentColor
+        val newAccentColor = userJson.get("accent_color")
+        when {
+            oldAccentColor == null && newAccentColor != null ->
+                user.accentColor = Color(newAccentColor.asInt())
+            oldAccentColor != null && newAccentColor != null ->
+                if (!Objects.deepEquals(oldAccentColor, newAccentColor)) {
+                    user.accentColor = Color(newAccentColor.asInt())
+                }
+            else -> user.accentColor = null
         }
 
         val oldLocale = user.banner
         val newLocale = userJson.get("locale").asText()
-        if (!Objects.deepEquals(oldLocale, newLocale)) {
-            user.locale = newLocale
+        when {
+            oldLocale == null && newLocale != null -> user.locale = newLocale
+            oldLocale != null && newLocale != null ->
+                if (!Objects.deepEquals(oldLocale, newLocale)) {
+                    user.locale = newLocale
+                }
+            else -> user.locale = null
         }
 
         val oldVerified = user.verified
-        val newVerified = userJson.get("verified").asBoolean()
-        if (oldVerified != newVerified) {
-            user.verified = newVerified
+        val newVerified = userJson.get("verified")
+        when {
+            oldVerified == null && newVerified != null -> user.verified = newVerified.asBoolean()
+            oldVerified != null && newVerified != null ->
+                if (!Objects.deepEquals(oldVerified, newVerified)) {
+                    user.verified = newVerified.asBoolean()
+                }
+            else -> user.verified = null
         }
 
         val oldFlags = user.flags
-        val newFlags = userJson.get("flags").asInt()
-        if (oldFlags != newFlags) {
-            user.flags = newFlags
+        val newFlags = userJson.get("flags")
+        when {
+            oldFlags == null && newFlags != null -> user.flags = newFlags.asInt()
+            oldFlags != null && newFlags != null ->
+                if (!Objects.deepEquals(oldFlags, newFlags)) {
+                    user.flags = newFlags.asInt()
+                }
+            else -> user.flags = null
         }
 
         val oldPremiumType = user.premiumType
-        val newPremiumType = userJson.get("premium_type").asInt()
-        if (oldPremiumType != newPremiumType) {
-            user.premiumType = newPremiumType
+        val newPremiumType = userJson.get("premium_type")
+        when {
+            oldPremiumType == null && newPremiumType != null ->
+                user.premiumType = newPremiumType.asInt()
+            oldPremiumType != null && newPremiumType != null ->
+                if (!Objects.deepEquals(oldPremiumType, newPremiumType)) {
+                    user.premiumType = newPremiumType.asInt()
+                }
+            else -> user.premiumType = null
         }
     }
 }

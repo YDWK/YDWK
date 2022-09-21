@@ -18,12 +18,14 @@
  */ 
 package io.github.realyusufismail.ydwk.cache
 
+import io.github.realyusufismail.ydwk.entities.guild.Member
+
 /**
  * Discord's Member do not have a unique ID, so we need to use a combination of the guild ID and the
  * user ID
  */
 class MemberCacheImpl : MemberCache, PerpetualCache() {
-    override fun set(userId: Long, guildId: Long, value: Any) {
+    override fun set(userId: Long, guildId: Long, value: Member) {
         val memberId: Long = userId + guildId
         this[memberId] = value
     }

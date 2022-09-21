@@ -55,4 +55,7 @@ interface Cache {
 
     /** Used to clear the cache */
     fun clear()
+
+    /** Used to get a list of objects in the cache */
+    fun values(): MutableCollection<Any>
 }
