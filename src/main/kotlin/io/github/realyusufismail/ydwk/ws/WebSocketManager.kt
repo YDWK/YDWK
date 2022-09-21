@@ -28,6 +28,7 @@ import io.github.realyusufismail.ydwk.impl.YDWKImpl
 import io.github.realyusufismail.ydwk.impl.entities.BotImpl
 import io.github.realyusufismail.ydwk.impl.entities.application.PartialApplicationImpl
 import io.github.realyusufismail.ydwk.impl.handler.handlers.UserUpdateHandler
+import io.github.realyusufismail.ydwk.impl.handler.handlers.guild.GuildCreateHandler
 import io.github.realyusufismail.ydwk.ws.util.CloseCode
 import io.github.realyusufismail.ydwk.ws.util.EventNames
 import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
@@ -388,7 +389,7 @@ open class WebSocketManager(
             EventNames.THREAD_DELETE -> TODO()
             EventNames.THREAD_LIST_SYNC -> TODO()
             EventNames.THREAD_MEMBERS_UPDATE -> TODO()
-            EventNames.GUILD_CREATE -> TODO()
+            EventNames.GUILD_CREATE -> GuildCreateHandler(ydwk, d).start()
             EventNames.GUILD_UPDATE -> TODO()
             EventNames.GUILD_DELETE -> TODO()
             EventNames.GUILD_BAN_ADD -> TODO()

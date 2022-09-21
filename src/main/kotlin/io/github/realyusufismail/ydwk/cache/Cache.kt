@@ -46,6 +46,13 @@ interface Cache {
      */
     fun remove(key: Long): Any?
 
+    /**
+     * Used to check if this properties exists in the cache
+     *
+     * @param key The key of the item
+     */
+    fun contains(key: Long): Boolean
+
     /** Used to clear the cache */
     fun clear()
 }

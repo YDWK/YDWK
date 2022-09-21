@@ -24,5 +24,39 @@ import io.github.realyusufismail.ydwk.util.NameAbleEntity
 
 interface Member : NameAbleEntity, GenericEntity {
 
-    val user: User
+    /** Used to get thw member's Guild */
+    val guild: Guild
+
+    /** The user this guild member represents. */
+    var user: User?
+
+    /** This users guild nickname. */
+    var nick: String?
+
+    /** The user's avatar hash. */
+    var avatar: String?
+
+    /** The date the user joined the guild. */
+    var joinedAt: String?
+
+    /** The date the user started boosting the guild. */
+    var premiumSince: String?
+
+    /** Whether the user is deafened in voice channels. */
+    var deaf: Boolean
+
+    /** Whether the user is muted in voice channels. */
+    var mute: Boolean
+
+    /** Whether the user has not yet passed the guild's Membership Screening requirements. */
+    var pending: Boolean
+
+    /**
+     * Total permissions of the member in the channel, including overwrites, returned when in the
+     * interaction object.
+     */
+    var permissions: String?
+
+    /** Weather this user is timed out. */
+    var isTimedOut: Boolean
 }

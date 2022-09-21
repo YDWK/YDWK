@@ -39,6 +39,10 @@ open class PerpetualCache : Cache {
         return cache.remove(key)
     }
 
+    override fun contains(key: Long): Boolean {
+        return cache.containsKey(key)
+    }
+
     override fun clear() {
         cache.clear()
     }

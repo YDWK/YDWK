@@ -38,6 +38,10 @@ class DummyCache : Cache {
         return dummyMap.remove(key)
     }
 
+    override fun contains(key: Long): Boolean {
+        return dummyMap.containsKey(key)
+    }
+
     override fun clear() {
         dummyMap.clear()
     }
