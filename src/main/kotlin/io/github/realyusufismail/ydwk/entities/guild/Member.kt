@@ -18,10 +18,12 @@
  */ 
 package io.github.realyusufismail.ydwk.entities.guild
 
+import io.github.realyusufismail.ydwk.entities.Guild
 import io.github.realyusufismail.ydwk.entities.User
 import io.github.realyusufismail.ydwk.entities.util.GenericEntity
 import io.github.realyusufismail.ydwk.util.NameAbleEntity
 
+/** This class is used to represent a discord guild member entity. */
 interface Member : NameAbleEntity, GenericEntity {
 
     /** Used to get thw member's Guild */

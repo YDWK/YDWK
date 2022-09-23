@@ -20,9 +20,16 @@ package io.github.realyusufismail.ydwk.impl.entities.guild
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.realyusufismail.ydwk.YDWK
-import io.github.realyusufismail.ydwk.entities.guild.Guild
+import io.github.realyusufismail.ydwk.entities.guild.WelcomeScreen
+import io.github.realyusufismail.ydwk.entities.guild.ws.WelcomeChannel
+import io.github.realyusufismail.ydwk.impl.entities.guild.ws.WelcomeChannelImpl
 
-class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override val idAsLong: Long) :
-    Guild {
-    override var name: String = json["name"].asText()
+class WelcomeScreenImpl(override val ydwk: YDWK, override val json: JsonNode) : WelcomeScreen {
+    override var description: String? =
+        if (json.has("description")) json["description"].asText() else null
+
+    override var welcomeChannels: List<WelcomeChannel> =
+        if (json.has("welcome_channels"))
+            json["welcome_channels"].map { WelcomeChannelImpl(ydwk, it) }
+        else emptyList()
 }

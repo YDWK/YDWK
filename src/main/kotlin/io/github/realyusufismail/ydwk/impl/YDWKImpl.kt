@@ -28,6 +28,7 @@ import io.github.realyusufismail.ydwk.cache.MemberCacheImpl
 import io.github.realyusufismail.ydwk.cache.PerpetualCache
 import io.github.realyusufismail.ydwk.entities.Application
 import io.github.realyusufismail.ydwk.entities.Bot
+import io.github.realyusufismail.ydwk.entities.Guild
 import io.github.realyusufismail.ydwk.entities.application.PartialApplication
 import io.github.realyusufismail.ydwk.event.Event
 import io.github.realyusufismail.ydwk.event.recieve.EventReceiver
@@ -55,6 +56,18 @@ class YDWKImpl : YDWK {
 
     override fun shutdown() {
         webSocketManager?.shutdown()
+    }
+
+    override fun getGuild(id: Long): Guild? {
+        return if (cache.contains(id)) {
+            cache[id] as Guild
+        } else {
+            null
+        }
+    }
+
+    override fun getGuilds(): List<Guild> {
+        return cache.values().filterIsInstance<Guild>()
     }
 
     override var bot: Bot? = null

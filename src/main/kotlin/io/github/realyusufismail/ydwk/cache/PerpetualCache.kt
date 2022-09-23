@@ -46,4 +46,8 @@ open class PerpetualCache : Cache {
     override fun clear() {
         cache.clear()
     }
+
+    override fun values(): MutableCollection<Any> {
+        return cache.values
+    }
 }

@@ -18,8 +18,22 @@
  */ 
 package io.github.realyusufismail.ydwk.entities.guild
 
+import io.github.realyusufismail.ydwk.entities.guild.ws.WelcomeChannel
 import io.github.realyusufismail.ydwk.entities.util.GenericEntity
-import io.github.realyusufismail.ydwk.util.NameAbleEntity
-import io.github.realyusufismail.ydwk.util.SnowFlake
 
-interface Guild : SnowFlake, NameAbleEntity, GenericEntity {}
+/** This class is used to represent a guild welcome screen object. */
+interface WelcomeScreen : GenericEntity {
+    /**
+     * The description of the Welcome Screen, if the guild has it enabled
+     *
+     * @return The description of the Welcome Screen, if the guild has it enabled
+     */
+    var description: String?
+
+    /**
+     * The channels shown in the Welcome Screen, if the guild has it enabled
+     *
+     * @return The channels shown in the Welcome Screen, if the guild has it enabled
+     */
+    var welcomeChannels: List<WelcomeChannel>
+}

@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.realyusufismail.ydwk.entities.Application
 import io.github.realyusufismail.ydwk.entities.Bot
+import io.github.realyusufismail.ydwk.entities.Guild
 import io.github.realyusufismail.ydwk.entities.application.PartialApplication
 import io.github.realyusufismail.ydwk.event.recieve.IEventReceiver
 import io.github.realyusufismail.ydwk.ws.WebSocketManager
@@ -64,6 +65,27 @@ interface YDWK {
 
     /** Used to shut down the websocket manager */
     fun shutdown()
+
+    /**
+     * Used to get a guild by its id.
+     *
+     * @param id The id of the guild.
+     */
+    fun getGuild(id: Long): Guild?
+
+    /**
+     * Used to get a guild by its id.
+     *
+     * @param id The id of the guild.
+     */
+    fun getGuild(id: String): Guild? = getGuild(id.toLong())
+
+    /**
+     * Gets all the guilds the bot is in.
+     *
+     * @return A list of guilds.
+     */
+    fun getGuilds(): List<Guild>
 }
 
 /**

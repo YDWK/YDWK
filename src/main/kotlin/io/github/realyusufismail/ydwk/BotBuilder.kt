@@ -28,7 +28,7 @@ import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
  */
 fun createDefaultBot(token: String): YDWK {
     val ydwk = YDWKImpl()
-    ydwk.setWebSocketManager(token, GateWayIntent.getAllIntents())
+    ydwk.setWebSocketManager(token, GateWayIntent.getDefaultIntents())
     return ydwk
 }
 

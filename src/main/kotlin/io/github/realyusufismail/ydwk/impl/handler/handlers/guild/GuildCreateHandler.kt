@@ -19,11 +19,17 @@
 package io.github.realyusufismail.ydwk.impl.handler.handlers.guild
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.realyusufismail.ydwk.entities.guild.Guild
+import io.github.realyusufismail.ydwk.entities.Emoji
+import io.github.realyusufismail.ydwk.entities.Guild
+import io.github.realyusufismail.ydwk.entities.Sticker
 import io.github.realyusufismail.ydwk.entities.guild.Member
+import io.github.realyusufismail.ydwk.entities.guild.Role
 import io.github.realyusufismail.ydwk.impl.YDWKImpl
-import io.github.realyusufismail.ydwk.impl.entities.guild.GuildImpl
+import io.github.realyusufismail.ydwk.impl.entities.EmojiImpl
+import io.github.realyusufismail.ydwk.impl.entities.GuildImpl
+import io.github.realyusufismail.ydwk.impl.entities.StickerImpl
 import io.github.realyusufismail.ydwk.impl.entities.guild.MemberImpl
+import io.github.realyusufismail.ydwk.impl.entities.guild.RoleImpl
 import io.github.realyusufismail.ydwk.impl.handler.Handler
 
 class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
@@ -44,5 +50,26 @@ class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
         members.forEach { member ->
             member.user?.let { ydwk.memberCache[it.idAsLong, member.guild.idAsLong] = member }
         }
+
+        val roles = ArrayList<Role>()
+        json["roles"].forEach { role -> roles.add(RoleImpl(ydwk, role, role.get("id").asLong())) }
+
+        roles.forEach { role -> ydwk.cache[role.idAsLong] = role }
+
+        val emojis = ArrayList<Emoji>()
+        json["emojis"].forEach { emoji -> emojis.add(EmojiImpl(ydwk, emoji)) }
+
+        emojis.forEach { emoji ->
+            if (emoji.idLong != null) {
+                ydwk.cache[emoji.idLong!!] = emoji
+            }
+        }
+
+        val stickers = ArrayList<Sticker>()
+        json["stickers"].forEach { sticker ->
+            stickers.add(StickerImpl(ydwk, sticker, sticker["id"].asLong()))
+        }
+
+        stickers.forEach { sticker -> ydwk.cache[sticker.idAsLong] = sticker }
     }
 }

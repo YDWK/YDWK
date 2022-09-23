@@ -18,7 +18,7 @@
  */ 
 package io.github.realyusufismail.ydwk.ws.util
 
-enum class GateWayIntent(final var value: Int, final var privileged: Boolean) {
+enum class GateWayIntent(var value: Int, final var privileged: Boolean) {
     GUILDS(0, false),
     GUILD_MEMBERS(1, true),
     GUILD_BANS(2, false),
@@ -45,6 +45,11 @@ enum class GateWayIntent(final var value: Int, final var privileged: Boolean) {
             return values().firstOrNull { it.value == value } ?: UNKNOWN
         }
 
+        /**
+         * Used to calculate the intent value
+         *
+         * @param intents The intents to calculate
+         */
         fun calculateBitmask(intents: List<GateWayIntent>): Int {
             var bitmask = 0
             for (intentValue in intents) {
@@ -53,7 +58,8 @@ enum class GateWayIntent(final var value: Int, final var privileged: Boolean) {
             return bitmask
         }
 
-        fun getAllIntents(): List<GateWayIntent> {
+        /** Gets the default intents for the gateway. */
+        fun getDefaultIntents(): List<GateWayIntent> {
             return listOf(
                 GUILDS,
                 GUILD_BANS,
