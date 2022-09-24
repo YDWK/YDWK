@@ -22,10 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.realyusufismail.ydwk.YDWK
-import io.github.realyusufismail.ydwk.cache.Cache
-import io.github.realyusufismail.ydwk.cache.MemberCache
-import io.github.realyusufismail.ydwk.cache.MemberCacheImpl
-import io.github.realyusufismail.ydwk.cache.PerpetualCache
+import io.github.realyusufismail.ydwk.cache.*
 import io.github.realyusufismail.ydwk.entities.Application
 import io.github.realyusufismail.ydwk.entities.Bot
 import io.github.realyusufismail.ydwk.entities.Guild
@@ -33,13 +30,16 @@ import io.github.realyusufismail.ydwk.entities.application.PartialApplication
 import io.github.realyusufismail.ydwk.event.Event
 import io.github.realyusufismail.ydwk.event.recieve.EventReceiver
 import io.github.realyusufismail.ydwk.event.recieve.IEventReceiver
+import io.github.realyusufismail.ydwk.rest.RestApiManager
+import io.github.realyusufismail.ydwk.rest.impl.RestApiManagerImpl
 import io.github.realyusufismail.ydwk.ws.WebSocketManager
 import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
 import io.github.realyusufismail.ydwk.ws.util.LoggedIn
+import okhttp3.OkHttpClient
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-class YDWKImpl : YDWK {
+class YDWKImpl(private val client: OkHttpClient?) : YDWK {
     // logger
     val logger: Logger = LoggerFactory.getLogger(javaClass)
     val cache: Cache = PerpetualCache()
@@ -59,16 +59,22 @@ class YDWKImpl : YDWK {
     }
 
     override fun getGuild(id: Long): Guild? {
-        return if (cache.contains(id)) {
-            cache[id] as Guild
-        } else {
-            null
-        }
+        // TODO: Add once all issues are fixed
+        return null
     }
 
     override fun getGuilds(): List<Guild> {
         return cache.values().filterIsInstance<Guild>()
     }
+
+    override val restApiManager: RestApiManager
+        get() {
+            return if (client == null) {
+                RestApiManagerImpl(this, OkHttpClient())
+            } else {
+                RestApiManagerImpl(this, client)
+            }
+        }
 
     override var bot: Bot? = null
         get() {

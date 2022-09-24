@@ -29,6 +29,8 @@ import io.github.realyusufismail.ydwk.impl.entities.BotImpl
 import io.github.realyusufismail.ydwk.impl.entities.application.PartialApplicationImpl
 import io.github.realyusufismail.ydwk.impl.handler.handlers.UserUpdateHandler
 import io.github.realyusufismail.ydwk.impl.handler.handlers.guild.GuildCreateHandler
+import io.github.realyusufismail.ydwk.impl.handler.handlers.guild.GuildDeleteHandler
+import io.github.realyusufismail.ydwk.impl.handler.handlers.guild.GuildUpdateHandler
 import io.github.realyusufismail.ydwk.ws.util.CloseCode
 import io.github.realyusufismail.ydwk.ws.util.EventNames
 import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
@@ -131,7 +133,7 @@ open class WebSocketManager(
     private fun handleMessage(message: String) {
         try {
             val payload = ydwk.objectMapper.readTree(message)
-            // logger.info("Received payload: ${payload.toPrettyString()}")
+            logger.info("Received payload: ${payload.toPrettyString()}")
             onEvent(payload)
         } catch (e: Exception) {
             logger.error("Error while handling message", e)
@@ -390,8 +392,8 @@ open class WebSocketManager(
             EventNames.THREAD_LIST_SYNC -> TODO()
             EventNames.THREAD_MEMBERS_UPDATE -> TODO()
             EventNames.GUILD_CREATE -> GuildCreateHandler(ydwk, d).start()
-            EventNames.GUILD_UPDATE -> TODO()
-            EventNames.GUILD_DELETE -> TODO()
+            EventNames.GUILD_UPDATE -> GuildUpdateHandler(ydwk, d).start()
+            EventNames.GUILD_DELETE -> GuildDeleteHandler(ydwk, d).start()
             EventNames.GUILD_BAN_ADD -> TODO()
             EventNames.GUILD_BAN_REMOVE -> TODO()
             EventNames.GUILD_EMOJIS_UPDATE -> TODO()

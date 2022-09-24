@@ -25,8 +25,10 @@ import io.github.realyusufismail.ydwk.entities.Guild
 import io.github.realyusufismail.ydwk.entities.Sticker
 import io.github.realyusufismail.ydwk.entities.guild.*
 import io.github.realyusufismail.ydwk.entities.guild.enums.*
+import io.github.realyusufismail.ydwk.impl.entities.guild.BanImpl
 import io.github.realyusufismail.ydwk.impl.entities.guild.RoleImpl
 import io.github.realyusufismail.ydwk.impl.entities.guild.WelcomeScreenImpl
+import io.github.realyusufismail.ydwk.rest.EndPoint
 import io.github.realyusufismail.ydwk.util.GetterSnowFlake
 
 class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override val idAsLong: Long) :
@@ -38,7 +40,8 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
     override var discoverySplash: String? =
         if (json.hasNonNull("discovery_splash")) json["discovery_splash"].asText() else null
 
-    override var isOwner: Boolean = json["owner"].asBoolean()
+    override var isOwner: Boolean? =
+        if (json.hasNonNull("owner")) json["owner"].asBoolean() else null
 
     override var ownerId: GetterSnowFlake = GetterSnowFlake.of(json["owner_id"].asLong())
 
@@ -51,7 +54,8 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
 
     override var afkTimeout: Int = json["afk_timeout"].asInt()
 
-    override var isWidgetEnabled: Boolean = json["widget_enabled"].asBoolean()
+    override var isWidgetEnabled: Boolean? =
+        if (json.hasNonNull("widget_enabled")) json["widget_enabled"].asBoolean() else null
 
     override var widgetChannelId: GetterSnowFlake? =
         if (json.hasNonNull("widget_channel_id"))
@@ -139,10 +143,14 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
     override var stickers: List<Sticker> =
         json["stickers"].map { StickerImpl(ydwk, it, it["id"].asLong()) }
 
-    override var isBoostProgressBarEnabled: Boolean = json["boost_progress_bar_enabled"].asBoolean()
+    override var isBoostProgressBarEnabled: Boolean =
+        json["premium_progress_bar_enabled"].asBoolean()
 
-    // TODO: Implement when rest api is ready
-    override var bans: List<Ban> = listOf()
+    override val bans: List<Ban>
+        get() =
+            ydwk.restApiManager.get(EndPoint.GuildEndpoint.GET_BANS).execute.json.map {
+                BanImpl(ydwk, it)
+            }
 
     override var name: String = json["name"].asText()
 }

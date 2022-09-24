@@ -16,23 +16,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.entities.guild
+package io.github.realyusufismail.ydwk.rest.type
 
-import io.github.realyusufismail.ydwk.entities.User
-import io.github.realyusufismail.ydwk.entities.util.GenericEntity
+import io.github.realyusufismail.ydwk.rest.execute.ExecuteRest
 
-interface Ban : GenericEntity {
-    /**
-     * The reason for the ban
-     *
-     * @return The reason for the ban
-     */
-    val reason: String?
-
-    /**
-     * The user who was banned
-     *
-     * @return The user who was banned
-     */
-    val user: User
+interface PostRestApi : SimilarRestApi {
+    val execute: ExecuteRest
 }

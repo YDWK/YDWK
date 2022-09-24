@@ -16,23 +16,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.entities.guild
+package io.github.realyusufismail.ydwk.rest.execute
 
-import io.github.realyusufismail.ydwk.entities.User
-import io.github.realyusufismail.ydwk.entities.util.GenericEntity
+import com.fasterxml.jackson.databind.JsonNode
 
-interface Ban : GenericEntity {
-    /**
-     * The reason for the ban
-     *
-     * @return The reason for the ban
-     */
-    val reason: String?
+interface ExecuteRest {
+    val json: JsonNode
 
-    /**
-     * The user who was banned
-     *
-     * @return The user who was banned
-     */
-    val user: User
+    val jsonAsString: String
+
+    val jsonAsPrettyString: String
+
+    val jsonAsBytes: ByteArray
+
+    val jsonAsArray: Array<String>
+
+    val jsonAsList: List<String>
 }

@@ -55,7 +55,7 @@ dependencies {
     //.env
     implementation("io.github.yusufsdiscordbot:config:1.0.4")
     //ws and https
-    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.10")
+    api("com.squareup.okhttp3:okhttp:5.0.0-alpha.10")
     implementation("com.neovisionaries:nv-websocket-client:2.14")
     //kotlin
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.7.10")
