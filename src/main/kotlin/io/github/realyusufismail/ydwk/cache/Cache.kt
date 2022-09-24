@@ -68,5 +68,5 @@ interface Cache {
     fun clear()
 
     /** Used to get a list of objects in the cache */
-    fun values(): MutableCollection<Any>
+    fun values(cacheType: CacheType): List<Any>
 }

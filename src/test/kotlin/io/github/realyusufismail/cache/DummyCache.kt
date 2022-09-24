@@ -198,7 +198,73 @@ class DummyCache : Cache {
         dummyMap.clear()
     }
 
-    override fun values(): MutableCollection<Any> {
-        return dummyMap.values
+    override fun values(cacheType: CacheType): List<Any> {
+        val list = ArrayList<Any>()
+        when (cacheType) {
+            CacheType.GUILD -> {
+                dummyMap.forEach { (key, value) ->
+                    if (key.endsWith("guild")) {
+                        list.add(value)
+                    }
+                }
+            }
+            CacheType.USER -> {
+                dummyMap.forEach { (key, value) ->
+                    if (key.endsWith("user")) {
+                        list.add(value)
+                    }
+                }
+            }
+            CacheType.ROLE -> {
+                dummyMap.forEach { (key, value) ->
+                    if (key.endsWith("role")) {
+                        list.add(value)
+                    }
+                }
+            }
+            CacheType.MEMBER -> {
+                dummyMap.forEach { (key, value) ->
+                    if (key.endsWith("member")) {
+                        list.add(value)
+                    }
+                }
+            }
+            CacheType.EMOJI -> {
+                dummyMap.forEach { (key, value) ->
+                    if (key.endsWith("emoji")) {
+                        list.add(value)
+                    }
+                }
+            }
+            CacheType.CHANNEL -> {
+                dummyMap.forEach { (key, value) ->
+                    if (key.endsWith("channel")) {
+                        list.add(value)
+                    }
+                }
+            }
+            CacheType.MESSAGE -> {
+                dummyMap.forEach { (key, value) ->
+                    if (key.endsWith("message")) {
+                        list.add(value)
+                    }
+                }
+            }
+            CacheType.VOICE_STATE -> {
+                dummyMap.forEach { (key, value) ->
+                    if (key.endsWith("voiceState")) {
+                        list.add(value)
+                    }
+                }
+            }
+            CacheType.STICKER -> {
+                dummyMap.forEach { (key, value) ->
+                    if (key.endsWith("sticker")) {
+                        list.add(value)
+                    }
+                }
+            }
+        }
+        return list
     }
 }

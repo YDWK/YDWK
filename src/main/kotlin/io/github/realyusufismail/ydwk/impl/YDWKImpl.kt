@@ -58,13 +58,12 @@ class YDWKImpl(private val client: OkHttpClient?) : YDWK {
         webSocketManager?.shutdown()
     }
 
-    override fun getGuild(id: Long): Guild? {
-        // TODO: Add once all issues are fixed
-        return null
+    override fun getGuild(id: String): Guild? {
+        return cache[id, CacheType.GUILD] as Guild?
     }
 
     override fun getGuilds(): List<Guild> {
-        return cache.values().filterIsInstance<Guild>()
+        return cache.values(CacheType.GUILD).map { it as Guild }
     }
 
     override val restApiManager: RestApiManager

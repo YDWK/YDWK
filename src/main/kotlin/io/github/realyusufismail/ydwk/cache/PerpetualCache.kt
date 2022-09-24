@@ -41,6 +41,7 @@ open class PerpetualCache : Cache {
         when (cacheType) {
             CacheType.GUILD -> {
                 if (value is Guild) {
+                    println("Setting guild ${value.id} to cache, with key $key + guild")
                     cache[key + "guild"] = value
                 } else {
                     throw CacheException("Cache type is Guild but value is not a Guild")
@@ -225,7 +226,57 @@ open class PerpetualCache : Cache {
         cache.clear()
     }
 
-    override fun values(): MutableCollection<Any> {
-        return cache.values
+    override fun values(cacheType: CacheType): List<Any> {
+        val values = ArrayList<Any>()
+        when (cacheType) {
+            CacheType.GUILD -> {
+                cache.forEach { (key, value) ->
+                    if (key.endsWith("guild")) {
+                        values.add(value)
+                    }
+                }
+            }
+            CacheType.USER -> {
+                cache.forEach { (key, value) ->
+                    if (key.endsWith("user")) {
+                        values.add(value)
+                    }
+                }
+            }
+            CacheType.ROLE -> {
+                cache.forEach { (key, value) ->
+                    if (key.endsWith("role")) {
+                        values.add(value)
+                    }
+                }
+            }
+            CacheType.MEMBER -> {
+                cache.forEach { (_, value) -> values.add(value) }
+            }
+            CacheType.EMOJI -> {
+                cache.forEach { (key, value) ->
+                    if (key.endsWith("emoji")) {
+                        values.add(value)
+                    }
+                }
+            }
+            CacheType.CHANNEL -> {
+                TODO()
+            }
+            CacheType.MESSAGE -> {
+                TODO()
+            }
+            CacheType.VOICE_STATE -> {
+                TODO()
+            }
+            CacheType.STICKER -> {
+                cache.forEach { (key, value) ->
+                    if (key.endsWith("sticker")) {
+                        values.add(value)
+                    }
+                }
+            }
+        }
+        return values
     }
 }
