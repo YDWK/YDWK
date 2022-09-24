@@ -97,41 +97,37 @@ open class PerpetualCache : Cache {
     }
 
     override fun get(key: String, cacheType: CacheType): Any? {
-        if (cache.containsKey(key)) {
-            when (cacheType) {
-                CacheType.GUILD -> {
-                    return cache[key + "guild"]
-                }
-                CacheType.USER -> {
-                    return cache[key + "user"]
-                }
-                CacheType.ROLE -> {
-                    return cache[key + "role"]
-                }
-                CacheType.MEMBER -> {
-                    return cache[key]
-                }
-                CacheType.EMOJI -> {
-                    return cache[key + "emoji"]
-                }
-                CacheType.CHANNEL -> {
-                    return cache[key + "channel"]
-                }
-                CacheType.MESSAGE -> {
-                    return cache[key + "message"]
-                }
-                CacheType.VOICE_STATE -> {
-                    return cache[key + "voiceState"]
-                }
-                CacheType.PRESENCE -> {
-                    return cache[key + "presence"]
-                }
-                CacheType.STICKER -> {
-                    return cache[key + "sticker"]
-                }
+        when (cacheType) {
+            CacheType.GUILD -> {
+                return cache[key + "guild"]
             }
-        } else {
-            throw CacheException("Cache does not contain key: $key")
+            CacheType.USER -> {
+                return cache[key + "user"]
+            }
+            CacheType.ROLE -> {
+                return cache[key + "role"]
+            }
+            CacheType.MEMBER -> {
+                return cache[key]
+            }
+            CacheType.EMOJI -> {
+                return cache[key + "emoji"]
+            }
+            CacheType.CHANNEL -> {
+                return cache[key + "channel"]
+            }
+            CacheType.MESSAGE -> {
+                return cache[key + "message"]
+            }
+            CacheType.VOICE_STATE -> {
+                return cache[key + "voiceState"]
+            }
+            CacheType.PRESENCE -> {
+                return cache[key + "presence"]
+            }
+            CacheType.STICKER -> {
+                return cache[key + "sticker"]
+            }
         }
     }
 

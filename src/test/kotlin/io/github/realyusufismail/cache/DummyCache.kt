@@ -94,41 +94,37 @@ class DummyCache : Cache {
     }
 
     override fun get(key: String, cacheType: CacheType): Any? {
-        if (dummyMap.containsKey(key)) {
-            when (cacheType) {
-                CacheType.GUILD -> {
-                    return dummyMap[key + "guild"]
-                }
-                CacheType.USER -> {
-                    return dummyMap[key + "user"]
-                }
-                CacheType.ROLE -> {
-                    return dummyMap[key + "role"]
-                }
-                CacheType.MEMBER -> {
-                    return dummyMap[key]
-                }
-                CacheType.EMOJI -> {
-                    return dummyMap[key + "emoji"]
-                }
-                CacheType.CHANNEL -> {
-                    return dummyMap[key + "channel"]
-                }
-                CacheType.MESSAGE -> {
-                    return dummyMap[key + "message"]
-                }
-                CacheType.VOICE_STATE -> {
-                    return dummyMap[key + "voiceState"]
-                }
-                CacheType.PRESENCE -> {
-                    return dummyMap[key + "presence"]
-                }
-                CacheType.STICKER -> {
-                    return dummyMap[key + "sticker"]
-                }
+        when (cacheType) {
+            CacheType.GUILD -> {
+                return dummyMap[key + "guild"]
             }
-        } else {
-            throw CacheException("Cache does not contain key: $key")
+            CacheType.USER -> {
+                return dummyMap[key + "user"]
+            }
+            CacheType.ROLE -> {
+                return dummyMap[key + "role"]
+            }
+            CacheType.MEMBER -> {
+                return dummyMap[key]
+            }
+            CacheType.EMOJI -> {
+                return dummyMap[key + "emoji"]
+            }
+            CacheType.CHANNEL -> {
+                return dummyMap[key + "channel"]
+            }
+            CacheType.MESSAGE -> {
+                return dummyMap[key + "message"]
+            }
+            CacheType.VOICE_STATE -> {
+                return dummyMap[key + "voiceState"]
+            }
+            CacheType.PRESENCE -> {
+                return dummyMap[key + "presence"]
+            }
+            CacheType.STICKER -> {
+                return dummyMap[key + "sticker"]
+            }
         }
     }
 
