@@ -83,9 +83,6 @@ open class PerpetualCache : Cache {
             CacheType.VOICE_STATE -> {
                 TODO()
             }
-            CacheType.PRESENCE -> {
-                TODO()
-            }
             CacheType.STICKER -> {
                 if (value is Sticker) {
                     cache[key + "sticker"] = value
@@ -99,34 +96,55 @@ open class PerpetualCache : Cache {
     override fun get(key: String, cacheType: CacheType): Any? {
         when (cacheType) {
             CacheType.GUILD -> {
-                return cache[key + "guild"]
+                return if (cache.containsKey(key + "guild")) {
+                    cache[key + "guild"]
+                } else {
+                    null
+                }
             }
             CacheType.USER -> {
-                return cache[key + "user"]
+                return if (cache.containsKey(key + "user")) {
+                    cache[key + "user"]
+                } else {
+                    null
+                }
             }
             CacheType.ROLE -> {
-                return cache[key + "role"]
+                return if (cache.containsKey(key + "role")) {
+                    cache[key + "role"]
+                } else {
+                    null
+                }
             }
             CacheType.MEMBER -> {
-                return cache[key]
+                return if (cache.containsKey(key)) {
+                    cache[key]
+                } else {
+                    null
+                }
             }
             CacheType.EMOJI -> {
-                return cache[key + "emoji"]
+                return if (cache.containsKey(key + "emoji")) {
+                    cache[key + "emoji"]
+                } else {
+                    null
+                }
             }
             CacheType.CHANNEL -> {
-                return cache[key + "channel"]
+                TODO()
             }
             CacheType.MESSAGE -> {
-                return cache[key + "message"]
+                TODO()
             }
             CacheType.VOICE_STATE -> {
-                return cache[key + "voiceState"]
-            }
-            CacheType.PRESENCE -> {
-                return cache[key + "presence"]
+                TODO()
             }
             CacheType.STICKER -> {
-                return cache[key + "sticker"]
+                return if (cache.containsKey(key + "sticker")) {
+                    cache[key + "sticker"]
+                } else {
+                    null
+                }
             }
         }
     }
@@ -157,9 +175,6 @@ open class PerpetualCache : Cache {
                 }
                 CacheType.VOICE_STATE -> {
                     return cache.remove(key + "voiceState")
-                }
-                CacheType.PRESENCE -> {
-                    return cache.remove(key + "presence")
                 }
                 CacheType.STICKER -> {
                     return cache.remove(key + "sticker")
@@ -199,9 +214,6 @@ open class PerpetualCache : Cache {
             }
             CacheType.VOICE_STATE -> {
                 return cache.containsKey(key + "voiceState")
-            }
-            CacheType.PRESENCE -> {
-                return cache.containsKey(key + "presence")
             }
             CacheType.STICKER -> {
                 return cache.containsKey(key + "sticker")

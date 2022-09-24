@@ -80,9 +80,6 @@ class DummyCache : Cache {
             CacheType.VOICE_STATE -> {
                 TODO()
             }
-            CacheType.PRESENCE -> {
-                TODO()
-            }
             CacheType.STICKER -> {
                 if (value is Sticker) {
                     dummyMap[key + "sticker"] = value
@@ -119,9 +116,6 @@ class DummyCache : Cache {
             CacheType.VOICE_STATE -> {
                 return dummyMap[key + "voiceState"]
             }
-            CacheType.PRESENCE -> {
-                return dummyMap[key + "presence"]
-            }
             CacheType.STICKER -> {
                 return dummyMap[key + "sticker"]
             }
@@ -154,9 +148,6 @@ class DummyCache : Cache {
                 }
                 CacheType.VOICE_STATE -> {
                     return dummyMap.remove(key + "voiceState")
-                }
-                CacheType.PRESENCE -> {
-                    return dummyMap.remove(key + "presence")
                 }
                 CacheType.STICKER -> {
                     return dummyMap.remove(key + "sticker")
@@ -196,9 +187,6 @@ class DummyCache : Cache {
             }
             CacheType.VOICE_STATE -> {
                 return dummyMap.containsKey(key + "voiceState")
-            }
-            CacheType.PRESENCE -> {
-                return dummyMap.containsKey(key + "presence")
             }
             CacheType.STICKER -> {
                 return dummyMap.containsKey(key + "sticker")

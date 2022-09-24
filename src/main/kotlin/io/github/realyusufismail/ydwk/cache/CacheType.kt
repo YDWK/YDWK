@@ -27,8 +27,7 @@ enum class CacheType {
     MESSAGE,
     STICKER,
     VOICE_STATE,
-    MEMBER,
-    PRESENCE;
+    MEMBER;
 
     companion object {
         /** Get the [CacheType] from a [String] type. */
