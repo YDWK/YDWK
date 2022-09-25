@@ -19,6 +19,7 @@
 package io.github.realyusufismail.ydwk.impl.handler.handlers.guild
 
 import com.fasterxml.jackson.databind.JsonNode
+import io.github.realyusufismail.ydwk.cache.CacheType
 import io.github.realyusufismail.ydwk.entities.Emoji
 import io.github.realyusufismail.ydwk.entities.Guild
 import io.github.realyusufismail.ydwk.entities.Sticker
@@ -36,32 +37,32 @@ class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override fun start() {
         val guild: Guild = GuildImpl(ydwk, json, json["id"].asLong())
 
-        if (ydwk.cache.contains(guild.idAsLong)) {
+        if (ydwk.cache.contains(guild.id, CacheType.GUILD)) {
             ydwk.logger.warn(
                 "Guild with id ${guild.idAsLong} already exists in cache, will replace it")
-            ydwk.cache.remove(guild.idAsLong)
+            ydwk.cache.remove(guild.id, CacheType.GUILD)
         }
 
-        ydwk.cache[guild.idAsLong] = guild
+        ydwk.cache[guild.id, guild] = CacheType.GUILD
 
         val members: ArrayList<Member> = ArrayList()
         json["members"].forEach { member -> members.add(MemberImpl(ydwk, member, guild)) }
 
         members.forEach { member ->
-            member.user?.let { ydwk.memberCache[it.idAsLong, member.guild.idAsLong] = member }
+            member.user?.let { ydwk.memberCache[it.id, member.guild.id] = member }
         }
 
         val roles = ArrayList<Role>()
         json["roles"].forEach { role -> roles.add(RoleImpl(ydwk, role, role.get("id").asLong())) }
 
-        roles.forEach { role -> ydwk.cache[role.idAsLong] = role }
+        roles.forEach { role -> ydwk.cache[role.id, role] = CacheType.ROLE }
 
         val emojis = ArrayList<Emoji>()
         json["emojis"].forEach { emoji -> emojis.add(EmojiImpl(ydwk, emoji)) }
 
         emojis.forEach { emoji ->
             if (emoji.idLong != null) {
-                ydwk.cache[emoji.idLong!!] = emoji
+                ydwk.cache[emoji.id!!, emoji] = CacheType.EMOJI
             }
         }
 
@@ -70,6 +71,6 @@ class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
             stickers.add(StickerImpl(ydwk, sticker, sticker["id"].asLong()))
         }
 
-        stickers.forEach { sticker -> ydwk.cache[sticker.idAsLong] = sticker }
+        stickers.forEach { sticker -> ydwk.cache[sticker.id, sticker] = CacheType.STICKER }
     }
 }

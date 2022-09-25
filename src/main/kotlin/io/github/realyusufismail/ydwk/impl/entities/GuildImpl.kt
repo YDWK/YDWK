@@ -23,7 +23,9 @@ import io.github.realyusufismail.ydwk.YDWK
 import io.github.realyusufismail.ydwk.entities.Emoji
 import io.github.realyusufismail.ydwk.entities.Guild
 import io.github.realyusufismail.ydwk.entities.Sticker
-import io.github.realyusufismail.ydwk.entities.guild.*
+import io.github.realyusufismail.ydwk.entities.guild.Ban
+import io.github.realyusufismail.ydwk.entities.guild.Role
+import io.github.realyusufismail.ydwk.entities.guild.WelcomeScreen
 import io.github.realyusufismail.ydwk.entities.guild.enums.*
 import io.github.realyusufismail.ydwk.impl.entities.guild.BanImpl
 import io.github.realyusufismail.ydwk.impl.entities.guild.RoleImpl

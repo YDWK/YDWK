@@ -18,7 +18,9 @@
  */ 
 package io.github.realyusufismail.ydwk.entities
 
-import io.github.realyusufismail.ydwk.entities.guild.*
+import io.github.realyusufismail.ydwk.entities.guild.Ban
+import io.github.realyusufismail.ydwk.entities.guild.Role
+import io.github.realyusufismail.ydwk.entities.guild.WelcomeScreen
 import io.github.realyusufismail.ydwk.entities.guild.enums.*
 import io.github.realyusufismail.ydwk.entities.util.GenericEntity
 import io.github.realyusufismail.ydwk.util.GetterSnowFlake

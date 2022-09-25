@@ -19,10 +19,8 @@
 package io.github.realyusufismail.ydwk.cache
 
 import io.github.realyusufismail.ydwk.cache.exception.CacheException
-import io.github.realyusufismail.ydwk.entities.Emoji
-import io.github.realyusufismail.ydwk.entities.Guild
-import io.github.realyusufismail.ydwk.entities.Sticker
-import io.github.realyusufismail.ydwk.entities.User
+import io.github.realyusufismail.ydwk.entities.*
+import io.github.realyusufismail.ydwk.entities.application.PartialApplication
 import io.github.realyusufismail.ydwk.entities.guild.Member
 import io.github.realyusufismail.ydwk.entities.guild.Role
 
@@ -41,7 +39,7 @@ open class PerpetualCache : Cache {
         when (cacheType) {
             CacheType.GUILD -> {
                 if (value is Guild) {
-                    println("Setting guild ${value.id} to cache, with key $key + guild")
+                    // println("Setting guild ${value.id} to cache, with key $key + guild")
                     cache[key + "guild"] = value
                 } else {
                     throw CacheException("Cache type is Guild but value is not a Guild")
@@ -72,7 +70,7 @@ open class PerpetualCache : Cache {
                 if (value is Emoji) {
                     cache[key + "emoji"] = value
                 } else {
-                    throw CacheException("Cache type is Emoji but value is not a Emoji")
+                    throw CacheException("Cache type is Emoji but value is not an Emoji")
                 }
             }
             CacheType.CHANNEL -> {
@@ -89,6 +87,14 @@ open class PerpetualCache : Cache {
                     cache[key + "sticker"] = value
                 } else {
                     throw CacheException("Cache type is Sticker but value is not a Sticker")
+                }
+            }
+            CacheType.APPLICATION -> {
+                if (value is Application || value is PartialApplication) {
+                    cache[key + "application"] = value
+                } else {
+                    throw CacheException(
+                        "Cache type is Application but value is not an Application")
                 }
             }
         }
@@ -147,6 +153,13 @@ open class PerpetualCache : Cache {
                     null
                 }
             }
+            CacheType.APPLICATION -> {
+                return if (cache.containsKey(key + "application")) {
+                    cache[key + "application"]
+                } else {
+                    null
+                }
+            }
         }
     }
 
@@ -179,6 +192,9 @@ open class PerpetualCache : Cache {
                 }
                 CacheType.STICKER -> {
                     return cache.remove(key + "sticker")
+                }
+                CacheType.APPLICATION -> {
+                    return cache.remove(key + "application")
                 }
             }
         } else {
@@ -218,6 +234,9 @@ open class PerpetualCache : Cache {
             }
             CacheType.STICKER -> {
                 return cache.containsKey(key + "sticker")
+            }
+            CacheType.APPLICATION -> {
+                return cache.containsKey(key + "application")
             }
         }
     }
@@ -272,6 +291,13 @@ open class PerpetualCache : Cache {
             CacheType.STICKER -> {
                 cache.forEach { (key, value) ->
                     if (key.endsWith("sticker")) {
+                        values.add(value)
+                    }
+                }
+            }
+            CacheType.APPLICATION -> {
+                cache.forEach { (key, value) ->
+                    if (key.endsWith("application")) {
                         values.add(value)
                     }
                 }

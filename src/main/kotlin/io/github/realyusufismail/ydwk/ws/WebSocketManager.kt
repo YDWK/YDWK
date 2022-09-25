@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.neovisionaries.ws.client.*
 import io.github.realyusufismail.ydwk.YDWKInfo
+import io.github.realyusufismail.ydwk.cache.CacheType
 import io.github.realyusufismail.ydwk.event.events.ReadyEvent
 import io.github.realyusufismail.ydwk.impl.YDWKImpl
 import io.github.realyusufismail.ydwk.impl.entities.BotImpl
@@ -133,7 +134,7 @@ open class WebSocketManager(
     private fun handleMessage(message: String) {
         try {
             val payload = ydwk.objectMapper.readTree(message)
-            logger.info("Received payload: ${payload.toPrettyString()}")
+            // logger.info("Received payload: ${payload.toPrettyString()}")
             onEvent(payload)
         } catch (e: Exception) {
             logger.error("Error while handling message", e)
@@ -352,13 +353,14 @@ open class WebSocketManager(
 
                 val bot = BotImpl(d.get("user"), d.get("user").get("id").asLong(), ydwk)
                 ydwk.bot = bot
-                ydwk.cache[d.get("user").get("id").asLong()] = bot
+                ydwk.cache[d.get("user").get("id").asText(), bot] = CacheType.USER
 
                 val partialApplication =
                     PartialApplicationImpl(
                         d.get("application"), d.get("application").get("id").asLong(), ydwk)
                 ydwk.partialApplication = partialApplication
-                ydwk.cache[d.get("application").get("id").asLong()] = partialApplication
+                ydwk.cache[d.get("application").get("id").asText(), partialApplication] =
+                    CacheType.APPLICATION
 
                 val guilds: ArrayNode = d.get("guilds") as ArrayNode
 

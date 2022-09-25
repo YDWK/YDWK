@@ -87,6 +87,9 @@ class DummyCache : Cache {
                     throw CacheException("Cache type is Sticker but value is not a Sticker")
                 }
             }
+            CacheType.APPLICATION -> {
+                TODO()
+            }
         }
     }
 
@@ -118,6 +121,9 @@ class DummyCache : Cache {
             }
             CacheType.STICKER -> {
                 return dummyMap[key + "sticker"]
+            }
+            CacheType.APPLICATION -> {
+                return dummyMap[key + "application"]
             }
         }
     }
@@ -151,6 +157,9 @@ class DummyCache : Cache {
                 }
                 CacheType.STICKER -> {
                     return dummyMap.remove(key + "sticker")
+                }
+                CacheType.APPLICATION -> {
+                    return dummyMap.remove(key + "application")
                 }
             }
         } else {
@@ -190,6 +199,9 @@ class DummyCache : Cache {
             }
             CacheType.STICKER -> {
                 return dummyMap.containsKey(key + "sticker")
+            }
+            CacheType.APPLICATION -> {
+                return dummyMap.containsKey(key + "application")
             }
         }
     }
@@ -260,6 +272,13 @@ class DummyCache : Cache {
             CacheType.STICKER -> {
                 dummyMap.forEach { (key, value) ->
                     if (key.endsWith("sticker")) {
+                        list.add(value)
+                    }
+                }
+            }
+            CacheType.APPLICATION -> {
+                dummyMap.forEach { (key, value) ->
+                    if (key.endsWith("application")) {
                         list.add(value)
                     }
                 }

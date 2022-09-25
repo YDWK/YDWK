@@ -19,6 +19,7 @@
 package io.github.realyusufismail.ydwk.impl.handler.handlers.guild
 
 import com.fasterxml.jackson.databind.JsonNode
+import io.github.realyusufismail.ydwk.cache.CacheType
 import io.github.realyusufismail.ydwk.entities.Guild
 import io.github.realyusufismail.ydwk.impl.YDWKImpl
 import io.github.realyusufismail.ydwk.impl.entities.GuildImpl
@@ -28,16 +29,16 @@ import io.github.realyusufismail.ydwk.impl.handler.Handler
 class GuildDeleteHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override fun start() {
         val unavailableGuild = UnavailableGuildImpl(ydwk, json, json.get("id").asLong())
-        val guild: Guild = ydwk.cache[unavailableGuild.idAsLong] as GuildImpl
-        guild.roles.forEach { role -> ydwk.cache.remove(role.idAsLong) }
+        val guild: Guild = ydwk.cache[unavailableGuild.id, CacheType.GUILD] as GuildImpl
+        guild.roles.forEach { role -> ydwk.cache.remove(role.id, CacheType.ROLE) }
         guild.emojis.forEach { emoji ->
             run {
                 if (emoji.idLong != null) {
-                    ydwk.cache.remove(emoji.idLong!!)
+                    ydwk.cache.remove(emoji.id!!, CacheType.EMOJI)
                 }
             }
         }
-        guild.stickers.forEach { sticker -> ydwk.cache.remove(sticker.idAsLong) }
-        ydwk.cache.remove(guild.idAsLong)
+        guild.stickers.forEach { sticker -> ydwk.cache.remove(sticker.id, CacheType.STICKER) }
+        ydwk.cache.remove(guild.id, CacheType.GUILD)
     }
 }
