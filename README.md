@@ -19,10 +19,10 @@ You might ask why should i use this wrapper when there is already a kotlin wrapp
 
 ## Future Features
 - [ ] Handle slash commands
-- [ ] Handle Rest API
 - [ ] Handle sending events
 
 ## Implemented
+- [x] Handle Rest API
 - [x] Connect to gateway
 - [x] Parse json
 - [x] Handle all op codes
