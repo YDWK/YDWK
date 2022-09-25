@@ -24,6 +24,7 @@ import io.github.realyusufismail.ydwk.entities.Application
 import io.github.realyusufismail.ydwk.entities.Bot
 import io.github.realyusufismail.ydwk.entities.Guild
 import io.github.realyusufismail.ydwk.entities.application.PartialApplication
+import io.github.realyusufismail.ydwk.event.recieve.CoroutineEventListener
 import io.github.realyusufismail.ydwk.event.recieve.IEventReceiver
 import io.github.realyusufismail.ydwk.rest.RestApiManager
 import io.github.realyusufismail.ydwk.ws.WebSocketManager
@@ -59,10 +60,10 @@ interface YDWK {
     val eventReceiver: IEventReceiver
 
     /** Used to add an event listener. */
-    fun addEvent(vararg eventAdapters: Any)
+    fun addEvent(vararg eventAdapters: CoroutineEventListener)
 
     /** Used to remove an event listener. */
-    fun removeEvent(vararg eventAdapters: Any)
+    fun removeEvent(vararg eventAdapters: CoroutineEventListener)
 
     /** Used to shut down the websocket manager */
     fun shutdown()

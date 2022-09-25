@@ -28,13 +28,15 @@ import io.github.realyusufismail.ydwk.entities.Bot
 import io.github.realyusufismail.ydwk.entities.Guild
 import io.github.realyusufismail.ydwk.entities.application.PartialApplication
 import io.github.realyusufismail.ydwk.event.Event
-import io.github.realyusufismail.ydwk.event.recieve.IEventReceiver
+import io.github.realyusufismail.ydwk.event.recieve.CoroutineEventListener
 import io.github.realyusufismail.ydwk.event.recieve.CoroutineEventReceiver
+import io.github.realyusufismail.ydwk.event.recieve.IEventReceiver
 import io.github.realyusufismail.ydwk.rest.RestApiManager
 import io.github.realyusufismail.ydwk.rest.impl.RestApiManagerImpl
 import io.github.realyusufismail.ydwk.ws.WebSocketManager
 import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
 import io.github.realyusufismail.ydwk.ws.util.LoggedIn
+import kotlinx.coroutines.awaitAll
 import okhttp3.OkHttpClient
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -152,16 +154,15 @@ class YDWKImpl(private val client: OkHttpClient?) : YDWK {
     override val eventReceiver: IEventReceiver
         get() = CoroutineEventReceiver()
 
-    override fun addEvent(vararg eventAdapters: Any) {
-        eventReceiver.addEventReceiver(eventAdapters)
+    override fun addEvent(vararg eventAdapters: CoroutineEventListener) {
+        eventAdapters.forEach { eventReceiver.addEventReceiver(it) }
     }
 
-    override fun removeEvent(vararg eventAdapters: Any) {
-        eventReceiver.removeEventReceiver(eventAdapters)
+    override fun removeEvent(vararg eventAdapters: CoroutineEventListener) {
+        eventAdapters.forEach { eventReceiver.removeEventReceiver(it) }
     }
 
     fun handleEvent(event: Event) {
-        println(event)
         eventReceiver.handleEvent(event)
     }
 

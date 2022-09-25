@@ -19,15 +19,6 @@
 package io.github.realyusufismail.ydwk.util
 
 interface SnowFlake {
-
-    fun of(string: String): SnowFlake {
-        return SnowFlakeReg(string.toLong())
-    }
-
-    fun of(id: Long): SnowFlake {
-        return SnowFlakeReg(id)
-    }
-
     /** @return The id of an object as a string */
     val id: String
         get() = idAsLong.toString()
@@ -35,5 +26,3 @@ interface SnowFlake {
     /** @return The id of an object as a long */
     val idAsLong: Long
 }
-
-internal class SnowFlakeReg(override val idAsLong: Long) : SnowFlake

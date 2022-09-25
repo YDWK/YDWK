@@ -27,5 +27,6 @@ inline fun <reified T : Event> YDWK.on(
     timeout: Duration? = null,
     crossinline consumer: suspend CoroutineEventListener.(T) -> Unit
 ): CoroutineEventListener {
+    println("Registering event listener for ${T::class.simpleName}")
     return (eventReceiver as CoroutineEventReceiver).onEvent(timeout, consumer)
 }

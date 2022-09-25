@@ -19,11 +19,9 @@
 package io.github.realyusufismail.ydwk.event.recieve
 
 import io.github.realyusufismail.ydwk.event.Event
+import java.util.concurrent.CopyOnWriteArrayList
 import kotlin.time.Duration
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withTimeoutOrNull
+import kotlinx.coroutines.*
 import org.slf4j.Logger
 
 fun getDefaultScope() = CoroutineScope(Dispatchers.Default)
@@ -32,8 +30,9 @@ open class CoroutineEventReceiver(
     private val scope: CoroutineScope = getDefaultScope(),
     private var timeout: Duration = Duration.INFINITE
 ) : IEventReceiver, CoroutineScope by scope {
-    private val events = mutableListOf<CoroutineEventListener>()
-    private val logger: Logger = org.slf4j.LoggerFactory.getLogger(CoroutineEventReceiver::class.java)
+    private val events = CopyOnWriteArrayList<CoroutineEventListener>()
+    private val logger: Logger =
+        org.slf4j.LoggerFactory.getLogger(CoroutineEventReceiver::class.java)
 
     protected fun timeout(event: Any) =
         when {
@@ -43,22 +42,23 @@ open class CoroutineEventReceiver(
         }
 
     override fun handleEvent(event: Event) {
+        println("Handling event $event")
         launch {
-            println("events = ${events.size}")
-            for (listener in events) {
+            events.forEach { listener ->
                 try {
                     val timeout = timeout(listener)
                     if (timeout.isPositive() && timeout.isFinite()) {
                         val result =
                             withTimeoutOrNull(timeout.inWholeMilliseconds) {
-                                runEvent(listener, event)
+                                listener.onEvent(event)
                             }
 
                         if (result == null) {
-                            logger.warn("Event ${event::class.simpleName} timed out after $timeout")
+                            logger.warn(
+                                "Event ${event::class.simpleName} timed out after $timeout")
                         }
                     } else {
-                        runEvent(listener, event)
+                        listener.onEvent(event)
                     }
                 } catch (e: Exception) {
                     logger.error("Error while handling event ${event::class.simpleName}", e)
@@ -67,30 +67,22 @@ open class CoroutineEventReceiver(
         }
     }
 
-    private suspend fun runEvent(listener: Any, event: Event) =
-        when (listener) {
-            is CoroutineEventListener ->  listener.onEvent(event)
-            else -> Unit
-        }
-
     override fun addEventReceiver(eventReceiver: Any) {
-        events.add(
-            when (eventReceiver) {
-                is CoroutineEventListener -> eventReceiver
-                else ->
-                    throw IllegalArgumentException(
-                        "Event receiver must be an instance of IEvent or CoroutineEventListener")
-            })
+        if (eventReceiver is CoroutineEventListener) {
+            events.add(eventReceiver)
+        } else {
+            throw IllegalArgumentException(
+                "Event receiver ${eventReceiver::class.simpleName} is not a CoroutineEventListener")
+        }
     }
 
     override fun removeEventReceiver(eventReceiver: Any) {
-        events.remove(
-            when (eventReceiver) {
-                is CoroutineEventListener -> eventReceiver
-                else ->
-                    throw IllegalArgumentException(
-                        "Event receiver must be an instance of IEvent or CoroutineEventListener")
-            })
+        if (eventReceiver is CoroutineEventListener) {
+            events.remove(eventReceiver)
+        } else {
+            throw IllegalArgumentException(
+                "Event receiver ${eventReceiver::class.simpleName} is not a CoroutineEventListener")
+        }
     }
 
     inline fun <reified T : Event> onEvent(
@@ -107,6 +99,7 @@ open class CoroutineEventReceiver(
                 }
 
                 override suspend fun onEvent(event: Event) {
+                    println("Event ${event::class.simpleName} received")
                     if (event is T) consumer(event)
                 }
             }
