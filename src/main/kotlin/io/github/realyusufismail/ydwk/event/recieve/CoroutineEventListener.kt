@@ -20,6 +20,19 @@ package io.github.realyusufismail.ydwk.event.recieve
 
 import io.github.realyusufismail.ydwk.event.Event
 
-fun interface IEvent {
-    fun onEvent(event: Event)
+interface CoroutineEventListener {
+    /**
+     * The event that will be called when the coroutine is cancelled.
+     *
+     * @param event The event that will be called when the coroutine is cancelled.
+     * @return The event that will be called when the coroutine is cancelled.
+     */
+    suspend fun onEvent(event: Event)
+
+    /** Used to set a timeout for the coroutine. */
+    val eventTimeout: EventTimeout
+        get() = EventTimeout.ZERO
+
+    /** Used to cancel the event */
+    fun cancelEvent()
 }

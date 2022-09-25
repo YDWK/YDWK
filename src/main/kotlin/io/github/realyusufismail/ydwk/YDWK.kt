@@ -95,9 +95,3 @@ interface YDWK {
      */
     val restApiManager: RestApiManager
 }
-
-/**
- * inline fun <reified EventClass : Event> YDWK.onEvent( crossinline block: suspend
- * ICoroutineEvent.(EventClass) -> Unit ): ICoroutineEvent { return (eventReceiver as
- * CoroutineEvent).onEvent(block) }
- */

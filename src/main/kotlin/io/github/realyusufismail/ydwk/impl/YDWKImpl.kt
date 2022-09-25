@@ -28,8 +28,8 @@ import io.github.realyusufismail.ydwk.entities.Bot
 import io.github.realyusufismail.ydwk.entities.Guild
 import io.github.realyusufismail.ydwk.entities.application.PartialApplication
 import io.github.realyusufismail.ydwk.event.Event
-import io.github.realyusufismail.ydwk.event.recieve.EventReceiver
 import io.github.realyusufismail.ydwk.event.recieve.IEventReceiver
+import io.github.realyusufismail.ydwk.event.recieve.CoroutineEventReceiver
 import io.github.realyusufismail.ydwk.rest.RestApiManager
 import io.github.realyusufismail.ydwk.rest.impl.RestApiManagerImpl
 import io.github.realyusufismail.ydwk.ws.WebSocketManager
@@ -150,7 +150,7 @@ class YDWKImpl(private val client: OkHttpClient?) : YDWK {
         }
 
     override val eventReceiver: IEventReceiver
-        get() = EventReceiver()
+        get() = CoroutineEventReceiver()
 
     override fun addEvent(vararg eventAdapters: Any) {
         eventReceiver.addEventReceiver(eventAdapters)
@@ -161,6 +161,7 @@ class YDWKImpl(private val client: OkHttpClient?) : YDWK {
     }
 
     fun handleEvent(event: Event) {
+        println(event)
         eventReceiver.handleEvent(event)
     }
 
