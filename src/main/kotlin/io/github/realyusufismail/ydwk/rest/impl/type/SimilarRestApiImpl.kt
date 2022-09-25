@@ -18,12 +18,16 @@
  */ 
 package io.github.realyusufismail.ydwk.rest.impl.type
 
+import com.fasterxml.jackson.databind.JsonNode
+import io.github.realyusufismail.ydwk.impl.YDWKImpl
 import io.github.realyusufismail.ydwk.rest.type.SimilarRestApi
-import okhttp3.CacheControl
-import okhttp3.Headers
-import okhttp3.Request
+import okhttp3.*
 
-open class SimilarRestApiImpl(private val builder: Request.Builder) : SimilarRestApi {
+open class SimilarRestApiImpl(
+    private val ydwk: YDWKImpl,
+    private val builder: Request.Builder,
+    private val client: OkHttpClient
+) : SimilarRestApi {
     override fun header(name: String, value: String) {
         builder.header(name, value)
     }
@@ -43,4 +47,23 @@ open class SimilarRestApiImpl(private val builder: Request.Builder) : SimilarRes
     override fun cacheControl(cacheControl: CacheControl): Request.Builder {
         return builder.cacheControl(cacheControl)
     }
+
+    private var responseBody: ResponseBody? = null
+
+    override val execute: JsonNode
+        get() {
+            try {
+                val response = client.newCall(builder.build()).execute()
+                responseBody = response.body
+                if (response.isSuccessful) {
+                    return ydwk.objectMapper.readTree(responseBody!!.string())
+                } else {
+                    throw Exception("Error ${response.code} ${response.message}")
+                }
+            } catch (e: Exception) {
+                throw RuntimeException("Error while executing request", e)
+            } finally {
+                responseBody?.close()
+            }
+        }
 }

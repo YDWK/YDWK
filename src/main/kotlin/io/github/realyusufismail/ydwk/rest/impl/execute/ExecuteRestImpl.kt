@@ -21,12 +21,16 @@ package io.github.realyusufismail.ydwk.rest.impl.execute
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.realyusufismail.ydwk.impl.YDWKImpl
 import io.github.realyusufismail.ydwk.rest.execute.ExecuteRest
-import okhttp3.Response
+import okhttp3.ResponseBody
 
-class ExecuteRestImpl(private val ydwk: YDWKImpl, private val response: Response) : ExecuteRest {
+class ExecuteRestImpl(private val ydwk: YDWKImpl, private val response: ResponseBody) :
+    ExecuteRest {
 
     override val json: JsonNode
-        get() = ydwk.objectMapper.readTree(response.body.string())
+        get() {
+            println(response.string())
+            return ydwk.objectMapper.readTree(response.string())
+        }
 
     override val jsonAsString: String
         get() = json.toString()

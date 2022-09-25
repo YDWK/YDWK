@@ -24,7 +24,9 @@ enum class YDWKInfo(val url: String) {
     JSON_ENCODING("&encoding=json"),
     DISCORD_REST_URL("https://discord.com/api"),
     DISCORD_REST_VERSION("/v10"),
-    FULL_DISCORD_REST_URL(DISCORD_REST_URL.url + DISCORD_REST_VERSION.url);
+    FULL_DISCORD_REST_URL(DISCORD_REST_URL.url + DISCORD_REST_VERSION.url),
+    GITHUB_URL("https://github.com/RealYusufIsmail/YDWK"),
+    YDWK_VERSION("0.0.1");
 
     override fun toString(): String {
         return url

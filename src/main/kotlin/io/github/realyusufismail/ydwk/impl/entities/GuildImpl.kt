@@ -150,7 +150,7 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
 
     override val bans: List<Ban>
         get() =
-            ydwk.restApiManager.get(EndPoint.GuildEndpoint.GET_BANS).execute.json.map {
+            ydwk.restApiManager.get(EndPoint.GuildEndpoint.GET_BANS, id).execute.map {
                 BanImpl(ydwk, it)
             }
 

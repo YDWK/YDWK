@@ -44,6 +44,7 @@ class YDWKImpl(private val client: OkHttpClient?) : YDWK {
     val logger: Logger = LoggerFactory.getLogger(javaClass)
     val cache: Cache = PerpetualCache()
     val memberCache: MemberCache = MemberCacheImpl()
+    private var token: String? = null
 
     override val objectNode: ObjectNode
         get() = JsonNodeFactory.instance.objectNode()
@@ -68,10 +69,11 @@ class YDWKImpl(private val client: OkHttpClient?) : YDWK {
 
     override val restApiManager: RestApiManager
         get() {
+            val botToken = token ?: throw IllegalStateException("Bot token is not set")
             return if (client == null) {
-                RestApiManagerImpl(this, OkHttpClient())
+                RestApiManagerImpl(botToken, this, OkHttpClient())
             } else {
-                RestApiManagerImpl(this, client)
+                RestApiManagerImpl(botToken, this, client)
             }
         }
 
@@ -170,6 +172,7 @@ class YDWKImpl(private val client: OkHttpClient?) : YDWK {
      */
     fun setWebSocketManager(token: String, intents: List<GateWayIntent>) {
         this.webSocketManager = WebSocketManager(this, token, intents).connect()
+        this.token = token
     }
 
     /**

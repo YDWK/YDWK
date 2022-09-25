@@ -19,8 +19,6 @@
 package io.github.realyusufismail.ydwk.rest.impl.type
 
 import io.github.realyusufismail.ydwk.impl.YDWKImpl
-import io.github.realyusufismail.ydwk.rest.execute.ExecuteRest
-import io.github.realyusufismail.ydwk.rest.impl.execute.ExecuteRestImpl
 import io.github.realyusufismail.ydwk.rest.type.GetRestApi
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -29,12 +27,4 @@ class GetRestApiImpl(
     private val ydwk: YDWKImpl,
     private val client: OkHttpClient,
     private val builder: Request.Builder
-) : GetRestApi, SimilarRestApiImpl(builder) {
-
-    override val execute: ExecuteRest
-        get() {
-            client.newCall(builder.build()).execute().use { response ->
-                return ExecuteRestImpl(ydwk, response)
-            }
-        }
-}
+) : GetRestApi, SimilarRestApiImpl(ydwk, builder, client)

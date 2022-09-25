@@ -18,19 +18,24 @@
  */ 
 package io.github.realyusufismail.ydwk.rest.impl
 
+import io.github.realyusufismail.ydwk.YDWKInfo
 import io.github.realyusufismail.ydwk.impl.YDWKImpl
 import io.github.realyusufismail.ydwk.rest.EndPoint
 import io.github.realyusufismail.ydwk.rest.RestApiManager
 import io.github.realyusufismail.ydwk.rest.impl.type.*
 import io.github.realyusufismail.ydwk.rest.type.*
+import okhttp3.Headers
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
 
-class RestApiManagerImpl(private val ydwkImpl: YDWKImpl, private val client: OkHttpClient) :
-    RestApiManager {
+class RestApiManagerImpl(
+    private val token: String,
+    private val ydwkImpl: YDWKImpl,
+    private val client: OkHttpClient
+) : RestApiManager {
     override fun get(endPoint: EndPoint.IEnumEndpoint, vararg params: String): GetRestApi {
-        val builder = Request.Builder().url(getEndpoint(endPoint, *params)).get()
+        val builder = requestBuilder(endPoint, *params).get()
 
         return GetRestApiImpl(ydwkImpl, client, builder)
     }
@@ -40,7 +45,7 @@ class RestApiManagerImpl(private val ydwkImpl: YDWKImpl, private val client: OkH
         endPoint: EndPoint.IEnumEndpoint,
         vararg params: String
     ): PostRestApi {
-        val builder = Request.Builder().url(getEndpoint(endPoint, *params)).post(body)
+        val builder = requestBuilder(endPoint, *params).post(body)
         return PostRestApiImpl(ydwkImpl, client, builder)
     }
 
@@ -49,7 +54,7 @@ class RestApiManagerImpl(private val ydwkImpl: YDWKImpl, private val client: OkH
         endPoint: EndPoint.IEnumEndpoint,
         vararg params: String
     ): PutRestApi {
-        val builder = Request.Builder().url(getEndpoint(endPoint, *params)).put(body)
+        val builder = requestBuilder(endPoint, *params).put(body)
         return PutRestApiImpl(ydwkImpl, client, builder)
     }
 
@@ -58,7 +63,7 @@ class RestApiManagerImpl(private val ydwkImpl: YDWKImpl, private val client: OkH
         endPoint: EndPoint.IEnumEndpoint,
         vararg params: String
     ): DeleteRestApi {
-        val builder = Request.Builder().url(getEndpoint(endPoint, *params)).delete(body)
+        val builder = requestBuilder(endPoint, *params).delete(body)
         return DeleteRestApiImpl(ydwkImpl, client, builder)
     }
 
@@ -67,8 +72,15 @@ class RestApiManagerImpl(private val ydwkImpl: YDWKImpl, private val client: OkH
         endPoint: EndPoint.IEnumEndpoint,
         vararg params: String
     ): PatchRestApi {
-        val builder = Request.Builder().url(getEndpoint(endPoint, *params)).patch(body)
+        val builder = requestBuilder(endPoint, *params).patch(body)
         return PatchRestApiImpl(ydwkImpl, client, builder)
+    }
+
+    private fun requestBuilder(
+        endPoint: EndPoint.IEnumEndpoint,
+        vararg params: String
+    ): Request.Builder {
+        return Request.Builder().headers(requiredHeaders()).url(getEndpoint(endPoint, *params))
     }
 
     private fun getEndpoint(endPoint: EndPoint.IEnumEndpoint, vararg params: String): String {
@@ -85,5 +97,16 @@ class RestApiManagerImpl(private val ydwkImpl: YDWKImpl, private val client: OkH
                 endPoint.getFullEndpointWithParams(*params)
             }
         }
+    }
+
+    private fun requiredHeaders(): Headers {
+        return Headers.Builder()
+            .add("Content-Type", "application/json")
+            .add("Authorization", "Bot $token")
+            .add(
+                "user-agent",
+                "DiscordBot (" + YDWKInfo.GITHUB_URL + ", " + YDWKInfo.YDWK_VERSION + ")")
+            .add("accept-encoding", "json")
+            .build()
     }
 }

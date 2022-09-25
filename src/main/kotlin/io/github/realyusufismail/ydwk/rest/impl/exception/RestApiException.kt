@@ -16,23 +16,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.rest.type
+package io.github.realyusufismail.ydwk.rest.impl.exception
 
-import com.fasterxml.jackson.databind.JsonNode
-import okhttp3.CacheControl
-import okhttp3.Headers
-import okhttp3.Request
-
-interface SimilarRestApi {
-    fun header(name: String, value: String)
-
-    fun addHeader(name: String, value: String)
-
-    fun removeHeader(name: String)
-
-    fun headers(headers: Headers)
-
-    fun cacheControl(cacheControl: CacheControl): Request.Builder
-
-    val execute: JsonNode
+class RestApiException(val name: String) : RuntimeException(name) {
+    constructor(name: String, cause: Throwable) : this(name) {
+        initCause(cause)
+    }
 }

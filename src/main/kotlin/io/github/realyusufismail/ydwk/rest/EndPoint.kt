@@ -44,7 +44,7 @@ open class EndPoint {
          * @return the rest api url
          */
         fun getRestApiUrl(): String {
-            return YDWKInfo.DISCORD_REST_URL.url
+            return YDWKInfo.FULL_DISCORD_REST_URL.url
         }
 
         fun containsParam(): Boolean {

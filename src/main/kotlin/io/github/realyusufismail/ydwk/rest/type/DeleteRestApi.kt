@@ -18,8 +18,4 @@
  */ 
 package io.github.realyusufismail.ydwk.rest.type
 
-import io.github.realyusufismail.ydwk.rest.execute.ExecuteRest
-
-interface DeleteRestApi : SimilarRestApi {
-    val execute: ExecuteRest
-}
+interface DeleteRestApi : SimilarRestApi
