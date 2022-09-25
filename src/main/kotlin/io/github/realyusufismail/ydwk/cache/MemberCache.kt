@@ -28,7 +28,7 @@ interface MemberCache : Cache {
      * @param guildId The guild id of the member
      * @param value The value of the item
      */
-    operator fun set(userId: Long, guildId: Long, value: Member)
+    operator fun set(userId: String, guildId: String, value: Member)
 
     /**
      * Used to get an item from the cache
@@ -37,7 +37,7 @@ interface MemberCache : Cache {
      * @param guildId The guild id of the member
      * @return The value of the item
      */
-    operator fun get(userId: Long, guildId: Long): Any?
+    operator fun get(userId: String, guildId: String): Any?
 
     /**
      * Used to remove an item from the cache
@@ -45,5 +45,5 @@ interface MemberCache : Cache {
      * @param userId The user id of the member
      * @param guildId The guild id of the member
      */
-    fun remove(userId: Long, guildId: Long)
+    fun remove(userId: String, guildId: String)
 }

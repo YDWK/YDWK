@@ -29,7 +29,7 @@ interface Cache {
      * @param key The key of the item
      * @param value The value of the item
      */
-    operator fun set(key: Long, value: Any)
+    operator fun set(key: String, value: Any, cacheType: CacheType)
 
     /**
      * Used to get an item from the cache
@@ -37,25 +37,36 @@ interface Cache {
      * @param key The key of the item
      * @return The value of the item
      */
-    operator fun get(key: Long): Any?
+    operator fun get(key: String, cacheType: CacheType): Any?
 
     /**
      * Used to remove an item from the cache
      *
      * @param key The key of the item
+     * @return The value of the item
      */
-    fun remove(key: Long): Any?
+    fun remove(key: String, cacheType: CacheType): Any?
 
     /**
      * Used to check if this properties exists in the cache
      *
      * @param key The key of the item
+     * @return True if the item exists, false otherwise
      */
-    fun contains(key: Long): Boolean
+    fun contains(key: String): Boolean
+
+    /**
+     * Used to check if this properties exists in the cache and value exists
+     *
+     * @param key The key of the item
+     * @param cacheType The type of the item
+     * @return True if the item exists, false otherwise
+     */
+    fun contains(key: String, cacheType: CacheType): Boolean
 
     /** Used to clear the cache */
     fun clear()
 
     /** Used to get a list of objects in the cache */
-    fun values(): MutableCollection<Any>
+    fun values(cacheType: CacheType): List<Any>
 }

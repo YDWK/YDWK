@@ -60,5 +60,5 @@ interface Member : NameAbleEntity, GenericEntity {
     var permissions: String?
 
     /** Weather this user is timed out. */
-    var isTimedOut: Boolean
+    var timedOutUntil: String?
 }

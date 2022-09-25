@@ -18,7 +18,9 @@
  */ 
 package io.github.realyusufismail.ydwk.entities
 
-import io.github.realyusufismail.ydwk.entities.guild.*
+import io.github.realyusufismail.ydwk.entities.guild.Ban
+import io.github.realyusufismail.ydwk.entities.guild.Role
+import io.github.realyusufismail.ydwk.entities.guild.WelcomeScreen
 import io.github.realyusufismail.ydwk.entities.guild.enums.*
 import io.github.realyusufismail.ydwk.entities.util.GenericEntity
 import io.github.realyusufismail.ydwk.util.GetterSnowFlake
@@ -53,7 +55,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      *
      * @return true if the user is owner of the guild
      */
-    var isOwner: Boolean
+    var isOwner: Boolean?
 
     /**
      * Used to get the guild's owner id
@@ -88,7 +90,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      *
      * @return true if the guild's widget is enabled
      */
-    var isWidgetEnabled: Boolean
+    var isWidgetEnabled: Boolean?
 
     /**
      * Used to get the guild's widget channel id
@@ -292,5 +294,5 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      *
      * @return a list of ban's for the guild
      */
-    var bans: List<Ban>
+    val bans: List<Ban>
 }

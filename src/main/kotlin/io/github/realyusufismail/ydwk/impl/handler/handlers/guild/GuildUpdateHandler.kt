@@ -19,6 +19,7 @@
 package io.github.realyusufismail.ydwk.impl.handler.handlers.guild
 
 import com.fasterxml.jackson.databind.JsonNode
+import io.github.realyusufismail.ydwk.cache.CacheType
 import io.github.realyusufismail.ydwk.entities.guild.enums.*
 import io.github.realyusufismail.ydwk.impl.YDWKImpl
 import io.github.realyusufismail.ydwk.impl.entities.EmojiImpl
@@ -31,6 +32,11 @@ import java.util.*
 class GuildUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override fun start() {
         val guild = ydwk.getGuild(json["id"].asLong()) ?: return
+
+        if (!ydwk.cache.contains(guild.id, CacheType.GUILD)) {
+            ydwk.logger.warn("GuildUpdateHandler: Guild ${guild.id} is not cached, will add it")
+            ydwk.cache[guild.id, guild] = CacheType.GUILD
+        }
 
         val oldName = guild.name
         val oldIcon = guild.icon

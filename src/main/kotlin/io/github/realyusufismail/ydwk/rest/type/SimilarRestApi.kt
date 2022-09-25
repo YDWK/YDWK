@@ -16,23 +16,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.entities.guild
+package io.github.realyusufismail.ydwk.rest.type
 
-import io.github.realyusufismail.ydwk.entities.User
-import io.github.realyusufismail.ydwk.entities.util.GenericEntity
+import com.fasterxml.jackson.databind.JsonNode
+import okhttp3.CacheControl
+import okhttp3.Headers
+import okhttp3.Request
 
-interface Ban : GenericEntity {
-    /**
-     * The reason for the ban
-     *
-     * @return The reason for the ban
-     */
-    val reason: String?
+interface SimilarRestApi {
+    fun header(name: String, value: String)
 
-    /**
-     * The user who was banned
-     *
-     * @return The user who was banned
-     */
-    val user: User
+    fun addHeader(name: String, value: String)
+
+    fun removeHeader(name: String)
+
+    fun headers(headers: Headers)
+
+    fun cacheControl(cacheControl: CacheControl): Request.Builder
+
+    val execute: JsonNode
 }

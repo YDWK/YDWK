@@ -16,23 +16,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.entities.guild
+package io.github.realyusufismail.ydwk.cache
 
-import io.github.realyusufismail.ydwk.entities.User
-import io.github.realyusufismail.ydwk.entities.util.GenericEntity
+enum class CacheType {
+    GUILD,
+    USER,
+    CHANNEL,
+    ROLE,
+    EMOJI,
+    MESSAGE,
+    STICKER,
+    VOICE_STATE,
+    MEMBER,
+    APPLICATION;
 
-interface Ban : GenericEntity {
-    /**
-     * The reason for the ban
-     *
-     * @return The reason for the ban
-     */
-    val reason: String?
-
-    /**
-     * The user who was banned
-     *
-     * @return The user who was banned
-     */
-    val user: User
+    companion object {
+        /** Get the [CacheType] from a [String] type. */
+        fun fromString(string: String): CacheType? {
+            return values().firstOrNull { it.name.equals(string, true) }
+        }
+    }
 }

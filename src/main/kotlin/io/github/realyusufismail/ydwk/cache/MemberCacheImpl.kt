@@ -25,18 +25,18 @@ import io.github.realyusufismail.ydwk.entities.guild.Member
  * user ID
  */
 class MemberCacheImpl : MemberCache, PerpetualCache() {
-    override fun set(userId: Long, guildId: Long, value: Member) {
-        val memberId: Long = userId + guildId
-        this[memberId] = value
+    override fun set(userId: String, guildId: String, value: Member) {
+        val memberId: String = userId + guildId
+        this[memberId, value] = CacheType.MEMBER
     }
 
-    override fun get(userId: Long, guildId: Long): Any? {
-        val memberId: Long = userId + guildId
-        return this[memberId]
+    override fun get(userId: String, guildId: String): Any? {
+        val memberId: String = userId + guildId
+        return this[memberId, CacheType.MEMBER]
     }
 
-    override fun remove(userId: Long, guildId: Long) {
-        val memberId: Long = userId + guildId
-        this.remove(memberId)
+    override fun remove(userId: String, guildId: String) {
+        val memberId: String = userId + guildId
+        this.remove(memberId, CacheType.MEMBER)
     }
 }

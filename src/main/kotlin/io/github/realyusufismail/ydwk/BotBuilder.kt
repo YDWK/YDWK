@@ -20,6 +20,7 @@ package io.github.realyusufismail.ydwk
 
 import io.github.realyusufismail.ydwk.impl.YDWKImpl
 import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
+import okhttp3.OkHttpClient
 
 /**
  * Used to create a bot instance and used the default intents decided by YDWK.
@@ -27,7 +28,19 @@ import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
  * @param token Used to authenticate the bot.
  */
 fun createDefaultBot(token: String): YDWK {
-    val ydwk = YDWKImpl()
+    val ydwk = YDWKImpl(null)
+    ydwk.setWebSocketManager(token, GateWayIntent.getDefaultIntents())
+    return ydwk
+}
+
+/**
+ * Used to create a bot instance and used the default intents decided by YDWK.
+ *
+ * @param token Used to authenticate the bot.
+ * @param httpClient Used to create the websocket connection.
+ */
+fun createDefaultBot(token: String, httpClient: OkHttpClient): YDWK {
+    val ydwk = YDWKImpl(httpClient)
     ydwk.setWebSocketManager(token, GateWayIntent.getDefaultIntents())
     return ydwk
 }
@@ -39,7 +52,20 @@ fun createDefaultBot(token: String): YDWK {
  * @param intents The gateway intent which will decide what events are sent by discord.
  */
 fun createCustomBot(token: String, intents: List<GateWayIntent>): YDWK {
-    val ydwk = YDWKImpl()
+    val ydwk = YDWKImpl(null)
+    ydwk.setWebSocketManager(token, intents)
+    return ydwk
+}
+
+/**
+ * Used to create a bot instance.
+ *
+ * @param token Used to authenticate the bot.
+ * @param intents The gateway intent which will decide what events are sent by discord.
+ * @param httpClient Used to create the websocket connection.
+ */
+fun createCustomBot(token: String, intents: List<GateWayIntent>, httpClient: OkHttpClient): YDWK {
+    val ydwk = YDWKImpl(httpClient)
     ydwk.setWebSocketManager(token, intents)
     return ydwk
 }

@@ -23,12 +23,15 @@ import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.neovisionaries.ws.client.*
 import io.github.realyusufismail.ydwk.YDWKInfo
+import io.github.realyusufismail.ydwk.cache.CacheType
 import io.github.realyusufismail.ydwk.event.events.ReadyEvent
 import io.github.realyusufismail.ydwk.impl.YDWKImpl
 import io.github.realyusufismail.ydwk.impl.entities.BotImpl
 import io.github.realyusufismail.ydwk.impl.entities.application.PartialApplicationImpl
 import io.github.realyusufismail.ydwk.impl.handler.handlers.UserUpdateHandler
 import io.github.realyusufismail.ydwk.impl.handler.handlers.guild.GuildCreateHandler
+import io.github.realyusufismail.ydwk.impl.handler.handlers.guild.GuildDeleteHandler
+import io.github.realyusufismail.ydwk.impl.handler.handlers.guild.GuildUpdateHandler
 import io.github.realyusufismail.ydwk.ws.util.CloseCode
 import io.github.realyusufismail.ydwk.ws.util.EventNames
 import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
@@ -350,13 +353,14 @@ open class WebSocketManager(
 
                 val bot = BotImpl(d.get("user"), d.get("user").get("id").asLong(), ydwk)
                 ydwk.bot = bot
-                ydwk.cache[d.get("user").get("id").asLong()] = bot
+                ydwk.cache[d.get("user").get("id").asText(), bot] = CacheType.USER
 
                 val partialApplication =
                     PartialApplicationImpl(
                         d.get("application"), d.get("application").get("id").asLong(), ydwk)
                 ydwk.partialApplication = partialApplication
-                ydwk.cache[d.get("application").get("id").asLong()] = partialApplication
+                ydwk.cache[d.get("application").get("id").asText(), partialApplication] =
+                    CacheType.APPLICATION
 
                 val guilds: ArrayNode = d.get("guilds") as ArrayNode
 
@@ -390,8 +394,8 @@ open class WebSocketManager(
             EventNames.THREAD_LIST_SYNC -> TODO()
             EventNames.THREAD_MEMBERS_UPDATE -> TODO()
             EventNames.GUILD_CREATE -> GuildCreateHandler(ydwk, d).start()
-            EventNames.GUILD_UPDATE -> TODO()
-            EventNames.GUILD_DELETE -> TODO()
+            EventNames.GUILD_UPDATE -> GuildUpdateHandler(ydwk, d).start()
+            EventNames.GUILD_DELETE -> GuildDeleteHandler(ydwk, d).start()
             EventNames.GUILD_BAN_ADD -> TODO()
             EventNames.GUILD_BAN_REMOVE -> TODO()
             EventNames.GUILD_EMOJIS_UPDATE -> TODO()

@@ -16,23 +16,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.entities.guild
+package io.github.realyusufismail.ydwk.rest.impl.type
 
-import io.github.realyusufismail.ydwk.entities.User
-import io.github.realyusufismail.ydwk.entities.util.GenericEntity
+import io.github.realyusufismail.ydwk.impl.YDWKImpl
+import io.github.realyusufismail.ydwk.rest.type.PutRestApi
+import okhttp3.OkHttpClient
+import okhttp3.Request
 
-interface Ban : GenericEntity {
-    /**
-     * The reason for the ban
-     *
-     * @return The reason for the ban
-     */
-    val reason: String?
-
-    /**
-     * The user who was banned
-     *
-     * @return The user who was banned
-     */
-    val user: User
-}
+class PutRestApiImpl(
+    private val ydwk: YDWKImpl,
+    private val client: OkHttpClient,
+    private val builder: Request.Builder
+) : PutRestApi, SimilarRestApiImpl(ydwk, builder, client)

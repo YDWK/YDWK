@@ -51,7 +51,10 @@ class MemberImpl(override val ydwk: YDWK, override val json: JsonNode, override 
     override var permissions: String? =
         if (json.has("permissions")) json["permissions"].asText() else null
 
-    override var isTimedOut: Boolean = json["timed_out"].asBoolean()
+    override var timedOutUntil: String? =
+        if (json.has("communication_disabled_until"))
+            formatZonedDateTime(json["communication_disabled_until"].asText())
+        else null
 
-    override var name: String = json["name"].asText()
+    override var name: String = if (nick != null) nick!! else if (user != null) user!!.name else ""
 }

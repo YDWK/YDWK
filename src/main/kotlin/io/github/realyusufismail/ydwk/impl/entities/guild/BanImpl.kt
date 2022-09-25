@@ -16,23 +16,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.entities.guild
+package io.github.realyusufismail.ydwk.impl.entities.guild
 
+import com.fasterxml.jackson.databind.JsonNode
+import io.github.realyusufismail.ydwk.YDWK
 import io.github.realyusufismail.ydwk.entities.User
-import io.github.realyusufismail.ydwk.entities.util.GenericEntity
+import io.github.realyusufismail.ydwk.entities.guild.Ban
+import io.github.realyusufismail.ydwk.impl.entities.UserImpl
 
-interface Ban : GenericEntity {
-    /**
-     * The reason for the ban
-     *
-     * @return The reason for the ban
-     */
-    val reason: String?
+class BanImpl(override val ydwk: YDWK, override val json: JsonNode) : Ban {
 
-    /**
-     * The user who was banned
-     *
-     * @return The user who was banned
-     */
-    val user: User
+    override val reason: String?
+        get() = if (json.has("reason")) json["reason"].asText() else null
+
+    override val user: User
+        get() = UserImpl(json["user"], json["user"]["id"].asLong(), ydwk)
 }

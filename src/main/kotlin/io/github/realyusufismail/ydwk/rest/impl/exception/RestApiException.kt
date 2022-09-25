@@ -16,23 +16,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.entities.guild
+package io.github.realyusufismail.ydwk.rest.impl.exception
 
-import io.github.realyusufismail.ydwk.entities.User
-import io.github.realyusufismail.ydwk.entities.util.GenericEntity
-
-interface Ban : GenericEntity {
-    /**
-     * The reason for the ban
-     *
-     * @return The reason for the ban
-     */
-    val reason: String?
-
-    /**
-     * The user who was banned
-     *
-     * @return The user who was banned
-     */
-    val user: User
+class RestApiException(val name: String) : RuntimeException(name) {
+    constructor(name: String, cause: Throwable) : this(name) {
+        initCause(cause)
+    }
 }

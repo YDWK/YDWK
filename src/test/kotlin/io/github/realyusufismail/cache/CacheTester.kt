@@ -20,6 +20,7 @@ package io.github.realyusufismail.ws.io.github.realyusufismail.cache
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.realyusufismail.ws.io.github.realyusufismail.cache.user.DummyUserImpl
+import io.github.realyusufismail.ydwk.cache.CacheType
 import java.nio.file.Files
 import java.util.Objects
 import kotlin.io.path.Path
@@ -41,9 +42,10 @@ class CacheTester {
         val user = DummyUserImpl(userJson)
         val cache = DummyCache()
 
-        cache[user.idAsLong] = user
+        cache[user.id, user] = CacheType.USER
 
-        val cachedUser = cache[user.idAsLong] as DummyUserImpl
+        // TODO: problem here
+        val cachedUser = cache[user.id, CacheType.USER] as DummyUserImpl
 
         Assertions.assertEquals(user.idAsLong, cachedUser.idAsLong, "User ID is not equal")
         Assertions.assertEquals(user.name, cachedUser.name, "User name is not equal")

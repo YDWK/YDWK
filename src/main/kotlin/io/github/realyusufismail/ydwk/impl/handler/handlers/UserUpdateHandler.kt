@@ -19,6 +19,7 @@
 package io.github.realyusufismail.ydwk.impl.handler.handlers
 
 import com.fasterxml.jackson.databind.JsonNode
+import io.github.realyusufismail.ydwk.cache.CacheType
 import io.github.realyusufismail.ydwk.entities.User
 import io.github.realyusufismail.ydwk.impl.YDWKImpl
 import io.github.realyusufismail.ydwk.impl.entities.UserImpl
@@ -31,13 +32,13 @@ class UserUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override fun start() {
         val userJson: JsonNode = json
 
-        val userCache = ydwk.cache[userJson.get("id").asLong()]
+        val userCache = ydwk.cache[userJson.get("id").asText(), CacheType.GUILD]
 
         if (userCache == null) {
             ydwk.logger.warn(
                 "UserUpdateHandler: User with id ${userJson.get("id").asLong()} not found in cache, will add it")
             val user = UserImpl(json, json.get("id").asLong(), ydwk)
-            ydwk.cache[user.idAsLong] = user
+            ydwk.cache[user.id, user] = CacheType.USER
             return
         }
 

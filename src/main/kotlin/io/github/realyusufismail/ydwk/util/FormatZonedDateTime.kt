@@ -25,10 +25,14 @@ import java.time.format.FormatStyle
 import java.util.*
 
 fun formatZonedDateTime(time: String): String {
-    val formatter =
-        DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
-            .withLocale(Locale.ENGLISH)
-            .withZone(ZoneId.systemDefault())
+    return if (time == "null") {
+        "null"
+    } else {
+        val formatter =
+            DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
+                .withLocale(Locale.ENGLISH)
+                .withZone(ZoneId.systemDefault())
 
-    return formatter.format(ZonedDateTime.parse(time))
+        formatter.format(ZonedDateTime.parse(time))
+    }
 }

@@ -25,6 +25,7 @@ import io.github.realyusufismail.ydwk.entities.Bot
 import io.github.realyusufismail.ydwk.entities.Guild
 import io.github.realyusufismail.ydwk.entities.application.PartialApplication
 import io.github.realyusufismail.ydwk.event.recieve.IEventReceiver
+import io.github.realyusufismail.ydwk.rest.RestApiManager
 import io.github.realyusufismail.ydwk.ws.WebSocketManager
 import io.github.realyusufismail.ydwk.ws.util.LoggedIn
 
@@ -71,14 +72,14 @@ interface YDWK {
      *
      * @param id The id of the guild.
      */
-    fun getGuild(id: Long): Guild?
+    fun getGuild(id: Long): Guild? = getGuild(id.toString())
 
     /**
      * Used to get a guild by its id.
      *
      * @param id The id of the guild.
      */
-    fun getGuild(id: String): Guild? = getGuild(id.toLong())
+    fun getGuild(id: String): Guild?
 
     /**
      * Gets all the guilds the bot is in.
@@ -86,6 +87,13 @@ interface YDWK {
      * @return A list of guilds.
      */
     fun getGuilds(): List<Guild>
+
+    /**
+     * Gets the rest api manager.
+     *
+     * @return The rest api manager.
+     */
+    val restApiManager: RestApiManager
 }
 
 /**
