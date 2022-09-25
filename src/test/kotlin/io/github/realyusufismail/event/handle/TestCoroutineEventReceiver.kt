@@ -16,8 +16,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.event.recieve
+package io.github.realyusufismail.ws.io.github.realyusufismail.event.handle
 
+import io.github.realyusufismail.event.handle.EventTimeout
+import io.github.realyusufismail.event.handle.toTimeout
 import io.github.realyusufismail.ydwk.event.Event
 import java.util.concurrent.CopyOnWriteArrayList
 import kotlin.time.Duration
@@ -26,17 +28,17 @@ import org.slf4j.Logger
 
 fun getDefaultScope() = CoroutineScope(Dispatchers.Default)
 
-open class CoroutineEventReceiver(
+open class TestCoroutineEventReceiver(
     private val scope: CoroutineScope = getDefaultScope(),
     private var timeout: Duration = Duration.INFINITE
-) : IEventReceiver, CoroutineScope by scope {
-    private val events = CopyOnWriteArrayList<CoroutineEventListener>()
+) : TestIEventReceiver, CoroutineScope by scope {
+    private val events = CopyOnWriteArrayList<TestCoroutineEventListener>()
     private val logger: Logger =
-        org.slf4j.LoggerFactory.getLogger(CoroutineEventReceiver::class.java)
+        org.slf4j.LoggerFactory.getLogger(TestCoroutineEventReceiver::class.java)
 
-    protected fun timeout(event: Any) =
+    private fun timeout(event: Any) =
         when {
-            (event is CoroutineEventListener && event.eventTimeout != EventTimeout.ZERO) ->
+            (event is TestCoroutineEventListener && event.eventTimeout != EventTimeout.ZERO) ->
                 event.eventTimeout.duration
             else -> timeout
         }
@@ -67,7 +69,7 @@ open class CoroutineEventReceiver(
     }
 
     override fun addEventReceiver(eventReceiver: Any) {
-        if (eventReceiver is CoroutineEventListener) {
+        if (eventReceiver is TestCoroutineEventListener) {
             events.add(eventReceiver)
         } else {
             throw IllegalArgumentException(
@@ -76,7 +78,7 @@ open class CoroutineEventReceiver(
     }
 
     override fun removeEventReceiver(eventReceiver: Any) {
-        if (eventReceiver is CoroutineEventListener) {
+        if (eventReceiver is TestCoroutineEventListener) {
             events.remove(eventReceiver)
         } else {
             throw IllegalArgumentException(
@@ -86,9 +88,9 @@ open class CoroutineEventReceiver(
 
     inline fun <reified T : Event> onEvent(
         timeout: Duration? = null,
-        crossinline consumer: suspend CoroutineEventListener.(T) -> Unit
-    ): CoroutineEventListener {
-        return object : CoroutineEventListener {
+        crossinline consumer: suspend TestCoroutineEventListener.(T) -> Unit
+    ): TestCoroutineEventListener {
+        return object : TestCoroutineEventListener {
 
                 override val eventTimeout: EventTimeout
                     get() = timeout.toTimeout()

@@ -36,7 +36,6 @@ import io.github.realyusufismail.ydwk.rest.impl.RestApiManagerImpl
 import io.github.realyusufismail.ydwk.ws.WebSocketManager
 import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
 import io.github.realyusufismail.ydwk.ws.util.LoggedIn
-import kotlinx.coroutines.awaitAll
 import okhttp3.OkHttpClient
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
