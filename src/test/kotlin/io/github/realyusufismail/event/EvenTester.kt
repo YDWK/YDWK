@@ -24,7 +24,6 @@ import io.github.realyusufismail.ws.io.github.realyusufismail.event.handle.IEven
 import io.github.realyusufismail.ws.io.github.realyusufismail.event.handle.on
 import io.github.realyusufismail.ydwk.event.recieve.on
 import io.github.realyusufismail.ydwk.impl.YDWKImpl
-import kotlin.test.assertEquals
 import okhttp3.OkHttpClient
 import org.junit.jupiter.api.Test
 
@@ -36,7 +35,7 @@ class EvenTester {
         eventListener.emitEvent(TestEvent(YDWKImpl(OkHttpClient())))
         var name: String? = null
         this.on<TestEvent> { name = "Yusuf" }
-        //assertEquals("Yusuf", name, "Name is not Yusuf")
+        // assertEquals("Yusuf", name, "Name is not Yusuf")
     }
 
     @Test
@@ -44,10 +43,8 @@ class EvenTester {
         val ydwk = YDWKImpl(OkHttpClient())
         ydwk.emitEvent(TestEvent(ydwk))
         var name: String? = null
-        ydwk.on<TestEvent> {
-            name = "Yusuf"
-        }
-        //assertEquals("Yusuf", name, "Name is not Yusuf")
+        ydwk.on<TestEvent> { name = "Yusuf" }
+        // assertEquals("Yusuf", name, "Name is not Yusuf")
     }
 
     fun addEvent(vararg eventListeners: Any) {
