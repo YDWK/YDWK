@@ -21,12 +21,16 @@ package io.github.realyusufismail.ydwk.entities.guild.enums
 enum class PremiumTier(val value: Int) {
     /** Guild has not unlocked any Server Boost perks. */
     NONE(0),
+
     /** Guild has unlocked Server Boost level 1 perks. */
     TIER_1(1),
+
     /** Guild has unlocked Server Boost level 2 perks. */
     TIER_2(2),
+
     /** Guild has unlocked Server Boost level 3 perks. */
     TIER_3(3),
+
     /** An unknown premium tier. */
     UNKNOWN(-1);
 

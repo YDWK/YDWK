@@ -103,7 +103,7 @@ abstract class EventAdapter : IEvent {
                 name = "on" + name!!.substring(0, name.length - "Event".length)
                 return lookup.findVirtual(EventAdapter::class.java, name, type)
             } catch (
-                ignored: NoSuchMethodException) {} // this means this is probably a custom event!
+                ignored: NoSuchMethodException,) {} // this means this is probably a custom event!
             catch (ignored: IllegalAccessException) {}
             return null
         }

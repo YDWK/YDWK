@@ -26,7 +26,7 @@ import okhttp3.*
 open class SimilarRestApiImpl(
     private val ydwk: YDWKImpl,
     private val builder: Request.Builder,
-    private val client: OkHttpClient
+    private val client: OkHttpClient,
 ) : SimilarRestApi {
     override fun header(name: String, value: String) {
         builder.header(name, value)

@@ -54,7 +54,7 @@ interface RestApiManager {
     fun post(
         body: RequestBody,
         endPoint: EndPoint.IEnumEndpoint,
-        vararg params: String
+        vararg params: String,
     ): PostRestApi
 
     /**
@@ -99,7 +99,7 @@ interface RestApiManager {
     fun delete(
         body: RequestBody?,
         endPoint: EndPoint.IEnumEndpoint,
-        vararg params: String
+        vararg params: String,
     ): DeleteRestApi
 
     /**
@@ -145,7 +145,7 @@ interface RestApiManager {
     fun patch(
         body: RequestBody,
         endPoint: EndPoint.IEnumEndpoint,
-        vararg params: String
+        vararg params: String,
     ): PatchRestApi
 
     /**

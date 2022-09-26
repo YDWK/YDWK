@@ -25,7 +25,7 @@ import io.github.realyusufismail.ydwk.entities.UnavailableGuild
 class UnavailableGuildImpl(
     override val ydwk: YDWK,
     override val json: JsonNode,
-    override val idAsLong: Long
+    override val idAsLong: Long,
 ) : UnavailableGuild {
     override var unavailable: Boolean = json["unavailable"].asBoolean()
 }

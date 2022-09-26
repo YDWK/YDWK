@@ -24,7 +24,7 @@ import io.github.realyusufismail.ydwk.event.Event
 class ReadyEvent(
     override val ydwk: YDWK,
     amountOfAvailableGuilds: Int,
-    unAvailableGuildsAmount: Int
+    unAvailableGuildsAmount: Int,
 ) : Event {
     val totalGuildsAmount = amountOfAvailableGuilds + unAvailableGuildsAmount
 }

@@ -28,7 +28,7 @@ import java.net.URL
 class ApplicationImpl(
     override val json: JsonNode,
     override val idAsLong: Long,
-    override val ydwk: YDWK
+    override val ydwk: YDWK,
 ) : Application {
 
     override var icon: String? = if (json.hasNonNull("icon")) json["icon"].asText() else null
