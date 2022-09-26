@@ -28,9 +28,8 @@ import io.github.realyusufismail.ydwk.entities.Bot
 import io.github.realyusufismail.ydwk.entities.Guild
 import io.github.realyusufismail.ydwk.entities.application.PartialApplication
 import io.github.realyusufismail.ydwk.event.Event
-import io.github.realyusufismail.ydwk.event.recieve.CoroutineEventListener
-import io.github.realyusufismail.ydwk.event.recieve.CoroutineEventReceiver
-import io.github.realyusufismail.ydwk.event.recieve.IEventReceiver
+import io.github.realyusufismail.ydwk.event.recieve.EventManager
+import io.github.realyusufismail.ydwk.event.recieve.IEventManager
 import io.github.realyusufismail.ydwk.rest.RestApiManager
 import io.github.realyusufismail.ydwk.rest.impl.RestApiManagerImpl
 import io.github.realyusufismail.ydwk.ws.WebSocketManager
@@ -150,19 +149,18 @@ class YDWKImpl(private val client: OkHttpClient?) : YDWK {
             return this
         }
 
-    override val eventReceiver: IEventReceiver
-        get() = CoroutineEventReceiver()
+    override val eventListener: IEventManager = EventManager()
 
-    override fun addEvent(vararg eventAdapters: CoroutineEventListener) {
-        eventAdapters.forEach { eventReceiver.addEventReceiver(it) }
+    override fun addEvent(vararg eventListeners: Any) {
+        eventListeners.forEach { eventListener.addEvent(it) }
     }
 
-    override fun removeEvent(vararg eventAdapters: CoroutineEventListener) {
-        eventAdapters.forEach { eventReceiver.removeEventReceiver(it) }
+    override fun removeEvent(vararg eventListeners: Any) {
+        eventListeners.forEach { eventListener.removeEvent(it) }
     }
 
-    fun handleEvent(event: Event) {
-        eventReceiver.handleEvent(event)
+    override fun emitEvent(event: Event) {
+        eventListener.emitEvent(event)
     }
 
     /**
@@ -183,5 +181,9 @@ class YDWKImpl(private val client: OkHttpClient?) : YDWK {
      */
     fun setLoggedIn(loggedIn: LoggedIn) {
         this.loggedInStatus = loggedIn
+    }
+
+    companion object {
+        val logger: Logger = LoggerFactory.getLogger(YDWKImpl::class.java)
     }
 }

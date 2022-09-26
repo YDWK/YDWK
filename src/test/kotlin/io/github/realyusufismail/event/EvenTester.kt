@@ -18,27 +18,42 @@
  */ 
 package io.github.realyusufismail.ws.io.github.realyusufismail.event
 
-import io.github.realyusufismail.ws.io.github.realyusufismail.TestEvent
-import io.github.realyusufismail.ws.io.github.realyusufismail.event.handle.TestCoroutineEventReceiver
-import io.github.realyusufismail.ws.io.github.realyusufismail.event.handle.TestIEventReceiver
+import io.github.realyusufismail.event.TestEvent
+import io.github.realyusufismail.ws.io.github.realyusufismail.event.handle.EventManager
+import io.github.realyusufismail.ws.io.github.realyusufismail.event.handle.IEventManager
 import io.github.realyusufismail.ws.io.github.realyusufismail.event.handle.on
+import io.github.realyusufismail.ydwk.event.recieve.on
 import io.github.realyusufismail.ydwk.impl.YDWKImpl
 import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
 import okhttp3.OkHttpClient
 import org.junit.jupiter.api.Test
 
 class EvenTester {
-    val iEventReceiver: TestIEventReceiver = TestCoroutineEventReceiver()
+    private val eventListener: IEventManager = EventManager()
 
     @Test
     fun testEvent() {
-        iEventReceiver.handleEvent(TestEvent(YDWKImpl(OkHttpClient())))
-
+        eventListener.emitEvent(TestEvent(YDWKImpl(OkHttpClient())))
         var name: String? = null
         this.on<TestEvent> { name = "Yusuf" }
 
-        assertNotNull(name, "Name is null")
         assertEquals("Yusuf", name, "Name is not Yusuf")
+    }
+
+    @Test
+    fun testYDWKEvent() {
+        val ydwk: YDWKImpl = YDWKImpl(OkHttpClient())
+        ydwk.emitEvent(TestEvent(ydwk))
+        var name: String? = null
+        ydwk.on<TestEvent> { name = "Yusuf" }
+        assertEquals("Yusuf", name, "Name is not Yusuf")
+    }
+
+    fun addEvent(vararg eventListeners: Any) {
+        eventListeners.forEach { eventListener.addEvent(it) }
+    }
+
+    fun removeEvent(vararg eventListeners: Any) {
+        eventListeners.forEach { eventListener.removeEvent(it) }
     }
 }

@@ -375,7 +375,7 @@ open class WebSocketManager(
                     }
                 }
 
-                ydwk.handleEvent(ReadyEvent(ydwk, availableGuildsAmount, unAvailableGuildsAmount))
+                ydwk.emitEvent(ReadyEvent(ydwk, availableGuildsAmount, unAvailableGuildsAmount))
             }
             EventNames.RESUMED -> TODO()
             EventNames.RECONNECT -> TODO()

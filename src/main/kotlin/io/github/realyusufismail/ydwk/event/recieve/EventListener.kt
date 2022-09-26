@@ -16,17 +16,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.event.handle
+package io.github.realyusufismail.ydwk.event.recieve
 
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.milliseconds
+import io.github.realyusufismail.ydwk.event.Event
 
-sealed class EventTimeout(val duration: Duration) {
-    object ZERO : EventTimeout(Duration.ZERO)
-
-    class Limit(limit: Duration) : EventTimeout(limit)
+@FunctionalInterface
+interface EventListener {
+    /**
+     * Used to trigger the event
+     *
+     * @param event The event to be triggered
+     */
+    suspend fun onEvent(event: Event)
 }
-
-fun Long?.toTimeout() = this?.let { EventTimeout.Limit(it.milliseconds) } ?: EventTimeout.ZERO
-
-fun Duration?.toTimeout() = this?.let { EventTimeout.Limit(it) } ?: EventTimeout.ZERO

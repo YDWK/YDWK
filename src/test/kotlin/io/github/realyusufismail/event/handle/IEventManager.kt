@@ -18,22 +18,33 @@
  */ 
 package io.github.realyusufismail.ws.io.github.realyusufismail.event.handle
 
-import io.github.realyusufismail.event.handle.EventTimeout
 import io.github.realyusufismail.ydwk.event.Event
 
-interface TestCoroutineEventListener {
+interface IEventManager {
     /**
-     * The event that will be called when the coroutine is cancelled.
+     * Used to handel the event when it is called
      *
-     * @param event The event that will be called when the coroutine is cancelled.
-     * @return The event that will be called when the coroutine is cancelled.
+     * @param event The event that is called
      */
-    suspend fun onEvent(event: Event)
+    fun emitEvent(event: Event)
 
-    /** Used to set a timeout for the coroutine. */
-    val eventTimeout: EventTimeout
-        get() = EventTimeout.ZERO
+    /**
+     * Used to add the event to the event handler
+     *
+     * @param event The event that is called
+     */
+    fun addEvent(event: Any)
 
-    /** Used to cancel the event */
-    fun cancelEvent()
+    /**
+     * Used to remove the event from the event handler
+     *
+     * @param event The event that is called
+     */
+    fun removeEvent(event: Any)
+
+    /** Used to remove all the events from the event handler */
+    fun removeAllEvents()
+
+    /** Used to get the registered event listeners */
+    val events: MutableList<EventListener>
 }

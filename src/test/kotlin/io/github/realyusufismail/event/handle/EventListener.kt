@@ -16,23 +16,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.event.recieve
+package io.github.realyusufismail.ws.io.github.realyusufismail.event.handle
 
 import io.github.realyusufismail.ydwk.event.Event
 
-interface CoroutineEventListener {
+@FunctionalInterface
+interface EventListener {
     /**
-     * The event that will be called when the coroutine is cancelled.
+     * Used to trigger the event
      *
-     * @param event The event that will be called when the coroutine is cancelled.
-     * @return The event that will be called when the coroutine is cancelled.
+     * @param event The event to be triggered
      */
     suspend fun onEvent(event: Event)
-
-    /** Used to set a timeout for the coroutine. */
-    val eventTimeout: EventTimeout
-        get() = EventTimeout.ZERO
-
-    /** Used to cancel the event */
-    fun cancelEvent()
 }

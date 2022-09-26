@@ -20,12 +20,16 @@ package io.github.realyusufismail.ws.io.github.realyusufismail.event.handle
 
 import io.github.realyusufismail.ws.io.github.realyusufismail.event.EvenTester
 import io.github.realyusufismail.ydwk.event.Event
-import kotlin.time.Duration
 
 inline fun <reified T : Event> EvenTester.on(
-    timeout: Duration? = null,
-    crossinline consumer: suspend TestCoroutineEventListener.(T) -> Unit
-): TestCoroutineEventListener {
-    println("Registering event listener for ${T::class.simpleName}")
-    return (iEventReceiver as TestCoroutineEventReceiver).onEvent(timeout, consumer)
+    crossinline consumer: suspend Event.(T) -> Unit
+): EventListener {
+    return object : EventListener {
+            override suspend fun onEvent(event: Event) {
+                if (event is T) {
+                    event.consumer(event)
+                }
+            }
+        }
+        .also { this.addEvent(it) }
 }

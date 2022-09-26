@@ -18,10 +18,18 @@
  */ 
 package io.github.realyusufismail.ydwk.event.recieve
 
+import io.github.realyusufismail.ydwk.YDWK
 import io.github.realyusufismail.ydwk.event.Event
 
-interface IEventReceiver {
-    fun addEventReceiver(eventReceiver: Any)
-    fun removeEventReceiver(eventReceiver: Any)
-    fun handleEvent(event: Event)
+inline fun <reified T : Event> YDWK.on(
+    crossinline consumer: suspend Event.(T) -> Unit
+): EventListener {
+    return object : EventListener {
+            override suspend fun onEvent(event: Event) {
+                if (event is T) {
+                    event.consumer(event)
+                }
+            }
+        }
+        .also { this.addEvent(it) }
 }
