@@ -12,7 +12,6 @@ A discord wrapper made in kotlin
 
 ## Future Features
 - [ ] Handle slash commands
-- [ ] Handle Rest API
 - [ ] Handle sending events
 
 ## Implemented
@@ -20,6 +19,8 @@ A discord wrapper made in kotlin
 - [x] Parse json
 - [x] Handle all op codes
 - [x] Caching
+- [x] Handle Rest API
+
 
 
 ## Installation
@@ -50,5 +51,7 @@ To use an event, add the following to your main class:
 fun main() {
     val ydwk =
         createDefaultBot("TOKEN")
+
+    ydwk.on<ReadyEvent> { println("Ready!") }
 }
 ```
