@@ -16,12 +16,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.event.recieve
+package io.github.realyusufismail.ws.io.github.realyusufismail.event.handle
 
+import io.github.realyusufismail.ws.io.github.realyusufismail.event.EvenTester
 import io.github.realyusufismail.ydwk.event.Event
 
-interface IEventReceiver {
-    fun addEventReceiver(eventReceiver: Any)
-    fun removeEventReceiver(eventReceiver: Any)
-    fun handleEvent(event: Event)
+inline fun <reified T : Event> EvenTester.on(
+    crossinline consumer: suspend Event.(T) -> Unit
+): EventListener {
+    return object : EventListener {
+            override suspend fun onEvent(event: Event) {
+                if (event is T) {
+                    event.consumer(event)
+                }
+            }
+        }
+        .also { this.addEvent(it) }
 }

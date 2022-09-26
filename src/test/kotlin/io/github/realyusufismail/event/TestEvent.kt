@@ -16,10 +16,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.event.recieve
+package io.github.realyusufismail.event
 
+import io.github.realyusufismail.ydwk.YDWK
 import io.github.realyusufismail.ydwk.event.Event
 
-fun interface IEvent {
-    fun onEvent(event: Event)
-}
+class TestEvent(override val ydwk: YDWK) : Event {}

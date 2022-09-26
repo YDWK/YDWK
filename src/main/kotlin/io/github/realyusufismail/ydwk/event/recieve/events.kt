@@ -16,13 +16,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.util
+package io.github.realyusufismail.ydwk.event.recieve
 
-interface SnowFlake {
-    /** @return The id of an object as a string */
-    val id: String
-        get() = idAsLong.toString()
+import io.github.realyusufismail.ydwk.YDWK
+import io.github.realyusufismail.ydwk.event.Event
 
-    /** @return The id of an object as a long */
-    val idAsLong: Long
+inline fun <reified T : Event> YDWK.on(
+    crossinline consumer: suspend Event.(T) -> Unit
+): EventListener {
+    return object : EventListener {
+            override suspend fun onEvent(event: Event) {
+                if (event is T) {
+                    event.consumer(event)
+                }
+            }
+        }
+        .also { this.addEvent(it) }
 }

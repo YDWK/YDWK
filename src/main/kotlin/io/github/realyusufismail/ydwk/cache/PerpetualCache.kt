@@ -27,8 +27,6 @@ import io.github.realyusufismail.ydwk.entities.guild.Role
 /**
  * This is the implementation of the [Cache] interface that uses a [Map] to store and retrieve data.
  */
-// Issues : Different unities with same id will be stored in the same cache
-// Solution : Use a different cache for each unity
 open class PerpetualCache : Cache {
     private val cache = HashMap<String, Any>()
 

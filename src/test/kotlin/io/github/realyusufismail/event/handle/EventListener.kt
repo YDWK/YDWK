@@ -16,13 +16,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ydwk.util
+package io.github.realyusufismail.ws.io.github.realyusufismail.event.handle
 
-interface SnowFlake {
-    /** @return The id of an object as a string */
-    val id: String
-        get() = idAsLong.toString()
+import io.github.realyusufismail.ydwk.event.Event
 
-    /** @return The id of an object as a long */
-    val idAsLong: Long
+@FunctionalInterface
+interface EventListener {
+    /**
+     * Used to trigger the event
+     *
+     * @param event The event to be triggered
+     */
+    suspend fun onEvent(event: Event)
 }

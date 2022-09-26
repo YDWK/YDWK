@@ -24,7 +24,8 @@ import io.github.realyusufismail.ydwk.entities.Application
 import io.github.realyusufismail.ydwk.entities.Bot
 import io.github.realyusufismail.ydwk.entities.Guild
 import io.github.realyusufismail.ydwk.entities.application.PartialApplication
-import io.github.realyusufismail.ydwk.event.recieve.IEventReceiver
+import io.github.realyusufismail.ydwk.event.Event
+import io.github.realyusufismail.ydwk.event.recieve.IEventManager
 import io.github.realyusufismail.ydwk.rest.RestApiManager
 import io.github.realyusufismail.ydwk.ws.WebSocketManager
 import io.github.realyusufismail.ydwk.ws.util.LoggedIn
@@ -55,14 +56,29 @@ interface YDWK {
     /** Used to indicated that bot has connected to the websocket. */
     val waitForConnection: YDWK
 
-    /** Used to get the event receiver. */
-    val eventReceiver: IEventReceiver
+    /** Used to get the event listener. */
+    val eventListener: IEventManager
 
-    /** Used to add an event listener. */
-    fun addEvent(vararg eventAdapters: Any)
+    /**
+     * Used to add an event listener.
+     *
+     * @param eventListeners The event listeners to be added.
+     */
+    fun addEvent(vararg eventListeners: Any)
 
-    /** Used to remove an event listener. */
-    fun removeEvent(vararg eventAdapters: Any)
+    /**
+     * Used to remove an event listener.
+     *
+     * @param eventListeners The event listeners to be removed.
+     */
+    fun removeEvent(vararg eventListeners: Any)
+
+    /**
+     * Used to emit an event
+     *
+     * @param event The event to be emitted.
+     */
+    fun emitEvent(event: Event)
 
     /** Used to shut down the websocket manager */
     fun shutdown()
@@ -95,9 +111,3 @@ interface YDWK {
      */
     val restApiManager: RestApiManager
 }
-
-/**
- * inline fun <reified EventClass : Event> YDWK.onEvent( crossinline block: suspend
- * ICoroutineEvent.(EventClass) -> Unit ): ICoroutineEvent { return (eventReceiver as
- * CoroutineEvent).onEvent(block) }
- */
