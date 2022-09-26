@@ -21,14 +21,19 @@ package io.github.realyusufismail.ydwk.entities.guild.enums
 enum class VerificationLevel(val level: Int) {
     /** Unrestricted */
     NONE(0),
+
     /** Must have a verified email on their account */
     LOW(1),
+
     /** Must be registered on Discord for longer than 5 minutes */
     MEDIUM(2),
+
     /** Must be a member of the server for longer than 10 minutes */
     HIGH(3),
+
     /** Must have a verified phone number */
     VERY_HIGH(4),
+
     /** An unknown verification level */
     UNKNOWN(-1);
 

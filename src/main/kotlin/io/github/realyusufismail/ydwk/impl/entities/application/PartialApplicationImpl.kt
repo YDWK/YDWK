@@ -25,7 +25,7 @@ import io.github.realyusufismail.ydwk.entities.application.PartialApplication
 class PartialApplicationImpl(
     override val json: JsonNode,
     override val idAsLong: Long,
-    override val ydwk: YDWK
+    override val ydwk: YDWK,
 ) : PartialApplication {
 
     override var flags: Int = json.get("flags").asInt()

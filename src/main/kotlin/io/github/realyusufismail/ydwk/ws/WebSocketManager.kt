@@ -49,9 +49,10 @@ import org.slf4j.LoggerFactory
 open class WebSocketManager(
     protected var ydwk: YDWKImpl,
     private var token: String,
-    private var intents: List<GateWayIntent>
+    private var intents: List<GateWayIntent>,
 ) : WebSocketAdapter(), WebSocketListener {
     private val logger: Logger = LoggerFactory.getLogger(javaClass) as Logger
+
     // Tha main websocket
     private var webSocket: WebSocket? = null
     private var resumeUrl: String? = null
@@ -146,7 +147,7 @@ open class WebSocketManager(
         websocket: WebSocket,
         serverCloseFrame: WebSocketFrame?,
         clientCloseFrame: WebSocketFrame?,
-        closedByServer: Boolean
+        closedByServer: Boolean,
     ) {
         connected = false
 

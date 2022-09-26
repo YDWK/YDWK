@@ -21,8 +21,10 @@ package io.github.realyusufismail.ydwk.entities.guild.enums
 enum class MessageNotificationLevel(val value: Int) {
     /** Members will receive notifications for all messages by default */
     ALL_MESSAGES(0),
+
     /** Members will receive notifications only for messages that @mention them by default */
     ONLY_MENTIONS(1),
+
     /** An unknown value */
     UNKNOWN(-1);
 

@@ -26,5 +26,5 @@ import okhttp3.Request
 class PostRestApiImpl(
     private val ydwk: YDWKImpl,
     private val client: OkHttpClient,
-    private val builder: Request.Builder
+    private val builder: Request.Builder,
 ) : PostRestApi, SimilarRestApiImpl(ydwk, builder, client)

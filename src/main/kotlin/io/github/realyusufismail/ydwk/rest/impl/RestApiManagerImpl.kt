@@ -32,7 +32,7 @@ import okhttp3.RequestBody
 class RestApiManagerImpl(
     private val token: String,
     private val ydwkImpl: YDWKImpl,
-    private val client: OkHttpClient
+    private val client: OkHttpClient,
 ) : RestApiManager {
     override fun get(endPoint: EndPoint.IEnumEndpoint, vararg params: String): GetRestApi {
         val builder = requestBuilder(endPoint, *params).get()
@@ -43,7 +43,7 @@ class RestApiManagerImpl(
     override fun post(
         body: RequestBody,
         endPoint: EndPoint.IEnumEndpoint,
-        vararg params: String
+        vararg params: String,
     ): PostRestApi {
         val builder = requestBuilder(endPoint, *params).post(body)
         return PostRestApiImpl(ydwkImpl, client, builder)
@@ -52,7 +52,7 @@ class RestApiManagerImpl(
     override fun put(
         body: RequestBody,
         endPoint: EndPoint.IEnumEndpoint,
-        vararg params: String
+        vararg params: String,
     ): PutRestApi {
         val builder = requestBuilder(endPoint, *params).put(body)
         return PutRestApiImpl(ydwkImpl, client, builder)
@@ -61,7 +61,7 @@ class RestApiManagerImpl(
     override fun delete(
         body: RequestBody?,
         endPoint: EndPoint.IEnumEndpoint,
-        vararg params: String
+        vararg params: String,
     ): DeleteRestApi {
         val builder = requestBuilder(endPoint, *params).delete(body)
         return DeleteRestApiImpl(ydwkImpl, client, builder)
@@ -70,7 +70,7 @@ class RestApiManagerImpl(
     override fun patch(
         body: RequestBody,
         endPoint: EndPoint.IEnumEndpoint,
-        vararg params: String
+        vararg params: String,
     ): PatchRestApi {
         val builder = requestBuilder(endPoint, *params).patch(body)
         return PatchRestApiImpl(ydwkImpl, client, builder)
@@ -78,7 +78,7 @@ class RestApiManagerImpl(
 
     private fun requestBuilder(
         endPoint: EndPoint.IEnumEndpoint,
-        vararg params: String
+        vararg params: String,
     ): Request.Builder {
         return Request.Builder().headers(requiredHeaders()).url(getEndpoint(endPoint, *params))
     }

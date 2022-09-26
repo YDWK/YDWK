@@ -76,6 +76,5 @@ open class EndPoint {
         }
     }
 
-    enum class UserEndpoint(val endPoint: String) {
-    }
+    enum class UserEndpoint(val endPoint: String)
 }

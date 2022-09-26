@@ -29,7 +29,7 @@ import io.github.realyusufismail.ydwk.util.GetterSnowFlake
 class StickerImpl(
     override val ydwk: YDWK,
     override val json: JsonNode,
-    override val idAsLong: Long
+    override val idAsLong: Long,
 ) : Sticker {
     override val packId: GetterSnowFlake?
         get() = if (json.has("pack_id")) GetterSnowFlake.of(json.get("pack_id").asLong()) else null

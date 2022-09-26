@@ -21,12 +21,16 @@ package io.github.realyusufismail.ydwk.entities.guild.enums
 enum class NSFWLeveL(val level: Int) {
     /** No NSFW content is allowed. */
     DEFAULT(0),
+
     /** NSFW content is allowed, but must be marked as such. */
     EXPLICIT(1),
+
     /** NSFW content is allowed without any special marking. */
     SAFE(2),
+
     /** NSFW content is not allowed. */
     AGE_RESTRICTED(3),
+
     /** An unknown NSFW level. */
     UNKNOWN(-1);
 

@@ -18,7 +18,7 @@
  */ 
 package io.github.realyusufismail.ydwk.ws.util
 
-enum class GateWayIntent(var value: Int, final var privileged: Boolean) {
+enum class GateWayIntent(var value: Int, var privileged: Boolean) {
     GUILDS(0, false),
     GUILD_MEMBERS(1, true),
     GUILD_BANS(2, false),

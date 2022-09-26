@@ -21,10 +21,13 @@ package io.github.realyusufismail.ydwk.entities.sticker
 enum class StickerFormatType(val value: Int) {
     /** The file is a PNG image. */
     PNG(1),
+
     /** The file is a TGS animation. */
     APNG(2),
+
     /** The file is a TGS animation. */
     LOTTIE(3),
+
     /** An unknown format. */
     UNKNOWN(-1);
 

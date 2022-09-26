@@ -21,8 +21,10 @@ package io.github.realyusufismail.ydwk.entities.guild.enums
 enum class MFALevel(val value: Int) {
     /** Guild has no MFA/2FA requirement for moderation actions */
     NONE(0),
+
     /** Guild has a 2FA requirement for moderation actions */
     ELEVATED(1),
+
     /** An unknown MFA level was returned */
     UNKNOWN(-1);
 
