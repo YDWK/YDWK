@@ -171,7 +171,7 @@ open class WebSocketManager(
         val closeFrame: WebSocketFrame? = if (closedByServer) serverCloseFrame else clientCloseFrame
 
         val closeCodeReason: String =
-            if (closeFrame != null) WebSocketFrame::getCloseReason.name else "Unknown reason"
+            if (closeFrame != null) closeFrame.closeReason else "Unknown reason"
 
         val closeCodeAsString: String =
             if (closeFrame != null)
