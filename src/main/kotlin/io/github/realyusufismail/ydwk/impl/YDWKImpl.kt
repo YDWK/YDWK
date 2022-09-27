@@ -56,6 +56,12 @@ class YDWKImpl(private val client: OkHttpClient?) : YDWK {
         private set
 
     override fun shutdown() {
+        logger.info("After 5 seconds, the bot will be shutdown")
+        try {
+            Thread.sleep(5000)
+        } catch (e: InterruptedException) {
+            logger.error("Error while sleeping", e)
+        }
         webSocketManager?.shutdown()
     }
 

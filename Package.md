@@ -27,7 +27,11 @@ A discord wrapper made in kotlin
 
 Add the following to your `build.gradle`:
 
-```gradle
+```kotlin
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     implementation("io.github.realyusufismail:ydwk:${project.version}")
 }
@@ -53,5 +57,22 @@ fun main() {
         createDefaultBot("TOKEN")
 
     ydwk.on<ReadyEvent> { println("Ready!") }
+}
+```
+
+or 
+
+```kotlin
+class Listener : ListenerAdapter() {
+    override fun onReady(event: ReadyEvent) {
+        println("Ready!")
+    }
+}
+
+fun main() {
+    val ydwk =
+        createDefaultBot("TOKEN")
+
+    ydwk.addEvent(Listener())
 }
 ```
