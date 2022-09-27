@@ -30,7 +30,7 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 import kotlin.reflect.KClass
 
-class ListenerAdapter : EventListener {
+abstract class ListenerAdapter : EventListener {
 
     /** Listens to all events */
     fun onBasicEvent(event: Event) {}
