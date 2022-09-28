@@ -11,8 +11,8 @@ buildscript {
 }
 
 plugins {
-    kotlin("jvm") version "1.7.10"
-    kotlin("plugin.allopen") version "1.7.10"
+    kotlin("jvm") version "1.7.20"
+    kotlin("plugin.allopen") version "1.7.20"
     id("com.diffplug.spotless") version "6.11.0"
     id("org.jetbrains.dokka") version "1.7.10"
     application
@@ -52,14 +52,15 @@ dependencies {
     api("ch.qos.logback:logback-classic:1.4.1")
     api("ch.qos.logback:logback-core:1.4.1")
     api("uk.org.lidalia:sysout-over-slf4j:1.0.2")
-    //.env
-    api("io.github.yusufsdiscordbot:config:1.0.4")
+    //config.json
+    api("io.github.realyusufismail:jconfig:1.0.6")
     //ws and https
     api("com.squareup.okhttp3:okhttp:5.0.0-alpha.10")
     api("com.neovisionaries:nv-websocket-client:2.14")
     //kotlin
-    testImplementation("org.jetbrains.kotlin:kotlin-test:1.7.10")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:1.7.20")
     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    implementation("com.google.code.findbugs:jsr305:3.0.2")
 }
 
 tasks.test {

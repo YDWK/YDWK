@@ -34,167 +34,20 @@ open class PerpetualCache : Cache {
         get() = cache.size
 
     override fun set(key: String, value: Any, cacheType: CacheType) {
-        when (cacheType) {
-            CacheType.GUILD -> {
-                if (value is Guild) {
-                    // println("Setting guild ${value.id} to cache, with key $key + guild")
-                    cache[key + "guild"] = value
-                } else {
-                    throw CacheException("Cache type is Guild but value is not a Guild")
-                }
-            }
-            CacheType.USER -> {
-                if (value is User) {
-                    cache[key + "user"] = value
-                } else {
-                    throw CacheException("Cache type is User but value is not a User")
-                }
-            }
-            CacheType.ROLE -> {
-                if (value is Role) {
-                    cache[key + "role"] = value
-                } else {
-                    throw CacheException("Cache type is Role but value is not a Role")
-                }
-            }
-            CacheType.MEMBER -> {
-                if (value is Member) {
-                    cache[key] = value
-                } else {
-                    throw CacheException("Cache type is Member but value is not a Member")
-                }
-            }
-            CacheType.EMOJI -> {
-                if (value is Emoji) {
-                    cache[key + "emoji"] = value
-                } else {
-                    throw CacheException("Cache type is Emoji but value is not an Emoji")
-                }
-            }
-            CacheType.CHANNEL -> {
-                TODO()
-            }
-            CacheType.MESSAGE -> {
-                TODO()
-            }
-            CacheType.VOICE_STATE -> {
-                TODO()
-            }
-            CacheType.STICKER -> {
-                if (value is Sticker) {
-                    cache[key + "sticker"] = value
-                } else {
-                    throw CacheException("Cache type is Sticker but value is not a Sticker")
-                }
-            }
-            CacheType.APPLICATION -> {
-                if (value is Application || value is PartialApplication) {
-                    cache[key + "application"] = value
-                } else {
-                    throw CacheException(
-                        "Cache type is Application but value is not an Application")
-                }
-            }
-        }
+        cache[key + cacheType.toString()] = value
     }
 
     override fun get(key: String, cacheType: CacheType): Any? {
-        when (cacheType) {
-            CacheType.GUILD -> {
-                return if (cache.containsKey(key + "guild")) {
-                    cache[key + "guild"]
-                } else {
-                    null
-                }
-            }
-            CacheType.USER -> {
-                return if (cache.containsKey(key + "user")) {
-                    cache[key + "user"]
-                } else {
-                    null
-                }
-            }
-            CacheType.ROLE -> {
-                return if (cache.containsKey(key + "role")) {
-                    cache[key + "role"]
-                } else {
-                    null
-                }
-            }
-            CacheType.MEMBER -> {
-                return if (cache.containsKey(key)) {
-                    cache[key]
-                } else {
-                    null
-                }
-            }
-            CacheType.EMOJI -> {
-                return if (cache.containsKey(key + "emoji")) {
-                    cache[key + "emoji"]
-                } else {
-                    null
-                }
-            }
-            CacheType.CHANNEL -> {
-                TODO()
-            }
-            CacheType.MESSAGE -> {
-                TODO()
-            }
-            CacheType.VOICE_STATE -> {
-                TODO()
-            }
-            CacheType.STICKER -> {
-                return if (cache.containsKey(key + "sticker")) {
-                    cache[key + "sticker"]
-                } else {
-                    null
-                }
-            }
-            CacheType.APPLICATION -> {
-                return if (cache.containsKey(key + "application")) {
-                    cache[key + "application"]
-                } else {
-                    null
-                }
-            }
+        return if (cache.containsKey(key + cacheType.toString())) {
+            cache[key + cacheType.toString()]
+        } else {
+            throw CacheException("No value found for key $key and type $cacheType")
         }
     }
 
     override fun remove(key: String, cacheType: CacheType): Any? {
-        if (cache.containsKey(key)) {
-            when (cacheType) {
-                CacheType.GUILD -> {
-                    return cache.remove(key + "guild")
-                }
-                CacheType.USER -> {
-                    return cache.remove(key + "user")
-                }
-                CacheType.ROLE -> {
-                    return cache.remove(key + "role")
-                }
-                CacheType.MEMBER -> {
-                    return cache.remove(key)
-                }
-                CacheType.EMOJI -> {
-                    return cache.remove(key + "emoji")
-                }
-                CacheType.CHANNEL -> {
-                    return cache.remove(key + "channel")
-                }
-                CacheType.MESSAGE -> {
-                    return cache.remove(key + "message")
-                }
-                CacheType.VOICE_STATE -> {
-                    return cache.remove(key + "voiceState")
-                }
-                CacheType.STICKER -> {
-                    return cache.remove(key + "sticker")
-                }
-                CacheType.APPLICATION -> {
-                    return cache.remove(key + "application")
-                }
-            }
+        return if (cache.containsKey(key + cacheType.toString())) {
+            cache.remove(key + cacheType.toString())
         } else {
             throw CacheException("Cache does not contain value for key $key")
         }
@@ -205,38 +58,7 @@ open class PerpetualCache : Cache {
     }
 
     override fun contains(key: String, cacheType: CacheType): Boolean {
-        when (cacheType) {
-            CacheType.GUILD -> {
-                return cache.containsKey(key + "guild")
-            }
-            CacheType.USER -> {
-                return cache.containsKey(key + "user")
-            }
-            CacheType.ROLE -> {
-                return cache.containsKey(key + "role")
-            }
-            CacheType.MEMBER -> {
-                return cache.containsKey(key)
-            }
-            CacheType.EMOJI -> {
-                return cache.containsKey(key + "emoji")
-            }
-            CacheType.CHANNEL -> {
-                return cache.containsKey(key + "channel")
-            }
-            CacheType.MESSAGE -> {
-                return cache.containsKey(key + "message")
-            }
-            CacheType.VOICE_STATE -> {
-                return cache.containsKey(key + "voiceState")
-            }
-            CacheType.STICKER -> {
-                return cache.containsKey(key + "sticker")
-            }
-            CacheType.APPLICATION -> {
-                return cache.containsKey(key + "application")
-            }
-        }
+        return cache.containsKey(key + cacheType.toString())
     }
 
     override fun clear() {
@@ -244,63 +66,15 @@ open class PerpetualCache : Cache {
     }
 
     override fun values(cacheType: CacheType): List<Any> {
-        val values = ArrayList<Any>()
-        when (cacheType) {
-            CacheType.GUILD -> {
-                cache.forEach { (key, value) ->
-                    if (key.endsWith("guild")) {
-                        values.add(value)
-                    }
-                }
-            }
-            CacheType.USER -> {
-                cache.forEach { (key, value) ->
-                    if (key.endsWith("user")) {
-                        values.add(value)
-                    }
-                }
-            }
-            CacheType.ROLE -> {
-                cache.forEach { (key, value) ->
-                    if (key.endsWith("role")) {
-                        values.add(value)
-                    }
-                }
-            }
-            CacheType.MEMBER -> {
-                cache.forEach { (_, value) -> values.add(value) }
-            }
-            CacheType.EMOJI -> {
-                cache.forEach { (key, value) ->
-                    if (key.endsWith("emoji")) {
-                        values.add(value)
-                    }
-                }
-            }
-            CacheType.CHANNEL -> {
-                TODO()
-            }
-            CacheType.MESSAGE -> {
-                TODO()
-            }
-            CacheType.VOICE_STATE -> {
-                TODO()
-            }
-            CacheType.STICKER -> {
-                cache.forEach { (key, value) ->
-                    if (key.endsWith("sticker")) {
-                        values.add(value)
-                    }
-                }
-            }
-            CacheType.APPLICATION -> {
-                cache.forEach { (key, value) ->
-                    if (key.endsWith("application")) {
-                        values.add(value)
-                    }
-                }
-            }
+        return cache.values.filter {
+            (it is Guild) ||
+                (it is User) ||
+                (it is Role) ||
+                (it is Emoji) ||
+                (it is Message) ||
+                (it is Sticker) ||
+                (it is Member) ||
+                (it is PartialApplication)
         }
-        return values
     }
 }

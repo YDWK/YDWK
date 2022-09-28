@@ -27,4 +27,4 @@ class DisconnectEvent(
     closeCode: String,
     closeCodeReason: String,
     now: Instant
-) : Event
+) : Event(ydwk)

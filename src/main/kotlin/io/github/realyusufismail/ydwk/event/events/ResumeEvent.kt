@@ -21,4 +21,4 @@ package io.github.realyusufismail.ydwk.event.events
 import io.github.realyusufismail.ydwk.YDWK
 import io.github.realyusufismail.ydwk.event.Event
 
-class ResumeEvent(override val ydwk: YDWK) : Event
+class ResumeEvent(override val ydwk: YDWK) : Event(ydwk)

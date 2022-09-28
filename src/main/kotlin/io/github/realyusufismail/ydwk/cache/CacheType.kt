@@ -18,22 +18,27 @@
  */ 
 package io.github.realyusufismail.ydwk.cache
 
-enum class CacheType {
-    GUILD,
-    USER,
-    CHANNEL,
-    ROLE,
-    EMOJI,
-    MESSAGE,
-    STICKER,
-    VOICE_STATE,
-    MEMBER,
-    APPLICATION;
+enum class CacheType(private val value: String) {
+    GUILD("guild"),
+    USER("user"),
+    CHANNEL("channel"),
+    ROLE("role"),
+    EMOJI("emoji"),
+    MESSAGE("message"),
+    STICKER("sticker"),
+    VOICE_STATE("voice_state"),
+    MEMBER("member"),
+    APPLICATION_COMMAND("application_command"),
+    APPLICATION("application");
 
     companion object {
         /** Get the [CacheType] from a [String] type. */
         fun fromString(string: String): CacheType? {
             return values().firstOrNull { it.name.equals(string, true) }
         }
+    }
+
+    override fun toString(): String {
+        return value
     }
 }

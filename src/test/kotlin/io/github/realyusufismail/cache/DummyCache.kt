@@ -90,6 +90,9 @@ class DummyCache : Cache {
             CacheType.APPLICATION -> {
                 TODO()
             }
+            else -> {
+                throw CacheException("Cache type is not supported")
+            }
         }
     }
 
@@ -124,6 +127,9 @@ class DummyCache : Cache {
             }
             CacheType.APPLICATION -> {
                 return dummyMap[key + "application"]
+            }
+            else -> {
+                throw CacheException("Cache type is not supported")
             }
         }
     }
@@ -160,6 +166,9 @@ class DummyCache : Cache {
                 }
                 CacheType.APPLICATION -> {
                     return dummyMap.remove(key + "application")
+                }
+                else -> {
+                    throw CacheException("Cache type is not supported")
                 }
             }
         } else {
@@ -202,6 +211,9 @@ class DummyCache : Cache {
             }
             CacheType.APPLICATION -> {
                 return dummyMap.containsKey(key + "application")
+            }
+            else -> {
+                throw CacheException("Cache type is not supported")
             }
         }
     }
@@ -282,6 +294,9 @@ class DummyCache : Cache {
                         list.add(value)
                     }
                 }
+            }
+            else -> {
+                throw CacheException("Cache type is not supported")
             }
         }
         return list

@@ -32,6 +32,7 @@ import io.github.realyusufismail.ydwk.impl.handler.handlers.UserUpdateHandler
 import io.github.realyusufismail.ydwk.impl.handler.handlers.guild.GuildCreateHandler
 import io.github.realyusufismail.ydwk.impl.handler.handlers.guild.GuildDeleteHandler
 import io.github.realyusufismail.ydwk.impl.handler.handlers.guild.GuildUpdateHandler
+import io.github.realyusufismail.ydwk.impl.handler.handlers.interactions.InteractionCreateHandler
 import io.github.realyusufismail.ydwk.ws.util.CloseCode
 import io.github.realyusufismail.ydwk.ws.util.EventNames
 import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
@@ -65,6 +66,7 @@ open class WebSocketManager(
     private var seq: Int? = null
     private var heartbeatsMissed: Int = 0
     private var heartbeatStartTime: Long = 0
+    var upTime: Instant? = null
     @Volatile protected var heartbeatThread: Future<*>? = null
     private val scheduler: ScheduledExecutorService = Executors.newScheduledThreadPool(1)
     @get:Synchronized @set:Synchronized var connected = false
@@ -128,8 +130,10 @@ open class WebSocketManager(
         attemptedToResume = false
         if (sessionId == null) {
             identify()
+            upTime = Instant.now()
         } else {
             resume()
+            upTime = Instant.now()
         }
     }
 
@@ -390,6 +394,7 @@ open class WebSocketManager(
                 val partialApplication =
                     PartialApplicationImpl(
                         d.get("application"), d.get("application").get("id").asLong(), ydwk)
+                ydwk.applicationId = partialApplication.id
                 ydwk.partialApplication = partialApplication
                 ydwk.cache[d.get("application").get("id").asText(), partialApplication] =
                     CacheType.APPLICATION
@@ -406,7 +411,6 @@ open class WebSocketManager(
                         unAvailableGuildsAmount += 1
                     }
                 }
-
                 ydwk.emitEvent(ReadyEvent(ydwk, availableGuildsAmount, unAvailableGuildsAmount))
             }
             EventNames.RESUMED -> {
@@ -452,7 +456,7 @@ open class WebSocketManager(
             EventNames.INTEGRATION_CREATE -> TODO()
             EventNames.INTEGRATION_UPDATE -> TODO()
             EventNames.INTEGRATION_DELETE -> TODO()
-            EventNames.INTERACTION_CREATE -> TODO()
+            EventNames.INTERACTION_CREATE -> InteractionCreateHandler(ydwk, d).start()
             EventNames.INVITE_CREATE -> TODO()
             EventNames.INVITE_DELETE -> TODO()
             EventNames.MESSAGE_CREATE -> TODO()
@@ -479,7 +483,9 @@ open class WebSocketManager(
         resumeUrl = null
         ydwk.cache.clear()
         heartbeatThread?.cancel(false)
+        ydwk.setLoggedIn(LoggedInImpl(false).setDisconnectedTime())
         scheduler.shutdownNow()
+        upTime = null
     }
 
     fun shutdown() {
@@ -487,7 +493,7 @@ open class WebSocketManager(
         webSocket?.disconnect()
         logger.info("Shutting down gateway")
         try {
-            Runtime.getRuntime().exit(1000)
+            Runtime.getRuntime().exit(0)
         } catch (e: Exception) {
             logger.error("Failed to shutdown vm", e)
         }

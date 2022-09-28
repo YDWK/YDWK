@@ -49,30 +49,37 @@ A default bot has all to recommend gateway intents.
 
 ## Getting started
 
-To use an event, add the following to your main class:
+To use an event, you can use the ListenerAdapter or inline method
 
 ```kotlin
-fun main() {
-    val ydwk =
-        createDefaultBot("TOKEN")
+object Bot : ListenerAdapter() {
 
-    ydwk.on<ReadyEvent> { println("Ready!") }
+    @JvmStatic
+    fun main(args: Array<String>) {
+        val ydwk =
+            createDefaultBot(JConfigUtils.getString("token"))
+
+        ydwk.addEvent(this)
+    }
+
+    override fun onReady(event : ReadyEvent) {
+        println("Bot is ready!")
+    }
 }
 ```
 
 or 
 
 ```kotlin
-class Listener : ListenerAdapter() {
-    override fun onReady(event: ReadyEvent) {
-        println("Ready!")
+object Bot {
+    @JvmStatic
+    fun main(args: Array<String>) {
+        val ydwk =
+            createDefaultBot(JConfigUtils.getString("token"))
+
+        ydwk.on<ReadyEvent> {
+            println("Ready!")
+        }
     }
-}
-
-fun main() {
-    val ydwk =
-        createDefaultBot("TOKEN")
-
-    ydwk.addEvent(Listener())
 }
 ```

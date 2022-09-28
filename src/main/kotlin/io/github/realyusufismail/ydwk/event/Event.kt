@@ -19,7 +19,6 @@
 package io.github.realyusufismail.ydwk.event
 
 import io.github.realyusufismail.ydwk.YDWK
+import io.github.realyusufismail.ydwk.event.backend.event.GenericEvent
 
-interface Event {
-    val ydwk: YDWK
-}
+abstract class Event(override val ydwk: YDWK) : GenericEvent

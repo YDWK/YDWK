@@ -27,26 +27,37 @@ import io.github.realyusufismail.ydwk.entities.Application
 import io.github.realyusufismail.ydwk.entities.Bot
 import io.github.realyusufismail.ydwk.entities.Guild
 import io.github.realyusufismail.ydwk.entities.application.PartialApplication
-import io.github.realyusufismail.ydwk.event.Event
-import io.github.realyusufismail.ydwk.event.recieve.EventManager
-import io.github.realyusufismail.ydwk.event.recieve.IEventManager
+import io.github.realyusufismail.ydwk.event.backend.event.CoroutineEventListener
+import io.github.realyusufismail.ydwk.event.backend.event.GenericEvent
+import io.github.realyusufismail.ydwk.event.backend.event.IEventListener
+import io.github.realyusufismail.ydwk.event.backend.managers.CoroutineEventManager
+import io.github.realyusufismail.ydwk.event.backend.managers.SampleEventManager
+import io.github.realyusufismail.ydwk.impl.rest.RestApiManagerImpl
+import io.github.realyusufismail.ydwk.impl.slash.SlashBuilderImpl
 import io.github.realyusufismail.ydwk.rest.RestApiManager
-import io.github.realyusufismail.ydwk.rest.impl.RestApiManagerImpl
+import io.github.realyusufismail.ydwk.slash.SlashBuilder
 import io.github.realyusufismail.ydwk.ws.WebSocketManager
 import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
 import io.github.realyusufismail.ydwk.ws.util.LoggedIn
+import java.time.Instant
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 import okhttp3.OkHttpClient
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-class YDWKImpl(private val client: OkHttpClient) : YDWK {
+class YDWKImpl(
+    private val client: OkHttpClient,
+    private val simpleEventManager: SampleEventManager = SampleEventManager(),
+    private val coroutineEventManager: CoroutineEventManager = CoroutineEventManager(),
+    val logger: Logger = LoggerFactory.getLogger(YDWKImpl::class.java),
+    val cache: Cache = PerpetualCache(),
+    val memberCache: MemberCache = MemberCacheImpl(),
+    private var token: String? = null,
+    private var guildIdList: MutableList<String> = mutableListOf(),
+    var applicationId: String? = null
+) : YDWK {
     // logger
-    val logger: Logger = LoggerFactory.getLogger(javaClass)
-    val cache: Cache = PerpetualCache()
-    val memberCache: MemberCache = MemberCacheImpl()
-    private var token: String? = null
 
     override val objectNode: ObjectNode
         get() = JsonNodeFactory.instance.objectNode()
@@ -58,10 +69,11 @@ class YDWKImpl(private val client: OkHttpClient) : YDWK {
         private set
 
     override fun shutdownAPI() {
+        val oneToFiveSecondTimeout = Random.nextLong(1000, 5000)
+        invalidateRestApi(oneToFiveSecondTimeout)
+        logger.info("Timeout for $oneToFiveSecondTimeout then shutting down")
+
         try {
-            val oneToFiveSecondTimeout = Random.nextLong(1000, 5000)
-            invalidateRestApi(oneToFiveSecondTimeout)
-            logger.info("Timeout for $oneToFiveSecondTimeout then shutting down")
             Thread.sleep(oneToFiveSecondTimeout)
         } catch (e: InterruptedException) {
             logger.error("Error while sleeping", e)
@@ -97,6 +109,18 @@ class YDWKImpl(private val client: OkHttpClient) : YDWK {
             val botToken = token ?: throw IllegalStateException("Bot token is not set")
             return RestApiManagerImpl(botToken, this, client)
         }
+    override val uptime: Instant
+        get() = webSocketManager!!.upTime ?: throw IllegalStateException("Bot is not logged in")
+    override val slashBuilder: SlashBuilder
+        get() =
+            SlashBuilderImpl(
+                this,
+                guildIdList,
+                applicationId ?: throw IllegalStateException("Application ID is not set"))
+
+    override fun setGuildIds(vararg guildIds: String) {
+        guildIds.forEach { this.guildIdList.add(it) }
+    }
 
     override var bot: Bot? = null
         get() {
@@ -170,18 +194,43 @@ class YDWKImpl(private val client: OkHttpClient) : YDWK {
             return this
         }
 
-    override val eventListener: IEventManager = EventManager()
-
     override fun addEvent(vararg eventListeners: Any) {
-        eventListeners.forEach { eventListener.addEvent(it) }
+        for (eventListener in eventListeners) {
+            when (eventListener) {
+                is IEventListener -> {
+                    simpleEventManager.addEvent(eventListener)
+                }
+                is CoroutineEventListener -> {
+                    coroutineEventManager.addEvent(eventListener)
+                }
+                else -> {
+                    logger.error(
+                        "Event listener is not an instance of EventListener or CoroutineEventListener")
+                }
+            }
+        }
     }
 
     override fun removeEvent(vararg eventListeners: Any) {
-        eventListeners.forEach { eventListener.removeEvent(it) }
+        for (eventListener in eventListeners) {
+            when (eventListener) {
+                is IEventListener -> {
+                    simpleEventManager.removeEvent(eventListener)
+                }
+                is CoroutineEventListener -> {
+                    coroutineEventManager.removeEvent(eventListener)
+                }
+                else -> {
+                    logger.error(
+                        "Event listener is not an instance of EventListener or CoroutineEventListener")
+                }
+            }
+        }
     }
 
-    override fun emitEvent(event: Event) {
-        eventListener.emitEvent(event)
+    override fun emitEvent(event: GenericEvent) {
+        simpleEventManager.emitEvent(event)
+        coroutineEventManager.emitEvent(event)
     }
 
     /**

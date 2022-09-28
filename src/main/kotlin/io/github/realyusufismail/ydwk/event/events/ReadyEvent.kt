@@ -26,4 +26,4 @@ class ReadyEvent(
     amountOfAvailableGuilds: Int,
     unAvailableGuildsAmount: Int,
     val totalGuildsAmount: Int = amountOfAvailableGuilds + unAvailableGuildsAmount
-) : Event
+) : Event(ydwk)

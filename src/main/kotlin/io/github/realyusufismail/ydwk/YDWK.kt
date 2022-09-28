@@ -24,11 +24,12 @@ import io.github.realyusufismail.ydwk.entities.Application
 import io.github.realyusufismail.ydwk.entities.Bot
 import io.github.realyusufismail.ydwk.entities.Guild
 import io.github.realyusufismail.ydwk.entities.application.PartialApplication
-import io.github.realyusufismail.ydwk.event.Event
-import io.github.realyusufismail.ydwk.event.recieve.IEventManager
+import io.github.realyusufismail.ydwk.event.backend.event.GenericEvent
 import io.github.realyusufismail.ydwk.rest.RestApiManager
+import io.github.realyusufismail.ydwk.slash.SlashBuilder
 import io.github.realyusufismail.ydwk.ws.WebSocketManager
 import io.github.realyusufismail.ydwk.ws.util.LoggedIn
+import java.time.Instant
 
 interface YDWK {
 
@@ -56,9 +57,6 @@ interface YDWK {
     /** Used to indicated that bot has connected to the websocket. */
     val waitForConnection: YDWK
 
-    /** Used to get the event listener. */
-    val eventListener: IEventManager
-
     /**
      * Used to add an event listener.
      *
@@ -78,7 +76,7 @@ interface YDWK {
      *
      * @param event The event to be emitted.
      */
-    fun emitEvent(event: Event)
+    fun emitEvent(event: GenericEvent)
 
     /** Used to shut down the websocket manager */
     fun shutdownAPI()
@@ -110,4 +108,24 @@ interface YDWK {
      * @return The rest api manager.
      */
     val restApiManager: RestApiManager
+
+    /**
+     * Gets the bot's uptime.
+     *
+     * @return The bot's uptime.
+     */
+    val uptime: Instant
+
+    /** Used to add or remove slash commands */
+    val slashBuilder: SlashBuilder
+
+    /** Used to set the guild ids for guild commands */
+    fun setGuildIds(vararg guildIds: String)
+
+    /** Used to set the guild ids for guild commands */
+    fun setGuildIds(vararg guildIds: Long) =
+        setGuildIds(*guildIds.map { it.toString() }.toTypedArray())
+
+    /** Used to set the guild ids for guild commands */
+    fun setGuildIds(guildIds: MutableList<String>) = setGuildIds(*guildIds.toTypedArray())
 }

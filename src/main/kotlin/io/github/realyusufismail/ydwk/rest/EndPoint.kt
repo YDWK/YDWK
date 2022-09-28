@@ -77,4 +77,15 @@ open class EndPoint {
     }
 
     enum class UserEndpoint(val endPoint: String)
+
+    enum class ApplicationCommandsEndpoint(val endPoint: String) : IEnumEndpoint {
+        CREATE_GLOBAL_COMMAND("/applications/%s/commands"),
+        GET_GLOBAL_COMMANDS("/applications/%s/commands"),
+        CREATE_GUILD_COMMAND("/applications/%s/guilds/%s/commands"),
+        GET_GUILD_COMMANDS("/applications/%s/guilds/%s/commands");
+
+        override fun getEndpoint(): String {
+            return endPoint
+        }
+    }
 }

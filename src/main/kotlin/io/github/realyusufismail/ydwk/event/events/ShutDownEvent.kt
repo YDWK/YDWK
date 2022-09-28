@@ -23,4 +23,4 @@ import io.github.realyusufismail.ydwk.event.Event
 import io.github.realyusufismail.ydwk.ws.util.CloseCode
 import java.time.Instant
 
-class ShutDownEvent(override val ydwk: YDWK, closeCode: CloseCode, now: Instant) : Event
+class ShutDownEvent(override val ydwk: YDWK, closeCode: CloseCode, now: Instant) : Event(ydwk)

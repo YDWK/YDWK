@@ -22,7 +22,8 @@ import io.github.realyusufismail.event.TestEvent
 import io.github.realyusufismail.ws.io.github.realyusufismail.event.handle.EventManager
 import io.github.realyusufismail.ws.io.github.realyusufismail.event.handle.IEventManager
 import io.github.realyusufismail.ws.io.github.realyusufismail.event.handle.on
-import io.github.realyusufismail.ydwk.event.recieve.on
+import io.github.realyusufismail.ydwk.event.Event
+import io.github.realyusufismail.ydwk.event.backend.event.on
 import io.github.realyusufismail.ydwk.impl.YDWKImpl
 import okhttp3.OkHttpClient
 import org.junit.jupiter.api.Test
@@ -33,7 +34,7 @@ class EvenTester {
     @Test
     fun testEvent() {
         eventListener.emitEvent(TestEvent(YDWKImpl(OkHttpClient())))
-        var name: String? = null
+        var name = ""
         this.on<TestEvent> { name = "Yusuf" }
         // assertEquals("Yusuf", name, "Name is not Yusuf")
     }
@@ -53,5 +54,9 @@ class EvenTester {
 
     fun removeEvent(vararg eventListeners: Any) {
         eventListeners.forEach { eventListener.removeEvent(it) }
+    }
+
+    inline fun <reified T : Event> onEvent(noinline listener: (T) -> Unit) {
+        this.on<T> { listener(it) }
     }
 }
