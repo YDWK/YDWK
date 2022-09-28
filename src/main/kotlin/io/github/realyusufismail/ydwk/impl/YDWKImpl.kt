@@ -35,6 +35,7 @@ import io.github.realyusufismail.ydwk.rest.impl.RestApiManagerImpl
 import io.github.realyusufismail.ydwk.ws.WebSocketManager
 import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
 import io.github.realyusufismail.ydwk.ws.util.LoggedIn
+import java.time.Instant
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 import okhttp3.OkHttpClient
@@ -58,10 +59,11 @@ class YDWKImpl(private val client: OkHttpClient) : YDWK {
         private set
 
     override fun shutdownAPI() {
+        val oneToFiveSecondTimeout = Random.nextLong(1000, 5000)
+        invalidateRestApi(oneToFiveSecondTimeout)
+        logger.info("Timeout for $oneToFiveSecondTimeout then shutting down")
+
         try {
-            val oneToFiveSecondTimeout = Random.nextLong(1000, 5000)
-            invalidateRestApi(oneToFiveSecondTimeout)
-            logger.info("Timeout for $oneToFiveSecondTimeout then shutting down")
             Thread.sleep(oneToFiveSecondTimeout)
         } catch (e: InterruptedException) {
             logger.error("Error while sleeping", e)
@@ -97,6 +99,8 @@ class YDWKImpl(private val client: OkHttpClient) : YDWK {
             val botToken = token ?: throw IllegalStateException("Bot token is not set")
             return RestApiManagerImpl(botToken, this, client)
         }
+    override val uptime: Instant
+        get() = webSocketManager!!.upTime ?: throw IllegalStateException("Bot is not logged in")
 
     override var bot: Bot? = null
         get() {

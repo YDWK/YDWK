@@ -29,6 +29,7 @@ import io.github.realyusufismail.ydwk.event.recieve.IEventManager
 import io.github.realyusufismail.ydwk.rest.RestApiManager
 import io.github.realyusufismail.ydwk.ws.WebSocketManager
 import io.github.realyusufismail.ydwk.ws.util.LoggedIn
+import java.time.Instant
 
 interface YDWK {
 
@@ -110,4 +111,11 @@ interface YDWK {
      * @return The rest api manager.
      */
     val restApiManager: RestApiManager
+
+    /**
+     * Gets the bot's uptime.
+     *
+     * @return The bot's uptime.
+     */
+    val uptime: Instant
 }

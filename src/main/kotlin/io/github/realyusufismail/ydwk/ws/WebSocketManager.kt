@@ -65,6 +65,7 @@ open class WebSocketManager(
     private var seq: Int? = null
     private var heartbeatsMissed: Int = 0
     private var heartbeatStartTime: Long = 0
+    var upTime: Instant? = null
     @Volatile protected var heartbeatThread: Future<*>? = null
     private val scheduler: ScheduledExecutorService = Executors.newScheduledThreadPool(1)
     @get:Synchronized @set:Synchronized var connected = false
@@ -128,8 +129,10 @@ open class WebSocketManager(
         attemptedToResume = false
         if (sessionId == null) {
             identify()
+            upTime = Instant.now()
         } else {
             resume()
+            upTime = Instant.now()
         }
     }
 
@@ -479,7 +482,9 @@ open class WebSocketManager(
         resumeUrl = null
         ydwk.cache.clear()
         heartbeatThread?.cancel(false)
+        ydwk.setLoggedIn(LoggedInImpl(false).setDisconnectedTime())
         scheduler.shutdownNow()
+        upTime = null
     }
 
     fun shutdown() {
@@ -487,7 +492,7 @@ open class WebSocketManager(
         webSocket?.disconnect()
         logger.info("Shutting down gateway")
         try {
-            Runtime.getRuntime().exit(1000)
+            Runtime.getRuntime().exit(0)
         } catch (e: Exception) {
             logger.error("Failed to shutdown vm", e)
         }
