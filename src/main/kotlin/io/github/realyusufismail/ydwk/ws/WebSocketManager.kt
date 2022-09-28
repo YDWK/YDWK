@@ -477,10 +477,7 @@ open class WebSocketManager(
     private fun invalidate() {
         sessionId = null
         resumeUrl = null
-        alreadySentConnectMessageOnce = false
         ydwk.cache.clear()
-        attemptedToResume = false
-        heartbeatsMissed = 0
         heartbeatThread?.cancel(false)
         scheduler.shutdownNow()
     }
