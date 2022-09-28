@@ -7,12 +7,10 @@ A discord wrapper made in kotlin
 ## In progress and to be done
 - [ ] Create entities - in progress
 - [ ] Handle events - In progress
-- [ ] Handle reconnect and resuming
 - [ ] Handle rate limiting in websocket
 
 ## Future Features
 - [ ] Handle slash commands
-- [ ] Handle sending events
 
 ## Implemented
 - [x] Connect to gateway
@@ -20,6 +18,7 @@ A discord wrapper made in kotlin
 - [x] Handle all op codes
 - [x] Caching
 - [x] Handle Rest API
+- [x] Handle reconnect and resuming
 
 
 

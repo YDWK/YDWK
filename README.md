@@ -14,12 +14,10 @@ You might ask why should i use this wrapper when there is already a kotlin wrapp
 ## In progress and to be done
 - [ ] Create entities - in progress
 - [ ] Handle events - In progress
-- [ ] Handle reconnect and resuming
 - [ ] Handle rate limiting in websocket
 
 ## Future Features
 - [ ] Handle slash commands
-- [ ] Handle sending events
 
 ## Implemented
 - [x] Handle Rest API
@@ -27,6 +25,7 @@ You might ask why should i use this wrapper when there is already a kotlin wrapp
 - [x] Parse json
 - [x] Handle all op codes
 - [x] Caching
+- [x] Handle reconnect and resuming
 
 ## Getting started
 
