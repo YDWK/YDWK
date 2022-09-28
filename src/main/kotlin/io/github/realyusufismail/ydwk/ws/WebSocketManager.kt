@@ -24,7 +24,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import com.neovisionaries.ws.client.*
 import io.github.realyusufismail.ydwk.YDWKInfo
 import io.github.realyusufismail.ydwk.cache.CacheType
-import io.github.realyusufismail.ydwk.event.events.ReadyEvent
+import io.github.realyusufismail.ydwk.event.events.*
 import io.github.realyusufismail.ydwk.impl.YDWKImpl
 import io.github.realyusufismail.ydwk.impl.entities.BotImpl
 import io.github.realyusufismail.ydwk.impl.entities.application.PartialApplicationImpl
@@ -42,7 +42,12 @@ import java.io.IOException
 import java.net.Socket
 import java.net.SocketException
 import java.net.SocketTimeoutException
-import java.util.concurrent.*
+import java.time.Instant
+import java.util.concurrent.Executors
+import java.util.concurrent.Future
+import java.util.concurrent.ScheduledExecutorService
+import java.util.concurrent.TimeUnit
+import kotlin.random.Random
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -64,6 +69,9 @@ open class WebSocketManager(
     private val scheduler: ScheduledExecutorService = Executors.newScheduledThreadPool(1)
     @get:Synchronized @set:Synchronized var connected = false
     private var alreadySentConnectMessageOnce: Boolean = false
+    private var identifyRateLimit = false
+    private var identifyTime = 0L
+    private var attemptedToResume = false
 
     @Synchronized
     fun connect(): WebSocketManager {
@@ -87,6 +95,7 @@ open class WebSocketManager(
                     .connect()
         } catch (e: IOException) {
             resumeUrl = null
+            sessionId = null
             logger.error("Failed to connect to gateway, will try again in 10 seconds", e)
             scheduler.schedule({ connect() }, 10, TimeUnit.SECONDS)
         }
@@ -116,11 +125,17 @@ open class WebSocketManager(
         }
 
         connected = true
+        attemptedToResume = false
         if (sessionId == null) {
             identify()
         } else {
             resume()
         }
+    }
+
+    private fun sendCloseCode(code: CloseCode) {
+        checkNotNull(webSocket) { "WebSocket is null" }
+        webSocket!!.sendClose(code.code(), code.getReason())
     }
 
     @Throws(Exception::class)
@@ -151,37 +166,32 @@ open class WebSocketManager(
     ) {
         connected = false
 
-        val closeCode: CloseCode =
-            when {
-                serverCloseFrame != null -> {
-                    CloseCode.from(serverCloseFrame.closeCode)
-                }
-                clientCloseFrame != null -> {
-                    CloseCode.from(clientCloseFrame.closeCode)
-                }
-                else -> {
-                    CloseCode.UNKNOWN
-                }
-            }
+        val closeFrame: WebSocketFrame? = if (closedByServer) serverCloseFrame else clientCloseFrame
+
+        val closeCodeReason: String =
+            if (closeFrame != null) closeFrame.closeReason else "Unknown reason"
+
+        val closeCodeAsString: String =
+            if (closeFrame != null)
+                CloseCode.from(closeFrame.closeCode).name + " (" + closeFrame.closeCode + ")"
+            else "Unknown code"
+
         logger.info(
-            "Disconnected from gateway, code: ${closeCode.code} reason: ${closeCode.reason}")
+            "Disconnected from websocket with close code $closeCodeAsString and reason $closeCodeReason")
 
-        if (heartbeatThread != null) {
-            heartbeatThread!!.cancel(false)
-        }
+        ydwk.emitEvent(DisconnectEvent(ydwk, closeCodeAsString, closeCodeReason, Instant.now()))
 
-        if (closeCode.isReconnect() || closeCode == CloseCode.UNKNOWN || !scheduler.isShutdown) {
-            try {
-                scheduler.schedule({ connect() }, 10, TimeUnit.SECONDS)
-            } catch (e: RejectedExecutionException) {
-                logger.error("Error while reconnecting", e)
-                invalidate()
-                ydwk.setLoggedIn(LoggedInImpl(false).setDisconnectedTime())
-                TODO("Add shutdown event")
-            }
+        heartbeatThread?.cancel(false)
+
+        val closeCode = CloseCode.from(closeFrame?.closeCode ?: 1000)
+
+        if (closeCode.isReconnect()) {
+            logger.info("Reconnecting to websocket")
+            connect()
         } else {
-            ydwk.setLoggedIn(LoggedInImpl(false).setDisconnectedTime())
-            TODO("When creating events, add a shutdown event here")
+            logger.info("Not able to reconnect to websocket, shutting down")
+            ydwk.emitEvent(ShutDownEvent(ydwk, closeCode, Instant.now()))
+            ydwk.shutdownAPI()
         }
     }
 
@@ -217,6 +227,8 @@ open class WebSocketManager(
         val json: JsonNode = ydwk.objectNode.put("op", IDENTIFY.code).set("d", d)
         webSocket?.sendText(json.toString())
         ydwk.setLoggedIn(LoggedInImpl(false).setLoggedInTime())
+        identifyTime = System.currentTimeMillis()
+        identifyRateLimit = true
     }
 
     private fun resume() {
@@ -225,6 +237,7 @@ open class WebSocketManager(
         val identify: ObjectNode = ydwk.objectNode.put("op", RESUME.code).set("d", json)
 
         webSocket?.sendText(identify.toString())
+        attemptedToResume = true
         ydwk.setLoggedIn(LoggedInImpl(false).setLoggedInTime())
     }
 
@@ -253,22 +266,38 @@ open class WebSocketManager(
             }
             RECONNECT -> {
                 logger.debug("Received $opCode")
-                if (sessionId != null) {
-                    resume()
-                } else {
-                    identify()
-                }
+                sendCloseCode(CloseCode.RECONNECT)
             }
             INVALID_SESSION -> {
                 logger.debug("Received $opCode")
-                if (rawJson.get("d").asBoolean()) {
-                    logger.info("Invalid session, reconnecting")
-                    identify()
-                } else {
-                    logger.error("Invalid session")
-                    resumeUrl = null
-                    sessionId = null
+                identifyRateLimit =
+                    identifyRateLimit && System.currentTimeMillis() - identifyTime < 5000
+
+                if (identifyRateLimit) {
+                    logger.warn(
+                        "Identify rate limit exceeded, waiting 5 seconds before reconnecting")
+
+                    try {
+                        Thread.sleep(5000)
+                    } catch (e: InterruptedException) {
+                        logger.error("Error while sleeping", e)
+                    }
+                } else if (attemptedToResume) {
+                    val oneToFiveSeconds = Random.nextInt(1, 5)
+                    logger.warn(
+                        "Invalid session, waiting $oneToFiveSeconds seconds before reconnecting")
+
+                    try {
+                        Thread.sleep(oneToFiveSeconds * 1000L)
+                    } catch (e: InterruptedException) {
+                        logger.error("Error while sleeping", e)
+                    }
                 }
+
+                sessionId = null
+                resumeUrl = null
+
+                sendCloseCode(CloseCode.INVALID_SESSION)
             }
             HELLO -> {
                 logger.debug("Received $opCode")
@@ -326,7 +355,7 @@ open class WebSocketManager(
         if (heartbeatsMissed >= 2) {
             heartbeatsMissed = 0
             logger.warn("Heartbeat missed, will attempt to reconnect")
-            webSocket!!.disconnect(CloseCode.RECONNECT.code, "ZOMBIE CONNECTION")
+            sendCloseCode(CloseCode.MISSED_HEARTBEAT)
         } else {
             heartbeatsMissed += 1
             webSocket!!.sendText(heartbeat.toString())
@@ -351,6 +380,8 @@ open class WebSocketManager(
 
                 sessionId = d.get("session_id").asText()
                 resumeUrl = d.get("resume_gateway_url").asText()
+                identifyRateLimit = false
+                attemptedToResume = false
 
                 val bot = BotImpl(d.get("user"), d.get("user").get("id").asLong(), ydwk)
                 ydwk.bot = bot
@@ -378,8 +409,14 @@ open class WebSocketManager(
 
                 ydwk.emitEvent(ReadyEvent(ydwk, availableGuildsAmount, unAvailableGuildsAmount))
             }
-            EventNames.RESUMED -> TODO()
-            EventNames.RECONNECT -> TODO()
+            EventNames.RESUMED -> {
+                attemptedToResume = false
+                ydwk.emitEvent(ResumeEvent(ydwk))
+            }
+            EventNames.RECONNECT -> {
+                attemptedToResume = false
+                ydwk.emitEvent(ReconnectEvent(ydwk))
+            }
             EventNames.INVALID_SESSION -> {
                 sessionId = null
                 resumeUrl = null
@@ -440,11 +477,19 @@ open class WebSocketManager(
     private fun invalidate() {
         sessionId = null
         resumeUrl = null
+        ydwk.cache.clear()
+        heartbeatThread?.cancel(false)
+        scheduler.shutdownNow()
     }
 
     fun shutdown() {
-        heartbeatThread?.cancel(true)
+        invalidate()
         webSocket?.disconnect()
-        logger.info("Disconnected from websocket")
+        logger.info("Shutting down gateway")
+        try {
+            Runtime.getRuntime().exit(1000)
+        } catch (e: Exception) {
+            logger.error("Failed to shutdown vm", e)
+        }
     }
 }

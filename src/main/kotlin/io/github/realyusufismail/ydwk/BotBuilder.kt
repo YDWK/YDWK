@@ -28,7 +28,7 @@ import okhttp3.OkHttpClient
  * @param token Used to authenticate the bot.
  */
 fun createDefaultBot(token: String): YDWK {
-    val ydwk = YDWKImpl(null)
+    val ydwk = YDWKImpl(OkHttpClient())
     ydwk.setWebSocketManager(token, GateWayIntent.getDefaultIntents())
     return ydwk
 }
@@ -52,7 +52,7 @@ fun createDefaultBot(token: String, httpClient: OkHttpClient): YDWK {
  * @param intents The gateway intent which will decide what events are sent by discord.
  */
 fun createCustomBot(token: String, intents: List<GateWayIntent>): YDWK {
-    val ydwk = YDWKImpl(null)
+    val ydwk = YDWKImpl(OkHttpClient())
     ydwk.setWebSocketManager(token, intents)
     return ydwk
 }

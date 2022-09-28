@@ -35,11 +35,13 @@ import io.github.realyusufismail.ydwk.rest.impl.RestApiManagerImpl
 import io.github.realyusufismail.ydwk.ws.WebSocketManager
 import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
 import io.github.realyusufismail.ydwk.ws.util.LoggedIn
+import java.util.concurrent.TimeUnit
+import kotlin.random.Random
 import okhttp3.OkHttpClient
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-class YDWKImpl(private val client: OkHttpClient?) : YDWK {
+class YDWKImpl(private val client: OkHttpClient) : YDWK {
     // logger
     val logger: Logger = LoggerFactory.getLogger(javaClass)
     val cache: Cache = PerpetualCache()
@@ -55,8 +57,31 @@ class YDWKImpl(private val client: OkHttpClient?) : YDWK {
     override var webSocketManager: WebSocketManager? = null
         private set
 
-    override fun shutdown() {
+    override fun shutdownAPI() {
+        try {
+            val oneToFiveSecondTimeout = Random.nextLong(1000, 5000)
+            invalidateRestApi(oneToFiveSecondTimeout)
+            logger.info("Timeout for $oneToFiveSecondTimeout then shutting down")
+            Thread.sleep(oneToFiveSecondTimeout)
+        } catch (e: InterruptedException) {
+            logger.error("Error while sleeping", e)
+        }
         webSocketManager?.shutdown()
+    }
+
+    private fun invalidateRestApi(oneToFiveSecondTimeout: Long) {
+        client.dispatcher.executorService.shutdown()
+        client.connectionPool.evictAll()
+        client.dispatcher.cancelAll()
+        if (client.cache != null) {
+            try {
+                client.cache!!.close()
+            } catch (e: Exception) {
+                logger.error("Error while closing cache", e)
+            }
+        }
+        client.dispatcher.executorService.awaitTermination(
+            oneToFiveSecondTimeout, TimeUnit.MILLISECONDS)
     }
 
     override fun getGuild(id: String): Guild? {
@@ -70,11 +95,7 @@ class YDWKImpl(private val client: OkHttpClient?) : YDWK {
     override val restApiManager: RestApiManager
         get() {
             val botToken = token ?: throw IllegalStateException("Bot token is not set")
-            return if (client == null) {
-                RestApiManagerImpl(botToken, this, OkHttpClient())
-            } else {
-                RestApiManagerImpl(botToken, this, client)
-            }
+            return RestApiManagerImpl(botToken, this, client)
         }
 
     override var bot: Bot? = null

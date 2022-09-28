@@ -19,7 +19,10 @@
 package io.github.realyusufismail.ydwk.event.recieve
 
 import io.github.realyusufismail.ydwk.event.Event
+import io.github.realyusufismail.ydwk.event.events.DisconnectEvent
 import io.github.realyusufismail.ydwk.event.events.ReadyEvent
+import io.github.realyusufismail.ydwk.event.events.ResumeEvent
+import io.github.realyusufismail.ydwk.event.events.ShutDownEvent
 import io.github.realyusufismail.ydwk.event.update.IEventUpdate
 import java.lang.invoke.MethodHandle
 import java.lang.invoke.MethodHandles
@@ -38,8 +41,33 @@ abstract class ListenerAdapter : EventListener {
     /** Listens to all event updates */
     fun onBasicUpdate(eventUpdate: IEventUpdate<*, *>) {}
 
-    /** Listens to ready event */
+    /**
+     * Listens to ready event
+     *
+     * @param event The ready event
+     */
     fun onReady(event: ReadyEvent) {}
+
+    /**
+     * Listens to Disconnect event
+     *
+     * @param event The disconnect event
+     */
+    fun onDisconnect(event: DisconnectEvent) {}
+
+    /**
+     * Listens to Resume event
+     *
+     * @param event The resume event
+     */
+    fun onResume(event: ResumeEvent) {}
+
+    /**
+     * Listens to ShutDown event
+     *
+     * @param event The shutdown event
+     */
+    fun onShutDown(event: ShutDownEvent) {}
 
     /**
      * This method is called when an event is received.

@@ -20,10 +20,11 @@ package io.github.realyusufismail.ydwk.event.events
 
 import io.github.realyusufismail.ydwk.YDWK
 import io.github.realyusufismail.ydwk.event.Event
+import java.time.Instant
 
-class ReadyEvent(
+class DisconnectEvent(
     override val ydwk: YDWK,
-    amountOfAvailableGuilds: Int,
-    unAvailableGuildsAmount: Int,
-    val totalGuildsAmount: Int = amountOfAvailableGuilds + unAvailableGuildsAmount
+    closeCode: String,
+    closeCodeReason: String,
+    now: Instant
 ) : Event
