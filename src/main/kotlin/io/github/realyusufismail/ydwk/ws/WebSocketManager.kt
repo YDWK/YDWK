@@ -24,10 +24,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import com.neovisionaries.ws.client.*
 import io.github.realyusufismail.ydwk.YDWKInfo
 import io.github.realyusufismail.ydwk.cache.CacheType
-import io.github.realyusufismail.ydwk.event.events.DisconnectEvent
-import io.github.realyusufismail.ydwk.event.events.ReadyEvent
-import io.github.realyusufismail.ydwk.event.events.ResumeEvent
-import io.github.realyusufismail.ydwk.event.events.ShutDownEvent
+import io.github.realyusufismail.ydwk.event.events.*
 import io.github.realyusufismail.ydwk.impl.YDWKImpl
 import io.github.realyusufismail.ydwk.impl.entities.BotImpl
 import io.github.realyusufismail.ydwk.impl.entities.application.PartialApplicationImpl
@@ -194,7 +191,7 @@ open class WebSocketManager(
         } else {
             logger.info("Not able to reconnect to websocket, shutting down")
             ydwk.emitEvent(ShutDownEvent(ydwk, closeCode, Instant.now()))
-            ydwk.shutdown()
+            ydwk.shutdownAPI()
         }
     }
 
@@ -416,7 +413,10 @@ open class WebSocketManager(
                 attemptedToResume = false
                 ydwk.emitEvent(ResumeEvent(ydwk))
             }
-            EventNames.RECONNECT -> TODO()
+            EventNames.RECONNECT -> {
+                attemptedToResume = false
+                ydwk.emitEvent(ReconnectEvent(ydwk))
+            }
             EventNames.INVALID_SESSION -> {
                 sessionId = null
                 resumeUrl = null
@@ -481,11 +481,12 @@ open class WebSocketManager(
         ydwk.cache.clear()
         attemptedToResume = false
         heartbeatsMissed = 0
+        heartbeatThread?.cancel(false)
+        scheduler.shutdownNow()
     }
 
     fun shutdown() {
         invalidate()
-        heartbeatThread?.cancel(false)
         webSocket?.disconnect()
         logger.info("Shutting down gateway")
         try {

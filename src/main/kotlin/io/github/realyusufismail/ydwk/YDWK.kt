@@ -81,7 +81,7 @@ interface YDWK {
     fun emitEvent(event: Event)
 
     /** Used to shut down the websocket manager */
-    fun shutdown()
+    fun shutdownAPI()
 
     /**
      * Used to get a guild by its id.

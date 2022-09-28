@@ -25,6 +25,5 @@ class ReadyEvent(
     override val ydwk: YDWK,
     amountOfAvailableGuilds: Int,
     unAvailableGuildsAmount: Int,
-) : Event {
-    val totalGuildsAmount = amountOfAvailableGuilds + unAvailableGuildsAmount
-}
+    val totalGuildsAmount: Int = amountOfAvailableGuilds + unAvailableGuildsAmount
+) : Event
