@@ -98,6 +98,7 @@ open class WebSocketManager(
                     .connect()
         } catch (e: IOException) {
             resumeUrl = null
+            sessionId = null
             logger.error("Failed to connect to gateway, will try again in 10 seconds", e)
             scheduler.schedule({ connect() }, 10, TimeUnit.SECONDS)
         }
@@ -268,11 +269,7 @@ open class WebSocketManager(
             }
             RECONNECT -> {
                 logger.debug("Received $opCode")
-                if (sessionId != null) {
-                    resume()
-                } else {
-                    identify()
-                }
+                sendCloseCode(CloseCode.RECONNECT)
             }
             INVALID_SESSION -> {
                 logger.debug("Received $opCode")
@@ -480,11 +477,21 @@ open class WebSocketManager(
     private fun invalidate() {
         sessionId = null
         resumeUrl = null
+        alreadySentConnectMessageOnce = false
+        ydwk.cache.clear()
+        attemptedToResume = false
+        heartbeatsMissed = 0
     }
 
     fun shutdown() {
+        invalidate()
         heartbeatThread?.cancel(false)
         webSocket?.disconnect()
-        logger.info("Disconnected from websocket")
+        logger.info("Shutting down gateway")
+        try {
+            Runtime.getRuntime().exit(1000)
+        } catch (e: Exception) {
+            logger.error("Failed to shutdown vm", e)
+        }
     }
 }

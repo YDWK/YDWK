@@ -23,6 +23,10 @@ enum class CloseCode(
     private val reason: String,
     private val reconnect: Boolean = true,
 ) {
+    TERMINATION(
+        1008,
+        "This endpoint is terminating the connection because it has received a message that violates its policy",
+        false),
     UNKNOWN_ERROR(4000, "We're not sure what went wrong. Try reconnecting?"),
     UNKNOWN_OPCODE(4001, "You sent an invalid Gateway opcode. Don't do that!"),
     DECODE_ERROR(4002, "You sent an invalid payload to us. Don't do that!"),
@@ -49,9 +53,10 @@ enum class CloseCode(
         4014,
         "You sent a disallowed intent for a Gateway Intent. You may have tried to specify an intent that you have not enabled or are not whitelisted for.",
         false),
-    INVALID_SESSION(4015, "The session has been invalidated. We will reconnect you automatically."),
-    MISSED_HEARTBEAT(4016, "You missed too many heartbeats.", false),
-    UNKNOWN(4000, "Unknown error", false);
+    RECONNECT(4999, "Sent when opcode 7 is received"),
+    INVALID_SESSION(4998, "The session has been invalidated. We will reconnect you automatically."),
+    MISSED_HEARTBEAT(4997, "You missed too many heartbeats, reconnecting."),
+    UNKNOWN(4999, "Unknown error", false);
 
     companion object {
         fun from(code: Int): CloseCode {
