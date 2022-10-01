@@ -111,6 +111,7 @@ class YDWKImpl(
         }
     override val uptime: Instant
         get() = webSocketManager!!.upTime ?: throw IllegalStateException("Bot is not logged in")
+        
     override val slashBuilder: SlashBuilder
         get() =
             SlashBuilderImpl(
@@ -120,7 +121,7 @@ class YDWKImpl(
 
     override fun setGuildIds(vararg guildIds: String) {
         guildIds.forEach { this.guildIdList.add(it) }
-    }
+
 
     override var bot: Bot? = null
         get() {
