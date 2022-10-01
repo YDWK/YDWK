@@ -57,6 +57,9 @@ interface YDWK {
     /** Used to indicated that bot has connected to the websocket. */
     val waitForConnection: YDWK
 
+    /** Used to wait for the READY gateway event to be received. */
+    val waitForReady: YDWK
+
     /**
      * Used to add an event listener.
      *

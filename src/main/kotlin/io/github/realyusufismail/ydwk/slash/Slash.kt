@@ -23,7 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ArrayNode
 import io.github.realyusufismail.ydwk.interaction.application.ApplicationCommandType
 
-class Slash(val name: String, val description: String) {
+class Slash(val name: String, val description: String, val guildOnly: Boolean = false) {
     private var options: MutableList<SlashOption> = mutableListOf()
 
     fun addOption(option: SlashOption) {
@@ -44,7 +44,15 @@ class Slash(val name: String, val description: String) {
         json.put("description", description)
         json.put("type", ApplicationCommandType.CHAT_INPUT.toInt())
         val options: ArrayNode = ObjectMapper().createArrayNode()
-        this.options.forEach { options.add(it.toJson()) }
+        this.options.forEach { it ->
+            run {
+                assert(it.name.length <= 32) { "Option name must be 32 characters or less" }
+                assert(it.description.length <= 100) {
+                    "Option description must be 100 characters or less"
+                }
+                options.add(it.toJson())
+            }
+        }
         json.set<ArrayNode>("options", options)
         return json
     }

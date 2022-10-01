@@ -18,6 +18,7 @@
  */ 
 package io.github.realyusufismail.ydwk.impl.rest.type
 
+import com.fasterxml.jackson.databind.JsonNode
 import io.github.realyusufismail.ydwk.impl.YDWKImpl
 import io.github.realyusufismail.ydwk.rest.type.GetRestApi
 import okhttp3.OkHttpClient
@@ -27,4 +28,21 @@ class GetRestApiImpl(
     private val ydwk: YDWKImpl,
     private val client: OkHttpClient,
     private val builder: Request.Builder,
-) : GetRestApi, SimilarRestApiImpl(ydwk, builder, client)
+) : GetRestApi, SimilarRestApiImpl(ydwk, builder, client) {
+    override val execute: JsonNode
+        get() {
+            try {
+                val response = client.newCall(builder.build()).execute()
+                responseBody = response.body
+                if (response.isSuccessful) {
+                    return ydwk.objectMapper.readTree(responseBody!!.string())
+                } else {
+                    throw Exception("Error ${response.code} ${response.message}")
+                }
+            } catch (e: Exception) {
+                throw RuntimeException("Error while executing request", e)
+            } finally {
+                responseBody?.close()
+            }
+        }
+}

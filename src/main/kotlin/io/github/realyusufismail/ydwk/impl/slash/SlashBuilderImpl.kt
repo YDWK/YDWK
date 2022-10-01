@@ -23,6 +23,7 @@ import io.github.realyusufismail.ydwk.rest.EndPoint
 import io.github.realyusufismail.ydwk.rest.RestApiManager
 import io.github.realyusufismail.ydwk.slash.Slash
 import io.github.realyusufismail.ydwk.slash.SlashBuilder
+import java.util.*
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 
@@ -75,32 +76,43 @@ class SlashBuilderImpl(
     override fun build() {
         val rest = ydwk.restApiManager
 
-        val jsons = mutableListOf<RequestBody>()
-        slashCommands.forEach { it -> jsons.add(it.toJson().asText().toRequestBody()) }
+        slashCommands.forEach { it ->
+            // check if the name is capital
+            assert(it.name == it.name.lowercase(Locale.ROOT)) {
+                "Slash command name must be lowercase"
+            }
+            // name can not be longer than 32 characters
+            assert(it.name.length <= 32) {
+                "Slash command name can not be longer than 32 characters"
+            }
+            // description can not be longer than 100 characters
+            assert(it.description.length <= 100) {
+                "Slash command description can not be longer than 100 characters"
+            }
 
-        if (guildIds.isNotEmpty()) {
-            addGuildSlashCommands(rest, jsons)
-        } else {
-            addGlobalSlashCommands(rest, jsons)
-        }
-    }
-
-    private fun addGuildSlashCommands(rest: RestApiManager, jsons: List<RequestBody>) {
-        guildIds.forEach { guildId ->
-            jsons.forEach { json -> addGuildSlashCommand(rest, guildId, json) }
+            if (it.guildOnly && guildIds.isEmpty()) {
+                guildIds.forEach { c ->
+                    addGuildSlashCommand(rest, c, it.toJson().asText().toRequestBody())
+                }
+            } else {
+                addGlobalSlashCommand(rest, it.toJson().asText().toRequestBody())
+            }
         }
     }
 
     private fun addGuildSlashCommand(rest: RestApiManager, guildId: String, json: RequestBody) {
-        rest.post(
-            json, EndPoint.ApplicationCommandsEndpoint.CREATE_GUILD_COMMAND, applicationId, guildId)
-    }
-
-    private fun addGlobalSlashCommands(rest: RestApiManager, jsons: List<RequestBody>) {
-        jsons.forEach { json -> addGlobalSlashCommand(rest, json) }
+        rest
+            .post(
+                json,
+                EndPoint.ApplicationCommandsEndpoint.CREATE_GUILD_COMMAND,
+                applicationId,
+                guildId)
+            .execute()
     }
 
     private fun addGlobalSlashCommand(rest: RestApiManager, json: RequestBody) {
-        rest.post(json, EndPoint.ApplicationCommandsEndpoint.CREATE_GLOBAL_COMMAND, applicationId)
+        rest
+            .post(json, EndPoint.ApplicationCommandsEndpoint.CREATE_GLOBAL_COMMAND, applicationId)
+            .execute()
     }
 }

@@ -18,4 +18,8 @@
  */ 
 package io.github.realyusufismail.ydwk.rest.type
 
-interface GetRestApi : SimilarRestApi
+import com.fasterxml.jackson.databind.JsonNode
+
+interface GetRestApi : SimilarRestApi {
+    val execute: JsonNode
+}

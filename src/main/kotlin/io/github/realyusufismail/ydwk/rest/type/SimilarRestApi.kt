@@ -18,7 +18,6 @@
  */ 
 package io.github.realyusufismail.ydwk.rest.type
 
-import com.fasterxml.jackson.databind.JsonNode
 import okhttp3.CacheControl
 import okhttp3.Headers
 import okhttp3.Request
@@ -34,5 +33,5 @@ interface SimilarRestApi {
 
     fun cacheControl(cacheControl: CacheControl): Request.Builder
 
-    val execute: JsonNode
+    fun execute()
 }

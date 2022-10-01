@@ -70,6 +70,7 @@ open class WebSocketManager(
     @Volatile protected var heartbeatThread: Future<*>? = null
     private val scheduler: ScheduledExecutorService = Executors.newScheduledThreadPool(1)
     @get:Synchronized @set:Synchronized var connected = false
+    @get:Synchronized @set:Synchronized var ready = false
     private var alreadySentConnectMessageOnce: Boolean = false
     private var identifyRateLimit = false
     private var identifyTime = 0L
@@ -386,6 +387,7 @@ open class WebSocketManager(
                 resumeUrl = d.get("resume_gateway_url").asText()
                 identifyRateLimit = false
                 attemptedToResume = false
+                ready = true
 
                 val bot = BotImpl(d.get("user"), d.get("user").get("id").asLong(), ydwk)
                 ydwk.bot = bot

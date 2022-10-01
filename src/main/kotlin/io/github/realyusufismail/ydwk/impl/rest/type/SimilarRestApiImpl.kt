@@ -18,9 +18,9 @@
  */ 
 package io.github.realyusufismail.ydwk.impl.rest.type
 
-import com.fasterxml.jackson.databind.JsonNode
 import io.github.realyusufismail.ydwk.impl.YDWKImpl
 import io.github.realyusufismail.ydwk.rest.type.SimilarRestApi
+import java.io.IOException
 import okhttp3.*
 
 open class SimilarRestApiImpl(
@@ -48,22 +48,15 @@ open class SimilarRestApiImpl(
         return builder.cacheControl(cacheControl)
     }
 
-    private var responseBody: ResponseBody? = null
-
-    override val execute: JsonNode
-        get() {
-            try {
-                val response = client.newCall(builder.build()).execute()
-                responseBody = response.body
-                if (response.isSuccessful) {
-                    return ydwk.objectMapper.readTree(responseBody!!.string())
-                } else {
-                    throw Exception("Error ${response.code} ${response.message}")
-                }
-            } catch (e: Exception) {
-                throw RuntimeException("Error while executing request", e)
-            } finally {
-                responseBody?.close()
+    override fun execute() {
+        try {
+            client.newCall(builder.build()).execute().use { response ->
+                if (!response.isSuccessful) throw IOException("Unexpected code $response")
             }
+        } catch (e: Exception) {
+            throw RuntimeException("Error while executing request", e)
         }
+    }
+
+    var responseBody: ResponseBody? = null
 }

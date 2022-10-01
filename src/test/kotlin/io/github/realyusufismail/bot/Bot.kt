@@ -23,6 +23,7 @@ import io.github.realyusufismail.ydwk.createDefaultBot
 import io.github.realyusufismail.ydwk.event.ListenerAdapter
 import io.github.realyusufismail.ydwk.event.backend.event.on
 import io.github.realyusufismail.ydwk.event.events.ReadyEvent
+import io.github.realyusufismail.ydwk.slash.Slash
 
 class Bot : ListenerAdapter() {
     override fun onReady(event: ReadyEvent) {
@@ -36,4 +37,6 @@ fun main() {
     ydwk.on<ReadyEvent> { println("Ready!") }
 
     ydwk.addEvent(Bot())
+
+    ydwk.waitForReady.slashBuilder.addSlashCommand(Slash("Test", "This is a test command")).build()
 }

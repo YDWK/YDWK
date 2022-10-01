@@ -194,6 +194,26 @@ class YDWKImpl(
             }
             return this
         }
+    override val waitForReady: YDWK
+        get() {
+            val ws = webSocketManager
+            if (ws == null) {
+                throw IllegalStateException("WebSocketManager is not initialized")
+            } else {
+                while (!ws.ready) {
+                    try {
+                        Thread.sleep(100)
+                    } catch (e: InterruptedException) {
+                        logger.error("Error while waiting for ready", e)
+                    } finally {
+                        if (!ws.ready) {
+                            waitForReady // retry
+                        }
+                    }
+                }
+            }
+            return this
+        }
 
     override fun addEvent(vararg eventListeners: Any) {
         for (eventListener in eventListeners) {
