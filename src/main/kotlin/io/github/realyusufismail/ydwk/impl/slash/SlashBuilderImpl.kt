@@ -23,6 +23,7 @@ import io.github.realyusufismail.ydwk.rest.EndPoint
 import io.github.realyusufismail.ydwk.rest.RestApiManager
 import io.github.realyusufismail.ydwk.slash.Slash
 import io.github.realyusufismail.ydwk.slash.SlashBuilder
+import io.github.realyusufismail.ydwk.util.Checks
 import java.util.*
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -77,18 +78,13 @@ class SlashBuilderImpl(
         val rest = ydwk.restApiManager
 
         slashCommands.forEach { it ->
-            // check if the name is capital
-            assert(it.name == it.name.lowercase(Locale.ROOT)) {
-                "Slash command name must be lowercase"
-            }
-            // name can not be longer than 32 characters
-            assert(it.name.length <= 32) {
-                "Slash command name can not be longer than 32 characters"
-            }
-            // description can not be longer than 100 characters
-            assert(it.description.length <= 100) {
-                "Slash command description can not be longer than 100 characters"
-            }
+            Checks.checkIfCapital(it.name, "Slash command name must be lowercase")
+            Checks.checkLength(
+                it.name, 32, "Slash command name can not be longer than 32 characters")
+            Checks.checkLength(
+                it.description,
+                100,
+                "Slash command description can not be longer than 100 characters")
 
             if (it.guildOnly && guildIds.isEmpty()) {
                 guildIds.forEach { c ->

@@ -38,5 +38,5 @@ fun main() {
 
     ydwk.addEvent(Bot())
 
-    ydwk.waitForReady.slashBuilder.addSlashCommand(Slash("Test", "This is a test command")).build()
+    ydwk.waitForReady.slashBuilder.addSlashCommand(Slash("test", "This is a test command")).build()
 }
