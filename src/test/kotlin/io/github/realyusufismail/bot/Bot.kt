@@ -24,18 +24,16 @@ import io.github.realyusufismail.ydwk.event.ListenerAdapter
 import io.github.realyusufismail.ydwk.event.backend.event.on
 import io.github.realyusufismail.ydwk.event.events.ReadyEvent
 
-object Bot : ListenerAdapter() {
-
-    @JvmStatic
-    fun main(args: Array<String>) {
-        val ydwk = createDefaultBot(JConfigUtils.getString("token"))
-
-        ydwk.addEvent(this)
-
-        ydwk.on<ReadyEvent> { println("Ready!") }
-    }
-
+class Bot : ListenerAdapter() {
     override fun onReady(event: ReadyEvent) {
         println("Bot is ready!")
     }
+}
+
+fun main() {
+    val ydwk = createDefaultBot(JConfigUtils.getString("token"))
+
+    ydwk.on<ReadyEvent> { println("Ready!") }
+
+    ydwk.addEvent(Bot())
 }
