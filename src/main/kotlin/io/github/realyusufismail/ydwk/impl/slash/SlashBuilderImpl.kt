@@ -88,10 +88,10 @@ class SlashBuilderImpl(
 
             if (it.guildOnly && guildIds.isEmpty()) {
                 guildIds.forEach { c ->
-                    addGuildSlashCommand(rest, c, it.toJson().asText().toRequestBody())
+                    addGuildSlashCommand(rest, c, it.toJson().toPrettyString().toRequestBody())
                 }
             } else {
-                addGlobalSlashCommand(rest, it.toJson().asText().toRequestBody())
+                addGlobalSlashCommand(rest, it.toJson().toPrettyString().toRequestBody())
             }
         }
     }

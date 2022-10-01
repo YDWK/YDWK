@@ -19,8 +19,8 @@
 package io.github.realyusufismail.ydwk.impl.rest.type
 
 import io.github.realyusufismail.ydwk.impl.YDWKImpl
+import io.github.realyusufismail.ydwk.rest.error.HttpResponseCode
 import io.github.realyusufismail.ydwk.rest.type.SimilarRestApi
-import java.io.IOException
 import okhttp3.*
 
 open class SimilarRestApiImpl(
@@ -51,7 +51,15 @@ open class SimilarRestApiImpl(
     override fun execute() {
         try {
             client.newCall(builder.build()).execute().use { response ->
-                if (!response.isSuccessful) throw IOException("Unexpected code $response")
+                if (!response.isSuccessful) {
+                    val code = response.code
+                    if (HttpResponseCode.fromCode(code) != HttpResponseCode.UNKNOWN) {
+                        val error = HttpResponseCode.fromCode(code)
+                        val codeAndName = error.getCode().toString() + " " + error.name
+                        val reason = error.getMessage()
+                        ydwk.logger.error("Error while executing request: $codeAndName $reason")
+                    }
+                }
             }
         } catch (e: Exception) {
             throw RuntimeException("Error while executing request", e)
