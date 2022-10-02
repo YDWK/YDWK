@@ -24,19 +24,17 @@ import io.github.ydwk.ydwk.entities.guild.Member
  * Discord's Member do not have a unique ID, so we need to use a combination of the guild ID and the
  * user ID
  */
-class MemberCacheImpl : MemberCache, PerpetualCache() {
+class MemberCacheImpl(allowedCache: Set<CacheType>, disallowedCache: Set<CacheType>) :
+    MemberCache, PerpetualCache(allowedCache, disallowedCache) {
     override fun set(userId: String, guildId: String, value: Member) {
-        val memberId: String = userId + guildId
-        this[memberId, value] = CacheType.MEMBER
+        super.set(userId + guildId, value, CacheIds.MEMBER)
     }
 
     override fun get(userId: String, guildId: String): Any? {
-        val memberId: String = userId + guildId
-        return this[memberId, CacheType.MEMBER]
+        return super.get(userId + guildId, CacheIds.MEMBER)
     }
 
     override fun remove(userId: String, guildId: String) {
-        val memberId: String = userId + guildId
-        this.remove(memberId, CacheType.MEMBER)
+        super.remove(userId + guildId, CacheIds.MEMBER)
     }
 }

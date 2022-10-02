@@ -31,60 +31,60 @@ class DummyCache : Cache {
     override val size: Int
         get() = dummyMap.size
 
-    override fun set(key: String, value: Any, cacheType: CacheType) {
+    override fun set(key: String, value: Any, cacheType: CacheIds) {
         when (cacheType) {
-            CacheType.GUILD -> {
+            CacheIds.GUILD -> {
                 if (value is Guild) {
                     dummyMap[key + "guild"] = value
                 } else {
                     throw CacheException("Cache type is Guild but value is not a Guild")
                 }
             }
-            CacheType.USER -> {
+            CacheIds.USER -> {
                 if (value is DummyUser) {
                     dummyMap[key + "user"] = value
                 } else {
                     throw CacheException("Cache type is User but value is not a User")
                 }
             }
-            CacheType.ROLE -> {
+            CacheIds.ROLE -> {
                 if (value is Role) {
                     dummyMap[key + "role"] = value
                 } else {
                     throw CacheException("Cache type is Role but value is not a Role")
                 }
             }
-            CacheType.MEMBER -> {
+            CacheIds.MEMBER -> {
                 if (value is Member) {
                     dummyMap[key] = value
                 } else {
                     throw CacheException("Cache type is Member but value is not a Member")
                 }
             }
-            CacheType.EMOJI -> {
+            CacheIds.EMOJI -> {
                 if (value is Emoji) {
                     dummyMap[key + "emoji"] = value
                 } else {
                     throw CacheException("Cache type is Emoji but value is not a Emoji")
                 }
             }
-            CacheType.CHANNEL -> {
+            CacheIds.CHANNEL -> {
                 TODO()
             }
-            CacheType.MESSAGE -> {
+            CacheIds.MESSAGE -> {
                 TODO()
             }
-            CacheType.VOICE_STATE -> {
+            CacheIds.VOICE_STATE -> {
                 TODO()
             }
-            CacheType.STICKER -> {
+            CacheIds.STICKER -> {
                 if (value is Sticker) {
                     dummyMap[key + "sticker"] = value
                 } else {
                     throw CacheException("Cache type is Sticker but value is not a Sticker")
                 }
             }
-            CacheType.APPLICATION -> {
+            CacheIds.APPLICATION -> {
                 TODO()
             }
             else -> {
@@ -93,36 +93,36 @@ class DummyCache : Cache {
         }
     }
 
-    override fun get(key: String, cacheType: CacheType): Any? {
+    override fun get(key: String, cacheType: CacheIds): Any? {
         when (cacheType) {
-            CacheType.GUILD -> {
+            CacheIds.GUILD -> {
                 return dummyMap[key + "guild"]
             }
-            CacheType.USER -> {
+            CacheIds.USER -> {
                 return dummyMap[key + "user"]
             }
-            CacheType.ROLE -> {
+            CacheIds.ROLE -> {
                 return dummyMap[key + "role"]
             }
-            CacheType.MEMBER -> {
+            CacheIds.MEMBER -> {
                 return dummyMap[key]
             }
-            CacheType.EMOJI -> {
+            CacheIds.EMOJI -> {
                 return dummyMap[key + "emoji"]
             }
-            CacheType.CHANNEL -> {
+            CacheIds.CHANNEL -> {
                 return dummyMap[key + "channel"]
             }
-            CacheType.MESSAGE -> {
+            CacheIds.MESSAGE -> {
                 return dummyMap[key + "message"]
             }
-            CacheType.VOICE_STATE -> {
+            CacheIds.VOICE_STATE -> {
                 return dummyMap[key + "voiceState"]
             }
-            CacheType.STICKER -> {
+            CacheIds.STICKER -> {
                 return dummyMap[key + "sticker"]
             }
-            CacheType.APPLICATION -> {
+            CacheIds.APPLICATION -> {
                 return dummyMap[key + "application"]
             }
             else -> {
@@ -131,37 +131,37 @@ class DummyCache : Cache {
         }
     }
 
-    override fun remove(key: String, cacheType: CacheType): Any? {
+    override fun remove(key: String, cacheType: CacheIds): Any? {
         if (dummyMap.containsKey(key)) {
             when (cacheType) {
-                CacheType.GUILD -> {
+                CacheIds.GUILD -> {
                     return dummyMap.remove(key + "guild")
                 }
-                CacheType.USER -> {
+                CacheIds.USER -> {
                     return dummyMap.remove(key + "user")
                 }
-                CacheType.ROLE -> {
+                CacheIds.ROLE -> {
                     return dummyMap.remove(key + "role")
                 }
-                CacheType.MEMBER -> {
+                CacheIds.MEMBER -> {
                     return dummyMap.remove(key)
                 }
-                CacheType.EMOJI -> {
+                CacheIds.EMOJI -> {
                     return dummyMap.remove(key + "emoji")
                 }
-                CacheType.CHANNEL -> {
+                CacheIds.CHANNEL -> {
                     return dummyMap.remove(key + "channel")
                 }
-                CacheType.MESSAGE -> {
+                CacheIds.MESSAGE -> {
                     return dummyMap.remove(key + "message")
                 }
-                CacheType.VOICE_STATE -> {
+                CacheIds.VOICE_STATE -> {
                     return dummyMap.remove(key + "voiceState")
                 }
-                CacheType.STICKER -> {
+                CacheIds.STICKER -> {
                     return dummyMap.remove(key + "sticker")
                 }
-                CacheType.APPLICATION -> {
+                CacheIds.APPLICATION -> {
                     return dummyMap.remove(key + "application")
                 }
                 else -> {
@@ -177,36 +177,36 @@ class DummyCache : Cache {
         return dummyMap.containsKey(key)
     }
 
-    override fun contains(key: String, cacheType: CacheType): Boolean {
+    override fun contains(key: String, cacheType: CacheIds): Boolean {
         when (cacheType) {
-            CacheType.GUILD -> {
+            CacheIds.GUILD -> {
                 return dummyMap.containsKey(key + "guild")
             }
-            CacheType.USER -> {
+            CacheIds.USER -> {
                 return dummyMap.containsKey(key + "user")
             }
-            CacheType.ROLE -> {
+            CacheIds.ROLE -> {
                 return dummyMap.containsKey(key + "role")
             }
-            CacheType.MEMBER -> {
+            CacheIds.MEMBER -> {
                 return dummyMap.containsKey(key)
             }
-            CacheType.EMOJI -> {
+            CacheIds.EMOJI -> {
                 return dummyMap.containsKey(key + "emoji")
             }
-            CacheType.CHANNEL -> {
+            CacheIds.CHANNEL -> {
                 return dummyMap.containsKey(key + "channel")
             }
-            CacheType.MESSAGE -> {
+            CacheIds.MESSAGE -> {
                 return dummyMap.containsKey(key + "message")
             }
-            CacheType.VOICE_STATE -> {
+            CacheIds.VOICE_STATE -> {
                 return dummyMap.containsKey(key + "voiceState")
             }
-            CacheType.STICKER -> {
+            CacheIds.STICKER -> {
                 return dummyMap.containsKey(key + "sticker")
             }
-            CacheType.APPLICATION -> {
+            CacheIds.APPLICATION -> {
                 return dummyMap.containsKey(key + "application")
             }
             else -> {
@@ -219,73 +219,73 @@ class DummyCache : Cache {
         dummyMap.clear()
     }
 
-    override fun values(cacheType: CacheType): List<Any> {
+    override fun values(cacheType: CacheIds): List<Any> {
         val list = ArrayList<Any>()
         when (cacheType) {
-            CacheType.GUILD -> {
+            CacheIds.GUILD -> {
                 dummyMap.forEach { (key, value) ->
                     if (key.endsWith("guild")) {
                         list.add(value)
                     }
                 }
             }
-            CacheType.USER -> {
+            CacheIds.USER -> {
                 dummyMap.forEach { (key, value) ->
                     if (key.endsWith("user")) {
                         list.add(value)
                     }
                 }
             }
-            CacheType.ROLE -> {
+            CacheIds.ROLE -> {
                 dummyMap.forEach { (key, value) ->
                     if (key.endsWith("role")) {
                         list.add(value)
                     }
                 }
             }
-            CacheType.MEMBER -> {
+            CacheIds.MEMBER -> {
                 dummyMap.forEach { (key, value) ->
                     if (key.endsWith("member")) {
                         list.add(value)
                     }
                 }
             }
-            CacheType.EMOJI -> {
+            CacheIds.EMOJI -> {
                 dummyMap.forEach { (key, value) ->
                     if (key.endsWith("emoji")) {
                         list.add(value)
                     }
                 }
             }
-            CacheType.CHANNEL -> {
+            CacheIds.CHANNEL -> {
                 dummyMap.forEach { (key, value) ->
                     if (key.endsWith("channel")) {
                         list.add(value)
                     }
                 }
             }
-            CacheType.MESSAGE -> {
+            CacheIds.MESSAGE -> {
                 dummyMap.forEach { (key, value) ->
                     if (key.endsWith("message")) {
                         list.add(value)
                     }
                 }
             }
-            CacheType.VOICE_STATE -> {
+            CacheIds.VOICE_STATE -> {
                 dummyMap.forEach { (key, value) ->
                     if (key.endsWith("voiceState")) {
                         list.add(value)
                     }
                 }
             }
-            CacheType.STICKER -> {
+            CacheIds.STICKER -> {
                 dummyMap.forEach { (key, value) ->
                     if (key.endsWith("sticker")) {
                         list.add(value)
                     }
                 }
             }
-            CacheType.APPLICATION -> {
+            CacheIds.APPLICATION -> {
                 dummyMap.forEach { (key, value) ->
                     if (key.endsWith("application")) {
                         list.add(value)

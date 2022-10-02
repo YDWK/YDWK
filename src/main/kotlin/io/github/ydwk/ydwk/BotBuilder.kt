@@ -18,6 +18,7 @@
  */ 
 package io.github.ydwk.ydwk
 
+import io.github.ydwk.ydwk.cache.CacheType
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.ws.util.GateWayIntent
 import okhttp3.OkHttpClient
@@ -30,6 +31,7 @@ import okhttp3.OkHttpClient
 fun createDefaultBot(token: String): YDWK {
     val ydwk = YDWKImpl(OkHttpClient())
     ydwk.setWebSocketManager(token, GateWayIntent.getDefaultIntents())
+    ydwk.setAllowedCache(CacheType.getDefaultCache())
     return ydwk
 }
 
@@ -50,10 +52,19 @@ fun createDefaultBot(token: String, httpClient: OkHttpClient): YDWK {
  *
  * @param token Used to authenticate the bot.
  * @param intents The gateway intent which will decide what events are sent by discord.
+ * @param allowedCache The cache type which will be cached.
+ * @param disallowedCache The cache type which will not be cached.
  */
-fun createCustomBot(token: String, intents: List<GateWayIntent>): YDWK {
+fun createCustomBot(
+    token: String,
+    intents: List<GateWayIntent>,
+    allowedCache: Set<CacheType>,
+    disallowedCache: Set<CacheType>
+): YDWK {
     val ydwk = YDWKImpl(OkHttpClient())
     ydwk.setWebSocketManager(token, intents)
+    ydwk.setAllowedCache(allowedCache)
+    ydwk.setDisallowedCache(disallowedCache)
     return ydwk
 }
 
@@ -63,9 +74,58 @@ fun createCustomBot(token: String, intents: List<GateWayIntent>): YDWK {
  * @param token Used to authenticate the bot.
  * @param intents The gateway intent which will decide what events are sent by discord.
  * @param httpClient Used to create the websocket connection.
+ * @param allowedCache The cache type which will be cached.
  */
-fun createCustomBot(token: String, intents: List<GateWayIntent>, httpClient: OkHttpClient): YDWK {
+fun createCustomBot(
+    token: String,
+    intents: List<GateWayIntent>,
+    allowedCache: Set<CacheType>,
+    httpClient: OkHttpClient
+): YDWK {
     val ydwk = YDWKImpl(httpClient)
     ydwk.setWebSocketManager(token, intents)
+    ydwk.setAllowedCache(allowedCache)
+    return ydwk
+}
+
+/**
+ * Used to create a bot instance.
+ *
+ * @param token Used to authenticate the bot.
+ * @param intents The gateway intent which will decide what events are sent by discord.
+ * @param httpClient Used to create the websocket connection.
+ * @param allowedCache The cache type which will be cached.
+ * @param disallowedCache The cache type which will not be cached.
+ */
+fun createCustomBot(
+    token: String,
+    intents: List<GateWayIntent>,
+    allowedCache: Set<CacheType>,
+    disallowedCache: Set<CacheType>,
+    httpClient: OkHttpClient
+): YDWK {
+    val ydwk = YDWKImpl(httpClient)
+    ydwk.setWebSocketManager(token, intents)
+    ydwk.setAllowedCache(allowedCache)
+    ydwk.setDisallowedCache(disallowedCache)
+    return ydwk
+}
+
+/**
+ * Used to create a bot instance.
+ *
+ * @param token Used to authenticate the bot.
+ * @param intents The gateway intent which will decide what events are sent by discord.
+ * @param httpClient Used to create the websocket connection.
+ * @param allowedCache The cache type which will be cached.
+ */
+fun createCustomBot(
+    token: String,
+    intents: List<GateWayIntent>,
+    allowedCache: Set<CacheType>
+): YDWK {
+    val ydwk = YDWKImpl(OkHttpClient())
+    ydwk.setWebSocketManager(token, intents)
+    ydwk.setAllowedCache(allowedCache)
     return ydwk
 }

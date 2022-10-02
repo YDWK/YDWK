@@ -19,7 +19,7 @@
 package io.github.ydwk.ydwk.impl.handler.handlers.guild
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.ydwk.ydwk.cache.CacheType
+import io.github.ydwk.ydwk.cache.CacheIds
 import io.github.ydwk.ydwk.entities.Emoji
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.Sticker
@@ -37,13 +37,13 @@ class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override fun start() {
         val guild: Guild = GuildImpl(ydwk, json, json["id"].asLong())
 
-        if (ydwk.cache.contains(guild.id, CacheType.GUILD)) {
+        if (ydwk.cache.contains(guild.id, CacheIds.GUILD)) {
             ydwk.logger.warn(
                 "Guild with id ${guild.idAsLong} already exists in cache, will replace it")
-            ydwk.cache.remove(guild.id, CacheType.GUILD)
+            ydwk.cache.remove(guild.id, CacheIds.GUILD)
         }
 
-        ydwk.cache[guild.id, guild] = CacheType.GUILD
+        ydwk.cache[guild.id, guild] = CacheIds.GUILD
 
         val members: ArrayList<Member> = ArrayList()
         json["members"].forEach { member -> members.add(MemberImpl(ydwk, member, guild)) }
@@ -55,14 +55,14 @@ class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
         val roles = ArrayList<Role>()
         json["roles"].forEach { role -> roles.add(RoleImpl(ydwk, role, role.get("id").asLong())) }
 
-        roles.forEach { role -> ydwk.cache[role.id, role] = CacheType.ROLE }
+        roles.forEach { role -> ydwk.cache[role.id, role] = CacheIds.ROLE }
 
         val emojis = ArrayList<Emoji>()
         json["emojis"].forEach { emoji -> emojis.add(EmojiImpl(ydwk, emoji)) }
 
         emojis.forEach { emoji ->
             if (emoji.idLong != null) {
-                ydwk.cache[emoji.id!!, emoji] = CacheType.EMOJI
+                ydwk.cache[emoji.id!!, emoji] = CacheIds.EMOJI
             }
         }
 
@@ -71,6 +71,6 @@ class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
             stickers.add(StickerImpl(ydwk, sticker, sticker["id"].asLong()))
         }
 
-        stickers.forEach { sticker -> ydwk.cache[sticker.id, sticker] = CacheType.STICKER }
+        stickers.forEach { sticker -> ydwk.cache[sticker.id, sticker] = CacheIds.STICKER }
     }
 }

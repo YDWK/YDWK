@@ -18,27 +18,42 @@
  */ 
 package io.github.ydwk.ydwk.cache
 
-enum class CacheType(private val value: String) {
-    GUILD("guild"),
-    USER("user"),
-    CHANNEL("channel"),
-    ROLE("role"),
-    EMOJI("emoji"),
-    MESSAGE("message"),
-    STICKER("sticker"),
-    VOICE_STATE("voice_state"),
-    MEMBER("member"),
-    APPLICATION_COMMAND("application_command"),
-    APPLICATION("application");
+enum class CacheType(private val ids: CacheIds) {
+    GUILD(CacheIds.GUILD),
+    CHANNEL(CacheIds.CHANNEL),
+    USER(CacheIds.USER),
+    MEMBER(CacheIds.MEMBER),
+    ROLE(CacheIds.ROLE),
+    MESSAGE(CacheIds.MESSAGE),
+    EMOJI(CacheIds.EMOJI),
+    VOICE_STATE(CacheIds.VOICE_STATE),
+    STICKER(CacheIds.STICKER),
+    APPLICATION_COMMAND(CacheIds.APPLICATION_COMMAND),
+    APPLICATION(CacheIds.APPLICATION),
+    UNKNOWN(CacheIds.UNKNOWN);
 
     companion object {
-        /** Get the [CacheType] from a [String] type. */
-        fun fromString(string: String): CacheType? {
-            return values().firstOrNull { it.name.equals(string, true) }
+        fun fromCacheIds(ids: CacheIds): CacheType {
+            return values().firstOrNull { it.ids == ids } ?: UNKNOWN
+        }
+
+        fun getDefaultCache(): Set<CacheType> {
+            return setOf(
+                GUILD,
+                CHANNEL,
+                USER,
+                MEMBER,
+                ROLE,
+                MESSAGE,
+                EMOJI,
+                VOICE_STATE,
+                STICKER,
+                APPLICATION_COMMAND,
+                APPLICATION)
         }
     }
 
-    override fun toString(): String {
-        return value
+    fun getCacheIds(): CacheIds {
+        return ids
     }
 }

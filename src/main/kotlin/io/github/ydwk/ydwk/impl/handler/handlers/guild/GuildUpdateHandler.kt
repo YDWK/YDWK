@@ -19,7 +19,7 @@
 package io.github.ydwk.ydwk.impl.handler.handlers.guild
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.ydwk.ydwk.cache.CacheType
+import io.github.ydwk.ydwk.cache.CacheIds
 import io.github.ydwk.ydwk.entities.guild.enums.*
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.EmojiImpl
@@ -33,9 +33,9 @@ class GuildUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override fun start() {
         val guild = ydwk.getGuild(json["id"].asLong()) ?: return
 
-        if (!ydwk.cache.contains(guild.id, CacheType.GUILD)) {
+        if (!ydwk.cache.contains(guild.id, CacheIds.GUILD)) {
             ydwk.logger.warn("GuildUpdateHandler: Guild ${guild.id} is not cached, will add it")
-            ydwk.cache[guild.id, guild] = CacheType.GUILD
+            ydwk.cache[guild.id, guild] = CacheIds.GUILD
         }
 
         val oldName = guild.name

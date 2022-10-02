@@ -23,7 +23,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.neovisionaries.ws.client.*
 import io.github.ydwk.ydwk.YDWKInfo
-import io.github.ydwk.ydwk.cache.CacheType
+import io.github.ydwk.ydwk.cache.CacheIds
 import io.github.ydwk.ydwk.event.events.*
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.BotImpl
@@ -404,7 +404,7 @@ open class WebSocketManager(
 
                 val bot = BotImpl(d.get("user"), d.get("user").get("id").asLong(), ydwk)
                 ydwk.bot = bot
-                ydwk.cache[d.get("user").get("id").asText(), bot] = CacheType.USER
+                ydwk.cache[d.get("user").get("id").asText(), bot] = CacheIds.USER
 
                 val partialApplication =
                     PartialApplicationImpl(
@@ -412,7 +412,7 @@ open class WebSocketManager(
                 ydwk.applicationId = partialApplication.id
                 ydwk.partialApplication = partialApplication
                 ydwk.cache[d.get("application").get("id").asText(), partialApplication] =
-                    CacheType.APPLICATION
+                    CacheIds.APPLICATION
 
                 val guilds: ArrayNode = d.get("guilds") as ArrayNode
 
