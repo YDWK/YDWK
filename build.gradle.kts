@@ -11,8 +11,8 @@ buildscript {
 }
 
 plugins {
-    kotlin("jvm") version "1.7.10"
-    kotlin("plugin.allopen") version "1.7.10"
+    kotlin("jvm") version "1.7.20"
+    kotlin("plugin.allopen") version "1.7.20"
     id("com.diffplug.spotless") version "6.11.0"
     id("org.jetbrains.dokka") version "1.7.10"
     application
@@ -30,15 +30,15 @@ extra.apply {
     set("dev_id", "yusuf")
     set("dev_name", "Yusuf Ismail")
     set("dev_email", "yusufgamer222@gmail.com")
-    set("dev_organization", "RealYusufIsmail")
-    set("dev_organization_url", "https://github.com/RealYusufIsmail")
+    set("dev_organization", "YDWK")
+    set("dev_organization_url", "https://github.com/YDWK")
     set("gpl_name", "Apache-2.0 license")
-    set("gpl_url", "https://github.com/RealYusufIsmail/YDWK/blob/master/LICENSE")
+    set("gpl_url", "https://github.com/YDWK/YDWK/blob/master/LICENSE")
     // Make sure we have a default for initial configuration evaluation
     set("isReleaseVersion", false)
 }
 
-group = "io.github.realyusufismail"
+group = "io.github.realyusufismail" // used for publishing. DONT CHANGE
 version = "0.0.1-SNAPSHOT"
 
 repositories {
@@ -52,14 +52,15 @@ dependencies {
     api("ch.qos.logback:logback-classic:1.4.1")
     api("ch.qos.logback:logback-core:1.4.1")
     api("uk.org.lidalia:sysout-over-slf4j:1.0.2")
-    //.env
-    api("io.github.yusufsdiscordbot:config:1.0.4")
+    //config.json
+    api("io.github.realyusufismail:jconfig:1.0.6")
     //ws and https
     api("com.squareup.okhttp3:okhttp:5.0.0-alpha.10")
     api("com.neovisionaries:nv-websocket-client:2.14")
     //kotlin
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.7.20")
     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    implementation("com.google.code.findbugs:jsr305:3.0.2")
 }
 
 tasks.test {
@@ -91,7 +92,7 @@ spotless {
 
         licenseHeader(
             """/*
- * Copyright 2022 Yusuf Arfan Ismail and other YDWK contributors.
+ * Copyright 2022 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -162,9 +163,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection.set("https://github.com/RealYusufIsmail/YDWK.git")
-                    developerConnection.set("scm:git:ssh://git@github.com/RealYusufIsmail/YDWK.git")
-                    url.set("github.com/RealYusufIsmail/YDWK")
+                    connection.set("https://github.com/YDWK/YDWK.git")
+                    developerConnection.set("scm:git:ssh://git@github.com/YDWK/YDWK.git")
+                    url.set("github.com/YDWK/YDWK")
                 }
             }
         }

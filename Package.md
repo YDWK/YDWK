@@ -1,26 +1,29 @@
-
-
 # Module ydwk
 
 A discord wrapper made in kotlin
 
 ## In progress and to be done
+
 - [ ] Create entities - in progress
 - [ ] Handle events - In progress
 - [ ] Handle rate limiting in websocket
 
 ## Future Features
-- [ ] Handle slash commands
+
+- [ ] Reply system for slash commands
+- [ ] Embed builder
+- [ ] Support for channels and messages
 
 ## Implemented
+
+- [x] Handle Rest API
 - [x] Connect to gateway
 - [x] Parse json
 - [x] Handle all op codes
 - [x] Caching
-- [x] Handle Rest API
 - [x] Handle reconnect and resuming
-
-
+- [x] Support for intents
+- [x] Handle slash commands
 
 ## Installation
 
@@ -48,30 +51,27 @@ A default bot has all to recommend gateway intents.
 
 ## Getting started
 
-To use an event, add the following to your main class:
+To use an event, you can use the ListenerAdapter or inline method
 
 ```kotlin
-fun main() {
-    val ydwk =
-        createDefaultBot("TOKEN")
-
-    ydwk.on<ReadyEvent> { println("Ready!") }
-}
-```
-
-or 
-
-```kotlin
-class Listener : ListenerAdapter() {
+class Bot : ListenerAdapter() {
     override fun onReady(event: ReadyEvent) {
-        println("Ready!")
+        println("Bot is ready!")
     }
 }
 
 fun main() {
-    val ydwk =
-        createDefaultBot("TOKEN")
+    val ydwk = createDefaultBot(JConfigUtils.getString("token"))
+    ydwk.addEvent(Bot())
+}
+```
 
-    ydwk.addEvent(Listener())
+or
+
+```kotlin
+fun main() {
+    val ydwk = createDefaultBot(JConfigUtils.getString("token"))
+
+    ydwk.on<ReadyEvent> { println("Ready!") }
 }
 ```
