@@ -20,6 +20,7 @@ package io.github.realyusufismail.ydwk.impl.rest.type
 
 import io.github.realyusufismail.ydwk.impl.YDWKImpl
 import io.github.realyusufismail.ydwk.rest.error.HttpResponseCode
+import io.github.realyusufismail.ydwk.rest.error.JsonErrorCode
 import io.github.realyusufismail.ydwk.rest.type.SimilarRestApi
 import okhttp3.*
 
@@ -53,16 +54,25 @@ open class SimilarRestApiImpl(
             client.newCall(builder.build()).execute().use { response ->
                 if (!response.isSuccessful) {
                     val code = response.code
-                    if (HttpResponseCode.fromCode(code) != HttpResponseCode.UNKNOWN) {
-                        val error = HttpResponseCode.fromCode(code)
-                        val codeAndName = error.getCode().toString() + " " + error.name
-                        val reason = error.getMessage()
-                        ydwk.logger.error("Error while executing request: $codeAndName $reason")
-                    }
+                    error(code)
                 }
             }
         } catch (e: Exception) {
             throw RuntimeException("Error while executing request", e)
+        }
+    }
+
+    fun error(code: Int) {
+        if (HttpResponseCode.fromCode(code) != HttpResponseCode.UNKNOWN) {
+            val error = HttpResponseCode.fromCode(code)
+            val codeAndName = error.getCode().toString() + " " + error.name
+            val reason = error.getMessage()
+            ydwk.logger.error("Error while executing request: $codeAndName $reason")
+        } else if (JsonErrorCode.fromCode(code) != JsonErrorCode.UNKNOWN) {
+            val jsonCode = JsonErrorCode.fromCode(code).getCode
+            val jsonMessage = JsonErrorCode.fromCode(code).getMessage
+
+            ydwk.logger.error("Error while executing request: $jsonCode $jsonMessage")
         }
     }
 

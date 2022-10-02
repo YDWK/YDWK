@@ -31,13 +31,14 @@ class GetRestApiImpl(
 ) : GetRestApi, SimilarRestApiImpl(ydwk, builder, client) {
     override val execute: JsonNode
         get() {
-            try {
+            return try {
                 val response = client.newCall(builder.build()).execute()
                 responseBody = response.body
                 if (response.isSuccessful) {
-                    return ydwk.objectMapper.readTree(responseBody!!.string())
+                    ydwk.objectMapper.readTree(responseBody!!.string())
                 } else {
-                    throw Exception("Error ${response.code} ${response.message}")
+                    error(response.code)
+                    null!!
                 }
             } catch (e: Exception) {
                 throw RuntimeException("Error while executing request", e)
