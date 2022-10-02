@@ -18,10 +18,10 @@
  */ 
 package io.github.ydwk.ydwk.entities
 
-import io.github.realyusufismail.ydwk.entities.util.GenericEntity
-import io.github.realyusufismail.ydwk.util.GetterSnowFlake
-import io.github.realyusufismail.ydwk.util.NameAbleEntity
-import io.github.realyusufismail.ydwk.util.SnowFlake
+import io.github.ydwk.ydwk.entities.util.GenericEntity
+import io.github.ydwk.ydwk.util.GetterSnowFlake
+import io.github.ydwk.ydwk.util.NameAbleEntity
+import io.github.ydwk.ydwk.util.SnowFlake
 import java.net.URL
 
 interface Application : SnowFlake, NameAbleEntity, GenericEntity {

@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.cache
 
-import io.github.realyusufismail.ydwk.entities.guild.Member
+import io.github.ydwk.ydwk.entities.guild.Member
 
 interface MemberCache : Cache {
     /**

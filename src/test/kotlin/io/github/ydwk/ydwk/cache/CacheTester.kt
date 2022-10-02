@@ -20,7 +20,7 @@ package io.github.realyusufismail.ws.io.github.realyusufismail.cache
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.realyusufismail.ws.io.github.realyusufismail.cache.user.DummyUserImpl
-import io.github.realyusufismail.ydwk.cache.CacheType
+import io.github.ydwk.ydwk.cache.CacheType
 import java.nio.file.Files
 import java.util.Objects
 import kotlin.io.path.Path

@@ -18,12 +18,12 @@
  */ 
 package io.github.ydwk.ydwk.impl.slash
 
-import io.github.realyusufismail.ydwk.impl.YDWKImpl
-import io.github.realyusufismail.ydwk.rest.EndPoint
-import io.github.realyusufismail.ydwk.rest.RestApiManager
-import io.github.realyusufismail.ydwk.slash.Slash
-import io.github.realyusufismail.ydwk.slash.SlashBuilder
-import io.github.realyusufismail.ydwk.util.Checks
+import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.rest.EndPoint
+import io.github.ydwk.ydwk.rest.RestApiManager
+import io.github.ydwk.ydwk.slash.Slash
+import io.github.ydwk.ydwk.slash.SlashBuilder
+import io.github.ydwk.ydwk.util.Checks
 import java.util.*
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody

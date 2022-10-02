@@ -19,8 +19,8 @@
 package io.github.ydwk.ydwk.impl.entities.application
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.realyusufismail.ydwk.YDWK
-import io.github.realyusufismail.ydwk.entities.application.PartialApplication
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.application.PartialApplication
 
 class PartialApplicationImpl(
     override val json: JsonNode,

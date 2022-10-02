@@ -19,9 +19,9 @@
 package io.github.ydwk.ydwk.impl.interaction.application
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.realyusufismail.ydwk.YDWK
-import io.github.realyusufismail.ydwk.interaction.application.ApplicationCommandOption
-import io.github.realyusufismail.ydwk.interaction.application.ApplicationCommandType
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.interaction.application.ApplicationCommandOption
+import io.github.ydwk.ydwk.interaction.application.ApplicationCommandType
 
 class ApplicationCommandOptionImpl(override val ydwk: YDWK, override val json: JsonNode) :
     ApplicationCommandOption {

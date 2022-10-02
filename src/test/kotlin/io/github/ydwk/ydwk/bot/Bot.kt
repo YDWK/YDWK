@@ -19,11 +19,11 @@
 package io.github.ydwk.ydwk.bot
 
 import io.github.realyusufismail.jconfig.util.JConfigUtils
-import io.github.realyusufismail.ydwk.createDefaultBot
-import io.github.realyusufismail.ydwk.event.ListenerAdapter
-import io.github.realyusufismail.ydwk.event.backend.event.on
-import io.github.realyusufismail.ydwk.event.events.ReadyEvent
-import io.github.realyusufismail.ydwk.slash.Slash
+import io.github.ydwk.ydwk.createDefaultBot
+import io.github.ydwk.ydwk.event.ListenerAdapter
+import io.github.ydwk.ydwk.event.backend.event.on
+import io.github.ydwk.ydwk.event.events.ReadyEvent
+import io.github.ydwk.ydwk.slash.Slash
 
 class Bot : ListenerAdapter() {
     override fun onReady(event: ReadyEvent) {

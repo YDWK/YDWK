@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.event.backend.event
 
-import io.github.realyusufismail.ydwk.YDWK
+import io.github.ydwk.ydwk.YDWK
 
 interface GenericEvent {
     val ydwk: YDWK

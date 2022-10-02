@@ -19,8 +19,8 @@
 package io.github.ydwk.ydwk.impl.entities
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.realyusufismail.ydwk.YDWK
-import io.github.realyusufismail.ydwk.entities.Bot
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.Bot
 
 class BotImpl(json: JsonNode, id: Long, ydwk: YDWK) : UserImpl(json, id, ydwk), Bot {
 

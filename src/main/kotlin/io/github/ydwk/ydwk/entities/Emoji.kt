@@ -18,9 +18,9 @@
  */ 
 package io.github.ydwk.ydwk.entities
 
-import io.github.realyusufismail.ydwk.entities.guild.Role
-import io.github.realyusufismail.ydwk.entities.util.GenericEntity
-import io.github.realyusufismail.ydwk.util.NameAbleEntity
+import io.github.ydwk.ydwk.entities.guild.Role
+import io.github.ydwk.ydwk.entities.util.GenericEntity
+import io.github.ydwk.ydwk.util.NameAbleEntity
 
 interface Emoji : NameAbleEntity, GenericEntity {
     /**

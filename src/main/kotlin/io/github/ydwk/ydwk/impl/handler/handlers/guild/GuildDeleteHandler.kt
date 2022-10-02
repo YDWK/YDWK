@@ -19,12 +19,12 @@
 package io.github.ydwk.ydwk.impl.handler.handlers.guild
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.realyusufismail.ydwk.cache.CacheType
-import io.github.realyusufismail.ydwk.entities.Guild
-import io.github.realyusufismail.ydwk.impl.YDWKImpl
-import io.github.realyusufismail.ydwk.impl.entities.GuildImpl
-import io.github.realyusufismail.ydwk.impl.entities.UnavailableGuildImpl
-import io.github.realyusufismail.ydwk.impl.handler.Handler
+import io.github.ydwk.ydwk.cache.CacheType
+import io.github.ydwk.ydwk.entities.Guild
+import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.impl.entities.GuildImpl
+import io.github.ydwk.ydwk.impl.entities.UnavailableGuildImpl
+import io.github.ydwk.ydwk.impl.handler.Handler
 
 class GuildDeleteHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override fun start() {

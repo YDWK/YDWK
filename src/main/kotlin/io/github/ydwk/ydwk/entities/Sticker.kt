@@ -18,12 +18,12 @@
  */ 
 package io.github.ydwk.ydwk.entities
 
-import io.github.realyusufismail.ydwk.entities.sticker.StickerFormatType
-import io.github.realyusufismail.ydwk.entities.sticker.StickerType
-import io.github.realyusufismail.ydwk.entities.util.GenericEntity
-import io.github.realyusufismail.ydwk.util.GetterSnowFlake
-import io.github.realyusufismail.ydwk.util.NameAbleEntity
-import io.github.realyusufismail.ydwk.util.SnowFlake
+import io.github.ydwk.ydwk.entities.sticker.StickerFormatType
+import io.github.ydwk.ydwk.entities.sticker.StickerType
+import io.github.ydwk.ydwk.entities.util.GenericEntity
+import io.github.ydwk.ydwk.util.GetterSnowFlake
+import io.github.ydwk.ydwk.util.NameAbleEntity
+import io.github.ydwk.ydwk.util.SnowFlake
 
 /** This class is used to represent a discord sticker object. */
 interface Sticker : GenericEntity, SnowFlake, NameAbleEntity {

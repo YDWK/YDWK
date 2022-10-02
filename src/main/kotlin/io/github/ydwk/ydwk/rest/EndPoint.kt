@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.rest
 
-import io.github.realyusufismail.ydwk.YDWKInfo
+import io.github.ydwk.ydwk.YDWKInfo
 
 open class EndPoint {
     interface IEnumEndpoint {

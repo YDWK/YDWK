@@ -18,8 +18,8 @@
  */ 
 package io.github.ydwk.ydwk.entities.application
 
-import io.github.realyusufismail.ydwk.entities.util.GenericEntity
-import io.github.realyusufismail.ydwk.util.SnowFlake
+import io.github.ydwk.ydwk.entities.util.GenericEntity
+import io.github.ydwk.ydwk.util.SnowFlake
 
 interface PartialApplication : SnowFlake, GenericEntity {
     /** The application's public flags. */

@@ -18,9 +18,9 @@
  */ 
 package io.github.ydwk.ydwk.event.events.interaction
 
-import io.github.realyusufismail.ydwk.YDWK
-import io.github.realyusufismail.ydwk.event.Event
-import io.github.realyusufismail.ydwk.interaction.application.ApplicationCommandData
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.event.Event
+import io.github.ydwk.ydwk.interaction.application.ApplicationCommandData
 
 class SlashCommandEvent(override val ydwk: YDWK, val applicationData: ApplicationCommandData) :
     Event(ydwk)

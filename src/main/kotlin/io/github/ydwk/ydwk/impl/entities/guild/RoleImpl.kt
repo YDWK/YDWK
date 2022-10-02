@@ -19,10 +19,10 @@
 package io.github.ydwk.ydwk.impl.entities.guild
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.realyusufismail.ydwk.YDWK
-import io.github.realyusufismail.ydwk.entities.guild.Role
-import io.github.realyusufismail.ydwk.entities.guild.role.RoleTag
-import io.github.realyusufismail.ydwk.impl.entities.guild.role.RoleTagImpl
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.guild.Role
+import io.github.ydwk.ydwk.entities.guild.role.RoleTag
+import io.github.ydwk.ydwk.impl.entities.guild.role.RoleTagImpl
 import java.awt.Color
 
 class RoleImpl(override val ydwk: YDWK, override val json: JsonNode, override val idAsLong: Long) :

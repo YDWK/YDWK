@@ -18,8 +18,8 @@
  */ 
 package io.github.ydwk.ydwk.entities
 
-import io.github.realyusufismail.ydwk.entities.util.GenericEntity
-import io.github.realyusufismail.ydwk.util.SnowFlake
+import io.github.ydwk.ydwk.entities.util.GenericEntity
+import io.github.ydwk.ydwk.util.SnowFlake
 
 interface UnavailableGuild : SnowFlake, GenericEntity {
     /**

@@ -18,8 +18,8 @@
  */ 
 package io.github.ydwk.ydwk.entities.guild
 
-import io.github.realyusufismail.ydwk.entities.guild.ws.WelcomeChannel
-import io.github.realyusufismail.ydwk.entities.util.GenericEntity
+import io.github.ydwk.ydwk.entities.guild.ws.WelcomeChannel
+import io.github.ydwk.ydwk.entities.util.GenericEntity
 
 /** This class is used to represent a guild welcome screen object. */
 interface WelcomeScreen : GenericEntity {

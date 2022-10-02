@@ -19,11 +19,11 @@
 package io.github.ydwk.ydwk.impl.handler.handlers.interactions
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.realyusufismail.ydwk.event.events.interaction.*
-import io.github.realyusufismail.ydwk.impl.YDWKImpl
-import io.github.realyusufismail.ydwk.impl.handler.Handler
-import io.github.realyusufismail.ydwk.impl.interaction.InteractionImpl
-import io.github.realyusufismail.ydwk.interaction.sub.InteractionType
+import io.github.ydwk.ydwk.event.events.interaction.*
+import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.impl.handler.Handler
+import io.github.ydwk.ydwk.impl.interaction.InteractionImpl
+import io.github.ydwk.ydwk.interaction.sub.InteractionType
 
 class InteractionCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override fun start() {

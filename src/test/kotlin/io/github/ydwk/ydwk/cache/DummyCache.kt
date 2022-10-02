@@ -19,14 +19,14 @@
 package io.github.realyusufismail.ws.io.github.realyusufismail.cache
 
 import io.github.realyusufismail.ws.io.github.realyusufismail.cache.user.DummyUser
-import io.github.realyusufismail.ydwk.cache.Cache
-import io.github.realyusufismail.ydwk.cache.CacheType
-import io.github.realyusufismail.ydwk.cache.exception.CacheException
-import io.github.realyusufismail.ydwk.entities.Emoji
-import io.github.realyusufismail.ydwk.entities.Guild
-import io.github.realyusufismail.ydwk.entities.Sticker
-import io.github.realyusufismail.ydwk.entities.guild.Member
-import io.github.realyusufismail.ydwk.entities.guild.Role
+import io.github.ydwk.ydwk.cache.Cache
+import io.github.ydwk.ydwk.cache.CacheType
+import io.github.ydwk.ydwk.cache.exception.CacheException
+import io.github.ydwk.ydwk.entities.Emoji
+import io.github.ydwk.ydwk.entities.Guild
+import io.github.ydwk.ydwk.entities.Sticker
+import io.github.ydwk.ydwk.entities.guild.Member
+import io.github.ydwk.ydwk.entities.guild.Role
 
 class DummyCache : Cache {
     private val dummyMap = HashMap<String, Any>()

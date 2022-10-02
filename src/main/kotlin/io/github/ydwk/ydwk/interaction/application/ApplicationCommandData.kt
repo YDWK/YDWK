@@ -18,12 +18,12 @@
  */ 
 package io.github.ydwk.ydwk.interaction.application
 
-import io.github.realyusufismail.ydwk.entities.User
-import io.github.realyusufismail.ydwk.entities.guild.Member
-import io.github.realyusufismail.ydwk.interaction.sub.GenericCommandData
-import io.github.realyusufismail.ydwk.interaction.sub.InteractionResolvedData
-import io.github.realyusufismail.ydwk.util.GetterSnowFlake
-import io.github.realyusufismail.ydwk.util.SnowFlake
+import io.github.ydwk.ydwk.entities.User
+import io.github.ydwk.ydwk.entities.guild.Member
+import io.github.ydwk.ydwk.interaction.sub.GenericCommandData
+import io.github.ydwk.ydwk.interaction.sub.InteractionResolvedData
+import io.github.ydwk.ydwk.util.GetterSnowFlake
+import io.github.ydwk.ydwk.util.SnowFlake
 
 interface ApplicationCommandData : SnowFlake, GenericCommandData {
     /**

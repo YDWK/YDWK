@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.event.backend.managers
 
-import io.github.realyusufismail.ydwk.event.backend.event.GenericEvent
+import io.github.ydwk.ydwk.event.backend.event.GenericEvent
 
 interface IEventManager {
     /**

@@ -21,8 +21,8 @@ package io.github.ydwk.ydwk.slash
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ArrayNode
-import io.github.realyusufismail.ydwk.interaction.application.ApplicationCommandType
-import io.github.realyusufismail.ydwk.util.Checks
+import io.github.ydwk.ydwk.interaction.application.ApplicationCommandType
+import io.github.ydwk.ydwk.util.Checks
 
 class Slash(val name: String, val description: String, val guildOnly: Boolean = false) {
     private var options: MutableList<SlashOption> = mutableListOf()

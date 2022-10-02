@@ -19,10 +19,10 @@
 package io.github.ydwk.ydwk.impl.entities.guild
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.realyusufismail.ydwk.YDWK
-import io.github.realyusufismail.ydwk.entities.User
-import io.github.realyusufismail.ydwk.entities.guild.Ban
-import io.github.realyusufismail.ydwk.impl.entities.UserImpl
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.User
+import io.github.ydwk.ydwk.entities.guild.Ban
+import io.github.ydwk.ydwk.impl.entities.UserImpl
 
 class BanImpl(override val ydwk: YDWK, override val json: JsonNode) : Ban {
 

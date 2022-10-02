@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.slash
 
-import io.github.realyusufismail.ydwk.util.CheckReturnValue
+import io.github.ydwk.ydwk.util.CheckReturnValue
 
 interface SlashBuilder {
     /**

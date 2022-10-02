@@ -19,19 +19,19 @@
 package io.github.ydwk.ydwk.impl.entities
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.realyusufismail.ydwk.YDWK
-import io.github.realyusufismail.ydwk.entities.Emoji
-import io.github.realyusufismail.ydwk.entities.Guild
-import io.github.realyusufismail.ydwk.entities.Sticker
-import io.github.realyusufismail.ydwk.entities.guild.Ban
-import io.github.realyusufismail.ydwk.entities.guild.Role
-import io.github.realyusufismail.ydwk.entities.guild.WelcomeScreen
-import io.github.realyusufismail.ydwk.entities.guild.enums.*
-import io.github.realyusufismail.ydwk.impl.entities.guild.BanImpl
-import io.github.realyusufismail.ydwk.impl.entities.guild.RoleImpl
-import io.github.realyusufismail.ydwk.impl.entities.guild.WelcomeScreenImpl
-import io.github.realyusufismail.ydwk.rest.EndPoint
-import io.github.realyusufismail.ydwk.util.GetterSnowFlake
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.Emoji
+import io.github.ydwk.ydwk.entities.Guild
+import io.github.ydwk.ydwk.entities.Sticker
+import io.github.ydwk.ydwk.entities.guild.Ban
+import io.github.ydwk.ydwk.entities.guild.Role
+import io.github.ydwk.ydwk.entities.guild.WelcomeScreen
+import io.github.ydwk.ydwk.entities.guild.enums.*
+import io.github.ydwk.ydwk.impl.entities.guild.BanImpl
+import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
+import io.github.ydwk.ydwk.impl.entities.guild.WelcomeScreenImpl
+import io.github.ydwk.ydwk.rest.EndPoint
+import io.github.ydwk.ydwk.util.GetterSnowFlake
 
 class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override val idAsLong: Long) :
     Guild {

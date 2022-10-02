@@ -18,10 +18,10 @@
  */ 
 package io.github.ydwk.ydwk.impl.rest.type
 
-import io.github.realyusufismail.ydwk.impl.YDWKImpl
-import io.github.realyusufismail.ydwk.rest.error.HttpResponseCode
-import io.github.realyusufismail.ydwk.rest.error.JsonErrorCode
-import io.github.realyusufismail.ydwk.rest.type.SimilarRestApi
+import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.rest.error.HttpResponseCode
+import io.github.ydwk.ydwk.rest.error.JsonErrorCode
+import io.github.ydwk.ydwk.rest.type.SimilarRestApi
 import okhttp3.*
 
 open class SimilarRestApiImpl(

@@ -18,8 +18,8 @@
  */ 
 package io.github.ydwk.ydwk.entities.guild
 
-import io.github.realyusufismail.ydwk.entities.User
-import io.github.realyusufismail.ydwk.entities.util.GenericEntity
+import io.github.ydwk.ydwk.entities.User
+import io.github.ydwk.ydwk.entities.util.GenericEntity
 
 interface Ban : GenericEntity {
     /**

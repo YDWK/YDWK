@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.interaction.message
 
-import io.github.realyusufismail.ydwk.interaction.sub.GenericCommandData
+import io.github.ydwk.ydwk.interaction.sub.GenericCommandData
 
 interface MessageComponentData : GenericCommandData {
     /**

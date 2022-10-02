@@ -18,8 +18,8 @@
  */ 
 package io.github.ydwk.ydwk.event.backend.event
 
-import io.github.realyusufismail.ydwk.YDWK
-import io.github.realyusufismail.ydwk.event.Event
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.event.Event
 
 inline fun <reified T : Event> YDWK.on(
     crossinline consumer: suspend Event.(T) -> Unit

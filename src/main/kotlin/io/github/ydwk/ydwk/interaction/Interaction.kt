@@ -18,16 +18,16 @@
  */ 
 package io.github.ydwk.ydwk.interaction
 
-import io.github.realyusufismail.ydwk.entities.Message
-import io.github.realyusufismail.ydwk.entities.User
-import io.github.realyusufismail.ydwk.entities.guild.Member
-import io.github.realyusufismail.ydwk.entities.util.GenericEntity
-import io.github.realyusufismail.ydwk.interaction.application.ApplicationCommandData
-import io.github.realyusufismail.ydwk.interaction.message.MessageComponentData
-import io.github.realyusufismail.ydwk.interaction.sub.GenericCommandData
-import io.github.realyusufismail.ydwk.interaction.sub.InteractionType
-import io.github.realyusufismail.ydwk.util.GetterSnowFlake
-import io.github.realyusufismail.ydwk.util.SnowFlake
+import io.github.ydwk.ydwk.entities.Message
+import io.github.ydwk.ydwk.entities.User
+import io.github.ydwk.ydwk.entities.guild.Member
+import io.github.ydwk.ydwk.entities.util.GenericEntity
+import io.github.ydwk.ydwk.interaction.application.ApplicationCommandData
+import io.github.ydwk.ydwk.interaction.message.MessageComponentData
+import io.github.ydwk.ydwk.interaction.sub.GenericCommandData
+import io.github.ydwk.ydwk.interaction.sub.InteractionType
+import io.github.ydwk.ydwk.util.GetterSnowFlake
+import io.github.ydwk.ydwk.util.SnowFlake
 
 interface Interaction : SnowFlake, GenericEntity {
     /**

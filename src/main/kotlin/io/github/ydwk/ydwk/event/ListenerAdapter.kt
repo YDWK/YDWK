@@ -18,15 +18,15 @@
  */ 
 package io.github.ydwk.ydwk.event
 
-import io.github.realyusufismail.ydwk.event.backend.ClassWalker
-import io.github.realyusufismail.ydwk.event.backend.event.GenericEvent
-import io.github.realyusufismail.ydwk.event.backend.event.IEventListener
-import io.github.realyusufismail.ydwk.event.events.DisconnectEvent
-import io.github.realyusufismail.ydwk.event.events.ReadyEvent
-import io.github.realyusufismail.ydwk.event.events.ResumeEvent
-import io.github.realyusufismail.ydwk.event.events.ShutDownEvent
-import io.github.realyusufismail.ydwk.event.events.interaction.*
-import io.github.realyusufismail.ydwk.event.update.IEventUpdate
+import io.github.ydwk.ydwk.event.backend.ClassWalker
+import io.github.ydwk.ydwk.event.backend.event.GenericEvent
+import io.github.ydwk.ydwk.event.backend.event.IEventListener
+import io.github.ydwk.ydwk.event.events.DisconnectEvent
+import io.github.ydwk.ydwk.event.events.ReadyEvent
+import io.github.ydwk.ydwk.event.events.ResumeEvent
+import io.github.ydwk.ydwk.event.events.ShutDownEvent
+import io.github.ydwk.ydwk.event.events.interaction.*
+import io.github.ydwk.ydwk.event.update.IEventUpdate
 import java.lang.invoke.MethodHandle
 import java.lang.invoke.MethodHandles
 import java.lang.invoke.MethodType
@@ -127,8 +127,8 @@ abstract class ListenerAdapter : IEventListener {
             try {
                 mh.invoke(this, event)
             } catch (throwable: Throwable) {
-                if (throwable is RuntimeException) throw (throwable as RuntimeException)
-                if (throwable is Error) throw (throwable as Error)
+                if (throwable is RuntimeException) throw throwable
+                if (throwable is Error) throw throwable
                 throw IllegalStateException(throwable)
             }
         }

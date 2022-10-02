@@ -19,10 +19,10 @@
 package io.github.ydwk.ydwk.impl.entities.guild
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.realyusufismail.ydwk.YDWK
-import io.github.realyusufismail.ydwk.entities.guild.WelcomeScreen
-import io.github.realyusufismail.ydwk.entities.guild.ws.WelcomeChannel
-import io.github.realyusufismail.ydwk.impl.entities.guild.ws.WelcomeChannelImpl
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.guild.WelcomeScreen
+import io.github.ydwk.ydwk.entities.guild.ws.WelcomeChannel
+import io.github.ydwk.ydwk.impl.entities.guild.ws.WelcomeChannelImpl
 
 class WelcomeScreenImpl(override val ydwk: YDWK, override val json: JsonNode) : WelcomeScreen {
     override var description: String? =

@@ -18,9 +18,9 @@
  */ 
 package io.github.ydwk.ydwk.event
 
-import io.github.realyusufismail.ydwk.event.backend.event.on
-import io.github.realyusufismail.ydwk.event.events.ReadyEvent
-import io.github.realyusufismail.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.event.backend.event.on
+import io.github.ydwk.ydwk.event.events.ReadyEvent
+import io.github.ydwk.ydwk.impl.YDWKImpl
 import okhttp3.OkHttpClient
 import org.junit.jupiter.api.Test
 

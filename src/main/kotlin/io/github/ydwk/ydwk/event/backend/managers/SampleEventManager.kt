@@ -18,11 +18,10 @@
  */ 
 package io.github.ydwk.ydwk.event.backend.managers
 
-import io.github.realyusufismail.ydwk.event.Event
-import io.github.realyusufismail.ydwk.event.backend.event.GenericEvent
-import io.github.realyusufismail.ydwk.event.backend.event.IEventListener
+import io.github.ydwk.ydwk.event.Event
+import io.github.ydwk.ydwk.event.backend.event.GenericEvent
+import io.github.ydwk.ydwk.event.backend.event.IEventListener
 import java.util.*
-import kotlin.collections.ArrayList
 
 class SampleEventManager(private var eventListeners: MutableList<IEventListener> = ArrayList()) :
     IEventManager {

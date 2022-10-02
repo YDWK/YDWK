@@ -19,7 +19,7 @@
 package io.github.ydwk.ydwk.entities.util
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.realyusufismail.ydwk.YDWK
+import io.github.ydwk.ydwk.YDWK
 
 interface GenericEntity {
     val ydwk: YDWK

@@ -18,8 +18,8 @@
  */ 
 package io.github.ydwk.ydwk.impl.rest.type
 
-import io.github.realyusufismail.ydwk.impl.YDWKImpl
-import io.github.realyusufismail.ydwk.rest.type.PutRestApi
+import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.rest.type.PutRestApi
 import okhttp3.OkHttpClient
 import okhttp3.Request
 

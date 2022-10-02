@@ -18,8 +18,8 @@
  */ 
 package io.github.ydwk.ydwk.event.events
 
-import io.github.realyusufismail.ydwk.YDWK
-import io.github.realyusufismail.ydwk.event.Event
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.event.Event
 import java.time.Instant
 
 class DisconnectEvent(

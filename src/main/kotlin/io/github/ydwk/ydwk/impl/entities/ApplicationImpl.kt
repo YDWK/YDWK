@@ -19,10 +19,10 @@
 package io.github.ydwk.ydwk.impl.entities
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.realyusufismail.ydwk.YDWK
-import io.github.realyusufismail.ydwk.entities.Application
-import io.github.realyusufismail.ydwk.entities.User
-import io.github.realyusufismail.ydwk.util.GetterSnowFlake
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.Application
+import io.github.ydwk.ydwk.entities.User
+import io.github.ydwk.ydwk.util.GetterSnowFlake
 import java.net.URL
 
 class ApplicationImpl(

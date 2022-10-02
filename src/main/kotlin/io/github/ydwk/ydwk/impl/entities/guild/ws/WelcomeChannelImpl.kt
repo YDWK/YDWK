@@ -19,9 +19,9 @@
 package io.github.ydwk.ydwk.impl.entities.guild.ws
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.realyusufismail.ydwk.YDWK
-import io.github.realyusufismail.ydwk.entities.guild.ws.WelcomeChannel
-import io.github.realyusufismail.ydwk.util.GetterSnowFlake
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.guild.ws.WelcomeChannel
+import io.github.ydwk.ydwk.util.GetterSnowFlake
 
 class WelcomeChannelImpl(override val ydwk: YDWK, override val json: JsonNode) : WelcomeChannel {
 

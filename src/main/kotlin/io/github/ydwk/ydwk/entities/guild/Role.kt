@@ -18,10 +18,10 @@
  */ 
 package io.github.ydwk.ydwk.entities.guild
 
-import io.github.realyusufismail.ydwk.entities.guild.role.RoleTag
-import io.github.realyusufismail.ydwk.entities.util.GenericEntity
-import io.github.realyusufismail.ydwk.util.NameAbleEntity
-import io.github.realyusufismail.ydwk.util.SnowFlake
+import io.github.ydwk.ydwk.entities.guild.role.RoleTag
+import io.github.ydwk.ydwk.entities.util.GenericEntity
+import io.github.ydwk.ydwk.util.NameAbleEntity
+import io.github.ydwk.ydwk.util.SnowFlake
 import java.awt.Color
 
 /** This class is used to represent a discord guild role entity. */

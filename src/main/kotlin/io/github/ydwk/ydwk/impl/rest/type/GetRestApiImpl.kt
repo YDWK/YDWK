@@ -19,8 +19,8 @@
 package io.github.ydwk.ydwk.impl.rest.type
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.realyusufismail.ydwk.impl.YDWKImpl
-import io.github.realyusufismail.ydwk.rest.type.GetRestApi
+import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.rest.type.GetRestApi
 import okhttp3.OkHttpClient
 import okhttp3.Request
 

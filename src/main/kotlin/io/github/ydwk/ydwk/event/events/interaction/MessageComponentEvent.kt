@@ -18,9 +18,9 @@
  */ 
 package io.github.ydwk.ydwk.event.events.interaction
 
-import io.github.realyusufismail.ydwk.YDWK
-import io.github.realyusufismail.ydwk.event.Event
-import io.github.realyusufismail.ydwk.interaction.message.MessageComponentData
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.event.Event
+import io.github.ydwk.ydwk.interaction.message.MessageComponentData
 
 class MessageComponentEvent(override val ydwk: YDWK, val interaction: MessageComponentData) :
     Event(ydwk)

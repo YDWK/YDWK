@@ -19,11 +19,11 @@
 package io.github.ydwk.ydwk.impl.handler.handlers
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.realyusufismail.ydwk.cache.CacheType
-import io.github.realyusufismail.ydwk.entities.User
-import io.github.realyusufismail.ydwk.impl.YDWKImpl
-import io.github.realyusufismail.ydwk.impl.entities.UserImpl
-import io.github.realyusufismail.ydwk.impl.handler.Handler
+import io.github.ydwk.ydwk.cache.CacheType
+import io.github.ydwk.ydwk.entities.User
+import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.impl.entities.UserImpl
+import io.github.ydwk.ydwk.impl.handler.Handler
 import java.awt.Color
 import java.util.*
 

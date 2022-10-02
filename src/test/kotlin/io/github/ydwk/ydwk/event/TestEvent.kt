@@ -18,7 +18,6 @@
  */ 
 package io.github.ydwk.ydwk.event
 
-import io.github.realyusufismail.ydwk.YDWK
-import io.github.realyusufismail.ydwk.event.Event
+import io.github.ydwk.ydwk.YDWK
 
 class TestEvent(override val ydwk: YDWK) : Event(ydwk)

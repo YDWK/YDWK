@@ -18,6 +18,6 @@
  */ 
 package io.github.ydwk.ydwk.interaction.sub
 
-import io.github.realyusufismail.ydwk.entities.util.GenericEntity
+import io.github.ydwk.ydwk.entities.util.GenericEntity
 
 interface GenericCommandData : GenericEntity

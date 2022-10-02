@@ -19,9 +19,9 @@
 package io.github.ydwk.ydwk.impl.interaction.message
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.realyusufismail.ydwk.YDWK
-import io.github.realyusufismail.ydwk.interaction.message.MessageComponentData
-import io.github.realyusufismail.ydwk.interaction.message.MessageComponentType
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.interaction.message.MessageComponentData
+import io.github.ydwk.ydwk.interaction.message.MessageComponentType
 
 class MessageComponentDataImpl(override val ydwk: YDWK, override val json: JsonNode) :
     MessageComponentData {

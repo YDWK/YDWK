@@ -20,15 +20,15 @@ package io.github.ydwk.ydwk
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
-import io.github.realyusufismail.ydwk.entities.Application
-import io.github.realyusufismail.ydwk.entities.Bot
-import io.github.realyusufismail.ydwk.entities.Guild
-import io.github.realyusufismail.ydwk.entities.application.PartialApplication
-import io.github.realyusufismail.ydwk.event.backend.event.GenericEvent
-import io.github.realyusufismail.ydwk.rest.RestApiManager
-import io.github.realyusufismail.ydwk.slash.SlashBuilder
-import io.github.realyusufismail.ydwk.ws.WebSocketManager
-import io.github.realyusufismail.ydwk.ws.util.LoggedIn
+import io.github.ydwk.ydwk.entities.Application
+import io.github.ydwk.ydwk.entities.Bot
+import io.github.ydwk.ydwk.entities.Guild
+import io.github.ydwk.ydwk.entities.application.PartialApplication
+import io.github.ydwk.ydwk.event.backend.event.GenericEvent
+import io.github.ydwk.ydwk.rest.RestApiManager
+import io.github.ydwk.ydwk.slash.SlashBuilder
+import io.github.ydwk.ydwk.ws.WebSocketManager
+import io.github.ydwk.ydwk.ws.util.LoggedIn
 import java.time.Instant
 
 interface YDWK {

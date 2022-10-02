@@ -18,8 +18,8 @@
  */ 
 package io.github.ydwk.ydwk.ws.util.impl
 
-import io.github.realyusufismail.ydwk.ws.util.LoggedIn
-import io.github.realyusufismail.ydwk.ws.util.formatInstant
+import io.github.ydwk.ydwk.ws.util.LoggedIn
+import io.github.ydwk.ydwk.ws.util.formatInstant
 import java.time.Instant
 
 class LoggedInImpl(

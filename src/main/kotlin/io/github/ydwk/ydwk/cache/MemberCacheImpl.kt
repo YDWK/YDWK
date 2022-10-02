@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.cache
 
-import io.github.realyusufismail.ydwk.entities.guild.Member
+import io.github.ydwk.ydwk.entities.guild.Member
 
 /**
  * Discord's Member do not have a unique ID, so we need to use a combination of the guild ID and the

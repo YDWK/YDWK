@@ -18,12 +18,12 @@
  */ 
 package io.github.ydwk.ydwk.interaction.sub
 
-import io.github.realyusufismail.ydwk.entities.Message
-import io.github.realyusufismail.ydwk.entities.User
-import io.github.realyusufismail.ydwk.entities.guild.Member
-import io.github.realyusufismail.ydwk.entities.guild.Role
-import io.github.realyusufismail.ydwk.entities.util.GenericEntity
-import io.github.realyusufismail.ydwk.util.GetterSnowFlake
+import io.github.ydwk.ydwk.entities.Message
+import io.github.ydwk.ydwk.entities.User
+import io.github.ydwk.ydwk.entities.guild.Member
+import io.github.ydwk.ydwk.entities.guild.Role
+import io.github.ydwk.ydwk.entities.util.GenericEntity
+import io.github.ydwk.ydwk.util.GetterSnowFlake
 
 interface InteractionResolvedData : GenericEntity {
     /**

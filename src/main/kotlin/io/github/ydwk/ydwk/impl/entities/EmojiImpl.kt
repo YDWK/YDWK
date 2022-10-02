@@ -19,11 +19,11 @@
 package io.github.ydwk.ydwk.impl.entities
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.realyusufismail.ydwk.YDWK
-import io.github.realyusufismail.ydwk.entities.Emoji
-import io.github.realyusufismail.ydwk.entities.User
-import io.github.realyusufismail.ydwk.entities.guild.Role
-import io.github.realyusufismail.ydwk.impl.entities.guild.RoleImpl
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.Emoji
+import io.github.ydwk.ydwk.entities.User
+import io.github.ydwk.ydwk.entities.guild.Role
+import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
 
 class EmojiImpl(override val ydwk: YDWK, override val json: JsonNode) : Emoji {
     override val idLong: Long?

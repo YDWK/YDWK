@@ -18,8 +18,8 @@
  */ 
 package io.github.ydwk.ydwk
 
-import io.github.realyusufismail.ydwk.impl.YDWKImpl
-import io.github.realyusufismail.ydwk.ws.util.GateWayIntent
+import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.ws.util.GateWayIntent
 import okhttp3.OkHttpClient
 
 /**

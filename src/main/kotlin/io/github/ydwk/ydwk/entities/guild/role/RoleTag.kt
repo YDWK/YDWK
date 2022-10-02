@@ -18,8 +18,8 @@
  */ 
 package io.github.ydwk.ydwk.entities.guild.role
 
-import io.github.realyusufismail.ydwk.entities.util.GenericEntity
-import io.github.realyusufismail.ydwk.util.GetterSnowFlake
+import io.github.ydwk.ydwk.entities.util.GenericEntity
+import io.github.ydwk.ydwk.util.GetterSnowFlake
 
 interface RoleTag : GenericEntity {
     /**

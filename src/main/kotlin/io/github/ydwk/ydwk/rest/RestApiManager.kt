@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.rest
 
-import io.github.realyusufismail.ydwk.rest.type.*
+import io.github.ydwk.ydwk.rest.type.*
 import okhttp3.RequestBody
 
 /** Used to manage the REST API */

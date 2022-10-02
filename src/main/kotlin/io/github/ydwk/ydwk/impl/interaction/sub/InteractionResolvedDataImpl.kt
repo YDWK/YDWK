@@ -19,16 +19,16 @@
 package io.github.ydwk.ydwk.impl.interaction.sub
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.realyusufismail.ydwk.YDWK
-import io.github.realyusufismail.ydwk.entities.Message
-import io.github.realyusufismail.ydwk.entities.User
-import io.github.realyusufismail.ydwk.entities.guild.Member
-import io.github.realyusufismail.ydwk.entities.guild.Role
-import io.github.realyusufismail.ydwk.impl.entities.UserImpl
-import io.github.realyusufismail.ydwk.impl.entities.guild.MemberImpl
-import io.github.realyusufismail.ydwk.impl.entities.guild.RoleImpl
-import io.github.realyusufismail.ydwk.interaction.sub.InteractionResolvedData
-import io.github.realyusufismail.ydwk.util.GetterSnowFlake
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.Message
+import io.github.ydwk.ydwk.entities.User
+import io.github.ydwk.ydwk.entities.guild.Member
+import io.github.ydwk.ydwk.entities.guild.Role
+import io.github.ydwk.ydwk.impl.entities.UserImpl
+import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
+import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
+import io.github.ydwk.ydwk.interaction.sub.InteractionResolvedData
+import io.github.ydwk.ydwk.util.GetterSnowFlake
 
 class InteractionResolvedDataImpl(override val ydwk: YDWK, override val json: JsonNode) :
     InteractionResolvedData {

@@ -19,15 +19,15 @@
 package io.github.ydwk.ydwk.impl.interaction.application
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.realyusufismail.ydwk.YDWK
-import io.github.realyusufismail.ydwk.entities.User
-import io.github.realyusufismail.ydwk.entities.guild.Member
-import io.github.realyusufismail.ydwk.impl.interaction.sub.InteractionResolvedDataImpl
-import io.github.realyusufismail.ydwk.interaction.application.ApplicationCommandData
-import io.github.realyusufismail.ydwk.interaction.application.ApplicationCommandOption
-import io.github.realyusufismail.ydwk.interaction.application.ApplicationCommandType
-import io.github.realyusufismail.ydwk.interaction.sub.InteractionResolvedData
-import io.github.realyusufismail.ydwk.util.GetterSnowFlake
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.User
+import io.github.ydwk.ydwk.entities.guild.Member
+import io.github.ydwk.ydwk.impl.interaction.sub.InteractionResolvedDataImpl
+import io.github.ydwk.ydwk.interaction.application.ApplicationCommandData
+import io.github.ydwk.ydwk.interaction.application.ApplicationCommandOption
+import io.github.ydwk.ydwk.interaction.application.ApplicationCommandType
+import io.github.ydwk.ydwk.interaction.sub.InteractionResolvedData
+import io.github.ydwk.ydwk.util.GetterSnowFlake
 
 class ApplicationCommandDataImpl(
     override val ydwk: YDWK,

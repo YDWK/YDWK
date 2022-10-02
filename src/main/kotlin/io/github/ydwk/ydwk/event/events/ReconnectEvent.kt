@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.event.events
 
-import io.github.realyusufismail.ydwk.YDWK
-import io.github.realyusufismail.ydwk.event.Event
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.event.Event
 
 class ReconnectEvent(override val ydwk: YDWK) : Event(ydwk)

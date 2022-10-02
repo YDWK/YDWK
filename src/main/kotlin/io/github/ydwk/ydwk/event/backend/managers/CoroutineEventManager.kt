@@ -18,9 +18,9 @@
  */ 
 package io.github.ydwk.ydwk.event.backend.managers
 
-import io.github.realyusufismail.ydwk.event.backend.event.CoroutineEventListener
-import io.github.realyusufismail.ydwk.event.backend.event.GenericEvent
-import io.github.realyusufismail.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.event.backend.event.CoroutineEventListener
+import io.github.ydwk.ydwk.event.backend.event.GenericEvent
+import io.github.ydwk.ydwk.impl.YDWKImpl
 import java.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

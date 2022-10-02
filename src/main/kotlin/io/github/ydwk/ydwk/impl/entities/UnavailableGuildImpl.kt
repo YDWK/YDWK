@@ -19,8 +19,8 @@
 package io.github.ydwk.ydwk.impl.entities
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.realyusufismail.ydwk.YDWK
-import io.github.realyusufismail.ydwk.entities.UnavailableGuild
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.UnavailableGuild
 
 class UnavailableGuildImpl(
     override val ydwk: YDWK,

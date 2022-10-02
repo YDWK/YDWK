@@ -18,8 +18,8 @@
  */ 
 package io.github.ydwk.ydwk.event.events.interaction
 
-import io.github.realyusufismail.ydwk.event.Event
-import io.github.realyusufismail.ydwk.impl.YDWKImpl
-import io.github.realyusufismail.ydwk.interaction.Interaction
+import io.github.ydwk.ydwk.event.Event
+import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.interaction.Interaction
 
 class ModelEvent(override val ydwk: YDWKImpl, val interaction: Interaction) : Event(ydwk)

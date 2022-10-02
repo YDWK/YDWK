@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.entities
 
-import io.github.realyusufismail.ydwk.util.SnowFlake
+import io.github.ydwk.ydwk.util.SnowFlake
 
 // TODO : Add more properties
 interface Message : SnowFlake {}

@@ -20,8 +20,8 @@ package io.github.realyusufismail.ws.io.github.realyusufismail.slash
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ArrayNode
-import io.github.realyusufismail.ydwk.interaction.application.ApplicationCommandType
-import io.github.realyusufismail.ydwk.slash.SlashOptionType
+import io.github.ydwk.ydwk.interaction.application.ApplicationCommandType
+import io.github.ydwk.ydwk.slash.SlashOptionType
 import kotlin.test.assertEquals
 import org.junit.jupiter.api.Test
 

@@ -17,7 +17,7 @@
   ~  */
   -->
 <configuration>
-<conversionRule conversionWord="highlight" converterClass="io.github.realyusufismail.ydwk.logger.LoggerColorScheme"/>
+<conversionRule conversionWord="highlight" converterClass="io.github.ydwk.ydwk.logger.LoggerColorScheme"/>
 <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
         <pattern>%cyan(%d{yyyy/mm/dd HH:mm:ss}) %green({%thread}) [%highlight(%level)] %magenta(%replace(%logger){'.*\.ydwk\.', ''}): %highlight(%msg) %n</pattern>
@@ -36,7 +36,7 @@
         <maxHistory>30</maxHistory>
     </rollingPolicy>
 </appender>
-<logger name="io.github.realyusufismail.ydwk" level="${LOG_LEVEL:-INFO}" additivity="false">
+<logger name="io.github.ydwk.ydwk" level="${LOG_LEVEL:-INFO}" additivity="false">
     <appender-ref ref="STDOUT"/>
     <appender-ref ref="LOGFILE"/>
 </logger>

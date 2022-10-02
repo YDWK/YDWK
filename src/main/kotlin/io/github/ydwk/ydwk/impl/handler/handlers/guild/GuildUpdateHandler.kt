@@ -19,14 +19,14 @@
 package io.github.ydwk.ydwk.impl.handler.handlers.guild
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.realyusufismail.ydwk.cache.CacheType
-import io.github.realyusufismail.ydwk.entities.guild.enums.*
-import io.github.realyusufismail.ydwk.impl.YDWKImpl
-import io.github.realyusufismail.ydwk.impl.entities.EmojiImpl
-import io.github.realyusufismail.ydwk.impl.entities.StickerImpl
-import io.github.realyusufismail.ydwk.impl.entities.guild.WelcomeScreenImpl
-import io.github.realyusufismail.ydwk.impl.handler.Handler
-import io.github.realyusufismail.ydwk.util.GetterSnowFlake
+import io.github.ydwk.ydwk.cache.CacheType
+import io.github.ydwk.ydwk.entities.guild.enums.*
+import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.impl.entities.EmojiImpl
+import io.github.ydwk.ydwk.impl.entities.StickerImpl
+import io.github.ydwk.ydwk.impl.entities.guild.WelcomeScreenImpl
+import io.github.ydwk.ydwk.impl.handler.Handler
+import io.github.ydwk.ydwk.util.GetterSnowFlake
 import java.util.*
 
 class GuildUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
