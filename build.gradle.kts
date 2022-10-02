@@ -30,10 +30,10 @@ extra.apply {
     set("dev_id", "yusuf")
     set("dev_name", "Yusuf Ismail")
     set("dev_email", "yusufgamer222@gmail.com")
-    set("dev_organization", "RealYusufIsmail")
-    set("dev_organization_url", "https://github.com/RealYusufIsmail")
+    set("dev_organization", "YDWK")
+    set("dev_organization_url", "https://github.com/YDWK")
     set("gpl_name", "Apache-2.0 license")
-    set("gpl_url", "https://github.com/RealYusufIsmail/YDWK/blob/master/LICENSE")
+    set("gpl_url", "https://github.com/YDWK/YDWK/blob/master/LICENSE")
     // Make sure we have a default for initial configuration evaluation
     set("isReleaseVersion", false)
 }
@@ -92,7 +92,7 @@ spotless {
 
         licenseHeader(
             """/*
- * Copyright 2022 Yusuf Arfan Ismail and other YDWK contributors.
+ * Copyright 2022 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -163,9 +163,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection.set("https://github.com/RealYusufIsmail/YDWK.git")
-                    developerConnection.set("scm:git:ssh://git@github.com/RealYusufIsmail/YDWK.git")
-                    url.set("github.com/RealYusufIsmail/YDWK")
+                    connection.set("https://github.com/YDWK/YDWK.git")
+                    developerConnection.set("scm:git:ssh://git@github.com/YDWK/YDWK.git")
+                    url.set("github.com/YDWK/YDWK")
                 }
             }
         }
