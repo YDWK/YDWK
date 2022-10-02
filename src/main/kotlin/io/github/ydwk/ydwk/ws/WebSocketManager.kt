@@ -75,6 +75,7 @@ open class WebSocketManager(
     private var identifyRateLimit = false
     private var identifyTime = 0L
     private var attemptedToResume = false
+    private var timesTriedToConnect = 0
 
     @Synchronized
     fun connect(): WebSocketManager {
@@ -100,7 +101,19 @@ open class WebSocketManager(
             resumeUrl = null
             sessionId = null
             logger.error("Failed to connect to gateway, will try again in 10 seconds", e)
-            scheduler.schedule({ connect() }, 10, TimeUnit.SECONDS)
+            if (timesTriedToConnect > 3) {
+                timesTriedToConnect = 0
+                logger.error("Failed to connect to gateway 3 times, shutting down")
+                ydwk.shutdownAPI()
+            } else {
+                scheduler.schedule(
+                    {
+                        timesTriedToConnect++
+                        connect()
+                    },
+                    10,
+                    TimeUnit.SECONDS)
+            }
         }
         return this
     }
@@ -492,7 +505,9 @@ open class WebSocketManager(
 
     fun shutdown() {
         invalidate()
-        webSocket?.disconnect()
+        if (webSocket != null) {
+            webSocket!!.disconnect()
+        }
         logger.info("Shutting down gateway")
         try {
             Runtime.getRuntime().exit(0)

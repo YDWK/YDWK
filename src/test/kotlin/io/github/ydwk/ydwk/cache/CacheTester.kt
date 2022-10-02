@@ -16,11 +16,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ws.io.github.realyusufismail.cache
+package io.github.ydwk.ydwk.cache
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import io.github.realyusufismail.ws.io.github.realyusufismail.cache.user.DummyUserImpl
-import io.github.ydwk.ydwk.cache.CacheType
 import java.nio.file.Files
 import java.util.Objects
 import kotlin.io.path.Path
@@ -37,7 +35,7 @@ class CacheTester {
             ObjectMapper()
                 .readTree(
                     Files.readString(
-                        Path("src/test/kotlin/io/github/realyusufismail/cache/user/user.json")))
+                        Path("src/test/kotlin/io/github/ydwk/ydwk/cache/user/user.json")))
 
         val user = DummyUserImpl(userJson)
         val cache = DummyCache()
@@ -54,7 +52,7 @@ class CacheTester {
             ObjectMapper()
                 .readTree(
                     Files.readString(
-                        Path("src/test/kotlin/io/github/realyusufismail/cache/user/newUser.json")))
+                        Path("src/test/kotlin/io/github/ydwk/ydwk/cache/user/newUser.json")))
 
         val oldName = cachedUser.name
         val newName = newUserJson["name"].asText()
