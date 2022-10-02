@@ -38,7 +38,7 @@ extra.apply {
     set("isReleaseVersion", false)
 }
 
-group = "io.github.realyusufismail"
+group = "io.github.realyusufismail" // used for publishing. DONT CHANGE
 version = "0.0.1-SNAPSHOT"
 
 repositories {
