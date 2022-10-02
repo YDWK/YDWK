@@ -58,7 +58,7 @@ dependencies {
     api("com.squareup.okhttp3:okhttp:5.0.0-alpha.10")
     api("com.neovisionaries:nv-websocket-client:2.14")
     //kotlin
-    testImplementation("org.jetbrains.kotlin:kotlin-test:1.7.10")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:1.7.20")
     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 }
 
