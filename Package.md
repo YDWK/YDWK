@@ -10,16 +10,20 @@ A discord wrapper made in kotlin
 
 ## Future Features
 
-- [ ] Handle slash commands
+- [ ] Reply system for slash commands
+- [ ] Embed builder
+- [ ] Support for channels and messages
 
 ## Implemented
 
+- [x] Handle Rest API
 - [x] Connect to gateway
 - [x] Parse json
 - [x] Handle all op codes
 - [x] Caching
-- [x] Handle Rest API
 - [x] Handle reconnect and resuming
+- [x] Support for intents
+- [x] Handle slash commands
 
 ## Installation
 
