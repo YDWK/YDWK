@@ -40,10 +40,10 @@ class CacheTester {
         val user = DummyUserImpl(userJson)
         val cache = DummyCache()
 
-        cache[user.id, user] = CacheType.USER
+        cache[user.id, user] = CacheIds.USER
 
         // TODO: problem here
-        val cachedUser = cache[user.id, CacheType.USER] as DummyUserImpl
+        val cachedUser = cache[user.id, CacheIds.USER] as DummyUserImpl
 
         Assertions.assertEquals(user.idAsLong, cachedUser.idAsLong, "User ID is not equal")
         Assertions.assertEquals(user.name, cachedUser.name, "User name is not equal")

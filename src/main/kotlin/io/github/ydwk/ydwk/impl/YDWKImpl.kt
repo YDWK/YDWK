@@ -51,8 +51,10 @@ class YDWKImpl(
     private val simpleEventManager: SampleEventManager = SampleEventManager(),
     private val coroutineEventManager: CoroutineEventManager = CoroutineEventManager(),
     val logger: Logger = LoggerFactory.getLogger(YDWKImpl::class.java),
-    val cache: Cache = PerpetualCache(),
-    val memberCache: MemberCache = MemberCacheImpl(),
+    private val allowedCache: MutableSet<CacheType> = mutableSetOf(),
+    private val disallowedCache: MutableSet<CacheType> = mutableSetOf(),
+    val cache: Cache = PerpetualCache(allowedCache, disallowedCache),
+    val memberCache: MemberCache = MemberCacheImpl(allowedCache, disallowedCache),
     private var token: String? = null,
     private var guildIdList: MutableList<String> = mutableListOf(),
     var applicationId: String? = null
@@ -97,11 +99,11 @@ class YDWKImpl(
     }
 
     override fun getGuild(id: String): Guild? {
-        return cache[id, CacheType.GUILD] as Guild?
+        return cache[id, CacheIds.GUILD] as Guild?
     }
 
     override fun getGuilds(): List<Guild> {
-        return cache.values(CacheType.GUILD).map { it as Guild }
+        return cache.values(CacheIds.GUILD).map { it as Guild }
     }
 
     override val restApiManager: RestApiManager
@@ -121,6 +123,14 @@ class YDWKImpl(
 
     override fun setGuildIds(vararg guildIds: String) {
         guildIds.forEach { this.guildIdList.add(it) }
+    }
+
+    override fun setAllowedCache(vararg cacheTypes: CacheType) {
+        allowedCache.addAll(cacheTypes)
+    }
+
+    override fun setDisallowedCache(vararg cacheTypes: CacheType) {
+        disallowedCache.addAll(cacheTypes)
     }
 
     override var bot: Bot? = null

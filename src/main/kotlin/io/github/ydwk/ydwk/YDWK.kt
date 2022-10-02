@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
+import io.github.ydwk.ydwk.cache.CacheType
 import io.github.ydwk.ydwk.entities.Application
 import io.github.ydwk.ydwk.entities.Bot
 import io.github.ydwk.ydwk.entities.Guild
@@ -131,4 +132,33 @@ interface YDWK {
 
     /** Used to set the guild ids for guild commands */
     fun setGuildIds(guildIds: MutableList<String>) = setGuildIds(*guildIds.toTypedArray())
+
+    /**
+     * Used to set the allowed cache types.
+     *
+     * @param cacheTypes The cache types to be allowed.
+     */
+    fun setAllowedCache(vararg cacheTypes: CacheType)
+
+    /**
+     * Used to set the allowed cache types.
+     *
+     * @param cacheTypes The cache types to be allowed.
+     */
+    fun setAllowedCache(cacheTypes: Set<CacheType>) = setAllowedCache(*cacheTypes.toTypedArray())
+
+    /**
+     * Used to set the disallowed cache types.
+     *
+     * @param cacheTypes The cache types to be disallowed.
+     */
+    fun setDisallowedCache(vararg cacheTypes: CacheType)
+
+    /**
+     * Used to set the disallowed cache types.
+     *
+     * @param cacheTypes The cache types to be disallowed.
+     */
+    fun setDisallowedCache(cacheTypes: Set<CacheType>) =
+        setDisallowedCache(*cacheTypes.toTypedArray())
 }

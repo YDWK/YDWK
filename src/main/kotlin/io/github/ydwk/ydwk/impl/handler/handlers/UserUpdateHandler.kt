@@ -19,7 +19,7 @@
 package io.github.ydwk.ydwk.impl.handler.handlers
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.ydwk.ydwk.cache.CacheType
+import io.github.ydwk.ydwk.cache.CacheIds
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.UserImpl
@@ -32,13 +32,13 @@ class UserUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override fun start() {
         val userJson: JsonNode = json
 
-        val userCache = ydwk.cache[userJson.get("id").asText(), CacheType.GUILD]
+        val userCache = ydwk.cache[userJson.get("id").asText(), CacheIds.GUILD]
 
         if (userCache == null) {
             ydwk.logger.warn(
                 "UserUpdateHandler: User with id ${userJson.get("id").asLong()} not found in cache, will add it")
             val user = UserImpl(json, json.get("id").asLong(), ydwk)
-            ydwk.cache[user.id, user] = CacheType.USER
+            ydwk.cache[user.id, user] = CacheIds.USER
             return
         }
 

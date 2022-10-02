@@ -27,37 +27,51 @@ import io.github.ydwk.ydwk.entities.guild.Role
 /**
  * This is the implementation of the [Cache] interface that uses a [Map] to store and retrieve data.
  */
-open class PerpetualCache : Cache {
+open class PerpetualCache(
+    private val allowedCache: Set<CacheType>,
+    val disallowedCache: Set<CacheType>
+) : Cache {
     private val cache = HashMap<String, Any>()
 
     override val size: Int
         get() = cache.size
 
-    override fun set(key: String, value: Any, cacheType: CacheType) {
-        cache[key + cacheType.toString()] = value
-    }
-
-    override fun get(key: String, cacheType: CacheType): Any? {
-        return if (cache.containsKey(key + cacheType.toString())) {
-            cache[key + cacheType.toString()]
-        } else {
-            throw CacheException("No value found for key $key and type $cacheType")
+    override fun set(key: String, value: Any, cacheType: CacheIds) {
+        if (allowedCache.contains(cacheType.getCacheType()) &&
+            !disallowedCache.contains(cacheType.getCacheType())) {
+            cache[key + cacheType.toString()] = value
         }
     }
 
-    override fun remove(key: String, cacheType: CacheType): Any? {
-        return if (cache.containsKey(key + cacheType.toString())) {
-            cache.remove(key + cacheType.toString())
-        } else {
-            throw CacheException("Cache does not contain value for key $key")
+    override fun get(key: String, cacheType: CacheIds): Any? {
+        if (allowedCache.contains(cacheType.getCacheType()) &&
+            !disallowedCache.contains(cacheType.getCacheType())) {
+            return if (cache.containsKey(key + cacheType.toString())) {
+                cache[key + cacheType.toString()]
+            } else {
+                throw CacheException("No value found for key $key and type $cacheType")
+            }
         }
+        return null
+    }
+
+    override fun remove(key: String, cacheType: CacheIds): Any? {
+        if (allowedCache.contains(cacheType.getCacheType()) &&
+            !disallowedCache.contains(cacheType.getCacheType())) {
+            return if (cache.containsKey(key + cacheType.toString())) {
+                cache.remove(key + cacheType.toString())
+            } else {
+                throw CacheException("Cache does not contain value for key $key")
+            }
+        }
+        return null
     }
 
     override fun contains(key: String): Boolean {
         return cache.containsKey(key)
     }
 
-    override fun contains(key: String, cacheType: CacheType): Boolean {
+    override fun contains(key: String, cacheType: CacheIds): Boolean {
         return cache.containsKey(key + cacheType.toString())
     }
 
@@ -65,7 +79,7 @@ open class PerpetualCache : Cache {
         cache.clear()
     }
 
-    override fun values(cacheType: CacheType): List<Any> {
+    override fun values(cacheType: CacheIds): List<Any> {
         return cache.values.filter {
             (it is Guild) ||
                 (it is User) ||
