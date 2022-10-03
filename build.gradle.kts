@@ -39,7 +39,7 @@ extra.apply {
 }
 
 group = "io.github.realyusufismail" // used for publishing. DONT CHANGE
-version = "0.0.1-SNAPSHOT"
+version = "0.0.1"
 
 repositories {
     mavenCentral()
