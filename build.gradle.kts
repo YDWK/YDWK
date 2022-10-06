@@ -53,7 +53,7 @@ dependencies {
     api("ch.qos.logback:logback-core:1.4.1")
     api("uk.org.lidalia:sysout-over-slf4j:1.0.2")
     //config.json
-    api("io.github.realyusufismail:jconfig:1.0.6")
+    api("io.github.realyusufismail:jconfig:1.0.7")
     //ws and https
     api("com.squareup.okhttp3:okhttp:5.0.0-alpha.10")
     api("com.neovisionaries:nv-websocket-client:2.14")

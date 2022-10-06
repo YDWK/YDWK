@@ -32,7 +32,7 @@ class Bot : ListenerAdapter() {
 }
 
 fun main() {
-    val ydwk = createDefaultBot(JConfigUtils.getString("token"))
+    val ydwk = createDefaultBot(JConfigUtils.getString("token") ?: throw Exception("Token not found!"))
 
     ydwk.on<ReadyEvent> { println("Ready!") }
 
