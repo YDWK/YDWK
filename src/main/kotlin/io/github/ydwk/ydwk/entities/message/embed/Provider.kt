@@ -16,6 +16,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.message
+package io.github.ydwk.ydwk.entities.message.embed
 
-interface Reaction {}
+interface Provider {
+    /**
+     * Gets the name of this provider.
+     *
+     * @return The name of this provider.
+     */
+    val name: String
+
+    /**
+     * Gets the url of this provider.
+     *
+     * @return The url of this provider.
+     */
+    val url: String
+}

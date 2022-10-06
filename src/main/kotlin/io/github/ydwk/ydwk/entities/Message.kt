@@ -18,132 +18,201 @@
  */ 
 package io.github.ydwk.ydwk.entities
 
+import io.github.ydwk.ydwk.entities.application.PartialApplication
 import io.github.ydwk.ydwk.entities.guild.Role
-import io.github.ydwk.ydwk.entities.message.Attachment
-import io.github.ydwk.ydwk.entities.message.Embed
-import io.github.ydwk.ydwk.entities.message.MessageType
-import io.github.ydwk.ydwk.entities.message.Reaction
+import io.github.ydwk.ydwk.entities.message.*
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 import io.github.ydwk.ydwk.util.SnowFlake
 
-// TODO : Add more properties
 interface Message : SnowFlake {
     /**
      * Gets the channel where this message was sent.
      *
      * @return The channel where this message was sent.
      */
-    val channel : Channel
+    val channel: Channel
 
     /**
      * Gets the author of this message.
      *
      * @return The author of this message.
      */
-    val author : User
+    val author: User
 
     /**
      * Gets the content of this message.
      *
      * @return The content of this message.
      */
-    val content : String
+    val content: String
 
     /**
      * Gets the time when this message was sent.
      *
      * @return The time when this message was sent.
      */
-    val time : String
+    val time: String
 
     /**
      * Gets the time when this message was edited.
      *
      * @return The time when this message was edited.
      */
-    val editedTime : String?
+    val editedTime: String?
 
     /**
      * Gets weather this message is TTS.
      *
      * @return Weather this message is TTS.
      */
-    val tts : Boolean
+    val tts: Boolean
 
     /**
      * Gets weather this message mentions everyone.
      *
      * @return Weather this message mentions everyone.
      */
-    val mentionEveryone : Boolean
+    val mentionEveryone: Boolean
 
     /**
      * Gets the mentioned users.
      *
      * @return The mentioned users.
      */
-    val mentionedUsers : List<User>
+    val mentionedUsers: List<User>
 
     /**
      * Gets the mentioned roles.
      *
      * @return The mentioned roles.
      */
-    val mentionedRoles : List<Role>
+    val mentionedRoles: List<Role>
 
     /**
      * Gets the mentioned channels.
      *
      * @return The mentioned channels.
      */
-    val mentionedChannels : List<Channel>
+    val mentionedChannels: List<Channel>
 
     /**
      * Gets the attachments.
      *
      * @return The attachments.
      */
-    val attachments : List<Attachment>
+    val attachments: List<Attachment>
 
     /**
      * Gets the embedded contents.
      *
      * @return The embedded contents.
      */
-    val embeds : List<Embed>
+    val embeds: List<Embed>
 
     /**
      * Gets the reactions.
      *
      * @return The reactions.
      */
-    val reactions : List<Reaction>
+    val reactions: List<Reaction>
 
     /**
      * Gets the nonce.
      *
      * @return The nonce.
      */
-    val nonce : String?
+    val nonce: String?
 
     /**
      * Gets weather this message is pinned.
      *
      * @return Weather this message is pinned.
      */
-    val pinned : Boolean
+    val pinned: Boolean
 
     /**
      * Gets the webhook id of this message.
      *
      * @return The webhook id of this message.
      */
-    val webhookId : GetterSnowFlake?
+    val webhookId: GetterSnowFlake?
 
     /**
      * Gets the type of this message.
      *
      * @return The type of this message.
      */
-    val type : MessageType
+    val type: MessageType
+
+    /**
+     * Gets the activity of this message.
+     *
+     * @return The activity of this message.
+     */
+    val activity: MessageActivity?
+
+    /**
+     * Gets the application of this message.
+     *
+     * @return The application of this message.
+     */
+    val application: PartialApplication?
+
+    /**
+     * Gets the message reference of this message.
+     *
+     * @return The message reference of this message.
+     */
+    val messageReference: MessageReference?
+
+    /**
+     * Gets the flags of this message.
+     *
+     * @return The flags of this message.
+     */
+    val flags: MessageFlag?
+
+    /**
+     * Gets the referenced message of this message.
+     *
+     * @return The referenced message of this message.
+     */
+    val referencedMessage: Message?
+
+    /**
+     * Gets the interaction of this message.
+     *
+     * @return The interaction of this message.
+     */
+    val interaction: MessageInteraction?
+
+    /**
+     * Gets the thread of this message.
+     *
+     * @return The thread of this message.
+     */
+    val thread: Channel?
+
+    /**
+     * Gets the components of this message.
+     *
+     * @return The components of this message.
+     */
+    val components: List<MessageComponent>
+
+    /**
+     * Gets the sticker items of this message.
+     *
+     * @return The sticker items of this message.
+     */
+    val stickerItems: List<MessageStickerItem>
+
+    /**
+     * Gets the position of this message.
+     *
+     * @return A generally increasing integer (there may be gaps or duplicates) that represents the
+     * approximate position of the message in a thread, it can be used to estimate the relative
+     * position of the message in a thread in company with total_message_sent on parent thread.
+     */
+    val position: Long?
 }

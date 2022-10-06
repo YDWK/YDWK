@@ -1,6 +1,24 @@
+/*
+ * Copyright 2022 YDWK inc.
+ *
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ *
+ * you may not use this file except in compliance with the License.
+ *
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */ 
 package io.github.ydwk.ydwk.entities.message
 
-enum class MessageType(private val type : Int, private val isDeletable : Boolean) {
+enum class MessageType(private val type: Int, private val isDeletable: Boolean) {
     DEFAULT(0, true),
     RECIPIENT_ADD(1, false),
     RECIPIENT_REMOVE(2, false),
@@ -24,29 +42,28 @@ enum class MessageType(private val type : Int, private val isDeletable : Boolean
     THREAD_STARTER_MESSAGE(21, false),
     GUILD_INVITE_REMINDER(22, true),
     CONTEXT_MENU_COMMAND(23, true),
-    /**
-     * Can only be deleted by members with MANAGE_MESSAGES permission.
-     */
+    /** Can only be deleted by members with MANAGE_MESSAGES permission. */
     AUTO_MODERATION_ACTION(24, true),
-    /**
-     * An Unknown Message Type.
-     */
+    /** An Unknown Message Type. */
     UNKNOWN(-1, false);
 
     companion object {
         /**
-         * Gets the [MessageType] from the given type.
+         * Gets the [MessageType] of the provided [type].
+         *
+         * @param type The type to get the [MessageType] of.
+         * @return The [MessageType] of the provided [type].
          */
-        fun fromType(type : Int) : MessageType {
+        fun fromType(type: Int): MessageType {
             return values().firstOrNull { it.type == type } ?: UNKNOWN
         }
     }
 
-    fun isDeletable() : Boolean {
+    fun isDeletable(): Boolean {
         return isDeletable
     }
 
-    fun getType() : Int {
+    fun getType(): Int {
         return type
     }
 }

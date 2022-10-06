@@ -18,4 +18,4 @@
  */ 
 package io.github.ydwk.ydwk.entities.message
 
-interface Reaction {}
+interface MessageReference {}

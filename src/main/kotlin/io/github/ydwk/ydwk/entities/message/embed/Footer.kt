@@ -16,6 +16,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.message
+package io.github.ydwk.ydwk.entities.message.embed
 
-interface Reaction {}
+interface Footer {
+    /**
+     * Gets the text of this footer.
+     *
+     * @return The text of this footer.
+     */
+    val text: String
+
+    /**
+     * Gets the icon url of this footer.
+     *
+     * @return The icon url of this footer.
+     */
+    val iconUrl: String?
+
+    /**
+     * Gets the proxy icon url of this footer.
+     *
+     * @return The proxy icon url of this footer.
+     */
+    val proxyIconUrl: String?
+}

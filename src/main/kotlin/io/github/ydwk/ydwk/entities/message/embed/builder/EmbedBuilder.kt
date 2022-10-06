@@ -16,6 +16,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.message
+package io.github.ydwk.ydwk.entities.message.embed.builder
 
-interface Reaction {}
+interface EmbedBuilder {
+    /**
+     * Used to set the title of the embed.
+     *
+     * @param title The title of the embed.
+     */
+    fun setTitle(title: String): EmbedBuilder
+
+    /**
+     * Used to set the description of the embed.
+     *
+     * @param description The description of the embed.
+     */
+    fun setDescription(description: String): EmbedBuilder
+}
