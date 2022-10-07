@@ -22,7 +22,7 @@ import io.github.ydwk.ydwk.util.Checks
 
 interface AssignableEntity<E> {
 
-    fun <T : E> `as`(type: Class<T>): T? {
+    fun <T : E> cast(type: Class<T>): T? {
         Checks.checkNotNull(type, "type cannot be null")
         return if (type.isAssignableFrom(javaClass)) type.cast(this) else null
     }
