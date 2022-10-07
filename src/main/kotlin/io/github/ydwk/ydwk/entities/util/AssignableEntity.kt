@@ -16,18 +16,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities
+package io.github.ydwk.ydwk.entities.util
 
-import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
-import io.github.ydwk.ydwk.entities.util.AssignableEntity
-import io.github.ydwk.ydwk.entities.util.GenericEntity
-import io.github.ydwk.ydwk.util.SnowFlake
+import io.github.ydwk.ydwk.util.Checks
 
-interface Channel : SnowFlake, GenericEntity, AssignableEntity<Channel> {
-    /**
-     * Get the channel type
-     *
-     * @return the channel type
-     */
-    val type: ChannelType
+interface AssignableEntity<E> {
+
+    fun <T : E> `as`(type: Class<T>): T? {
+        Checks.checkNotNull(type, "type cannot be null")
+        return if (type.isAssignableFrom(javaClass)) type.cast(this) else null
+    }
 }

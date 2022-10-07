@@ -16,18 +16,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities
+package io.github.ydwk.ydwk.entities.channel
 
-import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
-import io.github.ydwk.ydwk.entities.util.AssignableEntity
-import io.github.ydwk.ydwk.entities.util.GenericEntity
-import io.github.ydwk.ydwk.util.SnowFlake
+import io.github.ydwk.ydwk.entities.Channel
+import io.github.ydwk.ydwk.util.NameAbleEntity
 
-interface Channel : SnowFlake, GenericEntity, AssignableEntity<Channel> {
-    /**
-     * Get the channel type
-     *
-     * @return the channel type
-     */
-    val type: ChannelType
-}
+interface GuildChannel : Channel, NameAbleEntity {}
