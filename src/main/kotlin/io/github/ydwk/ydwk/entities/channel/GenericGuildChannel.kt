@@ -18,15 +18,11 @@
  */ 
 package io.github.ydwk.ydwk.entities.channel
 
-import io.github.ydwk.ydwk.entities.Channel
-import io.github.ydwk.ydwk.entities.Guild
-import io.github.ydwk.ydwk.util.NameAbleEntity
-
-interface GuildChannel : Channel, NameAbleEntity {
+interface GenericGuildChannel : GuildChannel {
     /**
-     * Gets the guild of this channel.
+     * Gets the position of this channel.
      *
-     * @return the guild of this channel.
+     * @return the position of this channel.
      */
-    val guild: Guild
+    val position: Int
 }

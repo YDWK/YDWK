@@ -29,7 +29,7 @@ import io.github.ydwk.ydwk.entities.guild.Role
  */
 open class PerpetualCache(
     private val allowedCache: Set<CacheType>,
-    val disallowedCache: Set<CacheType>
+    private val disallowedCache: Set<CacheType>
 ) : Cache {
     private val cache = HashMap<String, Any>()
 
@@ -82,6 +82,7 @@ open class PerpetualCache(
     override fun values(cacheType: CacheIds): List<Any> {
         return cache.values.filter {
             (it is Guild) ||
+                (it is Channel) ||
                 (it is User) ||
                 (it is Role) ||
                 (it is Emoji) ||

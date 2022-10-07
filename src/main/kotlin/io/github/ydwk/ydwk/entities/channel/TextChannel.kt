@@ -18,4 +18,25 @@
  */ 
 package io.github.ydwk.ydwk.entities.channel
 
-interface TextChannel : GuildChannel {}
+interface TextChannel : GenericGuildChannel {
+    /**
+     * Gets the topic of this channel.
+     *
+     * @return the topic of this channel.
+     */
+    val topic: String
+
+    /**
+     * Gets the nsfw flag of this channel.
+     *
+     * @return the nsfw flag of this channel.
+     */
+    val nsfw: Boolean
+
+    /**
+     * Get the default auto archive duration of this channel.
+     *
+     * @return the default auto archive duration of this channel.
+     */
+    val defaultAutoArchiveDuration: Int
+}

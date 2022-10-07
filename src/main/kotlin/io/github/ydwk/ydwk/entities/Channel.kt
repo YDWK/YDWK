@@ -18,6 +18,8 @@
  */ 
 package io.github.ydwk.ydwk.entities
 
+import io.github.ydwk.ydwk.entities.channel.GuildChannel
+import io.github.ydwk.ydwk.entities.channel.TextChannel
 import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
 import io.github.ydwk.ydwk.entities.util.AssignableEntity
 import io.github.ydwk.ydwk.entities.util.GenericEntity
@@ -30,4 +32,20 @@ interface Channel : SnowFlake, GenericEntity, AssignableEntity<Channel> {
      * @return the channel type
      */
     val type: ChannelType
+
+    /**
+     * Gets the channel as a [GuildChannel] if it is one.
+     *
+     * @return the channel as a [GuildChannel] if it is one.
+     */
+    fun asGuildChannel(): GuildChannel? {
+        return cast(GuildChannel::class.java)
+    }
+
+    /**
+     * Gets the channel as a [TextChannel] if it is one.
+     *
+     * @return the channel as a [TextChannel] if it is one.
+     */
+    fun asTextChannel(): TextChannel? = cast(TextChannel::class.java)
 }
