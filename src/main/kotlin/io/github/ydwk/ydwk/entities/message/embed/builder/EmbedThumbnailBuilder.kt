@@ -16,22 +16,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.message.embed
+package io.github.ydwk.ydwk.entities.message.embed.builder
 
-import io.github.ydwk.ydwk.entities.util.GenericEntity
+import java.net.URL
 
-interface Provider : GenericEntity {
-    /**
-     * Gets the name of this provider.
-     *
-     * @return The name of this provider.
-     */
-    val name: String?
-
-    /**
-     * Gets the url of this provider.
-     *
-     * @return The url of this provider.
-     */
-    val url: String?
-}
+class EmbedThumbnailBuilder(
+    var url: URL,
+    var proxyUrl: URL? = null,
+    var width: Int? = null,
+    var height: Int? = null
+)

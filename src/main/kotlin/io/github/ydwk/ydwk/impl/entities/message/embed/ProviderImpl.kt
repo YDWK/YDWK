@@ -16,22 +16,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.message.embed
+package io.github.ydwk.ydwk.impl.entities.message.embed
 
-import io.github.ydwk.ydwk.entities.util.GenericEntity
+import com.fasterxml.jackson.databind.JsonNode
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.message.embed.Provider
 
-interface Provider : GenericEntity {
-    /**
-     * Gets the name of this provider.
-     *
-     * @return The name of this provider.
-     */
-    val name: String?
+class ProviderImpl(override val ydwk: YDWK, override val json: JsonNode) : Provider {
 
-    /**
-     * Gets the url of this provider.
-     *
-     * @return The url of this provider.
-     */
-    val url: String?
+    override val name: String?
+        get() = if (json.has("name")) json["name"].asText() else null
+
+    override val url: String?
+        get() = if (json.has("url")) json["url"].asText() else null
 }

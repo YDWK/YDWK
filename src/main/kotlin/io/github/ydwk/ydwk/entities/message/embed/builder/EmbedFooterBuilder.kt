@@ -16,23 +16,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.util
+package io.github.ydwk.ydwk.entities.message.embed.builder
 
-import java.time.ZoneId
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
-import java.util.*
+import java.net.URL
 
-fun formatZonedDateTime(time: String): String {
-    return if (time == "null") {
-        "null"
-    } else {
-        val formatter =
-            DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
-                .withLocale(Locale.ENGLISH)
-                .withZone(ZoneId.systemDefault())
-
-        formatter.format(ZonedDateTime.parse(time))
-    }
-}
+class EmbedFooterBuilder(var text: String, var iconUrl: URL? = null, var proxyIconUrl: URL? = null)

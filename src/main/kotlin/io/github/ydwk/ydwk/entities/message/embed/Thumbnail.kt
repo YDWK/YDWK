@@ -34,19 +34,19 @@ interface Thumbnail : GenericEntity {
      *
      * @return The proxy url of this thumbnail.
      */
-    val proxyUrl: String
+    val proxyUrl: String?
 
     /**
      * Gets the height of this thumbnail.
      *
      * @return The height of this thumbnail.
      */
-    val height: Int
+    val height: Int?
 
     /**
      * Gets the width of this thumbnail.
      *
      * @return The width of this thumbnail.
      */
-    val width: Int
+    val width: Int?
 }

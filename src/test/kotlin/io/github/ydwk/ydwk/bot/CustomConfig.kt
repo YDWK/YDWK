@@ -31,5 +31,5 @@ class CustomConfig {
 fun main() {
     val config = CustomConfig().build()
 
-    println(config["name"].asString)
+    println(config["name"]?.asString)
 }

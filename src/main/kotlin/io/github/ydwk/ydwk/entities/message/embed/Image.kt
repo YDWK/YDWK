@@ -34,7 +34,7 @@ interface Image : GenericEntity {
      *
      * @return The proxy url of this image.
      */
-    val proxyUrl: String?
+    val proxyUrl: URL?
 
     /**
      * Gets the height of this image.

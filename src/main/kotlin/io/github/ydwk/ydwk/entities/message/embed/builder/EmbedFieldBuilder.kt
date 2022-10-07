@@ -18,4 +18,4 @@
  */ 
 package io.github.ydwk.ydwk.entities.message.embed.builder
 
-class EmbedFieldBuilder(var name: String, var value: String, var inline: Boolean = true)
+class EmbedFieldBuilder(var name: String, var value: CharSequence, var inline: Boolean = true)

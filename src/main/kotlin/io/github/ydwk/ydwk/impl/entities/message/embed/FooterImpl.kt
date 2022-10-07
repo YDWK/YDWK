@@ -16,22 +16,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.message.embed
+package io.github.ydwk.ydwk.impl.entities.message.embed
 
-import io.github.ydwk.ydwk.entities.util.GenericEntity
+import com.fasterxml.jackson.databind.JsonNode
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.message.embed.Footer
 
-interface Provider : GenericEntity {
-    /**
-     * Gets the name of this provider.
-     *
-     * @return The name of this provider.
-     */
-    val name: String?
+class FooterImpl(override val ydwk: YDWK, override val json: JsonNode) : Footer {
+    override val text: String
+        get() = json["text"].asText()
 
-    /**
-     * Gets the url of this provider.
-     *
-     * @return The url of this provider.
-     */
-    val url: String?
+    override val iconUrl: String?
+        get() = if (json.has("icon_url")) json["icon_url"].asText() else null
+
+    override val proxyIconUrl: String?
+        get() = if (json.has("proxy_icon_url")) json["proxy_icon_url"].asText() else null
 }

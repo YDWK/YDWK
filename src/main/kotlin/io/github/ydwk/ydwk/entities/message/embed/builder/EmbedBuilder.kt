@@ -73,12 +73,28 @@ interface EmbedBuilder {
     fun setThumbnail(url: URL): EmbedBuilder
 
     /**
+     * Used to set the thumbnail of the embed.
+     *
+     * @param thumbnail The thumbnail of the embed.
+     * @return The current [EmbedBuilder] instance.
+     */
+    fun setThumbnail(thumbnail: EmbedThumbnailBuilder): EmbedBuilder
+
+    /**
      * Used to set the image of the embed.
      *
      * @param url The url of the image.
      * @return The current [EmbedBuilder] instance.
      */
     fun setImage(url: URL): EmbedBuilder
+
+    /**
+     * Used to set the image of the embed.
+     *
+     * @param image The image of the embed.
+     * @return The current [EmbedBuilder] instance.
+     */
+    fun setImage(image: EmbedImageBuilder): EmbedBuilder
 
     /**
      * Used to set the footer of the embed.
@@ -90,6 +106,14 @@ interface EmbedBuilder {
     fun setFooter(text: String, iconUrl: URL): EmbedBuilder
 
     /**
+     * Used to set the footer of the embed.
+     *
+     * @param footer The footer of the embed.
+     * @return The current [EmbedBuilder] instance.
+     */
+    fun setFooter(footer: EmbedFooterBuilder): EmbedBuilder
+
+    /**
      * Used to set the author of the embed.
      *
      * @param name The name of the author.
@@ -98,6 +122,14 @@ interface EmbedBuilder {
      * @return The current [EmbedBuilder] instance.
      */
     fun setAuthor(name: String, url: URL? = null, iconUrl: URL? = null): EmbedBuilder
+
+    /**
+     * Used to set the author of the embed.
+     *
+     * @param author The author of the embed.
+     * @return The current [EmbedBuilder] instance.
+     */
+    fun setAuthor(author: EmbedAuthorBuilder): EmbedBuilder
 
     /**
      * Used to add a field to the embed.
