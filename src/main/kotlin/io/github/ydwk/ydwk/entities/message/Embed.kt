@@ -19,10 +19,11 @@
 package io.github.ydwk.ydwk.entities.message
 
 import io.github.ydwk.ydwk.entities.message.embed.*
+import io.github.ydwk.ydwk.entities.util.GenericEntity
 import java.awt.Color
 import java.net.URL
 
-interface Embed {
+interface Embed : GenericEntity {
     /**
      * Gets the title of this embed.
      *

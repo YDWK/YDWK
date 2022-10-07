@@ -22,7 +22,24 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 
 interface GenericEntity {
+
+    /** The main YDWK instance. */
     val ydwk: YDWK
 
+    /** The json representation of this entity. */
     val json: JsonNode
+
+    /**
+     * Used to get the full json of the entity as a string.
+     *
+     * @return The full json of the entity as a string.
+     */
+    fun toJson(): String = json.toString()
+
+    /**
+     * Used to get the full json of the entity as a pretty string.
+     *
+     * @return The full json of the entity as a pretty string.
+     */
+    fun toPrettyJson(): String = json.toPrettyString()
 }

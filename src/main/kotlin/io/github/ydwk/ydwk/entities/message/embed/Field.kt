@@ -18,7 +18,9 @@
  */ 
 package io.github.ydwk.ydwk.entities.message.embed
 
-interface Field {
+import io.github.ydwk.ydwk.entities.util.GenericEntity
+
+interface Field : GenericEntity {
     /**
      * Gets the name of this field.
      *

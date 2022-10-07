@@ -18,9 +18,10 @@
  */ 
 package io.github.ydwk.ydwk.entities.message.embed
 
+import io.github.ydwk.ydwk.entities.util.GenericEntity
 import java.net.URL
 
-interface Thumbnail {
+interface Thumbnail : GenericEntity {
     /**
      * Gets the url of this thumbnail.
      *

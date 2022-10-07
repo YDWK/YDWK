@@ -18,4 +18,6 @@
  */ 
 package io.github.ydwk.ydwk.entities.message
 
-interface MessageComponent {}
+import io.github.ydwk.ydwk.entities.util.GenericEntity
+
+interface MessageComponent : GenericEntity {}

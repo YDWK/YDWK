@@ -18,11 +18,12 @@
  */ 
 package io.github.ydwk.ydwk.entities.message
 
+import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.util.NameAbleEntity
 import io.github.ydwk.ydwk.util.SnowFlake
 import java.net.URL
 
-interface Attachment : SnowFlake, NameAbleEntity {
+interface Attachment : SnowFlake, NameAbleEntity, GenericEntity {
     /**
      * Gets the description of this attachment.
      *

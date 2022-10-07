@@ -18,4 +18,6 @@
  */ 
 package io.github.ydwk.ydwk.entities.message
 
-interface MessageReference {}
+import io.github.ydwk.ydwk.entities.util.GenericEntity
+
+interface MessageReference : GenericEntity {}

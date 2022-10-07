@@ -16,8 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.message
+package io.github.ydwk.ydwk.entities.message.embed.builder
 
-import io.github.ydwk.ydwk.entities.util.GenericEntity
-
-interface MessageActivity : GenericEntity {}
+class EmbedFieldBuilder(var name: String, var value: String, var inline: Boolean = true)

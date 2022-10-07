@@ -18,7 +18,9 @@
  */ 
 package io.github.ydwk.ydwk.entities.message.embed
 
-interface Footer {
+import io.github.ydwk.ydwk.entities.util.GenericEntity
+
+interface Footer : GenericEntity {
     /**
      * Gets the text of this footer.
      *

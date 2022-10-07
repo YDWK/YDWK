@@ -18,4 +18,6 @@
  */ 
 package io.github.ydwk.ydwk.entities.message
 
-interface Reaction {}
+import io.github.ydwk.ydwk.entities.util.GenericEntity
+
+interface Reaction : GenericEntity {}

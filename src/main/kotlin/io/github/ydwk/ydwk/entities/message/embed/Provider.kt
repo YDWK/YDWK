@@ -18,7 +18,9 @@
  */ 
 package io.github.ydwk.ydwk.entities.message.embed
 
-interface Provider {
+import io.github.ydwk.ydwk.entities.util.GenericEntity
+
+interface Provider : GenericEntity {
     /**
      * Gets the name of this provider.
      *
