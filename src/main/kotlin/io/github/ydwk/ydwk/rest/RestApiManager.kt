@@ -18,6 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.rest
 
+import io.github.ydwk.ydwk.impl.rest.enums.RestType
 import io.github.ydwk.ydwk.rest.type.*
 import okhttp3.RequestBody
 
@@ -158,4 +159,13 @@ interface RestApiManager {
     fun patch(body: RequestBody, endPoint: EndPoint.IEnumEndpoint): PatchRestApi {
         return patch(body, endPoint, *arrayOf())
     }
+
+    /** Used to create a request body. */
+    fun <T> request(
+        requestBody: RequestBody,
+        restType: RestType,
+        endPoint: EndPoint.IEnumEndpoint,
+        success: ((T) -> Unit)?,
+        failure: ((Throwable) -> Unit)?
+    ): T
 }

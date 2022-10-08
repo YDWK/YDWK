@@ -16,13 +16,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.channel
+package io.github.ydwk.ydwk.entities.channel.guild.vc
 
-interface GenericGuildChannel : GuildChannel {
-    /**
-     * Gets the position of this channel.
-     *
-     * @return the position of this channel.
-     */
-    val position: Int
-}
+import io.github.ydwk.ydwk.entities.channel.VoiceChannel
+import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildChannel
+
+interface GuildVoiceChannel : GenericGuildChannel, VoiceChannel {}

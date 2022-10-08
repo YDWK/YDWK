@@ -16,28 +16,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.channel
+package io.github.ydwk.ydwk.rest.queue
 
-import io.github.ydwk.ydwk.entities.Channel
-import io.github.ydwk.ydwk.entities.message.Embed
-import io.github.ydwk.ydwk.rest.queue.Queue
-
-/**
- * Contains all the functions that are common to all 'text' channels (i.e. channels that can send
- * messages).
- */
-interface TextChannel<T> : Channel {
-    /**
-     * Used to send a message to this channel.
-     *
-     * @param message the message to send.
-     */
-    fun sendMessage(message: String): Queue<T>
+interface Queue<T> {
 
     /**
-     * Used to send an embed to this channel.
+     * Gets the current value of the queue.
      *
-     * @param embed the embed to send.
+     * @return the current value of the queue.
      */
-    fun sendEmbed(embed: Embed): Queue<T>
+    fun queue(success: ((T) -> Unit)?, failure: ((Throwable) -> Unit)?): T
+
+    /**
+     * Gets the current value of the queue.
+     *
+     * @return the current value of the queue.
+     */
+    fun queue(success: ((T) -> Unit)?): T
+
+    /**
+     * Gets the current value of the queue.
+     *
+     * @return the current value of the queue.
+     */
+    fun queue(): T
 }

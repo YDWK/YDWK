@@ -16,9 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.rest.type
+package io.github.ydwk.ydwk.entities.channel.guild
 
-interface PostRestApi : SimilarRestApi {
-
-    fun <T> executeWithReturn(success: ((T) -> Unit)?, failure: ((Throwable) -> Unit)?): T
-}
+interface Category : GenericGuildChannel {}

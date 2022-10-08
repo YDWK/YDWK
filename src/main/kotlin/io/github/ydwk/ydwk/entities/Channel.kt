@@ -20,7 +20,11 @@ package io.github.ydwk.ydwk.entities
 
 import io.github.ydwk.ydwk.entities.channel.GuildChannel
 import io.github.ydwk.ydwk.entities.channel.TextChannel
+import io.github.ydwk.ydwk.entities.channel.VoiceChannel
 import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
+import io.github.ydwk.ydwk.entities.channel.guild.Category
+import io.github.ydwk.ydwk.entities.channel.guild.text.GuildTextChannel
+import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.ydwk.entities.util.AssignableEntity
 import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.util.SnowFlake
@@ -43,9 +47,37 @@ interface Channel : SnowFlake, GenericEntity, AssignableEntity<Channel> {
     }
 
     /**
+     * Gets the channel as a [GuildTextChannel] if it is one.
+     *
+     * @return the channel as a [GuildTextChannel] if it is one.
+     */
+    fun asGuildTextChannel(): GuildTextChannel? = cast(GuildTextChannel::class.java)
+
+    /**
+     * Gets the channel as a [GuildVoiceChannel] if it is one.
+     *
+     * @return the channel as a [GuildVoiceChannel] if it is one.
+     */
+    fun asGuildVoiceChannel(): GuildVoiceChannel? = cast(GuildVoiceChannel::class.java)
+
+    /**
+     * Gets the channel as a [Category] if it is one.
+     *
+     * @return the channel as a [Category] if it is one.
+     */
+    fun asGuildCategory(): Category? = cast(Category::class.java)
+
+    /**
      * Gets the channel as a [TextChannel] if it is one.
      *
      * @return the channel as a [TextChannel] if it is one.
      */
-    fun asTextChannel(): TextChannel? = cast(TextChannel::class.java)
+    fun asTextChannel(): TextChannel<*>? = cast(TextChannel::class.java)
+
+    /**
+     * Gets the channel as a [VoiceChannel] if it is one.
+     *
+     * @return the channel as a [VoiceChannel] if it is one.
+     */
+    fun asVoiceChannel(): VoiceChannel? = cast(VoiceChannel::class.java)
 }

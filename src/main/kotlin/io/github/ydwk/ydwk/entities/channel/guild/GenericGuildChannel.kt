@@ -16,28 +16,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.channel
+package io.github.ydwk.ydwk.entities.channel.guild
 
-import io.github.ydwk.ydwk.entities.Channel
-import io.github.ydwk.ydwk.entities.message.Embed
-import io.github.ydwk.ydwk.rest.queue.Queue
+import io.github.ydwk.ydwk.entities.channel.GuildChannel
 
-/**
- * Contains all the functions that are common to all 'text' channels (i.e. channels that can send
- * messages).
- */
-interface TextChannel<T> : Channel {
+interface GenericGuildChannel : GuildChannel {
     /**
-     * Used to send a message to this channel.
+     * Gets the position of this channel.
      *
-     * @param message the message to send.
+     * @return the position of this channel.
      */
-    fun sendMessage(message: String): Queue<T>
+    val position: Int
 
     /**
-     * Used to send an embed to this channel.
+     * Gets the parent of this channel.
      *
-     * @param embed the embed to send.
+     * @return the parent of this channel.
      */
-    fun sendEmbed(embed: Embed): Queue<T>
+    val parent: Category?
 }

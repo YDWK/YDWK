@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.impl.interaction.application
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.impl.interaction.sub.InteractionResolvedDataImpl
@@ -52,4 +53,6 @@ class ApplicationCommandDataImpl(
 
     override val targetId: GetterSnowFlake? =
         if (json.has("target_id")) GetterSnowFlake.of(json["target_id"].asLong()) else null
+    override val channel: Channel
+        get() = TODO("Not yet implemented")
 }

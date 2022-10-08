@@ -27,4 +27,28 @@ class PostRestApiImpl(
     private val ydwk: YDWKImpl,
     private val client: OkHttpClient,
     private val builder: Request.Builder,
-) : PostRestApi, SimilarRestApiImpl(ydwk, builder, client)
+) : PostRestApi, SimilarRestApiImpl(ydwk, builder, client) {
+
+    override fun <T> executeWithReturn(
+        success: ((T) -> Unit)?,
+        failure: ((Throwable) -> Unit)?
+    ): T {
+        // TODO : implement
+        return try {
+            val response = client.newCall(builder.build()).execute()
+            responseBody = response.body
+            if (response.isSuccessful) {
+                val node = ydwk.objectMapper.readTree(responseBody!!.string())
+                return null!!
+            } else {
+                error(response.code)
+                null!!
+            }
+        } catch (e: Exception) {
+            failure?.invoke(e)
+            throw RuntimeException("Error while executing request", e)
+        } finally {
+            responseBody?.close()
+        }
+    }
+}
