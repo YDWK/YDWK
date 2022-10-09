@@ -25,6 +25,7 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.cache.*
 import io.github.ydwk.ydwk.entities.Application
 import io.github.ydwk.ydwk.entities.Bot
+import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.application.PartialApplication
 import io.github.ydwk.ydwk.event.backend.event.CoroutineEventListener
@@ -131,6 +132,14 @@ class YDWKImpl(
 
     override fun setDisallowedCache(vararg cacheTypes: CacheType) {
         disallowedCache.addAll(cacheTypes)
+    }
+
+    override fun getChannel(asLong: Long): Channel? {
+        return cache[asLong.toString(), CacheIds.CHANNEL] as Channel?
+    }
+
+    override fun getChannels(): List<Channel> {
+        return cache.values(CacheIds.CHANNEL).map { it as Channel }
     }
 
     override var bot: Bot? = null

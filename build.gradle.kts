@@ -49,8 +49,8 @@ dependencies {
     //json
     api("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.4")
     //logger
-    api("ch.qos.logback:logback-classic:1.4.1")
-    api("ch.qos.logback:logback-core:1.4.1")
+    api("ch.qos.logback:logback-classic:1.4.3")
+    api("ch.qos.logback:logback-core:1.4.3")
     api("uk.org.lidalia:sysout-over-slf4j:1.0.2")
     //config.json
     api("io.github.realyusufismail:jconfig:1.0.7")

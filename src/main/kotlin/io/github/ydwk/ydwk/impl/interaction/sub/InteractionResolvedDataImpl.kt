@@ -26,9 +26,12 @@ import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.entities.message.Attachment
+import io.github.ydwk.ydwk.impl.entities.ChannelImpl
+import io.github.ydwk.ydwk.impl.entities.MessageImpl
 import io.github.ydwk.ydwk.impl.entities.UserImpl
 import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
 import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
+import io.github.ydwk.ydwk.impl.entities.message.AttachmentImpl
 import io.github.ydwk.ydwk.interaction.sub.InteractionResolvedData
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 
@@ -50,9 +53,18 @@ class InteractionResolvedDataImpl(override val ydwk: YDWK, override val json: Js
             GetterSnowFlake.of(it["id"].asLong()) to RoleImpl(ydwk, it, it["id"].asLong())
         }
 
-    override val channels: Map<GetterSnowFlake, Channel> = TODO("Not yet implemented")
+    override val channels: Map<GetterSnowFlake, Channel> =
+        json["channels"].associate {
+            GetterSnowFlake.of(it["id"].asLong()) to ChannelImpl(ydwk, it, it["id"].asLong())
+        }
 
-    override val messages: Map<GetterSnowFlake, Message> = TODO("Not yet implemented")
+    override val messages: Map<GetterSnowFlake, Message> =
+        json["messages"].associate {
+            GetterSnowFlake.of(it["id"].asLong()) to MessageImpl(ydwk, it, it["id"].asLong())
+        }
 
-    override val attachments: Map<GetterSnowFlake, Attachment> = TODO("Not yet implemented")
+    override val attachments: Map<GetterSnowFlake, Attachment> =
+        json["attachments"].associate {
+            GetterSnowFlake.of(it["id"].asLong()) to AttachmentImpl(ydwk, it, it["id"].asLong())
+        }
 }

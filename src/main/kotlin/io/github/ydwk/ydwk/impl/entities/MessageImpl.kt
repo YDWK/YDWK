@@ -40,7 +40,7 @@ class MessageImpl(
     override val idAsLong: Long
 ) : Message {
     override val channel: Channel
-        get() = TODO("Not yet implemented")
+        get() = ydwk.getChannel(json["channel_id"].asLong())!!
 
     override val author: User
         get() = UserImpl(json.get("author"), json.get("author").get("id").asLong(), ydwk)
@@ -80,7 +80,13 @@ class MessageImpl(
         }
 
     override val mentionedChannels: List<Channel>
-        get() = TODO("Not yet implemented")
+        get() {
+            val list = mutableListOf<Channel>()
+            json.get("mention_channels").forEach {
+                list.add(ChannelImpl(ydwk, it, it.get("id").asLong()))
+            }
+            return list
+        }
 
     override val attachments: List<Attachment>
         get() {

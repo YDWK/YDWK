@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.ydwk.ydwk.cache.CacheType
 import io.github.ydwk.ydwk.entities.Application
 import io.github.ydwk.ydwk.entities.Bot
+import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.application.PartialApplication
 import io.github.ydwk.ydwk.event.backend.event.GenericEvent
@@ -34,31 +35,63 @@ import java.time.Instant
 
 interface YDWK {
 
-    /** Used to create a json object. */
+    /**
+     * Used to create a json object
+     *
+     * @return a new [ObjectNode]
+     */
     val objectNode: ObjectNode
 
-    /** Used to parse json, i.e convert plain text json to Jackson classes such as JsonNode. */
+    /**
+     * Used to parse json, i.e. convert plain text json to Jackson classes such as JsonNode.
+     *
+     * @return a new json [ObjectMapper]
+     */
     val objectMapper: ObjectMapper
 
     /** This is where the websocket is created. */
     val webSocketManager: WebSocketManager?
 
-    /** Used to get the properties of the bot. */
+    /**
+     * Used to get the properties of the bot.
+     *
+     * @return the [Bot] object
+     */
     val bot: Bot?
 
-    /** A Used to get some application properties sent by discord's Ready event. */
+    /**
+     * Used to get some application properties sent by discord's Ready event.
+     *
+     * @return the [PartialApplication] object
+     */
     var partialApplication: PartialApplication?
 
-    /** Used to get the properties of the application. */
+    /**
+     * Used to get the properties of the application.
+     *
+     * @return the [Application] object
+     */
     val application: Application?
 
-    /** Used to get information about when the bot logged in. */
+    /**
+     * Used to get information about when the bot logged in.
+     *
+     * @return the [LoggedIn] object
+     */
     val loggedInStatus: LoggedIn?
 
-    /** Used to indicated that bot has connected to the websocket. */
+    /**
+     * Used to indicated that bot has connected to the websocket.
+     *
+     * @return The [YDWK] instance.
+     */
     val waitForConnection: YDWK
 
-    /** Used to wait for the READY gateway event to be received. */
+    /**
+     * Used to wait for the READY gateway event to be received.
+     *
+     * @return The [YDWK] instance.
+     */
     val waitForReady: YDWK
 
     /**
@@ -89,6 +122,7 @@ interface YDWK {
      * Used to get a guild by its id.
      *
      * @param id The id of the guild.
+     * @return The [Guild] object.
      */
     fun getGuild(id: Long): Guild? = getGuild(id.toString())
 
@@ -96,6 +130,7 @@ interface YDWK {
      * Used to get a guild by its id.
      *
      * @param id The id of the guild.
+     * @return The [Guild] object.
      */
     fun getGuild(id: String): Guild?
 
@@ -161,4 +196,27 @@ interface YDWK {
      */
     fun setDisallowedCache(cacheTypes: Set<CacheType>) =
         setDisallowedCache(*cacheTypes.toTypedArray())
+
+    /**
+     * Used to get a channel by its id.
+     *
+     * @param id The id of the channel.
+     * @return The [Channel] object.
+     */
+    fun getChannel(asLong: Long): Channel?
+
+    /**
+     * Used to get a channel by its id.
+     *
+     * @param id The id of the channel.
+     * @return The [Channel] object.
+     */
+    fun getChannel(asString: String): Channel? = getChannel(asString.toLong())
+
+    /**
+     * Used to get all the channels the bot is in.
+     *
+     * @return A list of [Channel] objects.
+     */
+    fun getChannels(): List<Channel>
 }
