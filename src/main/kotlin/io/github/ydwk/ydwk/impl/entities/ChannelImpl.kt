@@ -23,7 +23,7 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
 
-class ChannelImpl(
+open class ChannelImpl(
     override val ydwk: YDWK,
     override val json: JsonNode,
     override val idAsLong: Long

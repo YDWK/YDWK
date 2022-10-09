@@ -18,4 +18,6 @@
  */ 
 package io.github.ydwk.ydwk.entities.channel.extender
 
-interface TextChannelExtender
+import io.github.ydwk.ydwk.entities.Channel
+
+interface TextChannelExtender : Channel
