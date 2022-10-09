@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.impl.entities
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.Sticker
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.sticker.StickerFormatType
@@ -47,9 +48,8 @@ class StickerImpl(
 
     override var available: Boolean = json.get("available").asBoolean()
 
-    override val guildId: GetterSnowFlake?
-        get() =
-            if (json.has("guild_id")) GetterSnowFlake.of(json.get("guild_id").asLong()) else null
+    override val guild: Guild?
+        get() = if (json.has("guild_id")) ydwk.getGuild(json["guild_id"].asLong()) else null
 
     override var user: User? =
         if (json.has("user")) UserImpl(json["user"], json["user"]["id"].asLong(), ydwk) else null

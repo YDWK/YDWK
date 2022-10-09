@@ -18,6 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.interaction
 
+import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.guild.Member
@@ -68,11 +69,11 @@ interface Interaction : SnowFlake, GenericEntity {
         get() = data as? ApplicationCommandData
 
     /**
-     * Gets the guild Id of this interaction.
+     * Gets the guild that this interaction is for.
      *
-     * @return The guild Id of this interaction.
+     * @return The guild that this interaction is for.
      */
-    val guildId: GetterSnowFlake?
+    val guild: Guild?
 
     /**
      * Gets the channel Id of this interaction.

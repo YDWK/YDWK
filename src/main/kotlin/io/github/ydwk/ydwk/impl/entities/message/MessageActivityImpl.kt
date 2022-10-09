@@ -16,23 +16,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.message
+package io.github.ydwk.ydwk.impl.entities.message
 
+import com.fasterxml.jackson.databind.JsonNode
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.message.MessageActivity
 import io.github.ydwk.ydwk.entities.message.activity.MessageActivityType
-import io.github.ydwk.ydwk.entities.util.GenericEntity
 
-interface MessageActivity : GenericEntity {
-    /**
-     * Gets the type of the [MessageActivity].
-     *
-     * @return The type of the [MessageActivity].
-     */
-    val type: MessageActivityType
+class MessageActivityImpl(override val ydwk: YDWK, override val json: JsonNode) : MessageActivity {
+    override val type: MessageActivityType
+        get() = MessageActivityType.fromValue(json.get("type").asInt())
 
-    /**
-     * Gets the party id of the [MessageActivity].
-     *
-     * @return The party id of the [MessageActivity].
-     */
-    val partyId: String?
+    override val partyId: String?
+        get() = if (json.has("party_id")) json.get("party_id").asText() else null
 }

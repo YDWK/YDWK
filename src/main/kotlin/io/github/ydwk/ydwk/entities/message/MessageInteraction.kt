@@ -18,6 +18,38 @@
  */ 
 package io.github.ydwk.ydwk.entities.message
 
+import io.github.ydwk.ydwk.entities.User
+import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.util.GenericEntity
+import io.github.ydwk.ydwk.interaction.sub.InteractionType
+import io.github.ydwk.ydwk.util.SnowFlake
 
-interface MessageInteraction : GenericEntity {}
+interface MessageInteraction : GenericEntity, SnowFlake {
+    /**
+     * Gets the type of interaction.
+     *
+     * @return The type of interaction.
+     */
+    val type: InteractionType
+
+    /**
+     * Gets the name of the interaction command.
+     *
+     * @return The name of the interaction command.
+     */
+    val name: String
+
+    /**
+     * Gets the user who invoked the interaction.
+     *
+     * @return The user who invoked the interaction.
+     */
+    val user: User
+
+    /**
+     * Gets the member who invoked the interaction.
+     *
+     * @return The member who invoked the interaction.
+     */
+    val member: Member?
+}

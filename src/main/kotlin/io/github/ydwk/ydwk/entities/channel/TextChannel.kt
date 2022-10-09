@@ -32,13 +32,37 @@ interface TextChannel<T : TextChannelExtender> : Channel, TextChannelExtender {
      * Used to send a message to this channel.
      *
      * @param message the message to send.
+     * @return a [CompletableFuture] that completes with the message that was sent.
      */
-    fun sendMessage(message: String): CompletableFuture<T>
+    fun sendMessage(message: String): CompletableFuture<T> {
+        return sendMessage(message, false)
+    }
+
+    /**
+     * Used to send a message to this channel.
+     *
+     * @param message the message to send.
+     * @param tts whether or not the message should be sent using text-to-speech.
+     * @return a [CompletableFuture] that completes with the message that was sent.
+     */
+    fun sendMessage(message: String, tts: Boolean): CompletableFuture<T>
 
     /**
      * Used to send an embed to this channel.
      *
      * @param embed the embed to send.
+     * @return a [CompletableFuture] that completes with the message that was sent.
      */
-    fun sendEmbed(embed: Embed): CompletableFuture<T>
+    fun sendEmbed(embed: Embed): CompletableFuture<T> {
+        return sendEmbed(embed, false)
+    }
+
+    /**
+     * Used to send an embed to this channel.
+     *
+     * @param embed the embed to send.
+     * @param tts whether or not the message should be sent using text-to-speech.
+     * @return a [CompletableFuture] that completes with the message that was sent.
+     */
+    fun sendEmbed(embed: Embed, tts: Boolean): CompletableFuture<T>
 }

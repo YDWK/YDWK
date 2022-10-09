@@ -16,30 +16,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.message
+package io.github.ydwk.ydwk.entities.sticker
 
-import io.github.ydwk.ydwk.entities.Emoji
 import io.github.ydwk.ydwk.entities.util.GenericEntity
+import io.github.ydwk.ydwk.util.SnowFlake
 
-interface Reaction : GenericEntity {
+interface StickerItem : SnowFlake, GenericEntity {
     /**
-     * Gets the amount of times this reaction was used.
+     * Gets the name of this sticker.
      *
-     * @return The count of this reaction.
+     * @return The name of this sticker.
      */
-    val count: Int
-
-    /**
-     * Gets whether the current user reacted with this emoji.
-     *
-     * @return Whether the current user reacted with this emoji.
-     */
-    val me: Boolean
+    val name: String
 
     /**
-     * Gets the emoji of this reaction.
+     * Gets the type of this sticker.
      *
-     * @return The emoji of this reaction.
+     * @return The type of this sticker.
      */
-    val emoji: Emoji
+    val type: StickerType
 }

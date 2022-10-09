@@ -50,7 +50,7 @@ interface Attachment : SnowFlake, NameAbleEntity, GenericEntity {
      *
      * @return The proxy url of this attachment.
      */
-    val proxyUrl: String
+    val proxyUrl: URL
 
     /**
      * Gets the size of this attachment.
@@ -71,7 +71,7 @@ interface Attachment : SnowFlake, NameAbleEntity, GenericEntity {
      *
      * @return The width of this attachment.
      */
-    val width: Int
+    val width: Int?
 
     /**
      * Gets weather this attachment is ephemeral.

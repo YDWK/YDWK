@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.entities
 import io.github.ydwk.ydwk.entities.application.PartialApplication
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.entities.message.*
+import io.github.ydwk.ydwk.entities.sticker.StickerItem
 import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 import io.github.ydwk.ydwk.util.SnowFlake
@@ -206,7 +207,7 @@ interface Message : SnowFlake, GenericEntity {
      *
      * @return The sticker items of this message.
      */
-    val stickerItems: List<MessageStickerItem>
+    val stickerItems: List<StickerItem>
 
     /**
      * Gets the position of this message.

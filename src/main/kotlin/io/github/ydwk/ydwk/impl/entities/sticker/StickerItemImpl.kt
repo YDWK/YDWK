@@ -16,8 +16,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.message
+package io.github.ydwk.ydwk.impl.entities.sticker
 
-import io.github.ydwk.ydwk.entities.util.GenericEntity
+import com.fasterxml.jackson.databind.JsonNode
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.sticker.StickerItem
+import io.github.ydwk.ydwk.entities.sticker.StickerType
 
-interface MessageStickerItem : GenericEntity {}
+class StickerItemImpl(
+    override val ydwk: YDWK,
+    override val json: JsonNode,
+    override val idAsLong: Long
+) : StickerItem {
+
+    override val name: String
+        get() = json.get("name").asText()
+
+    override val type: StickerType
+        get() = StickerType.fromValue(json.get("type").asInt())
+}

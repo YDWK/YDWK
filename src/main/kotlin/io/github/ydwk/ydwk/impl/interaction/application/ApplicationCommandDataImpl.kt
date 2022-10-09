@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.impl.interaction.application
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Channel
+import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.impl.interaction.sub.InteractionResolvedDataImpl
@@ -48,8 +49,8 @@ class ApplicationCommandDataImpl(
         if (json.has("options")) json["options"].map { ApplicationCommandOptionImpl(ydwk, it) }
         else null
 
-    override val guildId: GetterSnowFlake? =
-        if (json.has("guild_id")) GetterSnowFlake.of(json["guild_id"].asLong()) else null
+    override val guild: Guild? =
+        if (json.has("guild_id")) ydwk.getGuild(json["guild_id"].asLong()) else null
 
     override val targetId: GetterSnowFlake? =
         if (json.has("target_id")) GetterSnowFlake.of(json["target_id"].asLong()) else null

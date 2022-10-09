@@ -52,8 +52,8 @@ interface Application : SnowFlake, NameAbleEntity, GenericEntity {
     /** The hex encoded key for verification in interactions and the GameSDK's GetTicket */
     var verifyKey: String?
 
-    /** The id of the guild this application is for. */
-    var guildId: GetterSnowFlake?
+    /** Getsd the guild this application is for. */
+    var guild: Guild?
 
     /** The game sdk id of the application. */
     var gameSdkId: GetterSnowFlake?
