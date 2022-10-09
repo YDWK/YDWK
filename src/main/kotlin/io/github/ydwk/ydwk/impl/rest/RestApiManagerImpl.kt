@@ -20,7 +20,6 @@ package io.github.ydwk.ydwk.impl.rest
 
 import io.github.ydwk.ydwk.YDWKInfo
 import io.github.ydwk.ydwk.impl.YDWKImpl
-import io.github.ydwk.ydwk.impl.rest.enums.RestType
 import io.github.ydwk.ydwk.impl.rest.type.*
 import io.github.ydwk.ydwk.rest.EndPoint
 import io.github.ydwk.ydwk.rest.RestApiManager
@@ -75,32 +74,6 @@ class RestApiManagerImpl(
     ): PatchRestApi {
         val builder = requestBuilder(endPoint, *params).patch(body)
         return PatchRestApiImpl(ydwkImpl, client, builder)
-    }
-
-    override fun <T> request(
-        requestBody: RequestBody,
-        restType: RestType,
-        endPoint: EndPoint.IEnumEndpoint,
-        success: ((T) -> Unit)?,
-        failure: ((Throwable) -> Unit)?,
-    ): T {
-        when (restType) {
-            RestType.GET -> {
-                return TODO()
-            }
-            RestType.POST -> {
-                return post(requestBody, endPoint).executeWithReturn(success, failure)
-            }
-            RestType.PUT -> {
-                return TODO()
-            }
-            RestType.DELETE -> {
-                return TODO()
-            }
-            RestType.PATCH -> {
-                return TODO()
-            }
-        }
     }
 
     private fun requestBuilder(

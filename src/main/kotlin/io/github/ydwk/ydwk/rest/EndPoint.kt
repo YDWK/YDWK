@@ -88,4 +88,12 @@ open class EndPoint {
             return endPoint
         }
     }
+
+    enum class ChannelEndpoint(val endPoint: String) : IEnumEndpoint {
+        CREATE_MESSAGE("/channels/%s/messages");
+
+        override fun getEndpoint(): String {
+            return endPoint
+        }
+    }
 }

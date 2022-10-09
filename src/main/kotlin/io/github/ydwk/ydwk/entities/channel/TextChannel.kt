@@ -19,25 +19,26 @@
 package io.github.ydwk.ydwk.entities.channel
 
 import io.github.ydwk.ydwk.entities.Channel
+import io.github.ydwk.ydwk.entities.channel.extender.TextChannelExtender
 import io.github.ydwk.ydwk.entities.message.Embed
-import io.github.ydwk.ydwk.rest.queue.Queue
+import java.util.concurrent.CompletableFuture
 
 /**
  * Contains all the functions that are common to all 'text' channels (i.e. channels that can send
  * messages).
  */
-interface TextChannel<T> : Channel {
+interface TextChannel<T : TextChannelExtender> : Channel, TextChannelExtender {
     /**
      * Used to send a message to this channel.
      *
      * @param message the message to send.
      */
-    fun sendMessage(message: String): Queue<T>
+    fun sendMessage(message: String): CompletableFuture<T>
 
     /**
      * Used to send an embed to this channel.
      *
      * @param embed the embed to send.
      */
-    fun sendEmbed(embed: Embed): Queue<T>
+    fun sendEmbed(embed: Embed): CompletableFuture<T>
 }

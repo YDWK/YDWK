@@ -18,7 +18,4 @@
  */ 
 package io.github.ydwk.ydwk.rest.type
 
-interface PostRestApi : SimilarRestApi {
-
-    fun <T> executeWithReturn(success: ((T) -> Unit)?, failure: ((Throwable) -> Unit)?): T
-}
+interface PostRestApi : SimilarRestApi

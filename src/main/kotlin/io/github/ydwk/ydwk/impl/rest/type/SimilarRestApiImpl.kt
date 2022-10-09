@@ -19,9 +19,12 @@
 package io.github.ydwk.ydwk.impl.rest.type
 
 import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.rest.cf.CompletableFutureManager
 import io.github.ydwk.ydwk.rest.error.HttpResponseCode
 import io.github.ydwk.ydwk.rest.error.JsonErrorCode
 import io.github.ydwk.ydwk.rest.type.SimilarRestApi
+import java.util.concurrent.CompletableFuture
+import java.util.function.Function
 import okhttp3.*
 
 open class SimilarRestApiImpl(
@@ -29,6 +32,7 @@ open class SimilarRestApiImpl(
     private val builder: Request.Builder,
     private val client: OkHttpClient,
 ) : SimilarRestApi {
+
     override fun header(name: String, value: String) {
         builder.header(name, value)
     }
@@ -60,6 +64,35 @@ open class SimilarRestApiImpl(
         } catch (e: Exception) {
             throw RuntimeException("Error while executing request", e)
         }
+    }
+
+    override fun <T : Any> execute(
+        function: Function<CompletableFutureManager, T>
+    ): CompletableFuture<T> {
+        val queue = CompletableFuture<T>()
+        try {
+            client
+                .newCall(builder.build())
+                .enqueue(
+                    object : Callback {
+                        override fun onFailure(call: Call, e: java.io.IOException) {
+                            queue.completeExceptionally(e)
+                        }
+
+                        override fun onResponse(call: Call, response: Response) {
+                            if (!response.isSuccessful) {
+                                val code = response.code
+                                error(code)
+                            }
+                            val manager = CompletableFutureManager(response, ydwk)
+                            val result = function.apply(manager)
+                            queue.complete(result)
+                        }
+                    })
+        } catch (e: Exception) {
+            throw RuntimeException("Error while executing request", e)
+        }
+        return queue
     }
 
     fun error(code: Int) {

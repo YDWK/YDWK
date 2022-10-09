@@ -18,6 +18,9 @@
  */ 
 package io.github.ydwk.ydwk.rest.type
 
+import io.github.ydwk.ydwk.rest.cf.CompletableFutureManager
+import java.util.concurrent.CompletableFuture
+import java.util.function.Function
 import okhttp3.CacheControl
 import okhttp3.Headers
 import okhttp3.Request
@@ -34,4 +37,6 @@ interface SimilarRestApi {
     fun cacheControl(cacheControl: CacheControl): Request.Builder
 
     fun execute()
+
+    fun <T : Any> execute(function: Function<CompletableFutureManager, T>): CompletableFuture<T>
 }

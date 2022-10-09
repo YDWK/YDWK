@@ -16,28 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.rest.queue
+package io.github.ydwk.ydwk.entities.channel.extender
 
-interface Queue<T> {
-
-    /**
-     * Gets the current value of the queue.
-     *
-     * @return the current value of the queue.
-     */
-    fun queue(success: ((T) -> Unit)?, failure: ((Throwable) -> Unit)?): T
-
-    /**
-     * Gets the current value of the queue.
-     *
-     * @return the current value of the queue.
-     */
-    fun queue(success: ((T) -> Unit)?): T
-
-    /**
-     * Gets the current value of the queue.
-     *
-     * @return the current value of the queue.
-     */
-    fun queue(): T
-}
+interface TextChannelExtender
