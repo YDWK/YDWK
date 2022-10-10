@@ -19,12 +19,12 @@
 package io.github.ydwk.ydwk.impl.rest.type
 
 import io.github.ydwk.ydwk.impl.YDWKImpl
-import io.github.ydwk.ydwk.impl.entities.ChannelImpl
 import io.github.ydwk.ydwk.rest.cf.CompletableFutureManager
 import io.github.ydwk.ydwk.rest.error.HttpResponseCode
 import io.github.ydwk.ydwk.rest.error.JsonErrorCode
 import io.github.ydwk.ydwk.rest.type.SimilarRestApi
 import java.util.concurrent.CompletableFuture
+import java.util.function.Function
 import okhttp3.*
 
 open class SimilarRestApiImpl(
@@ -67,7 +67,7 @@ open class SimilarRestApiImpl(
     }
 
     override fun <T : Any> execute(
-        function: (t: CompletableFutureManager) -> ChannelImpl
+        function: Function<CompletableFutureManager, T>
     ): CompletableFuture<T> {
         val queue = CompletableFuture<T>()
         try {

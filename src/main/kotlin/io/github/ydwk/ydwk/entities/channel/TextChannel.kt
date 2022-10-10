@@ -19,7 +19,6 @@
 package io.github.ydwk.ydwk.entities.channel
 
 import io.github.ydwk.ydwk.entities.Channel
-import io.github.ydwk.ydwk.entities.channel.extender.TextChannelExtender
 import io.github.ydwk.ydwk.entities.message.Embed
 import java.util.concurrent.CompletableFuture
 
@@ -27,7 +26,7 @@ import java.util.concurrent.CompletableFuture
  * Contains all the functions that are common to all 'text' channels (i.e. channels that can send
  * messages).
  */
-interface TextChannel<T : TextChannelExtender> : Channel, TextChannelExtender {
+interface TextChannel<T : Channel> : Channel {
     /**
      * Used to send a message to this channel.
      *
@@ -42,7 +41,7 @@ interface TextChannel<T : TextChannelExtender> : Channel, TextChannelExtender {
      * Used to send a message to this channel.
      *
      * @param message the message to send.
-     * @param tts whether or not the message should be sent using text-to-speech.
+     * @param tts whether the message should be sent using text-to-speech.
      * @return a [CompletableFuture] that completes with the message that was sent.
      */
     fun sendMessage(message: String, tts: Boolean): CompletableFuture<T>

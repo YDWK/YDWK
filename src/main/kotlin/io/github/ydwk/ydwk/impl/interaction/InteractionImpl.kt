@@ -25,6 +25,7 @@ import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.impl.entities.MessageImpl
 import io.github.ydwk.ydwk.impl.entities.UserImpl
 import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
 import io.github.ydwk.ydwk.impl.interaction.application.ApplicationCommandDataImpl
@@ -61,7 +62,7 @@ class InteractionImpl(
 
     override val version: Int = json["version"].asInt()
 
-    override val message: Message? = TODO("Not yet implemented")
+    override val message: Message? = if (json.has("message")) MessageImpl(ydwk, json["message"], json["message"]["id"].asLong()) else null
 
     override val permissions: Long? =
         if (json.has("permissions")) json["permissions"].asLong() else null

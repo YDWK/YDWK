@@ -20,15 +20,15 @@ package io.github.ydwk.ydwk.impl.entities.channel
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.entities.channel.TextChannel
-import io.github.ydwk.ydwk.entities.channel.extender.TextChannelExtender
 import io.github.ydwk.ydwk.entities.message.Embed
 import io.github.ydwk.ydwk.impl.entities.ChannelImpl
 import io.github.ydwk.ydwk.rest.EndPoint
 import java.util.concurrent.CompletableFuture
 import okhttp3.RequestBody.Companion.toRequestBody
 
-class TextChannelImpl<T : TextChannelExtender>(ydwk: YDWK, json: JsonNode, idAsLong: Long) :
+class TextChannelImpl<T : Channel>(ydwk: YDWK, json: JsonNode, idAsLong: Long) :
     TextChannel<T>, ChannelImpl(ydwk, json, idAsLong) {
 
     override fun sendMessage(message: String, tts: Boolean): CompletableFuture<T> {
@@ -36,7 +36,7 @@ class TextChannelImpl<T : TextChannelExtender>(ydwk: YDWK, json: JsonNode, idAsL
         return ydwk.restApiManager
             .put(body.toString().toRequestBody(), EndPoint.ChannelEndpoint.CREATE_MESSAGE, id)
             .execute { result ->
-                ChannelImpl(ydwk, result.jsonBody!!, result.jsonBody!!["id"].asLong())
+                ChannelImpl(ydwk, result.jsonBody!!, result.jsonBody!!["id"].asLong()) as T
             }
     }
 
@@ -45,7 +45,7 @@ class TextChannelImpl<T : TextChannelExtender>(ydwk: YDWK, json: JsonNode, idAsL
         return ydwk.restApiManager
             .put(body.toString().toRequestBody(), EndPoint.ChannelEndpoint.CREATE_MESSAGE, id)
             .execute { result ->
-                ChannelImpl(ydwk, result.jsonBody!!, result.jsonBody!!["id"].asLong())
+                ChannelImpl(ydwk, result.jsonBody!!, result.jsonBody!!["id"].asLong()) as T
             }
     }
 }

@@ -23,14 +23,16 @@ import io.github.ydwk.ydwk.event.events.interaction.*
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.handler.Handler
 import io.github.ydwk.ydwk.impl.interaction.InteractionImpl
+import io.github.ydwk.ydwk.interaction.Interaction
 import io.github.ydwk.ydwk.interaction.sub.InteractionType
 
 class InteractionCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override fun start() {
-        val interaction = InteractionImpl(ydwk, json, json["id"].asLong())
-
+        val interaction : Interaction = InteractionImpl(ydwk, json, json["id"].asLong())
+        println(interaction.type.toInt())
         when (interaction.type) {
             InteractionType.APPLICATION_COMMAND -> {
+                println("Slash command")
                 ydwk.emitEvent(SlashCommandEvent(ydwk, interaction.applicationData!!))
             }
             InteractionType.MESSAGE_COMPONENT -> {
