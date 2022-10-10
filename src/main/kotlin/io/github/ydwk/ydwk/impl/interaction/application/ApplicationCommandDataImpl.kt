@@ -51,8 +51,7 @@ class ApplicationCommandDataImpl(
         if (json.has("options")) json["options"].map { ApplicationCommandOptionImpl(ydwk, it) }
         else null
 
-    override val guild: Guild? =
-        if (json.has("guild_id")) ydwk.getGuild(json["guild_id"].asLong()) else null
+    override val guild: Guild? = interaction.guild
 
     override val targetId: GetterSnowFlake? =
         if (json.has("target_id")) GetterSnowFlake.of(json["target_id"].asLong()) else null
