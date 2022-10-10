@@ -18,11 +18,14 @@
  */ 
 package io.github.ydwk.ydwk.interaction.application
 
+import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.entities.Guild
+import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.interaction.sub.GenericCommandData
 import io.github.ydwk.ydwk.interaction.sub.InteractionResolvedData
+import io.github.ydwk.ydwk.interaction.sub.InteractionType
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 import io.github.ydwk.ydwk.util.SnowFlake
 
@@ -82,4 +85,62 @@ interface SlashCommand : SnowFlake, GenericCommandData {
      * @return The member who invoked the command.
      */
     val member: Member?
+
+    /**
+     * Gets the Id of the application that this interaction is for.
+     *
+     * @return The Id of the application that this interaction is for.
+     */
+    val applicationId: GetterSnowFlake
+
+    /**
+     * Gets the type of this interaction.
+     *
+     * @return The type of this interaction.
+     */
+    val interactionType: InteractionType
+
+    /**
+     * Gets the channel that this interaction is for.
+     *
+     * @return The channel that this interaction is for.
+     */
+    val channel: Channel?
+
+    /**
+     * Gets the token of this interaction.
+     *
+     * @return The token of this interaction.
+     */
+    val token: String
+
+    /**
+     * Gets the version of this interaction.
+     *
+     * @return The version of this interaction.
+     */
+    val version: Int
+
+    /**
+     * Gets the message of this interaction.
+     *
+     * @return The message of this interaction.
+     */
+    val message: Message?
+
+    /**
+     * Gets bitwise set of permissions the app or bot has within the channel the interaction was
+     * sent from
+     *
+     * @return bitwise set of permissions the app or bot has within the channel the interaction was
+     * sent from
+     */
+    val permissions: Long?
+
+    /**
+     * Gets the selected language of the invoking user
+     *
+     * @return the selected language of the invoking user
+     */
+    val locale: String?
 }

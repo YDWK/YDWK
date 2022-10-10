@@ -43,6 +43,7 @@ open class PerpetualCache(
             throw CacheException("The caching of type $cacheType has been disabled")
         } else {
             return cache[key + cacheType.toString()]
+                ?: throw CacheException("The key $key does not exist")
         }
     }
 

@@ -31,7 +31,6 @@ class InteractionCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, j
         val interaction: Interaction = InteractionImpl(ydwk, json, json["id"].asLong())
         when (interaction.type) {
             InteractionType.APPLICATION_COMMAND -> {
-                println(json.toPrettyString())
                 ydwk.emitEvent(SlashCommandEvent(ydwk, interaction.slashCommand!!))
             }
             InteractionType.MESSAGE_COMPONENT -> {

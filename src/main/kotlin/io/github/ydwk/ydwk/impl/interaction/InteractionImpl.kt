@@ -78,7 +78,7 @@ class InteractionImpl(
     override val data: GenericCommandData? =
         when (type) {
             InteractionType.APPLICATION_COMMAND ->
-                ApplicationCommandDataImpl(ydwk, json["data"], idAsLong, user, member)
+                ApplicationCommandDataImpl(ydwk, json["data"], idAsLong, this)
             InteractionType.MESSAGE_COMPONENT -> MessageComponentDataImpl(ydwk, json["data"])
             else -> {
                 (ydwk as YDWKImpl).logger.warn("Unknown interaction type: $type")

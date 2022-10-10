@@ -23,6 +23,7 @@ import io.github.ydwk.ydwk.createDefaultBot
 import io.github.ydwk.ydwk.event.ListenerAdapter
 import io.github.ydwk.ydwk.event.backend.event.on
 import io.github.ydwk.ydwk.event.events.ReadyEvent
+import io.github.ydwk.ydwk.event.events.interaction.SlashCommandEvent
 import io.github.ydwk.ydwk.slash.Slash
 
 class Bot : ListenerAdapter() {
@@ -40,4 +41,10 @@ fun main() {
     ydwk.addEvent(Bot())
 
     ydwk.waitForReady.slashBuilder.addSlashCommand(Slash("test", "This is a test command")).build()
+
+    ydwk.on<SlashCommandEvent> {
+        if (it.slash.name == "test") {
+            println(it.slash.guild?.id)
+        }
+    }
 }

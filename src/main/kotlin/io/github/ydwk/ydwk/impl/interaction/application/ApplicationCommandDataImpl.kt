@@ -20,28 +20,26 @@ package io.github.ydwk.ydwk.impl.interaction.application
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.entities.Guild
+import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.impl.interaction.sub.InteractionResolvedDataImpl
+import io.github.ydwk.ydwk.interaction.Interaction
 import io.github.ydwk.ydwk.interaction.application.ApplicationCommandOption
 import io.github.ydwk.ydwk.interaction.application.ApplicationCommandType
 import io.github.ydwk.ydwk.interaction.application.SlashCommand
 import io.github.ydwk.ydwk.interaction.sub.InteractionResolvedData
+import io.github.ydwk.ydwk.interaction.sub.InteractionType
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 
 class ApplicationCommandDataImpl(
     override val ydwk: YDWK,
     override val json: JsonNode,
     override val idAsLong: Long,
-    override val user: User?,
-    override val member: Member?
+    val interaction: Interaction
 ) : SlashCommand {
-
-    init {
-        println(json.toPrettyString())
-    }
-
     override val name: String = json["name"].asText()
 
     override val type: ApplicationCommandType = ApplicationCommandType.fromInt(json["type"].asInt())
@@ -58,4 +56,24 @@ class ApplicationCommandDataImpl(
 
     override val targetId: GetterSnowFlake? =
         if (json.has("target_id")) GetterSnowFlake.of(json["target_id"].asLong()) else null
+
+    override val user: User? = interaction.user
+
+    override val member: Member? = interaction.member
+
+    override val applicationId: GetterSnowFlake = interaction.applicationId
+
+    override val interactionType: InteractionType = interaction.type
+
+    override val channel: Channel? = interaction.channel
+
+    override val token: String = interaction.token
+
+    override val version: Int = interaction.version
+
+    override val message: Message? = interaction.message
+
+    override val permissions: Long? = interaction.permissions
+
+    override val locale: String? = interaction.locale
 }
