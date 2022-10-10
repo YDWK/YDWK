@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.impl.interaction
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.entities.User
@@ -49,8 +50,8 @@ class InteractionImpl(
     override val guild: Guild? =
         if (json.has("guild_id")) ydwk.getGuild(json["guild_id"].asLong()) else null
 
-    override val channelId: GetterSnowFlake? =
-        if (json.has("channel_id")) GetterSnowFlake.of(json["channel_id"].asLong()) else null
+    override val channel: Channel? =
+        if (json.has("channel_id")) ydwk.getChannel(json["channel_id"].asLong()) else null
 
     override val member: Member? =
         if (json.has("member")) guild?.let { MemberImpl(ydwk, json["member"], it) } else null
@@ -62,7 +63,9 @@ class InteractionImpl(
 
     override val version: Int = json["version"].asInt()
 
-    override val message: Message? = if (json.has("message")) MessageImpl(ydwk, json["message"], json["message"]["id"].asLong()) else null
+    override val message: Message? =
+        if (json.has("message")) MessageImpl(ydwk, json["message"], json["message"]["id"].asLong())
+        else null
 
     override val permissions: Long? =
         if (json.has("permissions")) json["permissions"].asLong() else null

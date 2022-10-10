@@ -25,9 +25,22 @@ import com.neovisionaries.ws.client.*
 import io.github.ydwk.ydwk.YDWKInfo
 import io.github.ydwk.ydwk.cache.CacheIds
 import io.github.ydwk.ydwk.event.events.*
+import io.github.ydwk.ydwk.event.events.channel.ChannelCreateEvent
+import io.github.ydwk.ydwk.event.events.channel.ChannelDeleteEvent
+import io.github.ydwk.ydwk.event.events.member.GuildMemberAddEvent
+import io.github.ydwk.ydwk.event.events.member.GuildMemberRemoveEvent
+import io.github.ydwk.ydwk.event.events.message.MessageCreateEvent
+import io.github.ydwk.ydwk.event.events.message.MessageDeleteBulkEvent
+import io.github.ydwk.ydwk.event.events.message.MessageDeleteEvent
+import io.github.ydwk.ydwk.event.events.role.GuildRoleCreateEvent
+import io.github.ydwk.ydwk.event.events.role.GuildRoleDeleteEvent
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.BotImpl
+import io.github.ydwk.ydwk.impl.entities.ChannelImpl
+import io.github.ydwk.ydwk.impl.entities.MessageImpl
 import io.github.ydwk.ydwk.impl.entities.application.PartialApplicationImpl
+import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
+import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
 import io.github.ydwk.ydwk.impl.handler.handlers.UserUpdateHandler
 import io.github.ydwk.ydwk.impl.handler.handlers.guild.GuildCreateHandler
 import io.github.ydwk.ydwk.impl.handler.handlers.guild.GuildDeleteHandler
@@ -441,9 +454,17 @@ open class WebSocketManager(
                 resumeUrl = null
             }
             EventNames.APPLICATION_COMMAND_PERMISSIONS_UPDATE -> TODO()
-            EventNames.CHANNEL_CREATE -> TODO()
+            EventNames.CHANNEL_CREATE -> {
+                val channel = ChannelImpl(ydwk, d, d.get("id").asLong())
+                ydwk.cache[d.get("id").asText(), channel] = CacheIds.CHANNEL
+                ydwk.emitEvent(ChannelCreateEvent(ydwk, channel))
+            }
             EventNames.CHANNEL_UPDATE -> TODO()
-            EventNames.CHANNEL_DELETE -> TODO()
+            EventNames.CHANNEL_DELETE -> {
+                val channel = ChannelImpl(ydwk, d, d.get("id").asLong())
+                ydwk.cache.remove(d.get("id").asText(), CacheIds.CHANNEL)
+                ydwk.emitEvent(ChannelDeleteEvent(ydwk, channel))
+            }
             EventNames.CHANNEL_PINS_UPDATE -> TODO()
             EventNames.THREAD_CREATE -> TODO()
             EventNames.THREAD_UPDATE -> TODO()
@@ -457,12 +478,48 @@ open class WebSocketManager(
             EventNames.GUILD_BAN_REMOVE -> TODO()
             EventNames.GUILD_EMOJIS_UPDATE -> TODO()
             EventNames.GUILD_INTEGRATIONS_UPDATE -> TODO()
-            EventNames.GUILD_MEMBER_ADD -> TODO()
-            EventNames.GUILD_MEMBER_REMOVE -> TODO()
+            EventNames.GUILD_MEMBER_ADD -> {
+                val guild = ydwk.getGuild(d.get("guild_id").asLong())
+                if (guild != null) {
+                    val member = MemberImpl(ydwk, d, guild)
+                    ydwk.memberCache.set(d.get("user").get("id").asText(), guild.id, member)
+                    ydwk.emitEvent(GuildMemberAddEvent(ydwk, member))
+                } else {
+                    logger.warn("Guild is null")
+                }
+            }
+            EventNames.GUILD_MEMBER_REMOVE -> {
+                val guild = ydwk.getGuild(d.get("guild_id").asLong())
+                if (guild != null) {
+                    val member = MemberImpl(ydwk, d, guild)
+                    ydwk.memberCache.remove(d.get("user").get("id").asText(), guild.id)
+                    ydwk.emitEvent(GuildMemberRemoveEvent(ydwk, member))
+                } else {
+                    logger.warn("Guild is null")
+                }
+            }
             EventNames.GUILD_MEMBER_UPDATE -> TODO()
-            EventNames.GUILD_ROLE_CREATE -> TODO()
+            EventNames.GUILD_ROLE_CREATE -> {
+                val guild = ydwk.getGuild(d.get("guild_id").asLong())
+                if (guild != null) {
+                    val role = RoleImpl(ydwk, d.get("role"), d.get("role").get("id").asLong())
+                    ydwk.cache[d.get("role").get("id").asText(), role] = CacheIds.ROLE
+                    ydwk.emitEvent(GuildRoleCreateEvent(ydwk, role))
+                } else {
+                    logger.warn("Guild is null")
+                }
+            }
             EventNames.GUILD_ROLE_UPDATE -> TODO()
-            EventNames.GUILD_ROLE_DELETE -> TODO()
+            EventNames.GUILD_ROLE_DELETE -> {
+                val guild = ydwk.getGuild(d.get("guild_id").asLong())
+                if (guild != null) {
+                    val role = RoleImpl(ydwk, d.get("role"), d.get("role").get("id").asLong())
+                    ydwk.cache.remove(d.get("role").get("id").asText(), CacheIds.ROLE)
+                    ydwk.emitEvent(GuildRoleDeleteEvent(ydwk, role))
+                } else {
+                    logger.warn("Guild is null")
+                }
+            }
             EventNames.GUILD_SCHEDULED_EVENT_CREATE -> TODO()
             EventNames.GUILD_SCHEDULED_EVENT_UPDATE -> TODO()
             EventNames.GUILD_SCHEDULED_EVENT_DELETE -> TODO()
@@ -474,10 +531,22 @@ open class WebSocketManager(
             EventNames.INTERACTION_CREATE -> InteractionCreateHandler(ydwk, d).start()
             EventNames.INVITE_CREATE -> TODO()
             EventNames.INVITE_DELETE -> TODO()
-            EventNames.MESSAGE_CREATE -> TODO()
+            EventNames.MESSAGE_CREATE -> {
+                val message = MessageImpl(ydwk, d, d.get("id").asLong())
+                ydwk.cache[d.get("id").asText(), message] = CacheIds.MESSAGE
+                ydwk.emitEvent(MessageCreateEvent(ydwk, message))
+            }
             EventNames.MESSAGE_UPDATE -> TODO()
-            EventNames.MESSAGE_DELETE -> TODO()
-            EventNames.MESSAGE_DELETE_BULK -> TODO()
+            EventNames.MESSAGE_DELETE -> {
+                val message = MessageImpl(ydwk, d, d.get("id").asLong())
+                ydwk.cache.remove(d.get("id").asText(), CacheIds.MESSAGE)
+                ydwk.emitEvent(MessageDeleteEvent(ydwk, message))
+            }
+            EventNames.MESSAGE_DELETE_BULK -> {
+                val messages = d.get("ids").map { MessageImpl(ydwk, d, it.asLong()) }
+                messages.forEach { ydwk.cache.remove(it.id, CacheIds.MESSAGE) }
+                ydwk.emitEvent(MessageDeleteBulkEvent(ydwk, messages))
+            }
             EventNames.MESSAGE_REACTION_ADD -> TODO()
             EventNames.MESSAGE_REACTION_REMOVE -> TODO()
             EventNames.MESSAGE_REACTION_REMOVE_ALL -> TODO()

@@ -18,7 +18,6 @@
  */ 
 package io.github.ydwk.ydwk.interaction.application
 
-import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.guild.Member
@@ -27,7 +26,7 @@ import io.github.ydwk.ydwk.interaction.sub.InteractionResolvedData
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 import io.github.ydwk.ydwk.util.SnowFlake
 
-interface ApplicationCommandData : SnowFlake, GenericCommandData {
+interface SlashCommand : SnowFlake, GenericCommandData {
     /**
      * Gets the name of the command.
      *
@@ -83,11 +82,4 @@ interface ApplicationCommandData : SnowFlake, GenericCommandData {
      * @return The member who invoked the command.
      */
     val member: Member?
-
-    /**
-     * Gets the channel in which the command was invoked.
-     *
-     * @return The channel in which the command was invoked.
-     */
-    val channel: Channel
 }

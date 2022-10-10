@@ -20,7 +20,7 @@ package io.github.ydwk.ydwk
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
-import io.github.ydwk.ydwk.cache.CacheType
+import io.github.ydwk.ydwk.cache.CacheIds
 import io.github.ydwk.ydwk.entities.Application
 import io.github.ydwk.ydwk.entities.Bot
 import io.github.ydwk.ydwk.entities.Channel
@@ -173,28 +173,28 @@ interface YDWK {
      *
      * @param cacheTypes The cache types to be allowed.
      */
-    fun setAllowedCache(vararg cacheTypes: CacheType)
+    fun setAllowedCache(vararg cacheTypes: CacheIds)
 
     /**
      * Used to set the allowed cache types.
      *
      * @param cacheTypes The cache types to be allowed.
      */
-    fun setAllowedCache(cacheTypes: Set<CacheType>) = setAllowedCache(*cacheTypes.toTypedArray())
+    fun setAllowedCache(cacheTypes: Set<CacheIds>) = setAllowedCache(*cacheTypes.toTypedArray())
 
     /**
      * Used to set the disallowed cache types.
      *
      * @param cacheTypes The cache types to be disallowed.
      */
-    fun setDisallowedCache(vararg cacheTypes: CacheType)
+    fun setDisallowedCache(vararg cacheTypes: CacheIds)
 
     /**
      * Used to set the disallowed cache types.
      *
      * @param cacheTypes The cache types to be disallowed.
      */
-    fun setDisallowedCache(cacheTypes: Set<CacheType>) =
+    fun setDisallowedCache(cacheTypes: Set<CacheIds>) =
         setDisallowedCache(*cacheTypes.toTypedArray())
 
     /**

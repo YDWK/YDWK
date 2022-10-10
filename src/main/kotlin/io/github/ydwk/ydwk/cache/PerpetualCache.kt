@@ -20,16 +20,12 @@ package io.github.ydwk.ydwk.cache
 
 import io.github.ydwk.ydwk.cache.exception.CacheException
 import io.github.ydwk.ydwk.entities.*
-import io.github.ydwk.ydwk.entities.application.PartialApplication
-import io.github.ydwk.ydwk.entities.guild.Member
-import io.github.ydwk.ydwk.entities.guild.Role
 
 /**
  * This is the implementation of the [Cache] interface that uses a [Map] to store and retrieve data.
  */
 open class PerpetualCache(
-    private val allowedCache: Set<CacheType>,
-    private val disallowedCache: Set<CacheType>
+    private val allowedCache: Set<CacheIds>,
 ) : Cache {
     private val cache = HashMap<String, Any>()
 
@@ -37,34 +33,25 @@ open class PerpetualCache(
         get() = cache.size
 
     override fun set(key: String, value: Any, cacheType: CacheIds) {
-        if (allowedCache.contains(cacheType.getCacheType()) &&
-            !disallowedCache.contains(cacheType.getCacheType())) {
+        if (cacheType in allowedCache) {
             cache[key + cacheType.toString()] = value
         }
     }
 
     override fun get(key: String, cacheType: CacheIds): Any? {
-        if (allowedCache.contains(cacheType.getCacheType()) &&
-            !disallowedCache.contains(cacheType.getCacheType())) {
-            return if (cache.containsKey(key + cacheType.toString())) {
-                cache[key + cacheType.toString()]
-            } else {
-                throw CacheException("No value found for key $key and type $cacheType")
-            }
+        if (cacheType !in allowedCache) {
+            throw CacheException("The caching of type $cacheType has been disabled")
+        } else {
+            return cache[key + cacheType.toString()]
         }
-        return null
     }
 
     override fun remove(key: String, cacheType: CacheIds): Any? {
-        if (allowedCache.contains(cacheType.getCacheType()) &&
-            !disallowedCache.contains(cacheType.getCacheType())) {
-            return if (cache.containsKey(key + cacheType.toString())) {
-                cache.remove(key + cacheType.toString())
-            } else {
-                throw CacheException("Cache does not contain value for key $key")
-            }
+        if (cacheType !in allowedCache) {
+            throw CacheException("The caching of type $cacheType has been disabled")
+        } else {
+            return cache.remove(key + cacheType.toString())
         }
-        return null
     }
 
     override fun contains(key: String): Boolean {
@@ -80,16 +67,6 @@ open class PerpetualCache(
     }
 
     override fun values(cacheType: CacheIds): List<Any> {
-        return cache.values.filter {
-            (it is Guild) ||
-                (it is Channel) ||
-                (it is User) ||
-                (it is Role) ||
-                (it is Emoji) ||
-                (it is Message) ||
-                (it is Sticker) ||
-                (it is Member) ||
-                (it is PartialApplication)
-        }
+        return cache.filter { it.key.endsWith(cacheType.toString()) }.values.toList()
     }
 }

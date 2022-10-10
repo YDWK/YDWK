@@ -16,10 +16,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.event.events.interaction
+package io.github.ydwk.ydwk.event.events.channel
 
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.event.Event
-import io.github.ydwk.ydwk.interaction.application.SlashCommand
 
-class SlashCommandEvent(override val ydwk: YDWK, val slash: SlashCommand) : Event(ydwk)
+class ChannelDeleteEvent(ydwk: YDWK, val channel: Channel) : Event(ydwk)

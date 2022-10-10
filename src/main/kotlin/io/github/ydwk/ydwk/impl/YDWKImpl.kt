@@ -52,10 +52,9 @@ class YDWKImpl(
     private val simpleEventManager: SampleEventManager = SampleEventManager(),
     private val coroutineEventManager: CoroutineEventManager = CoroutineEventManager(),
     val logger: Logger = LoggerFactory.getLogger(YDWKImpl::class.java),
-    private val allowedCache: MutableSet<CacheType> = mutableSetOf(),
-    private val disallowedCache: MutableSet<CacheType> = mutableSetOf(),
-    val cache: Cache = PerpetualCache(allowedCache, disallowedCache),
-    val memberCache: MemberCache = MemberCacheImpl(allowedCache, disallowedCache),
+    private val allowedCache: MutableSet<CacheIds> = mutableSetOf(),
+    val cache: Cache = PerpetualCache(allowedCache),
+    val memberCache: MemberCache = MemberCacheImpl(allowedCache),
     private var token: String? = null,
     private var guildIdList: MutableList<String> = mutableListOf(),
     var applicationId: String? = null
@@ -126,12 +125,12 @@ class YDWKImpl(
         guildIds.forEach { this.guildIdList.add(it) }
     }
 
-    override fun setAllowedCache(vararg cacheTypes: CacheType) {
-        allowedCache.addAll(cacheTypes)
+    override fun setAllowedCache(vararg cacheTypes: CacheIds) {
+        allowedCache.addAll(cacheTypes.toSet())
     }
 
-    override fun setDisallowedCache(vararg cacheTypes: CacheType) {
-        disallowedCache.addAll(cacheTypes)
+    override fun setDisallowedCache(vararg cacheTypes: CacheIds) {
+        allowedCache.removeAll(cacheTypes.toSet())
     }
 
     override fun getChannel(asLong: Long): Channel? {

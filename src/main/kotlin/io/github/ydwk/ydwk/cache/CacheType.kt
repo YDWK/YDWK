@@ -36,21 +36,6 @@ enum class CacheType(private val ids: CacheIds) {
         fun fromCacheIds(ids: CacheIds): CacheType {
             return values().firstOrNull { it.ids == ids } ?: UNKNOWN
         }
-
-        fun getDefaultCache(): Set<CacheType> {
-            return setOf(
-                GUILD,
-                CHANNEL,
-                USER,
-                MEMBER,
-                ROLE,
-                MESSAGE,
-                EMOJI,
-                VOICE_STATE,
-                STICKER,
-                APPLICATION_COMMAND,
-                APPLICATION)
-        }
     }
 
     fun getCacheIds(): CacheIds {

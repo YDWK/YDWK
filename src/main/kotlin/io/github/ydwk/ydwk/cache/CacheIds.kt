@@ -37,6 +37,14 @@ enum class CacheIds(private val value: String, private val cacheType: CacheType)
         fun fromString(string: String): CacheIds {
             return values().firstOrNull { it.value == string } ?: UNKNOWN
         }
+
+        fun getDefaultCache(): Set<CacheIds> {
+            return setOf(GUILD, USER, CHANNEL, MESSAGE, MEMBER, APPLICATION, ROLE)
+        }
+
+        fun getAllCache(): Set<CacheIds> {
+            return values().toSet()
+        }
     }
 
     override fun toString(): String {

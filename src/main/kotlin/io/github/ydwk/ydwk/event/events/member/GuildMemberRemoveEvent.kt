@@ -16,10 +16,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.event.events.interaction
+package io.github.ydwk.ydwk.event.events.member
 
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.event.Event
-import io.github.ydwk.ydwk.interaction.application.SlashCommand
 
-class SlashCommandEvent(override val ydwk: YDWK, val slash: SlashCommand) : Event(ydwk)
+class GuildMemberRemoveEvent(ydwk: YDWK, val member: Member) : Event(ydwk)
