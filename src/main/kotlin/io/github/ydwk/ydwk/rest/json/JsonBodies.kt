@@ -18,6 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.rest.json
 
+import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.ydwk.ydwk.YDWK
@@ -28,19 +29,100 @@ import io.github.ydwk.ydwk.interaction.sub.InteractionCallbackType
 fun replyJsonBody(
     ydwk: YDWK,
     content: String? = null,
-    embeds: List<Embed>? = null,
+    embeds: List<Embed> = emptyList(),
     tts: Boolean? = null,
-    flags: List<MessageFlag>? = null,
-    allowedMentions: List<String>? = null
+    flags: List<MessageFlag> = emptyList(),
+    allowedMentions: List<String> = emptyList(),
 ): ObjectNode {
     val mainBody =
         ydwk.objectNode.put("type", InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE.toInt())
     val secondBody = ydwk.objectNode
+
     if (content != null) secondBody.put("content", content)
-    if (embeds != null)
-        secondBody.set<ArrayNode>(
-            "embeds", ydwk.objectNode.arrayNode().addAll(embeds.map { it.json }))
+
     if (tts != null) secondBody.put("tts", tts)
-    if (flags != null) secondBody.put("flags", flags.sumOf { it.getValue() })
+
+    if (embeds.isNotEmpty()) {
+        val embedArray = ydwk.objectNode.arrayNode()
+        embeds.forEach { embedArray.add(it.toJson()) }
+        secondBody.set<ArrayNode>("embeds", embedArray)
+    }
+
+    if (flags.isNotEmpty()) secondBody.put("flags", flags.sumOf { it.getValue() })
+
+    if (allowedMentions.isNotEmpty()) {
+        val allowedMentionsArray = ydwk.objectNode.arrayNode()
+        allowedMentions.forEach { allowedMentionsArray.add(it) }
+        secondBody.set<ArrayNode>("allowed_mentions", allowedMentionsArray)
+    }
+
+    println(mainBody.set<JsonNode?>("data", secondBody).toPrettyString())
     return mainBody.set("data", secondBody)
+}
+
+fun replyJsonBody(
+    ydwk: YDWK,
+    embeds: List<Embed> = emptyList(),
+    tts: Boolean? = null,
+    flags: List<MessageFlag> = emptyList(),
+    allowedMentions: List<String> = emptyList()
+): ObjectNode {
+    return replyJsonBody(ydwk, null, embeds, tts, flags, allowedMentions)
+}
+
+fun replyJsonBody(
+    ydwk: YDWK,
+    embeds: Embed,
+    tts: Boolean? = null,
+    flag: MessageFlag? = null
+): ObjectNode {
+    return replyJsonBody(
+        ydwk,
+        null,
+        listOf(embeds),
+        tts,
+        if (flag != null) listOf(flag) else emptyList(),
+        emptyList())
+}
+
+fun replyJsonBody(
+    ydwk: YDWK,
+    embeds: Embed,
+    tts: Boolean? = null,
+    flag: MessageFlag? = null,
+    allowedMentions: List<String> = emptyList()
+): ObjectNode {
+    return replyJsonBody(
+        ydwk,
+        null,
+        listOf(embeds),
+        tts,
+        if (flag != null) listOf(flag) else emptyList(),
+        allowedMentions)
+}
+
+fun replyJsonBody(
+    ydwk: YDWK,
+    content: String,
+    tts: Boolean? = null,
+    flag: MessageFlag? = null
+): ObjectNode {
+    return replyJsonBody(
+        ydwk, content, listOf(), tts, if (flag != null) listOf(flag) else emptyList(), emptyList())
+}
+
+fun replyJsonBody(
+    ydwk: YDWK,
+    content: String,
+    tts: Boolean? = null,
+    flag: MessageFlag? = null,
+    allowedMentions: List<String> = emptyList()
+): ObjectNode {
+    return replyJsonBody(
+        ydwk,
+        content,
+        listOf(),
+        tts,
+        if (flag != null) listOf(flag) else emptyList(),
+        allowedMentions)
 }

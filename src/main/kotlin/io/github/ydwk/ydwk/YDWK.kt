@@ -26,6 +26,7 @@ import io.github.ydwk.ydwk.entities.Bot
 import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.application.PartialApplication
+import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
 import io.github.ydwk.ydwk.event.backend.event.GenericEvent
 import io.github.ydwk.ydwk.rest.RestApiManager
 import io.github.ydwk.ydwk.slash.SlashBuilder
@@ -219,4 +220,11 @@ interface YDWK {
      * @return A list of [Channel] objects.
      */
     fun getChannels(): List<Channel>
+
+    /**
+     * Used to create an embed.
+     *
+     * @return The [EmbedBuilder] object.
+     */
+    val embedBuilder: EmbedBuilder
 }

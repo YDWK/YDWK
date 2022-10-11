@@ -43,10 +43,16 @@ fun main() {
     ydwk.addEvent(Bot())
 
     ydwk.waitForReady.slashBuilder.addSlashCommand(Slash("test", "This is a test command")).build()
+    ydwk.waitForReady.slashBuilder.addSlashCommand(Slash("embed", "This is a test command")).build()
 
     ydwk.on<SlashCommandEvent> {
         if (it.slash.name == "test") {
             withContext(Dispatchers.IO) { it.slash.reply("This is a test command!").get() }
+        } else if (it.slash.name == "embed") {
+            withContext(Dispatchers.IO) {
+                val embed = ydwk.embedBuilder.setTitle("This is a test command!").build()
+                it.slash.reply(embed).get()
+            }
         }
     }
 }

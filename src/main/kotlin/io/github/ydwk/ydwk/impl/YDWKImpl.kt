@@ -28,11 +28,13 @@ import io.github.ydwk.ydwk.entities.Bot
 import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.application.PartialApplication
+import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
 import io.github.ydwk.ydwk.event.backend.event.CoroutineEventListener
 import io.github.ydwk.ydwk.event.backend.event.GenericEvent
 import io.github.ydwk.ydwk.event.backend.event.IEventListener
 import io.github.ydwk.ydwk.event.backend.managers.CoroutineEventManager
 import io.github.ydwk.ydwk.event.backend.managers.SampleEventManager
+import io.github.ydwk.ydwk.impl.entities.message.embed.builder.EmbedBuilderImpl
 import io.github.ydwk.ydwk.impl.rest.RestApiManagerImpl
 import io.github.ydwk.ydwk.impl.slash.SlashBuilderImpl
 import io.github.ydwk.ydwk.rest.RestApiManager
@@ -140,6 +142,9 @@ class YDWKImpl(
     override fun getChannels(): List<Channel> {
         return cache.values(CacheIds.CHANNEL).map { it as Channel }
     }
+
+    override val embedBuilder: EmbedBuilder
+        get() = EmbedBuilderImpl(this)
 
     override var bot: Bot? = null
         get() {

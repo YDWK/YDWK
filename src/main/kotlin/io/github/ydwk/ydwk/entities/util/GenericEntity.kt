@@ -34,12 +34,5 @@ interface GenericEntity {
      *
      * @return The full json of the entity as a string.
      */
-    fun toJson(): String = json.toString()
-
-    /**
-     * Used to get the full json of the entity as a pretty string.
-     *
-     * @return The full json of the entity as a pretty string.
-     */
-    fun toPrettyJson(): String = json.toPrettyString()
+    fun toJson(): String = json.toPrettyString()
 }

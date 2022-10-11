@@ -32,10 +32,10 @@ import io.github.ydwk.ydwk.interaction.Interaction
 import io.github.ydwk.ydwk.interaction.application.ApplicationCommandOption
 import io.github.ydwk.ydwk.interaction.application.ApplicationCommandType
 import io.github.ydwk.ydwk.interaction.application.SlashCommand
-import io.github.ydwk.ydwk.interaction.sub.InteractionCallbackType
 import io.github.ydwk.ydwk.interaction.sub.InteractionResolvedData
 import io.github.ydwk.ydwk.interaction.sub.InteractionType
 import io.github.ydwk.ydwk.rest.EndPoint
+import io.github.ydwk.ydwk.rest.json.replyJsonBody
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 import java.util.concurrent.CompletableFuture
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -86,15 +86,11 @@ class SlashCommandImpl(
         tts: Boolean,
         ephemeral: Boolean
     ): CompletableFuture<Void> {
-        val mainBody =
-            ydwk.objectNode.put("type", InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE.toInt())
-        val secondBody = ydwk.objectNode.put("content", content).put("tts", tts)
-        if (ephemeral) secondBody.put("flags", MessageFlag.EPHEMERAL.getValue())
-        mainBody.set<JsonNode>("data", secondBody)
-
         return ydwk.restApiManager
             .post(
-                mainBody.toString().toRequestBody(),
+                replyJsonBody(ydwk, content, tts, if (ephemeral) MessageFlag.EPHEMERAL else null)
+                    .toString()
+                    .toRequestBody(),
                 EndPoint.ApplicationCommandsEndpoint.REPLY_TO_SLASH_COMMAND,
                 interaction.id,
                 token)
@@ -106,16 +102,11 @@ class SlashCommandImpl(
         tts: Boolean,
         ephemeral: Boolean
     ): CompletableFuture<Void> {
-        val mainBody =
-            ydwk.objectNode.put("type", InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE.toInt())
-        val secondBody = ydwk.objectNode.put("tts", tts)
-        if (ephemeral) secondBody.put("flags", MessageFlag.EPHEMERAL.getValue())
-        secondBody.set<JsonNode>("embeds", ydwk.objectNode.arrayNode().add(embed.toJson()))
-        mainBody.set<JsonNode>("data", secondBody)
-
         return ydwk.restApiManager
             .post(
-                mainBody.toString().toRequestBody(),
+                replyJsonBody(ydwk, embed, tts, if (ephemeral) MessageFlag.EPHEMERAL else null)
+                    .toString()
+                    .toRequestBody(),
                 EndPoint.ApplicationCommandsEndpoint.REPLY_TO_SLASH_COMMAND,
                 interaction.id,
                 token)
