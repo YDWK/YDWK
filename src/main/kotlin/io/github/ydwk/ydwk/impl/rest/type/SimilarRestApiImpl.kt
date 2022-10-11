@@ -95,6 +95,31 @@ open class SimilarRestApiImpl(
         return queue
     }
 
+    override fun executeWithNoResult(): CompletableFuture<Void> {
+        val queue = CompletableFuture<Void>()
+        try {
+            client
+                .newCall(builder.build())
+                .enqueue(
+                    object : Callback {
+                        override fun onFailure(call: Call, e: java.io.IOException) {
+                            queue.completeExceptionally(e)
+                        }
+
+                        override fun onResponse(call: Call, response: Response) {
+                            if (!response.isSuccessful) {
+                                val code = response.code
+                                error(code)
+                            }
+                            queue.complete(null)
+                        }
+                    })
+        } catch (e: Exception) {
+            throw RuntimeException("Error while executing request", e)
+        }
+        return queue
+    }
+
     fun error(code: Int) {
         if (HttpResponseCode.fromCode(code) != HttpResponseCode.UNKNOWN) {
             val error = HttpResponseCode.fromCode(code)

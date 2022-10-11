@@ -39,4 +39,6 @@ interface SimilarRestApi {
     fun execute()
 
     fun <T : Any> execute(function: Function<CompletableFutureManager, T>): CompletableFuture<T>
+
+    fun executeWithNoResult(): CompletableFuture<Void>
 }
