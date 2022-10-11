@@ -25,6 +25,8 @@ import io.github.ydwk.ydwk.event.backend.event.on
 import io.github.ydwk.ydwk.event.events.ReadyEvent
 import io.github.ydwk.ydwk.event.events.interaction.SlashCommandEvent
 import io.github.ydwk.ydwk.slash.Slash
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class Bot : ListenerAdapter() {
     override fun onReady(event: ReadyEvent) {
@@ -44,7 +46,7 @@ fun main() {
 
     ydwk.on<SlashCommandEvent> {
         if (it.slash.name == "test") {
-            println(it.slash.guild?.id)
+            withContext(Dispatchers.IO) { it.slash.reply("This is a test command!").get() }
         }
     }
 }

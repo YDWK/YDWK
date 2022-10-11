@@ -29,7 +29,7 @@ import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.MessageImpl
 import io.github.ydwk.ydwk.impl.entities.UserImpl
 import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
-import io.github.ydwk.ydwk.impl.interaction.application.ApplicationCommandDataImpl
+import io.github.ydwk.ydwk.impl.interaction.application.SlashCommandImpl
 import io.github.ydwk.ydwk.impl.interaction.message.MessageComponentDataImpl
 import io.github.ydwk.ydwk.interaction.Interaction
 import io.github.ydwk.ydwk.interaction.sub.GenericCommandData
@@ -78,7 +78,7 @@ class InteractionImpl(
     override val data: GenericCommandData? =
         when (type) {
             InteractionType.APPLICATION_COMMAND ->
-                ApplicationCommandDataImpl(ydwk, json["data"], idAsLong, this)
+                SlashCommandImpl(ydwk, json["data"], idAsLong, this)
             InteractionType.MESSAGE_COMPONENT -> MessageComponentDataImpl(ydwk, json["data"])
             else -> {
                 (ydwk as YDWKImpl).logger.warn("Unknown interaction type: $type")

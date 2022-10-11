@@ -19,12 +19,14 @@
 package io.github.ydwk.ydwk.impl.interaction.application
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.node.ArrayNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.guild.Member
+import io.github.ydwk.ydwk.entities.message.Embed
 import io.github.ydwk.ydwk.impl.interaction.sub.InteractionResolvedDataImpl
 import io.github.ydwk.ydwk.interaction.Interaction
 import io.github.ydwk.ydwk.interaction.application.ApplicationCommandOption
@@ -32,9 +34,12 @@ import io.github.ydwk.ydwk.interaction.application.ApplicationCommandType
 import io.github.ydwk.ydwk.interaction.application.SlashCommand
 import io.github.ydwk.ydwk.interaction.sub.InteractionResolvedData
 import io.github.ydwk.ydwk.interaction.sub.InteractionType
+import io.github.ydwk.ydwk.rest.EndPoint
 import io.github.ydwk.ydwk.util.GetterSnowFlake
+import java.util.concurrent.CompletableFuture
+import okhttp3.RequestBody.Companion.toRequestBody
 
-class ApplicationCommandDataImpl(
+class SlashCommandImpl(
     override val ydwk: YDWK,
     override val json: JsonNode,
     override val idAsLong: Long,
@@ -75,4 +80,42 @@ class ApplicationCommandDataImpl(
     override val permissions: Long? = interaction.permissions
 
     override val locale: String? = interaction.locale
+    override suspend fun reply(
+        content: String,
+        tts: Boolean,
+        ephemeral: Boolean
+    ): CompletableFuture<Nothing> {
+        val body =
+            ydwk.objectNode
+                .put("content", content)
+                .put("tts", tts)
+                .put("flags", if (ephemeral) 64 else 0)
+        return ydwk.restApiManager
+            .put(
+                body.toString().toRequestBody(),
+                EndPoint.ApplicationCommandsEndpoint.REPLY_TO_SLASH_COMMAND,
+                interaction.id,
+                token)
+            .execute { throw RuntimeException("Failed to reply to slash command") }
+    }
+
+    override suspend fun reply(
+        embed: Embed,
+        tts: Boolean,
+        ephemeral: Boolean
+    ): CompletableFuture<Nothing> {
+        val body = ydwk.objectNode
+
+        body.set<ArrayNode>("embeds", ydwk.objectNode.arrayNode().add(embed.json))
+        body.put("tts", tts)
+        body.put("flags", if (ephemeral) 64 else 0)
+
+        return ydwk.restApiManager
+            .put(
+                body.toString().toRequestBody(),
+                EndPoint.ApplicationCommandsEndpoint.REPLY_TO_SLASH_COMMAND,
+                interaction.id,
+                token)
+            .execute { throw RuntimeException("Failed to reply to slash command") }
+    }
 }
