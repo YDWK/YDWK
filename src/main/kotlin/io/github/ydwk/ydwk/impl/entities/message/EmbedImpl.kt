@@ -19,7 +19,6 @@
 package io.github.ydwk.ydwk.impl.entities.message
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.node.ArrayNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.message.Embed
 import io.github.ydwk.ydwk.entities.message.embed.*
@@ -69,23 +68,4 @@ class EmbedImpl(override val ydwk: YDWK, override val json: JsonNode) : Embed {
         get() =
             if (json.hasNonNull("fields")) json["fields"].map { FieldImpl(ydwk, it) }
             else emptyList()
-
-    override fun toJson(): String {
-        val customJson = ydwk.objectNode
-        if (title != null) customJson.put("title", title)
-        if (description != null) customJson.put("description", description)
-        if (url != null) customJson.put("url", url.toString())
-        if (timestamp != null) customJson.put("timestamp", timestamp)
-        if (color != null) customJson.put("color", color!!.rgb)
-        if (footer != null) customJson.set<ArrayNode>("footer", footer!!.json)
-        if (image != null) customJson.set<ArrayNode>("image", image!!.json)
-        if (thumbnail != null) customJson.set<ArrayNode>("thumbnail", thumbnail!!.json)
-        if (video != null) customJson.set<ArrayNode>("video", video!!.json)
-        if (provider != null) customJson.set<ArrayNode>("provider", provider!!.json)
-        if (author != null) customJson.set<ArrayNode>("author", author!!.json)
-        if (fields.isNotEmpty())
-            customJson.set<ArrayNode>(
-                "fields", ydwk.objectNode.arrayNode().addAll(fields.map { it.json }))
-        return customJson.toPrettyString()
-    }
 }

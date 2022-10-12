@@ -19,6 +19,7 @@
 package io.github.ydwk.ydwk.impl.entities.channel
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.node.ArrayNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.entities.channel.TextChannel
@@ -41,7 +42,9 @@ class TextChannelImpl<T : Channel>(ydwk: YDWK, json: JsonNode, idAsLong: Long) :
     }
 
     override fun sendEmbed(embed: Embed, tts: Boolean): CompletableFuture<T> {
-        val body = ydwk.objectNode.put("embed", embed.toJson()).put("tts", tts)
+        val body = ydwk.objectNode
+        body.set<ArrayNode>("embed", embed.json)
+        body.put("tts", tts)
         return ydwk.restApiManager
             .put(body.toString().toRequestBody(), EndPoint.ChannelEndpoint.CREATE_MESSAGE, id)
             .execute { result ->

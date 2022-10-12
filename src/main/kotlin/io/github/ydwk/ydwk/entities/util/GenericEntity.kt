@@ -28,11 +28,4 @@ interface GenericEntity {
 
     /** The json representation of this entity. */
     val json: JsonNode
-
-    /**
-     * Used to get the full json of the entity as a string.
-     *
-     * @return The full json of the entity as a string.
-     */
-    fun toJson(): String = json.toPrettyString()
 }

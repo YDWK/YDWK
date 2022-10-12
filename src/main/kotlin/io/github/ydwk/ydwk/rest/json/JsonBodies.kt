@@ -18,7 +18,6 @@
  */ 
 package io.github.ydwk.ydwk.rest.json
 
-import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.ydwk.ydwk.YDWK
@@ -44,7 +43,7 @@ fun replyJsonBody(
 
     if (embeds.isNotEmpty()) {
         val embedArray = ydwk.objectNode.arrayNode()
-        embeds.forEach { embedArray.add(it.toJson()) }
+        embeds.forEach { embedArray.add(it.json) }
         secondBody.set<ArrayNode>("embeds", embedArray)
     }
 
@@ -56,7 +55,6 @@ fun replyJsonBody(
         secondBody.set<ArrayNode>("allowed_mentions", allowedMentionsArray)
     }
 
-    println(mainBody.set<JsonNode?>("data", secondBody).toPrettyString())
     return mainBody.set("data", secondBody)
 }
 
@@ -125,4 +123,20 @@ fun replyJsonBody(
         tts,
         if (flag != null) listOf(flag) else emptyList(),
         allowedMentions)
+}
+
+fun sendMessageToChannelBody(
+    ydwk: YDWK,
+    content: String,
+    tts: Boolean? = null,
+    embeds: List<Embed> = emptyList()
+) {
+    val body = ydwk.objectNode
+    body.put("content", content)
+    if (tts != null) body.put("tts", tts)
+    if (embeds.isNotEmpty()) {
+        val embedArray = ydwk.objectNode.arrayNode()
+        embeds.forEach { embedArray.add(it.json) }
+        body.set<ArrayNode>("embeds", embedArray)
+    }
 }
