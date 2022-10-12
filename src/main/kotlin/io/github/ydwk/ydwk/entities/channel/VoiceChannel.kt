@@ -19,5 +19,20 @@
 package io.github.ydwk.ydwk.entities.channel
 
 import io.github.ydwk.ydwk.entities.Channel
+import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
 
-interface VoiceChannel : Channel {}
+interface VoiceChannel : Channel {
+    /**
+     * Gets the channel as a [GuildVoiceChannel] if it is one.
+     *
+     * @return the channel as a [GuildVoiceChannel] if it is one.
+     */
+    fun asGuildVoiceChannel(): GuildVoiceChannel? = cast(GuildVoiceChannel::class.java)
+
+    /**
+     * Gets the channel as a [VoiceChannel] if it is one.
+     *
+     * @return the channel as a [VoiceChannel] if it is one.
+     */
+    fun asVoiceChannel(): VoiceChannel? = cast(VoiceChannel::class.java)
+}

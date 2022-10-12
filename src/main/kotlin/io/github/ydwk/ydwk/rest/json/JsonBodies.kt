@@ -127,16 +127,43 @@ fun replyJsonBody(
 
 fun sendMessageToChannelBody(
     ydwk: YDWK,
-    content: String,
+    content: String?,
     tts: Boolean? = null,
     embeds: List<Embed> = emptyList()
-) {
+): ObjectNode {
     val body = ydwk.objectNode
-    body.put("content", content)
+    if (content != null) body.put("content", content)
     if (tts != null) body.put("tts", tts)
     if (embeds.isNotEmpty()) {
         val embedArray = ydwk.objectNode.arrayNode()
         embeds.forEach { embedArray.add(it.json) }
         body.set<ArrayNode>("embeds", embedArray)
     }
+    return body
+}
+
+fun sendMessageToChannelBody(
+    ydwk: YDWK,
+    content: String? = null,
+    tts: Boolean? = null,
+    embed: Embed? = null
+): ObjectNode {
+    return sendMessageToChannelBody(
+        ydwk, content, tts, if (embed != null) listOf(embed) else emptyList())
+}
+
+fun sendMessageToChannelBody(ydwk: YDWK, embed: Embed, tts: Boolean? = null): ObjectNode {
+    return sendMessageToChannelBody(ydwk, null, tts, listOf(embed))
+}
+
+fun sendMessageToChannelBody(
+    ydwk: YDWK,
+    embeds: List<Embed> = emptyList(),
+    tts: Boolean? = null
+): ObjectNode {
+    return sendMessageToChannelBody(ydwk, null, tts, embeds)
+}
+
+fun sendMessageToChannelBody(ydwk: YDWK, content: String, tts: Boolean? = null): ObjectNode {
+    return sendMessageToChannelBody(ydwk, content, tts, listOf())
 }

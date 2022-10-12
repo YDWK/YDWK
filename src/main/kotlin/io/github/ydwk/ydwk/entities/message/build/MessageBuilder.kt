@@ -24,7 +24,11 @@ import io.github.ydwk.ydwk.entities.channel.TextChannel
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.message.Embed
 import io.github.ydwk.ydwk.entities.message.Sendeadble
+import io.github.ydwk.ydwk.impl.entities.MessageImpl
+import io.github.ydwk.ydwk.rest.EndPoint
+import io.github.ydwk.ydwk.rest.json.sendMessageToChannelBody
 import java.util.concurrent.CompletableFuture
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class MessageBuilder {
     private var content: String? = null
@@ -64,7 +68,20 @@ class MessageBuilder {
     }
 
     private fun sendToTextChannel(channel: TextChannel): CompletableFuture<Message> {
-        return TODO()
+        val body = sendMessageToChannelBody(channel.ydwk, content, tts, embed)
+        return channel.ydwk.restApiManager
+            .post(
+                body.toString().toRequestBody(),
+                EndPoint.ChannelEndpoint.CREATE_MESSAGE,
+                channel.id)
+            .execute { response ->
+                val json = response.jsonBody
+                if (json == null) {
+                    throw IllegalStateException("Response body is null")
+                } else {
+                    MessageImpl(channel.ydwk, json, json["id"].asLong())
+                }
+            }
     }
 
     private fun sendToMember(member: Member): CompletableFuture<Message> {
