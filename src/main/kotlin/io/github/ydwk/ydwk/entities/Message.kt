@@ -19,6 +19,7 @@
 package io.github.ydwk.ydwk.entities
 
 import io.github.ydwk.ydwk.entities.application.PartialApplication
+import io.github.ydwk.ydwk.entities.channel.TextChannel
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.entities.message.*
 import io.github.ydwk.ydwk.entities.sticker.StickerItem
@@ -32,7 +33,7 @@ interface Message : SnowFlake, GenericEntity {
      *
      * @return The channel where this message was sent.
      */
-    val channel: Channel
+    val channel: TextChannel
 
     /**
      * Gets the author of this message.
@@ -95,7 +96,7 @@ interface Message : SnowFlake, GenericEntity {
      *
      * @return The mentioned channels.
      */
-    val mentionedChannels: List<Channel>
+    val mentionedChannels: List<TextChannel>
 
     /**
      * Gets the attachments.
@@ -193,7 +194,7 @@ interface Message : SnowFlake, GenericEntity {
      *
      * @return The thread of this message.
      */
-    val thread: Channel?
+    val thread: TextChannel?
 
     /**
      * Gets the components of this message.

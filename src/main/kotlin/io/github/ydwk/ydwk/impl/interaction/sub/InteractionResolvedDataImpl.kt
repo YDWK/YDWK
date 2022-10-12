@@ -20,15 +20,15 @@ package io.github.ydwk.ydwk.impl.interaction.sub
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.entities.User
+import io.github.ydwk.ydwk.entities.channel.TextChannel
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.entities.message.Attachment
-import io.github.ydwk.ydwk.impl.entities.ChannelImpl
 import io.github.ydwk.ydwk.impl.entities.MessageImpl
 import io.github.ydwk.ydwk.impl.entities.UserImpl
+import io.github.ydwk.ydwk.impl.entities.channel.TextChannelImpl
 import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
 import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
 import io.github.ydwk.ydwk.impl.entities.message.AttachmentImpl
@@ -53,9 +53,10 @@ class InteractionResolvedDataImpl(override val ydwk: YDWK, override val json: Js
             GetterSnowFlake.of(it["id"].asLong()) to RoleImpl(ydwk, it, it["id"].asLong())
         }
 
-    override val channels: Map<GetterSnowFlake, Channel> =
+    override val channels: Map<GetterSnowFlake, TextChannel> =
         json["channels"].associate {
-            GetterSnowFlake.of(it["id"].asLong()) to ChannelImpl(ydwk, it, it["id"].asLong())
+            GetterSnowFlake.of(it["id"].asLong()) to
+                TextChannelImpl(ydwk, it, it.get("id").asLong())
         }
 
     override val messages: Map<GetterSnowFlake, Message> =

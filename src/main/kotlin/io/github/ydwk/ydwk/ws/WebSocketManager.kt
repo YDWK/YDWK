@@ -36,9 +36,9 @@ import io.github.ydwk.ydwk.event.events.role.GuildRoleCreateEvent
 import io.github.ydwk.ydwk.event.events.role.GuildRoleDeleteEvent
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.BotImpl
-import io.github.ydwk.ydwk.impl.entities.ChannelImpl
 import io.github.ydwk.ydwk.impl.entities.MessageImpl
 import io.github.ydwk.ydwk.impl.entities.application.PartialApplicationImpl
+import io.github.ydwk.ydwk.impl.entities.channel.TextChannelImpl
 import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
 import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
 import io.github.ydwk.ydwk.impl.handler.handlers.UserUpdateHandler
@@ -455,13 +455,14 @@ open class WebSocketManager(
             }
             EventNames.APPLICATION_COMMAND_PERMISSIONS_UPDATE -> TODO()
             EventNames.CHANNEL_CREATE -> {
-                val channel = ChannelImpl(ydwk, d, d.get("id").asLong())
+                val channel = TextChannelImpl(ydwk, d, d.get("id").asLong())
                 ydwk.cache[d.get("id").asText(), channel] = CacheIds.CHANNEL
                 ydwk.emitEvent(ChannelCreateEvent(ydwk, channel))
             }
             EventNames.CHANNEL_UPDATE -> TODO()
             EventNames.CHANNEL_DELETE -> {
-                val channel = ChannelImpl(ydwk, d, d.get("id").asLong())
+                // TODO need to check if channel is voice channel
+                val channel = TextChannelImpl(ydwk, d, d.get("id").asLong())
                 ydwk.cache.remove(d.get("id").asText(), CacheIds.CHANNEL)
                 ydwk.emitEvent(ChannelDeleteEvent(ydwk, channel))
             }

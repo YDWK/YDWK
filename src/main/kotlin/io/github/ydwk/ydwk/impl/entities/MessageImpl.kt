@@ -20,14 +20,15 @@ package io.github.ydwk.ydwk.impl.entities
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.application.PartialApplication
+import io.github.ydwk.ydwk.entities.channel.TextChannel
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.entities.message.*
 import io.github.ydwk.ydwk.entities.sticker.StickerItem
 import io.github.ydwk.ydwk.impl.entities.application.PartialApplicationImpl
+import io.github.ydwk.ydwk.impl.entities.channel.TextChannelImpl
 import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
 import io.github.ydwk.ydwk.impl.entities.message.*
 import io.github.ydwk.ydwk.impl.entities.sticker.StickerItemImpl
@@ -39,8 +40,8 @@ class MessageImpl(
     override val json: JsonNode,
     override val idAsLong: Long
 ) : Message {
-    override val channel: Channel
-        get() = ydwk.getChannel(json["channel_id"].asLong())!!
+    override val channel: TextChannel
+        get() = ydwk.getChannel(json["channel_id"].asLong())?.asTextChannel()!!
 
     override val author: User
         get() = UserImpl(json.get("author"), json.get("author").get("id").asLong(), ydwk)
@@ -79,11 +80,11 @@ class MessageImpl(
             return list
         }
 
-    override val mentionedChannels: List<Channel>
+    override val mentionedChannels: List<TextChannel>
         get() {
-            val list = mutableListOf<Channel>()
+            val list = mutableListOf<TextChannel>()
             json.get("mention_channels").forEach {
-                list.add(ChannelImpl(ydwk, it, it.get("id").asLong()))
+                list.add(TextChannelImpl(ydwk, it, it.get("id").asLong()))
             }
             return list
         }
@@ -160,8 +161,11 @@ class MessageImpl(
                     ydwk, json.get("interaction"), json.get("interaction").get("id").asLong())
             else null
 
-    override val thread: Channel?
-        get() = TODO("Not yet implemented")
+    override val thread: TextChannel?
+        get() =
+            if (json.has("thread"))
+                TextChannelImpl(ydwk, json.get("thread"), json.get("thread").get("id").asLong())
+            else null
 
     override val components: List<MessageComponent>
         get() = TODO("Not yet implemented")

@@ -20,17 +20,17 @@ package io.github.ydwk.ydwk.impl.handler.handlers.guild
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.cache.CacheIds
-import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.entities.Emoji
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.Sticker
+import io.github.ydwk.ydwk.entities.channel.TextChannel
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.impl.YDWKImpl
-import io.github.ydwk.ydwk.impl.entities.ChannelImpl
 import io.github.ydwk.ydwk.impl.entities.EmojiImpl
 import io.github.ydwk.ydwk.impl.entities.GuildImpl
 import io.github.ydwk.ydwk.impl.entities.StickerImpl
+import io.github.ydwk.ydwk.impl.entities.channel.TextChannelImpl
 import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
 import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
 import io.github.ydwk.ydwk.impl.handler.Handler
@@ -75,9 +75,10 @@ class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
 
         stickers.forEach { sticker -> ydwk.cache[sticker.id, sticker] = CacheIds.STICKER }
 
-        val channels = ArrayList<Channel>()
+        // TODO : check if VoiceChannel is needed
+        val channels = ArrayList<TextChannel>()
         json["channels"].forEach { channel ->
-            channels.add(ChannelImpl(ydwk, channel, channel["id"].asLong()))
+            channels.add(TextChannelImpl(ydwk, channel, channel["id"].asLong()))
         }
         channels.forEach { channel -> ydwk.cache[channel.id, channel] = CacheIds.CHANNEL }
     }

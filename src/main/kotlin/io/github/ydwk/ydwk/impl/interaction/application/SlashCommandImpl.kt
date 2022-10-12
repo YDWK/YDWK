@@ -20,10 +20,10 @@ package io.github.ydwk.ydwk.impl.interaction.application
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.entities.User
+import io.github.ydwk.ydwk.entities.channel.TextChannel
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.message.Embed
 import io.github.ydwk.ydwk.entities.message.MessageFlag
@@ -70,7 +70,7 @@ class SlashCommandImpl(
 
     override val interactionType: InteractionType = interaction.type
 
-    override val channel: Channel? = interaction.channel
+    override val channel: TextChannel? = interaction.channel
 
     override val token: String = interaction.token
 

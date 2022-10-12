@@ -18,12 +18,13 @@
  */ 
 package io.github.ydwk.ydwk.entities
 
+import io.github.ydwk.ydwk.entities.message.Sendeadble
 import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.util.NameAbleEntity
 import io.github.ydwk.ydwk.util.SnowFlake
 import java.awt.Color
 
-interface User : SnowFlake, GenericEntity, NameAbleEntity {
+interface User : SnowFlake, GenericEntity, NameAbleEntity, Sendeadble {
 
     /** The user's 4-digit discord-tag */
     var discriminator: String

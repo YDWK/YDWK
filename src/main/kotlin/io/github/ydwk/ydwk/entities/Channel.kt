@@ -72,7 +72,7 @@ interface Channel : SnowFlake, GenericEntity, AssignableEntity<Channel> {
      *
      * @return the channel as a [TextChannel] if it is one.
      */
-    fun asTextChannel(): TextChannel<*>? = cast(TextChannel::class.java)
+    fun asTextChannel(): TextChannel? = cast(TextChannel::class.java)
 
     /**
      * Gets the channel as a [VoiceChannel] if it is one.
