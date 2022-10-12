@@ -23,9 +23,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.ydwk.ydwk.cache.CacheIds
 import io.github.ydwk.ydwk.entities.Application
 import io.github.ydwk.ydwk.entities.Bot
-import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.application.PartialApplication
+import io.github.ydwk.ydwk.entities.channel.TextChannel
+import io.github.ydwk.ydwk.entities.channel.VoiceChannel
 import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
 import io.github.ydwk.ydwk.event.backend.event.GenericEvent
 import io.github.ydwk.ydwk.rest.RestApiManager
@@ -199,27 +200,50 @@ interface YDWK {
         setDisallowedCache(*cacheTypes.toTypedArray())
 
     /**
-     * Used to get a channel by its id.
+     * Used to get a text channel by its id.
      *
-     * @param id The id of the channel.
-     * @return The [Channel] object.
+     * @param id The id of the text channel.
+     * @return The [TextChannel] object.
      */
-    fun getChannel(asLong: Long): Channel?
+    fun getTextChannel(id: Long): TextChannel?
 
     /**
-     * Used to get a channel by its id.
+     * Used to get a text channel by its id.
      *
-     * @param id The id of the channel.
-     * @return The [Channel] object.
+     * @param id The id of the text channel.
+     * @return The [TextChannel] object.
      */
-    fun getChannel(asString: String): Channel? = getChannel(asString.toLong())
+    fun getTextChannel(id: String): TextChannel? = getTextChannel(id.toLong())
 
     /**
-     * Used to get all the channels the bot is in.
+     * Used to get all the text channels the bot is in.
      *
-     * @return A list of [Channel] objects.
+     * @return A list of [TextChannel] objects.
      */
-    fun getChannels(): List<Channel>
+    fun getTextChannels(): List<TextChannel>
+
+    /**
+     * Used to get a voice channel by its id.
+     *
+     * @param id The id of the voice channel.
+     * @return The [VoiceChannel] object.
+     */
+    fun getVoiceChannel(id: Long): VoiceChannel?
+
+    /**
+     * Used to get a voice channel by its id.
+     *
+     * @param id The id of the voice channel.
+     * @return The [VoiceChannel] object.
+     */
+    fun getVoiceChannel(id: String): VoiceChannel? = getVoiceChannel(id.toLong())
+
+    /**
+     * Used to get all the voice channels the bot is in.
+     *
+     * @return A list of [VoiceChannel] objects.
+     */
+    fun getVoiceChannels(): List<VoiceChannel>
 
     /**
      * Used to create an embed.

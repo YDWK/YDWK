@@ -25,9 +25,10 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.cache.*
 import io.github.ydwk.ydwk.entities.Application
 import io.github.ydwk.ydwk.entities.Bot
-import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.application.PartialApplication
+import io.github.ydwk.ydwk.entities.channel.TextChannel
+import io.github.ydwk.ydwk.entities.channel.VoiceChannel
 import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
 import io.github.ydwk.ydwk.event.backend.event.CoroutineEventListener
 import io.github.ydwk.ydwk.event.backend.event.GenericEvent
@@ -135,12 +136,20 @@ class YDWKImpl(
         allowedCache.removeAll(cacheTypes.toSet())
     }
 
-    override fun getChannel(asLong: Long): Channel? {
-        return cache[asLong.toString(), CacheIds.CHANNEL] as Channel?
+    override fun getTextChannel(id: Long): TextChannel? {
+        return cache[id.toString(), CacheIds.TEXT_CHANNEL] as TextChannel?
     }
 
-    override fun getChannels(): List<Channel> {
-        return cache.values(CacheIds.CHANNEL).map { it as Channel }
+    override fun getTextChannels(): List<TextChannel> {
+        return cache.values(CacheIds.TEXT_CHANNEL).map { it as TextChannel }
+    }
+
+    override fun getVoiceChannel(id: Long): VoiceChannel? {
+        return cache[id.toString(), CacheIds.VOICE_CHANNEL] as VoiceChannel?
+    }
+
+    override fun getVoiceChannels(): List<VoiceChannel> {
+        return cache.values(CacheIds.VOICE_CHANNEL).map { it as VoiceChannel }
     }
 
     override val embedBuilder: EmbedBuilder

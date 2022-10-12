@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import com.neovisionaries.ws.client.*
 import io.github.ydwk.ydwk.YDWKInfo
 import io.github.ydwk.ydwk.cache.CacheIds
+import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
 import io.github.ydwk.ydwk.event.events.*
 import io.github.ydwk.ydwk.event.events.channel.ChannelCreateEvent
 import io.github.ydwk.ydwk.event.events.channel.ChannelDeleteEvent
@@ -39,6 +40,7 @@ import io.github.ydwk.ydwk.impl.entities.BotImpl
 import io.github.ydwk.ydwk.impl.entities.MessageImpl
 import io.github.ydwk.ydwk.impl.entities.application.PartialApplicationImpl
 import io.github.ydwk.ydwk.impl.entities.channel.TextChannelImpl
+import io.github.ydwk.ydwk.impl.entities.channel.VoiceChannelImpl
 import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
 import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
 import io.github.ydwk.ydwk.impl.handler.handlers.UserUpdateHandler
@@ -455,16 +457,29 @@ open class WebSocketManager(
             }
             EventNames.APPLICATION_COMMAND_PERMISSIONS_UPDATE -> TODO()
             EventNames.CHANNEL_CREATE -> {
-                val channel = TextChannelImpl(ydwk, d, d.get("id").asLong())
-                ydwk.cache[d.get("id").asText(), channel] = CacheIds.CHANNEL
-                ydwk.emitEvent(ChannelCreateEvent(ydwk, channel))
+                val channelType = ChannelType.fromId(d.get("type").asInt())
+                if (channelType.isText) {
+                    val channel = TextChannelImpl(ydwk, d, d.get("id").asLong())
+                    ydwk.cache[d.get("id").asText(), channel] = CacheIds.TEXT_CHANNEL
+                    ydwk.emitEvent(ChannelCreateEvent(ydwk, channel))
+                } else if (channelType.isVoice) {
+                    val channel = VoiceChannelImpl(ydwk, d, d.get("id").asLong())
+                    ydwk.cache[d.get("id").asText(), channel] = CacheIds.VOICE_CHANNEL
+                    ydwk.emitEvent(ChannelCreateEvent(ydwk, channel))
+                }
             }
             EventNames.CHANNEL_UPDATE -> TODO()
             EventNames.CHANNEL_DELETE -> {
-                // TODO need to check if channel is voice channel
-                val channel = TextChannelImpl(ydwk, d, d.get("id").asLong())
-                ydwk.cache.remove(d.get("id").asText(), CacheIds.CHANNEL)
-                ydwk.emitEvent(ChannelDeleteEvent(ydwk, channel))
+                val channelType = ChannelType.fromId(d.get("type").asInt())
+                if (channelType.isText) {
+                    val channel = TextChannelImpl(ydwk, d, d.get("id").asLong())
+                    ydwk.cache.remove(d.get("id").asText(), CacheIds.TEXT_CHANNEL)
+                    ydwk.emitEvent(ChannelDeleteEvent(ydwk, channel))
+                } else if (channelType.isVoice) {
+                    val channel = VoiceChannelImpl(ydwk, d, d.get("id").asLong())
+                    ydwk.cache.remove(d.get("id").asText(), CacheIds.VOICE_CHANNEL)
+                    ydwk.emitEvent(ChannelDeleteEvent(ydwk, channel))
+                }
             }
             EventNames.CHANNEL_PINS_UPDATE -> TODO()
             EventNames.THREAD_CREATE -> TODO()

@@ -20,7 +20,8 @@ package io.github.ydwk.ydwk.cache
 
 enum class CacheType(private val ids: CacheIds) {
     GUILD(CacheIds.GUILD),
-    CHANNEL(CacheIds.CHANNEL),
+    TEXT_CHANNEL(CacheIds.TEXT_CHANNEL),
+    VOICE_CHANNEL(CacheIds.VOICE_CHANNEL),
     USER(CacheIds.USER),
     MEMBER(CacheIds.MEMBER),
     ROLE(CacheIds.ROLE),

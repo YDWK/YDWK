@@ -41,7 +41,10 @@ class MessageImpl(
     override val idAsLong: Long
 ) : Message {
     override val channel: TextChannel
-        get() = ydwk.getChannel(json["channel_id"].asLong())?.asTextChannel()!!
+        get() =
+            if (ydwk.getTextChannel(json["channel_id"].asLong()) != null)
+                ydwk.getTextChannel(json["channel_id"].asLong())!!
+            else throw IllegalStateException("Channel is null")
 
     override val author: User
         get() = UserImpl(json.get("author"), json.get("author").get("id").asLong(), ydwk)

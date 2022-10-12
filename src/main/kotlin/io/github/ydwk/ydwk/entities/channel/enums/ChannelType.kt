@@ -69,4 +69,15 @@ enum class ChannelType(private val id: Int) {
     fun getId(): Int {
         return id
     }
+
+    val isText: Boolean
+        get() =
+            this == TEXT ||
+                this == NEWS ||
+                this == NEWS_THREAD ||
+                this == PUBLIC_THREAD ||
+                this == PRIVATE_THREAD
+
+    val isVoice: Boolean
+        get() = this == VOICE || this == STAGE_VOICE
 }
