@@ -39,6 +39,7 @@ import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.BotImpl
 import io.github.ydwk.ydwk.impl.entities.MessageImpl
 import io.github.ydwk.ydwk.impl.entities.application.PartialApplicationImpl
+import io.github.ydwk.ydwk.impl.entities.channel.CategoryImpl
 import io.github.ydwk.ydwk.impl.entities.channel.TextChannelImpl
 import io.github.ydwk.ydwk.impl.entities.channel.VoiceChannelImpl
 import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
@@ -458,27 +459,43 @@ open class WebSocketManager(
             EventNames.APPLICATION_COMMAND_PERMISSIONS_UPDATE -> TODO()
             EventNames.CHANNEL_CREATE -> {
                 val channelType = ChannelType.fromId(d.get("type").asInt())
-                if (channelType.isText) {
-                    val channel = TextChannelImpl(ydwk, d, d.get("id").asLong())
-                    ydwk.cache[d.get("id").asText(), channel] = CacheIds.TEXT_CHANNEL
-                    ydwk.emitEvent(ChannelCreateEvent(ydwk, channel))
-                } else if (channelType.isVoice) {
-                    val channel = VoiceChannelImpl(ydwk, d, d.get("id").asLong())
-                    ydwk.cache[d.get("id").asText(), channel] = CacheIds.VOICE_CHANNEL
-                    ydwk.emitEvent(ChannelCreateEvent(ydwk, channel))
+                when {
+                    channelType.isText -> {
+                        val channel = TextChannelImpl(ydwk, d, d.get("id").asLong())
+                        ydwk.cache[d.get("id").asText(), channel] = CacheIds.TEXT_CHANNEL
+                        ydwk.emitEvent(ChannelCreateEvent(ydwk, channel))
+                    }
+                    channelType.isVoice -> {
+                        val channel = VoiceChannelImpl(ydwk, d, d.get("id").asLong())
+                        ydwk.cache[d.get("id").asText(), channel] = CacheIds.VOICE_CHANNEL
+                        ydwk.emitEvent(ChannelCreateEvent(ydwk, channel))
+                    }
+                    channelType.isCategory -> {
+                        val channel = CategoryImpl(ydwk, d, d.get("id").asLong())
+                        ydwk.cache[d.get("id").asText(), channel] = CacheIds.CATEGORY
+                        ydwk.emitEvent(ChannelCreateEvent(ydwk, channel))
+                    }
                 }
             }
             EventNames.CHANNEL_UPDATE -> TODO()
             EventNames.CHANNEL_DELETE -> {
                 val channelType = ChannelType.fromId(d.get("type").asInt())
-                if (channelType.isText) {
-                    val channel = TextChannelImpl(ydwk, d, d.get("id").asLong())
-                    ydwk.cache.remove(d.get("id").asText(), CacheIds.TEXT_CHANNEL)
-                    ydwk.emitEvent(ChannelDeleteEvent(ydwk, channel))
-                } else if (channelType.isVoice) {
-                    val channel = VoiceChannelImpl(ydwk, d, d.get("id").asLong())
-                    ydwk.cache.remove(d.get("id").asText(), CacheIds.VOICE_CHANNEL)
-                    ydwk.emitEvent(ChannelDeleteEvent(ydwk, channel))
+                when {
+                    channelType.isText -> {
+                        val channel = TextChannelImpl(ydwk, d, d.get("id").asLong())
+                        ydwk.cache.remove(d.get("id").asText(), CacheIds.TEXT_CHANNEL)
+                        ydwk.emitEvent(ChannelDeleteEvent(ydwk, channel))
+                    }
+                    channelType.isVoice -> {
+                        val channel = VoiceChannelImpl(ydwk, d, d.get("id").asLong())
+                        ydwk.cache.remove(d.get("id").asText(), CacheIds.VOICE_CHANNEL)
+                        ydwk.emitEvent(ChannelDeleteEvent(ydwk, channel))
+                    }
+                    channelType.isCategory -> {
+                        val channel = CategoryImpl(ydwk, d, d.get("id").asLong())
+                        ydwk.cache.remove(d.get("id").asText(), CacheIds.CATEGORY)
+                        ydwk.emitEvent(ChannelDeleteEvent(ydwk, channel))
+                    }
                 }
             }
             EventNames.CHANNEL_PINS_UPDATE -> TODO()

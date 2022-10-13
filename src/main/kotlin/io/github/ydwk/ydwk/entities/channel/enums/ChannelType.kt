@@ -70,15 +70,17 @@ enum class ChannelType(private val id: Int) {
         return id
     }
 
+    val isCategory: Boolean
+        get() = this == CATEGORY
+
     val isText: Boolean
         get() =
             this == TEXT ||
                 this == NEWS ||
                 this == NEWS_THREAD ||
                 this == PUBLIC_THREAD ||
-                this == PRIVATE_THREAD ||
-                this == CATEGORY
+                this == PRIVATE_THREAD
 
     val isVoice: Boolean
-        get() = this == VOICE || this == STAGE_VOICE || this == CATEGORY
+        get() = this == VOICE || this == STAGE_VOICE
 }

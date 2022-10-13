@@ -18,4 +18,6 @@
  */ 
 package io.github.ydwk.ydwk.entities.channel.guild
 
-interface Category : GenericGuildChannel {}
+import io.github.ydwk.ydwk.entities.channel.GuildChannel
+
+interface Category : GuildChannel {}

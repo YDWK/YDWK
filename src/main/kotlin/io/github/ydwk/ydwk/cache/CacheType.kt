@@ -22,6 +22,7 @@ enum class CacheType(private val ids: CacheIds) {
     GUILD(CacheIds.GUILD),
     TEXT_CHANNEL(CacheIds.TEXT_CHANNEL),
     VOICE_CHANNEL(CacheIds.VOICE_CHANNEL),
+    CATEGORY(CacheIds.CATEGORY),
     USER(CacheIds.USER),
     MEMBER(CacheIds.MEMBER),
     ROLE(CacheIds.ROLE),

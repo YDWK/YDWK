@@ -26,12 +26,14 @@ import io.github.ydwk.ydwk.entities.Sticker
 import io.github.ydwk.ydwk.entities.channel.TextChannel
 import io.github.ydwk.ydwk.entities.channel.VoiceChannel
 import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
+import io.github.ydwk.ydwk.entities.channel.guild.Category
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.EmojiImpl
 import io.github.ydwk.ydwk.impl.entities.GuildImpl
 import io.github.ydwk.ydwk.impl.entities.StickerImpl
+import io.github.ydwk.ydwk.impl.entities.channel.CategoryImpl
 import io.github.ydwk.ydwk.impl.entities.channel.TextChannelImpl
 import io.github.ydwk.ydwk.impl.entities.channel.VoiceChannelImpl
 import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
@@ -81,18 +83,34 @@ class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
         val channelJson = json["channels"]
         val channelType = ChannelType.fromId(channelJson["type"].asInt())
 
-        if (channelType.isText) {
-            val channels = ArrayList<TextChannel>()
-            json["channels"].forEach { channel ->
-                channels.add(TextChannelImpl(ydwk, channel, channel["id"].asLong()))
+        when {
+            channelType.isText -> {
+                val channels = ArrayList<TextChannel>()
+                json["channels"].forEach { channel ->
+                    channels.add(TextChannelImpl(ydwk, channel, channel["id"].asLong()))
+                }
+                channels.forEach { channel ->
+                    ydwk.cache[channel.id, channel] = CacheIds.TEXT_CHANNEL
+                }
             }
-            channels.forEach { channel -> ydwk.cache[channel.id, channel] = CacheIds.TEXT_CHANNEL }
-        } else if (channelType.isVoice) {
-            val channels = ArrayList<VoiceChannel>()
-            json["channels"].forEach { channel ->
-                channels.add(VoiceChannelImpl(ydwk, channel, channel["id"].asLong()))
+            channelType.isVoice -> {
+                val channels = ArrayList<VoiceChannel>()
+                json["channels"].forEach { channel ->
+                    channels.add(VoiceChannelImpl(ydwk, channel, channel["id"].asLong()))
+                }
+                channels.forEach { channel ->
+                    ydwk.cache[channel.id, channel] = CacheIds.VOICE_CHANNEL
+                }
             }
-            channels.forEach { channel -> ydwk.cache[channel.id, channel] = CacheIds.VOICE_CHANNEL }
+            channelType.isCategory -> {
+                val channels = ArrayList<Category>()
+                json["channels"].forEach { channel ->
+                    channels.add(CategoryImpl(ydwk, channel, channel["id"].asLong()))
+                }
+                channels.forEach { channel ->
+                    ydwk.cache[channel.id, channel] = CacheIds.VOICE_CHANNEL
+                }
+            }
         }
     }
 }

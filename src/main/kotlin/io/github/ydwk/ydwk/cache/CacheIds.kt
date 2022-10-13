@@ -23,6 +23,7 @@ enum class CacheIds(private val value: String, private val cacheType: CacheType)
     USER("user", CacheType.USER),
     VOICE_CHANNEL("voice_channel", CacheType.VOICE_CHANNEL),
     TEXT_CHANNEL("text_channel", CacheType.TEXT_CHANNEL),
+    CATEGORY("category", CacheType.CATEGORY),
     ROLE("role", CacheType.ROLE),
     EMOJI("emoji", CacheType.EMOJI),
     MESSAGE("message", CacheType.MESSAGE),
@@ -41,7 +42,15 @@ enum class CacheIds(private val value: String, private val cacheType: CacheType)
 
         fun getDefaultCache(): Set<CacheIds> {
             return setOf(
-                GUILD, USER, VOICE_CHANNEL, TEXT_CHANNEL, MESSAGE, MEMBER, APPLICATION, ROLE)
+                GUILD,
+                USER,
+                VOICE_CHANNEL,
+                TEXT_CHANNEL,
+                CATEGORY,
+                MESSAGE,
+                MEMBER,
+                APPLICATION,
+                ROLE)
         }
 
         fun getAllCache(): Set<CacheIds> {
