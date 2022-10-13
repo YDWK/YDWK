@@ -18,26 +18,21 @@
  */ 
 package io.github.ydwk.ydwk.entities.channel
 
-import io.github.ydwk.ydwk.entities.Channel
-import io.github.ydwk.ydwk.entities.channel.guild.text.GuildTextChannel
-import io.github.ydwk.ydwk.entities.message.Sendeadble
+import io.github.ydwk.ydwk.entities.User
+import io.github.ydwk.ydwk.util.GetterSnowFlake
 
-/**
- * Contains all the functions that are common to all 'text' channels (i.e. channels that can send
- * messages).
- */
-interface TextChannel : Channel, Sendeadble {
+interface DmChannel : TextChannel {
     /**
-     * Gets the channel as a [GuildTextChannel] if it is one.
+     * Used to get the channel's last message id
      *
-     * @return the channel as a [GuildTextChannel] if it is one.
+     * @return the channel's last message id
      */
-    fun asGuildTextChannel(): GuildTextChannel?
+    var lastMessageId: GetterSnowFlake?
 
     /**
-     * Gets the channel as a [DmChannel] if it is one.
+     * Used to get the recipient of the dm
      *
-     * @return the channel as a [DmChannel] if it is one.
+     * @return the recipient of the dm
      */
-    fun asDmChannel(): DmChannel?
+    var recipient: User?
 }

@@ -32,6 +32,7 @@ import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
 import io.github.ydwk.ydwk.impl.entities.guild.WelcomeScreenImpl
 import io.github.ydwk.ydwk.rest.EndPoint
 import io.github.ydwk.ydwk.util.GetterSnowFlake
+import java.util.concurrent.CompletableFuture
 
 class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override val idAsLong: Long) :
     Guild {
@@ -148,11 +149,14 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
     override var isBoostProgressBarEnabled: Boolean =
         json["premium_progress_bar_enabled"].asBoolean()
 
-    override val bans: List<Ban>
-        get() =
-            ydwk.restApiManager.get(EndPoint.GuildEndpoint.GET_BANS, id).execute.map {
-                BanImpl(ydwk, it)
+    override val bans: CompletableFuture<List<Ban>>
+        get() {
+            return ydwk.restApiManager.get(EndPoint.GuildEndpoint.GET_BANS, id).execute { it ->
+                val jsonBody = it.jsonBody
+                jsonBody?.map { BanImpl(ydwk, it) }
+                    ?: throw IllegalStateException("Response body is null")
             }
+        }
 
     override var name: String = json["name"].asText()
 }

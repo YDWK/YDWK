@@ -18,11 +18,13 @@
  */ 
 package io.github.ydwk.ydwk.entities
 
+import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.message.Sendeadble
 import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.util.NameAbleEntity
 import io.github.ydwk.ydwk.util.SnowFlake
 import java.awt.Color
+import java.util.concurrent.CompletableFuture
 
 interface User : SnowFlake, GenericEntity, NameAbleEntity, Sendeadble {
 
@@ -61,4 +63,7 @@ interface User : SnowFlake, GenericEntity, NameAbleEntity, Sendeadble {
 
     /** The public flags on a user's account */
     var publicFlags: Int?
+
+    /** Creates a dm channel with this user. */
+    fun createDmChannel(): CompletableFuture<DmChannel>
 }

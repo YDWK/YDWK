@@ -26,6 +26,7 @@ import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 import io.github.ydwk.ydwk.util.NameAbleEntity
 import io.github.ydwk.ydwk.util.SnowFlake
+import java.util.concurrent.CompletableFuture
 
 /** This class is used to represent a discord guild object. */
 interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
@@ -294,5 +295,5 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      *
      * @return a list of ban's for the guild
      */
-    val bans: List<Ban>
+    val bans: CompletableFuture<List<Ban>>
 }

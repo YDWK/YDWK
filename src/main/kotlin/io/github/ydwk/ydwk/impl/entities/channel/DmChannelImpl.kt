@@ -20,33 +20,27 @@ package io.github.ydwk.ydwk.impl.entities.channel
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.channel.DmChannel
-import io.github.ydwk.ydwk.entities.channel.TextChannel
 import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
-import io.github.ydwk.ydwk.entities.channel.guild.text.GuildTextChannel
-import io.github.ydwk.ydwk.impl.entities.channel.guild.GuildTextChannelImpl
+import io.github.ydwk.ydwk.impl.entities.UserImpl
+import io.github.ydwk.ydwk.util.GetterSnowFlake
 
-open class TextChannelImpl(
+class DmChannelImpl(
     override val ydwk: YDWK,
     override val json: JsonNode,
     override val idAsLong: Long
-) : TextChannel {
-    override fun asGuildTextChannel(): GuildTextChannel? {
-        return if (type == ChannelType.TEXT) {
-            GuildTextChannelImpl(ydwk, json, idAsLong)
-        } else {
-            null
-        }
-    }
+) : DmChannel, TextChannelImpl(ydwk, json, idAsLong) {
 
-    override fun asDmChannel(): DmChannel? {
-        return if (type == ChannelType.DM) {
-            DmChannelImpl(ydwk, json, idAsLong)
-        } else {
-            null
-        }
-    }
+    override var lastMessageId: GetterSnowFlake? =
+        if (json.has("last_message_id")) GetterSnowFlake.of(json["last_message_id"].asLong())
+        else null
+
+    override var recipient: User? =
+        if (json.has("recipients"))
+            UserImpl(json["recipients"][0], json["recipients"][0]["id"].asLong(), ydwk)
+        else null
 
     override val type: ChannelType
-        get() = ChannelType.fromId(json["type"].asInt())
+        get() = ChannelType.DM
 }

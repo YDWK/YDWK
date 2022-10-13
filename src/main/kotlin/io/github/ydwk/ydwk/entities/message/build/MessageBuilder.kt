@@ -85,10 +85,10 @@ class MessageBuilder {
     }
 
     private fun sendToMember(member: Member): CompletableFuture<Message> {
-        return TODO()
+        return send(member.user as Sendeadble)
     }
 
     private fun sendToUser(user: User): CompletableFuture<Message> {
-        return TODO()
+        return user.createDmChannel().thenCompose { channel -> send(channel) }
     }
 }
