@@ -27,12 +27,5 @@ interface VoiceChannel : Channel {
      *
      * @return the channel as a [GuildVoiceChannel] if it is one.
      */
-    fun asGuildVoiceChannel(): GuildVoiceChannel? = cast(GuildVoiceChannel::class.java)
-
-    /**
-     * Gets the channel as a [VoiceChannel] if it is one.
-     *
-     * @return the channel as a [VoiceChannel] if it is one.
-     */
-    fun asVoiceChannel(): VoiceChannel? = cast(VoiceChannel::class.java)
+    fun asGuildVoiceChannel(): GuildVoiceChannel?
 }

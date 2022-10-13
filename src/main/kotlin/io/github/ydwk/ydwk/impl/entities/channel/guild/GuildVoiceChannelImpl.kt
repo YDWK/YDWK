@@ -16,23 +16,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.impl.entities.channel
+package io.github.ydwk.ydwk.impl.entities.channel.guild
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.channel.VoiceChannel
-import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
+import io.github.ydwk.ydwk.entities.Guild
+import io.github.ydwk.ydwk.entities.channel.guild.Category
 import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
+import io.github.ydwk.ydwk.impl.entities.channel.VoiceChannelImpl
 
-open class VoiceChannelImpl(
+class GuildVoiceChannelImpl(
     override val ydwk: YDWK,
     override val json: JsonNode,
     override val idAsLong: Long
-) : VoiceChannel {
-    override fun asGuildVoiceChannel(): GuildVoiceChannel? {
-        TODO("Not yet implemented")
-    }
+) : GuildVoiceChannel, VoiceChannelImpl(ydwk, json, idAsLong) {
 
-    override val type: ChannelType
-        get() = ChannelType.fromId(json["type"].asInt())
+    override val position: Int
+        get() = json["position"].asInt()
+
+    override val parent: Category?
+        get() = ydwk.getCategory(json["parent_id"].asText())
+
+    override val guild: Guild
+        get() =
+            if (ydwk.getGuild(json["guild_id"].asText()) != null)
+                ydwk.getGuild(json["guild_id"].asText())!!
+            else throw IllegalStateException("Guild is null")
+
+    override var name: String
+        get() = json["name"].asText()
+        set(value) {}
 }

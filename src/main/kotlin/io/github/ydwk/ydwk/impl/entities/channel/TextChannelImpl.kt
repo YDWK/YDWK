@@ -22,12 +22,22 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.channel.TextChannel
 import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
+import io.github.ydwk.ydwk.entities.channel.guild.text.GuildTextChannel
+import io.github.ydwk.ydwk.impl.entities.channel.guild.GuildTextChannelImpl
 
-class TextChannelImpl(
+open class TextChannelImpl(
     override val ydwk: YDWK,
     override val json: JsonNode,
     override val idAsLong: Long
 ) : TextChannel {
+    override fun asGuildTextChannel(): GuildTextChannel? {
+        return if (type == ChannelType.TEXT) {
+            GuildTextChannelImpl(ydwk, json, idAsLong)
+        } else {
+            null
+        }
+    }
+
     override val type: ChannelType
         get() = ChannelType.fromId(json["type"].asInt())
 }

@@ -27,6 +27,7 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.application.PartialApplication
 import io.github.ydwk.ydwk.entities.channel.TextChannel
 import io.github.ydwk.ydwk.entities.channel.VoiceChannel
+import io.github.ydwk.ydwk.entities.channel.guild.Category
 import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
 import io.github.ydwk.ydwk.event.backend.event.GenericEvent
 import io.github.ydwk.ydwk.rest.RestApiManager
@@ -251,4 +252,27 @@ interface YDWK {
      * @return The [EmbedBuilder] object.
      */
     val embedBuilder: EmbedBuilder
+
+    /**
+     * Used to get a category by its id.
+     *
+     * @param id The id of the category.
+     * @return The [Category] object.
+     */
+    fun getCategory(id: Long): Category?
+
+    /**
+     * Used to get a category by its id.
+     *
+     * @param id The id of the category.
+     * @return The [Category] object.
+     */
+    fun getCategory(id: String): Category? = getCategory(id.toLong())
+
+    /**
+     * Used to get all the categories the bot is in.
+     *
+     * @return A list of [Category] objects.
+     */
+    fun getCategories(): List<Category>
 }

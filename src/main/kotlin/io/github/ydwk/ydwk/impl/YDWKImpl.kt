@@ -29,6 +29,7 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.application.PartialApplication
 import io.github.ydwk.ydwk.entities.channel.TextChannel
 import io.github.ydwk.ydwk.entities.channel.VoiceChannel
+import io.github.ydwk.ydwk.entities.channel.guild.Category
 import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
 import io.github.ydwk.ydwk.event.backend.event.CoroutineEventListener
 import io.github.ydwk.ydwk.event.backend.event.GenericEvent
@@ -154,6 +155,14 @@ class YDWKImpl(
 
     override val embedBuilder: EmbedBuilder
         get() = EmbedBuilderImpl(this)
+
+    override fun getCategory(id: Long): Category? {
+        return cache[id.toString(), CacheIds.CATEGORY] as Category?
+    }
+
+    override fun getCategories(): List<Category> {
+        return cache.values(CacheIds.CATEGORY).map { it as Category }
+    }
 
     override var bot: Bot? = null
         get() {
