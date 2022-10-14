@@ -42,4 +42,32 @@ interface GuildTextChannel : GenericGuildChannel, TextChannel {
      * @return the default auto archive duration of this channel.
      */
     val defaultAutoArchiveDuration: Int
+
+    /**
+     * Gets the rate limit per user of this channel.
+     *
+     * @return the rate limit per user of this channel.
+     */
+    val rateLimitPerUser: Int
+
+    /**
+     * Gets the last message id of this channel.
+     *
+     * @return the last message id of this channel.
+     */
+    val lastMessageId: String
+
+    /**
+     * Gets the last pinned message id of this channel.
+     *
+     * @return the last pinned message id of this channel.
+     */
+    val lastPinTimestamp: String
+
+    /**
+     * Gets the permission overwrites of this channel.
+     *
+     * @return the permission overwrites of this channel.
+     */
+    val permissionOverwrites: List<PermissionOverwrite>
 }

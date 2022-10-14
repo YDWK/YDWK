@@ -23,6 +23,7 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.channel.guild.Category
 import io.github.ydwk.ydwk.entities.channel.guild.text.GuildTextChannel
+import io.github.ydwk.ydwk.entities.channel.guild.text.PermissionOverwrite
 import io.github.ydwk.ydwk.impl.entities.channel.TextChannelImpl
 
 class GuildTextChannelImpl(
@@ -39,6 +40,14 @@ class GuildTextChannelImpl(
 
     override val defaultAutoArchiveDuration: Int
         get() = json["default_auto_archive_duration"].asInt()
+    override val rateLimitPerUser: Int
+        get() = json["rate_limit_per_user"].asInt()
+    override val lastMessageId: String
+        get() = json["last_message_id"].asText()
+    override val lastPinTimestamp: String
+        get() = json["last_pin_timestamp"].asText()
+    override val permissionOverwrites: List<PermissionOverwrite>
+        get() = TODO("Not yet implemented")
 
     override val position: Int
         get() = json["position"].asInt()
