@@ -65,5 +65,5 @@ interface User : SnowFlake, GenericEntity, NameAbleEntity, Sendeadble {
     var publicFlags: Int?
 
     /** Creates a dm channel with this user. */
-    fun createDmChannel(): CompletableFuture<DmChannel>
+    val createDmChannel: CompletableFuture<DmChannel>
 }

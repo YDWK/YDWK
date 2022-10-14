@@ -167,3 +167,9 @@ fun sendMessageToChannelBody(
 fun sendMessageToChannelBody(ydwk: YDWK, content: String, tts: Boolean? = null): ObjectNode {
     return sendMessageToChannelBody(ydwk, content, tts, listOf())
 }
+
+fun openDmChannelBody(ydwk: YDWK, recipientId: String): ObjectNode {
+    val body = ydwk.objectNode
+    body.put("recipient_id", recipientId)
+    return body
+}
