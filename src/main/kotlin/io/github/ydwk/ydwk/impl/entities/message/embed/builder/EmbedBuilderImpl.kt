@@ -129,7 +129,7 @@ class EmbedBuilderImpl(private val ydwk: YDWK) : EmbedBuilder {
         val fieldsJson = ydwk.objectNode.arrayNode()
 
         if (title != null) json.put("title", title)
-        json.put("description", description.toString())
+        if (description.isNotEmpty()) json.put("description", description.toString())
         if (timestamp != null) json.put("timestamp", timestamp.toString())
         if (url != null) json.put("url", url)
         if (color != null) json.put("color", color!!.rgb)

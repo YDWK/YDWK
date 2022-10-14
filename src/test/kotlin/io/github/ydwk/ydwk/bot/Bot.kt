@@ -25,6 +25,7 @@ import io.github.ydwk.ydwk.event.backend.event.on
 import io.github.ydwk.ydwk.event.events.ReadyEvent
 import io.github.ydwk.ydwk.event.events.interaction.SlashCommandEvent
 import io.github.ydwk.ydwk.slash.Slash
+import java.awt.Color
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -40,18 +41,22 @@ fun main() {
     ydwk.addEvent(Bot())
 
     ydwk.waitForReady.slashBuilder.addSlashCommand(Slash("test", "This is a test command")).build()
-    ydwk.waitForReady.slashBuilder.addSlashCommand(Slash("embed", "This is a test command")).build()
+    ydwk.waitForReady.slashBuilder.addSlashCommand(Slash("test2", "This is a test command")).build()
 
     ydwk.on<SlashCommandEvent> {
         if (it.slash.name == "test") {
-            withContext(Dispatchers.IO) {
-                it.slash.channel?.asGuildTextChannel()?.sendMessage("Hello World!")
-                it.slash.reply("This is a test command!").get()
-            }
+            withContext(Dispatchers.IO) { it.slash.reply("This is a test command!").get() }
         } else if (it.slash.name == "embed") {
             withContext(Dispatchers.IO) {
-                val embed = ydwk.embedBuilder.setTitle("This is a test command!").build()
-                it.slash.reply(embed).get()
+                val embed = ydwk.embedBuilder
+                val member = it.slash.member
+                if (member != null) {
+                    embed.setTitle(member.user!!.name)
+                    embed.setDescription("Hello World!")
+                    embed.setColor(Color.blue)
+                    println(embed.build().json.toPrettyString())
+                    it.slash.reply(embed.build()).get()
+                }
             }
         }
     }

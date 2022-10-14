@@ -58,7 +58,7 @@ open class SimilarRestApiImpl(
             client.newCall(builder.build()).execute().use { response ->
                 if (!response.isSuccessful) {
                     val code = response.code
-                    error(code)
+                    error(response.body, code)
                 }
             }
         } catch (e: Exception) {
@@ -82,7 +82,7 @@ open class SimilarRestApiImpl(
                         override fun onResponse(call: Call, response: Response) {
                             if (!response.isSuccessful) {
                                 val code = response.code
-                                error(code)
+                                error(response.body, code)
                             }
                             val manager = CompletableFutureManager(response, ydwk)
                             val result = function.apply(manager)
@@ -109,7 +109,7 @@ open class SimilarRestApiImpl(
                         override fun onResponse(call: Call, response: Response) {
                             if (!response.isSuccessful) {
                                 val code = response.code
-                                error(code)
+                                error(response.body, code)
                             }
                             queue.complete(null)
                         }
@@ -120,15 +120,23 @@ open class SimilarRestApiImpl(
         return queue
     }
 
-    fun error(code: Int) {
+    fun error(body: ResponseBody, code: Int) {
         if (HttpResponseCode.fromCode(code) != HttpResponseCode.UNKNOWN) {
             val error = HttpResponseCode.fromCode(code)
             val codeAndName = error.getCode().toString() + " " + error.name
-            val reason = error.getMessage()
+            var reason = error.getMessage()
+            if (body.toString().isNotEmpty())
+                reason +=
+                    " This body contains more detail : " +
+                        ydwk.objectMapper.readTree(body.string()).toPrettyString()
             ydwk.logger.error("Error while executing request: $codeAndName $reason")
         } else if (JsonErrorCode.fromCode(code) != JsonErrorCode.UNKNOWN) {
             val jsonCode = JsonErrorCode.fromCode(code).getCode
-            val jsonMessage = JsonErrorCode.fromCode(code).getMessage
+            var jsonMessage = JsonErrorCode.fromCode(code).getMessage
+            if (body.toString().isNotEmpty())
+                jsonMessage +=
+                    " This body contains more detail : " +
+                        ydwk.objectMapper.readTree(body.string()).toPrettyString()
 
             ydwk.logger.error("Error while executing request: $jsonCode $jsonMessage")
         }
