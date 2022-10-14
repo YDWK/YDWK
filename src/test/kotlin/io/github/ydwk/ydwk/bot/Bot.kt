@@ -54,7 +54,6 @@ fun main() {
                     embed.setTitle(member.user!!.name)
                     embed.setDescription("Hello World!")
                     embed.setColor(Color.blue)
-                    println(embed.build().json.toPrettyString())
                     it.slash.reply(embed.build()).get()
                 }
             }
