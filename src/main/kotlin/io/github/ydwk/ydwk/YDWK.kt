@@ -24,7 +24,9 @@ import io.github.ydwk.ydwk.cache.CacheIds
 import io.github.ydwk.ydwk.entities.Application
 import io.github.ydwk.ydwk.entities.Bot
 import io.github.ydwk.ydwk.entities.Guild
+import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.application.PartialApplication
+import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.channel.TextChannel
 import io.github.ydwk.ydwk.entities.channel.VoiceChannel
 import io.github.ydwk.ydwk.entities.channel.guild.Category
@@ -35,6 +37,7 @@ import io.github.ydwk.ydwk.slash.SlashBuilder
 import io.github.ydwk.ydwk.ws.WebSocketManager
 import io.github.ydwk.ydwk.ws.util.LoggedIn
 import java.time.Instant
+import java.util.concurrent.CompletableFuture
 
 interface YDWK {
 
@@ -275,4 +278,29 @@ interface YDWK {
      * @return A list of [Category] objects.
      */
     fun getCategories(): List<Category>
+
+    /**
+     * Used to create a dm channel.
+     *
+     * @param userId The id of the user.
+     * @return The [DmChannel] object.
+     */
+    fun createDmChannel(userId: Long): CompletableFuture<DmChannel>
+
+    /**
+     * Used to create a dm channel.
+     *
+     * @param userId The id of the user.
+     * @return The [DmChannel] object.
+     */
+    fun createDmChannel(userId: String): CompletableFuture<DmChannel> =
+        createDmChannel(userId.toLong())
+
+    /**
+     * Used to create a dm channel.
+     *
+     * @param user The user who you want to create a dm channel with.
+     * @return The [DmChannel] object.
+     */
+    fun createDmChannel(user: User): CompletableFuture<DmChannel> = createDmChannel(user.id)
 }

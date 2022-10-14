@@ -39,6 +39,7 @@ import io.github.ydwk.ydwk.impl.entities.channel.VoiceChannelImpl
 import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
 import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
 import io.github.ydwk.ydwk.impl.handler.Handler
+import java.util.EnumSet
 
 class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override fun start() {
@@ -81,36 +82,55 @@ class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
         stickers.forEach { sticker -> ydwk.cache[sticker.id, sticker] = CacheIds.STICKER }
 
         val channelJson = json["channels"]
-        val channelType = ChannelType.fromId(channelJson["type"].asInt())
+        val channelType: EnumSet<ChannelType> =
+            channelJson
+                .map { ChannelType.fromId(it["type"].asInt()) }
+                .toCollection(EnumSet.noneOf(ChannelType::class.java))
 
-        when {
-            channelType.isText -> {
-                val channels = ArrayList<TextChannel>()
-                json["channels"].forEach { channel ->
-                    channels.add(TextChannelImpl(ydwk, channel, channel["id"].asLong()))
+        val textChannel = ArrayList<TextChannel>()
+        val voiceChannel = ArrayList<VoiceChannel>()
+        val category = ArrayList<Category>()
+        channelType.forEach {
+            when {
+                it.isText -> {
+                    channelJson.forEach { channel ->
+                        if (channel["type"].asInt() == it.getId()) {
+                            textChannel.add(TextChannelImpl(ydwk, channel, channel["id"].asLong()))
+                        }
+                    }
                 }
-                channels.forEach { channel ->
-                    ydwk.cache[channel.id, channel] = CacheIds.TEXT_CHANNEL
+                it.isVoice -> {
+                    channelJson.forEach { channel ->
+                        if (channel["type"].asInt() == it.getId()) {
+                            voiceChannel.add(
+                                VoiceChannelImpl(ydwk, channel, channel["id"].asLong()))
+                        }
+                    }
+                }
+                it.isCategory -> {
+                    channelJson.forEach { channel ->
+                        if (channel["type"].asInt() == it.getId()) {
+                            category.add(CategoryImpl(ydwk, channel, channel["id"].asLong()))
+                        }
+                    }
                 }
             }
-            channelType.isVoice -> {
-                val channels = ArrayList<VoiceChannel>()
-                json["channels"].forEach { channel ->
-                    channels.add(VoiceChannelImpl(ydwk, channel, channel["id"].asLong()))
-                }
-                channels.forEach { channel ->
-                    ydwk.cache[channel.id, channel] = CacheIds.VOICE_CHANNEL
-                }
+        }
+
+        if (textChannel.isNotEmpty()) {
+            textChannel.forEach { channel ->
+                ydwk.cache[channel.id, channel] = CacheIds.TEXT_CHANNEL
             }
-            channelType.isCategory -> {
-                val channels = ArrayList<Category>()
-                json["channels"].forEach { channel ->
-                    channels.add(CategoryImpl(ydwk, channel, channel["id"].asLong()))
-                }
-                channels.forEach { channel ->
-                    ydwk.cache[channel.id, channel] = CacheIds.VOICE_CHANNEL
-                }
+        }
+
+        if (voiceChannel.isNotEmpty()) {
+            voiceChannel.forEach { channel ->
+                ydwk.cache[channel.id, channel] = CacheIds.VOICE_CHANNEL
             }
+        }
+
+        if (category.isNotEmpty()) {
+            category.forEach { channel -> ydwk.cache[channel.id, channel] = CacheIds.CATEGORY }
         }
     }
 }

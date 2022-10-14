@@ -27,6 +27,7 @@ import io.github.ydwk.ydwk.entities.Application
 import io.github.ydwk.ydwk.entities.Bot
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.application.PartialApplication
+import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.channel.TextChannel
 import io.github.ydwk.ydwk.entities.channel.VoiceChannel
 import io.github.ydwk.ydwk.entities.channel.guild.Category
@@ -36,18 +37,23 @@ import io.github.ydwk.ydwk.event.backend.event.GenericEvent
 import io.github.ydwk.ydwk.event.backend.event.IEventListener
 import io.github.ydwk.ydwk.event.backend.managers.CoroutineEventManager
 import io.github.ydwk.ydwk.event.backend.managers.SampleEventManager
+import io.github.ydwk.ydwk.impl.entities.channel.DmChannelImpl
 import io.github.ydwk.ydwk.impl.entities.message.embed.builder.EmbedBuilderImpl
 import io.github.ydwk.ydwk.impl.rest.RestApiManagerImpl
 import io.github.ydwk.ydwk.impl.slash.SlashBuilderImpl
+import io.github.ydwk.ydwk.rest.EndPoint
 import io.github.ydwk.ydwk.rest.RestApiManager
+import io.github.ydwk.ydwk.rest.json.openDmChannelBody
 import io.github.ydwk.ydwk.slash.SlashBuilder
 import io.github.ydwk.ydwk.ws.WebSocketManager
 import io.github.ydwk.ydwk.ws.util.GateWayIntent
 import io.github.ydwk.ydwk.ws.util.LoggedIn
 import java.time.Instant
+import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -162,6 +168,21 @@ class YDWKImpl(
 
     override fun getCategories(): List<Category> {
         return cache.values(CacheIds.CATEGORY).map { it as Category }
+    }
+
+    override fun createDmChannel(userId: Long): CompletableFuture<DmChannel> {
+        return this.restApiManager
+            .post(
+                openDmChannelBody(this, userId.toString()).toString().toRequestBody(),
+                EndPoint.UserEndpoint.CREATE_DM)
+            .execute { it ->
+                val jsonBody = it.jsonBody
+                if (jsonBody == null) {
+                    throw IllegalStateException("json body is null")
+                } else {
+                    DmChannelImpl(this, jsonBody, jsonBody["id"].asLong())
+                }
+            }
     }
 
     override var bot: Bot? = null

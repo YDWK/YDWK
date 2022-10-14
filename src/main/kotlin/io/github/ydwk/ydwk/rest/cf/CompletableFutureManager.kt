@@ -31,21 +31,21 @@ class CompletableFutureManager(var response: Response, val ydwk: YDWKImpl) {
 
     init {
         val body = response.body
-
         if (body.isNullOrEmpty()) {
             stringBody = null
             jsonBody = NullNode.instance
         } else {
             stringBody = body.string()
             val objectMapper = ydwk.objectMapper
-            val jsonNode: JsonNode
-            try {
-                jsonNode = objectMapper.readTree(stringBody)
-            } catch (e: JsonParseException) {
-                throw RuntimeException("Error while parsing json", e)
-                jsonBody = null
-            }
-            jsonBody = if (jsonBody == null) NullNode.instance else jsonNode
+            jsonBody =
+                try {
+                    objectMapper.readTree(stringBody)
+                } catch (e: JsonParseException) {
+                    throw RuntimeException("Error while parsing json", e)
+                    null
+                }
+
+            jsonBody = if (jsonBody == null) NullNode.instance else jsonBody
         }
     }
 }

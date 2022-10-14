@@ -37,9 +37,6 @@ class Bot : ListenerAdapter() {
 fun main() {
     val ydwk =
         createDefaultBot(JConfigUtils.getString("token") ?: throw Exception("Token not found!"))
-
-    ydwk.on<ReadyEvent> { println("Ready!") }
-
     ydwk.addEvent(Bot())
 
     ydwk.waitForReady.slashBuilder.addSlashCommand(Slash("test", "This is a test command")).build()
@@ -47,7 +44,10 @@ fun main() {
 
     ydwk.on<SlashCommandEvent> {
         if (it.slash.name == "test") {
-            withContext(Dispatchers.IO) { it.slash.reply("This is a test command!").get() }
+            withContext(Dispatchers.IO) {
+                it.slash.channel?.asGuildTextChannel()?.sendMessage("Hello World!")
+                it.slash.reply("This is a test command!").get()
+            }
         } else if (it.slash.name == "embed") {
             withContext(Dispatchers.IO) {
                 val embed = ydwk.embedBuilder.setTitle("This is a test command!").build()
