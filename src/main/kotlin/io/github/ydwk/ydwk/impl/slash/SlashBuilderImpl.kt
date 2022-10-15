@@ -103,27 +103,39 @@ class SlashBuilderImpl(
         slash: List<Slash>,
         toRequestBody: RequestBody
     ) {
-        val currentGuildCommandNames: CompletableFuture<List<String>> =
-            rest.get(EndPoint.ApplicationCommandsEndpoint.GET_GLOBAL_COMMANDS).execute { it ->
-                val jsonBody = it.jsonBody
-                if (jsonBody == null) {
-                    return@execute emptyList()
-                } else {
-                    return@execute jsonBody.map { it["name"].asText() }
+        val currentGlobalCommandIdAndNameMap: CompletableFuture<Map<Long, String>> =
+            rest
+                .get(EndPoint.ApplicationCommandsEndpoint.GET_GLOBAL_COMMANDS, applicationId)
+                .execute { it ->
+                    val jsonBody = it.jsonBody
+                    if (jsonBody == null) {
+                        return@execute emptyMap()
+                    } else {
+                        return@execute jsonBody.associate {
+                            it["id"].asLong() to it["name"].asText()
+                        }
+                    }
                 }
-            }
 
-        val slashNames: List<String> = slash.map { it.name }
-        currentGuildCommandNames.thenAccept { names ->
-            names.forEach { currentGuildCommandName ->
-                if (!slashNames.contains(currentGuildCommandName)) {
+        if (currentGlobalCommandIdAndNameMap.get().isEmpty()) {
+            ydwk.logger.debug("No global slash commands found, creating new ones")
+            addGlobalSlashCommand(rest, toRequestBody)
+        } else {
+            for (s in slash) {
+                if (!currentGlobalCommandIdAndNameMap.get().values.contains(s.name)) {
+                    ydwk.logger.debug("Global slash command ${s.name} not found, creating new one")
+                    addGlobalSlashCommand(rest, toRequestBody)
+                } else if (currentGlobalCommandIdAndNameMap.get().values.contains(s.name)) {
+                    ydwk.logger.debug("Global slash command ${s.name} found, updating")
+                    addGlobalSlashCommand(rest, toRequestBody)
+                } else {
+                    ydwk.logger.debug("Global slash command ${s.name} found, updating")
                     rest
                         .delete(
                             EndPoint.ApplicationCommandsEndpoint.DELETE_GLOBAL_COMMAND,
-                            currentGuildCommandName)
+                            applicationId,
+                            currentGlobalCommandIdAndNameMap.get().keys.first().toString())
                         .execute()
-                } else {
-                    addGlobalSlashCommand(rest, toRequestBody)
                 }
             }
         }
@@ -135,30 +147,41 @@ class SlashBuilderImpl(
         slash: List<Slash>,
         toRequestBody: RequestBody
     ) {
-        val currentGuildCommandNames: CompletableFuture<List<String>> =
-            rest.get(EndPoint.ApplicationCommandsEndpoint.GET_GUILD_COMMANDS, guildId).execute { it
-                ->
-                val jsonBody = it.jsonBody
-                if (jsonBody == null) {
-                    return@execute emptyList()
-                } else {
-                    return@execute jsonBody.map { it["name"].asText() }
+        val currentGuildCommandIdAndNameMap: CompletableFuture<Map<Long, String>> =
+            rest
+                .get(
+                    EndPoint.ApplicationCommandsEndpoint.GET_GUILD_COMMANDS, applicationId, guildId)
+                .execute { it ->
+                    val jsonBody = it.jsonBody
+                    if (jsonBody == null) {
+                        return@execute emptyMap()
+                    } else {
+                        return@execute jsonBody.associate {
+                            it["id"].asLong() to it["name"].asText()
+                        }
+                    }
                 }
-            }
 
-        val slashNames: List<String> = slash.map { it.name }
-
-        currentGuildCommandNames.thenAccept { names ->
-            names.forEach { name ->
-                if (!slashNames.contains(name)) {
+        if (currentGuildCommandIdAndNameMap.get().isEmpty()) {
+            ydwk.logger.debug("No guild slash commands found, creating new ones")
+            addGuildSlashCommand(rest, guildId, toRequestBody)
+        } else {
+            for (s in slash) {
+                if (!currentGuildCommandIdAndNameMap.get().values.contains(s.name)) {
+                    ydwk.logger.debug("Guild slash command ${s.name} not found, creating new one")
+                    addGuildSlashCommand(rest, guildId, toRequestBody)
+                } else if (currentGuildCommandIdAndNameMap.get().values.contains(s.name)) {
+                    ydwk.logger.debug("Global slash command ${s.name} found, updating")
+                    addGuildSlashCommand(rest, guildId, toRequestBody)
+                } else {
+                    ydwk.logger.debug("Global slash command ${s.name} found, updating")
                     rest
                         .delete(
                             EndPoint.ApplicationCommandsEndpoint.DELETE_GUILD_COMMAND,
+                            applicationId,
                             guildId,
-                            name)
+                            currentGuildCommandIdAndNameMap.get().keys.first().toString())
                         .execute()
-                } else {
-                    addGuildSlashCommand(rest, guildId, toRequestBody)
                 }
             }
         }
