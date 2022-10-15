@@ -49,6 +49,8 @@ import io.github.ydwk.ydwk.impl.handler.handlers.guild.GuildCreateHandler
 import io.github.ydwk.ydwk.impl.handler.handlers.guild.GuildDeleteHandler
 import io.github.ydwk.ydwk.impl.handler.handlers.guild.GuildUpdateHandler
 import io.github.ydwk.ydwk.impl.handler.handlers.interactions.InteractionCreateHandler
+import io.github.ydwk.ydwk.util.convertInstantToChronoZonedDateTime
+import io.github.ydwk.ydwk.util.reverseFormatZonedDateTime
 import io.github.ydwk.ydwk.ws.util.CloseCode
 import io.github.ydwk.ydwk.ws.util.EventNames
 import io.github.ydwk.ydwk.ws.util.GateWayIntent
@@ -60,6 +62,8 @@ import java.net.Socket
 import java.net.SocketException
 import java.net.SocketTimeoutException
 import java.time.Instant
+import java.time.temporal.ChronoUnit
+import java.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import java.util.concurrent.ScheduledExecutorService
@@ -341,9 +345,33 @@ open class WebSocketManager(
             HEARTBEAT_ACK -> {
                 logger.debug("Heartbeat acknowledged")
                 heartbeatsMissed = 0
+                val timer = Timer()
+                // repeat this every 14 days
+                timer.scheduleAtFixedRate(
+                    object : TimerTask() {
+                        override fun run() {
+                            sendHeartbeat()
+                        }
+                    },
+                    0,
+                    14 * 24 * 60 * 60 * 1000)
             }
             else -> {
                 logger.error("Unknown opcode: $opCode")
+            }
+        }
+    }
+
+    @Synchronized
+    private fun deleteMessageCachePast14Days() {
+
+        val now = Instant.now()
+        val fourteenDaysAgo: Instant = now.minus(14, ChronoUnit.DAYS)
+        ydwk.cache.values(CacheIds.MESSAGE).forEach {
+            if (it is MessageImpl &&
+                reverseFormatZonedDateTime(it.time)
+                    .isBefore(convertInstantToChronoZonedDateTime(fourteenDaysAgo))) {
+                ydwk.cache.remove(it.id, CacheIds.MESSAGE)
             }
         }
     }

@@ -19,6 +19,7 @@
 package io.github.ydwk.ydwk.util
 
 import java.time.*
+import java.time.chrono.ChronoZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.time.temporal.TemporalAccessor
@@ -35,6 +36,19 @@ fun formatZonedDateTime(time: String): String {
 
         formatter.format(ZonedDateTime.parse(time))
     }
+}
+
+fun reverseFormatZonedDateTime(time: String): ZonedDateTime {
+    val formatter =
+        DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
+            .withLocale(Locale.ENGLISH)
+            .withZone(ZoneId.systemDefault())
+
+    return ZonedDateTime.from(formatter.parse(time))
+}
+
+fun convertInstantToChronoZonedDateTime(instant: Instant): ChronoZonedDateTime<*> {
+    return instant.atZone(ZoneId.systemDefault())
 }
 
 fun toOffsetDateTime(time: TemporalAccessor): OffsetDateTime {
