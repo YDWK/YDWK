@@ -49,6 +49,7 @@ import io.github.ydwk.ydwk.ws.WebSocketManager
 import io.github.ydwk.ydwk.ws.util.GateWayIntent
 import io.github.ydwk.ydwk.ws.util.LoggedIn
 import java.time.Instant
+import java.util.*
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
@@ -56,7 +57,6 @@ import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.util.*
 
 class YDWKImpl(
     private val client: OkHttpClient,
@@ -332,7 +332,7 @@ class YDWKImpl(
     }
 
     @Synchronized
-    private fun timer(timer: Timer, ws : WebSocketManager) {
+    private fun timer(timer: Timer, ws: WebSocketManager) {
         timer.scheduleAtFixedRate(
             object : TimerTask() {
                 override fun run() {

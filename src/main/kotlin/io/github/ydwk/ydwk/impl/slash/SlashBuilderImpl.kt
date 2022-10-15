@@ -24,6 +24,7 @@ import io.github.ydwk.ydwk.rest.RestApiManager
 import io.github.ydwk.ydwk.slash.Slash
 import io.github.ydwk.ydwk.slash.SlashBuilder
 import io.github.ydwk.ydwk.util.Checks
+import java.util.concurrent.CompletableFuture
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 
@@ -76,7 +77,7 @@ class SlashBuilderImpl(
     override fun build() {
         val rest = ydwk.restApiManager
 
-        slashCommands.forEach { it ->
+        slashCommands.forEach {
             Checks.checkIfCapital(it.name, "Slash command name must be lowercase")
             Checks.checkLength(
                 it.name, 32, "Slash command name can not be longer than 32 characters")
@@ -87,10 +88,78 @@ class SlashBuilderImpl(
 
             if (it.guildOnly && guildIds.isEmpty()) {
                 guildIds.forEach { c ->
-                    addGuildSlashCommand(rest, c, it.toJson().toPrettyString().toRequestBody())
+                    checkIfGuildCommandHasBeenDeleted(
+                        rest, c, slashCommands, it.toJson().toPrettyString().toRequestBody())
                 }
             } else {
-                addGlobalSlashCommand(rest, it.toJson().toPrettyString().toRequestBody())
+                checkIfGlobalCommandHasBeenDeleted(
+                    rest, slashCommands, it.toJson().toPrettyString().toRequestBody())
+            }
+        }
+    }
+
+    private fun checkIfGlobalCommandHasBeenDeleted(
+        rest: RestApiManager,
+        slash: List<Slash>,
+        toRequestBody: RequestBody
+    ) {
+        val currentGuildCommandNames: CompletableFuture<List<String>> =
+            rest.get(EndPoint.ApplicationCommandsEndpoint.GET_GLOBAL_COMMANDS).execute { it ->
+                val jsonBody = it.jsonBody
+                if (jsonBody == null) {
+                    return@execute emptyList()
+                } else {
+                    return@execute jsonBody.map { it["name"].asText() }
+                }
+            }
+
+        val slashNames: List<String> = slash.map { it.name }
+        currentGuildCommandNames.thenAccept { names ->
+            names.forEach { currentGuildCommandName ->
+                if (!slashNames.contains(currentGuildCommandName)) {
+                    rest
+                        .delete(
+                            EndPoint.ApplicationCommandsEndpoint.DELETE_GLOBAL_COMMAND,
+                            currentGuildCommandName)
+                        .execute()
+                } else {
+                    addGlobalSlashCommand(rest, toRequestBody)
+                }
+            }
+        }
+    }
+
+    private fun checkIfGuildCommandHasBeenDeleted(
+        rest: RestApiManager,
+        guildId: String,
+        slash: List<Slash>,
+        toRequestBody: RequestBody
+    ) {
+        val currentGuildCommandNames: CompletableFuture<List<String>> =
+            rest.get(EndPoint.ApplicationCommandsEndpoint.GET_GUILD_COMMANDS, guildId).execute { it
+                ->
+                val jsonBody = it.jsonBody
+                if (jsonBody == null) {
+                    return@execute emptyList()
+                } else {
+                    return@execute jsonBody.map { it["name"].asText() }
+                }
+            }
+
+        val slashNames: List<String> = slash.map { it.name }
+
+        currentGuildCommandNames.thenAccept { names ->
+            names.forEach { name ->
+                if (!slashNames.contains(name)) {
+                    rest
+                        .delete(
+                            EndPoint.ApplicationCommandsEndpoint.DELETE_GUILD_COMMAND,
+                            guildId,
+                            name)
+                        .execute()
+                } else {
+                    addGuildSlashCommand(rest, guildId, toRequestBody)
+                }
             }
         }
     }

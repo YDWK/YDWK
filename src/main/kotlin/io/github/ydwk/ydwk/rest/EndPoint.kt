@@ -89,7 +89,9 @@ open class EndPoint {
         GET_GLOBAL_COMMANDS("/applications/%s/commands"),
         CREATE_GUILD_COMMAND("/applications/%s/guilds/%s/commands"),
         GET_GUILD_COMMANDS("/applications/%s/guilds/%s/commands"),
-        REPLY_TO_SLASH_COMMAND("/interactions/%s/%s/callback");
+        REPLY_TO_SLASH_COMMAND("/interactions/%s/%s/callback"),
+        DELETE_GUILD_COMMAND("/applications/%s/guilds/%s/commands/%s"),
+        DELETE_GLOBAL_COMMAND("/applications/%s/commands/%s");
 
         override fun getEndpoint(): String {
             return endPoint
