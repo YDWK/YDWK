@@ -30,6 +30,14 @@ class GuildVoiceChannelImpl(
     override val json: JsonNode,
     override val idAsLong: Long
 ) : GuildVoiceChannel, VoiceChannelImpl(ydwk, json, idAsLong) {
+    override val bitrate: Int
+        get() = json["bitrate"].asInt()
+
+    override val userLimit: Int
+        get() = json["user_limit"].asInt()
+
+    override val rateLimitPerUser: Int
+        get() = json["rate_limit_per_user"].asInt()
 
     override val position: Int
         get() = json["position"].asInt()

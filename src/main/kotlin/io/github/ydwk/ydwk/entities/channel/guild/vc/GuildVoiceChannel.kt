@@ -21,4 +21,25 @@ package io.github.ydwk.ydwk.entities.channel.guild.vc
 import io.github.ydwk.ydwk.entities.channel.VoiceChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildChannel
 
-interface GuildVoiceChannel : GenericGuildChannel, VoiceChannel {}
+interface GuildVoiceChannel : GenericGuildChannel, VoiceChannel {
+    /**
+     * Gets the bitrate (in bits) of the voice channel
+     *
+     * @return the bitrate
+     */
+    val bitrate: Int
+
+    /**
+     * Gets the user limit of the voice channel
+     *
+     * @return the user limit
+     */
+    val userLimit: Int
+
+    /**
+     * Gets the rate limit per user of the voice channel
+     *
+     * @return the rate limit per user
+     */
+    val rateLimitPerUser: Int
+}

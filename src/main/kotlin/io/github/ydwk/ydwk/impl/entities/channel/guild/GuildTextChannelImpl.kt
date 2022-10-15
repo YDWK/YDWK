@@ -40,14 +40,21 @@ class GuildTextChannelImpl(
 
     override val defaultAutoArchiveDuration: Int
         get() = json["default_auto_archive_duration"].asInt()
+
     override val rateLimitPerUser: Int
         get() = json["rate_limit_per_user"].asInt()
+
     override val lastMessageId: String
         get() = json["last_message_id"].asText()
+
     override val lastPinTimestamp: String
         get() = json["last_pin_timestamp"].asText()
+
     override val permissionOverwrites: List<PermissionOverwrite>
-        get() = TODO("Not yet implemented")
+        get() =
+            json["permission_overwrites"].map {
+                PermissionOverwriteImpl(ydwk, it, it["id"].asLong())
+            }
 
     override val position: Int
         get() = json["position"].asInt()
