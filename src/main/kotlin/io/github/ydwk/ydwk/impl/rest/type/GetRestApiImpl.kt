@@ -37,7 +37,7 @@ class GetRestApiImpl(
                 if (response.isSuccessful) {
                     ydwk.objectMapper.readTree(responseBody!!.string())
                 } else {
-                    error(response.code)
+                    error(response.body, response.code)
                     null!!
                 }
             } catch (e: Exception) {

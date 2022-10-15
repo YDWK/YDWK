@@ -27,7 +27,19 @@ class Checks {
         }
 
         fun checkLength(obj: String, length: Int, message: String) {
-            if (obj.length > length) {
+            if (obj.length >= length) {
+                throw IllegalArgumentException(message)
+            }
+        }
+
+        fun checkLength(obj: CharSequence, length: Int, message: String) {
+            if (obj.length >= length) {
+                throw IllegalArgumentException(message)
+            }
+        }
+
+        fun checkLength(obj: String, min: Int, max: Int, message: String) {
+            if (obj.length < min || obj.length > max) {
                 throw IllegalArgumentException(message)
             }
         }

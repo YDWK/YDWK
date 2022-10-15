@@ -24,15 +24,33 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import com.neovisionaries.ws.client.*
 import io.github.ydwk.ydwk.YDWKInfo
 import io.github.ydwk.ydwk.cache.CacheIds
+import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
 import io.github.ydwk.ydwk.event.events.*
+import io.github.ydwk.ydwk.event.events.channel.ChannelCreateEvent
+import io.github.ydwk.ydwk.event.events.channel.ChannelDeleteEvent
+import io.github.ydwk.ydwk.event.events.member.GuildMemberAddEvent
+import io.github.ydwk.ydwk.event.events.member.GuildMemberRemoveEvent
+import io.github.ydwk.ydwk.event.events.message.MessageCreateEvent
+import io.github.ydwk.ydwk.event.events.message.MessageDeleteBulkEvent
+import io.github.ydwk.ydwk.event.events.message.MessageDeleteEvent
+import io.github.ydwk.ydwk.event.events.role.GuildRoleCreateEvent
+import io.github.ydwk.ydwk.event.events.role.GuildRoleDeleteEvent
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.BotImpl
+import io.github.ydwk.ydwk.impl.entities.MessageImpl
 import io.github.ydwk.ydwk.impl.entities.application.PartialApplicationImpl
+import io.github.ydwk.ydwk.impl.entities.channel.CategoryImpl
+import io.github.ydwk.ydwk.impl.entities.channel.TextChannelImpl
+import io.github.ydwk.ydwk.impl.entities.channel.VoiceChannelImpl
+import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
+import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
 import io.github.ydwk.ydwk.impl.handler.handlers.UserUpdateHandler
 import io.github.ydwk.ydwk.impl.handler.handlers.guild.GuildCreateHandler
 import io.github.ydwk.ydwk.impl.handler.handlers.guild.GuildDeleteHandler
 import io.github.ydwk.ydwk.impl.handler.handlers.guild.GuildUpdateHandler
 import io.github.ydwk.ydwk.impl.handler.handlers.interactions.InteractionCreateHandler
+import io.github.ydwk.ydwk.util.convertInstantToChronoZonedDateTime
+import io.github.ydwk.ydwk.util.reverseFormatZonedDateTime
 import io.github.ydwk.ydwk.ws.util.CloseCode
 import io.github.ydwk.ydwk.ws.util.EventNames
 import io.github.ydwk.ydwk.ws.util.GateWayIntent
@@ -44,6 +62,8 @@ import java.net.Socket
 import java.net.SocketException
 import java.net.SocketTimeoutException
 import java.time.Instant
+import java.time.temporal.ChronoUnit
+import java.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import java.util.concurrent.ScheduledExecutorService
@@ -332,6 +352,20 @@ open class WebSocketManager(
         }
     }
 
+    @Synchronized
+    private fun deleteMessageCachePast14Days() {
+
+        val now = Instant.now()
+        val fourteenDaysAgo: Instant = now.minus(14, ChronoUnit.DAYS)
+        ydwk.cache.values(CacheIds.MESSAGE).forEach {
+            if (it is MessageImpl &&
+                reverseFormatZonedDateTime(it.time)
+                    .isBefore(convertInstantToChronoZonedDateTime(fourteenDaysAgo))) {
+                ydwk.cache.remove(it.id, CacheIds.MESSAGE)
+            }
+        }
+    }
+
     private fun sendHeartbeat(heartbeatInterval: Long) {
         try {
             if (webSocket != null) {
@@ -360,7 +394,7 @@ open class WebSocketManager(
                 TimeUnit.MILLISECONDS)
     }
 
-    private fun sendHeartbeat() {
+    fun sendHeartbeat() {
         if (webSocket == null) {
             throw IllegalStateException("WebSocket is not connected")
         }
@@ -441,9 +475,47 @@ open class WebSocketManager(
                 resumeUrl = null
             }
             EventNames.APPLICATION_COMMAND_PERMISSIONS_UPDATE -> TODO()
-            EventNames.CHANNEL_CREATE -> TODO()
+            EventNames.CHANNEL_CREATE -> {
+                val channelType = ChannelType.fromId(d.get("type").asInt())
+                when {
+                    channelType.isText -> {
+                        val channel = TextChannelImpl(ydwk, d, d.get("id").asLong())
+                        ydwk.cache[d.get("id").asText(), channel] = CacheIds.TEXT_CHANNEL
+                        ydwk.emitEvent(ChannelCreateEvent(ydwk, channel))
+                    }
+                    channelType.isVoice -> {
+                        val channel = VoiceChannelImpl(ydwk, d, d.get("id").asLong())
+                        ydwk.cache[d.get("id").asText(), channel] = CacheIds.VOICE_CHANNEL
+                        ydwk.emitEvent(ChannelCreateEvent(ydwk, channel))
+                    }
+                    channelType.isCategory -> {
+                        val channel = CategoryImpl(ydwk, d, d.get("id").asLong())
+                        ydwk.cache[d.get("id").asText(), channel] = CacheIds.CATEGORY
+                        ydwk.emitEvent(ChannelCreateEvent(ydwk, channel))
+                    }
+                }
+            }
             EventNames.CHANNEL_UPDATE -> TODO()
-            EventNames.CHANNEL_DELETE -> TODO()
+            EventNames.CHANNEL_DELETE -> {
+                val channelType = ChannelType.fromId(d.get("type").asInt())
+                when {
+                    channelType.isText -> {
+                        val channel = TextChannelImpl(ydwk, d, d.get("id").asLong())
+                        ydwk.cache.remove(d.get("id").asText(), CacheIds.TEXT_CHANNEL)
+                        ydwk.emitEvent(ChannelDeleteEvent(ydwk, channel))
+                    }
+                    channelType.isVoice -> {
+                        val channel = VoiceChannelImpl(ydwk, d, d.get("id").asLong())
+                        ydwk.cache.remove(d.get("id").asText(), CacheIds.VOICE_CHANNEL)
+                        ydwk.emitEvent(ChannelDeleteEvent(ydwk, channel))
+                    }
+                    channelType.isCategory -> {
+                        val channel = CategoryImpl(ydwk, d, d.get("id").asLong())
+                        ydwk.cache.remove(d.get("id").asText(), CacheIds.CATEGORY)
+                        ydwk.emitEvent(ChannelDeleteEvent(ydwk, channel))
+                    }
+                }
+            }
             EventNames.CHANNEL_PINS_UPDATE -> TODO()
             EventNames.THREAD_CREATE -> TODO()
             EventNames.THREAD_UPDATE -> TODO()
@@ -457,12 +529,48 @@ open class WebSocketManager(
             EventNames.GUILD_BAN_REMOVE -> TODO()
             EventNames.GUILD_EMOJIS_UPDATE -> TODO()
             EventNames.GUILD_INTEGRATIONS_UPDATE -> TODO()
-            EventNames.GUILD_MEMBER_ADD -> TODO()
-            EventNames.GUILD_MEMBER_REMOVE -> TODO()
+            EventNames.GUILD_MEMBER_ADD -> {
+                val guild = ydwk.getGuild(d.get("guild_id").asLong())
+                if (guild != null) {
+                    val member = MemberImpl(ydwk, d, guild)
+                    ydwk.memberCache.set(d.get("user").get("id").asText(), guild.id, member)
+                    ydwk.emitEvent(GuildMemberAddEvent(ydwk, member))
+                } else {
+                    logger.warn("Guild is null")
+                }
+            }
+            EventNames.GUILD_MEMBER_REMOVE -> {
+                val guild = ydwk.getGuild(d.get("guild_id").asLong())
+                if (guild != null) {
+                    val member = MemberImpl(ydwk, d, guild)
+                    ydwk.memberCache.remove(d.get("user").get("id").asText(), guild.id)
+                    ydwk.emitEvent(GuildMemberRemoveEvent(ydwk, member))
+                } else {
+                    logger.warn("Guild is null")
+                }
+            }
             EventNames.GUILD_MEMBER_UPDATE -> TODO()
-            EventNames.GUILD_ROLE_CREATE -> TODO()
+            EventNames.GUILD_ROLE_CREATE -> {
+                val guild = ydwk.getGuild(d.get("guild_id").asLong())
+                if (guild != null) {
+                    val role = RoleImpl(ydwk, d.get("role"), d.get("role").get("id").asLong())
+                    ydwk.cache[d.get("role").get("id").asText(), role] = CacheIds.ROLE
+                    ydwk.emitEvent(GuildRoleCreateEvent(ydwk, role))
+                } else {
+                    logger.warn("Guild is null")
+                }
+            }
             EventNames.GUILD_ROLE_UPDATE -> TODO()
-            EventNames.GUILD_ROLE_DELETE -> TODO()
+            EventNames.GUILD_ROLE_DELETE -> {
+                val guild = ydwk.getGuild(d.get("guild_id").asLong())
+                if (guild != null) {
+                    val role = RoleImpl(ydwk, d.get("role"), d.get("role").get("id").asLong())
+                    ydwk.cache.remove(d.get("role").get("id").asText(), CacheIds.ROLE)
+                    ydwk.emitEvent(GuildRoleDeleteEvent(ydwk, role))
+                } else {
+                    logger.warn("Guild is null")
+                }
+            }
             EventNames.GUILD_SCHEDULED_EVENT_CREATE -> TODO()
             EventNames.GUILD_SCHEDULED_EVENT_UPDATE -> TODO()
             EventNames.GUILD_SCHEDULED_EVENT_DELETE -> TODO()
@@ -474,10 +582,22 @@ open class WebSocketManager(
             EventNames.INTERACTION_CREATE -> InteractionCreateHandler(ydwk, d).start()
             EventNames.INVITE_CREATE -> TODO()
             EventNames.INVITE_DELETE -> TODO()
-            EventNames.MESSAGE_CREATE -> TODO()
+            EventNames.MESSAGE_CREATE -> {
+                val message = MessageImpl(ydwk, d, d.get("id").asLong())
+                ydwk.cache[d.get("id").asText(), message] = CacheIds.MESSAGE
+                ydwk.emitEvent(MessageCreateEvent(ydwk, message))
+            }
             EventNames.MESSAGE_UPDATE -> TODO()
-            EventNames.MESSAGE_DELETE -> TODO()
-            EventNames.MESSAGE_DELETE_BULK -> TODO()
+            EventNames.MESSAGE_DELETE -> {
+                val message = MessageImpl(ydwk, d, d.get("id").asLong())
+                ydwk.cache.remove(d.get("id").asText(), CacheIds.MESSAGE)
+                ydwk.emitEvent(MessageDeleteEvent(ydwk, message))
+            }
+            EventNames.MESSAGE_DELETE_BULK -> {
+                val messages = d.get("ids").map { MessageImpl(ydwk, d, it.asLong()) }
+                messages.forEach { ydwk.cache.remove(it.id, CacheIds.MESSAGE) }
+                ydwk.emitEvent(MessageDeleteBulkEvent(ydwk, messages))
+            }
             EventNames.MESSAGE_REACTION_ADD -> TODO()
             EventNames.MESSAGE_REACTION_REMOVE -> TODO()
             EventNames.MESSAGE_REACTION_REMOVE_ALL -> TODO()

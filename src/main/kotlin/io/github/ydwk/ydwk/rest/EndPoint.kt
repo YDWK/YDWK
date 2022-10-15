@@ -76,13 +76,30 @@ open class EndPoint {
         }
     }
 
-    enum class UserEndpoint(val endPoint: String)
+    enum class UserEndpoint(private val endPoint: String) : IEnumEndpoint {
+        CREATE_DM("/users/@me/channels");
 
-    enum class ApplicationCommandsEndpoint(val endPoint: String) : IEnumEndpoint {
+        override fun getEndpoint(): String {
+            return endPoint
+        }
+    }
+
+    enum class ApplicationCommandsEndpoint(private val endPoint: String) : IEnumEndpoint {
         CREATE_GLOBAL_COMMAND("/applications/%s/commands"),
         GET_GLOBAL_COMMANDS("/applications/%s/commands"),
         CREATE_GUILD_COMMAND("/applications/%s/guilds/%s/commands"),
-        GET_GUILD_COMMANDS("/applications/%s/guilds/%s/commands");
+        GET_GUILD_COMMANDS("/applications/%s/guilds/%s/commands"),
+        REPLY_TO_SLASH_COMMAND("/interactions/%s/%s/callback"),
+        DELETE_GUILD_COMMAND("/applications/%s/guilds/%s/commands/%s"),
+        DELETE_GLOBAL_COMMAND("/applications/%s/commands/%s");
+
+        override fun getEndpoint(): String {
+            return endPoint
+        }
+    }
+
+    enum class ChannelEndpoint(val endPoint: String) : IEnumEndpoint {
+        CREATE_MESSAGE("/channels/%s/messages");
 
         override fun getEndpoint(): String {
             return endPoint

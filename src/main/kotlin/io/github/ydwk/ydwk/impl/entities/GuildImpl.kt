@@ -23,15 +23,20 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Emoji
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.Sticker
+import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.guild.Ban
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.entities.guild.WelcomeScreen
 import io.github.ydwk.ydwk.entities.guild.enums.*
+import io.github.ydwk.ydwk.impl.entities.channel.DmChannelImpl
 import io.github.ydwk.ydwk.impl.entities.guild.BanImpl
 import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
 import io.github.ydwk.ydwk.impl.entities.guild.WelcomeScreenImpl
 import io.github.ydwk.ydwk.rest.EndPoint
+import io.github.ydwk.ydwk.rest.json.openDmChannelBody
 import io.github.ydwk.ydwk.util.GetterSnowFlake
+import java.util.concurrent.CompletableFuture
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override val idAsLong: Long) :
     Guild {
@@ -148,11 +153,29 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
     override var isBoostProgressBarEnabled: Boolean =
         json["premium_progress_bar_enabled"].asBoolean()
 
-    override val bans: List<Ban>
-        get() =
-            ydwk.restApiManager.get(EndPoint.GuildEndpoint.GET_BANS, id).execute.map {
-                BanImpl(ydwk, it)
+    override val bans: CompletableFuture<List<Ban>>
+        get() {
+            return ydwk.restApiManager.get(EndPoint.GuildEndpoint.GET_BANS, id).execute { it ->
+                val jsonBody = it.jsonBody
+                jsonBody?.map { BanImpl(ydwk, it) }
+                    ?: throw IllegalStateException("Response body is null")
             }
+        }
+
+    override fun createDmChannel(userId: Long): CompletableFuture<DmChannel> {
+        return ydwk.restApiManager
+            .post(
+                openDmChannelBody(ydwk, this.id).toString().toRequestBody(),
+                EndPoint.UserEndpoint.CREATE_DM)
+            .execute { it ->
+                val jsonBody = it.jsonBody
+                if (jsonBody == null) {
+                    throw IllegalStateException("json body is null")
+                } else {
+                    DmChannelImpl(ydwk, jsonBody, jsonBody["id"].asLong())
+                }
+            }
+    }
 
     override var name: String = json["name"].asText()
 }

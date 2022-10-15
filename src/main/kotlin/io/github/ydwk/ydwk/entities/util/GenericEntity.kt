@@ -22,7 +22,10 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 
 interface GenericEntity {
+
+    /** The main YDWK instance. */
     val ydwk: YDWK
 
+    /** The json representation of this entity. */
     val json: JsonNode
 }

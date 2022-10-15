@@ -23,7 +23,11 @@ import io.github.ydwk.ydwk.createDefaultBot
 import io.github.ydwk.ydwk.event.ListenerAdapter
 import io.github.ydwk.ydwk.event.backend.event.on
 import io.github.ydwk.ydwk.event.events.ReadyEvent
+import io.github.ydwk.ydwk.event.events.interaction.SlashCommandEvent
 import io.github.ydwk.ydwk.slash.Slash
+import java.awt.Color
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class Bot : ListenerAdapter() {
     override fun onReady(event: ReadyEvent) {
@@ -32,11 +36,27 @@ class Bot : ListenerAdapter() {
 }
 
 fun main() {
-    val ydwk = createDefaultBot(JConfigUtils.getString("token"))
-
-    ydwk.on<ReadyEvent> { println("Ready!") }
-
+    val ydwk =
+        createDefaultBot(JConfigUtils.getString("token") ?: throw Exception("Token not found!"))
     ydwk.addEvent(Bot())
 
     ydwk.waitForReady.slashBuilder.addSlashCommand(Slash("test", "This is a test command")).build()
+    ydwk.waitForReady.slashBuilder.addSlashCommand(Slash("test2", "This is a test command")).build()
+
+    ydwk.on<SlashCommandEvent> {
+        if (it.slash.name == "test") {
+            withContext(Dispatchers.IO) { it.slash.reply("This is a test command!").get() }
+        } else if (it.slash.name == "embed") {
+            withContext(Dispatchers.IO) {
+                val embed = ydwk.embedBuilder
+                val member = it.slash.member
+                if (member != null) {
+                    embed.setTitle(member.user!!.name)
+                    embed.setDescription("Hello World!")
+                    embed.setColor(Color.blue)
+                    it.slash.reply(embed.build()).get()
+                }
+            }
+        }
+    }
 }

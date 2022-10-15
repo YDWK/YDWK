@@ -24,7 +24,7 @@ import io.github.ydwk.ydwk.rest.RestApiManager
 import io.github.ydwk.ydwk.slash.Slash
 import io.github.ydwk.ydwk.slash.SlashBuilder
 import io.github.ydwk.ydwk.util.Checks
-import java.util.*
+import java.util.concurrent.CompletableFuture
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 
@@ -77,7 +77,7 @@ class SlashBuilderImpl(
     override fun build() {
         val rest = ydwk.restApiManager
 
-        slashCommands.forEach { it ->
+        slashCommands.forEach {
             Checks.checkIfCapital(it.name, "Slash command name must be lowercase")
             Checks.checkLength(
                 it.name, 32, "Slash command name can not be longer than 32 characters")
@@ -88,10 +88,101 @@ class SlashBuilderImpl(
 
             if (it.guildOnly && guildIds.isEmpty()) {
                 guildIds.forEach { c ->
-                    addGuildSlashCommand(rest, c, it.toJson().toPrettyString().toRequestBody())
+                    checkIfGuildCommandHasBeenDeleted(
+                        rest, c, slashCommands, it.toJson().toPrettyString().toRequestBody())
                 }
             } else {
-                addGlobalSlashCommand(rest, it.toJson().toPrettyString().toRequestBody())
+                checkIfGlobalCommandHasBeenDeleted(
+                    rest, slashCommands, it.toJson().toPrettyString().toRequestBody())
+            }
+        }
+    }
+
+    private fun checkIfGlobalCommandHasBeenDeleted(
+        rest: RestApiManager,
+        slash: List<Slash>,
+        toRequestBody: RequestBody
+    ) {
+        val currentGlobalCommandIdAndNameMap: CompletableFuture<Map<Long, String>> =
+            rest
+                .get(EndPoint.ApplicationCommandsEndpoint.GET_GLOBAL_COMMANDS, applicationId)
+                .execute { it ->
+                    val jsonBody = it.jsonBody
+                    if (jsonBody == null) {
+                        return@execute emptyMap()
+                    } else {
+                        return@execute jsonBody.associate {
+                            it["id"].asLong() to it["name"].asText()
+                        }
+                    }
+                }
+
+        if (currentGlobalCommandIdAndNameMap.get().isEmpty()) {
+            ydwk.logger.debug("No global slash commands found, creating new ones")
+            addGlobalSlashCommand(rest, toRequestBody)
+        } else {
+            for (s in slash) {
+                if (!currentGlobalCommandIdAndNameMap.get().values.contains(s.name)) {
+                    ydwk.logger.debug("Global slash command ${s.name} not found, creating new one")
+                    addGlobalSlashCommand(rest, toRequestBody)
+                } else if (currentGlobalCommandIdAndNameMap.get().values.contains(s.name)) {
+                    ydwk.logger.debug("Global slash command ${s.name} found, updating")
+                    addGlobalSlashCommand(rest, toRequestBody)
+                } else {
+                    ydwk.logger.debug("Global slash command ${s.name} found, updating")
+                    rest
+                        .delete(
+                            EndPoint.ApplicationCommandsEndpoint.DELETE_GLOBAL_COMMAND,
+                            applicationId,
+                            currentGlobalCommandIdAndNameMap.get().keys.first().toString())
+                        .execute()
+                }
+            }
+        }
+    }
+
+    private fun checkIfGuildCommandHasBeenDeleted(
+        rest: RestApiManager,
+        guildId: String,
+        slash: List<Slash>,
+        toRequestBody: RequestBody
+    ) {
+        val currentGuildCommandIdAndNameMap: CompletableFuture<Map<Long, String>> =
+            rest
+                .get(
+                    EndPoint.ApplicationCommandsEndpoint.GET_GUILD_COMMANDS, applicationId, guildId)
+                .execute { it ->
+                    val jsonBody = it.jsonBody
+                    if (jsonBody == null) {
+                        return@execute emptyMap()
+                    } else {
+                        return@execute jsonBody.associate {
+                            it["id"].asLong() to it["name"].asText()
+                        }
+                    }
+                }
+
+        if (currentGuildCommandIdAndNameMap.get().isEmpty()) {
+            ydwk.logger.debug("No guild slash commands found, creating new ones")
+            addGuildSlashCommand(rest, guildId, toRequestBody)
+        } else {
+            for (s in slash) {
+                if (!currentGuildCommandIdAndNameMap.get().values.contains(s.name)) {
+                    ydwk.logger.debug("Guild slash command ${s.name} not found, creating new one")
+                    addGuildSlashCommand(rest, guildId, toRequestBody)
+                } else if (currentGuildCommandIdAndNameMap.get().values.contains(s.name)) {
+                    ydwk.logger.debug("Global slash command ${s.name} found, updating")
+                    addGuildSlashCommand(rest, guildId, toRequestBody)
+                } else {
+                    ydwk.logger.debug("Global slash command ${s.name} found, updating")
+                    rest
+                        .delete(
+                            EndPoint.ApplicationCommandsEndpoint.DELETE_GUILD_COMMAND,
+                            applicationId,
+                            guildId,
+                            currentGuildCommandIdAndNameMap.get().keys.first().toString())
+                        .execute()
+                }
             }
         }
     }

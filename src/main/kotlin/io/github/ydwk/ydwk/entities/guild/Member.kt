@@ -20,11 +20,12 @@ package io.github.ydwk.ydwk.entities.guild
 
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.User
+import io.github.ydwk.ydwk.entities.message.Sendeadble
 import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.util.NameAbleEntity
 
 /** This class is used to represent a discord guild member entity. */
-interface Member : NameAbleEntity, GenericEntity {
+interface Member : NameAbleEntity, GenericEntity, Sendeadble {
 
     /** Used to get thw member's Guild */
     val guild: Guild

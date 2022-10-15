@@ -27,22 +27,34 @@ import io.github.ydwk.ydwk.entities.Application
 import io.github.ydwk.ydwk.entities.Bot
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.application.PartialApplication
+import io.github.ydwk.ydwk.entities.channel.DmChannel
+import io.github.ydwk.ydwk.entities.channel.TextChannel
+import io.github.ydwk.ydwk.entities.channel.VoiceChannel
+import io.github.ydwk.ydwk.entities.channel.guild.Category
+import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
 import io.github.ydwk.ydwk.event.backend.event.CoroutineEventListener
 import io.github.ydwk.ydwk.event.backend.event.GenericEvent
 import io.github.ydwk.ydwk.event.backend.event.IEventListener
 import io.github.ydwk.ydwk.event.backend.managers.CoroutineEventManager
 import io.github.ydwk.ydwk.event.backend.managers.SampleEventManager
+import io.github.ydwk.ydwk.impl.entities.channel.DmChannelImpl
+import io.github.ydwk.ydwk.impl.entities.message.embed.builder.EmbedBuilderImpl
 import io.github.ydwk.ydwk.impl.rest.RestApiManagerImpl
 import io.github.ydwk.ydwk.impl.slash.SlashBuilderImpl
+import io.github.ydwk.ydwk.rest.EndPoint
 import io.github.ydwk.ydwk.rest.RestApiManager
+import io.github.ydwk.ydwk.rest.json.openDmChannelBody
 import io.github.ydwk.ydwk.slash.SlashBuilder
 import io.github.ydwk.ydwk.ws.WebSocketManager
 import io.github.ydwk.ydwk.ws.util.GateWayIntent
 import io.github.ydwk.ydwk.ws.util.LoggedIn
 import java.time.Instant
+import java.util.*
+import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -51,10 +63,9 @@ class YDWKImpl(
     private val simpleEventManager: SampleEventManager = SampleEventManager(),
     private val coroutineEventManager: CoroutineEventManager = CoroutineEventManager(),
     val logger: Logger = LoggerFactory.getLogger(YDWKImpl::class.java),
-    private val allowedCache: MutableSet<CacheType> = mutableSetOf(),
-    private val disallowedCache: MutableSet<CacheType> = mutableSetOf(),
-    val cache: Cache = PerpetualCache(allowedCache, disallowedCache),
-    val memberCache: MemberCache = MemberCacheImpl(allowedCache, disallowedCache),
+    private val allowedCache: MutableSet<CacheIds> = mutableSetOf(),
+    val cache: Cache = PerpetualCache(allowedCache),
+    val memberCache: MemberCache = MemberCacheImpl(allowedCache),
     private var token: String? = null,
     private var guildIdList: MutableList<String> = mutableListOf(),
     var applicationId: String? = null
@@ -125,12 +136,54 @@ class YDWKImpl(
         guildIds.forEach { this.guildIdList.add(it) }
     }
 
-    override fun setAllowedCache(vararg cacheTypes: CacheType) {
-        allowedCache.addAll(cacheTypes)
+    override fun setAllowedCache(vararg cacheTypes: CacheIds) {
+        allowedCache.addAll(cacheTypes.toSet())
     }
 
-    override fun setDisallowedCache(vararg cacheTypes: CacheType) {
-        disallowedCache.addAll(cacheTypes)
+    override fun setDisallowedCache(vararg cacheTypes: CacheIds) {
+        allowedCache.removeAll(cacheTypes.toSet())
+    }
+
+    override fun getTextChannel(id: Long): TextChannel? {
+        return cache[id.toString(), CacheIds.TEXT_CHANNEL] as TextChannel?
+    }
+
+    override fun getTextChannels(): List<TextChannel> {
+        return cache.values(CacheIds.TEXT_CHANNEL).map { it as TextChannel }
+    }
+
+    override fun getVoiceChannel(id: Long): VoiceChannel? {
+        return cache[id.toString(), CacheIds.VOICE_CHANNEL] as VoiceChannel?
+    }
+
+    override fun getVoiceChannels(): List<VoiceChannel> {
+        return cache.values(CacheIds.VOICE_CHANNEL).map { it as VoiceChannel }
+    }
+
+    override val embedBuilder: EmbedBuilder
+        get() = EmbedBuilderImpl(this)
+
+    override fun getCategory(id: Long): Category? {
+        return cache[id.toString(), CacheIds.CATEGORY] as Category?
+    }
+
+    override fun getCategories(): List<Category> {
+        return cache.values(CacheIds.CATEGORY).map { it as Category }
+    }
+
+    override fun createDmChannel(userId: Long): CompletableFuture<DmChannel> {
+        return this.restApiManager
+            .post(
+                openDmChannelBody(this, userId.toString()).toString().toRequestBody(),
+                EndPoint.UserEndpoint.CREATE_DM)
+            .execute { it ->
+                val jsonBody = it.jsonBody
+                if (jsonBody == null) {
+                    throw IllegalStateException("json body is null")
+                } else {
+                    DmChannelImpl(this, jsonBody, jsonBody["id"].asLong())
+                }
+            }
     }
 
     override var bot: Bot? = null
@@ -271,8 +324,23 @@ class YDWKImpl(
      * @param intents The gateway intent which will decide what events are sent by discord.
      */
     fun setWebSocketManager(token: String, intents: List<GateWayIntent>) {
-        this.webSocketManager = WebSocketManager(this, token, intents).connect()
+        var ws: WebSocketManager? = null
+        ws = WebSocketManager(this, token, intents)
+        this.webSocketManager = ws.connect()
+        this.timer(Timer(), ws)
         this.token = token
+    }
+
+    @Synchronized
+    private fun timer(timer: Timer, ws: WebSocketManager) {
+        timer.scheduleAtFixedRate(
+            object : TimerTask() {
+                override fun run() {
+                    ws.sendHeartbeat()
+                }
+            },
+            0,
+            14 * 24 * 60 * 60 * 1000)
     }
 
     /**

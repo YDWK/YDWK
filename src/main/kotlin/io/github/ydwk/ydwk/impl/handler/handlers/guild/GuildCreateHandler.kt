@@ -23,15 +23,23 @@ import io.github.ydwk.ydwk.cache.CacheIds
 import io.github.ydwk.ydwk.entities.Emoji
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.Sticker
+import io.github.ydwk.ydwk.entities.channel.TextChannel
+import io.github.ydwk.ydwk.entities.channel.VoiceChannel
+import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
+import io.github.ydwk.ydwk.entities.channel.guild.Category
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.EmojiImpl
 import io.github.ydwk.ydwk.impl.entities.GuildImpl
 import io.github.ydwk.ydwk.impl.entities.StickerImpl
+import io.github.ydwk.ydwk.impl.entities.channel.CategoryImpl
+import io.github.ydwk.ydwk.impl.entities.channel.TextChannelImpl
+import io.github.ydwk.ydwk.impl.entities.channel.VoiceChannelImpl
 import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
 import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
 import io.github.ydwk.ydwk.impl.handler.Handler
+import java.util.EnumSet
 
 class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override fun start() {
@@ -72,5 +80,57 @@ class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
         }
 
         stickers.forEach { sticker -> ydwk.cache[sticker.id, sticker] = CacheIds.STICKER }
+
+        val channelJson = json["channels"]
+        val channelType: EnumSet<ChannelType> =
+            channelJson
+                .map { ChannelType.fromId(it["type"].asInt()) }
+                .toCollection(EnumSet.noneOf(ChannelType::class.java))
+
+        val textChannel = ArrayList<TextChannel>()
+        val voiceChannel = ArrayList<VoiceChannel>()
+        val category = ArrayList<Category>()
+        channelType.forEach {
+            when {
+                it.isText -> {
+                    channelJson.forEach { channel ->
+                        if (channel["type"].asInt() == it.getId()) {
+                            textChannel.add(TextChannelImpl(ydwk, channel, channel["id"].asLong()))
+                        }
+                    }
+                }
+                it.isVoice -> {
+                    channelJson.forEach { channel ->
+                        if (channel["type"].asInt() == it.getId()) {
+                            voiceChannel.add(
+                                VoiceChannelImpl(ydwk, channel, channel["id"].asLong()))
+                        }
+                    }
+                }
+                it.isCategory -> {
+                    channelJson.forEach { channel ->
+                        if (channel["type"].asInt() == it.getId()) {
+                            category.add(CategoryImpl(ydwk, channel, channel["id"].asLong()))
+                        }
+                    }
+                }
+            }
+        }
+
+        if (textChannel.isNotEmpty()) {
+            textChannel.forEach { channel ->
+                ydwk.cache[channel.id, channel] = CacheIds.TEXT_CHANNEL
+            }
+        }
+
+        if (voiceChannel.isNotEmpty()) {
+            voiceChannel.forEach { channel ->
+                ydwk.cache[channel.id, channel] = CacheIds.VOICE_CHANNEL
+            }
+        }
+
+        if (category.isNotEmpty()) {
+            category.forEach { channel -> ydwk.cache[channel.id, channel] = CacheIds.CATEGORY }
+        }
     }
 }

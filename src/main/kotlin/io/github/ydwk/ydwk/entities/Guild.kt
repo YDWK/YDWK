@@ -18,6 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.entities
 
+import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.guild.Ban
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.entities.guild.WelcomeScreen
@@ -26,6 +27,7 @@ import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 import io.github.ydwk.ydwk.util.NameAbleEntity
 import io.github.ydwk.ydwk.util.SnowFlake
+import java.util.concurrent.CompletableFuture
 
 /** This class is used to represent a discord guild object. */
 interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
@@ -294,5 +296,30 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      *
      * @return a list of ban's for the guild
      */
-    val bans: List<Ban>
+    val bans: CompletableFuture<List<Ban>>
+
+    /**
+     * Used to create a dm channel.
+     *
+     * @param userId The id of the user.
+     * @return The [DmChannel] object.
+     */
+    fun createDmChannel(userId: Long): CompletableFuture<DmChannel>
+
+    /**
+     * Used to create a dm channel.
+     *
+     * @param userId The id of the user.
+     * @return The [DmChannel] object.
+     */
+    fun createDmChannel(userId: String): CompletableFuture<DmChannel> =
+        createDmChannel(userId.toLong())
+
+    /**
+     * Used to create a dm channel.
+     *
+     * @param user The user who you want to create a dm channel with.
+     * @return The [DmChannel] object.
+     */
+    fun createDmChannel(user: User): CompletableFuture<DmChannel> = createDmChannel(user.id)
 }

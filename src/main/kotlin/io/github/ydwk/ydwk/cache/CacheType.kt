@@ -20,7 +20,9 @@ package io.github.ydwk.ydwk.cache
 
 enum class CacheType(private val ids: CacheIds) {
     GUILD(CacheIds.GUILD),
-    CHANNEL(CacheIds.CHANNEL),
+    TEXT_CHANNEL(CacheIds.TEXT_CHANNEL),
+    VOICE_CHANNEL(CacheIds.VOICE_CHANNEL),
+    CATEGORY(CacheIds.CATEGORY),
     USER(CacheIds.USER),
     MEMBER(CacheIds.MEMBER),
     ROLE(CacheIds.ROLE),
@@ -35,21 +37,6 @@ enum class CacheType(private val ids: CacheIds) {
     companion object {
         fun fromCacheIds(ids: CacheIds): CacheType {
             return values().firstOrNull { it.ids == ids } ?: UNKNOWN
-        }
-
-        fun getDefaultCache(): Set<CacheType> {
-            return setOf(
-                GUILD,
-                CHANNEL,
-                USER,
-                MEMBER,
-                ROLE,
-                MESSAGE,
-                EMOJI,
-                VOICE_STATE,
-                STICKER,
-                APPLICATION_COMMAND,
-                APPLICATION)
         }
     }
 

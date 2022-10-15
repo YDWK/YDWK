@@ -21,7 +21,9 @@ package io.github.ydwk.ydwk.cache
 enum class CacheIds(private val value: String, private val cacheType: CacheType) {
     GUILD("guild", CacheType.GUILD),
     USER("user", CacheType.USER),
-    CHANNEL("channel", CacheType.CHANNEL),
+    VOICE_CHANNEL("voice_channel", CacheType.VOICE_CHANNEL),
+    TEXT_CHANNEL("text_channel", CacheType.TEXT_CHANNEL),
+    CATEGORY("category", CacheType.CATEGORY),
     ROLE("role", CacheType.ROLE),
     EMOJI("emoji", CacheType.EMOJI),
     MESSAGE("message", CacheType.MESSAGE),
@@ -36,6 +38,23 @@ enum class CacheIds(private val value: String, private val cacheType: CacheType)
         /** Get the [CacheIds] from a [String] type. */
         fun fromString(string: String): CacheIds {
             return values().firstOrNull { it.value == string } ?: UNKNOWN
+        }
+
+        fun getDefaultCache(): Set<CacheIds> {
+            return setOf(
+                GUILD,
+                USER,
+                VOICE_CHANNEL,
+                TEXT_CHANNEL,
+                CATEGORY,
+                MESSAGE,
+                MEMBER,
+                APPLICATION,
+                ROLE)
+        }
+
+        fun getAllCache(): Set<CacheIds> {
+            return values().toSet()
         }
     }
 

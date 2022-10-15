@@ -20,8 +20,10 @@ package io.github.ydwk.ydwk.interaction.sub
 
 import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.entities.User
+import io.github.ydwk.ydwk.entities.channel.TextChannel
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.guild.Role
+import io.github.ydwk.ydwk.entities.message.Attachment
 import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 
@@ -52,8 +54,7 @@ interface InteractionResolvedData : GenericEntity {
      *
      * @return The channels resolved by this interaction.
      */
-    // TODO val channels: Map<GetterSnowFlake, Channel>
-    val channels: Map<GetterSnowFlake, Any>
+    val channels: Map<GetterSnowFlake, TextChannel>
 
     /**
      * Gets the messages resolved by this interaction.
@@ -67,6 +68,5 @@ interface InteractionResolvedData : GenericEntity {
      *
      * @return The attachments resolved by this interaction.
      */
-    // TODO val attachments: Map<GetterSnowFlake, Attachment>
-    val attachments: Map<GetterSnowFlake, Any>
+    val attachments: Map<GetterSnowFlake, Attachment>
 }

@@ -20,13 +20,16 @@ package io.github.ydwk.ydwk.impl.interaction
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.entities.User
+import io.github.ydwk.ydwk.entities.channel.TextChannel
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.impl.entities.MessageImpl
 import io.github.ydwk.ydwk.impl.entities.UserImpl
 import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
-import io.github.ydwk.ydwk.impl.interaction.application.ApplicationCommandDataImpl
+import io.github.ydwk.ydwk.impl.interaction.application.SlashCommandImpl
 import io.github.ydwk.ydwk.impl.interaction.message.MessageComponentDataImpl
 import io.github.ydwk.ydwk.interaction.Interaction
 import io.github.ydwk.ydwk.interaction.sub.GenericCommandData
@@ -44,16 +47,14 @@ class InteractionImpl(
 
     override val type: InteractionType = InteractionType.fromInt(json["type"].asInt())
 
-    override val guildId: GetterSnowFlake? =
-        if (json.has("guild_id")) GetterSnowFlake.of(json["guild_id"].asLong()) else null
+    override val guild: Guild? =
+        if (json.has("guild_id")) ydwk.getGuild(json["guild_id"].asLong()) else null
 
-    override val channelId: GetterSnowFlake? =
-        if (json.has("channel_id")) GetterSnowFlake.of(json["channel_id"].asLong()) else null
+    override val channel: TextChannel? =
+        if (json.has("channel_id")) ydwk.getTextChannel(json["channel_id"].asLong()) else null
 
     override val member: Member? =
-        if (json.has("member"))
-            ydwk.getGuild(guildId!!.asLong)?.let { MemberImpl(ydwk, json["member"], it) }
-        else null
+        if (json.has("member")) guild?.let { MemberImpl(ydwk, json["member"], it) } else null
 
     override val user: User? =
         if (json.has("user")) UserImpl(json["user"], json["user"]["id"].asLong(), ydwk) else null
@@ -62,7 +63,9 @@ class InteractionImpl(
 
     override val version: Int = json["version"].asInt()
 
-    override val message: Message? = TODO("Not yet implemented")
+    override val message: Message? =
+        if (json.has("message")) MessageImpl(ydwk, json["message"], json["message"]["id"].asLong())
+        else null
 
     override val permissions: Long? =
         if (json.has("permissions")) json["permissions"].asLong() else null
@@ -75,7 +78,7 @@ class InteractionImpl(
     override val data: GenericCommandData? =
         when (type) {
             InteractionType.APPLICATION_COMMAND ->
-                ApplicationCommandDataImpl(ydwk, json["data"], idAsLong, user, member)
+                SlashCommandImpl(ydwk, json["data"], idAsLong, this)
             InteractionType.MESSAGE_COMPONENT -> MessageComponentDataImpl(ydwk, json["data"])
             else -> {
                 (ydwk as YDWKImpl).logger.warn("Unknown interaction type: $type")

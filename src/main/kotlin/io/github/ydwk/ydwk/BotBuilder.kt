@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk
 
-import io.github.ydwk.ydwk.cache.CacheType
+import io.github.ydwk.ydwk.cache.CacheIds
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.ws.util.GateWayIntent
 import okhttp3.OkHttpClient
@@ -31,7 +31,7 @@ import okhttp3.OkHttpClient
 fun createDefaultBot(token: String): YDWK {
     val ydwk = YDWKImpl(OkHttpClient())
     ydwk.setWebSocketManager(token, GateWayIntent.getDefaultIntents())
-    ydwk.setAllowedCache(CacheType.getDefaultCache())
+    ydwk.setAllowedCache(CacheIds.getDefaultCache())
     return ydwk
 }
 
@@ -58,8 +58,8 @@ fun createDefaultBot(token: String, httpClient: OkHttpClient): YDWK {
 fun createCustomBot(
     token: String,
     intents: List<GateWayIntent>,
-    allowedCache: Set<CacheType>,
-    disallowedCache: Set<CacheType>
+    allowedCache: Set<CacheIds>,
+    disallowedCache: Set<CacheIds>
 ): YDWK {
     val ydwk = YDWKImpl(OkHttpClient())
     ydwk.setWebSocketManager(token, intents)
@@ -79,7 +79,7 @@ fun createCustomBot(
 fun createCustomBot(
     token: String,
     intents: List<GateWayIntent>,
-    allowedCache: Set<CacheType>,
+    allowedCache: Set<CacheIds>,
     httpClient: OkHttpClient
 ): YDWK {
     val ydwk = YDWKImpl(httpClient)
@@ -100,8 +100,8 @@ fun createCustomBot(
 fun createCustomBot(
     token: String,
     intents: List<GateWayIntent>,
-    allowedCache: Set<CacheType>,
-    disallowedCache: Set<CacheType>,
+    allowedCache: Set<CacheIds>,
+    disallowedCache: Set<CacheIds>,
     httpClient: OkHttpClient
 ): YDWK {
     val ydwk = YDWKImpl(httpClient)
@@ -116,13 +116,12 @@ fun createCustomBot(
  *
  * @param token Used to authenticate the bot.
  * @param intents The gateway intent which will decide what events are sent by discord.
- * @param httpClient Used to create the websocket connection.
  * @param allowedCache The cache type which will be cached.
  */
 fun createCustomBot(
     token: String,
     intents: List<GateWayIntent>,
-    allowedCache: Set<CacheType>
+    allowedCache: Set<CacheIds>
 ): YDWK {
     val ydwk = YDWKImpl(OkHttpClient())
     ydwk.setWebSocketManager(token, intents)

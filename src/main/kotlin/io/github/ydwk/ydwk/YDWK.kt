@@ -20,45 +20,84 @@ package io.github.ydwk.ydwk
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
-import io.github.ydwk.ydwk.cache.CacheType
+import io.github.ydwk.ydwk.cache.CacheIds
 import io.github.ydwk.ydwk.entities.Application
 import io.github.ydwk.ydwk.entities.Bot
 import io.github.ydwk.ydwk.entities.Guild
+import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.application.PartialApplication
+import io.github.ydwk.ydwk.entities.channel.DmChannel
+import io.github.ydwk.ydwk.entities.channel.TextChannel
+import io.github.ydwk.ydwk.entities.channel.VoiceChannel
+import io.github.ydwk.ydwk.entities.channel.guild.Category
+import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
 import io.github.ydwk.ydwk.event.backend.event.GenericEvent
 import io.github.ydwk.ydwk.rest.RestApiManager
 import io.github.ydwk.ydwk.slash.SlashBuilder
 import io.github.ydwk.ydwk.ws.WebSocketManager
 import io.github.ydwk.ydwk.ws.util.LoggedIn
 import java.time.Instant
+import java.util.concurrent.CompletableFuture
 
 interface YDWK {
 
-    /** Used to create a json object. */
+    /**
+     * Used to create a json object
+     *
+     * @return a new [ObjectNode]
+     */
     val objectNode: ObjectNode
 
-    /** Used to parse json, i.e convert plain text json to Jackson classes such as JsonNode. */
+    /**
+     * Used to parse json, i.e. convert plain text json to Jackson classes such as JsonNode.
+     *
+     * @return a new json [ObjectMapper]
+     */
     val objectMapper: ObjectMapper
 
     /** This is where the websocket is created. */
     val webSocketManager: WebSocketManager?
 
-    /** Used to get the properties of the bot. */
+    /**
+     * Used to get the properties of the bot.
+     *
+     * @return the [Bot] object
+     */
     val bot: Bot?
 
-    /** A Used to get some application properties sent by discord's Ready event. */
+    /**
+     * Used to get some application properties sent by discord's Ready event.
+     *
+     * @return the [PartialApplication] object
+     */
     var partialApplication: PartialApplication?
 
-    /** Used to get the properties of the application. */
+    /**
+     * Used to get the properties of the application.
+     *
+     * @return the [Application] object
+     */
     val application: Application?
 
-    /** Used to get information about when the bot logged in. */
+    /**
+     * Used to get information about when the bot logged in.
+     *
+     * @return the [LoggedIn] object
+     */
     val loggedInStatus: LoggedIn?
 
-    /** Used to indicated that bot has connected to the websocket. */
+    /**
+     * Used to indicated that bot has connected to the websocket.
+     *
+     * @return The [YDWK] instance.
+     */
     val waitForConnection: YDWK
 
-    /** Used to wait for the READY gateway event to be received. */
+    /**
+     * Used to wait for the READY gateway event to be received.
+     *
+     * @return The [YDWK] instance.
+     */
     val waitForReady: YDWK
 
     /**
@@ -89,6 +128,7 @@ interface YDWK {
      * Used to get a guild by its id.
      *
      * @param id The id of the guild.
+     * @return The [Guild] object.
      */
     fun getGuild(id: Long): Guild? = getGuild(id.toString())
 
@@ -96,6 +136,7 @@ interface YDWK {
      * Used to get a guild by its id.
      *
      * @param id The id of the guild.
+     * @return The [Guild] object.
      */
     fun getGuild(id: String): Guild?
 
@@ -138,27 +179,128 @@ interface YDWK {
      *
      * @param cacheTypes The cache types to be allowed.
      */
-    fun setAllowedCache(vararg cacheTypes: CacheType)
+    fun setAllowedCache(vararg cacheTypes: CacheIds)
 
     /**
      * Used to set the allowed cache types.
      *
      * @param cacheTypes The cache types to be allowed.
      */
-    fun setAllowedCache(cacheTypes: Set<CacheType>) = setAllowedCache(*cacheTypes.toTypedArray())
+    fun setAllowedCache(cacheTypes: Set<CacheIds>) = setAllowedCache(*cacheTypes.toTypedArray())
 
     /**
      * Used to set the disallowed cache types.
      *
      * @param cacheTypes The cache types to be disallowed.
      */
-    fun setDisallowedCache(vararg cacheTypes: CacheType)
+    fun setDisallowedCache(vararg cacheTypes: CacheIds)
 
     /**
      * Used to set the disallowed cache types.
      *
      * @param cacheTypes The cache types to be disallowed.
      */
-    fun setDisallowedCache(cacheTypes: Set<CacheType>) =
+    fun setDisallowedCache(cacheTypes: Set<CacheIds>) =
         setDisallowedCache(*cacheTypes.toTypedArray())
+
+    /**
+     * Used to get a text channel by its id.
+     *
+     * @param id The id of the text channel.
+     * @return The [TextChannel] object.
+     */
+    fun getTextChannel(id: Long): TextChannel?
+
+    /**
+     * Used to get a text channel by its id.
+     *
+     * @param id The id of the text channel.
+     * @return The [TextChannel] object.
+     */
+    fun getTextChannel(id: String): TextChannel? = getTextChannel(id.toLong())
+
+    /**
+     * Used to get all the text channels the bot is in.
+     *
+     * @return A list of [TextChannel] objects.
+     */
+    fun getTextChannels(): List<TextChannel>
+
+    /**
+     * Used to get a voice channel by its id.
+     *
+     * @param id The id of the voice channel.
+     * @return The [VoiceChannel] object.
+     */
+    fun getVoiceChannel(id: Long): VoiceChannel?
+
+    /**
+     * Used to get a voice channel by its id.
+     *
+     * @param id The id of the voice channel.
+     * @return The [VoiceChannel] object.
+     */
+    fun getVoiceChannel(id: String): VoiceChannel? = getVoiceChannel(id.toLong())
+
+    /**
+     * Used to get all the voice channels the bot is in.
+     *
+     * @return A list of [VoiceChannel] objects.
+     */
+    fun getVoiceChannels(): List<VoiceChannel>
+
+    /**
+     * Used to create an embed.
+     *
+     * @return The [EmbedBuilder] object.
+     */
+    val embedBuilder: EmbedBuilder
+
+    /**
+     * Used to get a category by its id.
+     *
+     * @param id The id of the category.
+     * @return The [Category] object.
+     */
+    fun getCategory(id: Long): Category?
+
+    /**
+     * Used to get a category by its id.
+     *
+     * @param id The id of the category.
+     * @return The [Category] object.
+     */
+    fun getCategory(id: String): Category? = getCategory(id.toLong())
+
+    /**
+     * Used to get all the categories the bot is in.
+     *
+     * @return A list of [Category] objects.
+     */
+    fun getCategories(): List<Category>
+
+    /**
+     * Used to create a dm channel.
+     *
+     * @param userId The id of the user.
+     * @return The [DmChannel] object.
+     */
+    fun createDmChannel(userId: Long): CompletableFuture<DmChannel>
+
+    /**
+     * Used to create a dm channel.
+     *
+     * @param userId The id of the user.
+     * @return The [DmChannel] object.
+     */
+    fun createDmChannel(userId: String): CompletableFuture<DmChannel> =
+        createDmChannel(userId.toLong())
+
+    /**
+     * Used to create a dm channel.
+     *
+     * @param user The user who you want to create a dm channel with.
+     * @return The [DmChannel] object.
+     */
+    fun createDmChannel(user: User): CompletableFuture<DmChannel> = createDmChannel(user.id)
 }
