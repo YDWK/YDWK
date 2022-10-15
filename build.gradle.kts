@@ -6,7 +6,7 @@ import java.net.URL
 
 buildscript {
     dependencies {
-        classpath("org.jetbrains.dokka:dokka-base:1.7.10")
+        classpath("org.jetbrains.dokka:dokka-base:1.7.20")
     }
 }
 
@@ -14,7 +14,7 @@ plugins {
     kotlin("jvm") version "1.7.20"
     kotlin("plugin.allopen") version "1.7.20"
     id("com.diffplug.spotless") version "6.11.0"
-    id("org.jetbrains.dokka") version "1.7.10"
+    id("org.jetbrains.dokka") version "1.7.20"
     application
     `maven-publish`
     signing
@@ -26,7 +26,7 @@ extra.apply {
     set("name", "YDWK")
     set("description", "YDWK (Yusuf's Discord Wrapper Kotlin) My own Discord Wrapper in Kotlin")
     set("group", "io.github.realyusufismail")
-    set("version", "0.0.1")
+    set("version", "0.0.2")
     set("dev_id", "yusuf")
     set("dev_name", "Yusuf Ismail")
     set("dev_email", "yusufgamer222@gmail.com")

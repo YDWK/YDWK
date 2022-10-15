@@ -22,13 +22,10 @@ to solve the following problems:
 
 - [ ] Create entities - in progress
 - [ ] Handle events - In progress
-- [ ] Handle rate limiting in websocket
 
 ## Future Features
 
-- [ ] Reply system for slash commands
-- [ ] Embed builder
-- [ ] Support for channels and messages
+- [ ] Support for channels
 
 ## Implemented
 
@@ -40,6 +37,10 @@ to solve the following problems:
 - [x] Handle reconnect and resuming
 - [x] Support for intents
 - [x] Handle slash commands
+- [x] Reply system for slash commands
+- [x] Embed builder
+- [x] Support for messages
+- [x] Handle rate limiting in websocket
 
 ## Getting started
 
