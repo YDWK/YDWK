@@ -56,6 +56,7 @@ import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.util.*
 
 class YDWKImpl(
     private val client: OkHttpClient,
@@ -323,8 +324,23 @@ class YDWKImpl(
      * @param intents The gateway intent which will decide what events are sent by discord.
      */
     fun setWebSocketManager(token: String, intents: List<GateWayIntent>) {
-        this.webSocketManager = WebSocketManager(this, token, intents).connect()
+        var ws: WebSocketManager? = null
+        ws = WebSocketManager(this, token, intents)
+        this.webSocketManager = ws.connect()
+        this.timer(Timer(), ws)
         this.token = token
+    }
+
+    @Synchronized
+    private fun timer(timer: Timer, ws : WebSocketManager) {
+        timer.scheduleAtFixedRate(
+            object : TimerTask() {
+                override fun run() {
+                    ws.sendHeartbeat()
+                }
+            },
+            0,
+            14 * 24 * 60 * 60 * 1000)
     }
 
     /**

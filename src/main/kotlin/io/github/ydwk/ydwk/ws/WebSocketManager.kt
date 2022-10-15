@@ -117,17 +117,6 @@ open class WebSocketManager(
                     .addHeader("Accept-Encoding", "gzip")
                     .addListener(this)
                     .connect()
-
-            val timer = Timer()
-            // repeat this every 14 days
-            timer.scheduleAtFixedRate(
-                object : TimerTask() {
-                    override fun run() {
-                        sendHeartbeat()
-                    }
-                },
-                0,
-                14 * 24 * 60 * 60 * 1000)
         } catch (e: IOException) {
             resumeUrl = null
             sessionId = null
@@ -405,7 +394,7 @@ open class WebSocketManager(
                 TimeUnit.MILLISECONDS)
     }
 
-    private fun sendHeartbeat() {
+    fun sendHeartbeat() {
         if (webSocket == null) {
             throw IllegalStateException("WebSocket is not connected")
         }
