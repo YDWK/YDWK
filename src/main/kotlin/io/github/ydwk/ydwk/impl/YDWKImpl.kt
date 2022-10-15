@@ -31,6 +31,7 @@ import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.channel.TextChannel
 import io.github.ydwk.ydwk.entities.channel.VoiceChannel
 import io.github.ydwk.ydwk.entities.channel.guild.Category
+import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
 import io.github.ydwk.ydwk.event.backend.event.CoroutineEventListener
 import io.github.ydwk.ydwk.event.backend.event.GenericEvent
@@ -184,6 +185,14 @@ class YDWKImpl(
                     DmChannelImpl(this, jsonBody, jsonBody["id"].asLong())
                 }
             }
+    }
+
+    override fun getMember(guildId: Long, userId: Long): Member? {
+        return memberCache[userId.toString(), guildId.toString()] as Member?
+    }
+
+    override fun getMembers(): List<Member> {
+        return memberCache.values(CacheIds.MEMBER).map { it as Member }
     }
 
     override var bot: Bot? = null

@@ -24,6 +24,7 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.message.Embed
 import io.github.ydwk.ydwk.entities.message.MessageFlag
 import io.github.ydwk.ydwk.interaction.sub.InteractionCallbackType
+import kotlin.time.Duration
 
 fun replyJsonBody(
     ydwk: YDWK,
@@ -171,5 +172,13 @@ fun sendMessageToChannelBody(ydwk: YDWK, content: String, tts: Boolean? = null):
 fun openDmChannelBody(ydwk: YDWK, recipientId: String): ObjectNode {
     val body = ydwk.objectNode
     body.put("recipient_id", recipientId)
+    return body
+}
+
+fun banUserBody(ydwk: YDWK, deleteMessageDuration: Duration): ObjectNode {
+    if (deleteMessageDuration.inWholeDays > 7)
+        throw IllegalArgumentException("Duration cannot be longer than 7 days")
+    val body = ydwk.objectNode
+    body.put("delete_message_days", deleteMessageDuration.inWholeSeconds.toInt())
     return body
 }

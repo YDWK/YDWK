@@ -30,6 +30,7 @@ import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.channel.TextChannel
 import io.github.ydwk.ydwk.entities.channel.VoiceChannel
 import io.github.ydwk.ydwk.entities.channel.guild.Category
+import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
 import io.github.ydwk.ydwk.event.backend.event.GenericEvent
 import io.github.ydwk.ydwk.rest.RestApiManager
@@ -303,4 +304,30 @@ interface YDWK {
      * @return The [DmChannel] object.
      */
     fun createDmChannel(user: User): CompletableFuture<DmChannel> = createDmChannel(user.id)
+
+    /**
+     * Used to get a member by its id.
+     *
+     * @param guildId The id of the guild.
+     * @param userId The id of the user.
+     * @return The [Member] object.
+     */
+    fun getMember(guildId: Long, userId: Long): Member?
+
+    /**
+     * Used to get a member by its id.
+     *
+     * @param guildId The id of the guild.
+     * @param userId The id of the user.
+     * @return The [Member] object.
+     */
+    fun getMember(guildId: String, userId: String): Member? =
+        getMember(guildId.toLong(), userId.toLong())
+
+    /**
+     * Used to get all the members the bot is in.
+     *
+     * @return A list of [Member] objects.
+     */
+    fun getMembers(): List<Member>
 }

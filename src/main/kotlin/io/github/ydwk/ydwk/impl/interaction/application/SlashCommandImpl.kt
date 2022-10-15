@@ -81,11 +81,7 @@ class SlashCommandImpl(
     override val permissions: Long? = interaction.permissions
 
     override val locale: String? = interaction.locale
-    override suspend fun reply(
-        content: String,
-        tts: Boolean,
-        ephemeral: Boolean
-    ): CompletableFuture<Void> {
+    override fun reply(content: String, tts: Boolean, ephemeral: Boolean): CompletableFuture<Void> {
         return ydwk.restApiManager
             .post(
                 replyJsonBody(ydwk, content, tts, if (ephemeral) MessageFlag.EPHEMERAL else null)
@@ -97,11 +93,7 @@ class SlashCommandImpl(
             .executeWithNoResult()
     }
 
-    override suspend fun reply(
-        embed: Embed,
-        tts: Boolean,
-        ephemeral: Boolean
-    ): CompletableFuture<Void> {
+    override fun reply(embed: Embed, tts: Boolean, ephemeral: Boolean): CompletableFuture<Void> {
         return ydwk.restApiManager
             .post(
                 replyJsonBody(ydwk, embed, tts, if (ephemeral) MessageFlag.EPHEMERAL else null)

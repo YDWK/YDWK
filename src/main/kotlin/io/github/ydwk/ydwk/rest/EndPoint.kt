@@ -69,7 +69,8 @@ open class EndPoint {
 
     enum class GuildEndpoint(private val endPoint: String) : IEnumEndpoint {
         GET_BANS("/guilds/%s/bans"),
-        CREATE_BAN("/guilds/%s/bans/%s");
+        BAN("/guilds/%s/bans/%s"),
+        KICK("/guilds/%s/members/%s");
 
         override fun getEndpoint(): String {
             return endPoint
