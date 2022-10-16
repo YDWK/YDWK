@@ -34,8 +34,6 @@ interface SimilarRestApi {
 
     fun headers(headers: Headers): SimilarRestApi
 
-    fun cacheControl(cacheControl: CacheControl): Request.Builder
-
     fun addReason(reason: String?): SimilarRestApi
 
     fun execute()
