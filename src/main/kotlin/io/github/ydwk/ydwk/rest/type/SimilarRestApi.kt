@@ -26,15 +26,17 @@ import okhttp3.Headers
 import okhttp3.Request
 
 interface SimilarRestApi {
-    fun header(name: String, value: String)
+    fun header(name: String, value: String): SimilarRestApi
 
-    fun addHeader(name: String, value: String)
+    fun addHeader(name: String, value: String): SimilarRestApi
 
-    fun removeHeader(name: String)
+    fun removeHeader(name: String): SimilarRestApi
 
-    fun headers(headers: Headers)
+    fun headers(headers: Headers): SimilarRestApi
 
     fun cacheControl(cacheControl: CacheControl): Request.Builder
+
+    fun addReason(reason: String?): SimilarRestApi
 
     fun execute()
 

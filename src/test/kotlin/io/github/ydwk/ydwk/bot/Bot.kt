@@ -47,24 +47,28 @@ fun main() {
         .build()
 
     ydwk.on<SlashCommandEvent> {
-        if (it.slash.name == "test") {
-            withContext(Dispatchers.IO) { it.slash.reply("This is a test command!").get() }
-        } else if (it.slash.name == "embed") {
-            withContext(Dispatchers.IO) {
-                val embed = ydwk.embedBuilder
-                val member = it.slash.member
-                if (member != null) {
-                    embed.setTitle(member.user!!.name)
-                    embed.setDescription("Yo this is a test embed")
-                    embed.setColor(Color.blue)
-                    it.slash.reply(embed.build()).get()
+        when (it.slash.name) {
+            "test" -> {
+                withContext(Dispatchers.IO) { it.slash.reply("This is a test command!").get() }
+            }
+            "embed" -> {
+                withContext(Dispatchers.IO) {
+                    val embed = ydwk.embedBuilder
+                    val member = it.slash.member
+                    if (member != null) {
+                        embed.setTitle(member.user!!.name)
+                        embed.setDescription("Yo this is a test embed")
+                        embed.setColor(Color.blue)
+                        it.slash.reply(embed.build()).get()
+                    }
                 }
             }
-        } else if (it.slash.name == "json") {
-            withContext(Dispatchers.IO) {
-                val member = it.slash.member
-                if (member != null) {
-                    it.slash.reply(member.json.toPrettyString()).get()
+            "json" -> {
+                withContext(Dispatchers.IO) {
+                    val member = it.slash.member
+                    if (member != null) {
+                        it.slash.reply(member.json.toPrettyString()).get()
+                    }
                 }
             }
         }

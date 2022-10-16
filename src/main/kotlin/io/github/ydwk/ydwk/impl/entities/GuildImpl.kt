@@ -199,18 +199,21 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
                 EndPoint.GuildEndpoint.BAN,
                 id,
                 userId.toString())
+            .addReason(reason)
             .executeWithNoResult()
     }
 
     override fun unbanUser(userId: Long, reason: String?): CompletableFuture<Void> {
         return ydwk.restApiManager
             .delete(EndPoint.GuildEndpoint.BAN, id, userId.toString())
+            .addReason(reason)
             .executeWithNoResult()
     }
 
     override fun kickMember(userId: Long, reason: String?): CompletableFuture<Void> {
         return ydwk.restApiManager
             .delete(EndPoint.GuildEndpoint.KICK, id, userId.toString())
+            .addReason(reason)
             .executeWithNoResult()
     }
 

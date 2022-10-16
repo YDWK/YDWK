@@ -23,6 +23,8 @@ import io.github.ydwk.ydwk.rest.cf.CompletableFutureManager
 import io.github.ydwk.ydwk.rest.error.HttpResponseCode
 import io.github.ydwk.ydwk.rest.error.JsonErrorCode
 import io.github.ydwk.ydwk.rest.type.SimilarRestApi
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 import java.util.concurrent.CompletableFuture
 import java.util.function.Function
 import okhttp3.*
@@ -33,24 +35,37 @@ open class SimilarRestApiImpl(
     private val client: OkHttpClient,
 ) : SimilarRestApi {
 
-    override fun header(name: String, value: String) {
+    override fun header(name: String, value: String): SimilarRestApi {
         builder.header(name, value)
+        return this
     }
 
-    override fun addHeader(name: String, value: String) {
+    override fun addHeader(name: String, value: String): SimilarRestApi {
         builder.addHeader(name, value)
+        return this
     }
 
-    override fun removeHeader(name: String) {
+    override fun removeHeader(name: String): SimilarRestApi {
         builder.removeHeader(name)
+        return this
     }
 
-    override fun headers(headers: Headers) {
+    override fun headers(headers: Headers): SimilarRestApi {
         builder.headers(headers)
+        return this
     }
 
     override fun cacheControl(cacheControl: CacheControl): Request.Builder {
         return builder.cacheControl(cacheControl)
+    }
+
+    override fun addReason(reason: String?): SimilarRestApi {
+        if (reason != null) {
+            addHeader(
+                "X-Audit-Log-Reason",
+                URLEncoder.encode(reason, StandardCharsets.UTF_8.name()).replace("+", " "))
+        }
+        return this
     }
 
     override fun execute() {
@@ -67,7 +82,7 @@ open class SimilarRestApiImpl(
     }
 
     override fun <T : Any> execute(
-        function: Function<CompletableFutureManager, T>
+        function: Function<CompletableFutureManager, T>,
     ): CompletableFuture<T> {
         val queue = CompletableFuture<T>()
         try {
