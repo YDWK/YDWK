@@ -40,8 +40,11 @@ fun main() {
         createDefaultBot(JConfigUtils.getString("token") ?: throw Exception("Token not found!"))
     ydwk.addEvent(Bot())
 
-    ydwk.waitForReady.slashBuilder.addSlashCommand(Slash("test", "This is a test command")).build()
-    ydwk.waitForReady.slashBuilder.addSlashCommand(Slash("test2", "This is a test command")).build()
+    ydwk.waitForReady.slashBuilder
+        .addSlashCommand(Slash("test", "This is a test command"))
+        .addSlashCommand(Slash("embed", "This is a test command"))
+        .addSlashCommand(Slash("json", "Gets the json for member"))
+        .build()
 
     ydwk.on<SlashCommandEvent> {
         if (it.slash.name == "test") {
@@ -52,9 +55,16 @@ fun main() {
                 val member = it.slash.member
                 if (member != null) {
                     embed.setTitle(member.user!!.name)
-                    embed.setDescription("Hello World!")
+                    embed.setDescription("Yo this is a test embed")
                     embed.setColor(Color.blue)
                     it.slash.reply(embed.build()).get()
+                }
+            }
+        } else if (it.slash.name == "json") {
+            withContext(Dispatchers.IO) {
+                val member = it.slash.member
+                if (member != null) {
+                    it.slash.reply(member.json.toPrettyString()).get()
                 }
             }
         }
