@@ -55,10 +55,6 @@ open class SimilarRestApiImpl(
         return this
     }
 
-    override fun cacheControl(cacheControl: CacheControl): Request.Builder {
-        return builder.cacheControl(cacheControl)
-    }
-
     override fun addReason(reason: String?): SimilarRestApi {
         if (reason != null) {
             addHeader(
