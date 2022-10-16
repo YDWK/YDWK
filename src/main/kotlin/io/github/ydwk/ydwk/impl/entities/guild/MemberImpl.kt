@@ -23,8 +23,10 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.guild.Member
+import io.github.ydwk.ydwk.entities.guild.enums.MemberPermission
 import io.github.ydwk.ydwk.impl.entities.UserImpl
 import io.github.ydwk.ydwk.util.formatZonedDateTime
+import java.util.*
 
 class MemberImpl(override val ydwk: YDWK, override val json: JsonNode, override val guild: Guild) :
     Member {
@@ -48,13 +50,21 @@ class MemberImpl(override val ydwk: YDWK, override val json: JsonNode, override 
 
     override var pending: Boolean = json["pending"].asBoolean()
 
-    override var permissions: String? =
-        if (json.has("permissions")) json["permissions"].asText() else null
-
     override var timedOutUntil: String? =
         if (json.has("communication_disabled_until"))
             formatZonedDateTime(json["communication_disabled_until"].asText())
         else null
 
+    override var permissions: EnumSet<MemberPermission> =
+        json
+            .map { MemberPermission.fromValue(it.asLong()) }
+            .toCollection(EnumSet.noneOf(MemberPermission::class.java))
+
+    override fun hasPermission(permission: MemberPermission): Boolean {
+        return permissions.contains(permission)
+    }
+
     override var name: String = if (nick != null) nick!! else if (user != null) user!!.name else ""
+    override val idAsLong: Long
+        get() = user!!.idAsLong + guild.idAsLong
 }

@@ -154,7 +154,7 @@ interface SlashCommand : SnowFlake, GenericCommandData {
      * @param ephemeral Whether the reply should be ephemeral.
      * @return The reply.
      */
-    suspend fun reply(
+    fun reply(
         content: String,
         tts: Boolean = false,
         ephemeral: Boolean = false
@@ -167,7 +167,7 @@ interface SlashCommand : SnowFlake, GenericCommandData {
      * @param ephemeral Whether the reply should be ephemeral.
      * @return The reply.
      */
-    suspend fun reply(content: String, ephemeral: Boolean = false): CompletableFuture<Void> =
+    fun reply(content: String, ephemeral: Boolean = false): CompletableFuture<Void> =
         reply(content, false, ephemeral)
 
     /**
@@ -178,7 +178,7 @@ interface SlashCommand : SnowFlake, GenericCommandData {
      * @param ephemeral Whether the reply should be ephemeral.
      * @return The reply.
      */
-    suspend fun reply(
+    fun reply(
         embed: Embed,
         tts: Boolean = false,
         ephemeral: Boolean = false
@@ -191,6 +191,6 @@ interface SlashCommand : SnowFlake, GenericCommandData {
      * @param ephemeral Whether the reply should be ephemeral.
      * @return The reply.
      */
-    suspend fun reply(embed: Embed, ephemeral: Boolean = false): CompletableFuture<Void> =
+    fun reply(embed: Embed, ephemeral: Boolean = false): CompletableFuture<Void> =
         reply(embed, false, ephemeral)
 }

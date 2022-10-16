@@ -20,12 +20,15 @@ package io.github.ydwk.ydwk.entities.guild
 
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.User
+import io.github.ydwk.ydwk.entities.guild.enums.MemberPermission
 import io.github.ydwk.ydwk.entities.message.Sendeadble
 import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.util.NameAbleEntity
+import io.github.ydwk.ydwk.util.SnowFlake
+import java.util.*
 
 /** This class is used to represent a discord guild member entity. */
-interface Member : NameAbleEntity, GenericEntity, Sendeadble {
+interface Member : NameAbleEntity, GenericEntity, Sendeadble, SnowFlake {
 
     /** Used to get thw member's Guild */
     val guild: Guild
@@ -54,12 +57,17 @@ interface Member : NameAbleEntity, GenericEntity, Sendeadble {
     /** Whether the user has not yet passed the guild's Membership Screening requirements. */
     var pending: Boolean
 
-    /**
-     * Total permissions of the member in the channel, including overwrites, returned when in the
-     * interaction object.
-     */
-    var permissions: String?
-
     /** Weather this user is timed out. */
     var timedOutUntil: String?
+
+    /** Used to get the permissions of this member. */
+    var permissions: EnumSet<MemberPermission>
+
+    /**
+     * Used to check if the member has a specific permission.
+     *
+     * @param permission The permission to check.
+     * @return True if the member has the permission, false otherwise.
+     */
+    fun hasPermission(permission: MemberPermission): Boolean
 }

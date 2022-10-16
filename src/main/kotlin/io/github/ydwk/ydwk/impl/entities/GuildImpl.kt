@@ -25,6 +25,7 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.Sticker
 import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.guild.Ban
+import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.entities.guild.WelcomeScreen
 import io.github.ydwk.ydwk.entities.guild.enums.*
@@ -33,9 +34,11 @@ import io.github.ydwk.ydwk.impl.entities.guild.BanImpl
 import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
 import io.github.ydwk.ydwk.impl.entities.guild.WelcomeScreenImpl
 import io.github.ydwk.ydwk.rest.EndPoint
+import io.github.ydwk.ydwk.rest.json.banUserBody
 import io.github.ydwk.ydwk.rest.json.openDmChannelBody
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 import java.util.concurrent.CompletableFuture
+import kotlin.time.Duration
 import okhttp3.RequestBody.Companion.toRequestBody
 
 class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override val idAsLong: Long) :
@@ -175,6 +178,40 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
                     DmChannelImpl(ydwk, jsonBody, jsonBody["id"].asLong())
                 }
             }
+    }
+
+    override val botAsMember: Member
+        get() =
+            if (ydwk.bot?.let { ydwk.getMember(id, it.id) } == null) {
+                throw IllegalStateException("Bot is not a member of this guild")
+            } else {
+                ydwk.getMember(id, ydwk.bot!!.id)!!
+            }
+
+    override fun banUser(
+        userId: Long,
+        deleteMessageDuration: Duration,
+        reason: String?
+    ): CompletableFuture<Void> {
+        return ydwk.restApiManager
+            .put(
+                banUserBody(ydwk, deleteMessageDuration).toString().toRequestBody(),
+                EndPoint.GuildEndpoint.BAN,
+                id,
+                userId.toString())
+            .executeWithNoResult()
+    }
+
+    override fun unbanUser(userId: Long, reason: String?): CompletableFuture<Void> {
+        return ydwk.restApiManager
+            .delete(EndPoint.GuildEndpoint.BAN, id, userId.toString())
+            .executeWithNoResult()
+    }
+
+    override fun kickMember(userId: Long, reason: String?): CompletableFuture<Void> {
+        return ydwk.restApiManager
+            .delete(EndPoint.GuildEndpoint.KICK, id, userId.toString())
+            .executeWithNoResult()
     }
 
     override var name: String = json["name"].asText()

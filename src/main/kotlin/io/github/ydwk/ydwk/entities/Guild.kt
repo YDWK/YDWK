@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.entities
 
 import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.guild.Ban
+import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.entities.guild.WelcomeScreen
 import io.github.ydwk.ydwk.entities.guild.enums.*
@@ -28,6 +29,7 @@ import io.github.ydwk.ydwk.util.GetterSnowFlake
 import io.github.ydwk.ydwk.util.NameAbleEntity
 import io.github.ydwk.ydwk.util.SnowFlake
 import java.util.concurrent.CompletableFuture
+import kotlin.time.Duration
 
 /** This class is used to represent a discord guild object. */
 interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
@@ -322,4 +324,130 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @return The [DmChannel] object.
      */
     fun createDmChannel(user: User): CompletableFuture<DmChannel> = createDmChannel(user.id)
+
+    /**
+     * Used to get the bot as a member of the guild.
+     *
+     * @return The [Member] object.
+     * @throws IllegalStateException If the bot is not in the guild.
+     */
+    val botAsMember: Member
+
+    /**
+     * Used to ban a user from the guild.
+     *
+     * @param userId The id of the user.
+     * @param deleteMessageDuration The duration of the messages to delete.
+     * @param reason The reason for the ban.
+     * @return A [CompletableFuture] that completes when the ban is created.
+     */
+    fun banUser(
+        userId: Long,
+        deleteMessageDuration: Duration = Duration.ZERO,
+        reason: String? = null
+    ): CompletableFuture<Void>
+
+    /**
+     * Used to ban a user from the guild.
+     *
+     * @param userId The id of the user.
+     * @param deleteMessageDuration The duration of the messages to delete.
+     * @param reason The reason for the ban.
+     * @return A [CompletableFuture] that completes when the ban is created.
+     */
+    fun banUser(
+        userId: String,
+        deleteMessageDuration: Duration = Duration.ZERO,
+        reason: String? = null
+    ): CompletableFuture<Void> = banUser(userId.toLong(), deleteMessageDuration, reason)
+
+    /**
+     * Used to ban a user from the guild.
+     *
+     * @param user The user to ban.
+     * @param deleteMessageDuration The duration of the messages to delete.
+     * @param reason The reason for the ban.
+     */
+    fun banUser(
+        user: User,
+        deleteMessageDuration: Duration = Duration.ZERO,
+        reason: String? = null
+    ): CompletableFuture<Void> = banUser(user.id, deleteMessageDuration, reason)
+
+    /**
+     * Used to ban a member from the guild.
+     *
+     * @param member The member to ban.
+     * @param deleteMessageDuration The duration of the messages to delete.
+     * @param reason The reason for the ban.
+     * @return A [CompletableFuture] that completes when the ban is created.
+     */
+    fun banMember(
+        member: Member,
+        deleteMessageDuration: Duration = Duration.ZERO,
+        reason: String? = null
+    ): CompletableFuture<Void> =
+        banUser(
+            member.user ?: throw IllegalStateException("Member has no user"),
+            deleteMessageDuration,
+            reason)
+
+    /**
+     * Used to unban a user from the guild.
+     *
+     * @param userId The id of the user.
+     * @param reason The reason for the unban.
+     * @return A [CompletableFuture] that completes when the unban is created.
+     */
+    fun unbanUser(userId: Long, reason: String? = null): CompletableFuture<Void>
+
+    /**
+     * Used to unban a user from the guild.
+     *
+     * @param userId The id of the user.
+     * @param reason The reason for the unban.
+     * @return A [CompletableFuture] that completes when the unban is created.
+     */
+    fun unbanUser(userId: String, reason: String? = null): CompletableFuture<Void> =
+        unbanUser(userId.toLong(), reason)
+
+    /**
+     * Used to unban a user from the guild.
+     *
+     * @param user The user to unban.
+     * @param reason The reason for the unban.
+     * @return A [CompletableFuture] that completes when the unban is created.
+     */
+    fun unbanUser(user: User, reason: String? = null): CompletableFuture<Void> =
+        unbanUser(user.id, reason)
+
+    /**
+     * Used to kick a member from the guild.
+     *
+     * @param userId The id of the user.
+     * @param reason The reason for the kick.
+     * @return A [CompletableFuture] that completes when the kick is created.
+     */
+    fun kickMember(userId: Long, reason: String? = null): CompletableFuture<Void>
+
+    /**
+     * Used to kick a member from the guild.
+     *
+     * @param userId The id of the user.
+     * @param reason The reason for the kick.
+     * @return A [CompletableFuture] that completes when the kick is created.
+     */
+    fun kickMember(userId: String, reason: String? = null): CompletableFuture<Void> =
+        kickMember(userId.toLong(), reason)
+
+    /**
+     * Used to kick a member from the guild.
+     *
+     * @param member The member to kick.
+     * @param reason The reason for the kick.
+     * @return A [CompletableFuture] that completes when the kick is created.
+     */
+    fun kickMember(member: Member, reason: String? = null): CompletableFuture<Void> =
+        member.user?.let { kickMember(it.id, reason) }
+            ?: throw IllegalStateException("Member has no user")
 }
