@@ -21,9 +21,7 @@ package io.github.ydwk.ydwk.rest.type
 import io.github.ydwk.ydwk.rest.cf.CompletableFutureManager
 import java.util.concurrent.CompletableFuture
 import java.util.function.Function
-import okhttp3.CacheControl
 import okhttp3.Headers
-import okhttp3.Request
 
 interface SimilarRestApi {
     fun header(name: String, value: String): SimilarRestApi
