@@ -96,7 +96,6 @@ class RestApiManagerImpl(
             addQueryParameterMap.forEach { (key, value) -> url.addQueryParameter(key, value) }
             builder.url(url.build())
         }
-        println(builder.build().url)
         return builder
     }
 

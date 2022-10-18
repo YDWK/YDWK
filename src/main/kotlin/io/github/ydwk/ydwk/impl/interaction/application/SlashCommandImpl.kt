@@ -44,7 +44,7 @@ class SlashCommandImpl(
     override val ydwk: YDWK,
     override val json: JsonNode,
     override val idAsLong: Long,
-    val interaction: Interaction?
+    val interaction: Interaction
 ) : SlashCommand {
     override val name: String = json["name"].asText()
 
@@ -57,31 +57,30 @@ class SlashCommandImpl(
         if (json.has("options")) json["options"].map { ApplicationCommandOptionImpl(ydwk, it) }
         else null
 
-    override val guild: Guild? = interaction?.guild
+    override val guild: Guild? = interaction.guild
 
     override val targetId: GetterSnowFlake? =
         if (json.has("target_id")) GetterSnowFlake.of(json["target_id"].asLong()) else null
 
-    override val user: User? = interaction?.user
+    override val user: User? = interaction.user
 
-    override val member: Member? = interaction?.member
+    override val member: Member? = interaction.member
 
-    override val applicationId: GetterSnowFlake =
-        interaction?.applicationId ?: GetterSnowFlake.of(idAsLong)
+    override val applicationId: GetterSnowFlake = interaction.applicationId
 
-    override val interactionType: InteractionType = interaction?.type ?: InteractionType.UNKNOWN
+    override val interactionType: InteractionType = interaction.type
 
-    override val channel: TextChannel? = interaction?.channel
+    override val channel: TextChannel? = interaction.channel
 
-    override val token: String = interaction?.token ?: ""
+    override val token: String = interaction.token
 
-    override val version: Int = interaction?.version ?: 1
+    override val version: Int = interaction.version
 
-    override val message: Message? = interaction?.message
+    override val message: Message? = interaction.message
 
-    override val permissions: Long? = interaction?.permissions
+    override val permissions: Long? = interaction.permissions
 
-    override val locale: String? = interaction?.locale
+    override val locale: String? = interaction.locale
     override fun reply(content: String, tts: Boolean, ephemeral: Boolean): CompletableFuture<Void> {
         return ydwk.restApiManager
             .post(
@@ -89,7 +88,7 @@ class SlashCommandImpl(
                     .toString()
                     .toRequestBody(),
                 EndPoint.ApplicationCommandsEndpoint.REPLY_TO_SLASH_COMMAND,
-                (interaction?.id ?: throw IllegalStateException("interaction is null")),
+                interaction.id,
                 token)
             .executeWithNoResult()
     }
@@ -101,7 +100,7 @@ class SlashCommandImpl(
                     .toString()
                     .toRequestBody(),
                 EndPoint.ApplicationCommandsEndpoint.REPLY_TO_SLASH_COMMAND,
-                (interaction?.id ?: throw IllegalStateException("interaction is null")),
+                interaction.id,
                 token)
             .executeWithNoResult()
     }
