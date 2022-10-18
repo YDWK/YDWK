@@ -25,6 +25,8 @@ interface GetterSnowFlake {
         get() = asLong.toString()
 
     companion object {
+        val asNull: GetterSnowFlake? = null
+
         fun of(id: Long): GetterSnowFlake {
             return object : GetterSnowFlake {
                 override val asLong: Long = id

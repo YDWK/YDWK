@@ -325,9 +325,32 @@ interface YDWK {
         getMember(guildId.toLong(), userId.toLong())
 
     /**
-     * Used to get all the members the bot is in.
+     * Used to get all the members in all the guilds the bot is in.
      *
      * @return A list of [Member] objects.
      */
     fun getMembers(): List<Member>
+
+    /**
+     * Used to get a user by its id.
+     *
+     * @param id The id of the user.
+     * @return The [User] object.
+     */
+    fun getUser(id: Long): User?
+
+    /**
+     * Used to get a user by its id.
+     *
+     * @param id The id of the user.
+     * @return The [User] object.
+     */
+    fun getUser(id: String): User? = getUser(id.toLong())
+
+    /**
+     * Used to get all the users the bot can see.
+     *
+     * @return A list of [User] objects.
+     */
+    fun getUsers(): List<User>
 }

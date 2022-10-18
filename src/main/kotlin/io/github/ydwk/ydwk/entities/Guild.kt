@@ -471,6 +471,14 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     /**
      * Used to get the audit log for the guild.
      *
+     * @return A [CompletableFuture] that completes when the audit log is retrieved.
+     */
+    fun getAuditLog(): CompletableFuture<AuditLog> =
+        getAuditLog(GetterSnowFlake.asNull, 50, null, null)
+
+    /**
+     * Used to get the audit log for the guild.
+     *
      * @param userId The id of the user.
      * @return A [CompletableFuture] that completes when the audit log is retrieved.
      */

@@ -16,29 +16,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.audit
+package io.github.ydwk.ydwk.impl.entities.audit
 
-import io.github.ydwk.ydwk.entities.util.GenericEntity
+import com.fasterxml.jackson.databind.JsonNode
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.audit.AuditLogChange
 
-interface AuditLogChange : GenericEntity {
-    /**
-     * Gets the new value of the change.
-     *
-     * @return The new value of the change.
-     */
-    val newValue: String?
+class AuditLogChangeImpl(override val ydwk: YDWK, override val json: JsonNode) : AuditLogChange {
+    override val newValue: String?
+        get() = if (json.has("new_value")) json["new_value"].asText() else null
 
-    /**
-     * Gets the old value of the change.
-     *
-     * @return The old value of the change.
-     */
-    val oldValue: String?
+    override val oldValue: String?
+        get() = if (json.has("old_value")) json["old_value"].asText() else null
 
-    /**
-     * Gets the key of the change.
-     *
-     * @return The key of the change.
-     */
-    val key: String
+    override val key: String
+        get() = json["key"].asText()
 }

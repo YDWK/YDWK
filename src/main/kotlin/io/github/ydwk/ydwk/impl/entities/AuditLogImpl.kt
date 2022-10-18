@@ -22,11 +22,16 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.AuditLog
 import io.github.ydwk.ydwk.entities.audit.AuditLogEntry
+import io.github.ydwk.ydwk.impl.entities.audit.AuditLogEntryImpl
+import io.github.ydwk.ydwk.impl.interaction.application.SlashCommandImpl
 import io.github.ydwk.ydwk.interaction.application.SlashCommand
 
 class AuditLogImpl(override val ydwk: YDWK, override val json: JsonNode) : AuditLog {
+
     override val applicationCommands: List<SlashCommand>
-        get() = TODO("Not yet implemented")
+        get() =
+            json["application_commands"].map { SlashCommandImpl(ydwk, it, it["id"].asLong(), null) }
+
     override val entries: List<AuditLogEntry>
-        get() = TODO("Not yet implemented")
+        get() = json["entries"].map { AuditLogEntryImpl(ydwk, it, it["id"].asLong()) }
 }

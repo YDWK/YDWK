@@ -26,6 +26,7 @@ import io.github.ydwk.ydwk.cache.*
 import io.github.ydwk.ydwk.entities.Application
 import io.github.ydwk.ydwk.entities.Bot
 import io.github.ydwk.ydwk.entities.Guild
+import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.application.PartialApplication
 import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.channel.TextChannel
@@ -190,6 +191,14 @@ class YDWKImpl(
 
     override fun getMembers(): List<Member> {
         return memberCache.values(CacheIds.MEMBER).map { it as Member }
+    }
+
+    override fun getUser(id: Long): User? {
+        return cache[id.toString(), CacheIds.USER] as User?
+    }
+
+    override fun getUsers(): List<User> {
+        return cache.values(CacheIds.USER).map { it as User }
     }
 
     override var bot: Bot? = null

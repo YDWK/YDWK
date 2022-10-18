@@ -44,6 +44,7 @@ fun main() {
         .addSlashCommand(Slash("test", "This is a test command"))
         .addSlashCommand(Slash("embed", "This is a test command"))
         .addSlashCommand(Slash("json", "Gets the json for member"))
+        .addSlashCommand(Slash("audit", "Gets the audit log for member"))
         .build()
 
     ydwk.on<SlashCommandEvent> {
@@ -68,6 +69,16 @@ fun main() {
                     val member = it.slash.member
                     if (member != null) {
                         it.slash.reply(member.json.toPrettyString()).get()
+                    }
+                }
+            }
+            "audit" -> {
+                withContext(Dispatchers.IO) {
+                    val member = it.slash.member
+                    if (member != null) {
+                        it.slash.guild?.getAuditLog()?.get()?.json?.let { it1 ->
+                            it.slash.reply(it1.toPrettyString()).get()
+                        }
                     }
                 }
             }
