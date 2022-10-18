@@ -145,7 +145,8 @@ class SlashBuilderImpl(
                 ydwk.logger.debug("Global slash command ${slash.name} does not exist, creating...")
                 globalCommandToAdd.add(slash)
             } else {
-                ydwk.logger.debug("Global slash command ${slash.name} no longer exists, deleting...")
+                ydwk.logger.debug(
+                    "Global slash command ${slash.name} no longer exists, deleting...")
                 globalCommandsToDelete.add(
                     currentGlobalCommandIdAndNameMap.filterValues { it == slash.name }.keys.first())
             }

@@ -89,7 +89,7 @@ class SlashCommandImpl(
                     .toString()
                     .toRequestBody(),
                 EndPoint.ApplicationCommandsEndpoint.REPLY_TO_SLASH_COMMAND,
-                interaction?.id ?: id,
+                (interaction?.id ?: throw IllegalStateException("interaction is null")),
                 token)
             .executeWithNoResult()
     }
@@ -101,7 +101,7 @@ class SlashCommandImpl(
                     .toString()
                     .toRequestBody(),
                 EndPoint.ApplicationCommandsEndpoint.REPLY_TO_SLASH_COMMAND,
-                interaction?.id ?: id,
+                (interaction?.id ?: throw IllegalStateException("interaction is null")),
                 token)
             .executeWithNoResult()
     }

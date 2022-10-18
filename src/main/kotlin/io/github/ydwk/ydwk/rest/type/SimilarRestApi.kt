@@ -34,8 +34,6 @@ interface SimilarRestApi {
 
     fun addReason(reason: String?): SimilarRestApi
 
-    fun addQueryParameter(key: String, value: String): SimilarRestApi
-
     fun execute()
 
     fun <T : Any> execute(function: Function<CompletableFutureManager, T>): CompletableFuture<T>

@@ -23,6 +23,16 @@ import okhttp3.RequestBody
 
 /** Used to manage the REST API */
 interface RestApiManager {
+
+    /**
+     * Used to add query parameters to the request
+     *
+     * @param key The key of the query parameter
+     * @param value The value of the query parameter
+     * @return The RestApiManager
+     */
+    fun addQueryParameter(key: String, value: String): RestApiManager
+
     /**
      * Used to get a certain endpoint from the API.
      *

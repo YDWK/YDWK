@@ -33,8 +33,7 @@ import java.util.*
 class MemberImpl(override val ydwk: YDWK, override val json: JsonNode, override val guild: Guild) :
     Member {
 
-    override var user: User? =
-        if (json.has("user")) UserImpl(json["user"], json["user"]["id"].asLong(), ydwk) else null
+    override var user: User = UserImpl(json["user"], json["user"]["id"].asLong(), ydwk)
 
     override var nick: String? = if (json.has("nick")) json["nick"].asText() else null
 

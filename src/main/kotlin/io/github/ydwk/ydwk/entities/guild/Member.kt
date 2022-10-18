@@ -35,7 +35,7 @@ interface Member : NameAbleEntity, GenericEntity, Sendeadble, SnowFlake {
     val guild: Guild
 
     /** The user this guild member represents. */
-    var user: User?
+    var user: User
 
     /** This users guild nickname. */
     var nick: String?

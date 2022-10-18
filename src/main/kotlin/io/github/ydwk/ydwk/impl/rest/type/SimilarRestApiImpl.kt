@@ -64,12 +64,6 @@ open class SimilarRestApiImpl(
         return this
     }
 
-    override fun addQueryParameter(key: String, value: String): SimilarRestApi {
-        val url = builder.build().url.newBuilder().addQueryParameter(key, value).build()
-        builder.url(url)
-        return this
-    }
-
     override fun execute() {
         try {
             client.newCall(builder.build()).execute().use { response ->

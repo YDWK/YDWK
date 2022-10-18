@@ -68,8 +68,8 @@ open class UserImpl(
     override val createDmChannel: CompletableFuture<DmChannel>
         get() {
             return ydwk.restApiManager
-                .post(null, EndPoint.UserEndpoint.CREATE_DM)
                 .addQueryParameter("recipient_id", id)
+                .post(null, EndPoint.UserEndpoint.CREATE_DM)
                 .execute { it ->
                     val jsonBody = it.jsonBody
                     if (jsonBody == null) {

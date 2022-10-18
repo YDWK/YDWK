@@ -166,8 +166,8 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
 
     override fun createDmChannel(userId: Long): CompletableFuture<DmChannel> {
         return ydwk.restApiManager
-            .post(null, EndPoint.UserEndpoint.CREATE_DM)
             .addQueryParameter("recipient_id", userId.toString())
+            .post(null, EndPoint.UserEndpoint.CREATE_DM)
             .execute { it ->
                 val jsonBody = it.jsonBody
                 if (jsonBody == null) {
@@ -192,8 +192,8 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
         reason: String?
     ): CompletableFuture<Void> {
         return ydwk.restApiManager
-            .put(null, EndPoint.GuildEndpoint.BAN, id, userId.toString())
             .addQueryParameter("delete-message-days", deleteMessageDuration.inWholeDays.toString())
+            .put(null, EndPoint.GuildEndpoint.BAN, id, userId.toString())
             .addReason(reason)
             .executeWithNoResult()
     }
@@ -218,32 +218,31 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
         before: GetterSnowFlake?,
         actionType: AuditLogType?,
     ): CompletableFuture<AuditLog> {
-        val get = ydwk.restApiManager.get(EndPoint.GuildEndpoint.GET_AUDIT_LOGS, id)
+        val rest = ydwk.restApiManager
 
         if (userId != null) {
-            get.addQueryParameter("user_id", userId.asString)
-        }
-
-        if (limit != 0) {
-            get.addQueryParameter("limit", limit.toString())
+            rest.addQueryParameter("user_id", userId.asString)
         }
 
         if (before != null) {
-            get.addQueryParameter("before", before.asString)
+            rest.addQueryParameter("before", before.asString)
         }
 
         if (actionType != null) {
-            get.addQueryParameter("action_type", actionType.getType().toString())
+            rest.addQueryParameter("action_type", actionType.getType().toString())
         }
 
-        return get.execute { it ->
-            val jsonBody = it.jsonBody
-            if (jsonBody == null) {
-                throw IllegalStateException("json body is null")
-            } else {
-                AuditLogImpl(ydwk, jsonBody)
+        return rest
+            .addQueryParameter("limit", limit.toString())
+            .get(EndPoint.GuildEndpoint.GET_AUDIT_LOGS, id)
+            .execute { it ->
+                val jsonBody = it.jsonBody
+                if (jsonBody == null) {
+                    throw IllegalStateException("json body is null")
+                } else {
+                    AuditLogImpl(ydwk, jsonBody)
+                }
             }
-        }
     }
 
     override fun getRole(roleId: Long): Role? {
