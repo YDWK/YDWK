@@ -137,19 +137,31 @@ class SlashBuilderImpl(
             }
         }
 
-        for (currentSlash in currentGlobalCommandIdAndNameMap) {
-            if (globalSlash.none { it.name == currentSlash.value }) {
-                globalCommandsToDelete.add(currentSlash.key)
+        for (slash in globalSlash) {
+            if (currentGlobalCommandIdAndNameMap.containsValue(slash.name)) {
+                ydwk.logger.debug("Global slash command ${slash.name} already exists, updating...")
+                globalCommandToAdd.add(slash)
+            } else if (!currentGlobalCommandIdAndNameMap.containsValue(slash.name)) {
+                ydwk.logger.debug("Global slash command ${slash.name} does not exist, creating...")
+                globalCommandToAdd.add(slash)
             } else {
-                globalCommandToAdd.add(globalSlash.first { it.name == currentSlash.value })
+                ydwk.logger.debug("Global slash command ${slash.name} no longer exists, deleting...")
+                globalCommandsToDelete.add(
+                    currentGlobalCommandIdAndNameMap.filterValues { it == slash.name }.keys.first())
             }
         }
 
-        for (currentSlash in currentGuildCommandIdAndNameMap) {
-            if (guildSlash.none { it.name == currentSlash.value }) {
-                guildCommandsToDelete.putAll(currentSlash.key)
+        for (slash in guildSlash) {
+            if (currentGuildCommandIdAndNameMap.containsValue(slash.name)) {
+                ydwk.logger.debug("Guild slash command ${slash.name} already exists, updating...")
+                guildCommandToAdd.add(slash)
+            } else if (!currentGuildCommandIdAndNameMap.containsValue(slash.name)) {
+                ydwk.logger.debug("Guild slash command ${slash.name} does not exist, creating...")
+                guildCommandToAdd.add(slash)
             } else {
-                guildCommandToAdd.add(guildSlash.first { it.name == currentSlash.value })
+                ydwk.logger.debug("Guild slash command ${slash.name} no longer exists, deleting...")
+                guildCommandsToDelete.putAll(
+                    currentGuildCommandIdAndNameMap.filterValues { it == slash.name }.keys.first())
             }
         }
 
