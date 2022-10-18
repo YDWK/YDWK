@@ -18,6 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.entities
 
+import io.github.ydwk.ydwk.entities.audit.AuditLogType
 import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.guild.Ban
 import io.github.ydwk.ydwk.entities.guild.Member
@@ -450,4 +451,114 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     fun kickMember(member: Member, reason: String? = null): CompletableFuture<Void> =
         member.user?.let { kickMember(it.id, reason) }
             ?: throw IllegalStateException("Member has no user")
+
+    /**
+     * Used to get the audit log for the guild.
+     *
+     * @param userId The id of the user.
+     * @param limit Maximum number of entries (between 1-100) to return, defaults to 50
+     * @param before Entries that preceded a specific audit log entry ID.
+     * @param actionType The type of action to filter by.
+     * @return A [CompletableFuture] that completes when the audit log is retrieved.
+     */
+    fun getAuditLog(
+        userId: GetterSnowFlake? = null,
+        limit: Int = 50,
+        before: GetterSnowFlake? = null,
+        actionType: AuditLogType? = null
+    ): CompletableFuture<AuditLog>
+
+    /**
+     * Used to get the audit log for the guild.
+     *
+     * @param userId The id of the user.
+     * @return A [CompletableFuture] that completes when the audit log is retrieved.
+     */
+    fun getAuditLog(userId: GetterSnowFlake): CompletableFuture<AuditLog> =
+        getAuditLog(userId, 50, null, null)
+
+    /**
+     * Used to get the audit log for the guild.
+     *
+     * @param userId The id of the user.
+     * @param limit Maximum number of entries (between 1-100) to return, defaults to 50
+     * @return A [CompletableFuture] that completes when the audit log is retrieved.
+     */
+    fun getAuditLog(userId: GetterSnowFlake, limit: Int): CompletableFuture<AuditLog> =
+        getAuditLog(userId, limit, null, null)
+
+    /**
+     * Used to get the audit log for the guild.
+     *
+     * @param userId The id of the user.
+     * @param limit Maximum number of entries (between 1-100) to return, defaults to 50
+     * @param before Entries that preceded a specific audit log entry ID.
+     * @return A [CompletableFuture] that completes when the audit log is retrieved.
+     */
+    fun getAuditLog(
+        userId: GetterSnowFlake,
+        limit: Int,
+        before: GetterSnowFlake
+    ): CompletableFuture<AuditLog> = getAuditLog(userId, limit, before, null)
+
+    /**
+     * Used to get the audit log for the guild.
+     *
+     * @param user The user to filter by.
+     * @param limit Maximum number of entries (between 1-100) to return, defaults to 50
+     * @param before Entries that preceded a specific audit log entry ID.
+     * @param actionType The type of action to filter by.
+     * @return A [CompletableFuture] that completes when the audit log is retrieved.
+     */
+    fun getAuditLog(
+        user: User? = null,
+        limit: Int = 50,
+        before: GetterSnowFlake? = null,
+        actionType: AuditLogType? = null
+    ): CompletableFuture<AuditLog> = getAuditLog(user, limit, before, actionType)
+
+    /**
+     * Used to get the audit log for the guild.
+     *
+     * @param user The user to filter by.
+     * @return A [CompletableFuture] that completes when the audit log is retrieved.
+     */
+    fun getAuditLog(user: User): CompletableFuture<AuditLog> = getAuditLog(user, 50, null, null)
+
+    /**
+     * Used to get the audit log for the guild.
+     *
+     * @param user The user to filter by.
+     * @param limit Maximum number of entries (between 1-100) to return, defaults to 50
+     * @return A [CompletableFuture] that completes when the audit log is retrieved.
+     */
+    fun getAuditLog(user: User, limit: Int): CompletableFuture<AuditLog> =
+        getAuditLog(user, limit, null, null)
+
+    /**
+     * Used to get the audit log for the guild.
+     *
+     * @param user The user to filter by.
+     * @param limit Maximum number of entries (between 1-100) to return, defaults to 50
+     * @param before Entries that preceded a specific audit log entry ID.
+     * @return A [CompletableFuture] that completes when the audit log is retrieved.
+     */
+    fun getAuditLog(user: User, limit: Int, before: GetterSnowFlake): CompletableFuture<AuditLog> =
+        getAuditLog(user, limit, before, null)
+
+    /**
+     * Used to get a role from the guild.
+     *
+     * @param roleId The id of the role.
+     * @return The role, or null if it doesn't exist.
+     */
+    fun getRole(roleId: Long): Role?
+
+    /**
+     * Used to get a role from the guild.
+     *
+     * @param roleId The id of the role.
+     * @return The role, or null if it doesn't exist.
+     */
+    fun getRole(roleId: String): Role? = getRole(roleId.toLong())
 }

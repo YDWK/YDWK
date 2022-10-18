@@ -24,11 +24,9 @@ import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.impl.entities.channel.DmChannelImpl
 import io.github.ydwk.ydwk.rest.EndPoint
-import io.github.ydwk.ydwk.rest.json.openDmChannelBody
 import java.awt.Color
 import java.util.*
 import java.util.concurrent.CompletableFuture
-import okhttp3.RequestBody.Companion.toRequestBody
 
 open class UserImpl(
     final override val json: JsonNode,
@@ -70,9 +68,8 @@ open class UserImpl(
     override val createDmChannel: CompletableFuture<DmChannel>
         get() {
             return ydwk.restApiManager
-                .post(
-                    openDmChannelBody(ydwk, this.id).toString().toRequestBody(),
-                    EndPoint.UserEndpoint.CREATE_DM)
+                .post(null, EndPoint.UserEndpoint.CREATE_DM)
+                .addQueryParameter("recipient_id", id)
                 .execute { it ->
                     val jsonBody = it.jsonBody
                     if (jsonBody == null) {

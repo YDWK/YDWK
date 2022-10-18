@@ -28,6 +28,7 @@ import okhttp3.Headers
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class RestApiManagerImpl(
     private val token: String,
@@ -41,20 +42,22 @@ class RestApiManagerImpl(
     }
 
     override fun post(
-        body: RequestBody,
+        body: RequestBody?,
         endPoint: EndPoint.IEnumEndpoint,
         vararg params: String,
     ): PostRestApi {
-        val builder = requestBuilder(endPoint, *params).post(body)
+        val builder =
+            requestBuilder(endPoint, *params).post(body ?: ByteArray(0).toRequestBody(null, 0, 0))
         return PostRestApiImpl(ydwkImpl, client, builder)
     }
 
     override fun put(
-        body: RequestBody,
+        body: RequestBody?,
         endPoint: EndPoint.IEnumEndpoint,
         vararg params: String,
     ): PutRestApi {
-        val builder = requestBuilder(endPoint, *params).put(body)
+        val builder =
+            requestBuilder(endPoint, *params).put(body ?: ByteArray(0).toRequestBody(null, 0, 0))
         return PutRestApiImpl(ydwkImpl, client, builder)
     }
 

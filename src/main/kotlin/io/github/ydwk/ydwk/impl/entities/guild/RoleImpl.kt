@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.impl.entities.guild
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.guild.Role
+import io.github.ydwk.ydwk.entities.guild.enums.MemberPermission
 import io.github.ydwk.ydwk.entities.guild.role.RoleTag
 import io.github.ydwk.ydwk.impl.entities.guild.role.RoleTagImpl
 import java.awt.Color
@@ -39,7 +40,8 @@ class RoleImpl(override val ydwk: YDWK, override val json: JsonNode, override va
 
     override var position: Int = json["position"].asInt()
 
-    override var permissions: String = json["permissions"].asText()
+    override var permissions: MemberPermission =
+        MemberPermission.fromValue(json["permissions"].asLong())
 
     override var isManaged: Boolean = json["managed"].asBoolean()
 

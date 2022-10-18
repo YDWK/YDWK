@@ -18,6 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.entities.guild
 
+import io.github.ydwk.ydwk.entities.guild.enums.MemberPermission
 import io.github.ydwk.ydwk.entities.guild.role.RoleTag
 import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.util.NameAbleEntity
@@ -66,7 +67,7 @@ interface Role : SnowFlake, GenericEntity, NameAbleEntity {
      *
      * @return The permissions of this role.
      */
-    var permissions: String
+    var permissions: MemberPermission
 
     /**
      * Gets the managed status of this role.

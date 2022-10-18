@@ -23,7 +23,6 @@ import okhttp3.RequestBody
 
 /** Used to manage the REST API */
 interface RestApiManager {
-
     /**
      * Used to get a certain endpoint from the API.
      *
@@ -52,7 +51,7 @@ interface RestApiManager {
      * @return The [PostRestApi] object.
      */
     fun post(
-        body: RequestBody,
+        body: RequestBody?,
         endPoint: EndPoint.IEnumEndpoint,
         vararg params: String,
     ): PostRestApi
@@ -64,7 +63,7 @@ interface RestApiManager {
      * @param endPoint The endpoint to post to.
      * @return The [PostRestApi] object.
      */
-    fun post(body: RequestBody, endPoint: EndPoint.IEnumEndpoint): PostRestApi {
+    fun post(body: RequestBody?, endPoint: EndPoint.IEnumEndpoint): PostRestApi {
         return post(body, endPoint, *arrayOf())
     }
 
@@ -76,7 +75,7 @@ interface RestApiManager {
      * @param params The parameters to put to the endpoint.
      * @return The [DeleteRestApi] object.
      */
-    fun put(body: RequestBody, endPoint: EndPoint.IEnumEndpoint, vararg params: String): PutRestApi
+    fun put(body: RequestBody?, endPoint: EndPoint.IEnumEndpoint, vararg params: String): PutRestApi
 
     /**
      * Used to put something to the API.
@@ -85,7 +84,7 @@ interface RestApiManager {
      * @param endPoint The endpoint to put to.
      * @return The [DeleteRestApi] object.
      */
-    fun put(body: RequestBody, endPoint: EndPoint.IEnumEndpoint): PutRestApi {
+    fun put(body: RequestBody?, endPoint: EndPoint.IEnumEndpoint): PutRestApi {
         return put(body, endPoint, *arrayOf())
     }
 

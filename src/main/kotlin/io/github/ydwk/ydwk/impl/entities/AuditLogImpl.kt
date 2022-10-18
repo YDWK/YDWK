@@ -16,7 +16,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.impl.entities.audit
+package io.github.ydwk.ydwk.impl.entities
 
-enum class AuditLogType {
+import com.fasterxml.jackson.databind.JsonNode
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.AuditLog
+import io.github.ydwk.ydwk.entities.audit.AuditLogEntry
+import io.github.ydwk.ydwk.interaction.application.SlashCommand
+
+class AuditLogImpl(override val ydwk: YDWK, override val json: JsonNode) : AuditLog {
+    override val applicationCommands: List<SlashCommand>
+        get() = TODO("Not yet implemented")
+    override val entries: List<AuditLogEntry>
+        get() = TODO("Not yet implemented")
 }

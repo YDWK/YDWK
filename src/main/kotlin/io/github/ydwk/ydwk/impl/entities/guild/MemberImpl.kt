@@ -23,8 +23,10 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.guild.Member
+import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.entities.guild.enums.MemberPermission
 import io.github.ydwk.ydwk.impl.entities.UserImpl
+import io.github.ydwk.ydwk.util.GetterSnowFlake
 import io.github.ydwk.ydwk.util.formatZonedDateTime
 import java.util.*
 
@@ -37,6 +39,12 @@ class MemberImpl(override val ydwk: YDWK, override val json: JsonNode, override 
     override var nick: String? = if (json.has("nick")) json["nick"].asText() else null
 
     override var avatar: String? = if (json.has("avatar")) json["avatar"].asText() else null
+    override val roleIds: List<GetterSnowFlake>
+        get() = json["roles"].map { GetterSnowFlake.of(it.asLong()) }
+
+    override val roles: List<Role?>
+        get() =
+            roleIds.map { if (guild.getRole(it.asLong) != null) guild.getRole(it.asLong) else null }
 
     override var joinedAt: String? =
         if (json.has("joined_at")) formatZonedDateTime(json["joined_at"].asText()) else null
@@ -55,10 +63,13 @@ class MemberImpl(override val ydwk: YDWK, override val json: JsonNode, override 
             formatZonedDateTime(json["communication_disabled_until"].asText())
         else null
 
-    override var permissions: EnumSet<MemberPermission> =
-        json
-            .map { MemberPermission.fromValue(it.asLong()) }
-            .toCollection(EnumSet.noneOf(MemberPermission::class.java))
+    override val permissions: EnumSet<MemberPermission>
+        get() {
+            val roles = roles.filterNotNull()
+            val permissions = EnumSet.noneOf(MemberPermission::class.java)
+            roles.forEach { permissions.addAll(listOf(it.permissions)) }
+            return permissions
+        }
 
     override fun hasPermission(permission: MemberPermission): Boolean {
         return permissions.contains(permission)

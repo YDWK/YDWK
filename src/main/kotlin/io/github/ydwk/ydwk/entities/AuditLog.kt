@@ -16,12 +16,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.impl.entities
+package io.github.ydwk.ydwk.entities
 
-import io.github.ydwk.ydwk.impl.entities.audit.AuditLogEntry
+import io.github.ydwk.ydwk.entities.audit.AuditLogEntry
+import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.interaction.application.SlashCommand
 
-interface AuditLog {
+interface AuditLog : GenericEntity {
     /**
      * Gets a list of application commands referenced in the audit log.
      *
