@@ -74,11 +74,11 @@ fun main() {
             }
             "audit" -> {
                 withContext(Dispatchers.IO) {
-                    val member = it.slash.member
-                    if (member != null) {
-                        it.slash.guild?.getAuditLog()?.get()?.json?.let { it1 ->
-                            it.slash.reply(it1.toPrettyString()).get()
-                        }
+										val guild = it.slash.guild
+										if(guild != null) {
+												 val audit = guild!!.getAuditLog().get()
+												 it.slash.reply(audit.json.toPrettyString()
+											 }
                     }
                 }
             }
