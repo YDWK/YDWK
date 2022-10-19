@@ -26,14 +26,14 @@ interface AuditLogChange : GenericEntity {
      *
      * @return The new value of the change.
      */
-    val newValue: String?
+    val newValue: Any?
 
     /**
      * Gets the old value of the change.
      *
      * @return The old value of the change.
      */
-    val oldValue: String?
+    val oldValue: Any?
 
     /**
      * Gets the key of the change.
