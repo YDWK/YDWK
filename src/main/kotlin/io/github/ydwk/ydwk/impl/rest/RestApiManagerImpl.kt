@@ -28,33 +28,42 @@ import okhttp3.Headers
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class RestApiManagerImpl(
     private val token: String,
     private val ydwkImpl: YDWKImpl,
     private val client: OkHttpClient,
 ) : RestApiManager {
+    private val addQueryParameterMap: MutableMap<String, String> = mutableMapOf()
+
+    override fun addQueryParameter(key: String, value: String): RestApiManager {
+        addQueryParameterMap[key] = value
+        return this
+    }
+
     override fun get(endPoint: EndPoint.IEnumEndpoint, vararg params: String): GetRestApi {
         val builder = requestBuilder(endPoint, *params).get()
-
         return GetRestApiImpl(ydwkImpl, client, builder)
     }
 
     override fun post(
-        body: RequestBody,
+        body: RequestBody?,
         endPoint: EndPoint.IEnumEndpoint,
         vararg params: String,
     ): PostRestApi {
-        val builder = requestBuilder(endPoint, *params).post(body)
+        val builder =
+            requestBuilder(endPoint, *params).post(body ?: ByteArray(0).toRequestBody(null, 0, 0))
         return PostRestApiImpl(ydwkImpl, client, builder)
     }
 
     override fun put(
-        body: RequestBody,
+        body: RequestBody?,
         endPoint: EndPoint.IEnumEndpoint,
         vararg params: String,
     ): PutRestApi {
-        val builder = requestBuilder(endPoint, *params).put(body)
+        val builder =
+            requestBuilder(endPoint, *params).put(body ?: ByteArray(0).toRequestBody(null, 0, 0))
         return PutRestApiImpl(ydwkImpl, client, builder)
     }
 
@@ -80,7 +89,14 @@ class RestApiManagerImpl(
         endPoint: EndPoint.IEnumEndpoint,
         vararg params: String,
     ): Request.Builder {
-        return Request.Builder().headers(requiredHeaders()).url(getEndpoint(endPoint, *params))
+        val builder =
+            Request.Builder().headers(requiredHeaders()).url(getEndpoint(endPoint, *params))
+        if (addQueryParameterMap.isNotEmpty()) {
+            val url = builder.build().url.newBuilder()
+            addQueryParameterMap.forEach { (key, value) -> url.addQueryParameter(key, value) }
+            builder.url(url.build())
+        }
+        return builder
     }
 
     private fun getEndpoint(endPoint: EndPoint.IEnumEndpoint, vararg params: String): String {

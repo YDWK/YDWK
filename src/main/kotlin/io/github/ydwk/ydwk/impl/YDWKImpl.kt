@@ -26,6 +26,7 @@ import io.github.ydwk.ydwk.cache.*
 import io.github.ydwk.ydwk.entities.Application
 import io.github.ydwk.ydwk.entities.Bot
 import io.github.ydwk.ydwk.entities.Guild
+import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.application.PartialApplication
 import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.channel.TextChannel
@@ -44,7 +45,6 @@ import io.github.ydwk.ydwk.impl.rest.RestApiManagerImpl
 import io.github.ydwk.ydwk.impl.slash.SlashBuilderImpl
 import io.github.ydwk.ydwk.rest.EndPoint
 import io.github.ydwk.ydwk.rest.RestApiManager
-import io.github.ydwk.ydwk.rest.json.openDmChannelBody
 import io.github.ydwk.ydwk.slash.SlashBuilder
 import io.github.ydwk.ydwk.ws.WebSocketManager
 import io.github.ydwk.ydwk.ws.util.GateWayIntent
@@ -55,7 +55,6 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 import okhttp3.OkHttpClient
-import okhttp3.RequestBody.Companion.toRequestBody
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -174,9 +173,8 @@ class YDWKImpl(
 
     override fun createDmChannel(userId: Long): CompletableFuture<DmChannel> {
         return this.restApiManager
-            .post(
-                openDmChannelBody(this, userId.toString()).toString().toRequestBody(),
-                EndPoint.UserEndpoint.CREATE_DM)
+            .addQueryParameter("recipient_id", userId.toString())
+            .post(null, EndPoint.UserEndpoint.CREATE_DM)
             .execute { it ->
                 val jsonBody = it.jsonBody
                 if (jsonBody == null) {
@@ -193,6 +191,14 @@ class YDWKImpl(
 
     override fun getMembers(): List<Member> {
         return memberCache.values(CacheIds.MEMBER).map { it as Member }
+    }
+
+    override fun getUser(id: Long): User? {
+        return cache[id.toString(), CacheIds.USER] as User?
+    }
+
+    override fun getUsers(): List<User> {
+        return cache.values(CacheIds.USER).map { it as User }
     }
 
     override var bot: Bot? = null

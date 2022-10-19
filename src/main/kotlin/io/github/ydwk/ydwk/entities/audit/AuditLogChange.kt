@@ -16,21 +16,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.util
+package io.github.ydwk.ydwk.entities.audit
 
-interface GetterSnowFlake {
-    val asLong: Long
+import io.github.ydwk.ydwk.entities.util.GenericEntity
 
-    val asString: String
-        get() = asLong.toString()
+interface AuditLogChange : GenericEntity {
+    /**
+     * Gets the new value of the change.
+     *
+     * @return The new value of the change.
+     */
+    val newValue: Any?
 
-    companion object {
-        val asNull: GetterSnowFlake? = null
+    /**
+     * Gets the old value of the change.
+     *
+     * @return The old value of the change.
+     */
+    val oldValue: Any?
 
-        fun of(id: Long): GetterSnowFlake {
-            return object : GetterSnowFlake {
-                override val asLong: Long = id
-            }
-        }
-    }
+    /**
+     * Gets the key of the change.
+     *
+     * @return The key of the change.
+     */
+    val key: String
 }

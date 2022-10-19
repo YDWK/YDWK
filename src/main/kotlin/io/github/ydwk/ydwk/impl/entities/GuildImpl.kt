@@ -20,9 +20,11 @@ package io.github.ydwk.ydwk.impl.entities
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.AuditLog
 import io.github.ydwk.ydwk.entities.Emoji
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.Sticker
+import io.github.ydwk.ydwk.entities.audit.AuditLogType
 import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.guild.Ban
 import io.github.ydwk.ydwk.entities.guild.Member
@@ -34,12 +36,9 @@ import io.github.ydwk.ydwk.impl.entities.guild.BanImpl
 import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
 import io.github.ydwk.ydwk.impl.entities.guild.WelcomeScreenImpl
 import io.github.ydwk.ydwk.rest.EndPoint
-import io.github.ydwk.ydwk.rest.json.banUserBody
-import io.github.ydwk.ydwk.rest.json.openDmChannelBody
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 import java.util.concurrent.CompletableFuture
 import kotlin.time.Duration
-import okhttp3.RequestBody.Companion.toRequestBody
 
 class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override val idAsLong: Long) :
     Guild {
@@ -167,9 +166,8 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
 
     override fun createDmChannel(userId: Long): CompletableFuture<DmChannel> {
         return ydwk.restApiManager
-            .post(
-                openDmChannelBody(ydwk, this.id).toString().toRequestBody(),
-                EndPoint.UserEndpoint.CREATE_DM)
+            .addQueryParameter("recipient_id", userId.toString())
+            .post(null, EndPoint.UserEndpoint.CREATE_DM)
             .execute { it ->
                 val jsonBody = it.jsonBody
                 if (jsonBody == null) {
@@ -194,24 +192,65 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
         reason: String?
     ): CompletableFuture<Void> {
         return ydwk.restApiManager
-            .put(
-                banUserBody(ydwk, deleteMessageDuration).toString().toRequestBody(),
-                EndPoint.GuildEndpoint.BAN,
-                id,
-                userId.toString())
+            .addQueryParameter("delete-message-days", deleteMessageDuration.inWholeDays.toString())
+            .put(null, EndPoint.GuildEndpoint.BAN, id, userId.toString())
+            .addReason(reason)
             .executeWithNoResult()
     }
 
     override fun unbanUser(userId: Long, reason: String?): CompletableFuture<Void> {
         return ydwk.restApiManager
             .delete(EndPoint.GuildEndpoint.BAN, id, userId.toString())
+            .addReason(reason)
             .executeWithNoResult()
     }
 
     override fun kickMember(userId: Long, reason: String?): CompletableFuture<Void> {
         return ydwk.restApiManager
             .delete(EndPoint.GuildEndpoint.KICK, id, userId.toString())
+            .addReason(reason)
             .executeWithNoResult()
+    }
+
+    override fun getAuditLog(
+        userId: GetterSnowFlake?,
+        limit: Int,
+        before: GetterSnowFlake?,
+        actionType: AuditLogType?,
+    ): CompletableFuture<AuditLog> {
+        val rest = ydwk.restApiManager
+
+        if (userId != null) {
+            rest.addQueryParameter("user_id", userId.asString)
+        }
+
+        if (before != null) {
+            rest.addQueryParameter("before", before.asString)
+        }
+
+        if (actionType != null) {
+            rest.addQueryParameter("action_type", actionType.getType().toString())
+        }
+
+        return rest
+            .addQueryParameter("limit", limit.toString())
+            .get(EndPoint.GuildEndpoint.GET_AUDIT_LOGS, id)
+            .execute { it ->
+                val jsonBody = it.jsonBody
+                if (jsonBody == null) {
+                    throw IllegalStateException("json body is null")
+                } else {
+                    AuditLogImpl(ydwk, jsonBody)
+                }
+            }
+    }
+
+    override fun getRole(roleId: Long): Role? {
+        return if (roles.any { it.idAsLong == roleId }) {
+            roles.first { it.idAsLong == roleId }
+        } else {
+            null
+        }
     }
 
     override var name: String = json["name"].asText()

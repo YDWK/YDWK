@@ -23,6 +23,7 @@ import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.guild.enums.MemberPermission
 import io.github.ydwk.ydwk.entities.message.Sendeadble
 import io.github.ydwk.ydwk.entities.util.GenericEntity
+import io.github.ydwk.ydwk.util.GetterSnowFlake
 import io.github.ydwk.ydwk.util.NameAbleEntity
 import io.github.ydwk.ydwk.util.SnowFlake
 import java.util.*
@@ -34,13 +35,27 @@ interface Member : NameAbleEntity, GenericEntity, Sendeadble, SnowFlake {
     val guild: Guild
 
     /** The user this guild member represents. */
-    var user: User?
+    var user: User
 
     /** This users guild nickname. */
     var nick: String?
 
     /** The user's avatar hash. */
     var avatar: String?
+
+    /**
+     * Gets the ids of the roles this member is assigned.
+     *
+     * @return The ids of the roles this member is assigned.
+     */
+    val roleIds: List<GetterSnowFlake>
+
+    /**
+     * Gets the roles of this member.
+     *
+     * @return The roles of this member.
+     */
+    val roles: List<Role?>
 
     /** The date the user joined the guild. */
     var joinedAt: String?
@@ -61,7 +76,7 @@ interface Member : NameAbleEntity, GenericEntity, Sendeadble, SnowFlake {
     var timedOutUntil: String?
 
     /** Used to get the permissions of this member. */
-    var permissions: EnumSet<MemberPermission>
+    val permissions: EnumSet<MemberPermission>
 
     /**
      * Used to check if the member has a specific permission.

@@ -25,6 +25,15 @@ import okhttp3.RequestBody
 interface RestApiManager {
 
     /**
+     * Used to add query parameters to the request
+     *
+     * @param key The key of the query parameter
+     * @param value The value of the query parameter
+     * @return The RestApiManager
+     */
+    fun addQueryParameter(key: String, value: String): RestApiManager
+
+    /**
      * Used to get a certain endpoint from the API.
      *
      * @param endPoint The endpoint to get.
@@ -52,7 +61,7 @@ interface RestApiManager {
      * @return The [PostRestApi] object.
      */
     fun post(
-        body: RequestBody,
+        body: RequestBody?,
         endPoint: EndPoint.IEnumEndpoint,
         vararg params: String,
     ): PostRestApi
@@ -64,7 +73,7 @@ interface RestApiManager {
      * @param endPoint The endpoint to post to.
      * @return The [PostRestApi] object.
      */
-    fun post(body: RequestBody, endPoint: EndPoint.IEnumEndpoint): PostRestApi {
+    fun post(body: RequestBody?, endPoint: EndPoint.IEnumEndpoint): PostRestApi {
         return post(body, endPoint, *arrayOf())
     }
 
@@ -76,7 +85,7 @@ interface RestApiManager {
      * @param params The parameters to put to the endpoint.
      * @return The [DeleteRestApi] object.
      */
-    fun put(body: RequestBody, endPoint: EndPoint.IEnumEndpoint, vararg params: String): PutRestApi
+    fun put(body: RequestBody?, endPoint: EndPoint.IEnumEndpoint, vararg params: String): PutRestApi
 
     /**
      * Used to put something to the API.
@@ -85,7 +94,7 @@ interface RestApiManager {
      * @param endPoint The endpoint to put to.
      * @return The [DeleteRestApi] object.
      */
-    fun put(body: RequestBody, endPoint: EndPoint.IEnumEndpoint): PutRestApi {
+    fun put(body: RequestBody?, endPoint: EndPoint.IEnumEndpoint): PutRestApi {
         return put(body, endPoint, *arrayOf())
     }
 
