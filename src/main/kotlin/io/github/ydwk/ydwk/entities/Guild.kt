@@ -299,7 +299,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      *
      * @return a list of ban's for the guild
      */
-    val bans: CompletableFuture<List<Ban>>
+    val requestBans: CompletableFuture<List<Ban>>
 
     /**
      * Used to create a dm channel.
@@ -461,7 +461,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @param actionType The type of action to filter by.
      * @return A [CompletableFuture] that completes when the audit log is retrieved.
      */
-    fun getAuditLog(
+    fun requestedAuditLog(
         userId: GetterSnowFlake? = null,
         limit: Int = 50,
         before: GetterSnowFlake? = null,
@@ -473,8 +473,8 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      *
      * @return A [CompletableFuture] that completes when the audit log is retrieved.
      */
-    fun getAuditLog(): CompletableFuture<AuditLog> =
-        getAuditLog(GetterSnowFlake.asNull, 50, null, null)
+    fun requestedAuditLog(): CompletableFuture<AuditLog> =
+        requestedAuditLog(GetterSnowFlake.asNull, 50, null, null)
 
     /**
      * Used to get the audit log for the guild.
@@ -482,8 +482,8 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @param userId The id of the user.
      * @return A [CompletableFuture] that completes when the audit log is retrieved.
      */
-    fun getAuditLog(userId: GetterSnowFlake): CompletableFuture<AuditLog> =
-        getAuditLog(userId, 50, null, null)
+    fun requestedAuditLog(userId: GetterSnowFlake): CompletableFuture<AuditLog> =
+        requestedAuditLog(userId, 50, null, null)
 
     /**
      * Used to get the audit log for the guild.
@@ -492,8 +492,8 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @param limit Maximum number of entries (between 1-100) to return, defaults to 50
      * @return A [CompletableFuture] that completes when the audit log is retrieved.
      */
-    fun getAuditLog(userId: GetterSnowFlake, limit: Int): CompletableFuture<AuditLog> =
-        getAuditLog(userId, limit, null, null)
+    fun requestedAuditLog(userId: GetterSnowFlake, limit: Int): CompletableFuture<AuditLog> =
+        requestedAuditLog(userId, limit, null, null)
 
     /**
      * Used to get the audit log for the guild.
@@ -503,11 +503,11 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @param before Entries that preceded a specific audit log entry ID.
      * @return A [CompletableFuture] that completes when the audit log is retrieved.
      */
-    fun getAuditLog(
+    fun requestedAuditLog(
         userId: GetterSnowFlake,
         limit: Int,
         before: GetterSnowFlake
-    ): CompletableFuture<AuditLog> = getAuditLog(userId, limit, before, null)
+    ): CompletableFuture<AuditLog> = requestedAuditLog(userId, limit, before, null)
 
     /**
      * Used to get the audit log for the guild.
@@ -518,12 +518,12 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @param actionType The type of action to filter by.
      * @return A [CompletableFuture] that completes when the audit log is retrieved.
      */
-    fun getAuditLog(
+    fun requestedAuditLog(
         user: User? = null,
         limit: Int = 50,
         before: GetterSnowFlake? = null,
         actionType: AuditLogType? = null
-    ): CompletableFuture<AuditLog> = getAuditLog(user, limit, before, actionType)
+    ): CompletableFuture<AuditLog> = requestedAuditLog(user, limit, before, actionType)
 
     /**
      * Used to get the audit log for the guild.
@@ -531,7 +531,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @param user The user to filter by.
      * @return A [CompletableFuture] that completes when the audit log is retrieved.
      */
-    fun getAuditLog(user: User): CompletableFuture<AuditLog> = getAuditLog(user, 50, null, null)
+    fun requestedAuditLog(user: User): CompletableFuture<AuditLog> = requestedAuditLog(user, 50, null, null)
 
     /**
      * Used to get the audit log for the guild.
@@ -540,8 +540,8 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @param limit Maximum number of entries (between 1-100) to return, defaults to 50
      * @return A [CompletableFuture] that completes when the audit log is retrieved.
      */
-    fun getAuditLog(user: User, limit: Int): CompletableFuture<AuditLog> =
-        getAuditLog(user, limit, null, null)
+    fun requestedAuditLog(user: User, limit: Int): CompletableFuture<AuditLog> =
+        requestedAuditLog(user, limit, null, null)
 
     /**
      * Used to get the audit log for the guild.
@@ -551,8 +551,8 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @param before Entries that preceded a specific audit log entry ID.
      * @return A [CompletableFuture] that completes when the audit log is retrieved.
      */
-    fun getAuditLog(user: User, limit: Int, before: GetterSnowFlake): CompletableFuture<AuditLog> =
-        getAuditLog(user, limit, before, null)
+    fun requestedAuditLog(user: User, limit: Int, before: GetterSnowFlake): CompletableFuture<AuditLog> =
+        requestedAuditLog(user, limit, before, null)
 
     /**
      * Used to get a role from the guild.
