@@ -25,7 +25,7 @@ import java.time.temporal.TemporalAccessor
 
 interface EmbedBuilder {
     /**
-     * Used to set the title of the embed.
+     * Sets the title of the embed.
      *
      * @param title The title of the embed.
      * @return The current [EmbedBuilder] instance.
@@ -33,7 +33,7 @@ interface EmbedBuilder {
     fun setTitle(title: String): EmbedBuilder
 
     /**
-     * Used to set the description of the embed.
+     * Sets the description of the embed.
      *
      * @param description The description of the embed.
      * @return The current [EmbedBuilder] instance.
@@ -41,7 +41,7 @@ interface EmbedBuilder {
     fun setDescription(description: CharSequence): EmbedBuilder
 
     /**
-     * Used to set the timestamp of the embed.
+     * Sets the timestamp of the embed.
      *
      * @param timestamp The timestamp of the embed.
      * @return The current [EmbedBuilder] instance.
@@ -49,7 +49,7 @@ interface EmbedBuilder {
     fun setTimestamp(timestamp: TemporalAccessor): EmbedBuilder
 
     /**
-     * Used to set the url of the embed.
+     * Sets the url of the embed.
      *
      * @param url The url of the embed.
      * @return The current [EmbedBuilder] instance.
@@ -57,7 +57,7 @@ interface EmbedBuilder {
     fun setUrl(url: URL): EmbedBuilder
 
     /**
-     * Used to set the color of the embed.
+     * Sets the color of the embed.
      *
      * @param color The color of the embed.
      * @return The current [EmbedBuilder] instance.
@@ -65,7 +65,7 @@ interface EmbedBuilder {
     fun setColor(color: Color): EmbedBuilder
 
     /**
-     * Used to set the thumbnail of the embed.
+     * Sets the thumbnail of the embed.
      *
      * @param url The url of the thumbnail.
      * @return The current [EmbedBuilder] instance.
@@ -73,7 +73,7 @@ interface EmbedBuilder {
     fun setThumbnail(url: URL): EmbedBuilder
 
     /**
-     * Used to set the thumbnail of the embed.
+     * Sets the thumbnail of the embed.
      *
      * @param thumbnail The thumbnail of the embed.
      * @return The current [EmbedBuilder] instance.
@@ -81,7 +81,7 @@ interface EmbedBuilder {
     fun setThumbnail(thumbnail: EmbedThumbnailBuilder): EmbedBuilder
 
     /**
-     * Used to set the image of the embed.
+     * Sets the image of the embed.
      *
      * @param url The url of the image.
      * @return The current [EmbedBuilder] instance.
@@ -89,7 +89,7 @@ interface EmbedBuilder {
     fun setImage(url: URL): EmbedBuilder
 
     /**
-     * Used to set the image of the embed.
+     * Sets the image of the embed.
      *
      * @param image The image of the embed.
      * @return The current [EmbedBuilder] instance.
@@ -97,7 +97,7 @@ interface EmbedBuilder {
     fun setImage(image: EmbedImageBuilder): EmbedBuilder
 
     /**
-     * Used to set the footer of the embed.
+     * Sets the footer of the embed.
      *
      * @param text The text of the footer.
      * @param iconUrl The url of the icon.
@@ -106,7 +106,7 @@ interface EmbedBuilder {
     fun setFooter(text: String, iconUrl: URL): EmbedBuilder
 
     /**
-     * Used to set the footer of the embed.
+     * Sets the footer of the embed.
      *
      * @param footer The footer of the embed.
      * @return The current [EmbedBuilder] instance.
@@ -114,7 +114,7 @@ interface EmbedBuilder {
     fun setFooter(footer: EmbedFooterBuilder): EmbedBuilder
 
     /**
-     * Used to set the author of the embed.
+     * Sets the author of the embed.
      *
      * @param name The name of the author.
      * @param url The url of the author.
@@ -124,7 +124,7 @@ interface EmbedBuilder {
     fun setAuthor(name: String, url: URL? = null, iconUrl: URL? = null): EmbedBuilder
 
     /**
-     * Used to set the author of the embed.
+     * Sets the author of the embed.
      *
      * @param author The author of the embed.
      * @return The current [EmbedBuilder] instance.
@@ -132,7 +132,7 @@ interface EmbedBuilder {
     fun setAuthor(author: EmbedAuthorBuilder): EmbedBuilder
 
     /**
-     * Used to add a field to the embed.
+     * Adds a field to the embed.
      *
      * @param name The name of the field.
      * @param value The value of the field.
@@ -142,7 +142,7 @@ interface EmbedBuilder {
     fun addField(name: String, value: CharSequence, inline: Boolean = true): EmbedBuilder
 
     /**
-     * Used to add a field to the embed.
+     * Adds a field to the embed.
      *
      * @param field The field to add.
      * @return The current [EmbedBuilder] instance.
@@ -150,7 +150,7 @@ interface EmbedBuilder {
     fun addField(field: EmbedFieldBuilder): EmbedBuilder
 
     /**
-     * Used to build the embed.
+     * Builds the embed.
      *
      * @return The [Embed] instance.
      */

@@ -46,7 +46,7 @@ enum class GateWayIntent(var value: Int, var privileged: Boolean) {
         }
 
         /**
-         * Used to calculate the intent value
+         * Calculates the intent value
          *
          * @param intents The intents to calculate
          */

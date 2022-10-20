@@ -39,6 +39,7 @@ import io.github.ydwk.ydwk.event.backend.event.GenericEvent
 import io.github.ydwk.ydwk.event.backend.event.IEventListener
 import io.github.ydwk.ydwk.event.backend.managers.CoroutineEventManager
 import io.github.ydwk.ydwk.event.backend.managers.SampleEventManager
+import io.github.ydwk.ydwk.impl.entities.UserImpl
 import io.github.ydwk.ydwk.impl.entities.channel.DmChannelImpl
 import io.github.ydwk.ydwk.impl.entities.message.embed.builder.EmbedBuilderImpl
 import io.github.ydwk.ydwk.impl.rest.RestApiManagerImpl
@@ -201,6 +202,18 @@ class YDWKImpl(
         return cache.values(CacheIds.USER).map { it as User }
     }
 
+    override fun requestUser(id: Long): CompletableFuture<User> {
+        return this.restApiManager.get(EndPoint.UserEndpoint.GET_USER, id.toString()).execute { it
+            ->
+            val jsonBody = it.jsonBody
+            if (jsonBody == null) {
+                throw IllegalStateException("json body is null")
+            } else {
+                UserImpl(jsonBody, jsonBody["id"].asLong(), this)
+            }
+        }
+    }
+
     override var bot: Bot? = null
         get() {
             while (field == null) {
@@ -333,7 +346,7 @@ class YDWKImpl(
     }
 
     /**
-     * Used to start the websocket manager
+     * Starts the websocket manager
      *
      * @param token The token of the bot which is used to authenticate the bot.
      * @param intents The gateway intent which will decide what events are sent by discord.
@@ -359,7 +372,7 @@ class YDWKImpl(
     }
 
     /**
-     * Used to set the logged in status
+     * Sets the logged in status
      *
      * @param loggedIn The logged in status which is used to send messages to discord.
      */

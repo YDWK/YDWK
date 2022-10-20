@@ -79,7 +79,8 @@ open class EndPoint {
     }
 
     enum class UserEndpoint(private val endPoint: String) : IEnumEndpoint {
-        CREATE_DM("/users/@me/channels");
+        CREATE_DM("/users/@me/channels"),
+        GET_USER("/users/%s");
 
         override fun getEndpoint(): String {
             return endPoint

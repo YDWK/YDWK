@@ -147,7 +147,7 @@ interface SlashCommand : SnowFlake, GenericCommandData {
     val locale: String?
 
     /**
-     * Used to reply to an interaction.
+     * Replies to an interaction.
      *
      * @param content The content of the reply.
      * @param tts Whether the reply should be sent with text-to-speech.
@@ -161,7 +161,7 @@ interface SlashCommand : SnowFlake, GenericCommandData {
     ): CompletableFuture<Void>
 
     /**
-     * Used to reply to an interaction.
+     * Replies to an interaction.
      *
      * @param content The content of the reply.
      * @param ephemeral Whether the reply should be ephemeral.
@@ -171,7 +171,7 @@ interface SlashCommand : SnowFlake, GenericCommandData {
         reply(content, false, ephemeral)
 
     /**
-     * Used to reply to an interaction.
+     * Replies to an interaction.
      *
      * @param embed The embed of the reply.
      * @param tts Whether the reply should be sent with text-to-speech.
@@ -185,7 +185,7 @@ interface SlashCommand : SnowFlake, GenericCommandData {
     ): CompletableFuture<Void>
 
     /**
-     * Used to reply to an interaction.
+     * Replies to an interaction.
      *
      * @param embed The embed of the reply.
      * @param ephemeral Whether the reply should be ephemeral.
