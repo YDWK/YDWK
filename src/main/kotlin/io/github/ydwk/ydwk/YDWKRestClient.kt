@@ -19,6 +19,7 @@
 package io.github.ydwk.ydwk
 
 import io.github.ydwk.ydwk.entities.User
+import io.github.ydwk.ydwk.rest.RestApiClient
 import java.util.concurrent.CompletableFuture
 
 interface YDWKRestClient : YDWK {
@@ -37,4 +38,11 @@ interface YDWKRestClient : YDWK {
      * @return The [CompletableFuture] object.
      */
     fun requestUser(id: String): CompletableFuture<User> = requestUser(id.toLong())
+
+    /**
+     * Gets the rest api client.
+     *
+     * @return The rest api client.
+     */
+    val restApiClient: RestApiClient
 }
