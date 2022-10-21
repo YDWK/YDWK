@@ -24,7 +24,7 @@ import io.github.ydwk.ydwk.entities.*
 import io.github.ydwk.ydwk.entities.application.PartialApplication
 import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
-import io.github.ydwk.ydwk.rest.RestApiManager
+import io.github.ydwk.ydwk.rest.manager.RestApiManager
 import io.github.ydwk.ydwk.slash.SlashBuilder
 import io.github.ydwk.ydwk.ws.util.LoggedIn
 import java.util.concurrent.CompletableFuture

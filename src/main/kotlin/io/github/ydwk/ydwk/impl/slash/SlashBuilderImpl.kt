@@ -19,8 +19,8 @@
 package io.github.ydwk.ydwk.impl.slash
 
 import io.github.ydwk.ydwk.impl.YDWKImpl
-import io.github.ydwk.ydwk.rest.EndPoint
-import io.github.ydwk.ydwk.rest.RestApiManager
+import io.github.ydwk.ydwk.rest.endpoint.EndPoint
+import io.github.ydwk.ydwk.rest.manager.RestApiManager
 import io.github.ydwk.ydwk.slash.Slash
 import io.github.ydwk.ydwk.slash.SlashBuilder
 import io.github.ydwk.ydwk.util.Checks

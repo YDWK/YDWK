@@ -34,7 +34,7 @@ import io.github.ydwk.ydwk.interaction.application.ApplicationCommandType
 import io.github.ydwk.ydwk.interaction.application.SlashCommand
 import io.github.ydwk.ydwk.interaction.sub.InteractionResolvedData
 import io.github.ydwk.ydwk.interaction.sub.InteractionType
-import io.github.ydwk.ydwk.rest.EndPoint
+import io.github.ydwk.ydwk.rest.endpoint.EndPoint
 import io.github.ydwk.ydwk.rest.json.replyJsonBody
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 import java.util.concurrent.CompletableFuture

@@ -25,7 +25,7 @@ import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.message.Embed
 import io.github.ydwk.ydwk.entities.message.Sendeadble
 import io.github.ydwk.ydwk.impl.entities.MessageImpl
-import io.github.ydwk.ydwk.rest.EndPoint
+import io.github.ydwk.ydwk.rest.endpoint.EndPoint
 import io.github.ydwk.ydwk.rest.json.sendMessageToChannelBody
 import java.util.concurrent.CompletableFuture
 import okhttp3.RequestBody.Companion.toRequestBody

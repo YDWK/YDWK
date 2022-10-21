@@ -21,7 +21,7 @@ package io.github.ydwk.ydwk.impl
 import io.github.ydwk.ydwk.YDWKRestClient
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.impl.entities.UserImpl
-import io.github.ydwk.ydwk.rest.EndPoint
+import io.github.ydwk.ydwk.rest.endpoint.EndPoint
 import java.util.concurrent.CompletableFuture
 import okhttp3.OkHttpClient
 

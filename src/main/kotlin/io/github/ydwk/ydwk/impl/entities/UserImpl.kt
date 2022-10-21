@@ -23,7 +23,7 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.impl.entities.channel.DmChannelImpl
-import io.github.ydwk.ydwk.rest.EndPoint
+import io.github.ydwk.ydwk.rest.endpoint.EndPoint
 import java.awt.Color
 import java.util.*
 import java.util.concurrent.CompletableFuture

@@ -36,7 +36,7 @@ import io.github.ydwk.ydwk.impl.entities.channel.DmChannelImpl
 import io.github.ydwk.ydwk.impl.entities.guild.BanImpl
 import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
 import io.github.ydwk.ydwk.impl.entities.guild.WelcomeScreenImpl
-import io.github.ydwk.ydwk.rest.EndPoint
+import io.github.ydwk.ydwk.rest.endpoint.EndPoint
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 import java.util.concurrent.CompletableFuture
 import kotlin.time.Duration

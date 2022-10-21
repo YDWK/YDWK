@@ -16,13 +16,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.impl.rest
+package io.github.ydwk.ydwk.impl.rest.manager
 
 import io.github.ydwk.ydwk.YDWKInfo
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.rest.type.*
-import io.github.ydwk.ydwk.rest.EndPoint
-import io.github.ydwk.ydwk.rest.RestApiManager
+import io.github.ydwk.ydwk.rest.endpoint.EndPoint
+import io.github.ydwk.ydwk.rest.manager.RestApiManager
 import io.github.ydwk.ydwk.rest.type.*
 import okhttp3.Headers
 import okhttp3.OkHttpClient

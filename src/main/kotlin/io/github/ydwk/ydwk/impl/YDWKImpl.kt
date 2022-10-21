@@ -24,7 +24,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.YDWKRestClient
 import io.github.ydwk.ydwk.YDWKWebSocket
-import io.github.ydwk.ydwk.cache.*
 import io.github.ydwk.ydwk.entities.Application
 import io.github.ydwk.ydwk.entities.Bot
 import io.github.ydwk.ydwk.entities.application.PartialApplication
@@ -32,13 +31,12 @@ import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
 import io.github.ydwk.ydwk.impl.entities.channel.DmChannelImpl
 import io.github.ydwk.ydwk.impl.entities.message.embed.builder.EmbedBuilderImpl
-import io.github.ydwk.ydwk.impl.rest.RestApiManagerImpl
+import io.github.ydwk.ydwk.impl.rest.manager.RestApiManagerImpl
 import io.github.ydwk.ydwk.impl.slash.SlashBuilderImpl
-import io.github.ydwk.ydwk.rest.EndPoint
-import io.github.ydwk.ydwk.rest.RestApiManager
+import io.github.ydwk.ydwk.rest.endpoint.EndPoint
+import io.github.ydwk.ydwk.rest.manager.RestApiManager
 import io.github.ydwk.ydwk.slash.SlashBuilder
 import io.github.ydwk.ydwk.ws.util.LoggedIn
-import java.util.*
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient
