@@ -44,5 +44,5 @@ interface YDWKRestClient : YDWK {
      *
      * @return The rest api client.
      */
-    val restApiClient: RestApiClient
+    val restApiClient: RestApiClient?
 }

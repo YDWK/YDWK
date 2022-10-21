@@ -20,7 +20,7 @@ package io.github.ydwk.ydwk.event
 
 import io.github.ydwk.ydwk.event.backend.event.on
 import io.github.ydwk.ydwk.event.events.ReadyEvent
-import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.impl.YDWKWebSocketImpl
 import okhttp3.OkHttpClient
 import org.junit.jupiter.api.Test
 
@@ -29,7 +29,7 @@ object EvenTester {
 
     @Test
     fun testEvent() {
-        val ydwk = YDWKImpl(OkHttpClient())
+        val ydwk = YDWKWebSocketImpl(OkHttpClient())
         ydwk.emitEvent(TestEvent(ydwk))
 
         ydwk.on<ReadyEvent> { println("Ready!") }

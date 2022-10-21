@@ -18,6 +18,6 @@
  */ 
 package io.github.ydwk.ydwk.event
 
-import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.YDWKWebSocket
 
-class TestEvent(override val ydwk: YDWK) : Event(ydwk)
+class TestEvent(override val ydwk: YDWKWebSocket) : Event(ydwk)

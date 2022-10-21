@@ -20,4 +20,10 @@ package io.github.ydwk.ydwk.rest
 
 import io.github.ydwk.ydwk.YDWKRestClient
 
-class RestApiClient(val ydwk: YDWKRestClient) {}
+class RestApiClient(val ydwk: YDWKRestClient, private var token: String) {
+
+    @Synchronized
+    fun connect(): RestApiClient {
+        return this
+    }
+}

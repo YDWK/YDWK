@@ -39,9 +39,14 @@ class YDWKRestClientImpl(val OkHttpClient: OkHttpClient) : YDWKRestClient, YDWKI
         }
     }
 
-    override val restApiClient: RestApiClient
-        get() = RestApiClient(this)
+    override var restApiClient: RestApiClient? = null
+        private set
 
     /** Used to create a rest client. */
-    fun setRestManager(token: String) {}
+    fun setRestManager(token: String) {
+        val client: RestApiClient?
+        this.token = token
+        client = RestApiClient(this, token)
+        this.restApiClient = client.connect()
+    }
 }

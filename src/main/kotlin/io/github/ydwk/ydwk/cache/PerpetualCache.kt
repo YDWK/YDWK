@@ -19,7 +19,6 @@
 package io.github.ydwk.ydwk.cache
 
 import io.github.ydwk.ydwk.cache.exception.CacheException
-import io.github.ydwk.ydwk.entities.*
 
 /**
  * This is the implementation of the [Cache] interface that uses a [Map] to store and retrieve data.

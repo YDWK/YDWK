@@ -209,7 +209,7 @@ class YDWKWebSocketImpl(
      * @param intents The gateway intent which will decide what events are sent by discord.
      */
     fun setWebSocketManager(token: String, intents: List<GateWayIntent>) {
-        var ws: WebSocketManager? = null
+        val ws: WebSocketManager?
         ws = WebSocketManager(this, token, intents)
         this.webSocketManager = ws.connect()
         this.timer(Timer(), ws)

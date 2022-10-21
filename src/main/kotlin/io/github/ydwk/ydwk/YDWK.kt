@@ -20,7 +20,9 @@ package io.github.ydwk.ydwk
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
-import io.github.ydwk.ydwk.entities.*
+import io.github.ydwk.ydwk.entities.Application
+import io.github.ydwk.ydwk.entities.Bot
+import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.application.PartialApplication
 import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
