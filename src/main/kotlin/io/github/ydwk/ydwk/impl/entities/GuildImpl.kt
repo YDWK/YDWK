@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.impl.entities
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.YDWKWebSocket
 import io.github.ydwk.ydwk.entities.AuditLog
 import io.github.ydwk.ydwk.entities.Emoji
 import io.github.ydwk.ydwk.entities.Guild
@@ -180,10 +181,15 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
 
     override val botAsMember: Member
         get() =
-            if (ydwk.bot?.let { ydwk.getMember(id, it.id) } == null) {
-                throw IllegalStateException("Bot is not a member of this guild")
+            if (ydwk is YDWKWebSocket) {
+                val ydwkRestClient: YDWKWebSocket = ydwk
+                if (ydwkRestClient.bot?.let { ydwkRestClient.getMember(id, it.id) } == null) {
+                    throw IllegalStateException("Bot is not a member of this guild")
+                } else {
+                    ydwkRestClient.getMember(id, ydwk.bot!!.id)!!
+                }
             } else {
-                ydwk.getMember(id, ydwk.bot!!.id)!!
+                TODO("Add rest client support")
             }
 
     override fun banUser(

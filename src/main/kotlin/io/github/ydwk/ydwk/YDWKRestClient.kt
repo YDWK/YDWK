@@ -16,20 +16,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.event.backend.event
+package io.github.ydwk.ydwk
 
-import io.github.ydwk.ydwk.YDWKWebSocket
-import io.github.ydwk.ydwk.event.Event
+import io.github.ydwk.ydwk.entities.User
+import java.util.concurrent.CompletableFuture
 
-inline fun <reified T : Event> YDWKWebSocket.on(
-    crossinline consumer: suspend Event.(T) -> Unit
-): CoroutineEventListener {
-    return object : CoroutineEventListener {
-            override suspend fun onEvent(event: GenericEvent) {
-                if (event is T) {
-                    event.consumer(event)
-                }
-            }
-        }
-        .also { this.addEvent(it) }
+interface YDWKRestClient : YDWK {
+    /**
+     * Requests a user using its id.
+     *
+     * @param id The id of the user.
+     * @return The [CompletableFuture] object.
+     */
+    fun requestUser(id: Long): CompletableFuture<User>
+
+    /**
+     * Requests a user using its id.
+     *
+     * @param id The id of the user.
+     * @return The [CompletableFuture] object.
+     */
+    fun requestUser(id: String): CompletableFuture<User> = requestUser(id.toLong())
 }
