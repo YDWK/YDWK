@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.event
 
-import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.YDWKWebSocket
 import io.github.ydwk.ydwk.event.backend.event.GenericEvent
 
-abstract class Event(override val ydwk: YDWK) : GenericEvent
+abstract class Event(override val ydwk: YDWKWebSocket) : GenericEvent

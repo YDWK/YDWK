@@ -35,7 +35,7 @@ import io.github.ydwk.ydwk.event.events.message.MessageDeleteBulkEvent
 import io.github.ydwk.ydwk.event.events.message.MessageDeleteEvent
 import io.github.ydwk.ydwk.event.events.role.GuildRoleCreateEvent
 import io.github.ydwk.ydwk.event.events.role.GuildRoleDeleteEvent
-import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.impl.YDWKWebSocketImpl
 import io.github.ydwk.ydwk.impl.entities.BotImpl
 import io.github.ydwk.ydwk.impl.entities.MessageImpl
 import io.github.ydwk.ydwk.impl.entities.application.PartialApplicationImpl
@@ -73,7 +73,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 open class WebSocketManager(
-    protected var ydwk: YDWKImpl,
+    protected var ydwk: YDWKWebSocketImpl,
     private var token: String,
     private var intents: List<GateWayIntent>,
 ) : WebSocketAdapter(), WebSocketListener {

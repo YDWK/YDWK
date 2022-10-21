@@ -21,13 +21,13 @@ package io.github.ydwk.ydwk.impl.handler.handlers
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.cache.CacheIds
 import io.github.ydwk.ydwk.entities.User
-import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.impl.YDWKWebSocketImpl
 import io.github.ydwk.ydwk.impl.entities.UserImpl
 import io.github.ydwk.ydwk.impl.handler.Handler
 import java.awt.Color
 import java.util.*
 
-class UserUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
+class UserUpdateHandler(ydwk: YDWKWebSocketImpl, json: JsonNode) : Handler(ydwk, json) {
 
     override fun start() {
         val userJson: JsonNode = json

@@ -18,9 +18,11 @@
  */ 
 package io.github.ydwk.ydwk.event.events.interaction
 
-import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.YDWKWebSocket
 import io.github.ydwk.ydwk.event.Event
 import io.github.ydwk.ydwk.interaction.Interaction
 
-class AutoCompleteSlashCommandEvent(override val ydwk: YDWK, val interaction: Interaction) :
-    Event(ydwk)
+class AutoCompleteSlashCommandEvent(
+    override val ydwk: YDWKWebSocket,
+    val interaction: Interaction
+) : Event(ydwk)

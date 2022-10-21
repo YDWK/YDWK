@@ -18,8 +18,8 @@
  */ 
 package io.github.ydwk.ydwk.event.events.role
 
-import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.YDWKWebSocket
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.event.Event
 
-class GuildRoleDeleteEvent(ydwk: YDWK, val role: Role) : Event(ydwk)
+class GuildRoleDeleteEvent(ydwk: YDWKWebSocket, val role: Role) : Event(ydwk)

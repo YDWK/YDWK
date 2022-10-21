@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.event.events
 
-import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.YDWKWebSocket
 import io.github.ydwk.ydwk.event.Event
 
-class ResumeEvent(override val ydwk: YDWK) : Event(ydwk)
+class ResumeEvent(override val ydwk: YDWKWebSocket) : Event(ydwk)

@@ -21,7 +21,7 @@ package io.github.ydwk.ydwk.impl.handler.handlers.guild
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.cache.CacheIds
 import io.github.ydwk.ydwk.entities.guild.enums.*
-import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.impl.YDWKWebSocketImpl
 import io.github.ydwk.ydwk.impl.entities.EmojiImpl
 import io.github.ydwk.ydwk.impl.entities.StickerImpl
 import io.github.ydwk.ydwk.impl.entities.guild.WelcomeScreenImpl
@@ -29,7 +29,7 @@ import io.github.ydwk.ydwk.impl.handler.Handler
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 import java.util.*
 
-class GuildUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
+class GuildUpdateHandler(ydwk: YDWKWebSocketImpl, json: JsonNode) : Handler(ydwk, json) {
     override fun start() {
         val guild = ydwk.getGuild(json["id"].asLong()) ?: return
 

@@ -29,7 +29,7 @@ import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
 import io.github.ydwk.ydwk.entities.channel.guild.Category
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.guild.Role
-import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.impl.YDWKWebSocketImpl
 import io.github.ydwk.ydwk.impl.entities.EmojiImpl
 import io.github.ydwk.ydwk.impl.entities.GuildImpl
 import io.github.ydwk.ydwk.impl.entities.StickerImpl
@@ -41,7 +41,7 @@ import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
 import io.github.ydwk.ydwk.impl.handler.Handler
 import java.util.EnumSet
 
-class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
+class GuildCreateHandler(ydwk: YDWKWebSocketImpl, json: JsonNode) : Handler(ydwk, json) {
     override fun start() {
         val guild: Guild = GuildImpl(ydwk, json, json["id"].asLong())
 

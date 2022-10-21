@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.impl.entities.channel
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.YDWKWebSocket
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
 import io.github.ydwk.ydwk.entities.channel.guild.Category
@@ -34,10 +35,14 @@ class CategoryImpl(
         get() =
             when {
                 json.has("guild_id") -> {
-                    if (ydwk.getGuild(json["guild_id"].asLong()) != null) {
-                        ydwk.getGuild(json["guild_id"].asLong())!!
+                    if (ydwk is YDWKWebSocket) {
+                        if (ydwk.getGuild(json["guild_id"].asLong()) != null) {
+                            ydwk.getGuild(json["guild_id"].asLong())!!
+                        } else {
+                            throw IllegalStateException("Guild is null")
+                        }
                     } else {
-                        throw IllegalStateException("Guild is null")
+                        TODO("add support for rest")
                     }
                 }
                 else -> {

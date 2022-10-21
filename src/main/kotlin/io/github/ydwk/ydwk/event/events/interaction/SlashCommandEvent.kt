@@ -18,8 +18,8 @@
  */ 
 package io.github.ydwk.ydwk.event.events.interaction
 
-import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.YDWKWebSocket
 import io.github.ydwk.ydwk.event.Event
 import io.github.ydwk.ydwk.interaction.application.SlashCommand
 
-class SlashCommandEvent(override val ydwk: YDWK, val slash: SlashCommand) : Event(ydwk)
+class SlashCommandEvent(override val ydwk: YDWKWebSocket, val slash: SlashCommand) : Event(ydwk)

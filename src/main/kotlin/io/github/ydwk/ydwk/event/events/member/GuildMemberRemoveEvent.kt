@@ -18,8 +18,8 @@
  */ 
 package io.github.ydwk.ydwk.event.events.member
 
-import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.YDWKWebSocket
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.event.Event
 
-class GuildMemberRemoveEvent(ydwk: YDWK, val member: Member) : Event(ydwk)
+class GuildMemberRemoveEvent(ydwk: YDWKWebSocket, val member: Member) : Event(ydwk)

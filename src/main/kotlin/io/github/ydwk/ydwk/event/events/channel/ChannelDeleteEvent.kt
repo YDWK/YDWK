@@ -18,8 +18,8 @@
  */ 
 package io.github.ydwk.ydwk.event.events.channel
 
-import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.YDWKWebSocket
 import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.event.Event
 
-class ChannelDeleteEvent(ydwk: YDWK, val channel: Channel) : Event(ydwk)
+class ChannelDeleteEvent(ydwk: YDWKWebSocket, val channel: Channel) : Event(ydwk)

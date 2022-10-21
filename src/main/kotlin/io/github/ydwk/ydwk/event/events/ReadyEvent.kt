@@ -18,11 +18,11 @@
  */ 
 package io.github.ydwk.ydwk.event.events
 
-import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.YDWKWebSocket
 import io.github.ydwk.ydwk.event.Event
 
 class ReadyEvent(
-    override val ydwk: YDWK,
+    override val ydwk: YDWKWebSocket,
     amountOfAvailableGuilds: Int,
     unAvailableGuildsAmount: Int,
     val totalGuildsAmount: Int = amountOfAvailableGuilds + unAvailableGuildsAmount

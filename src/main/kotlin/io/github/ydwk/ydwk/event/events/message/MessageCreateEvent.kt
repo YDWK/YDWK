@@ -18,8 +18,8 @@
  */ 
 package io.github.ydwk.ydwk.event.events.message
 
-import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.YDWKWebSocket
 import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.event.Event
 
-class MessageCreateEvent(ydwk: YDWK, val message: Message) : Event(ydwk)
+class MessageCreateEvent(ydwk: YDWKWebSocket, val message: Message) : Event(ydwk)

@@ -18,8 +18,8 @@
  */ 
 package io.github.ydwk.ydwk.event.backend.event
 
-import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.YDWKWebSocket
 
 interface GenericEvent {
-    val ydwk: YDWK
+    val ydwk: YDWKWebSocket
 }

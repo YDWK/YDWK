@@ -18,12 +18,12 @@
  */ 
 package io.github.ydwk.ydwk.event.events
 
-import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.YDWKWebSocket
 import io.github.ydwk.ydwk.event.Event
 import java.time.Instant
 
 class DisconnectEvent(
-    override val ydwk: YDWK,
+    override val ydwk: YDWKWebSocket,
     closeCode: String,
     closeCodeReason: String,
     now: Instant

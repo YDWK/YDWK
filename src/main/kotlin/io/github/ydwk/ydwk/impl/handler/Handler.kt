@@ -19,8 +19,8 @@
 package io.github.ydwk.ydwk.impl.handler
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.impl.YDWKWebSocketImpl
 
-abstract class Handler(val ydwk: YDWKImpl, val json: JsonNode) {
+abstract class Handler(val ydwk: YDWKWebSocketImpl, val json: JsonNode) {
     abstract fun start()
 }

@@ -18,9 +18,11 @@
  */ 
 package io.github.ydwk.ydwk.event.events.interaction
 
-import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.YDWKWebSocket
 import io.github.ydwk.ydwk.event.Event
 import io.github.ydwk.ydwk.interaction.message.MessageComponentData
 
-class MessageComponentEvent(override val ydwk: YDWK, val interaction: MessageComponentData) :
-    Event(ydwk)
+class MessageComponentEvent(
+    override val ydwk: YDWKWebSocket,
+    val interaction: MessageComponentData
+) : Event(ydwk)

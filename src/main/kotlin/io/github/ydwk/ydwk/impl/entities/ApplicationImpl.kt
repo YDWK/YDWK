@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.impl.entities
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.YDWKWebSocket
 import io.github.ydwk.ydwk.entities.Application
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.User
@@ -61,7 +62,10 @@ class ApplicationImpl(
         if (json.hasNonNull("verify_key")) json["verify_key"].asText() else null
 
     override var guild: Guild? =
-        if (json.hasNonNull("guild_id")) ydwk.getGuild(json["guild_id"].asLong()) else null
+        if (json.hasNonNull("guild_id"))
+            if (ydwk is YDWKWebSocket) ydwk.getGuild(json["guild_id"].asLong())
+            else TODO("Add support for rest")
+        else null
 
     override var gameSdkId: GetterSnowFlake? =
         if (json.hasNonNull("game_sdk_id")) GetterSnowFlake.of(json["game_sdk_id"].asLong())

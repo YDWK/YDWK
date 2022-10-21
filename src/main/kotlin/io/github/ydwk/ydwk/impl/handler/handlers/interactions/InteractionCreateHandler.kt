@@ -20,13 +20,13 @@ package io.github.ydwk.ydwk.impl.handler.handlers.interactions
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.event.events.interaction.*
-import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.impl.YDWKWebSocketImpl
 import io.github.ydwk.ydwk.impl.handler.Handler
 import io.github.ydwk.ydwk.impl.interaction.InteractionImpl
 import io.github.ydwk.ydwk.interaction.Interaction
 import io.github.ydwk.ydwk.interaction.sub.InteractionType
 
-class InteractionCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
+class InteractionCreateHandler(ydwk: YDWKWebSocketImpl, json: JsonNode) : Handler(ydwk, json) {
     override fun start() {
         val interaction: Interaction = InteractionImpl(ydwk, json, json["id"].asLong())
         when (interaction.type) {

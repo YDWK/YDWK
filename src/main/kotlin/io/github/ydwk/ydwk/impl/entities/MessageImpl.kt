@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.impl.entities
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.YDWKWebSocket
 import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.application.PartialApplication
@@ -42,9 +43,11 @@ class MessageImpl(
 ) : Message {
     override val channel: TextChannel
         get() =
-            if (ydwk.getTextChannel(json["channel_id"].asLong()) != null)
-                ydwk.getTextChannel(json["channel_id"].asLong())!!
-            else throw IllegalStateException("Channel is null")
+            if (ydwk is YDWKWebSocket) {
+                if (ydwk.getTextChannel(json["channel_id"].asLong()) != null)
+                    ydwk.getTextChannel(json["channel_id"].asLong())!!
+                else throw IllegalStateException("Channel is null")
+            } else TODO("add support for rest")
 
     override val author: User
         get() = UserImpl(json.get("author"), json.get("author").get("id").asLong(), ydwk)

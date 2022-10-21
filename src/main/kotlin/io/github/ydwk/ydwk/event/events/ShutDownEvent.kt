@@ -18,9 +18,10 @@
  */ 
 package io.github.ydwk.ydwk.event.events
 
-import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.YDWKWebSocket
 import io.github.ydwk.ydwk.event.Event
 import io.github.ydwk.ydwk.ws.util.CloseCode
 import java.time.Instant
 
-class ShutDownEvent(override val ydwk: YDWK, closeCode: CloseCode, now: Instant) : Event(ydwk)
+class ShutDownEvent(override val ydwk: YDWKWebSocket, closeCode: CloseCode, now: Instant) :
+    Event(ydwk)
