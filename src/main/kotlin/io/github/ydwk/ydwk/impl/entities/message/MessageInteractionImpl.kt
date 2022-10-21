@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.impl.entities.message
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.YDWKWebSocket
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.message.MessageInteraction
@@ -48,7 +49,11 @@ class MessageInteractionImpl(
                 MemberImpl(
                     ydwk,
                     json.get("member"),
-                    ydwk.getGuild(json.get("guild_id").asLong())
-                        ?: throw IllegalStateException("Bot is not in guild"))
+                    if (ydwk is YDWKWebSocket) {
+                        ydwk.getGuild(json.get("guild_id").asLong())
+                            ?: throw IllegalStateException("Bot is not in guild")
+                    } else {
+                        TODO("add support for rest")
+                    })
             else null
 }

@@ -387,11 +387,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
         member: Member,
         deleteMessageDuration: Duration = Duration.ZERO,
         reason: String? = null
-    ): CompletableFuture<Void> =
-        banUser(
-            member.user ?: throw IllegalStateException("Member has no user"),
-            deleteMessageDuration,
-            reason)
+    ): CompletableFuture<Void> = banUser(member.user, deleteMessageDuration, reason)
 
     /**
      * Unbans a user from the guild.
@@ -449,8 +445,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @return A [CompletableFuture] that completes when the kick is created.
      */
     fun kickMember(member: Member, reason: String? = null): CompletableFuture<Void> =
-        member.user?.let { kickMember(it.id, reason) }
-            ?: throw IllegalStateException("Member has no user")
+        kickMember(member.user.id, reason)
 
     /**
      * Request the audit log for the guild.

@@ -32,6 +32,20 @@ import java.util.concurrent.CompletableFuture
 interface YDWK {
 
     /**
+     * Used to get ydwk as YDWKWebSocket.
+     *
+     * @return YDWKWebSocket
+     */
+    fun asYDWKWebSocket(): YDWKWebSocket
+
+    /**
+     * Used to get ydwk as YDWKRestClient
+     *
+     * @return YDWKRestClient
+     */
+    fun asYDWKRestClient(): YDWKRestClient
+
+    /**
      * Create a json object
      *
      * @return a new [ObjectNode]

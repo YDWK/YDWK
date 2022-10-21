@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.impl.entities.audit
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.YDWKWebSocket
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.audit.AuditLogChange
 import io.github.ydwk.ydwk.entities.audit.AuditLogEntry
@@ -37,7 +38,11 @@ class AuditLogEntryImpl(
         get() = json["changes"].map { AuditLogChangeImpl(ydwk, it) }
 
     override val user: User?
-        get() = if (json.has("user_id")) ydwk.getUser(json["user_id"].asLong()) else null
+        get() =
+            if (json.has("user_id"))
+                if (ydwk is YDWKWebSocket) ydwk.getUser(json["user_id"].asLong())
+                else TODO("Add support for rest")
+            else null
 
     override val type: AuditLogType
         get() = AuditLogType.fromType(json["action_type"].asInt())

@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.impl.entities
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.YDWKWebSocket
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.Sticker
 import io.github.ydwk.ydwk.entities.User
@@ -49,7 +50,14 @@ class StickerImpl(
     override var available: Boolean = json.get("available").asBoolean()
 
     override val guild: Guild?
-        get() = if (json.has("guild_id")) ydwk.getGuild(json["guild_id"].asLong()) else null
+        get() =
+            if (json.has("guild_id"))
+                if (ydwk is YDWKWebSocket) {
+                    if (ydwk.getGuild(json.get("guild_id").asLong()) != null)
+                        ydwk.getGuild(json.get("guild_id").asLong())!!
+                    else throw IllegalStateException("Guild is null")
+                } else TODO("add support for rest")
+            else null
 
     override var user: User? =
         if (json.has("user")) UserImpl(json["user"], json["user"]["id"].asLong(), ydwk) else null

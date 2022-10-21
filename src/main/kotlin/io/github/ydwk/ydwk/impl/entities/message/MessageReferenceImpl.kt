@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.impl.entities.message
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.YDWKWebSocket
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.message.MessageReference
 import io.github.ydwk.ydwk.util.GetterSnowFlake
@@ -37,5 +38,7 @@ class MessageReferenceImpl(override val ydwk: YDWK, override val json: JsonNode)
         get() = GetterSnowFlake.of(json.get("guild_id").asLong())
 
     override val guild: Guild?
-        get() = ydwk.getGuild(guildId.asLong)
+        get() =
+            if (ydwk is YDWKWebSocket) ydwk.getGuild(guildId.asLong)
+            else TODO("add support for rest")
 }

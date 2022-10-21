@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.impl.entities.channel.guild
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.YDWKWebSocket
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.channel.guild.Category
 import io.github.ydwk.ydwk.entities.channel.guild.text.GuildTextChannel
@@ -60,13 +61,17 @@ class GuildTextChannelImpl(
         get() = json["position"].asInt()
 
     override val parent: Category?
-        get() = ydwk.getCategory(json["parent_id"].asText())
+        get() =
+            if (ydwk is YDWKWebSocket) ydwk.getCategory(json["parent_id"].asText())
+            else TODO("Add support for rest")
 
     override val guild: Guild
         get() =
-            if (ydwk.getGuild(json["guild_id"].asText()) != null)
-                ydwk.getGuild(json["guild_id"].asText())!!
-            else throw IllegalStateException("Guild is null")
+            if (ydwk is YDWKWebSocket) {
+                if (ydwk.getGuild(json["guild_id"].asText()) != null)
+                    ydwk.getGuild(json["guild_id"].asText())!!
+                else throw IllegalStateException("Guild is null")
+            } else TODO("Add support for rest")
 
     override var name: String
         get() = json["name"].asText()

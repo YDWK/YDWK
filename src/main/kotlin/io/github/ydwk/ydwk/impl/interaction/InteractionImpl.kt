@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.impl.interaction
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.YDWKWebSocket
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.entities.User
@@ -48,10 +49,16 @@ class InteractionImpl(
     override val type: InteractionType = InteractionType.fromInt(json["type"].asInt())
 
     override val guild: Guild? =
-        if (json.has("guild_id")) ydwk.getGuild(json["guild_id"].asLong()) else null
+        if (json.has("guild_id"))
+            if (ydwk is YDWKWebSocket) ydwk.getGuild(json["guild_id"].asLong())
+            else TODO("add support for rest")
+        else null
 
     override val channel: TextChannel? =
-        if (json.has("channel_id")) ydwk.getTextChannel(json["channel_id"].asLong()) else null
+        if (json.has("channel_id"))
+            if (ydwk is YDWKWebSocket) ydwk.getTextChannel(json["channel_id"].asLong())
+            else TODO("add support for rest")
+        else null
 
     override val member: Member? =
         if (json.has("member")) guild?.let { MemberImpl(ydwk, json["member"], it) } else null

@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.impl.interaction.sub
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.YDWKWebSocket
 import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.channel.TextChannel
@@ -45,7 +46,11 @@ class InteractionResolvedDataImpl(override val ydwk: YDWK, override val json: Js
     override val members: Map<GetterSnowFlake, Member> =
         json["members"].associate {
             GetterSnowFlake.of(it["user"]["id"].asLong()) to
-                MemberImpl(ydwk, it, ydwk.getGuild(it["guild_id"].asLong())!!)
+                MemberImpl(
+                    ydwk,
+                    it,
+                    if (ydwk is YDWKWebSocket) ydwk.getGuild(it["guild_id"].asLong())!!
+                    else TODO("add support for rest"))
         }
 
     override val roles: Map<GetterSnowFlake, Role> =

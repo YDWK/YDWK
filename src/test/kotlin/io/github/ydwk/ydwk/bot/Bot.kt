@@ -19,7 +19,7 @@
 package io.github.ydwk.ydwk.bot
 
 import io.github.realyusufismail.jconfig.util.JConfigUtils
-import io.github.ydwk.ydwk.createDefaultBot
+import io.github.ydwk.ydwk.createDefaultWsBot
 import io.github.ydwk.ydwk.event.ListenerAdapter
 import io.github.ydwk.ydwk.event.backend.event.on
 import io.github.ydwk.ydwk.event.events.ReadyEvent
@@ -37,7 +37,7 @@ class Bot : ListenerAdapter() {
 
 fun main() {
     val ydwk =
-        createDefaultBot(JConfigUtils.getString("token") ?: throw Exception("Token not found!"))
+        createDefaultWsBot(JConfigUtils.getString("token") ?: throw Exception("Token not found!"))
     ydwk.addEvent(Bot())
 
     ydwk.waitForReady.slashBuilder
@@ -74,7 +74,8 @@ fun main() {
             }
             "forum_json" -> {
                 withContext(Dispatchers.IO) {
-                    val forum = it.slash.ydwk.getTextChannel("1031971612238561390")
+                    val forum =
+                        it.slash.ydwk.asYDWKWebSocket().getTextChannel("1031971612238561390")
                     if (forum != null) {
                         it.slash.reply(forum.json.toPrettyString()).get()
                     }

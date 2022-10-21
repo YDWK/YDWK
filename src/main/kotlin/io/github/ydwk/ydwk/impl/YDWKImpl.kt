@@ -22,6 +22,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.YDWKRestClient
+import io.github.ydwk.ydwk.YDWKWebSocket
 import io.github.ydwk.ydwk.cache.*
 import io.github.ydwk.ydwk.entities.Application
 import io.github.ydwk.ydwk.entities.Bot
@@ -61,6 +63,22 @@ open class YDWKImpl(
      */
     fun setLoggedIn(loggedIn: LoggedIn) {
         this.loggedInStatus = loggedIn
+    }
+
+    override fun asYDWKWebSocket(): YDWKWebSocket {
+        if (this is YDWKWebSocket) {
+            return this
+        } else {
+            throw UnsupportedOperationException("This is not a YDWKWebSocket")
+        }
+    }
+
+    override fun asYDWKRestClient(): YDWKRestClient {
+        if (this is YDWKRestClient) {
+            return this
+        } else {
+            throw UnsupportedOperationException("This is not a YDWKRestClient")
+        }
     }
 
     override val objectNode: ObjectNode
