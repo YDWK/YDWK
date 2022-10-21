@@ -61,3 +61,8 @@ fun main() {
 ```
 
 A default bot has all the recommend gateway intents.
+
+## Getting cached entities and getting entities through the rest api
+
+When you want to get a cached entity, it will be named `getEntity` and when you want to get an entity through the rest api, it will be named `requestEntity`.
+

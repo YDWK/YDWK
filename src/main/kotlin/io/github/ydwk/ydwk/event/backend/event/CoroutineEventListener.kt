@@ -22,7 +22,7 @@ package io.github.ydwk.ydwk.event.backend.event
 @FunctionalInterface
 interface CoroutineEventListener {
     /**
-     * Used to trigger the event
+     * Triggers the event
      *
      * @param event The event to be triggered
      */

@@ -24,7 +24,7 @@ import java.util.concurrent.CompletableFuture
 
 interface Sendeadble {
     /**
-     * Used to send a message to this channel.
+     * Sends a message to this channel.
      *
      * @param message the message to send.
      * @return a [CompletableFuture] that completes with the message that was sent.
@@ -34,7 +34,7 @@ interface Sendeadble {
     }
 
     /**
-     * Used to send a message to this channel.
+     * Sends a message to this channel.
      *
      * @param message the message to send.
      * @param tts whether the message should be sent using text-to-speech.
@@ -45,7 +45,7 @@ interface Sendeadble {
     }
 
     /**
-     * Used to send an embed to this channel.
+     * Sends an embed to this channel.
      *
      * @param embed the embed to send.
      * @return a [CompletableFuture] that completes with the message that was sent.
@@ -55,7 +55,7 @@ interface Sendeadble {
     }
 
     /**
-     * Used to send an embed to this channel.
+     * Sends an embed to this channel.
      *
      * @param embed the embed to send.
      * @param tts whether or not the message should be sent using text-to-speech.

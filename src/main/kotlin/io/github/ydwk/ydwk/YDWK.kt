@@ -21,10 +21,7 @@ package io.github.ydwk.ydwk
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.ydwk.ydwk.cache.CacheIds
-import io.github.ydwk.ydwk.entities.Application
-import io.github.ydwk.ydwk.entities.Bot
-import io.github.ydwk.ydwk.entities.Guild
-import io.github.ydwk.ydwk.entities.User
+import io.github.ydwk.ydwk.entities.*
 import io.github.ydwk.ydwk.entities.application.PartialApplication
 import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.channel.TextChannel
@@ -43,14 +40,14 @@ import java.util.concurrent.CompletableFuture
 interface YDWK {
 
     /**
-     * Used to create a json object
+     * Create a json object
      *
      * @return a new [ObjectNode]
      */
     val objectNode: ObjectNode
 
     /**
-     * Used to parse json, i.e. convert plain text json to Jackson classes such as JsonNode.
+     * Parses json, i.e. convert plain text json to Jackson classes such as JsonNode.
      *
      * @return a new json [ObjectMapper]
      */
@@ -60,73 +57,73 @@ interface YDWK {
     val webSocketManager: WebSocketManager?
 
     /**
-     * Used to get the properties of the bot.
+     * Gets the properties of the bot.
      *
      * @return the [Bot] object
      */
     val bot: Bot?
 
     /**
-     * Used to get some application properties sent by discord's Ready event.
+     * Gets some application properties sent by discord's Ready event.
      *
      * @return the [PartialApplication] object
      */
     var partialApplication: PartialApplication?
 
     /**
-     * Used to get the properties of the application.
+     * Gets the properties of the application.
      *
      * @return the [Application] object
      */
     val application: Application?
 
     /**
-     * Used to get information about when the bot logged in.
+     * Gets information about when the bot logged in.
      *
      * @return the [LoggedIn] object
      */
     val loggedInStatus: LoggedIn?
 
     /**
-     * Used to indicated that bot has connected to the websocket.
+     * Indicates that bot has connected to the websocket.
      *
      * @return The [YDWK] instance.
      */
     val waitForConnection: YDWK
 
     /**
-     * Used to wait for the READY gateway event to be received.
+     * Waits for the READY gateway event to be received.
      *
      * @return The [YDWK] instance.
      */
     val waitForReady: YDWK
 
     /**
-     * Used to add an event listener.
+     * adds an event listener.
      *
      * @param eventListeners The event listeners to be added.
      */
     fun addEvent(vararg eventListeners: Any)
 
     /**
-     * Used to remove an event listener.
+     * removes an event listener.
      *
      * @param eventListeners The event listeners to be removed.
      */
     fun removeEvent(vararg eventListeners: Any)
 
     /**
-     * Used to emit an event
+     * emits an event
      *
      * @param event The event to be emitted.
      */
     fun emitEvent(event: GenericEvent)
 
-    /** Used to shut down the websocket manager */
+    /** shut's down the websocket manager */
     fun shutdownAPI()
 
     /**
-     * Used to get a guild by its id.
+     * Gets a guild by its id.
      *
      * @param id The id of the guild.
      * @return The [Guild] object.
@@ -134,7 +131,7 @@ interface YDWK {
     fun getGuild(id: Long): Guild? = getGuild(id.toString())
 
     /**
-     * Used to get a guild by its id.
+     * Gets a guild by its id.
      *
      * @param id The id of the guild.
      * @return The [Guild] object.
@@ -162,42 +159,42 @@ interface YDWK {
      */
     val uptime: Instant
 
-    /** Used to add or remove slash commands */
+    /** adds or remove slash commands */
     val slashBuilder: SlashBuilder
 
-    /** Used to set the guild ids for guild commands */
+    /** Sets the guild ids for guild commands */
     fun setGuildIds(vararg guildIds: String)
 
-    /** Used to set the guild ids for guild commands */
+    /** Sets the guild ids for guild commands */
     fun setGuildIds(vararg guildIds: Long) =
         setGuildIds(*guildIds.map { it.toString() }.toTypedArray())
 
-    /** Used to set the guild ids for guild commands */
+    /** Sets the guild ids for guild commands */
     fun setGuildIds(guildIds: MutableList<String>) = setGuildIds(*guildIds.toTypedArray())
 
     /**
-     * Used to set the allowed cache types.
+     * Sets the allowed cache types.
      *
      * @param cacheTypes The cache types to be allowed.
      */
     fun setAllowedCache(vararg cacheTypes: CacheIds)
 
     /**
-     * Used to set the allowed cache types.
+     * Sets the allowed cache types.
      *
      * @param cacheTypes The cache types to be allowed.
      */
     fun setAllowedCache(cacheTypes: Set<CacheIds>) = setAllowedCache(*cacheTypes.toTypedArray())
 
     /**
-     * Used to set the disallowed cache types.
+     * Sets the disallowed cache types.
      *
      * @param cacheTypes The cache types to be disallowed.
      */
     fun setDisallowedCache(vararg cacheTypes: CacheIds)
 
     /**
-     * Used to set the disallowed cache types.
+     * Sets the disallowed cache types.
      *
      * @param cacheTypes The cache types to be disallowed.
      */
@@ -205,7 +202,7 @@ interface YDWK {
         setDisallowedCache(*cacheTypes.toTypedArray())
 
     /**
-     * Used to get a text channel by its id.
+     * Gets a text channel by its id.
      *
      * @param id The id of the text channel.
      * @return The [TextChannel] object.
@@ -213,7 +210,7 @@ interface YDWK {
     fun getTextChannel(id: Long): TextChannel?
 
     /**
-     * Used to get a text channel by its id.
+     * Gets a text channel by its id.
      *
      * @param id The id of the text channel.
      * @return The [TextChannel] object.
@@ -221,14 +218,14 @@ interface YDWK {
     fun getTextChannel(id: String): TextChannel? = getTextChannel(id.toLong())
 
     /**
-     * Used to get all the text channels the bot is in.
+     * Gets all the text channels the bot is in.
      *
      * @return A list of [TextChannel] objects.
      */
     fun getTextChannels(): List<TextChannel>
 
     /**
-     * Used to get a voice channel by its id.
+     * Gets a voice channel by its id.
      *
      * @param id The id of the voice channel.
      * @return The [VoiceChannel] object.
@@ -236,7 +233,7 @@ interface YDWK {
     fun getVoiceChannel(id: Long): VoiceChannel?
 
     /**
-     * Used to get a voice channel by its id.
+     * Gets a voice channel by its id.
      *
      * @param id The id of the voice channel.
      * @return The [VoiceChannel] object.
@@ -244,21 +241,21 @@ interface YDWK {
     fun getVoiceChannel(id: String): VoiceChannel? = getVoiceChannel(id.toLong())
 
     /**
-     * Used to get all the voice channels the bot is in.
+     * Gets all the voice channels the bot is in.
      *
      * @return A list of [VoiceChannel] objects.
      */
     fun getVoiceChannels(): List<VoiceChannel>
 
     /**
-     * Used to create an embed.
+     * Creates an embed.
      *
      * @return The [EmbedBuilder] object.
      */
     val embedBuilder: EmbedBuilder
 
     /**
-     * Used to get a category by its id.
+     * Gets a category by its id.
      *
      * @param id The id of the category.
      * @return The [Category] object.
@@ -266,7 +263,7 @@ interface YDWK {
     fun getCategory(id: Long): Category?
 
     /**
-     * Used to get a category by its id.
+     * Gets a category by its id.
      *
      * @param id The id of the category.
      * @return The [Category] object.
@@ -274,14 +271,14 @@ interface YDWK {
     fun getCategory(id: String): Category? = getCategory(id.toLong())
 
     /**
-     * Used to get all the categories the bot is in.
+     * Gets all the categories the bot is in.
      *
      * @return A list of [Category] objects.
      */
     fun getCategories(): List<Category>
 
     /**
-     * Used to create a dm channel.
+     * Creates a dm channel.
      *
      * @param userId The id of the user.
      * @return The [DmChannel] object.
@@ -289,7 +286,7 @@ interface YDWK {
     fun createDmChannel(userId: Long): CompletableFuture<DmChannel>
 
     /**
-     * Used to create a dm channel.
+     * UCreates a dm channel.
      *
      * @param userId The id of the user.
      * @return The [DmChannel] object.
@@ -298,7 +295,7 @@ interface YDWK {
         createDmChannel(userId.toLong())
 
     /**
-     * Used to create a dm channel.
+     * Creates a dm channel.
      *
      * @param user The user who you want to create a dm channel with.
      * @return The [DmChannel] object.
@@ -306,7 +303,7 @@ interface YDWK {
     fun createDmChannel(user: User): CompletableFuture<DmChannel> = createDmChannel(user.id)
 
     /**
-     * Used to get a member by its id.
+     * Gets a member by its id.
      *
      * @param guildId The id of the guild.
      * @param userId The id of the user.
@@ -315,7 +312,7 @@ interface YDWK {
     fun getMember(guildId: Long, userId: Long): Member?
 
     /**
-     * Used to get a member by its id.
+     * Gets a member by its id.
      *
      * @param guildId The id of the guild.
      * @param userId The id of the user.
@@ -325,14 +322,14 @@ interface YDWK {
         getMember(guildId.toLong(), userId.toLong())
 
     /**
-     * Used to get all the members in all the guilds the bot is in.
+     * Gets all the members in all the guilds the bot is in.
      *
      * @return A list of [Member] objects.
      */
     fun getMembers(): List<Member>
 
     /**
-     * Used to get a user by its id.
+     * Gets a user by its id.
      *
      * @param id The id of the user.
      * @return The [User] object.
@@ -340,7 +337,7 @@ interface YDWK {
     fun getUser(id: Long): User?
 
     /**
-     * Used to get a user by its id.
+     * Gets a user by its id.
      *
      * @param id The id of the user.
      * @return The [User] object.
@@ -348,9 +345,25 @@ interface YDWK {
     fun getUser(id: String): User? = getUser(id.toLong())
 
     /**
-     * Used to get all the users the bot can see.
+     * Gets all the users the bot can see.
      *
      * @return A list of [User] objects.
      */
     fun getUsers(): List<User>
+
+    /**
+     * Requests a user using its id.
+     *
+     * @param id The id of the user.
+     * @return The [CompletableFuture] object.
+     */
+    fun requestUser(id: Long): CompletableFuture<User>
+
+    /**
+     * Requests a user using its id.
+     *
+     * @param id The id of the user.
+     * @return The [CompletableFuture] object.
+     */
+    fun requestUser(id: String): CompletableFuture<User> = requestUser(id.toLong())
 }

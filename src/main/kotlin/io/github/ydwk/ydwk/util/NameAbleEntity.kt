@@ -25,7 +25,7 @@ interface NameAbleEntity : Formattable {
     var name: String
 
     /**
-     * Used to format the name of the entity
+     * Formats the name of the entity
      *
      * @param format the format of the name
      * @return the formatted name

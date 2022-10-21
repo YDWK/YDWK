@@ -155,7 +155,7 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
     override var isBoostProgressBarEnabled: Boolean =
         json["premium_progress_bar_enabled"].asBoolean()
 
-    override val bans: CompletableFuture<List<Ban>>
+    override val requestBans: CompletableFuture<List<Ban>>
         get() {
             return ydwk.restApiManager.get(EndPoint.GuildEndpoint.GET_BANS, id).execute { it ->
                 val jsonBody = it.jsonBody
@@ -212,7 +212,7 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
             .executeWithNoResult()
     }
 
-    override fun getAuditLog(
+    override fun requestedAuditLog(
         userId: GetterSnowFlake?,
         limit: Int,
         before: GetterSnowFlake?,

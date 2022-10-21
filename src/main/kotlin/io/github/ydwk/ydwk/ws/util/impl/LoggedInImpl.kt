@@ -44,13 +44,13 @@ class LoggedInImpl(
             return null
         }
 
-    /** Used to set the logged in time */
+    /** Sets the logged in time */
     fun setLoggedInTime(): LoggedIn {
         loggedInInstant = Instant.now()
         return this
     }
 
-    /** Used to set the disconnected time */
+    /** Sets the disconnected time */
     fun setDisconnectedTime(): LoggedIn {
         disconnectedInstant = Instant.now()
         return this

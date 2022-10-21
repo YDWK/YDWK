@@ -35,147 +35,147 @@ import kotlin.time.Duration
 /** This class is used to represent a discord guild object. */
 interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     /**
-     * Used to get the guild's icon hash
+     * Gets the guild's icon hash
      *
      * @return the guild's icon hash
      */
     var icon: String?
 
     /**
-     * Used to get the guild's splash hash
+     * Gets the guild's splash hash
      *
      * @return the guild's splash hash
      */
     var splash: String?
 
     /**
-     * Used to get the guild's discovery splash hash
+     * Gets the guild's discovery splash hash
      *
      * @return the guild's discovery splash hash
      */
     var discoverySplash: String?
 
     /**
-     * Used to check if this is user is owner of the guild
+     * Checks if this is user is owner of the guild
      *
      * @return true if the user is owner of the guild
      */
     var isOwner: Boolean?
 
     /**
-     * Used to get the guild's owner id
+     * Gets the guild's owner id
      *
      * @return the guild's owner id
      */
     var ownerId: GetterSnowFlake
 
     /**
-     * Used to get the guild's permissions
+     * Gets the guild's permissions
      *
      * @return the guild's permissions
      */
     var permissions: String?
 
     /**
-     * Used to get the guild's afk channel id
+     * Gets the guild's afk channel id
      *
      * @return the guild's afk channel id
      */
     var afkChannelId: GetterSnowFlake?
 
     /**
-     * Used to get the guild's afk timeout
+     * Gets the guild's afk timeout
      *
      * @return the guild's afk timeout
      */
     var afkTimeout: Int
 
     /**
-     * Used to check if the guild's widget is enabled
+     * Checks if the guild's widget is enabled
      *
      * @return true if the guild's widget is enabled
      */
     var isWidgetEnabled: Boolean?
 
     /**
-     * Used to get the guild's widget channel id
+     * Gets the guild's widget channel id
      *
      * @return the guild's widget channel id
      */
     var widgetChannelId: GetterSnowFlake?
 
     /**
-     * Used to get the guild's verification level
+     * Gets the guild's verification level
      *
      * @return the guild's verification level
      */
     var verificationLevel: VerificationLevel
 
     /**
-     * Used to get the guild's default message notification level
+     * Gets the guild's default message notification level
      *
      * @return the guild's default message notification level
      */
     var defaultMessageNotificationsLevel: MessageNotificationLevel
 
     /**
-     * Used to get the guild's explicit content filter level
+     * Gets the guild's explicit content filter level
      *
      * @return the guild's explicit content filter level
      */
     var explicitContentFilterLevel: ExplicitContentFilterLevel
 
     /**
-     * Used to get the guild's roles
+     * Gets the guild's roles
      *
      * @return the guild's roles
      */
     var roles: List<Role>
 
     /**
-     * Used to get the guild's emojis
+     * Gets the guild's emojis
      *
      * @return the guild's emojis
      */
     var emojis: List<Emoji>
 
     /**
-     * Used to get the guild's features
+     * Gets the guild's features
      *
      * @return the guild's features
      */
     var features: Set<GuildFeature>
 
     /**
-     * Used to get the guild's mfa level
+     * Gets the guild's mfa level
      *
      * @return the guild's mfa level
      */
     var mfaLevel: MFALevel
 
     /**
-     * Used to get the guild's application id
+     * Gets the guild's application id
      *
      * @return the guild's application id
      */
     var applicationId: GetterSnowFlake?
 
     /**
-     * Used to get the guild's system channel id
+     * Gets the guild's system channel id
      *
      * @return the guild's system channel id
      */
     var systemChannelId: GetterSnowFlake?
 
     /**
-     * Used to get the guild's system channel flags
+     * Gets the guild's system channel flags
      *
      * @return the guild's system channel flags
      */
     var systemChannelFlags: SystemChannelFlag
 
     /**
-     * Used to get the guild's rules channel id
+     * Gets the guild's rules channel id
      *
      * @return the guild's rules channel id
      */
@@ -295,14 +295,14 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     var isBoostProgressBarEnabled: Boolean
 
     /**
-     * Gets a list of ban's for the guild
+     * Requests a list of ban's for the guild
      *
      * @return a list of ban's for the guild
      */
-    val bans: CompletableFuture<List<Ban>>
+    val requestBans: CompletableFuture<List<Ban>>
 
     /**
-     * Used to create a dm channel.
+     * Creates a dm channel.
      *
      * @param userId The id of the user.
      * @return The [DmChannel] object.
@@ -310,7 +310,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     fun createDmChannel(userId: Long): CompletableFuture<DmChannel>
 
     /**
-     * Used to create a dm channel.
+     * Creates a dm channel.
      *
      * @param userId The id of the user.
      * @return The [DmChannel] object.
@@ -319,7 +319,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
         createDmChannel(userId.toLong())
 
     /**
-     * Used to create a dm channel.
+     * Creates a dm channel.
      *
      * @param user The user who you want to create a dm channel with.
      * @return The [DmChannel] object.
@@ -327,7 +327,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     fun createDmChannel(user: User): CompletableFuture<DmChannel> = createDmChannel(user.id)
 
     /**
-     * Used to get the bot as a member of the guild.
+     * Gets the bot as a member of the guild.
      *
      * @return The [Member] object.
      * @throws IllegalStateException If the bot is not in the guild.
@@ -335,7 +335,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     val botAsMember: Member
 
     /**
-     * Used to ban a user from the guild.
+     * Bans a user from the guild.
      *
      * @param userId The id of the user.
      * @param deleteMessageDuration The duration of the messages to delete.
@@ -349,7 +349,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     ): CompletableFuture<Void>
 
     /**
-     * Used to ban a user from the guild.
+     * Bans a user from the guild.
      *
      * @param userId The id of the user.
      * @param deleteMessageDuration The duration of the messages to delete.
@@ -363,7 +363,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     ): CompletableFuture<Void> = banUser(userId.toLong(), deleteMessageDuration, reason)
 
     /**
-     * Used to ban a user from the guild.
+     * Bans a user from the guild.
      *
      * @param user The user to ban.
      * @param deleteMessageDuration The duration of the messages to delete.
@@ -376,7 +376,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     ): CompletableFuture<Void> = banUser(user.id, deleteMessageDuration, reason)
 
     /**
-     * Used to ban a member from the guild.
+     * Bans a member from the guild.
      *
      * @param member The member to ban.
      * @param deleteMessageDuration The duration of the messages to delete.
@@ -394,7 +394,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
             reason)
 
     /**
-     * Used to unban a user from the guild.
+     * Unbans a user from the guild.
      *
      * @param userId The id of the user.
      * @param reason The reason for the unban.
@@ -403,7 +403,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     fun unbanUser(userId: Long, reason: String? = null): CompletableFuture<Void>
 
     /**
-     * Used to unban a user from the guild.
+     * Unbans a user from the guild.
      *
      * @param userId The id of the user.
      * @param reason The reason for the unban.
@@ -413,7 +413,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
         unbanUser(userId.toLong(), reason)
 
     /**
-     * Used to unban a user from the guild.
+     * Unbans a user from the guild.
      *
      * @param user The user to unban.
      * @param reason The reason for the unban.
@@ -423,7 +423,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
         unbanUser(user.id, reason)
 
     /**
-     * Used to kick a member from the guild.
+     * Kicks a member from the guild.
      *
      * @param userId The id of the user.
      * @param reason The reason for the kick.
@@ -432,7 +432,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     fun kickMember(userId: Long, reason: String? = null): CompletableFuture<Void>
 
     /**
-     * Used to kick a member from the guild.
+     * Kicks a member from the guild.
      *
      * @param userId The id of the user.
      * @param reason The reason for the kick.
@@ -442,7 +442,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
         kickMember(userId.toLong(), reason)
 
     /**
-     * Used to kick a member from the guild.
+     * Kicks a member from the guild.
      *
      * @param member The member to kick.
      * @param reason The reason for the kick.
@@ -453,7 +453,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
             ?: throw IllegalStateException("Member has no user")
 
     /**
-     * Used to get the audit log for the guild.
+     * Request the audit log for the guild.
      *
      * @param userId The id of the user.
      * @param limit Maximum number of entries (between 1-100) to return, defaults to 50
@@ -461,7 +461,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @param actionType The type of action to filter by.
      * @return A [CompletableFuture] that completes when the audit log is retrieved.
      */
-    fun getAuditLog(
+    fun requestedAuditLog(
         userId: GetterSnowFlake? = null,
         limit: Int = 50,
         before: GetterSnowFlake? = null,
@@ -469,48 +469,48 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     ): CompletableFuture<AuditLog>
 
     /**
-     * Used to get the audit log for the guild.
+     * Request the audit log for the guild.
      *
      * @return A [CompletableFuture] that completes when the audit log is retrieved.
      */
-    fun getAuditLog(): CompletableFuture<AuditLog> =
-        getAuditLog(GetterSnowFlake.asNull, 50, null, null)
+    fun requestedAuditLog(): CompletableFuture<AuditLog> =
+        requestedAuditLog(GetterSnowFlake.asNull, 50, null, null)
 
     /**
-     * Used to get the audit log for the guild.
+     * Request the audit log for the guild.
      *
      * @param userId The id of the user.
      * @return A [CompletableFuture] that completes when the audit log is retrieved.
      */
-    fun getAuditLog(userId: GetterSnowFlake): CompletableFuture<AuditLog> =
-        getAuditLog(userId, 50, null, null)
+    fun requestedAuditLog(userId: GetterSnowFlake): CompletableFuture<AuditLog> =
+        requestedAuditLog(userId, 50, null, null)
 
     /**
-     * Used to get the audit log for the guild.
+     * Request the audit log for the guild.
      *
      * @param userId The id of the user.
      * @param limit Maximum number of entries (between 1-100) to return, defaults to 50
      * @return A [CompletableFuture] that completes when the audit log is retrieved.
      */
-    fun getAuditLog(userId: GetterSnowFlake, limit: Int): CompletableFuture<AuditLog> =
-        getAuditLog(userId, limit, null, null)
+    fun requestedAuditLog(userId: GetterSnowFlake, limit: Int): CompletableFuture<AuditLog> =
+        requestedAuditLog(userId, limit, null, null)
 
     /**
-     * Used to get the audit log for the guild.
+     * Request the audit log for the guild.
      *
      * @param userId The id of the user.
      * @param limit Maximum number of entries (between 1-100) to return, defaults to 50
      * @param before Entries that preceded a specific audit log entry ID.
      * @return A [CompletableFuture] that completes when the audit log is retrieved.
      */
-    fun getAuditLog(
+    fun requestedAuditLog(
         userId: GetterSnowFlake,
         limit: Int,
         before: GetterSnowFlake
-    ): CompletableFuture<AuditLog> = getAuditLog(userId, limit, before, null)
+    ): CompletableFuture<AuditLog> = requestedAuditLog(userId, limit, before, null)
 
     /**
-     * Used to get the audit log for the guild.
+     * Request the audit log for the guild.
      *
      * @param user The user to filter by.
      * @param limit Maximum number of entries (between 1-100) to return, defaults to 50
@@ -518,44 +518,48 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @param actionType The type of action to filter by.
      * @return A [CompletableFuture] that completes when the audit log is retrieved.
      */
-    fun getAuditLog(
+    fun requestedAuditLog(
         user: User? = null,
         limit: Int = 50,
         before: GetterSnowFlake? = null,
         actionType: AuditLogType? = null
-    ): CompletableFuture<AuditLog> = getAuditLog(user, limit, before, actionType)
+    ): CompletableFuture<AuditLog> = requestedAuditLog(user, limit, before, actionType)
 
     /**
-     * Used to get the audit log for the guild.
+     * Request the audit log for the guild.
      *
      * @param user The user to filter by.
      * @return A [CompletableFuture] that completes when the audit log is retrieved.
      */
-    fun getAuditLog(user: User): CompletableFuture<AuditLog> = getAuditLog(user, 50, null, null)
+    fun requestedAuditLog(user: User): CompletableFuture<AuditLog> =
+        requestedAuditLog(user, 50, null, null)
 
     /**
-     * Used to get the audit log for the guild.
+     * Request the audit log for the guild.
      *
      * @param user The user to filter by.
      * @param limit Maximum number of entries (between 1-100) to return, defaults to 50
      * @return A [CompletableFuture] that completes when the audit log is retrieved.
      */
-    fun getAuditLog(user: User, limit: Int): CompletableFuture<AuditLog> =
-        getAuditLog(user, limit, null, null)
+    fun requestedAuditLog(user: User, limit: Int): CompletableFuture<AuditLog> =
+        requestedAuditLog(user, limit, null, null)
 
     /**
-     * Used to get the audit log for the guild.
+     * Request the audit log for the guild.
      *
      * @param user The user to filter by.
      * @param limit Maximum number of entries (between 1-100) to return, defaults to 50
      * @param before Entries that preceded a specific audit log entry ID.
      * @return A [CompletableFuture] that completes when the audit log is retrieved.
      */
-    fun getAuditLog(user: User, limit: Int, before: GetterSnowFlake): CompletableFuture<AuditLog> =
-        getAuditLog(user, limit, before, null)
+    fun requestedAuditLog(
+        user: User,
+        limit: Int,
+        before: GetterSnowFlake
+    ): CompletableFuture<AuditLog> = requestedAuditLog(user, limit, before, null)
 
     /**
-     * Used to get a role from the guild.
+     * Gets a role from the guild.
      *
      * @param roleId The id of the role.
      * @return The role, or null if it doesn't exist.
@@ -563,7 +567,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     fun getRole(roleId: Long): Role?
 
     /**
-     * Used to get a role from the guild.
+     * Gets a role from the guild.
      *
      * @param roleId The id of the role.
      * @return The role, or null if it doesn't exist.
