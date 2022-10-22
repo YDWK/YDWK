@@ -21,15 +21,14 @@ package io.github.ydwk.ydwk.impl.entities.channel.guild
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Guild
-import io.github.ydwk.ydwk.entities.channel.guild.Category
+import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
 import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
-import io.github.ydwk.ydwk.impl.entities.channel.VoiceChannelImpl
 
-class GuildVoiceChannelImpl(
+open class GuildVoiceChannelImpl(
     override val ydwk: YDWK,
     override val json: JsonNode,
     override val idAsLong: Long
-) : GuildVoiceChannel, VoiceChannelImpl(ydwk, json, idAsLong) {
+) : GuildVoiceChannel, GenericGuildChannelImpl(ydwk, json, idAsLong) {
     override val bitrate: Int
         get() = json["bitrate"].asInt()
 
@@ -42,7 +41,7 @@ class GuildVoiceChannelImpl(
     override val position: Int
         get() = json["position"].asInt()
 
-    override val parent: Category?
+    override val parent: GuildCategory?
         get() = ydwk.getCategory(json["parent_id"].asText())
 
     override val guild: Guild

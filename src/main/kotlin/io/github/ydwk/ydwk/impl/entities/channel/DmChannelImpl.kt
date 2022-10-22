@@ -30,7 +30,7 @@ class DmChannelImpl(
     override val ydwk: YDWK,
     override val json: JsonNode,
     override val idAsLong: Long
-) : DmChannel, TextChannelImpl(ydwk, json, idAsLong) {
+) : DmChannel {
 
     override var lastMessageId: GetterSnowFlake? =
         if (json.has("last_message_id")) GetterSnowFlake.of(json["last_message_id"].asLong())

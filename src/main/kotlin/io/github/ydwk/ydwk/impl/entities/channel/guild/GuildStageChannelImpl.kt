@@ -16,8 +16,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.channel.guild
+package io.github.ydwk.ydwk.impl.entities.channel.guild
 
-import io.github.ydwk.ydwk.entities.channel.GuildChannel
+import com.fasterxml.jackson.databind.JsonNode
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildStageChannel
 
-interface Category : GuildChannel {}
+class GuildStageChannelImpl(ydwk: YDWK, override val json: JsonNode, idAsLong: Long) :
+    GuildStageChannel, GuildVoiceChannelImpl(ydwk, json, idAsLong) {
+    override val topic: String?
+        get() = if (json["topic"].isNull) null else json["topic"].asText()
+}

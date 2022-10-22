@@ -29,7 +29,7 @@ import io.github.ydwk.ydwk.entities.application.PartialApplication
 import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.channel.TextChannel
 import io.github.ydwk.ydwk.entities.channel.VoiceChannel
-import io.github.ydwk.ydwk.entities.channel.guild.Category
+import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
 import io.github.ydwk.ydwk.event.backend.event.GenericEvent
@@ -261,24 +261,24 @@ interface YDWK {
      * Used to get a category by its id.
      *
      * @param id The id of the category.
-     * @return The [Category] object.
+     * @return The [GuildCategory] object.
      */
-    fun getCategory(id: Long): Category?
+    fun getCategory(id: Long): GuildCategory?
 
     /**
      * Used to get a category by its id.
      *
      * @param id The id of the category.
-     * @return The [Category] object.
+     * @return The [GuildCategory] object.
      */
-    fun getCategory(id: String): Category? = getCategory(id.toLong())
+    fun getCategory(id: String): GuildCategory? = getCategory(id.toLong())
 
     /**
      * Used to get all the categories the bot is in.
      *
-     * @return A list of [Category] objects.
+     * @return A list of [GuildCategory] objects.
      */
-    fun getCategories(): List<Category>
+    fun getCategories(): List<GuildCategory>
 
     /**
      * Used to create a dm channel.

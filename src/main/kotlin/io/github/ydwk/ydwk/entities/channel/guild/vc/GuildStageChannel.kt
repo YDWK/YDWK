@@ -16,8 +16,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.channel
+package io.github.ydwk.ydwk.entities.channel.guild.vc
 
-import io.github.ydwk.ydwk.entities.Channel
-
-interface VoiceChannel : Channel
+interface GuildStageChannel : GuildVoiceChannel {
+    /**
+     * Gets the topic of the stage channel.
+     *
+     * @return The topic of the stage channel.
+     */
+    val topic: String?
+}

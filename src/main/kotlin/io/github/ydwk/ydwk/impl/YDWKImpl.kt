@@ -31,7 +31,7 @@ import io.github.ydwk.ydwk.entities.application.PartialApplication
 import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.channel.TextChannel
 import io.github.ydwk.ydwk.entities.channel.VoiceChannel
-import io.github.ydwk.ydwk.entities.channel.guild.Category
+import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
 import io.github.ydwk.ydwk.event.backend.event.CoroutineEventListener
@@ -163,12 +163,12 @@ class YDWKImpl(
     override val embedBuilder: EmbedBuilder
         get() = EmbedBuilderImpl(this)
 
-    override fun getCategory(id: Long): Category? {
-        return cache[id.toString(), CacheIds.CATEGORY] as Category?
+    override fun getCategory(id: Long): GuildCategory? {
+        return cache[id.toString(), CacheIds.CATEGORY] as GuildCategory?
     }
 
-    override fun getCategories(): List<Category> {
-        return cache.values(CacheIds.CATEGORY).map { it as Category }
+    override fun getCategories(): List<GuildCategory> {
+        return cache.values(CacheIds.CATEGORY).map { it as GuildCategory }
     }
 
     override fun createDmChannel(userId: Long): CompletableFuture<DmChannel> {

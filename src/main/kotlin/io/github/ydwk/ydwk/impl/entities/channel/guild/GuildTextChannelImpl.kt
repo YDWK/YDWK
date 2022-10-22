@@ -21,16 +21,15 @@ package io.github.ydwk.ydwk.impl.entities.channel.guild
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Guild
-import io.github.ydwk.ydwk.entities.channel.guild.Category
+import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
 import io.github.ydwk.ydwk.entities.channel.guild.text.GuildTextChannel
 import io.github.ydwk.ydwk.entities.channel.guild.text.PermissionOverwrite
-import io.github.ydwk.ydwk.impl.entities.channel.TextChannelImpl
 
 class GuildTextChannelImpl(
     override val ydwk: YDWK,
     override val json: JsonNode,
     override val idAsLong: Long
-) : GuildTextChannel, TextChannelImpl(ydwk, json, idAsLong) {
+) : GuildTextChannel, GenericGuildChannelImpl(ydwk, json, idAsLong) {
 
     override val topic: String
         get() = json["topic"].asText()
@@ -59,7 +58,7 @@ class GuildTextChannelImpl(
     override val position: Int
         get() = json["position"].asInt()
 
-    override val parent: Category?
+    override val parent: GuildCategory?
         get() = ydwk.getCategory(json["parent_id"].asText())
 
     override val guild: Guild

@@ -20,6 +20,10 @@ package io.github.ydwk.ydwk.entities.channel
 
 import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.entities.Guild
+import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
+import io.github.ydwk.ydwk.entities.channel.guild.text.GuildTextChannel
+import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildStageChannel
+import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.ydwk.util.NameAbleEntity
 
 interface GuildChannel : Channel, NameAbleEntity {
@@ -29,4 +33,32 @@ interface GuildChannel : Channel, NameAbleEntity {
      * @return the guild of this channel.
      */
     val guild: Guild
+
+    /**
+     * Gets the channel as Guild Text Channel.
+     *
+     * @return the channel as Guild Text Channel.
+     */
+    fun asGuildTextChannel(): GuildTextChannel?
+
+    /**
+     * Gets the channel as Guild Voice Channel.
+     *
+     * @return the channel as Guild Voice Channel.
+     */
+    fun asGuildVoiceChannel(): GuildVoiceChannel?
+
+    /**
+     * Gets the channel as Guild Category.
+     *
+     * @return the channel as Guild Category.
+     */
+    fun asGuildCategory(): GuildCategory?
+
+    /**
+     * Gets the channel as a guild stage channel.
+     *
+     * @return the channel as a stage channel.
+     */
+    fun asStageChannel(): GuildStageChannel?
 }

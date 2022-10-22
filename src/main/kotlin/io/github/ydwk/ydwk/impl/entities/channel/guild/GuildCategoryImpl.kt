@@ -16,23 +16,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.impl.entities.channel
+package io.github.ydwk.ydwk.impl.entities.channel.guild
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.channel.VoiceChannel
-import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
-import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
+import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
 
-open class VoiceChannelImpl(
+class GuildCategoryImpl(
     override val ydwk: YDWK,
     override val json: JsonNode,
     override val idAsLong: Long
-) : VoiceChannel {
-    override fun asGuildVoiceChannel(): GuildVoiceChannel? {
-        TODO("Not yet implemented")
-    }
-
-    override val type: ChannelType
-        get() = ChannelType.fromId(json["type"].asInt())
-}
+) : GuildCategory, GenericGuildChannelImpl(ydwk, json, idAsLong) {}

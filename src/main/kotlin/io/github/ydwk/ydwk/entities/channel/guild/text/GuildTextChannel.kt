@@ -22,6 +22,7 @@ import io.github.ydwk.ydwk.entities.channel.TextChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildChannel
 
 interface GuildTextChannel : GenericGuildChannel, TextChannel {
+
     /**
      * Gets the topic of this channel.
      *

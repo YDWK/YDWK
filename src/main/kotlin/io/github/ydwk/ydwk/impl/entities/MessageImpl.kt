@@ -24,11 +24,12 @@ import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.application.PartialApplication
 import io.github.ydwk.ydwk.entities.channel.TextChannel
+import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildChannel
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.entities.message.*
 import io.github.ydwk.ydwk.entities.sticker.StickerItem
 import io.github.ydwk.ydwk.impl.entities.application.PartialApplicationImpl
-import io.github.ydwk.ydwk.impl.entities.channel.TextChannelImpl
+import io.github.ydwk.ydwk.impl.entities.channel.guild.GenericGuildChannelImpl
 import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
 import io.github.ydwk.ydwk.impl.entities.message.*
 import io.github.ydwk.ydwk.impl.entities.sticker.StickerItemImpl
@@ -83,11 +84,11 @@ class MessageImpl(
             return list
         }
 
-    override val mentionedChannels: List<TextChannel>
+    override val mentionedChannels: List<GenericGuildChannel>
         get() {
-            val list = mutableListOf<TextChannel>()
+            val list = mutableListOf<GenericGuildChannel>()
             json.get("mention_channels").forEach {
-                list.add(TextChannelImpl(ydwk, it, it.get("id").asLong()))
+                list.add(GenericGuildChannelImpl(ydwk, it, it.get("id").asLong()))
             }
             return list
         }
@@ -164,10 +165,11 @@ class MessageImpl(
                     ydwk, json.get("interaction"), json.get("interaction").get("id").asLong())
             else null
 
-    override val thread: TextChannel?
+    override val thread: GenericGuildChannel?
         get() =
             if (json.has("thread"))
-                TextChannelImpl(ydwk, json.get("thread"), json.get("thread").get("id").asLong())
+                GenericGuildChannelImpl(
+                    ydwk, json.get("thread"), json.get("thread").get("id").asLong())
             else null
 
     override val components: List<MessageComponent>

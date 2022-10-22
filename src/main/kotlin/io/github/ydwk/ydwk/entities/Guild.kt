@@ -531,7 +531,8 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @param user The user to filter by.
      * @return A [CompletableFuture] that completes when the audit log is retrieved.
      */
-    fun requestedAuditLog(user: User): CompletableFuture<AuditLog> = requestedAuditLog(user, 50, null, null)
+    fun requestedAuditLog(user: User): CompletableFuture<AuditLog> =
+        requestedAuditLog(user, 50, null, null)
 
     /**
      * Used to get the audit log for the guild.
@@ -551,8 +552,11 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @param before Entries that preceded a specific audit log entry ID.
      * @return A [CompletableFuture] that completes when the audit log is retrieved.
      */
-    fun requestedAuditLog(user: User, limit: Int, before: GetterSnowFlake): CompletableFuture<AuditLog> =
-        requestedAuditLog(user, limit, before, null)
+    fun requestedAuditLog(
+        user: User,
+        limit: Int,
+        before: GetterSnowFlake
+    ): CompletableFuture<AuditLog> = requestedAuditLog(user, limit, before, null)
 
     /**
      * Used to get a role from the guild.
