@@ -31,6 +31,7 @@ import io.github.ydwk.ydwk.entities.application.PartialApplication
 import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.channel.TextChannel
 import io.github.ydwk.ydwk.entities.channel.VoiceChannel
+import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
@@ -145,30 +146,78 @@ class YDWKImpl(
     }
 
     override fun getTextChannel(id: Long): TextChannel? {
-        return cache[id.toString(), CacheIds.TEXT_CHANNEL] as TextChannel?
+        val channel = cache[id.toString(), CacheIds.TEXT_CHANNEL] as GenericGuildChannel?
+        if (channel != null) {
+            if (channel.isTextChannel) {
+                return channel.asGenericGuildTextChannel()
+            }
+        } else {
+            return null
+        }
+        return null
     }
 
     override fun getTextChannels(): List<TextChannel> {
-        return cache.values(CacheIds.TEXT_CHANNEL).map { it as TextChannel }
+        return cache.values(CacheIds.TEXT_CHANNEL).map { it ->
+            val genericGuildChannel = it as GenericGuildChannel
+            if (genericGuildChannel.isTextChannel) {
+                genericGuildChannel.asGenericGuildTextChannel()
+            } else {
+                null
+            }
+                ?: throw IllegalStateException("Channel is not a text channel")
+        }
     }
 
     override fun getVoiceChannel(id: Long): VoiceChannel? {
-        return cache[id.toString(), CacheIds.VOICE_CHANNEL] as VoiceChannel?
+        val channel = cache[id.toString(), CacheIds.VOICE_CHANNEL] as GenericGuildChannel?
+        if (channel != null) {
+            if (channel.isVoiceChannel) {
+                return channel.asGenericGuildVoiceChannel()
+            }
+        } else {
+            return null
+        }
+        return null
     }
 
     override fun getVoiceChannels(): List<VoiceChannel> {
-        return cache.values(CacheIds.VOICE_CHANNEL).map { it as VoiceChannel }
+        return cache.values(CacheIds.VOICE_CHANNEL).map { it ->
+            val genericGuildChannel = it as GenericGuildChannel
+            if (genericGuildChannel.isVoiceChannel) {
+                genericGuildChannel.asGenericGuildVoiceChannel()
+            } else {
+                null
+            }
+                ?: throw IllegalStateException("Channel is not a voice channel")
+        }
     }
 
     override val embedBuilder: EmbedBuilder
         get() = EmbedBuilderImpl(this)
 
     override fun getCategory(id: Long): GuildCategory? {
-        return cache[id.toString(), CacheIds.CATEGORY] as GuildCategory?
+        val channel = cache[id.toString(), CacheIds.CATEGORY] as GenericGuildChannel?
+        if (channel != null) {
+            if (channel.isCategory) {
+                return channel.asGuildCategory()
+            }
+        } else {
+            return null
+        }
+        return null
     }
 
     override fun getCategories(): List<GuildCategory> {
-        return cache.values(CacheIds.CATEGORY).map { it as GuildCategory }
+        return cache.values(CacheIds.CATEGORY).map { it ->
+            val genericGuildChannel = it as GenericGuildChannel
+            if (genericGuildChannel.isCategory) {
+                genericGuildChannel.asGuildCategory()
+            } else {
+                null
+            }
+                ?: throw IllegalStateException("Channel is not a category")
+        }
     }
 
     override fun createDmChannel(userId: Long): CompletableFuture<DmChannel> {

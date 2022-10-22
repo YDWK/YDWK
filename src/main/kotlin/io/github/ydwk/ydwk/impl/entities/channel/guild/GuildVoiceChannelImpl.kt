@@ -28,7 +28,7 @@ open class GuildVoiceChannelImpl(
     override val ydwk: YDWK,
     override val json: JsonNode,
     override val idAsLong: Long
-) : GuildVoiceChannel, GenericGuildChannelImpl(ydwk, json, idAsLong) {
+) : GuildVoiceChannel, GenericGuildVoiceChannelImpl(ydwk, json, idAsLong) {
     override val bitrate: Int
         get() = json["bitrate"].asInt()
 

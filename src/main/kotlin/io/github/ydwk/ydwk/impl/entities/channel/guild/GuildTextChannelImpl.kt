@@ -29,7 +29,7 @@ class GuildTextChannelImpl(
     override val ydwk: YDWK,
     override val json: JsonNode,
     override val idAsLong: Long
-) : GuildTextChannel, GenericGuildChannelImpl(ydwk, json, idAsLong) {
+) : GuildTextChannel, GenericGuildTextChannelImpl(ydwk, json, idAsLong) {
 
     override val topic: String
         get() = json["topic"].asText()

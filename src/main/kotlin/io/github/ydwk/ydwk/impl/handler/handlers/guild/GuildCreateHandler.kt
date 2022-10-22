@@ -92,7 +92,8 @@ class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
                     channelJson.forEach { channel ->
                         if (channel["type"].asInt() == it.getId()) {
                             textChannel.add(
-                                GenericGuildChannelImpl(ydwk, channel, channel["id"].asLong()))
+                                GenericGuildChannelImpl(
+                                    ydwk, channel, channel["id"].asLong(), true))
                         }
                     }
                 }
@@ -100,7 +101,8 @@ class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
                     channelJson.forEach { channel ->
                         if (channel["type"].asInt() == it.getId()) {
                             voiceChannel.add(
-                                GenericGuildChannelImpl(ydwk, channel, channel["id"].asLong()))
+                                GenericGuildChannelImpl(
+                                    ydwk, channel, channel["id"].asLong(), isVoiceChannel = true))
                         }
                     }
                 }
@@ -108,7 +110,8 @@ class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
                     channelJson.forEach { channel ->
                         if (channel["type"].asInt() == it.getId()) {
                             category.add(
-                                GenericGuildChannelImpl(ydwk, channel, channel["id"].asLong()))
+                                GenericGuildChannelImpl(
+                                    ydwk, channel, channel["id"].asLong(), isCategory = true))
                         }
                     }
                 }

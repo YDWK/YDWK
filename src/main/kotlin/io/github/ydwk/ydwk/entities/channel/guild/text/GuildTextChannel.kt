@@ -18,10 +18,9 @@
  */ 
 package io.github.ydwk.ydwk.entities.channel.guild.text
 
-import io.github.ydwk.ydwk.entities.channel.TextChannel
-import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildChannel
+import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
 
-interface GuildTextChannel : GenericGuildChannel, TextChannel {
+interface GuildTextChannel : GenericGuildTextChannel {
 
     /**
      * Gets the topic of this channel.

@@ -16,29 +16,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.channel.guild.vc
+package io.github.ydwk.ydwk.entities.channel.guild
 
-import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildVoiceChannel
+import io.github.ydwk.ydwk.entities.channel.VoiceChannel
+import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildStageChannel
+import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
 
-interface GuildVoiceChannel : GenericGuildVoiceChannel {
+interface GenericGuildVoiceChannel : GenericGuildChannel, VoiceChannel {
     /**
-     * Gets the bitrate (in bits) of the voice channel
+     * Gets the channel as Guild Voice Channel.
      *
-     * @return the bitrate
+     * @return the channel as Guild Voice Channel.
      */
-    val bitrate: Int
-
-    /**
-     * Gets the user limit of the voice channel
-     *
-     * @return the user limit
-     */
-    val userLimit: Int
+    fun asGuildVoiceChannel(): GuildVoiceChannel?
 
     /**
-     * Gets the rate limit per user of the voice channel
+     * Gets the channel as a guild stage channel.
      *
-     * @return the rate limit per user
+     * @return the channel as a stage channel.
      */
-    val rateLimitPerUser: Int
+    fun asStageChannel(): GuildStageChannel?
 }

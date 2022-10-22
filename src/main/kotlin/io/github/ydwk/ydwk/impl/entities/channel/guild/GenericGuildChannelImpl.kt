@@ -23,15 +23,17 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
 import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildChannel
+import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
+import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildVoiceChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
-import io.github.ydwk.ydwk.entities.channel.guild.text.GuildTextChannel
-import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildStageChannel
-import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
 
 open class GenericGuildChannelImpl(
     override val ydwk: YDWK,
     override val json: JsonNode,
-    override val idAsLong: Long
+    override val idAsLong: Long,
+    override val isTextChannel: Boolean = false,
+    override val isVoiceChannel: Boolean = false,
+    override val isCategory: Boolean = false
 ) : GenericGuildChannel {
 
     override val position: Int
@@ -39,22 +41,6 @@ open class GenericGuildChannelImpl(
 
     override val parent: GuildCategory?
         get() = TODO("Not yet implemented")
-
-    override fun asGuildTextChannel(): GuildTextChannel? {
-        return if (isCastable(GuildTextChannel::class.java)) {
-            GuildTextChannelImpl(ydwk, json, idAsLong)
-        } else {
-            null
-        }
-    }
-
-    override fun asGuildVoiceChannel(): GuildVoiceChannel? {
-        return if (isCastable(GuildVoiceChannel::class.java)) {
-            GuildVoiceChannelImpl(ydwk, json, idAsLong)
-        } else {
-            null
-        }
-    }
 
     override fun asGuildCategory(): GuildCategory? {
         return if (isCastable(GuildCategory::class.java)) {
@@ -64,11 +50,19 @@ open class GenericGuildChannelImpl(
         }
     }
 
-    override fun asStageChannel(): GuildStageChannel? {
-        return if (isCastable(GuildStageChannel::class.java)) {
-            GuildStageChannelImpl(ydwk, json, idAsLong)
+    override fun asGenericGuildTextChannel(): GenericGuildTextChannel {
+        return if (isCastable(GenericGuildTextChannel::class.java)) {
+            GenericGuildTextChannelImpl(ydwk, json, idAsLong)
         } else {
-            null
+            throw ClassCastException("This channel is not a text channel.")
+        }
+    }
+
+    override fun asGenericGuildVoiceChannel(): GenericGuildVoiceChannel {
+        return if (isCastable(GenericGuildVoiceChannel::class.java)) {
+            GenericGuildVoiceChannelImpl(ydwk, json, idAsLong)
+        } else {
+            throw ClassCastException("This channel is not a voice channel.")
         }
     }
 
@@ -79,6 +73,6 @@ open class GenericGuildChannelImpl(
         get() = ChannelType.fromId(json["type"].asInt())
 
     override var name: String
-        get() = TODO("Not yet implemented")
+        get() = json["name"].asText()
         set(value) {}
 }
