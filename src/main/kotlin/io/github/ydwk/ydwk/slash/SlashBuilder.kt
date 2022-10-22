@@ -22,7 +22,7 @@ import io.github.ydwk.ydwk.util.CheckReturnValue
 
 interface SlashBuilder {
     /**
-     * Used to add a new Slash Command to the builder
+     * Adds a new Slash Command to the builder
      *
      * @param slash The Slash Command to add
      */
@@ -46,29 +46,29 @@ interface SlashBuilder {
     @CheckReturnValue fun getSlashCommands(): List<Slash>
 
     /**
-     * Used to remove a Slash Command from the builder
+     * Removes a Slash Command from the builder
      *
      * @param slash The Slash Command to remove
      */
     @CheckReturnValue fun removeSlashCommand(slash: Slash): SlashBuilder
 
     /**
-     * Used to remove a List of Slash Commands from the builder
+     * Replies a List of Slash Commands from the builder
      *
      * @param slashes The List of Slash Commands to remove
      */
     @CheckReturnValue fun removeSlashCommands(slashes: List<Slash>): SlashBuilder
 
     /**
-     * Used to remove a List of Slash Commands from the builder
+     * Replies a List of Slash Commands from the builder
      *
      * @param slashes The List of Slash Commands to remove
      */
     @CheckReturnValue fun removeSlashCommands(vararg slashes: Slash): SlashBuilder
 
-    /** Used to remove all Slash Commands from the builder */
+    /** Removes all Slash Commands from the builder */
     @CheckReturnValue fun removeAllSlashCommands(): SlashBuilder
 
-    /** Used to build the Slash Commands */
+    /** Builds the Slash Commands */
     fun build()
 }

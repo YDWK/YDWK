@@ -20,11 +20,11 @@ package io.github.ydwk.ydwk.cache
 
 /** This used to store and retrieve data from cache */
 interface Cache {
-    /** Used to get the size of the cache */
+    /** Gets the size of the cache */
     val size: Int
 
     /**
-     * Used to add a new item to the cache
+     * Adds a new item to the cache
      *
      * @param key The key of the item
      * @param value The value of the item
@@ -32,7 +32,7 @@ interface Cache {
     operator fun set(key: String, value: Any, cacheType: CacheIds)
 
     /**
-     * Used to get an item from the cache
+     * Gets an item from the cache
      *
      * @param key The key of the item
      * @return The value of the item
@@ -40,7 +40,7 @@ interface Cache {
     operator fun get(key: String, cacheType: CacheIds): Any?
 
     /**
-     * Used to remove an item from the cache
+     * Removes an item from the cache
      *
      * @param key The key of the item
      * @return The value of the item
@@ -48,7 +48,7 @@ interface Cache {
     fun remove(key: String, cacheType: CacheIds): Any?
 
     /**
-     * Used to check if this properties exists in the cache
+     * Check's if this properties exists in the cache
      *
      * @param key The key of the item
      * @return True if the item exists, false otherwise
@@ -56,7 +56,7 @@ interface Cache {
     fun contains(key: String): Boolean
 
     /**
-     * Used to check if this properties exists in the cache and value exists
+     * Check's if this properties exists in the cache and value exists
      *
      * @param key The key of the item
      * @param cacheType The type of the item
@@ -64,9 +64,9 @@ interface Cache {
      */
     fun contains(key: String, cacheType: CacheIds): Boolean
 
-    /** Used to clear the cache */
+    /** Clears the cache */
     fun clear()
 
-    /** Used to get a list of objects in the cache */
+    /** Gets a list of objects in the cache */
     fun values(cacheType: CacheIds): List<Any>
 }

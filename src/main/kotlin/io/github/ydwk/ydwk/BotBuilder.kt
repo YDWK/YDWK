@@ -24,7 +24,7 @@ import io.github.ydwk.ydwk.ws.util.GateWayIntent
 import okhttp3.OkHttpClient
 
 /**
- * Used to create a bot instance and used the default intents decided by YDWK.
+ * Creates a bot instance and used the default intents decided by YDWK.
  *
  * @param token Used to authenticate the bot.
  */
@@ -36,7 +36,7 @@ fun createDefaultBot(token: String): YDWK {
 }
 
 /**
- * Used to create a bot instance and used the default intents decided by YDWK.
+ * Creates a bot instance and used the default intents decided by YDWK.
  *
  * @param token Used to authenticate the bot.
  * @param httpClient Used to create the websocket connection.
@@ -48,7 +48,7 @@ fun createDefaultBot(token: String, httpClient: OkHttpClient): YDWK {
 }
 
 /**
- * Used to create a bot instance.
+ * Creates a bot instance.
  *
  * @param token Used to authenticate the bot.
  * @param intents The gateway intent which will decide what events are sent by discord.
@@ -69,7 +69,7 @@ fun createCustomBot(
 }
 
 /**
- * Used to create a bot instance.
+ * Creates a bot instance.
  *
  * @param token Used to authenticate the bot.
  * @param intents The gateway intent which will decide what events are sent by discord.
@@ -89,7 +89,7 @@ fun createCustomBot(
 }
 
 /**
- * Used to create a bot instance.
+ * Creates a bot instance.
  *
  * @param token Used to authenticate the bot.
  * @param intents The gateway intent which will decide what events are sent by discord.
@@ -112,7 +112,7 @@ fun createCustomBot(
 }
 
 /**
- * Used to create a bot instance.
+ * Creates a bot instance.
  *
  * @param token Used to authenticate the bot.
  * @param intents The gateway intent which will decide what events are sent by discord.

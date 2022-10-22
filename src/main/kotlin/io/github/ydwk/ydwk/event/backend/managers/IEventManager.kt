@@ -22,29 +22,29 @@ import io.github.ydwk.ydwk.event.backend.event.GenericEvent
 
 interface IEventManager {
     /**
-     * Used to handel the event when it is called
+     * Handels the event when it is called
      *
      * @param event The event that is called
      */
     fun emitEvent(event: GenericEvent)
 
     /**
-     * Used to add the event to the event handler
+     * Adds the event to the event handler
      *
      * @param event The event that is called
      */
     fun addEvent(event: Any)
 
     /**
-     * Used to remove the event from the event handler
+     * Removes the event from the event handler
      *
      * @param event The event that is called
      */
     fun removeEvent(event: Any)
 
-    /** Used to remove all the events from the event handler */
+    /** Removes all the events from the event handler */
     fun removeAllEvents()
 
-    /** Used to get the registered event listeners */
+    /** Gets the registered event listeners */
     val events: MutableList<Any>
 }

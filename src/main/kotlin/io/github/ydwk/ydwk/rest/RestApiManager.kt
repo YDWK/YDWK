@@ -21,11 +21,11 @@ package io.github.ydwk.ydwk.rest
 import io.github.ydwk.ydwk.rest.type.*
 import okhttp3.RequestBody
 
-/** Used to manage the REST API */
+/** Manages the REST API */
 interface RestApiManager {
 
     /**
-     * Used to add query parameters to the request
+     * Adds a query parameters to the request
      *
      * @param key The key of the query parameter
      * @param value The value of the query parameter
@@ -34,7 +34,7 @@ interface RestApiManager {
     fun addQueryParameter(key: String, value: String): RestApiManager
 
     /**
-     * Used to get a certain endpoint from the API.
+     * Gets a certain endpoint from the API.
      *
      * @param endPoint The endpoint to get.
      * @param params The parameters to be used in the endpoint.
@@ -43,7 +43,7 @@ interface RestApiManager {
     fun get(endPoint: EndPoint.IEnumEndpoint, vararg params: String): GetRestApi
 
     /**
-     * Used to get a certain endpoint from the API.
+     * Gets a certain endpoint from the API.
      *
      * @param endPoint The endpoint to get.
      * @return The [GetRestApi] instance.
@@ -53,7 +53,7 @@ interface RestApiManager {
     }
 
     /**
-     * Used to post something to the API.
+     * Posts something to the API.
      *
      * @param body The body of the request.
      * @param endPoint The endpoint to post to.
@@ -67,7 +67,7 @@ interface RestApiManager {
     ): PostRestApi
 
     /**
-     * Used to post something to the API.
+     * Pots something to the API.
      *
      * @param body The body of the request.
      * @param endPoint The endpoint to post to.
@@ -78,7 +78,7 @@ interface RestApiManager {
     }
 
     /**
-     * Used to put something to the API.
+     * Puts something to the API.
      *
      * @param body The body of the request.
      * @param endPoint The endpoint to put to.
@@ -88,7 +88,7 @@ interface RestApiManager {
     fun put(body: RequestBody?, endPoint: EndPoint.IEnumEndpoint, vararg params: String): PutRestApi
 
     /**
-     * Used to put something to the API.
+     * Puts something to the API.
      *
      * @param body The body of the request.
      * @param endPoint The endpoint to put to.
@@ -99,7 +99,7 @@ interface RestApiManager {
     }
 
     /**
-     * Used to delete something from the API.
+     * Deletes something from the API.
      *
      * @param endPoint The endpoint to delete from.
      * @param params The parameters to be used in the endpoint.
@@ -112,7 +112,7 @@ interface RestApiManager {
     ): DeleteRestApi
 
     /**
-     * Used to delete something from the API.
+     * Deletes something from the API.
      *
      * @param body The body of the request.
      * @param endPoint The endpoint to delete from.
@@ -123,7 +123,7 @@ interface RestApiManager {
     }
 
     /**
-     * Used to delete something from the API.
+     * Deletes something from the API.
      *
      * @param endPoint The endpoint to delete from.
      * @param params The parameters to be used in the endpoint.
@@ -134,7 +134,7 @@ interface RestApiManager {
     }
 
     /**
-     * Used to delete something from the API.
+     * Deletes something from the API.
      *
      * @param endPoint The endpoint to delete from.
      * @return The [DeleteRestApi] object.
@@ -144,7 +144,7 @@ interface RestApiManager {
     }
 
     /**
-     * Used to patch something from the API.
+     * Patches something from the API.
      *
      * @param body The body of the request.
      * @param endPoint The endpoint to patch from.
@@ -158,7 +158,7 @@ interface RestApiManager {
     ): PatchRestApi
 
     /**
-     * Used to patch something from the API.
+     * Patches something from the API.
      *
      * @param body The body of the request.
      * @param endPoint The endpoint to patch from.

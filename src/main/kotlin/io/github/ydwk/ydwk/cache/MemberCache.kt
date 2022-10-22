@@ -22,7 +22,7 @@ import io.github.ydwk.ydwk.entities.guild.Member
 
 interface MemberCache : Cache {
     /**
-     * Used to add a new item to the cache
+     * Adds a new item to the cache
      *
      * @param userId The user id of the member
      * @param guildId The guild id of the member
@@ -31,7 +31,7 @@ interface MemberCache : Cache {
     operator fun set(userId: String, guildId: String, value: Member)
 
     /**
-     * Used to get an item from the cache
+     * Gets an item from the cache
      *
      * @param userId The user id of the member
      * @param guildId The guild id of the member
@@ -40,7 +40,7 @@ interface MemberCache : Cache {
     operator fun get(userId: String, guildId: String): Any?
 
     /**
-     * Used to remove an item from the cache
+     * Removes an item from the cache
      *
      * @param userId The user id of the member
      * @param guildId The guild id of the member
