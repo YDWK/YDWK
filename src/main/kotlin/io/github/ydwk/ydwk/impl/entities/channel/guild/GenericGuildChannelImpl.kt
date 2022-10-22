@@ -43,7 +43,7 @@ open class GenericGuildChannelImpl(
         get() = TODO("Not yet implemented")
 
     override fun asGuildCategory(): GuildCategory? {
-        return if (isCastable(GuildCategory::class.java)) {
+        return if (isCategory) {
             GuildCategoryImpl(ydwk, json, idAsLong)
         } else {
             null
@@ -51,18 +51,18 @@ open class GenericGuildChannelImpl(
     }
 
     override fun asGenericGuildTextChannel(): GenericGuildTextChannel {
-        return if (isCastable(GenericGuildTextChannel::class.java)) {
+        return if (isTextChannel) {
             GenericGuildTextChannelImpl(ydwk, json, idAsLong)
         } else {
-            throw ClassCastException("This channel is not a text channel.")
+            throw IllegalStateException("This channel is not a text channel")
         }
     }
 
     override fun asGenericGuildVoiceChannel(): GenericGuildVoiceChannel {
-        return if (isCastable(GenericGuildVoiceChannel::class.java)) {
+        return if (isVoiceChannel) {
             GenericGuildVoiceChannelImpl(ydwk, json, idAsLong)
         } else {
-            throw ClassCastException("This channel is not a voice channel.")
+            throw IllegalStateException("This channel is not a voice channel")
         }
     }
 
