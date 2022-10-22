@@ -36,4 +36,8 @@ open class GenericGuildTextChannelImpl(
             null
         }
     }
+
+    override fun asGenericGuildTextChannel(): GenericGuildTextChannel {
+        return this
+    }
 }

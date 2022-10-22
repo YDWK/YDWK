@@ -19,5 +19,13 @@
 package io.github.ydwk.ydwk.entities.channel
 
 import io.github.ydwk.ydwk.entities.Channel
+import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildVoiceChannel
 
-interface VoiceChannel : Channel
+interface VoiceChannel : Channel {
+    /**
+     * Gets the channel as a generic guild voice channel.
+     *
+     * @return the channel as a generic guild voice channel.
+     */
+    fun asGenericGuildVoiceChannel(): GenericGuildVoiceChannel?
+}

@@ -45,4 +45,8 @@ open class GenericGuildVoiceChannelImpl(
             null
         }
     }
+
+    override fun asGenericGuildVoiceChannel(): GenericGuildVoiceChannel {
+        return this
+    }
 }
