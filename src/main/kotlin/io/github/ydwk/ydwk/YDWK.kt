@@ -50,7 +50,7 @@ interface YDWK {
     val objectNode: ObjectNode
 
     /**
-     * Used to parse json, i.e. convert plain text json to Jackson classes such as JsonNode.
+     * Parses json, i.e. convert plain text json to Jackson classes such as JsonNode.
      *
      * @return a new json [ObjectMapper]
      */
@@ -88,7 +88,7 @@ interface YDWK {
     val loggedInStatus: LoggedIn?
 
     /**
-     * Used to indicated that bot has connected to the websocket.
+     * Indicates that bot has connected to the websocket.
      *
      * @return The [YDWK] instance.
      */
