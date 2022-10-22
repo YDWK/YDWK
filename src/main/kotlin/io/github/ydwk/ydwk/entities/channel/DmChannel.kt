@@ -23,14 +23,14 @@ import io.github.ydwk.ydwk.util.GetterSnowFlake
 
 interface DmChannel : TextChannel {
     /**
-     * Used to get the channel's last message id
+     * Gets the channel's last message id
      *
      * @return the channel's last message id
      */
     var lastMessageId: GetterSnowFlake?
 
     /**
-     * Used to get the recipient of the dm
+     * Gets the recipient of the dm
      *
      * @return the recipient of the dm
      */

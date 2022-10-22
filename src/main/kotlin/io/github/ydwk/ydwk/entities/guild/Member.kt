@@ -31,7 +31,7 @@ import java.util.*
 /** This class is used to represent a discord guild member entity. */
 interface Member : NameAbleEntity, GenericEntity, Sendeadble, SnowFlake {
 
-    /** Used to get thw member's Guild */
+    /** Gets thw member's Guild */
     val guild: Guild
 
     /** The user this guild member represents. */
@@ -75,11 +75,11 @@ interface Member : NameAbleEntity, GenericEntity, Sendeadble, SnowFlake {
     /** Weather this user is timed out. */
     var timedOutUntil: String?
 
-    /** Used to get the permissions of this member. */
+    /** Gets the permissions of this member. */
     val permissions: EnumSet<MemberPermission>
 
     /**
-     * Used to check if the member has a specific permission.
+     * Checks if the member has a specific permission.
      *
      * @param permission The permission to check.
      * @return True if the member has the permission, false otherwise.
