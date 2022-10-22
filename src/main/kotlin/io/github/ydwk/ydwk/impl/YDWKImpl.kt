@@ -29,9 +29,9 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.application.PartialApplication
 import io.github.ydwk.ydwk.entities.channel.DmChannel
-import io.github.ydwk.ydwk.entities.channel.TextChannel
-import io.github.ydwk.ydwk.entities.channel.VoiceChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildChannel
+import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
+import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildVoiceChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
@@ -145,7 +145,7 @@ class YDWKImpl(
         allowedCache.removeAll(cacheTypes.toSet())
     }
 
-    override fun getTextChannel(id: Long): TextChannel? {
+    override fun getGuildTextChannel(id: Long): GenericGuildTextChannel? {
         val channel = cache[id.toString(), CacheIds.TEXT_CHANNEL] as GenericGuildChannel?
         if (channel != null) {
             if (channel.isTextChannel) {
@@ -157,7 +157,7 @@ class YDWKImpl(
         return null
     }
 
-    override fun getTextChannels(): List<TextChannel> {
+    override fun getGuildTextChannels(): List<GenericGuildTextChannel> {
         return cache.values(CacheIds.TEXT_CHANNEL).map { it ->
             val genericGuildChannel = it as GenericGuildChannel
             if (genericGuildChannel.isTextChannel) {
@@ -169,7 +169,7 @@ class YDWKImpl(
         }
     }
 
-    override fun getVoiceChannel(id: Long): VoiceChannel? {
+    override fun getGuildVoiceChannel(id: Long): GenericGuildVoiceChannel? {
         val channel = cache[id.toString(), CacheIds.VOICE_CHANNEL] as GenericGuildChannel?
         if (channel != null) {
             if (channel.isVoiceChannel) {
@@ -181,7 +181,7 @@ class YDWKImpl(
         return null
     }
 
-    override fun getVoiceChannels(): List<VoiceChannel> {
+    override fun getGuildVoiceChannels(): List<GenericGuildVoiceChannel> {
         return cache.values(CacheIds.VOICE_CHANNEL).map { it ->
             val genericGuildChannel = it as GenericGuildChannel
             if (genericGuildChannel.isVoiceChannel) {

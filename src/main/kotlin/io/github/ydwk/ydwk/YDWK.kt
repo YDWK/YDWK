@@ -27,8 +27,8 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.application.PartialApplication
 import io.github.ydwk.ydwk.entities.channel.DmChannel
-import io.github.ydwk.ydwk.entities.channel.TextChannel
-import io.github.ydwk.ydwk.entities.channel.VoiceChannel
+import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
+import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildVoiceChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
@@ -205,50 +205,51 @@ interface YDWK {
         setDisallowedCache(*cacheTypes.toTypedArray())
 
     /**
-     * Used to get a text channel by its id.
+     * Used to get a guild text channel by its id.
      *
      * @param id The id of the text channel.
-     * @return The [TextChannel] object.
+     * @return The [GenericGuildTextChannel] object.
      */
-    fun getTextChannel(id: Long): TextChannel?
+    fun getGuildTextChannel(id: Long): GenericGuildTextChannel?
 
     /**
-     * Used to get a text channel by its id.
+     * Used to get a guild text channel by its id.
      *
      * @param id The id of the text channel.
-     * @return The [TextChannel] object.
+     * @return The [GenericGuildTextChannel] object.
      */
-    fun getTextChannel(id: String): TextChannel? = getTextChannel(id.toLong())
+    fun getGuildTextChannel(id: String): GenericGuildTextChannel? = getGuildTextChannel(id.toLong())
 
     /**
-     * Used to get all the text channels the bot is in.
+     * Used to get all the guild text channels the bot is in.
      *
-     * @return A list of [TextChannel] objects.
+     * @return A list of [GenericGuildTextChannel] objects.
      */
-    fun getTextChannels(): List<TextChannel>
+    fun getGuildTextChannels(): List<GenericGuildTextChannel>
 
     /**
-     * Used to get a voice channel by its id.
-     *
-     * @param id The id of the voice channel.
-     * @return The [VoiceChannel] object.
-     */
-    fun getVoiceChannel(id: Long): VoiceChannel?
-
-    /**
-     * Used to get a voice channel by its id.
+     * Used to get a voice guild channel by its id.
      *
      * @param id The id of the voice channel.
-     * @return The [VoiceChannel] object.
+     * @return The [GenericGuildVoiceChannel] object.
      */
-    fun getVoiceChannel(id: String): VoiceChannel? = getVoiceChannel(id.toLong())
+    fun getGuildVoiceChannel(id: Long): GenericGuildVoiceChannel?
 
     /**
-     * Used to get all the voice channels the bot is in.
+     * Used to get a voice guild channel by its id.
      *
-     * @return A list of [VoiceChannel] objects.
+     * @param id The id of the voice channel.
+     * @return The [GenericGuildVoiceChannel] object.
      */
-    fun getVoiceChannels(): List<VoiceChannel>
+    fun getGuildVoiceChannel(id: String): GenericGuildVoiceChannel? =
+        getGuildVoiceChannel(id.toLong())
+
+    /**
+     * Used to get all the guild voice channels the bot is in.
+     *
+     * @return A list of [GenericGuildVoiceChannel] objects.
+     */
+    fun getGuildVoiceChannels(): List<GenericGuildVoiceChannel>
 
     /**
      * Used to create an embed.
