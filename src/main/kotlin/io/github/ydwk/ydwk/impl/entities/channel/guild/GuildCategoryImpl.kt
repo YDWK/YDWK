@@ -20,10 +20,25 @@ package io.github.ydwk.ydwk.impl.entities.channel.guild
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
+import java.util.*
 
 class GuildCategoryImpl(
     override val ydwk: YDWK,
     override val json: JsonNode,
     override val idAsLong: Long
-) : GuildCategory, GenericGuildChannelImpl(ydwk, json, idAsLong) {}
+) : GuildCategory, GenericGuildChannelImpl(ydwk, json, idAsLong) {
+
+    override val channels: List<GenericGuildChannel>
+        get() =
+            Collections.unmodifiableList(
+                guild.getUnorderedChannels
+                    .stream()
+                    .filter { channel -> channel.asGuildCategory()?.equals(this) ?: false }
+                    .map { it as GenericGuildChannel }
+                    .toList())
+
+    override val nsfw: Boolean
+        get() = json.has("nsfw") && json["nsfw"].asBoolean()
+}

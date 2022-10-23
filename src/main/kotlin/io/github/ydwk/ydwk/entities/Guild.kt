@@ -20,6 +20,11 @@ package io.github.ydwk.ydwk.entities
 
 import io.github.ydwk.ydwk.entities.audit.AuditLogType
 import io.github.ydwk.ydwk.entities.channel.DmChannel
+import io.github.ydwk.ydwk.entities.channel.GuildChannel
+import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildChannel
+import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
+import io.github.ydwk.ydwk.entities.channel.guild.message.text.GuildTextChannel
+import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.ydwk.entities.guild.Ban
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.guild.Role
@@ -573,4 +578,55 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @return The role, or null if it doesn't exist.
      */
     fun getRole(roleId: String): Role? = getRole(roleId.toLong())
+
+    /**
+     * Gets all the channels as unordered list.
+     *
+     * @return The channels.
+     */
+    val getUnorderedChannels: List<GuildChannel>
+
+    /**
+     * Gets all the channels as sorted list.
+     *
+     * @return The channels.
+     */
+    val getChannels: List<GenericGuildChannel>
+
+    /**
+     * Gets all the categories as sorted list.
+     *
+     * @return The categories.
+     */
+    val getCategories: List<GuildCategory>
+
+    /**
+     * Gets all the text channels as sorted list.
+     *
+     * @return The text channels.
+     */
+    val getTextChannels: List<GuildTextChannel>
+
+    /**
+     * Gets all the voice channels as sorted list.
+     *
+     * @return The voice channels.
+     */
+    val getVoiceChannels: List<GuildVoiceChannel>
+
+    /**
+     * Gets the channel by its id.
+     *
+     * @param channelId The id of the channel.
+     * @return The channel, or null if it doesn't exist.
+     */
+    fun getChannelById(channelId: Long): GuildChannel?
+
+    /**
+     * Gets the channel by its id.
+     *
+     * @param channelId The id of the channel.
+     * @return The channel, or null if it doesn't exist.
+     */
+    fun getChannelById(channelId: String): GuildChannel? = getChannelById(channelId.toLong())
 }

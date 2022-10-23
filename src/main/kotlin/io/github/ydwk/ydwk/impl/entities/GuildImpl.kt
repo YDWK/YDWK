@@ -26,6 +26,11 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.Sticker
 import io.github.ydwk.ydwk.entities.audit.AuditLogType
 import io.github.ydwk.ydwk.entities.channel.DmChannel
+import io.github.ydwk.ydwk.entities.channel.GuildChannel
+import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildChannel
+import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
+import io.github.ydwk.ydwk.entities.channel.guild.message.text.GuildTextChannel
+import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.ydwk.entities.guild.Ban
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.guild.Role
@@ -251,6 +256,25 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
         } else {
             null
         }
+    }
+
+    override val getUnorderedChannels: List<GuildChannel>
+        get() = TODO("Not yet implemented")
+
+    override val getChannels: List<GenericGuildChannel>
+        get() = TODO("Not yet implemented")
+
+    override val getCategories: List<GuildCategory>
+        get() = TODO("Not yet implemented")
+
+    override val getTextChannels: List<GuildTextChannel>
+        get() = TODO("Not yet implemented")
+
+    override val getVoiceChannels: List<GuildVoiceChannel>
+        get() = TODO("Not yet implemented")
+
+    override fun getChannelById(channelId: Long): GuildChannel? {
+        TODO("Not yet implemented")
     }
 
     override var name: String = json["name"].asText()
