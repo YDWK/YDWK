@@ -88,7 +88,7 @@ class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
         val category = ArrayList<GenericGuildChannel>()
         channelType.forEach {
             when {
-                it.isText -> {
+                it.isGuildText -> {
                     channelJson.forEach { channel ->
                         if (channel["type"].asInt() == it.getId()) {
                             textChannel.add(

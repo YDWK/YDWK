@@ -24,10 +24,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import com.neovisionaries.ws.client.*
 import io.github.ydwk.ydwk.YDWKInfo
 import io.github.ydwk.ydwk.cache.CacheIds
-import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
 import io.github.ydwk.ydwk.event.events.*
-import io.github.ydwk.ydwk.event.events.channel.ChannelCreateEvent
-import io.github.ydwk.ydwk.event.events.channel.ChannelDeleteEvent
 import io.github.ydwk.ydwk.event.events.member.GuildMemberAddEvent
 import io.github.ydwk.ydwk.event.events.member.GuildMemberRemoveEvent
 import io.github.ydwk.ydwk.event.events.message.MessageCreateEvent
@@ -39,11 +36,12 @@ import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.BotImpl
 import io.github.ydwk.ydwk.impl.entities.MessageImpl
 import io.github.ydwk.ydwk.impl.entities.application.PartialApplicationImpl
-import io.github.ydwk.ydwk.impl.entities.channel.guild.GenericGuildChannelImpl
-import io.github.ydwk.ydwk.impl.entities.channel.guild.GuildCategoryImpl
 import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
 import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
 import io.github.ydwk.ydwk.impl.handler.handlers.UserUpdateHandler
+import io.github.ydwk.ydwk.impl.handler.handlers.channel.ChannelCreateHandler
+import io.github.ydwk.ydwk.impl.handler.handlers.channel.ChannelDeleteHandler
+import io.github.ydwk.ydwk.impl.handler.handlers.channel.ChannelUpdateHandler
 import io.github.ydwk.ydwk.impl.handler.handlers.guild.GuildCreateHandler
 import io.github.ydwk.ydwk.impl.handler.handlers.guild.GuildDeleteHandler
 import io.github.ydwk.ydwk.impl.handler.handlers.guild.GuildUpdateHandler
@@ -474,53 +472,9 @@ open class WebSocketManager(
                 resumeUrl = null
             }
             EventNames.APPLICATION_COMMAND_PERMISSIONS_UPDATE -> TODO()
-            EventNames.CHANNEL_CREATE -> {
-                val channelType = ChannelType.fromId(d.get("type").asInt())
-                when {
-                    channelType.isText -> {
-                        val channel = GenericGuildChannelImpl(ydwk, d, d.get("id").asLong(), true)
-                        ydwk.cache[d.get("id").asText(), channel] = CacheIds.TEXT_CHANNEL
-                        ydwk.emitEvent(ChannelCreateEvent(ydwk, channel))
-                    }
-                    channelType.isVoice -> {
-                        val channel =
-                            GenericGuildChannelImpl(
-                                ydwk, d, d.get("id").asLong(), isVoiceChannel = true)
-                        ydwk.cache[d.get("id").asText(), channel] = CacheIds.VOICE_CHANNEL
-                        ydwk.emitEvent(ChannelCreateEvent(ydwk, channel))
-                    }
-                    channelType.isCategory -> {
-                        val channel = GuildCategoryImpl(ydwk, d, d.get("id").asLong())
-                        ydwk.cache[d.get("id").asText(), channel] = CacheIds.CATEGORY
-                        ydwk.emitEvent(ChannelCreateEvent(ydwk, channel))
-                    }
-                }
-            }
-            EventNames.CHANNEL_UPDATE -> TODO()
-            EventNames.CHANNEL_DELETE -> {
-                val channelType = ChannelType.fromId(d.get("type").asInt())
-                when {
-                    channelType.isText -> {
-                        val channel = GenericGuildChannelImpl(ydwk, d, d.get("id").asLong(), true)
-                        ydwk.cache.remove(d.get("id").asText(), CacheIds.TEXT_CHANNEL)
-                        ydwk.emitEvent(ChannelDeleteEvent(ydwk, channel))
-                    }
-                    channelType.isVoice -> {
-                        val channel =
-                            GenericGuildChannelImpl(
-                                ydwk, d, d.get("id").asLong(), isVoiceChannel = true)
-                        ydwk.cache.remove(d.get("id").asText(), CacheIds.VOICE_CHANNEL)
-                        ydwk.emitEvent(ChannelDeleteEvent(ydwk, channel))
-                    }
-                    channelType.isCategory -> {
-                        val channel =
-                            GenericGuildChannelImpl(
-                                ydwk, d, d.get("id").asLong(), isCategory = true)
-                        ydwk.cache.remove(d.get("id").asText(), CacheIds.CATEGORY)
-                        ydwk.emitEvent(ChannelDeleteEvent(ydwk, channel))
-                    }
-                }
-            }
+            EventNames.CHANNEL_CREATE -> ChannelCreateHandler(ydwk, d).start()
+            EventNames.CHANNEL_UPDATE -> ChannelUpdateHandler(ydwk, d).start()
+            EventNames.CHANNEL_DELETE -> ChannelDeleteHandler(ydwk, d).start()
             EventNames.CHANNEL_PINS_UPDATE -> TODO()
             EventNames.THREAD_CREATE -> TODO()
             EventNames.THREAD_UPDATE -> TODO()

@@ -73,14 +73,18 @@ enum class ChannelType(private val id: Int) {
     val isCategory: Boolean
         get() = this == CATEGORY
 
-    val isText: Boolean
+    val isGuildText: Boolean
         get() =
             this == TEXT ||
                 this == NEWS ||
                 this == NEWS_THREAD ||
                 this == PUBLIC_THREAD ||
                 this == PRIVATE_THREAD ||
-                this == FORUM
+                this == FORUM ||
+                this == DIRECTORY
+
+    val isText: Boolean
+        get() = isGuildText || this == DM || this == GROUP_DM
 
     val isVoice: Boolean
         get() = this == VOICE || this == STAGE_VOICE
