@@ -60,9 +60,6 @@ open class UserImpl(
 
     override var flags: Int? = if (json.hasNonNull("flags")) json.get("flags").asInt() else null
 
-    override var premiumType: Int? =
-        if (json.hasNonNull("premium_type")) json.get("premium_type").asInt() else null
-
     override var publicFlags: Int? =
         if (json.hasNonNull("public_flags")) json.get("public_flags").asInt() else null
     override val createDmChannel: CompletableFuture<DmChannel>

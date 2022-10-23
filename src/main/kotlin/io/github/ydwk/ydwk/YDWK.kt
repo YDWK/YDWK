@@ -354,4 +354,20 @@ interface YDWK {
      * @return A list of [User] objects.
      */
     fun getUsers(): List<User>
+
+    /**
+     * Requests a user using its id.
+     *
+     * @param id The id of the user.
+     * @return The [CompletableFuture] object.
+     */
+    fun requestUser(id: Long): CompletableFuture<User>
+
+    /**
+     * Requests a user using its id.
+     *
+     * @param id The id of the user.
+     * @return The [CompletableFuture] object.
+     */
+    fun requestUser(id: String): CompletableFuture<User> = requestUser(id.toLong())
 }

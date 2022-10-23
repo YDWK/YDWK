@@ -58,9 +58,6 @@ interface User : SnowFlake, GenericEntity, NameAbleEntity, Sendeadble {
     /** The flags on a user's account */
     var flags: Int?
 
-    /** The type of Nitro subscription on a user's account */
-    var premiumType: Int?
-
     /** The public flags on a user's account */
     var publicFlags: Int?
 
