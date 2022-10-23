@@ -16,12 +16,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.channel.guild.text
+package io.github.ydwk.ydwk.entities.channel.guild.message
 
 import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
+import io.github.ydwk.ydwk.entities.channel.guild.message.text.PermissionOverwrite
 
-interface GuildTextChannel : GenericGuildTextChannel {
-
+interface GuildMessageChannel : GenericGuildTextChannel {
     /**
      * Gets the topic of this channel.
      *
@@ -42,13 +42,6 @@ interface GuildTextChannel : GenericGuildTextChannel {
      * @return the default auto archive duration of this channel.
      */
     val defaultAutoArchiveDuration: Int
-
-    /**
-     * Gets the rate limit per user of this channel.
-     *
-     * @return the rate limit per user of this channel.
-     */
-    val rateLimitPerUser: Int
 
     /**
      * Gets the last message id of this channel.

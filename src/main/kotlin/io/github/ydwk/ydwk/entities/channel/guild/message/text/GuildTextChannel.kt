@@ -16,8 +16,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.channel.guild.news
+package io.github.ydwk.ydwk.entities.channel.guild.message.text
 
-import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
+import io.github.ydwk.ydwk.entities.channel.guild.message.GuildMessageChannel
 
-interface GuildNewsChannel : GenericGuildTextChannel {}
+interface GuildTextChannel : GuildMessageChannel {
+    /**
+     * Gets the rate limit per user of this channel.
+     *
+     * @return the rate limit per user of this channel.
+     */
+    val rateLimitPerUser: Int
+}

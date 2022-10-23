@@ -21,7 +21,7 @@ package io.github.ydwk.ydwk.impl.entities.channel.guild
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
-import io.github.ydwk.ydwk.entities.channel.guild.text.GuildTextChannel
+import io.github.ydwk.ydwk.entities.channel.guild.message.text.GuildTextChannel
 
 open class GenericGuildTextChannelImpl(
     override val ydwk: YDWK,

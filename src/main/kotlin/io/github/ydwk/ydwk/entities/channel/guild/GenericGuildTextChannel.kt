@@ -19,7 +19,7 @@
 package io.github.ydwk.ydwk.entities.channel.guild
 
 import io.github.ydwk.ydwk.entities.channel.TextChannel
-import io.github.ydwk.ydwk.entities.channel.guild.text.GuildTextChannel
+import io.github.ydwk.ydwk.entities.channel.guild.message.text.GuildTextChannel
 
 interface GenericGuildTextChannel : GenericGuildChannel, TextChannel {
     /**

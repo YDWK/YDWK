@@ -16,21 +16,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.impl.entities.channel.guild
+package io.github.ydwk.ydwk.entities.channel.guild.message.news
 
-import com.fasterxml.jackson.databind.JsonNode
-import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.channel.guild.message.text.PermissionOverwrite
+import io.github.ydwk.ydwk.entities.channel.guild.message.GuildMessageChannel
 
-class PermissionOverwriteImpl(
-    override val ydwk: YDWK,
-    override val json: JsonNode,
-    override val idAsLong: Long
-) : PermissionOverwrite {
-    override val type: Int
-        get() = json["type"].asInt()
-    override val allow: String
-        get() = json["allow"].asText()
-    override val deny: String
-        get() = json["deny"].asText()
-}
+interface GuildNewsChannel : GuildMessageChannel
