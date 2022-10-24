@@ -523,6 +523,7 @@ open class WebSocketManager(
             EventNames.GUILD_ROLE_DELETE -> {
                 val guild = ydwk.getGuild(d.get("guild_id").asLong())
                 if (guild != null) {
+                    // TODO: broken
                     val role = RoleImpl(ydwk, d.get("role"), d.get("role").get("id").asLong())
                     ydwk.cache.remove(d.get("role").get("id").asText(), CacheIds.ROLE)
                     ydwk.emitEvent(GuildRoleDeleteEvent(ydwk, role))

@@ -30,10 +30,16 @@ import io.github.ydwk.ydwk.util.GetterSnowFlake
 import io.github.ydwk.ydwk.util.formatZonedDateTime
 import java.util.*
 
-class MemberImpl(override val ydwk: YDWK, override val json: JsonNode, override val guild: Guild) :
-    Member {
+class MemberImpl(
+    override val ydwk: YDWK,
+    override val json: JsonNode,
+    override val guild: Guild,
+    backupUser: User? = null
+) : Member {
 
-    override var user: User = UserImpl(json["user"], json["user"]["id"].asLong(), ydwk)
+    override var user: User =
+        if (json.has("user")) UserImpl(json["user"], json["user"]["id"].asLong(), ydwk)
+        else backupUser ?: throw IllegalStateException("Member must have a user")
 
     override var nick: String? = if (json.has("nick")) json["nick"].asText() else null
 
@@ -76,5 +82,5 @@ class MemberImpl(override val ydwk: YDWK, override val json: JsonNode, override 
 
     override var name: String = if (nick != null) nick!! else if (user != null) user!!.name else ""
     override val idAsLong: Long
-        get() = user!!.idAsLong + guild.idAsLong
+        get() = user.idAsLong + guild.idAsLong
 }

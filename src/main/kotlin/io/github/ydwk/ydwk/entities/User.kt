@@ -30,7 +30,6 @@ import java.util.concurrent.CompletableFuture
 import okhttp3.RequestBody.Companion.toRequestBody
 
 interface User : SnowFlake, GenericEntity, NameAbleEntity, Sendeadble {
-
     /** The user's 4-digit discord-tag */
     var discriminator: String
 

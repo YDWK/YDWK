@@ -20,7 +20,6 @@ package io.github.ydwk.ydwk.bot
 
 import io.github.realyusufismail.jconfig.util.JConfigUtils
 import io.github.ydwk.ydwk.createDefaultBot
-import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.event.ListenerAdapter
 import io.github.ydwk.ydwk.event.backend.event.on
 import io.github.ydwk.ydwk.event.events.ReadyEvent
@@ -43,7 +42,7 @@ fun main() {
         createDefaultBot(JConfigUtils.getString("token") ?: throw Exception("Token not found!"))
     ydwk.addEvent(Bot())
 
-    //TODO: having more than 6 commands leads to rate limit need to fix
+    // TODO: having more than 6 commands leads to rate limit need to fix
     ydwk.waitForReady.slashBuilder
         .addSlashCommand(Slash("embed", "This is a test command"))
         .addSlashCommand(Slash("json", "Gets the json for member"))
@@ -92,10 +91,7 @@ fun main() {
             }
             "ban" -> {
                 withContext(Dispatchers.IO) {
-                    val memberOption =
-                        it.slash.getOption<Member>("member")
-
-                    it.slash.guild?.banUser(memberOption.user)?.get()
+                    it.slash.reply(it.slash.getOption("member")!!.asMember!!.name)
                 }
             }
         }

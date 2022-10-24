@@ -35,6 +35,7 @@ import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildVoiceChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
 import io.github.ydwk.ydwk.entities.guild.Member
+import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
 import io.github.ydwk.ydwk.event.backend.event.CoroutineEventListener
 import io.github.ydwk.ydwk.event.backend.event.GenericEvent
@@ -269,6 +270,10 @@ class YDWKImpl(
                 UserImpl(jsonBody, jsonBody["id"].asLong(), this)
             }
         }
+    }
+
+    override fun getRole(asLong: Long): Role? {
+        return cache[asLong.toString(), CacheIds.ROLE] as Role?
     }
 
     override val guildChannels: List<GuildChannel>

@@ -25,8 +25,9 @@ import io.github.ydwk.ydwk.entities.channel.TextChannel
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.message.Embed
 import io.github.ydwk.ydwk.interaction.sub.GenericCommandData
-import io.github.ydwk.ydwk.interaction.sub.InteractionResolvedData
 import io.github.ydwk.ydwk.interaction.sub.InteractionType
+import io.github.ydwk.ydwk.slash.SlashOptionGetter
+import io.github.ydwk.ydwk.slash.SlashOptionType
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 import io.github.ydwk.ydwk.util.SnowFlake
 import java.util.concurrent.CompletableFuture
@@ -45,13 +46,6 @@ interface SlashCommand : SnowFlake, GenericCommandData {
      * @return The type of the command.
      */
     val type: ApplicationCommandType
-
-    /**
-     * Gets the resolved data of the command.
-     *
-     * @return The resolved data of the command.
-     */
-    val resolved: InteractionResolvedData?
 
     /**
      * Gets the guild where the interaction occurred.
@@ -150,7 +144,7 @@ interface SlashCommand : SnowFlake, GenericCommandData {
     fun reply(
         content: String,
         tts: Boolean = false,
-        ephemeral: Boolean = false
+        ephemeral: Boolean = false,
     ): CompletableFuture<Void>
 
     /**
@@ -174,7 +168,7 @@ interface SlashCommand : SnowFlake, GenericCommandData {
     fun reply(
         embed: Embed,
         tts: Boolean = false,
-        ephemeral: Boolean = false
+        ephemeral: Boolean = false,
     ): CompletableFuture<Void>
 
     /**
@@ -187,5 +181,53 @@ interface SlashCommand : SnowFlake, GenericCommandData {
     fun reply(embed: Embed, ephemeral: Boolean = false): CompletableFuture<Void> =
         reply(embed, false, ephemeral)
 
-    fun <T> getOption(s: String): T?
+    /**
+     * Gets all the options of the command.
+     *
+     * @return All the options of the command.
+     */
+    val options: List<SlashOptionGetter>
+
+    /**
+     * Gets all the options with the specified name.
+     *
+     * @param name The name of the option.
+     * @return All the options with the specified name.
+     */
+    fun getOptionsByName(name: String): List<SlashOptionGetter> {
+        return options.filter { it.name == name }
+    }
+
+    /**
+     * Gets the first option with the specified type.
+     *
+     * @param type The type of the option.
+     * @return The first option with the specified type.
+     */
+    fun getOptionsByType(type: SlashOptionType): List<SlashOptionGetter> {
+        return options.filter { it.type == type }
+    }
+
+    /**
+     * Gets the first option with the specified name.
+     *
+     * @param name The name of the option.
+     * @return The first option with the specified name.
+     */
+    fun getOption(name: String): SlashOptionGetter? {
+        val options = getOptionsByName(name)
+        return if (options.isEmpty()) null else options[0]
+    }
+
+    /**
+     * Gets the option with the specified name.
+     *
+     * @param name The name of the option.
+     * @param resolver The resolver to use.
+     * @return The option with the specified name.
+     */
+    fun <T> getOption(name: String, resolver: (SlashOptionGetter) -> T): T? {
+        val option = getOption(name)
+        return if (option == null) null else resolver(option)
+    }
 }
