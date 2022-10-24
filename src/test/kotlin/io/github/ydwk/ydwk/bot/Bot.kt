@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.bot
 
 import io.github.realyusufismail.jconfig.util.JConfigUtils
 import io.github.ydwk.ydwk.createDefaultBot
+import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.event.ListenerAdapter
 import io.github.ydwk.ydwk.event.backend.event.on
 import io.github.ydwk.ydwk.event.events.ReadyEvent
@@ -85,6 +86,13 @@ fun main() {
                 withContext(Dispatchers.IO) {
                     val member = it.slash.member
                     member?.createDmChannel?.get()?.sendMessage("Hello!")?.get()
+                }
+            }
+            "ban" -> {
+                withContext(Dispatchers.IO) {
+                    val memberOption =
+                        it.slash.options?.find { it.name == "member" }?.value as Member
+                    it.slash.guild?.banUser(memberOption.user)?.get()
                 }
             }
         }
