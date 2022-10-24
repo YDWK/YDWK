@@ -40,7 +40,7 @@ open class GenericGuildChannelImpl(
         get() = json["position"].asInt()
 
     override val parent: GuildCategory?
-        get() = TODO("Not yet implemented")
+        get() = json["parent_id"]?.asText()?.let { ydwk.getCategory(it) }
 
     override fun asGuildCategory(): GuildCategory? {
         return if (isCategory) {

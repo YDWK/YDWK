@@ -426,11 +426,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
         member: Member,
         deleteMessageDuration: Duration = Duration.ZERO,
         reason: String? = null
-    ): CompletableFuture<Void> =
-        banUser(
-            member.user ?: throw IllegalStateException("Member has no user"),
-            deleteMessageDuration,
-            reason)
+    ): CompletableFuture<Void> = banUser(member.user, deleteMessageDuration, reason)
 
     /**
      * Unbans a user from the guild.

@@ -16,14 +16,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.channel
+package io.github.ydwk.ydwk.impl.entities.channel.guild
 
-import io.github.ydwk.ydwk.entities.Channel
-import io.github.ydwk.ydwk.entities.message.Sendeadble
-import io.github.ydwk.ydwk.util.NameAbleEntity
+import com.fasterxml.jackson.databind.JsonNode
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.channel.guild.forum.GuildForumChannel
 
-/**
- * Contains all the functions that are common to all 'text' channels (i.e. channels that can send
- * messages).
- */
-interface TextChannel : Channel, Sendeadble, NameAbleEntity
+class GuildForumChannelImpl(
+    override val ydwk: YDWK,
+    override val json: JsonNode,
+    override val idAsLong: Long
+) : GuildForumChannel, GenericGuildTextChannelImpl(ydwk, json, idAsLong)

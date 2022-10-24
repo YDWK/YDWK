@@ -117,9 +117,8 @@ class YDWKImpl(
         return cache[id, CacheIds.GUILD] as Guild?
     }
 
-    override fun getGuilds(): List<Guild> {
-        return cache.values(CacheIds.GUILD).map { it as Guild }
-    }
+    override val guilds: List<Guild>
+        get() = cache.values(CacheIds.GUILD).map { it as Guild }
 
     override val restApiManager: RestApiManager
         get() {
@@ -160,17 +159,18 @@ class YDWKImpl(
         return null
     }
 
-    override fun getGuildTextChannels(): List<GenericGuildTextChannel> {
-        return cache.values(CacheIds.TEXT_CHANNEL).map { it ->
-            val genericGuildChannel = it as GenericGuildChannel
-            if (genericGuildChannel.isTextChannel) {
-                genericGuildChannel.asGenericGuildTextChannel()
-            } else {
-                null
+    override val guildTextChannels: List<GenericGuildTextChannel>
+        get() {
+            return cache.values(CacheIds.TEXT_CHANNEL).map { it ->
+                val genericGuildChannel = it as GenericGuildChannel
+                if (genericGuildChannel.isTextChannel) {
+                    genericGuildChannel.asGenericGuildTextChannel()
+                } else {
+                    null
+                }
+                    ?: throw IllegalStateException("Channel is not a text channel")
             }
-                ?: throw IllegalStateException("Channel is not a text channel")
         }
-    }
 
     override fun getGuildVoiceChannel(id: Long): GenericGuildVoiceChannel? {
         val channel = cache[id.toString(), CacheIds.VOICE_CHANNEL] as GenericGuildChannel?
@@ -184,17 +184,18 @@ class YDWKImpl(
         return null
     }
 
-    override fun getGuildVoiceChannels(): List<GenericGuildVoiceChannel> {
-        return cache.values(CacheIds.VOICE_CHANNEL).map { it ->
-            val genericGuildChannel = it as GenericGuildChannel
-            if (genericGuildChannel.isVoiceChannel) {
-                genericGuildChannel.asGenericGuildVoiceChannel()
-            } else {
-                null
+    override val guildVoiceChannels: List<GenericGuildVoiceChannel>
+        get() {
+            return cache.values(CacheIds.VOICE_CHANNEL).map { it ->
+                val genericGuildChannel = it as GenericGuildChannel
+                if (genericGuildChannel.isVoiceChannel) {
+                    genericGuildChannel.asGenericGuildVoiceChannel()
+                } else {
+                    null
+                }
+                    ?: throw IllegalStateException("Channel is not a voice channel")
             }
-                ?: throw IllegalStateException("Channel is not a voice channel")
         }
-    }
 
     override val embedBuilder: EmbedBuilder
         get() = EmbedBuilderImpl(this)
@@ -414,7 +415,7 @@ class YDWKImpl(
      * @param intents The gateway intent which will decide what events are sent by discord.
      */
     fun setWebSocketManager(token: String, intents: List<GateWayIntent>) {
-        var ws: WebSocketManager? = null
+        var ws: WebSocketManager?
         ws = WebSocketManager(this, token, intents)
         this.webSocketManager = ws.connect()
         this.timer(Timer(), ws)

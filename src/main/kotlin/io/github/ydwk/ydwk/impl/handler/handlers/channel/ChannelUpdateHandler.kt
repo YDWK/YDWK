@@ -19,9 +19,27 @@
 package io.github.ydwk.ydwk.impl.handler.handlers.channel
 
 import com.fasterxml.jackson.databind.JsonNode
+import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.handler.Handler
 
 class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override fun start() {}
+    override fun start() {
+        val type = ChannelType.fromId(json["type"].asInt())
+        when (type) {
+            ChannelType.TEXT -> TODO()
+            ChannelType.DM -> ydwk.logger.warn("Dm is not supported")
+            ChannelType.VOICE -> TODO()
+            ChannelType.GROUP_DM -> ydwk.logger.warn("Group DMs are not supported.")
+            ChannelType.CATEGORY -> TODO()
+            ChannelType.NEWS -> TODO()
+            ChannelType.NEWS_THREAD -> TODO()
+            ChannelType.PUBLIC_THREAD -> TODO()
+            ChannelType.PRIVATE_THREAD -> TODO()
+            ChannelType.STAGE_VOICE -> TODO()
+            ChannelType.DIRECTORY -> TODO()
+            ChannelType.FORUM -> TODO()
+            ChannelType.UNKNOWN -> TODO()
+        }
+    }
 }

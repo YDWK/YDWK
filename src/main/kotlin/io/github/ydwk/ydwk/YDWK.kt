@@ -147,7 +147,7 @@ interface YDWK {
      *
      * @return A list of guilds.
      */
-    fun getGuilds(): List<Guild>
+    val guilds: List<Guild>
 
     /**
      * Gets the rest api manager.
@@ -206,6 +206,13 @@ interface YDWK {
         setDisallowedCache(*cacheTypes.toTypedArray())
 
     /**
+     * Gets all the guild channels the bot is in.
+     *
+     * @return A list of [GuildChannel] objects.
+     */
+    val guildChannels: List<GuildChannel>
+
+    /**
      * Gets a guild text channel by its id.
      *
      * @param id The id of the text channel.
@@ -226,7 +233,7 @@ interface YDWK {
      *
      * @return A list of [GenericGuildTextChannel] objects.
      */
-    fun getGuildTextChannels(): List<GenericGuildTextChannel>
+    val guildTextChannels: List<GenericGuildTextChannel>
 
     /**
      * Gets a voice guild channel by its id.
@@ -250,7 +257,7 @@ interface YDWK {
      *
      * @return A list of [GenericGuildVoiceChannel] objects.
      */
-    fun getGuildVoiceChannels(): List<GenericGuildVoiceChannel>
+    val guildVoiceChannels: List<GenericGuildVoiceChannel>
 
     /**
      * Creates an embed.
@@ -371,11 +378,4 @@ interface YDWK {
      * @return The [CompletableFuture] object.
      */
     fun requestUser(id: String): CompletableFuture<User> = requestUser(id.toLong())
-
-    /**
-     * Gets all the guild channels the bot is in.
-     *
-     * @return A list of [GuildChannel] objects.
-     */
-    val guildChannels: List<GuildChannel>
 }

@@ -43,4 +43,8 @@ class DmChannelImpl(
 
     override val type: ChannelType
         get() = ChannelType.DM
+
+    override var name: String
+        get() = json["name"].asText()
+        set(value) {}
 }

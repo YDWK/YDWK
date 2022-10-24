@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.impl.entities.channel.guild
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
+import io.github.ydwk.ydwk.entities.channel.guild.forum.GuildForumChannel
 import io.github.ydwk.ydwk.entities.channel.guild.message.news.GuildNewsChannel
 import io.github.ydwk.ydwk.entities.channel.guild.message.text.GuildTextChannel
 
@@ -41,6 +42,14 @@ open class GenericGuildTextChannelImpl(
     override fun asGuildNewsChannel(): GuildNewsChannel? {
         return if (isCastable(GuildNewsChannel::class.java)) {
             GuildNewsChannelImpl(ydwk, json, idAsLong)
+        } else {
+            null
+        }
+    }
+
+    override fun asGuildForumChannel(): GuildForumChannel? {
+        return if (isCastable(GuildForumChannel::class.java)) {
+            GuildForumChannelImpl(ydwk, json, idAsLong)
         } else {
             null
         }

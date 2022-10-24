@@ -19,10 +19,11 @@
 package io.github.ydwk.ydwk.entities.channel.guild
 
 import io.github.ydwk.ydwk.entities.channel.TextChannel
+import io.github.ydwk.ydwk.entities.channel.guild.forum.GuildForumChannel
 import io.github.ydwk.ydwk.entities.channel.guild.message.news.GuildNewsChannel
 import io.github.ydwk.ydwk.entities.channel.guild.message.text.GuildTextChannel
 
-interface GenericGuildTextChannel : GenericGuildChannel, TextChannel {
+interface GenericGuildTextChannel : TextChannel {
     /**
      * Gets the channel as Guild Text Channel.
      *
@@ -36,4 +37,11 @@ interface GenericGuildTextChannel : GenericGuildChannel, TextChannel {
      * @return the channel as Guild News Channel.
      */
     fun asGuildNewsChannel(): GuildNewsChannel?
+
+    /**
+     * Gets the channel as Guild Forum Channel.
+     *
+     * @return the channel as Guild Forum Channel.
+     */
+    fun asGuildForumChannel(): GuildForumChannel?
 }

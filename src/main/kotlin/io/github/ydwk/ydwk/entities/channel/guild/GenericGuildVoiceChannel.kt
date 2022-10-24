@@ -22,7 +22,7 @@ import io.github.ydwk.ydwk.entities.channel.VoiceChannel
 import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildStageChannel
 import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
 
-interface GenericGuildVoiceChannel : GenericGuildChannel, VoiceChannel {
+interface GenericGuildVoiceChannel : VoiceChannel {
     /**
      * Gets the channel as Guild Voice Channel.
      *
