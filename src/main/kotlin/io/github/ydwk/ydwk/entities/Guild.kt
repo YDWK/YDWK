@@ -18,6 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.entities
 
+import com.fasterxml.jackson.databind.node.ArrayNode
 import io.github.ydwk.ydwk.entities.audit.AuditLogType
 import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.channel.GuildChannel
@@ -33,6 +34,7 @@ import io.github.ydwk.ydwk.entities.guild.enums.*
 import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.impl.entities.AuditLogImpl
 import io.github.ydwk.ydwk.impl.entities.channel.DmChannelImpl
+import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
 import io.github.ydwk.ydwk.rest.EndPoint
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 import io.github.ydwk.ydwk.util.NameAbleEntity
@@ -694,4 +696,46 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @return The channel, or null if it doesn't exist.
      */
     fun getChannelById(channelId: String): GuildChannel? = getChannelById(channelId.toLong())
+
+    /**
+     * Used to get all the members of the guild.
+     *
+     * @return The members.
+     */
+    val retrieveMembers: CompletableFuture<List<Member>>
+        get() {
+            return ydwk.restApiManager
+                .addQueryParameter("limit", "")
+                .get(EndPoint.GuildEndpoint.GET_MEMBERS, id)
+                .execute { it ->
+                    val jsonBody = it.jsonBody
+                    val members: ArrayNode = jsonBody as ArrayNode
+                    val memberList = mutableListOf<Member>()
+                    for (member in members) {
+                        memberList.add(MemberImpl(ydwk, member, this))
+                    }
+                    memberList
+                }
+        }
+
+    /**
+     * Used to get all the members of the guild.
+     *
+     * @param limit The limit of members to retrieve.
+     * @return The members.
+     */
+    fun retrieveMembers(limit: Int): CompletableFuture<List<Member>> {
+        return ydwk.restApiManager
+            .addQueryParameter("limit", limit.toString())
+            .get(EndPoint.GuildEndpoint.GET_MEMBERS, id)
+            .execute { it ->
+                val jsonBody = it.jsonBody
+                val members: ArrayNode = jsonBody as ArrayNode
+                val memberList = mutableListOf<Member>()
+                for (member in members) {
+                    memberList.add(MemberImpl(ydwk, member, this))
+                }
+                memberList
+            }
+    }
 }
