@@ -58,6 +58,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -224,8 +225,13 @@ class YDWKImpl(
 
     override fun createDmChannel(userId: Long): CompletableFuture<DmChannel> {
         return this.restApiManager
-            .addQueryParameter("recipient_id", userId.toString())
-            .post(null, EndPoint.UserEndpoint.CREATE_DM)
+            .post(
+                this.objectMapper
+                    .createObjectNode()
+                    .put("recipient_id", userId)
+                    .toString()
+                    .toRequestBody(),
+                EndPoint.UserEndpoint.CREATE_DM)
             .execute { it ->
                 val jsonBody = it.jsonBody
                 if (jsonBody == null) {

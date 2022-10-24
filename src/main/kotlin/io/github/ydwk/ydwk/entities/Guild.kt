@@ -39,6 +39,7 @@ import io.github.ydwk.ydwk.util.NameAbleEntity
 import io.github.ydwk.ydwk.util.SnowFlake
 import java.util.concurrent.CompletableFuture
 import kotlin.time.Duration
+import okhttp3.RequestBody.Companion.toRequestBody
 
 /** This class is used to represent a discord guild object. */
 interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
@@ -317,8 +318,13 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      */
     fun createDmChannel(userId: Long): CompletableFuture<DmChannel> {
         return ydwk.restApiManager
-            .addQueryParameter("recipient_id", userId.toString())
-            .post(null, EndPoint.UserEndpoint.CREATE_DM)
+            .post(
+                ydwk.objectMapper
+                    .createObjectNode()
+                    .put("recipient_id", id)
+                    .toString()
+                    .toRequestBody(),
+                EndPoint.UserEndpoint.CREATE_DM)
             .execute { it ->
                 val jsonBody = it.jsonBody
                 if (jsonBody == null) {
@@ -368,8 +374,15 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
         reason: String? = null
     ): CompletableFuture<Void> {
         return ydwk.restApiManager
-            .addQueryParameter("delete-message-days", deleteMessageDuration.inWholeDays.toString())
-            .put(null, EndPoint.GuildEndpoint.BAN, id, userId.toString())
+            .put(
+                ydwk.objectMapper
+                    .createObjectNode()
+                    .put("delete_message_seconds", deleteMessageDuration.inWholeSeconds)
+                    .toString()
+                    .toRequestBody(),
+                EndPoint.GuildEndpoint.BAN,
+                id,
+                userId.toString())
             .addReason(reason)
             .executeWithNoResult()
     }
