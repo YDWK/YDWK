@@ -39,61 +39,69 @@ interface SlashOptionGetter : NameAbleEntity {
      *
      * @return The option as a string.
      */
-    val asString: String?
+    val asString: String
 
     /**
      * Gets the option as a boolean.
      *
      * @return The option as a boolean.
+     * @throws IllegalArgumentException if the option is not a boolean.
      */
-    val asBoolean: Boolean?
+    val asBoolean: Boolean
 
     /**
      * Gets the option as a long.
      *
      * @return The option as a long.
+     * @throws IllegalArgumentException if the option is not a long.
      */
-    val asLong: Long?
+    val asLong: Long
 
     /**
      * Gets the option as a double.
      *
      * @return The option as a double.
+     * @throws IllegalArgumentException if the option is not a double.
      */
-    val asDouble: Double?
+    val asDouble: Double
 
     /**
      * Gets the option as a user.
      *
      * @return The option as a user.
+     * @throws IllegalArgumentException if the option is not a user.
      */
-    val asUser: User?
+    val asUser: User
 
     /**
      * Gets the option as a member.
      *
      * @return The option as a member.
+     * @throws IllegalArgumentException if the option is not a member.
      */
-    val asMember: Member?
+    val asMember: Member
 
     /**
      * Gets the option as a channel.
      *
      * @return The option as a channel.
+     * @throws IllegalArgumentException if the option is not a channel.
      */
-    val asChannel: GenericGuildTextChannel?
+    val asChannel: GenericGuildTextChannel
 
     /**
      * Gets the option as a role.
      *
      * @return The option as a role.
+     * @throws IllegalArgumentException if the option is not a role.
      */
-    val asRole: Role?
+    val asRole: Role
 
     /**
      * Gets the option as an attachment.
      *
      * @return The option as an attachment.
+     * @throws IllegalArgumentException if the option is not an attachment.
      */
-    val asAttachment: Attachment?
+    val asAttachment: Attachment
 }

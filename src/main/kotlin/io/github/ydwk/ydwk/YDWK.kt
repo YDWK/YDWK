@@ -32,8 +32,6 @@ import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildVoiceChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
 import io.github.ydwk.ydwk.entities.guild.Member
-import io.github.ydwk.ydwk.entities.guild.Role
-import io.github.ydwk.ydwk.entities.message.Attachment
 import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
 import io.github.ydwk.ydwk.event.backend.event.GenericEvent
 import io.github.ydwk.ydwk.rest.RestApiManager
@@ -377,34 +375,4 @@ interface YDWK {
      * @return The [CompletableFuture] object.
      */
     fun requestUser(id: String): CompletableFuture<User> = requestUser(id.toLong())
-
-    /**
-     * Gets a guild by its id.
-     *
-     * @param id The id of the guild.
-     * @return The [Role] object.
-     */
-    fun getRole(id: Long): Role?
-
-    /**
-     * Gets a guild by its id.
-     *
-     * @param id The id of the guild.
-     * @return The [Role] object.
-     */
-    fun getRole(id: String): Role? = getRole(id.toLong())
-
-    /**
-     * Gets all the attachments of a message.
-     *
-     * @param attachmentId The ids of the attachments.
-     */
-    fun getAttachment(attachmentId: Long): Attachment?
-
-    /**
-     * Gets all the attachments of a message.
-     *
-     * @param attachmentId The ids of the attachments.
-     */
-    fun getAttachment(attachmentId: String): Attachment? = getAttachment(attachmentId.toLong())
 }

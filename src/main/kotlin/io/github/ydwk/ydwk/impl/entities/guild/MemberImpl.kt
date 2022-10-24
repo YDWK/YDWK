@@ -57,9 +57,9 @@ class MemberImpl(
     override var premiumSince: String? =
         if (json.has("premium_since")) formatZonedDateTime(json["premium_since"].asText()) else null
 
-    override var deaf: Boolean = json["deaf"].asBoolean()
+    override var deaf: Boolean = json.has("deaf") && json["deaf"].asBoolean()
 
-    override var mute: Boolean = json["mute"].asBoolean()
+    override var mute: Boolean = json.has("mute") && json["mute"].asBoolean()
 
     override var pending: Boolean = json["pending"].asBoolean()
 

@@ -23,61 +23,68 @@ import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.entities.message.Attachment
+import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.interaction.application.ApplicationCommandOption
 
-class SlashOptionGetterImpl(private val applicationCommandOption: ApplicationCommandOption) :
-    SlashOptionGetter {
+class SlashOptionGetterImpl(
+    private val applicationCommandOption: ApplicationCommandOption,
+    private val optionObjects: Map<Long, GenericEntity>
+) : SlashOptionGetter {
 
     override val type: SlashOptionType
         get() = applicationCommandOption.type
 
-    override val asString: String?
-        get() =
-            if (type == SlashOptionType.STRING) applicationCommandOption.value.asText() else null
+    override val asString: String
+        get() = applicationCommandOption.value.asText()
 
-    override val asBoolean: Boolean?
+    override val asBoolean: Boolean
         get() =
             if (type == SlashOptionType.BOOLEAN) applicationCommandOption.value.asBoolean()
-            else null
+            else throw IllegalArgumentException("The option type ${type.name} is not a boolean")
 
-    override val asLong: Long?
+    override val asLong: Long
         get() =
-            if (type == SlashOptionType.INTEGER) applicationCommandOption.value.asLong() else null
+            if (type == SlashOptionType.INTEGER) applicationCommandOption.value.asLong()
+            else throw IllegalArgumentException("The option type ${type.name} is not a long")
 
-    override val asDouble: Double?
+    override val asDouble: Double
         get() =
-            if (type == SlashOptionType.NUMBER) applicationCommandOption.value.asDouble() else null
+            if (type == SlashOptionType.NUMBER) applicationCommandOption.value.asDouble()
+            else throw IllegalArgumentException("The option type ${type.name} is not a double")
 
-    override val asUser: User?
-        get() =
-            if (type == SlashOptionType.USER)
-                applicationCommandOption.ydwk.getUser(applicationCommandOption.value.asLong())
-            else null
-
-    override val asMember: Member?
+    override val asUser: User
         get() =
             if (type == SlashOptionType.USER)
-                applicationCommandOption.ydwk.getMember(applicationCommandOption.value.asLong())
-            else null
+                if (optionObjects[applicationCommandOption.value.asLong()] is Member) {
+                    (optionObjects[applicationCommandOption.value.asLong()] as Member).user
+                } else {
+                    optionObjects[applicationCommandOption.value.asLong()] as User
+                }
+            else throw IllegalArgumentException("The option type ${type.name} is not a user")
 
-    override val asChannel: GenericGuildTextChannel?
+    override val asMember: Member
+        get() =
+            if (type == SlashOptionType.USER)
+                optionObjects[applicationCommandOption.value.asLong()] as Member
+            else throw IllegalArgumentException("The option type ${type.name} is not a member")
+
+    override val asChannel: GenericGuildTextChannel
         get() =
             if (type == SlashOptionType.CHANNEL)
-                applicationCommandOption.ydwk.getGuildTextChannel(
-                    applicationCommandOption.value.asLong())
-            else null
+                optionObjects[applicationCommandOption.value.asLong()] as GenericGuildTextChannel
+            else throw IllegalArgumentException("The option type ${type.name} is not a channel")
 
-    override val asRole: Role?
+    override val asRole: Role
         get() =
             if (type == SlashOptionType.ROLE)
-                applicationCommandOption.ydwk.getRole(applicationCommandOption.value.asLong())
-            else null
+                optionObjects[applicationCommandOption.value.asLong()] as Role
+            else throw IllegalArgumentException("The option type ${type.name} is not a role")
 
-    override val asAttachment: Attachment?
+    override val asAttachment: Attachment
         get() =
-            if (type == SlashOptionType.MENTIONABLE)
-                applicationCommandOption.ydwk.getAttachment(applicationCommandOption.value.asLong())
-            else null
+            if (type == SlashOptionType.ATTACHMENT)
+                optionObjects[applicationCommandOption.value.asLong()] as Attachment
+            else throw IllegalArgumentException("The option type ${type.name} is not an attachment")
 
     override var name: String
         get() = applicationCommandOption.name
