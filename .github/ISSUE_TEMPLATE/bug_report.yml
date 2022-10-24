@@ -1,5 +1,7 @@
 name: Bug reports
 description: Create a report to help us improve
+labels: [ bug ]
+assignees: [ RealYusufIsmail ]
 body:
   - type: markdown
     attributes:

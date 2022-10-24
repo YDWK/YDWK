@@ -1,5 +1,7 @@
 name: Feature Request
 description: Request a new feature
+labels: [ enhancement ]
+assignees: [ RealYusufIsmail ]
 body:
   - type: markdown
     attributes:
