@@ -36,6 +36,7 @@ import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildVoiceChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.guild.Role
+import io.github.ydwk.ydwk.entities.message.Attachment
 import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
 import io.github.ydwk.ydwk.event.backend.event.CoroutineEventListener
 import io.github.ydwk.ydwk.event.backend.event.GenericEvent
@@ -244,8 +245,8 @@ class YDWKImpl(
             }
     }
 
-    override fun getMember(guildId: Long, userId: Long): Member? {
-        return memberCache[userId.toString(), guildId.toString()] as Member?
+    override fun getMember(userId: Long): Member? {
+        return memberCache[userId.toString()] as Member?
     }
 
     override fun getMembers(): List<Member> {
@@ -274,6 +275,10 @@ class YDWKImpl(
 
     override fun getRole(asLong: Long): Role? {
         return cache[asLong.toString(), CacheIds.ROLE] as Role?
+    }
+
+    override fun getAttachment(attachmentId: Long): Attachment? {
+        return cache[attachmentId.toString(), CacheIds.ATTACHMENT] as Attachment?
     }
 
     override val guildChannels: List<GuildChannel>

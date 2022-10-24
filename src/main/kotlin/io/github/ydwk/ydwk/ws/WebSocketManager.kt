@@ -492,7 +492,7 @@ open class WebSocketManager(
                 val guild = ydwk.getGuild(d.get("guild_id").asLong())
                 if (guild != null) {
                     val member = MemberImpl(ydwk, d, guild)
-                    ydwk.memberCache.set(d.get("user").get("id").asText(), guild.id, member)
+                    ydwk.memberCache.set(d.get("user").get("id").asText(), member)
                     ydwk.emitEvent(GuildMemberAddEvent(ydwk, member))
                 } else {
                     logger.warn("Guild is null")
@@ -502,7 +502,7 @@ open class WebSocketManager(
                 val guild = ydwk.getGuild(d.get("guild_id").asLong())
                 if (guild != null) {
                     val member = MemberImpl(ydwk, d, guild)
-                    ydwk.memberCache.remove(d.get("user").get("id").asText(), guild.id)
+                    ydwk.memberCache.remove(d.get("user").get("id").asText())
                     ydwk.emitEvent(GuildMemberRemoveEvent(ydwk, member))
                 } else {
                     logger.warn("Guild is null")

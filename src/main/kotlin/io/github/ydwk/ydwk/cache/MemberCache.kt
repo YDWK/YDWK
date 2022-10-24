@@ -24,26 +24,22 @@ interface MemberCache : Cache {
     /**
      * Adds a new item to the cache
      *
-     * @param userId The user id of the member
-     * @param guildId The guild id of the member
-     * @param value The value of the item
+     * @param userId The user id of the member = * @param value The value of the item
      */
-    operator fun set(userId: String, guildId: String, value: Member)
+    operator fun set(userId: String, value: Member)
 
     /**
      * Gets an item from the cache
      *
      * @param userId The user id of the member
-     * @param guildId The guild id of the member
      * @return The value of the item
      */
-    operator fun get(userId: String, guildId: String): Any?
+    operator fun get(userId: String): Any?
 
     /**
      * Removes an item from the cache
      *
      * @param userId The user id of the member
-     * @param guildId The guild id of the member
      */
-    fun remove(userId: String, guildId: String)
+    fun remove(userId: String)
 }

@@ -52,9 +52,7 @@ class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
         val members: ArrayList<Member> = ArrayList()
         json["members"].forEach { member -> members.add(MemberImpl(ydwk, member, guild)) }
 
-        members.forEach { member ->
-            member.user?.let { ydwk.memberCache[it.id, member.guild.id] = member }
-        }
+        members.forEach { member -> member.user.let { ydwk.memberCache[it.id] = member } }
 
         val roles = ArrayList<Role>()
         json["roles"].forEach { role -> roles.add(RoleImpl(ydwk, role, role.get("id").asLong())) }

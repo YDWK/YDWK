@@ -91,7 +91,7 @@ fun main() {
             }
             "ban" -> {
                 withContext(Dispatchers.IO) {
-                    it.slash.reply(it.slash.getOption("member")!!.asMember!!.name)
+                    it.slash.reply(it.slash.getOption("member")!!.asUser!!.name).get()
                 }
             }
         }

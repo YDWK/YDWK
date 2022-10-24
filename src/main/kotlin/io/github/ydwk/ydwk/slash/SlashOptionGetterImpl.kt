@@ -28,10 +28,6 @@ import io.github.ydwk.ydwk.interaction.application.ApplicationCommandOption
 class SlashOptionGetterImpl(private val applicationCommandOption: ApplicationCommandOption) :
     SlashOptionGetter {
 
-    init {
-        println(applicationCommandOption.json.toPrettyString())
-    }
-
     override val type: SlashOptionType
         get() = applicationCommandOption.type
 
@@ -59,7 +55,10 @@ class SlashOptionGetterImpl(private val applicationCommandOption: ApplicationCom
             else null
 
     override val asMember: Member?
-        get() = if (type == SlashOptionType.USER) applicationCommandOption.value as Member else null
+        get() =
+            if (type == SlashOptionType.USER)
+                applicationCommandOption.ydwk.getMember(applicationCommandOption.value.asLong())
+            else null
 
     override val asChannel: GenericGuildTextChannel?
         get() =
@@ -76,7 +75,8 @@ class SlashOptionGetterImpl(private val applicationCommandOption: ApplicationCom
 
     override val asAttachment: Attachment?
         get() =
-            if (type == SlashOptionType.MENTIONABLE) applicationCommandOption.value as Attachment
+            if (type == SlashOptionType.MENTIONABLE)
+                applicationCommandOption.ydwk.getAttachment(applicationCommandOption.value.asLong())
             else null
 
     override var name: String

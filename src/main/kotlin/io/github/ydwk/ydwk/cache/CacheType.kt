@@ -32,6 +32,7 @@ enum class CacheType(private val ids: CacheIds) {
     STICKER(CacheIds.STICKER),
     APPLICATION_COMMAND(CacheIds.APPLICATION_COMMAND),
     APPLICATION(CacheIds.APPLICATION),
+    ATTACHMENT(CacheIds.ATTACHMENT),
     UNKNOWN(CacheIds.UNKNOWN);
 
     companion object {
