@@ -4,7 +4,7 @@ body:
   - type: markdown
     attributes:
       value: |-
-        Please ask questions in [our Discussions](https://github.com/YDWK/YDWK/discussions.
+        Please ask questions in [our Discussions](https://github.com/YDWK/YDWK/discussions)
         
         Keep in mind that this isn't the place to learn Kotlin.  
         Please head over to [StackOverflow](https://stackoverflow.com/questions/tagged/kotlin) for your general programming questions.
@@ -15,7 +15,7 @@ body:
       options:
         - label: I have checked for similar issues on the Issue-tracker.
           required: true
-        - label: I have updated to the [latest YDWk version](https://search.maven.org/artifact/io.github.realyusufismail/ydwk)
+        - label: I have updated to the [latest YDWK version](https://search.maven.org/artifact/io.github.realyusufismail/ydwk)
           required: true
         - label: I have checked the branches or the maintainers' PRs for upcoming features.
           required: true
