@@ -54,13 +54,6 @@ interface SlashCommand : SnowFlake, GenericCommandData {
     val resolved: InteractionResolvedData?
 
     /**
-     * Gets the options of this interaction.
-     *
-     * @return The options of this interaction.
-     */
-    val options: List<ApplicationCommandOption>?
-
-    /**
      * Gets the guild where the interaction occurred.
      *
      * @return The guild where the interaction occurred.
@@ -193,4 +186,6 @@ interface SlashCommand : SnowFlake, GenericCommandData {
      */
     fun reply(embed: Embed, ephemeral: Boolean = false): CompletableFuture<Void> =
         reply(embed, false, ephemeral)
+
+    fun <T> getOption(s: String): T?
 }

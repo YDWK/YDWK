@@ -26,6 +26,8 @@ import io.github.ydwk.ydwk.event.backend.event.on
 import io.github.ydwk.ydwk.event.events.ReadyEvent
 import io.github.ydwk.ydwk.event.events.interaction.SlashCommandEvent
 import io.github.ydwk.ydwk.slash.Slash
+import io.github.ydwk.ydwk.slash.SlashOption
+import io.github.ydwk.ydwk.slash.SlashOptionType
 import java.awt.Color
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -41,19 +43,19 @@ fun main() {
         createDefaultBot(JConfigUtils.getString("token") ?: throw Exception("Token not found!"))
     ydwk.addEvent(Bot())
 
+    //TODO: having more than 6 commands leads to rate limit need to fix
     ydwk.waitForReady.slashBuilder
-        .addSlashCommand(Slash("test", "This is a test command"))
         .addSlashCommand(Slash("embed", "This is a test command"))
         .addSlashCommand(Slash("json", "Gets the json for member"))
         .addSlashCommand(Slash("forum_json", "Gets the json for forum"))
         .addSlashCommand(Slash("create_dm", "Creates a dm channel"))
+        .addSlashCommand(
+            Slash("ban", "Bans a member")
+                .addOption(SlashOption("member", "The member to ban", SlashOptionType.USER)))
         .build()
 
     ydwk.on<SlashCommandEvent> {
         when (it.slash.name) {
-            "test" -> {
-                withContext(Dispatchers.IO) { it.slash.reply("This is a test command!").get() }
-            }
             "embed" -> {
                 withContext(Dispatchers.IO) {
                     val embed = ydwk.embedBuilder
@@ -91,7 +93,8 @@ fun main() {
             "ban" -> {
                 withContext(Dispatchers.IO) {
                     val memberOption =
-                        it.slash.options?.find { it.name == "member" }?.value as Member
+                        it.slash.getOption<Member>("member")
+
                     it.slash.guild?.banUser(memberOption.user)?.get()
                 }
             }

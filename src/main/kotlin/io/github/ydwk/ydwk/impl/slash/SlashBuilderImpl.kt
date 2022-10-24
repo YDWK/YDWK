@@ -33,7 +33,6 @@ class SlashBuilderImpl(
     private val applicationId: String
 ) : SlashBuilder {
     private val slashCommands: MutableList<Slash> = mutableListOf()
-    private var excutedBuildOnce = false
 
     override fun addSlashCommand(slash: Slash): SlashBuilder {
         slashCommands.add(slash)

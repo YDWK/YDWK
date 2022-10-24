@@ -53,7 +53,7 @@ class SlashCommandImpl(
     override val resolved: InteractionResolvedData? =
         if (json.has("resolved")) InteractionResolvedDataImpl(ydwk, json["resolved"]) else null
 
-    override val options: List<ApplicationCommandOption>? =
+    private val options: List<ApplicationCommandOption>? =
         if (json.has("options")) json["options"].map { ApplicationCommandOptionImpl(ydwk, it) }
         else null
 
@@ -103,5 +103,9 @@ class SlashCommandImpl(
                 interaction.id,
                 token)
             .executeWithNoResult()
+    }
+
+    override fun <T> getOption(s: String): T? {
+        TODO("Not yet implemented")
     }
 }
