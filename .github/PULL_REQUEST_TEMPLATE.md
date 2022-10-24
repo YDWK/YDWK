@@ -1,4 +1,5 @@
 [code_of_conduct]: https://github.com/ydwk/ydwk/blob/master/.github/CODE_OF_CONDUCT.md
+
 [new_issue]: https://github.com/ydwk/ydwk/issues/new/choose
 
 ## Pull Request Etiquette
@@ -20,7 +21,7 @@
 ### Changes
 
 - [ ] Internal code
-- [ ] Library interface (affecting end-user code) 
+- [ ] Library interface (affecting end-user code)
 - [ ] Documentation
 - [ ] Other: \_____ <!-- Insert other type here -->
 
