@@ -21,10 +21,13 @@ package io.github.ydwk.ydwk.entities
 import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.message.Sendeadble
 import io.github.ydwk.ydwk.entities.util.GenericEntity
+import io.github.ydwk.ydwk.impl.entities.channel.DmChannelImpl
+import io.github.ydwk.ydwk.rest.EndPoint
 import io.github.ydwk.ydwk.util.NameAbleEntity
 import io.github.ydwk.ydwk.util.SnowFlake
 import java.awt.Color
 import java.util.concurrent.CompletableFuture
+import okhttp3.RequestBody.Companion.toRequestBody
 
 interface User : SnowFlake, GenericEntity, NameAbleEntity, Sendeadble {
 
@@ -63,4 +66,22 @@ interface User : SnowFlake, GenericEntity, NameAbleEntity, Sendeadble {
 
     /** Creates a dm channel with this user. */
     val createDmChannel: CompletableFuture<DmChannel>
+        get() {
+            return ydwk.restApiManager
+                .post(
+                    ydwk.objectMapper
+                        .createObjectNode()
+                        .put("recipient_id", id)
+                        .toString()
+                        .toRequestBody(),
+                    EndPoint.UserEndpoint.CREATE_DM)
+                .execute { it ->
+                    val jsonBody = it.jsonBody
+                    if (jsonBody == null) {
+                        throw IllegalStateException("json body is null")
+                    } else {
+                        DmChannelImpl(ydwk, jsonBody, jsonBody["id"].asLong())
+                    }
+                }
+        }
 }
