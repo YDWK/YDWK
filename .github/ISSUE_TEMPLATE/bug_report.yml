@@ -1,4 +1,4 @@
-name: "Bug reports"
+name: Bug reports
 description: Create a report to help us improve
 labels: [":bug: bug"]
 body:
