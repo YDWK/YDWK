@@ -18,11 +18,58 @@
  */ 
 package io.github.ydwk.ydwk.util
 
+/**
+ * A snowflake is a 64-bit integer that is used to uniquely identify a Discord entity.
+ *
+ * @see [DiscordDocs](https://discord.com/developers/docs/reference#snowflakes)
+ */
 interface SnowFlake {
-    /** @return The id of an object as a string */
+
+    /**
+     * Gets the id of this snowflake as a String.
+     *
+     * @return the id of this snowflake as a [String]
+     */
     val id: String
         get() = idAsLong.toString()
 
-    /** @return The id of an object as a long */
+    /**
+     * Gets the id of this snowflake as a Long.
+     *
+     * @return the id of this snowflake as a [Long]
+     */
     val idAsLong: Long
+
+    /**
+     * Gets the timestamp of this snowflake. (Milliseconds since Discord Epoch, the first second of
+     * 2015 or 1420070400000.)
+     *
+     * @return the timestamp of this snowflake.
+     */
+    val asTimestamp: Long
+        get() = (idAsLong shr 22) + 1420070400000
+
+    /**
+     * Gets the worker id of this snowflake.
+     *
+     * @return the worker id of this snowflake.
+     */
+    val asWorkerId: Long
+        get() = (idAsLong and 0x3E0000) shr 17
+
+    /**
+     * Gets the process id of this snowflake.
+     *
+     * @return the process id of this snowflake.
+     */
+    val asProcessId: Long
+        get() = (idAsLong and 0x1F000) shr 12
+
+    /**
+     * Gets the increment of this snowflake.
+     *
+     * @return the increment of this snowflake.
+     */
+    val asIncrement: Long
+        get() = idAsLong and 0xFFF
 }
