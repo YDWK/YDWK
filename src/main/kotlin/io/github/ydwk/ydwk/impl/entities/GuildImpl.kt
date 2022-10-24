@@ -20,25 +20,25 @@ package io.github.ydwk.ydwk.impl.entities
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.AuditLog
 import io.github.ydwk.ydwk.entities.Emoji
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.Sticker
-import io.github.ydwk.ydwk.entities.audit.AuditLogType
-import io.github.ydwk.ydwk.entities.channel.DmChannel
+import io.github.ydwk.ydwk.entities.channel.GuildChannel
+import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildChannel
+import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
+import io.github.ydwk.ydwk.entities.channel.guild.message.text.GuildTextChannel
+import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.ydwk.entities.guild.Ban
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.entities.guild.WelcomeScreen
 import io.github.ydwk.ydwk.entities.guild.enums.*
-import io.github.ydwk.ydwk.impl.entities.channel.DmChannelImpl
 import io.github.ydwk.ydwk.impl.entities.guild.BanImpl
 import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
 import io.github.ydwk.ydwk.impl.entities.guild.WelcomeScreenImpl
 import io.github.ydwk.ydwk.rest.EndPoint
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 import java.util.concurrent.CompletableFuture
-import kotlin.time.Duration
 
 class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override val idAsLong: Long) :
     Guild {
@@ -164,86 +164,13 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
             }
         }
 
-    override fun createDmChannel(userId: Long): CompletableFuture<DmChannel> {
-        return ydwk.restApiManager
-            .addQueryParameter("recipient_id", userId.toString())
-            .post(null, EndPoint.UserEndpoint.CREATE_DM)
-            .execute { it ->
-                val jsonBody = it.jsonBody
-                if (jsonBody == null) {
-                    throw IllegalStateException("json body is null")
-                } else {
-                    DmChannelImpl(ydwk, jsonBody, jsonBody["id"].asLong())
-                }
-            }
-    }
-
     override val botAsMember: Member
         get() =
-            if (ydwk.bot?.let { ydwk.getMember(id, it.id) } == null) {
+            if (ydwk.bot?.let { ydwk.getMember(it.id) } == null) {
                 throw IllegalStateException("Bot is not a member of this guild")
             } else {
-                ydwk.getMember(id, ydwk.bot!!.id)!!
+                ydwk.getMember(ydwk.bot!!.id)!!
             }
-
-    override fun banUser(
-        userId: Long,
-        deleteMessageDuration: Duration,
-        reason: String?
-    ): CompletableFuture<Void> {
-        return ydwk.restApiManager
-            .addQueryParameter("delete-message-days", deleteMessageDuration.inWholeDays.toString())
-            .put(null, EndPoint.GuildEndpoint.BAN, id, userId.toString())
-            .addReason(reason)
-            .executeWithNoResult()
-    }
-
-    override fun unbanUser(userId: Long, reason: String?): CompletableFuture<Void> {
-        return ydwk.restApiManager
-            .delete(EndPoint.GuildEndpoint.BAN, id, userId.toString())
-            .addReason(reason)
-            .executeWithNoResult()
-    }
-
-    override fun kickMember(userId: Long, reason: String?): CompletableFuture<Void> {
-        return ydwk.restApiManager
-            .delete(EndPoint.GuildEndpoint.KICK, id, userId.toString())
-            .addReason(reason)
-            .executeWithNoResult()
-    }
-
-    override fun requestedAuditLog(
-        userId: GetterSnowFlake?,
-        limit: Int,
-        before: GetterSnowFlake?,
-        actionType: AuditLogType?,
-    ): CompletableFuture<AuditLog> {
-        val rest = ydwk.restApiManager
-
-        if (userId != null) {
-            rest.addQueryParameter("user_id", userId.asString)
-        }
-
-        if (before != null) {
-            rest.addQueryParameter("before", before.asString)
-        }
-
-        if (actionType != null) {
-            rest.addQueryParameter("action_type", actionType.getType().toString())
-        }
-
-        return rest
-            .addQueryParameter("limit", limit.toString())
-            .get(EndPoint.GuildEndpoint.GET_AUDIT_LOGS, id)
-            .execute { it ->
-                val jsonBody = it.jsonBody
-                if (jsonBody == null) {
-                    throw IllegalStateException("json body is null")
-                } else {
-                    AuditLogImpl(ydwk, jsonBody)
-                }
-            }
-    }
 
     override fun getRole(roleId: Long): Role? {
         return if (roles.any { it.idAsLong == roleId }) {
@@ -251,6 +178,25 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
         } else {
             null
         }
+    }
+
+    override val getUnorderedChannels: List<GuildChannel>
+        get() = ydwk.guildChannels.filter { it.guild.id == id }
+
+    override val getChannels: List<GenericGuildChannel>
+        get() = getUnorderedChannels.filterIsInstance<GenericGuildChannel>()
+
+    override val getCategories: List<GuildCategory>
+        get() = getUnorderedChannels.filterIsInstance<GuildCategory>()
+
+    override val getTextChannels: List<GuildTextChannel>
+        get() = getUnorderedChannels.filterIsInstance<GuildTextChannel>()
+
+    override val getVoiceChannels: List<GuildVoiceChannel>
+        get() = getUnorderedChannels.filterIsInstance<GuildVoiceChannel>()
+
+    override fun getChannelById(channelId: Long): GuildChannel? {
+        return getUnorderedChannels.firstOrNull { it.idAsLong == channelId }
     }
 
     override var name: String = json["name"].asText()

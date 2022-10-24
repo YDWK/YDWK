@@ -23,19 +23,15 @@ import io.github.ydwk.ydwk.cache.CacheIds
 import io.github.ydwk.ydwk.entities.Emoji
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.Sticker
-import io.github.ydwk.ydwk.entities.channel.TextChannel
-import io.github.ydwk.ydwk.entities.channel.VoiceChannel
 import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
-import io.github.ydwk.ydwk.entities.channel.guild.Category
+import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildChannel
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.EmojiImpl
 import io.github.ydwk.ydwk.impl.entities.GuildImpl
 import io.github.ydwk.ydwk.impl.entities.StickerImpl
-import io.github.ydwk.ydwk.impl.entities.channel.CategoryImpl
-import io.github.ydwk.ydwk.impl.entities.channel.TextChannelImpl
-import io.github.ydwk.ydwk.impl.entities.channel.VoiceChannelImpl
+import io.github.ydwk.ydwk.impl.entities.channel.guild.GenericGuildChannelImpl
 import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
 import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
 import io.github.ydwk.ydwk.impl.handler.Handler
@@ -56,9 +52,7 @@ class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
         val members: ArrayList<Member> = ArrayList()
         json["members"].forEach { member -> members.add(MemberImpl(ydwk, member, guild)) }
 
-        members.forEach { member ->
-            member.user?.let { ydwk.memberCache[it.id, member.guild.id] = member }
-        }
+        members.forEach { member -> member.user.let { ydwk.memberCache[it.id] = member } }
 
         val roles = ArrayList<Role>()
         json["roles"].forEach { role -> roles.add(RoleImpl(ydwk, role, role.get("id").asLong())) }
@@ -87,15 +81,17 @@ class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
                 .map { ChannelType.fromId(it["type"].asInt()) }
                 .toCollection(EnumSet.noneOf(ChannelType::class.java))
 
-        val textChannel = ArrayList<TextChannel>()
-        val voiceChannel = ArrayList<VoiceChannel>()
-        val category = ArrayList<Category>()
+        val textChannel = ArrayList<GenericGuildChannel>()
+        val voiceChannel = ArrayList<GenericGuildChannel>()
+        val category = ArrayList<GenericGuildChannel>()
         channelType.forEach {
             when {
-                it.isText -> {
+                it.isGuildText -> {
                     channelJson.forEach { channel ->
                         if (channel["type"].asInt() == it.getId()) {
-                            textChannel.add(TextChannelImpl(ydwk, channel, channel["id"].asLong()))
+                            textChannel.add(
+                                GenericGuildChannelImpl(
+                                    ydwk, channel, channel["id"].asLong(), true))
                         }
                     }
                 }
@@ -103,14 +99,17 @@ class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
                     channelJson.forEach { channel ->
                         if (channel["type"].asInt() == it.getId()) {
                             voiceChannel.add(
-                                VoiceChannelImpl(ydwk, channel, channel["id"].asLong()))
+                                GenericGuildChannelImpl(
+                                    ydwk, channel, channel["id"].asLong(), isVoiceChannel = true))
                         }
                     }
                 }
                 it.isCategory -> {
                     channelJson.forEach { channel ->
                         if (channel["type"].asInt() == it.getId()) {
-                            category.add(CategoryImpl(ydwk, channel, channel["id"].asLong()))
+                            category.add(
+                                GenericGuildChannelImpl(
+                                    ydwk, channel, channel["id"].asLong(), isCategory = true))
                         }
                     }
                 }

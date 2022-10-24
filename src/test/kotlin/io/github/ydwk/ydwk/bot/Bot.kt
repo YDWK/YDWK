@@ -25,6 +25,8 @@ import io.github.ydwk.ydwk.event.backend.event.on
 import io.github.ydwk.ydwk.event.events.ReadyEvent
 import io.github.ydwk.ydwk.event.events.interaction.SlashCommandEvent
 import io.github.ydwk.ydwk.slash.Slash
+import io.github.ydwk.ydwk.slash.SlashOption
+import io.github.ydwk.ydwk.slash.SlashOptionType
 import java.awt.Color
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -40,18 +42,19 @@ fun main() {
         createDefaultBot(JConfigUtils.getString("token") ?: throw Exception("Token not found!"))
     ydwk.addEvent(Bot())
 
+    // TODO: having more than 6 commands leads to rate limit need to fix
     ydwk.waitForReady.slashBuilder
-        .addSlashCommand(Slash("test", "This is a test command"))
         .addSlashCommand(Slash("embed", "This is a test command"))
         .addSlashCommand(Slash("json", "Gets the json for member"))
         .addSlashCommand(Slash("forum_json", "Gets the json for forum"))
+        .addSlashCommand(Slash("create_dm", "Creates a dm channel"))
+        .addSlashCommand(
+            Slash("ban", "Bans a member")
+                .addOption(SlashOption("member", "The member to ban", SlashOptionType.USER)))
         .build()
 
     ydwk.on<SlashCommandEvent> {
         when (it.slash.name) {
-            "test" -> {
-                withContext(Dispatchers.IO) { it.slash.reply("This is a test command!").get() }
-            }
             "embed" -> {
                 withContext(Dispatchers.IO) {
                     val embed = ydwk.embedBuilder
@@ -74,10 +77,21 @@ fun main() {
             }
             "forum_json" -> {
                 withContext(Dispatchers.IO) {
-                    val forum = it.slash.ydwk.getTextChannel("1031971612238561390")
+                    val forum = it.slash.ydwk.getGuildTextChannel("1031971612238561390")
                     if (forum != null) {
                         it.slash.reply(forum.json.toPrettyString()).get()
                     }
+                }
+            }
+            "create_dm" -> {
+                withContext(Dispatchers.IO) {
+                    val member = it.slash.member
+                    member?.createDmChannel?.get()?.sendMessage("Hello!")?.get()
+                }
+            }
+            "ban" -> {
+                withContext(Dispatchers.IO) {
+                    it.slash.reply(it.slash.getOption("member")!!.asUser!!.name).get()
                 }
             }
         }

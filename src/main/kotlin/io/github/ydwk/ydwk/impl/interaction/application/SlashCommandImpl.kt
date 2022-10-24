@@ -27,15 +27,15 @@ import io.github.ydwk.ydwk.entities.channel.TextChannel
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.message.Embed
 import io.github.ydwk.ydwk.entities.message.MessageFlag
-import io.github.ydwk.ydwk.impl.interaction.sub.InteractionResolvedDataImpl
 import io.github.ydwk.ydwk.interaction.Interaction
 import io.github.ydwk.ydwk.interaction.application.ApplicationCommandOption
 import io.github.ydwk.ydwk.interaction.application.ApplicationCommandType
 import io.github.ydwk.ydwk.interaction.application.SlashCommand
-import io.github.ydwk.ydwk.interaction.sub.InteractionResolvedData
 import io.github.ydwk.ydwk.interaction.sub.InteractionType
 import io.github.ydwk.ydwk.rest.EndPoint
 import io.github.ydwk.ydwk.rest.json.replyJsonBody
+import io.github.ydwk.ydwk.slash.SlashOptionGetter
+import io.github.ydwk.ydwk.slash.SlashOptionGetterImpl
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 import java.util.concurrent.CompletableFuture
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -50,10 +50,8 @@ class SlashCommandImpl(
 
     override val type: ApplicationCommandType = ApplicationCommandType.fromInt(json["type"].asInt())
 
-    override val resolved: InteractionResolvedData? =
-        if (json.has("resolved")) InteractionResolvedDataImpl(ydwk, json["resolved"]) else null
-
-    override val options: List<ApplicationCommandOption>? =
+    // ignore
+    private val applicationOptions: List<ApplicationCommandOption>? =
         if (json.has("options")) json["options"].map { ApplicationCommandOptionImpl(ydwk, it) }
         else null
 
@@ -104,4 +102,7 @@ class SlashCommandImpl(
                 token)
             .executeWithNoResult()
     }
+
+    override val options: List<SlashOptionGetter>
+        get() = applicationOptions?.map { SlashOptionGetterImpl(it) } ?: emptyList()
 }

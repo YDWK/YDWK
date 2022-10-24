@@ -20,7 +20,7 @@ package io.github.ydwk.ydwk.entities.channel.guild
 
 import io.github.ydwk.ydwk.entities.channel.GuildChannel
 
-interface GenericGuildChannel : GuildChannel {
+interface GenericGuildChannel : GuildChannel, Comparable<GenericGuildChannel> {
     /**
      * Gets the position of this channel.
      *
@@ -33,5 +33,33 @@ interface GenericGuildChannel : GuildChannel {
      *
      * @return the parent of this channel.
      */
-    val parent: Category?
+    val parent: GuildCategory?
+
+    /**
+     * Weather the channel is voice channel.
+     *
+     * @return true if the channel is voice channel.
+     */
+    val isVoiceChannel: Boolean
+
+    /**
+     * Weather the channel is a text channel.
+     *
+     * @return true if the channel is a text channel.
+     */
+    val isTextChannel: Boolean
+
+    /**
+     * Weather the channel is a category channel.
+     *
+     * @return true if the channel is a category channel.
+     */
+    val isCategory: Boolean
+
+    override fun compareTo(other: GenericGuildChannel): Int {
+        if (guild != other.guild) {
+            throw IllegalArgumentException("Cannot compare channels from different guilds")
+        }
+        return position.compareTo(other.position)
+    }
 }

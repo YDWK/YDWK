@@ -25,6 +25,8 @@ import io.github.ydwk.ydwk.event.events.DisconnectEvent
 import io.github.ydwk.ydwk.event.events.ReadyEvent
 import io.github.ydwk.ydwk.event.events.ResumeEvent
 import io.github.ydwk.ydwk.event.events.ShutDownEvent
+import io.github.ydwk.ydwk.event.events.channel.ChannelCreateEvent
+import io.github.ydwk.ydwk.event.events.channel.ChannelDeleteEvent
 import io.github.ydwk.ydwk.event.events.interaction.*
 import io.github.ydwk.ydwk.event.update.IEventUpdate
 import java.lang.invoke.MethodHandle
@@ -106,6 +108,21 @@ abstract class ListenerAdapter : IEventListener {
      * @param event The Message Component Event
      */
     open fun onMessageComponent(event: MessageComponentEvent) {}
+
+    // Channel
+    /**
+     * Listens to ChannelCreateEvent
+     *
+     * @param event The ChannelCreateEvent
+     */
+    open fun onChannelCreate(event: ChannelCreateEvent) {}
+
+    /**
+     * Listens to ChannelDeleteEvent
+     *
+     * @param event The ChannelDeleteEvent
+     */
+    open fun onChannelDelete(event: ChannelDeleteEvent) {}
 
     /**
      * This method is called when an event is received.

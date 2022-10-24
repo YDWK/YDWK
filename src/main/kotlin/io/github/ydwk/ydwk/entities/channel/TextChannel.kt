@@ -19,25 +19,11 @@
 package io.github.ydwk.ydwk.entities.channel
 
 import io.github.ydwk.ydwk.entities.Channel
-import io.github.ydwk.ydwk.entities.channel.guild.text.GuildTextChannel
 import io.github.ydwk.ydwk.entities.message.Sendeadble
+import io.github.ydwk.ydwk.util.NameAbleEntity
 
 /**
  * Contains all the functions that are common to all 'text' channels (i.e. channels that can send
  * messages).
  */
-interface TextChannel : Channel, Sendeadble {
-    /**
-     * Gets the channel as a [GuildTextChannel] if it is one.
-     *
-     * @return the channel as a [GuildTextChannel] if it is one.
-     */
-    fun asGuildTextChannel(): GuildTextChannel?
-
-    /**
-     * Gets the channel as a [DmChannel] if it is one.
-     *
-     * @return the channel as a [DmChannel] if it is one.
-     */
-    fun asDmChannel(): DmChannel?
-}
+interface TextChannel : Channel, Sendeadble, NameAbleEntity

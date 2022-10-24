@@ -32,6 +32,7 @@ enum class CacheIds(private val value: String, private val cacheType: CacheType)
     MEMBER("member", CacheType.MEMBER),
     APPLICATION_COMMAND("application_command", CacheType.APPLICATION_COMMAND),
     APPLICATION("application", CacheType.APPLICATION),
+    ATTACHMENT("attachment", CacheType.ATTACHMENT),
     UNKNOWN("unknown", CacheType.UNKNOWN);
 
     companion object {
@@ -50,6 +51,7 @@ enum class CacheIds(private val value: String, private val cacheType: CacheType)
                 MESSAGE,
                 MEMBER,
                 APPLICATION,
+                ATTACHMENT,
                 ROLE)
         }
 

@@ -20,55 +20,14 @@ package io.github.ydwk.ydwk.impl.entities.channel.guild
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.Guild
-import io.github.ydwk.ydwk.entities.channel.guild.Category
-import io.github.ydwk.ydwk.entities.channel.guild.text.GuildTextChannel
-import io.github.ydwk.ydwk.entities.channel.guild.text.PermissionOverwrite
-import io.github.ydwk.ydwk.impl.entities.channel.TextChannelImpl
+import io.github.ydwk.ydwk.entities.channel.guild.message.text.GuildTextChannel
 
 class GuildTextChannelImpl(
     override val ydwk: YDWK,
     override val json: JsonNode,
     override val idAsLong: Long
-) : GuildTextChannel, TextChannelImpl(ydwk, json, idAsLong) {
-
-    override val topic: String
-        get() = json["topic"].asText()
-
-    override val nsfw: Boolean
-        get() = json["nsfw"].asBoolean()
-
-    override val defaultAutoArchiveDuration: Int
-        get() = json["default_auto_archive_duration"].asInt()
+) : GuildTextChannel, GuildMessageChannelImpl(ydwk, json, idAsLong) {
 
     override val rateLimitPerUser: Int
         get() = json["rate_limit_per_user"].asInt()
-
-    override val lastMessageId: String
-        get() = json["last_message_id"].asText()
-
-    override val lastPinTimestamp: String
-        get() = json["last_pin_timestamp"].asText()
-
-    override val permissionOverwrites: List<PermissionOverwrite>
-        get() =
-            json["permission_overwrites"].map {
-                PermissionOverwriteImpl(ydwk, it, it["id"].asLong())
-            }
-
-    override val position: Int
-        get() = json["position"].asInt()
-
-    override val parent: Category?
-        get() = ydwk.getCategory(json["parent_id"].asText())
-
-    override val guild: Guild
-        get() =
-            if (ydwk.getGuild(json["guild_id"].asText()) != null)
-                ydwk.getGuild(json["guild_id"].asText())!!
-            else throw IllegalStateException("Guild is null")
-
-    override var name: String
-        get() = json["name"].asText()
-        set(value) {}
 }

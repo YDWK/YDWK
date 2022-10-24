@@ -19,13 +19,6 @@
 package io.github.ydwk.ydwk.entities.channel
 
 import io.github.ydwk.ydwk.entities.Channel
-import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
+import io.github.ydwk.ydwk.util.NameAbleEntity
 
-interface VoiceChannel : Channel {
-    /**
-     * Gets the channel as a [GuildVoiceChannel] if it is one.
-     *
-     * @return the channel as a [GuildVoiceChannel] if it is one.
-     */
-    fun asGuildVoiceChannel(): GuildVoiceChannel?
-}
+interface VoiceChannel : NameAbleEntity, Channel

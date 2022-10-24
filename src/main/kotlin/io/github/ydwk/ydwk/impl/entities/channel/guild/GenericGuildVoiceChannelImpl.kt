@@ -16,23 +16,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.impl.entities.channel
+package io.github.ydwk.ydwk.impl.entities.channel.guild
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.channel.VoiceChannel
-import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
+import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildVoiceChannel
+import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildStageChannel
 import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
 
-open class VoiceChannelImpl(
+open class GenericGuildVoiceChannelImpl(
     override val ydwk: YDWK,
     override val json: JsonNode,
     override val idAsLong: Long
-) : VoiceChannel {
+) : GenericGuildVoiceChannel, GenericGuildChannelImpl(ydwk, json, idAsLong, false, true, false) {
+
     override fun asGuildVoiceChannel(): GuildVoiceChannel? {
-        TODO("Not yet implemented")
+        return if (isCastable(GuildVoiceChannel::class.java)) {
+            GuildVoiceChannelImpl(ydwk, json, idAsLong)
+        } else {
+            null
+        }
     }
 
-    override val type: ChannelType
-        get() = ChannelType.fromId(json["type"].asInt())
+    override fun asStageChannel(): GuildStageChannel? {
+        return if (isCastable(GuildStageChannel::class.java)) {
+            GuildStageChannelImpl(ydwk, json, idAsLong)
+        } else {
+            null
+        }
+    }
+
+    override fun asGenericGuildVoiceChannel(): GenericGuildVoiceChannel {
+        return this
+    }
 }

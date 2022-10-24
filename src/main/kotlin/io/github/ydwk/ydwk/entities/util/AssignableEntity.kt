@@ -26,4 +26,9 @@ interface AssignableEntity<E> {
         Checks.checkNotNull(type, "type cannot be null")
         return if (type.isAssignableFrom(javaClass)) type.cast(this) else null
     }
+
+    fun <T : E> isCastable(type: Class<T>): Boolean {
+        Checks.checkNotNull(type, "type cannot be null")
+        return type.isAssignableFrom(javaClass)
+    }
 }

@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.entities.guild
 
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.User
+import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.guild.enums.MemberPermission
 import io.github.ydwk.ydwk.entities.message.Sendeadble
 import io.github.ydwk.ydwk.entities.util.GenericEntity
@@ -27,6 +28,7 @@ import io.github.ydwk.ydwk.util.GetterSnowFlake
 import io.github.ydwk.ydwk.util.NameAbleEntity
 import io.github.ydwk.ydwk.util.SnowFlake
 import java.util.*
+import java.util.concurrent.CompletableFuture
 
 /** This class is used to represent a discord guild member entity. */
 interface Member : NameAbleEntity, GenericEntity, Sendeadble, SnowFlake {
@@ -84,5 +86,14 @@ interface Member : NameAbleEntity, GenericEntity, Sendeadble, SnowFlake {
      * @param permission The permission to check.
      * @return True if the member has the permission, false otherwise.
      */
+    // TODO: double check this
     fun hasPermission(permission: MemberPermission): Boolean
+
+    /**
+     * Creates a direct message channel with this member.
+     *
+     * @return A future that completes with the created channel.
+     */
+    val createDmChannel: CompletableFuture<DmChannel>
+        get() = user.createDmChannel
 }

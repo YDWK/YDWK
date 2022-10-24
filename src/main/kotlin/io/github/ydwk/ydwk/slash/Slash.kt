@@ -27,16 +27,19 @@ import io.github.ydwk.ydwk.util.Checks
 class Slash(val name: String, val description: String, val guildOnly: Boolean = false) {
     private var options: MutableList<SlashOption> = mutableListOf()
 
-    fun addOption(option: SlashOption) {
+    fun addOption(option: SlashOption): Slash {
         options.add(option)
+        return this
     }
 
-    fun addOptions(options: List<SlashOption>) {
+    fun addOptions(options: List<SlashOption>): Slash {
         this.options.addAll(options)
+        return this
     }
 
-    fun addOptions(vararg options: SlashOption) {
+    fun addOptions(vararg options: SlashOption): Slash {
         this.options.addAll(options)
+        return this
     }
 
     fun toJson(): JsonNode {

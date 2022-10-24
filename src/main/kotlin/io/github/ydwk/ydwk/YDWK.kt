@@ -21,13 +21,19 @@ package io.github.ydwk.ydwk
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.ydwk.ydwk.cache.CacheIds
-import io.github.ydwk.ydwk.entities.*
+import io.github.ydwk.ydwk.entities.Application
+import io.github.ydwk.ydwk.entities.Bot
+import io.github.ydwk.ydwk.entities.Guild
+import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.application.PartialApplication
 import io.github.ydwk.ydwk.entities.channel.DmChannel
-import io.github.ydwk.ydwk.entities.channel.TextChannel
-import io.github.ydwk.ydwk.entities.channel.VoiceChannel
-import io.github.ydwk.ydwk.entities.channel.guild.Category
+import io.github.ydwk.ydwk.entities.channel.GuildChannel
+import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
+import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildVoiceChannel
+import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
 import io.github.ydwk.ydwk.entities.guild.Member
+import io.github.ydwk.ydwk.entities.guild.Role
+import io.github.ydwk.ydwk.entities.message.Attachment
 import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
 import io.github.ydwk.ydwk.event.backend.event.GenericEvent
 import io.github.ydwk.ydwk.rest.RestApiManager
@@ -40,7 +46,7 @@ import java.util.concurrent.CompletableFuture
 interface YDWK {
 
     /**
-     * Create a json object
+     * Creates a json object
      *
      * @return a new [ObjectNode]
      */
@@ -99,27 +105,27 @@ interface YDWK {
     val waitForReady: YDWK
 
     /**
-     * adds an event listener.
+     * Adds an event listener.
      *
      * @param eventListeners The event listeners to be added.
      */
     fun addEvent(vararg eventListeners: Any)
 
     /**
-     * removes an event listener.
+     * Removes an event listener.
      *
      * @param eventListeners The event listeners to be removed.
      */
     fun removeEvent(vararg eventListeners: Any)
 
     /**
-     * emits an event
+     * Emits an event
      *
      * @param event The event to be emitted.
      */
     fun emitEvent(event: GenericEvent)
 
-    /** shut's down the websocket manager */
+    /** Shuts down the websocket manager */
     fun shutdownAPI()
 
     /**
@@ -143,7 +149,7 @@ interface YDWK {
      *
      * @return A list of guilds.
      */
-    fun getGuilds(): List<Guild>
+    val guilds: List<Guild>
 
     /**
      * Gets the rest api manager.
@@ -159,7 +165,7 @@ interface YDWK {
      */
     val uptime: Instant
 
-    /** adds or remove slash commands */
+    /** Used to add or remove slash commands */
     val slashBuilder: SlashBuilder
 
     /** Sets the guild ids for guild commands */
@@ -202,50 +208,58 @@ interface YDWK {
         setDisallowedCache(*cacheTypes.toTypedArray())
 
     /**
-     * Gets a text channel by its id.
+     * Gets all the guild channels the bot is in.
+     *
+     * @return A list of [GuildChannel] objects.
+     */
+    val guildChannels: List<GuildChannel>
+
+    /**
+     * Gets a guild text channel by its id.
      *
      * @param id The id of the text channel.
-     * @return The [TextChannel] object.
+     * @return The [GenericGuildTextChannel] object.
      */
-    fun getTextChannel(id: Long): TextChannel?
+    fun getGuildTextChannel(id: Long): GenericGuildTextChannel?
 
     /**
-     * Gets a text channel by its id.
+     * Gets a guild text channel by its id.
      *
      * @param id The id of the text channel.
-     * @return The [TextChannel] object.
+     * @return The [GenericGuildTextChannel] object.
      */
-    fun getTextChannel(id: String): TextChannel? = getTextChannel(id.toLong())
+    fun getGuildTextChannel(id: String): GenericGuildTextChannel? = getGuildTextChannel(id.toLong())
 
     /**
-     * Gets all the text channels the bot is in.
+     * Gets all the guild text channels the bot is in.
      *
-     * @return A list of [TextChannel] objects.
+     * @return A list of [GenericGuildTextChannel] objects.
      */
-    fun getTextChannels(): List<TextChannel>
+    val guildTextChannels: List<GenericGuildTextChannel>
 
     /**
-     * Gets a voice channel by its id.
-     *
-     * @param id The id of the voice channel.
-     * @return The [VoiceChannel] object.
-     */
-    fun getVoiceChannel(id: Long): VoiceChannel?
-
-    /**
-     * Gets a voice channel by its id.
+     * Gets a voice guild channel by its id.
      *
      * @param id The id of the voice channel.
-     * @return The [VoiceChannel] object.
+     * @return The [GenericGuildVoiceChannel] object.
      */
-    fun getVoiceChannel(id: String): VoiceChannel? = getVoiceChannel(id.toLong())
+    fun getGuildVoiceChannel(id: Long): GenericGuildVoiceChannel?
 
     /**
-     * Gets all the voice channels the bot is in.
+     * Gets a voice guild channel by its id.
      *
-     * @return A list of [VoiceChannel] objects.
+     * @param id The id of the voice channel.
+     * @return The [GenericGuildVoiceChannel] object.
      */
-    fun getVoiceChannels(): List<VoiceChannel>
+    fun getGuildVoiceChannel(id: String): GenericGuildVoiceChannel? =
+        getGuildVoiceChannel(id.toLong())
+
+    /**
+     * Gets all the guild voice channels the bot is in.
+     *
+     * @return A list of [GenericGuildVoiceChannel] objects.
+     */
+    val guildVoiceChannels: List<GenericGuildVoiceChannel>
 
     /**
      * Creates an embed.
@@ -258,24 +272,24 @@ interface YDWK {
      * Gets a category by its id.
      *
      * @param id The id of the category.
-     * @return The [Category] object.
+     * @return The [GuildCategory] object.
      */
-    fun getCategory(id: Long): Category?
+    fun getCategory(id: Long): GuildCategory?
 
     /**
      * Gets a category by its id.
      *
      * @param id The id of the category.
-     * @return The [Category] object.
+     * @return The [GuildCategory] object.
      */
-    fun getCategory(id: String): Category? = getCategory(id.toLong())
+    fun getCategory(id: String): GuildCategory? = getCategory(id.toLong())
 
     /**
      * Gets all the categories the bot is in.
      *
-     * @return A list of [Category] objects.
+     * @return A list of [GuildCategory] objects.
      */
-    fun getCategories(): List<Category>
+    fun getCategories(): List<GuildCategory>
 
     /**
      * Creates a dm channel.
@@ -286,7 +300,7 @@ interface YDWK {
     fun createDmChannel(userId: Long): CompletableFuture<DmChannel>
 
     /**
-     * UCreates a dm channel.
+     * Creates a dm channel.
      *
      * @param userId The id of the user.
      * @return The [DmChannel] object.
@@ -305,21 +319,18 @@ interface YDWK {
     /**
      * Gets a member by its id.
      *
-     * @param guildId The id of the guild.
      * @param userId The id of the user.
      * @return The [Member] object.
      */
-    fun getMember(guildId: Long, userId: Long): Member?
+    fun getMember(userId: Long): Member?
 
     /**
      * Gets a member by its id.
      *
-     * @param guildId The id of the guild.
      * @param userId The id of the user.
      * @return The [Member] object.
      */
-    fun getMember(guildId: String, userId: String): Member? =
-        getMember(guildId.toLong(), userId.toLong())
+    fun getMember(userId: String): Member? = getMember(userId.toLong())
 
     /**
      * Gets all the members in all the guilds the bot is in.
@@ -366,4 +377,34 @@ interface YDWK {
      * @return The [CompletableFuture] object.
      */
     fun requestUser(id: String): CompletableFuture<User> = requestUser(id.toLong())
+
+    /**
+     * Gets a guild by its id.
+     *
+     * @param id The id of the guild.
+     * @return The [Role] object.
+     */
+    fun getRole(id: Long): Role?
+
+    /**
+     * Gets a guild by its id.
+     *
+     * @param id The id of the guild.
+     * @return The [Role] object.
+     */
+    fun getRole(id: String): Role? = getRole(id.toLong())
+
+    /**
+     * Gets all the attachments of a message.
+     *
+     * @param attachmentId The ids of the attachments.
+     */
+    fun getAttachment(attachmentId: Long): Attachment?
+
+    /**
+     * Gets all the attachments of a message.
+     *
+     * @param attachmentId The ids of the attachments.
+     */
+    fun getAttachment(attachmentId: String): Attachment? = getAttachment(attachmentId.toLong())
 }

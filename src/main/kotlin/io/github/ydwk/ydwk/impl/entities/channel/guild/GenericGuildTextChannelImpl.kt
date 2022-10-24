@@ -16,37 +16,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.impl.entities.channel
+package io.github.ydwk.ydwk.impl.entities.channel.guild
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.channel.DmChannel
-import io.github.ydwk.ydwk.entities.channel.TextChannel
-import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
-import io.github.ydwk.ydwk.entities.channel.guild.text.GuildTextChannel
-import io.github.ydwk.ydwk.impl.entities.channel.guild.GuildTextChannelImpl
+import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
+import io.github.ydwk.ydwk.entities.channel.guild.forum.GuildForumChannel
+import io.github.ydwk.ydwk.entities.channel.guild.message.news.GuildNewsChannel
+import io.github.ydwk.ydwk.entities.channel.guild.message.text.GuildTextChannel
 
-open class TextChannelImpl(
+open class GenericGuildTextChannelImpl(
     override val ydwk: YDWK,
     override val json: JsonNode,
     override val idAsLong: Long
-) : TextChannel {
+) : GenericGuildTextChannel, GenericGuildChannelImpl(ydwk, json, idAsLong, true, false, false) {
+
     override fun asGuildTextChannel(): GuildTextChannel? {
-        return if (type == ChannelType.TEXT) {
+        return if (isCastable(GuildTextChannel::class.java)) {
             GuildTextChannelImpl(ydwk, json, idAsLong)
         } else {
             null
         }
     }
 
-    override fun asDmChannel(): DmChannel? {
-        return if (type == ChannelType.DM) {
-            DmChannelImpl(ydwk, json, idAsLong)
+    override fun asGuildNewsChannel(): GuildNewsChannel? {
+        return if (isCastable(GuildNewsChannel::class.java)) {
+            GuildNewsChannelImpl(ydwk, json, idAsLong)
         } else {
             null
         }
     }
 
-    override val type: ChannelType
-        get() = ChannelType.fromId(json["type"].asInt())
+    override fun asGuildForumChannel(): GuildForumChannel? {
+        return if (isCastable(GuildForumChannel::class.java)) {
+            GuildForumChannelImpl(ydwk, json, idAsLong)
+        } else {
+            null
+        }
+    }
 }

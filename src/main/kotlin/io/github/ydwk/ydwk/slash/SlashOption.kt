@@ -30,16 +30,19 @@ class SlashOption(
 ) {
     private var choices: MutableList<SlashOptionChoice> = mutableListOf()
 
-    fun addChoice(choice: SlashOptionChoice) {
+    fun addChoice(choice: SlashOptionChoice): SlashOption {
         choices.add(choice)
+        return this
     }
 
-    fun addChoices(choices: List<SlashOptionChoice>) {
+    fun addChoices(choices: List<SlashOptionChoice>): SlashOption {
         this.choices.addAll(choices)
+        return this
     }
 
-    fun addChoices(vararg choices: SlashOptionChoice) {
+    fun addChoices(vararg choices: SlashOptionChoice): SlashOption {
         this.choices.addAll(choices)
+        return this
     }
 
     fun toJson(): JsonNode {

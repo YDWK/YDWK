@@ -21,29 +21,15 @@ package io.github.ydwk.ydwk.impl.interaction.application
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.interaction.application.ApplicationCommandOption
-import io.github.ydwk.ydwk.interaction.application.ApplicationCommandType
+import io.github.ydwk.ydwk.slash.SlashOptionType
 
 class ApplicationCommandOptionImpl(override val ydwk: YDWK, override val json: JsonNode) :
     ApplicationCommandOption {
-    override val name: String = json["name"].asText()
+    override var name: String = json["name"].asText()
 
-    override val type: ApplicationCommandType = ApplicationCommandType.fromInt(json["type"].asInt())
+    override val type: SlashOptionType = SlashOptionType.fromInt(json["type"].asInt())
 
-    override val value: Any? =
-        when {
-            json.has("value") -> {
-                val value = json["value"]
-
-                if (value.isInt) value.asInt()
-                else if (value.isLong) value.asLong()
-                else if (value.isTextual) value.asText()
-                else if (value.isDouble) value.asDouble()
-                else if (value.isFloat) value.asDouble() else null
-            }
-            else -> {
-                null
-            }
-        }
+    override val value: JsonNode = json["value"]
 
     override val options: List<ApplicationCommandOption> =
         if (json.has("options")) json["options"].map { ApplicationCommandOptionImpl(ydwk, it) }

@@ -32,5 +32,11 @@ interface GetterSnowFlake {
                 override val asLong: Long = id
             }
         }
+
+        fun of(id: String): GetterSnowFlake {
+            return object : GetterSnowFlake {
+                override val asLong: Long = id.toLong()
+            }
+        }
     }
 }

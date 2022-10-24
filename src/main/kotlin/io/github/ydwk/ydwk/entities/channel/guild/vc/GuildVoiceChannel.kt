@@ -18,10 +18,9 @@
  */ 
 package io.github.ydwk.ydwk.entities.channel.guild.vc
 
-import io.github.ydwk.ydwk.entities.channel.VoiceChannel
-import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildChannel
+import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildVoiceChannel
 
-interface GuildVoiceChannel : GenericGuildChannel, VoiceChannel {
+interface GuildVoiceChannel : GenericGuildVoiceChannel {
     /**
      * Gets the bitrate (in bits) of the voice channel
      *

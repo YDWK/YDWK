@@ -140,17 +140,5 @@ class UserUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
                 }
             else -> user.flags = null
         }
-
-        val oldPremiumType = user.premiumType
-        val newPremiumType = userJson.get("premium_type")
-        when {
-            oldPremiumType == null && newPremiumType != null ->
-                user.premiumType = newPremiumType.asInt()
-            oldPremiumType != null && newPremiumType != null ->
-                if (!Objects.deepEquals(oldPremiumType, newPremiumType)) {
-                    user.premiumType = newPremiumType.asInt()
-                }
-            else -> user.premiumType = null
-        }
     }
 }

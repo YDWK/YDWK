@@ -18,7 +18,9 @@
  */ 
 package io.github.ydwk.ydwk.interaction.application
 
+import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.entities.util.GenericEntity
+import io.github.ydwk.ydwk.slash.SlashOptionType
 
 interface ApplicationCommandOption : GenericEntity {
     /**
@@ -26,53 +28,21 @@ interface ApplicationCommandOption : GenericEntity {
      *
      * @return The name of the option.
      */
-    val name: String
+    var name: String
 
     /**
      * Gets the type of the option.
      *
      * @return The type of the option.
      */
-    val type: ApplicationCommandType
+    val type: SlashOptionType
 
     /**
      * Gets the value as Any.
      *
      * @return The value as Any.
      */
-    val value: Any?
-
-    /**
-     * Gets the value of the option as a string.
-     *
-     * @return The value of the option as a string.
-     */
-    val valueAsString: String?
-        get() = value as? String
-
-    /**
-     * Gets the value of the option as a long.
-     *
-     * @return The value of the option as a long.
-     */
-    val valueAsLong: Long?
-        get() = value as? Long
-
-    /**
-     * Gets the value of the option as an Int.
-     *
-     * @return The value of the option as an Int.
-     */
-    val valueAsInt: Int?
-        get() = value as? Int
-
-    /**
-     * Gets the value of the option as a Double
-     *
-     * @return The value of the option as a Double
-     */
-    val valueAsDouble: Double?
-        get() = value as? Double
+    val value: JsonNode
 
     /**
      * Gets the options of the option.
