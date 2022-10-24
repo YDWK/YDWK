@@ -31,6 +31,9 @@ import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.entities.guild.WelcomeScreen
 import io.github.ydwk.ydwk.entities.guild.enums.*
 import io.github.ydwk.ydwk.entities.util.GenericEntity
+import io.github.ydwk.ydwk.impl.entities.AuditLogImpl
+import io.github.ydwk.ydwk.impl.entities.channel.DmChannelImpl
+import io.github.ydwk.ydwk.rest.EndPoint
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 import io.github.ydwk.ydwk.util.NameAbleEntity
 import io.github.ydwk.ydwk.util.SnowFlake
@@ -312,7 +315,19 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @param userId The id of the user.
      * @return The [DmChannel] object.
      */
-    fun createDmChannel(userId: Long): CompletableFuture<DmChannel>
+    fun createDmChannel(userId: Long): CompletableFuture<DmChannel> {
+        return ydwk.restApiManager
+            .addQueryParameter("recipient_id", userId.toString())
+            .post(null, EndPoint.UserEndpoint.CREATE_DM)
+            .execute { it ->
+                val jsonBody = it.jsonBody
+                if (jsonBody == null) {
+                    throw IllegalStateException("json body is null")
+                } else {
+                    DmChannelImpl(ydwk, jsonBody, jsonBody["id"].asLong())
+                }
+            }
+    }
 
     /**
      * Creates a dm channel.
@@ -351,7 +366,13 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
         userId: Long,
         deleteMessageDuration: Duration = Duration.ZERO,
         reason: String? = null
-    ): CompletableFuture<Void>
+    ): CompletableFuture<Void> {
+        return ydwk.restApiManager
+            .addQueryParameter("delete-message-days", deleteMessageDuration.inWholeDays.toString())
+            .put(null, EndPoint.GuildEndpoint.BAN, id, userId.toString())
+            .addReason(reason)
+            .executeWithNoResult()
+    }
 
     /**
      * Bans a user from the guild.
@@ -405,7 +426,12 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @param reason The reason for the unban.
      * @return A [CompletableFuture] that completes when the unban is created.
      */
-    fun unbanUser(userId: Long, reason: String? = null): CompletableFuture<Void>
+    fun unbanUser(userId: Long, reason: String? = null): CompletableFuture<Void> {
+        return ydwk.restApiManager
+            .delete(EndPoint.GuildEndpoint.BAN, id, userId.toString())
+            .addReason(reason)
+            .executeWithNoResult()
+    }
 
     /**
      * Unbans a user from the guild.
@@ -434,7 +460,12 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @param reason The reason for the kick.
      * @return A [CompletableFuture] that completes when the kick is created.
      */
-    fun kickMember(userId: Long, reason: String? = null): CompletableFuture<Void>
+    fun kickMember(userId: Long, reason: String? = null): CompletableFuture<Void> {
+        return ydwk.restApiManager
+            .delete(EndPoint.GuildEndpoint.KICK, id, userId.toString())
+            .addReason(reason)
+            .executeWithNoResult()
+    }
 
     /**
      * Kicks a member from the guild.
@@ -454,8 +485,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @return A [CompletableFuture] that completes when the kick is created.
      */
     fun kickMember(member: Member, reason: String? = null): CompletableFuture<Void> =
-        member.user?.let { kickMember(it.id, reason) }
-            ?: throw IllegalStateException("Member has no user")
+        kickMember(member.user.id, reason)
 
     /**
      * Request the audit log for the guild.
@@ -471,7 +501,33 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
         limit: Int = 50,
         before: GetterSnowFlake? = null,
         actionType: AuditLogType? = null
-    ): CompletableFuture<AuditLog>
+    ): CompletableFuture<AuditLog> {
+        val rest = ydwk.restApiManager
+
+        if (userId != null) {
+            rest.addQueryParameter("user_id", userId.asString)
+        }
+
+        if (before != null) {
+            rest.addQueryParameter("before", before.asString)
+        }
+
+        if (actionType != null) {
+            rest.addQueryParameter("action_type", actionType.getType().toString())
+        }
+
+        return rest
+            .addQueryParameter("limit", limit.toString())
+            .get(EndPoint.GuildEndpoint.GET_AUDIT_LOGS, id)
+            .execute { it ->
+                val jsonBody = it.jsonBody
+                if (jsonBody == null) {
+                    throw IllegalStateException("json body is null")
+                } else {
+                    AuditLogImpl(ydwk, jsonBody)
+                }
+            }
+    }
 
     /**
      * Request the audit log for the guild.

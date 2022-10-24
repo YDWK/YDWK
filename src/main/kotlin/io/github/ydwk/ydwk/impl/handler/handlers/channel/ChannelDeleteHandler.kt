@@ -48,9 +48,8 @@ class ChannelDeleteHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json)
                 ydwk.cache.remove(json.get("id").asText(), CacheIds.CATEGORY)
                 ydwk.emitEvent(ChannelDeleteEvent(ydwk, channel))
             }
-            channelType.isText -> {
-                ydwk.logger.warn(
-                    "Received a text channel create event, but it is not supported yet.")
+            channelType == ChannelType.DM || channelType == ChannelType.GROUP_DM -> {
+                ydwk.logger.warn("DM and Group DM are not supported and will be ignored.")
             }
         }
     }

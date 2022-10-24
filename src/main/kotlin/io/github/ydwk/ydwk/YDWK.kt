@@ -27,6 +27,7 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.application.PartialApplication
 import io.github.ydwk.ydwk.entities.channel.DmChannel
+import io.github.ydwk.ydwk.entities.channel.GuildChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildVoiceChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
@@ -370,4 +371,11 @@ interface YDWK {
      * @return The [CompletableFuture] object.
      */
     fun requestUser(id: String): CompletableFuture<User> = requestUser(id.toLong())
+
+    /**
+     * Gets all the guild channels the bot is in.
+     *
+     * @return A list of [GuildChannel] objects.
+     */
+    val guildChannels: List<GuildChannel>
 }

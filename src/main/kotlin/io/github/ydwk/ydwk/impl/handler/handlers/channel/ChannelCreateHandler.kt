@@ -48,9 +48,8 @@ class ChannelCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json)
                 ydwk.cache[json.get("id").asText(), channel] = CacheIds.CATEGORY
                 ydwk.emitEvent(ChannelCreateEvent(ydwk, channel))
             }
-            channelType.isText -> {
-                ydwk.logger.warn(
-                    "Received a text channel create event, but it is not supported yet.")
+            channelType == ChannelType.DM || channelType == ChannelType.GROUP_DM -> {
+                ydwk.logger.warn("DM and Group DM are not supported and will be ignored.")
             }
         }
     }

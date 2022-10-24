@@ -23,7 +23,6 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
-import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
 import io.github.ydwk.ydwk.impl.entities.UserImpl
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 
@@ -41,10 +40,6 @@ class DmChannelImpl(
         if (json.has("recipients"))
             UserImpl(json["recipients"][0], json["recipients"][0]["id"].asLong(), ydwk)
         else null
-
-    override fun asGenericGuildTextChannel(): GenericGuildTextChannel? {
-        return null
-    }
 
     override val type: ChannelType
         get() = ChannelType.DM

@@ -83,9 +83,6 @@ enum class ChannelType(private val id: Int) {
                 this == FORUM ||
                 this == DIRECTORY
 
-    val isText: Boolean
-        get() = isGuildText || this == DM || this == GROUP_DM
-
     val isVoice: Boolean
         get() = this == VOICE || this == STAGE_VOICE
 }

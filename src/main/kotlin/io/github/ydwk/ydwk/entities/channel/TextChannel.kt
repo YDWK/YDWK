@@ -19,18 +19,10 @@
 package io.github.ydwk.ydwk.entities.channel
 
 import io.github.ydwk.ydwk.entities.Channel
-import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
 import io.github.ydwk.ydwk.entities.message.Sendeadble
 
 /**
  * Contains all the functions that are common to all 'text' channels (i.e. channels that can send
  * messages).
  */
-interface TextChannel : Channel, Sendeadble {
-    /**
-     * Gets the text channel as a generic guild text channel.
-     *
-     * @return the text channel as a generic guild text channel.
-     */
-    fun asGenericGuildTextChannel(): GenericGuildTextChannel?
-}
+interface TextChannel : Channel, Sendeadble

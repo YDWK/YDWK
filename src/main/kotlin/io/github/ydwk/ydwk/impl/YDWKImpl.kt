@@ -29,6 +29,7 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.application.PartialApplication
 import io.github.ydwk.ydwk.entities.channel.DmChannel
+import io.github.ydwk.ydwk.entities.channel.GuildChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildVoiceChannel
@@ -262,6 +263,12 @@ class YDWKImpl(
             }
         }
     }
+
+    override val guildChannels: List<GuildChannel>
+        get() =
+            cache.values(CacheIds.TEXT_CHANNEL).map { it as GuildChannel } +
+                cache.values(CacheIds.VOICE_CHANNEL).map { it as GuildChannel } +
+                cache.values(CacheIds.CATEGORY).map { it as GuildChannel }
 
     override var bot: Bot? = null
         get() {

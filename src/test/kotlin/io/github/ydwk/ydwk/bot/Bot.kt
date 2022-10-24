@@ -45,6 +45,7 @@ fun main() {
         .addSlashCommand(Slash("embed", "This is a test command"))
         .addSlashCommand(Slash("json", "Gets the json for member"))
         .addSlashCommand(Slash("forum_json", "Gets the json for forum"))
+        .addSlashCommand(Slash("create_dm", "Creates a dm channel"))
         .build()
 
     ydwk.on<SlashCommandEvent> {
@@ -78,6 +79,12 @@ fun main() {
                     if (forum != null) {
                         it.slash.reply(forum.json.toPrettyString()).get()
                     }
+                }
+            }
+            "create_dm" -> {
+                withContext(Dispatchers.IO) {
+                    val member = it.slash.member
+                    member?.createDmChannel?.get()?.sendMessage("Hello!")?.get()
                 }
             }
         }

@@ -20,14 +20,10 @@ package io.github.ydwk.ydwk.impl.entities.channel.guild
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.channel.guild.message.text.GuildTextChannel
+import io.github.ydwk.ydwk.entities.channel.guild.message.news.GuildNewsChannel
 
-class GuildTextChannelImpl(
+class GuildNewsChannelImpl(
     override val ydwk: YDWK,
     override val json: JsonNode,
     override val idAsLong: Long
-) : GuildTextChannel, GuildMessageChannelImpl(ydwk, json, idAsLong) {
-
-    override val rateLimitPerUser: Int
-        get() = json["rate_limit_per_user"].asInt()
-}
+) : GuildNewsChannel, GuildMessageChannelImpl(ydwk, json, idAsLong)
