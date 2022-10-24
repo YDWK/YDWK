@@ -49,8 +49,10 @@ fun main() {
         .addSlashCommand(Slash("forum_json", "Gets the json for forum"))
         .addSlashCommand(Slash("create_dm", "Creates a dm channel"))
         .addSlashCommand(
-            Slash("ban", "Bans a member")
-                .addOption(SlashOption("member", "The member to ban", SlashOptionType.USER)))
+            Slash("option", "An option test")
+                .addOption(
+                    SlashOption(
+                        "member", "The member to test the option with", SlashOptionType.USER)))
         .build()
 
     ydwk.on<SlashCommandEvent> {
@@ -89,9 +91,9 @@ fun main() {
                     member?.createDmChannel?.get()?.sendMessage("Hello!")?.get()
                 }
             }
-            "ban" -> {
+            "option" -> {
                 withContext(Dispatchers.IO) {
-                    it.slash.reply(it.slash.getOption("member")!!.asUser!!.name).get()
+                    it.slash.reply(it.slash.getOption("member")!!.asUser.name).get()
                 }
             }
         }

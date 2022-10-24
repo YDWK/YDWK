@@ -27,6 +27,12 @@ import io.github.ydwk.ydwk.entities.channel.TextChannel
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.message.Embed
 import io.github.ydwk.ydwk.entities.message.MessageFlag
+import io.github.ydwk.ydwk.entities.util.GenericEntity
+import io.github.ydwk.ydwk.impl.entities.UserImpl
+import io.github.ydwk.ydwk.impl.entities.channel.guild.GenericGuildTextChannelImpl
+import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
+import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
+import io.github.ydwk.ydwk.impl.entities.message.AttachmentImpl
 import io.github.ydwk.ydwk.interaction.Interaction
 import io.github.ydwk.ydwk.interaction.application.ApplicationCommandOption
 import io.github.ydwk.ydwk.interaction.application.ApplicationCommandType
@@ -104,5 +110,46 @@ class SlashCommandImpl(
     }
 
     override val options: List<SlashOptionGetter>
-        get() = applicationOptions?.map { SlashOptionGetterImpl(it) } ?: emptyList()
+        get() {
+            val map: MutableMap<Long, GenericEntity> = mutableMapOf()
+            val resolved = json["resolved"]
+            resolved["users"]?.let {
+                it.fields().forEach { (id, node) ->
+                    map[id.toLong()] = UserImpl(node, node["id"].asLong(), ydwk)
+                }
+            }
+            resolved["attachments"]?.let {
+                it.fields().forEach { (id, node) ->
+                    map[id.toLong()] = AttachmentImpl(ydwk, node, node["id"].asLong())
+                }
+            }
+
+            if (guild != null) {
+                resolved["members"]?.let {
+                    it.fields().forEach { (id, node) ->
+                        resolved["users"]?.let { users ->
+                            val user = users[id]
+                            map[id.toLong()] =
+                                MemberImpl(
+                                    ydwk, node, guild, UserImpl(user, user["id"].asLong(), ydwk))
+                        }
+                    }
+                }
+
+                resolved["roles"]?.let {
+                    it.fields().forEach { (id, node) ->
+                        map[id.toLong()] = RoleImpl(ydwk, node, node["id"].asLong())
+                    }
+                }
+
+                resolved["channels"]?.let {
+                    it.fields().forEach { (id, node) ->
+                        map[id.toLong()] =
+                            GenericGuildTextChannelImpl(ydwk, node, node["id"].asLong())
+                    }
+                }
+            }
+
+            return applicationOptions?.map { SlashOptionGetterImpl(it, map) } ?: emptyList()
+        }
 }
