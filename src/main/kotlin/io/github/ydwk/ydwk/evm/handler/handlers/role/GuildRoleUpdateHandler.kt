@@ -19,11 +19,21 @@
 package io.github.ydwk.ydwk.evm.handler.handlers.role
 
 import com.fasterxml.jackson.databind.JsonNode
+import io.github.ydwk.ydwk.cache.CacheIds
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
 
 class GuildRoleUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override fun start() {
-        TODO("Not yet implemented")
+        val role =
+            ydwk
+                .getGuildById(json.get("guild_id").asLong())
+                ?.getRoleById(json.get("role").get("id").asLong())
+        if (role == null) {
+            ydwk.logger.info("Role not found in cache, creating new role")
+            val role = RoleImpl(ydwk, json.get("role"), json.get("role").get("id").asLong())
+            ydwk.cache[role.id, role] = CacheIds.ROLE
+        }
     }
 }

@@ -636,7 +636,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @param roleId The id of the role.
      * @return The role, or null if it doesn't exist.
      */
-    fun getRole(roleId: Long): Role?
+    fun getRoleById(roleId: Long): Role?
 
     /**
      * Gets a role from the guild.
@@ -644,7 +644,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @param roleId The id of the role.
      * @return The role, or null if it doesn't exist.
      */
-    fun getRole(roleId: String): Role? = getRole(roleId.toLong())
+    fun getRoleById(roleId: String): Role? = getRoleById(roleId.toLong())
 
     /**
      * Gets all the channels as unordered list.

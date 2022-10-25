@@ -172,7 +172,7 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
                 ydwk.getMemberById(this.id, ydwk.bot!!.id)!!
             }
 
-    override fun getRole(roleId: Long): Role? {
+    override fun getRoleById(roleId: Long): Role? {
         return if (roles.any { it.idAsLong == roleId }) {
             roles.first { it.idAsLong == roleId }
         } else {

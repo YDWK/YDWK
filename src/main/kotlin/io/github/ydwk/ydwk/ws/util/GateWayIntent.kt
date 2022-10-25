@@ -71,8 +71,6 @@ enum class GateWayIntent(var value: Int, var privileged: Boolean) {
                 GUILD_MESSAGE_REACTIONS,
                 DIRECT_MESSAGES,
                 DIRECT_MESSAGE_REACTIONS,
-                GUILD_SCHEDULED_EVENTS,
-                AUTO_MODERATION_CONFIGURATION,
                 CHANNEL_STATS)
         }
     }
