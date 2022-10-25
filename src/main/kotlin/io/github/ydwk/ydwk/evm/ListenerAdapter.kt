@@ -23,6 +23,14 @@ import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
 import io.github.ydwk.ydwk.evm.backend.event.IEventListener
 import io.github.ydwk.ydwk.evm.backend.update.IEventUpdate
 import io.github.ydwk.ydwk.evm.event.Event
+import io.github.ydwk.ydwk.evm.event.events.ban.GuildBanAddEvent
+import io.github.ydwk.ydwk.evm.event.events.channel.ChannelCreateEvent
+import io.github.ydwk.ydwk.evm.event.events.channel.ChannelDeleteEvent
+import io.github.ydwk.ydwk.evm.event.events.gateway.DisconnectEvent
+import io.github.ydwk.ydwk.evm.event.events.gateway.ReadyEvent
+import io.github.ydwk.ydwk.evm.event.events.gateway.ResumeEvent
+import io.github.ydwk.ydwk.evm.event.events.gateway.ShutDownEvent
+import io.github.ydwk.ydwk.evm.event.events.interaction.*
 import java.lang.invoke.MethodHandle
 import java.lang.invoke.MethodHandles
 import java.lang.invoke.MethodType
@@ -43,28 +51,28 @@ abstract class ListenerAdapter : IEventListener {
      *
      * @param event The ready event
      */
-    open fun onReady(event: io.github.ydwk.ydwk.evm.event.events.gateway.ReadyEvent) {}
+    open fun onReady(event: ReadyEvent) {}
 
     /**
      * Listens to Disconnect event
      *
      * @param event The disconnect event
      */
-    open fun onDisconnect(event: io.github.ydwk.ydwk.evm.event.events.gateway.DisconnectEvent) {}
+    open fun onDisconnect(event: DisconnectEvent) {}
 
     /**
      * Listens to Resume event
      *
      * @param event The resume event
      */
-    open fun onResume(event: io.github.ydwk.ydwk.evm.event.events.gateway.ResumeEvent) {}
+    open fun onResume(event: ResumeEvent) {}
 
     /**
      * Listens to ShutDown event
      *
      * @param event The shutdown event
      */
-    open fun onShutDown(event: io.github.ydwk.ydwk.evm.event.events.gateway.ShutDownEvent) {}
+    open fun onShutDown(event: ShutDownEvent) {}
 
     // interactions
 
@@ -73,41 +81,35 @@ abstract class ListenerAdapter : IEventListener {
      *
      * @param event The SlashCommandEvent
      */
-    open fun onSlashCommand(
-        event: io.github.ydwk.ydwk.evm.event.events.interaction.SlashCommandEvent
-    ) {}
+    open fun onSlashCommand(event: SlashCommandEvent) {}
 
     /**
      * Listens to AutoCompleteSlashCommandEvent
      *
      * @param event The AutoCompleteSlashCommandEvent
      */
-    open fun onAutoCompleteSlashCommand(
-        event: io.github.ydwk.ydwk.evm.event.events.interaction.AutoCompleteSlashCommandEvent
-    ) {}
+    open fun onAutoCompleteSlashCommand(event: AutoCompleteSlashCommandEvent) {}
 
     /**
      * Listens to Model Event
      *
      * @param event The Model Event
      */
-    open fun onModel(event: io.github.ydwk.ydwk.evm.event.events.interaction.ModelEvent) {}
+    open fun onModel(event: ModelEvent) {}
 
     /**
      * Listens to Ping Event
      *
      * @param event The Ping Event
      */
-    open fun onPing(event: io.github.ydwk.ydwk.evm.event.events.interaction.PingEvent) {}
+    open fun onPing(event: PingEvent) {}
 
     /**
      * Listens to Message Component Event
      *
      * @param event The Message Component Event
      */
-    open fun onMessageComponent(
-        event: io.github.ydwk.ydwk.evm.event.events.interaction.MessageComponentEvent
-    ) {}
+    open fun onMessageComponent(event: MessageComponentEvent) {}
 
     // Channel
     /**
@@ -115,18 +117,22 @@ abstract class ListenerAdapter : IEventListener {
      *
      * @param event The ChannelCreateEvent
      */
-    open fun onChannelCreate(
-        event: io.github.ydwk.ydwk.evm.event.events.channel.ChannelCreateEvent
-    ) {}
+    open fun onChannelCreate(event: ChannelCreateEvent) {}
 
     /**
      * Listens to ChannelDeleteEvent
      *
      * @param event The ChannelDeleteEvent
      */
-    open fun onChannelDelete(
-        event: io.github.ydwk.ydwk.evm.event.events.channel.ChannelDeleteEvent
-    ) {}
+    open fun onChannelDelete(event: ChannelDeleteEvent) {}
+
+    // ban
+    /**
+     * Listens to GuildBanAddEvent
+     *
+     * @param event The GuildBanAddEvent
+     */
+    open fun onGuildBanAdd(event: GuildBanAddEvent) {}
 
     /**
      * This method is called when an event is received.

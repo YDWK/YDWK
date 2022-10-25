@@ -19,6 +19,7 @@
 package io.github.ydwk.ydwk.evm.handler.handlers.ban
 
 import com.fasterxml.jackson.databind.JsonNode
+import io.github.ydwk.ydwk.evm.event.events.ban.GuildBanAddEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
@@ -27,5 +28,11 @@ class GuildBanAddHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
         val guildId: Long = json.get("id").asLong()
         val user = json.get("user")
         val cachedMember = ydwk.getGuildById(guildId)?.getMemberById(user.get("id").asLong())
+        if (cachedMember != null) {
+            ydwk.emitEvent(GuildBanAddEvent(ydwk, ydwk.getGuildById(guildId)!!, cachedMember))
+            ydwk.memberCache.remove(guildId.toString(), cachedMember.id)
+        } else {
+            ydwk.emitEvent(GuildBanAddEvent(ydwk, ydwk.getGuildById(guildId)!!, null))
+        }
     }
 }
