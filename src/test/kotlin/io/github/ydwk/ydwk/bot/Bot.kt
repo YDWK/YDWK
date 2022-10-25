@@ -77,7 +77,7 @@ fun main() {
             }
             "forum_json" -> {
                 withContext(Dispatchers.IO) {
-                    val forum = it.slash.ydwk.getGuildTextChannel("1031971612238561390")
+                    val forum = it.slash.ydwk.getGuildTextChannelById("1031971612238561390")
                     if (forum != null) {
                         it.slash.reply(forum.json.toPrettyString()).get()
                     }
