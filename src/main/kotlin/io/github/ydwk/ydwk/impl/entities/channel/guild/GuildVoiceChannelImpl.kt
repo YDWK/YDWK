@@ -42,12 +42,12 @@ open class GuildVoiceChannelImpl(
         get() = json["position"].asInt()
 
     override val parent: GuildCategory?
-        get() = ydwk.getCategory(json["parent_id"].asText())
+        get() = ydwk.getCategoryById(json["parent_id"].asText())
 
     override val guild: Guild
         get() =
-            if (ydwk.getGuild(json["guild_id"].asText()) != null)
-                ydwk.getGuild(json["guild_id"].asText())!!
+            if (ydwk.getGuildById(json["guild_id"].asText()) != null)
+                ydwk.getGuildById(json["guild_id"].asText())!!
             else throw IllegalStateException("Guild is null")
 
     override var name: String

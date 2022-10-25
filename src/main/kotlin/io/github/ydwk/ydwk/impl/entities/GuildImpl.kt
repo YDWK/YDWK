@@ -166,10 +166,10 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
 
     override val botAsMember: Member
         get() =
-            if (ydwk.bot?.let { ydwk.getMember(it.id) } == null) {
+            if (ydwk.bot?.let { ydwk.getMemberById(this.id, it.id) } == null) {
                 throw IllegalStateException("Bot is not a member of this guild")
             } else {
-                ydwk.getMember(ydwk.bot!!.id)!!
+                ydwk.getMemberById(this.id, ydwk.bot!!.id)!!
             }
 
     override fun getRole(roleId: Long): Role? {

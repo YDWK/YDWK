@@ -36,11 +36,11 @@ import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildVoiceChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
-import io.github.ydwk.ydwk.eventmanager.backend.event.CoroutineEventListener
-import io.github.ydwk.ydwk.eventmanager.backend.event.GenericEvent
-import io.github.ydwk.ydwk.eventmanager.backend.event.IEventListener
-import io.github.ydwk.ydwk.eventmanager.backend.managers.CoroutineEventManager
-import io.github.ydwk.ydwk.eventmanager.backend.managers.SampleEventManager
+import io.github.ydwk.ydwk.evm.backend.event.CoroutineEventListener
+import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
+import io.github.ydwk.ydwk.evm.backend.event.IEventListener
+import io.github.ydwk.ydwk.evm.backend.managers.CoroutineEventManager
+import io.github.ydwk.ydwk.evm.backend.managers.SampleEventManager
 import io.github.ydwk.ydwk.impl.entities.UserImpl
 import io.github.ydwk.ydwk.impl.entities.channel.DmChannelImpl
 import io.github.ydwk.ydwk.impl.entities.message.embed.builder.EmbedBuilderImpl
@@ -113,7 +113,7 @@ class YDWKImpl(
             oneToFiveSecondTimeout, TimeUnit.MILLISECONDS)
     }
 
-    override fun getGuild(id: String): Guild? {
+    override fun getGuildById(id: String): Guild? {
         return cache[id, CacheIds.GUILD] as Guild?
     }
 
@@ -147,7 +147,7 @@ class YDWKImpl(
         allowedCache.removeAll(cacheTypes.toSet())
     }
 
-    override fun getGuildTextChannel(id: Long): GenericGuildTextChannel? {
+    override fun getGuildTextChannelById(id: Long): GenericGuildTextChannel? {
         val channel = cache[id.toString(), CacheIds.TEXT_CHANNEL] as GenericGuildChannel?
         if (channel != null) {
             if (channel.isTextChannel) {
@@ -172,7 +172,7 @@ class YDWKImpl(
             }
         }
 
-    override fun getGuildVoiceChannel(id: Long): GenericGuildVoiceChannel? {
+    override fun getGuildVoiceChannelById(id: Long): GenericGuildVoiceChannel? {
         val channel = cache[id.toString(), CacheIds.VOICE_CHANNEL] as GenericGuildChannel?
         if (channel != null) {
             if (channel.isVoiceChannel) {
@@ -200,7 +200,7 @@ class YDWKImpl(
     override val embedBuilder: EmbedBuilder
         get() = EmbedBuilderImpl(this)
 
-    override fun getCategory(id: Long): GuildCategory? {
+    override fun getCategoryById(id: Long): GuildCategory? {
         val channel = cache[id.toString(), CacheIds.CATEGORY] as GenericGuildChannel?
         if (channel != null) {
             if (channel.isCategory) {
@@ -243,15 +243,15 @@ class YDWKImpl(
             }
     }
 
-    override fun getMember(userId: Long): Member? {
-        return memberCache[userId.toString()] as Member?
+    override fun getMemberById(guildId: Long, userId: Long): Member? {
+        return memberCache[guildId.toString(), userId.toString()] as Member?
     }
 
     override fun getMembers(): List<Member> {
         return memberCache.values(CacheIds.MEMBER).map { it as Member }
     }
 
-    override fun getUser(id: Long): User? {
+    override fun getUserById(id: Long): User? {
         return cache[id.toString(), CacheIds.USER] as User?
     }
 

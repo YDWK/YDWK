@@ -33,7 +33,7 @@ import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildVoiceChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
-import io.github.ydwk.ydwk.eventmanager.backend.event.GenericEvent
+import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
 import io.github.ydwk.ydwk.rest.RestApiManager
 import io.github.ydwk.ydwk.slash.SlashBuilder
 import io.github.ydwk.ydwk.ws.WebSocketManager
@@ -132,7 +132,7 @@ interface YDWK {
      * @param id The id of the guild.
      * @return The [Guild] object.
      */
-    fun getGuild(id: Long): Guild? = getGuild(id.toString())
+    fun getGuildById(id: Long): Guild? = getGuildById(id.toString())
 
     /**
      * Gets a guild by its id.
@@ -140,7 +140,7 @@ interface YDWK {
      * @param id The id of the guild.
      * @return The [Guild] object.
      */
-    fun getGuild(id: String): Guild?
+    fun getGuildById(id: String): Guild?
 
     /**
      * Gets all the guilds the bot is in.
@@ -218,7 +218,7 @@ interface YDWK {
      * @param id The id of the text channel.
      * @return The [GenericGuildTextChannel] object.
      */
-    fun getGuildTextChannel(id: Long): GenericGuildTextChannel?
+    fun getGuildTextChannelById(id: Long): GenericGuildTextChannel?
 
     /**
      * Gets a guild text channel by its id.
@@ -226,7 +226,8 @@ interface YDWK {
      * @param id The id of the text channel.
      * @return The [GenericGuildTextChannel] object.
      */
-    fun getGuildTextChannel(id: String): GenericGuildTextChannel? = getGuildTextChannel(id.toLong())
+    fun getGuildTextChannelById(id: String): GenericGuildTextChannel? =
+        getGuildTextChannelById(id.toLong())
 
     /**
      * Gets all the guild text channels the bot is in.
@@ -241,7 +242,7 @@ interface YDWK {
      * @param id The id of the voice channel.
      * @return The [GenericGuildVoiceChannel] object.
      */
-    fun getGuildVoiceChannel(id: Long): GenericGuildVoiceChannel?
+    fun getGuildVoiceChannelById(id: Long): GenericGuildVoiceChannel?
 
     /**
      * Gets a voice guild channel by its id.
@@ -249,8 +250,8 @@ interface YDWK {
      * @param id The id of the voice channel.
      * @return The [GenericGuildVoiceChannel] object.
      */
-    fun getGuildVoiceChannel(id: String): GenericGuildVoiceChannel? =
-        getGuildVoiceChannel(id.toLong())
+    fun getGuildVoiceChannelById(id: String): GenericGuildVoiceChannel? =
+        getGuildVoiceChannelById(id.toLong())
 
     /**
      * Gets all the guild voice channels the bot is in.
@@ -272,7 +273,7 @@ interface YDWK {
      * @param id The id of the category.
      * @return The [GuildCategory] object.
      */
-    fun getCategory(id: Long): GuildCategory?
+    fun getCategoryById(id: Long): GuildCategory?
 
     /**
      * Gets a category by its id.
@@ -280,7 +281,7 @@ interface YDWK {
      * @param id The id of the category.
      * @return The [GuildCategory] object.
      */
-    fun getCategory(id: String): GuildCategory? = getCategory(id.toLong())
+    fun getCategoryById(id: String): GuildCategory? = getCategoryById(id.toLong())
 
     /**
      * Gets all the categories the bot is in.
@@ -317,18 +318,21 @@ interface YDWK {
     /**
      * Gets a member by its id.
      *
+     * @param guildId The id of the guild.
      * @param userId The id of the user.
      * @return The [Member] object.
      */
-    fun getMember(userId: Long): Member?
+    fun getMemberById(guildId: Long, userId: Long): Member?
 
     /**
      * Gets a member by its id.
      *
+     * @param guildId The id of the guild.
      * @param userId The id of the user.
      * @return The [Member] object.
      */
-    fun getMember(userId: String): Member? = getMember(userId.toLong())
+    fun getMemberById(guildId: String, userId: String): Member? =
+        getMemberById(guildId.toLong(), userId.toLong())
 
     /**
      * Gets all the members in all the guilds the bot is in.
@@ -343,7 +347,7 @@ interface YDWK {
      * @param id The id of the user.
      * @return The [User] object.
      */
-    fun getUser(id: Long): User?
+    fun getUserById(id: Long): User?
 
     /**
      * Gets a user by its id.
@@ -351,7 +355,7 @@ interface YDWK {
      * @param id The id of the user.
      * @return The [User] object.
      */
-    fun getUser(id: String): User? = getUser(id.toLong())
+    fun getUserById(id: String): User? = getUserById(id.toLong())
 
     /**
      * Gets all the users the bot can see.

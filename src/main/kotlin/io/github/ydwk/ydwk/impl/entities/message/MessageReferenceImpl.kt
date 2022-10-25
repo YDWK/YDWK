@@ -37,5 +37,5 @@ class MessageReferenceImpl(override val ydwk: YDWK, override val json: JsonNode)
         get() = GetterSnowFlake.of(json.get("guild_id").asLong())
 
     override val guild: Guild?
-        get() = ydwk.getGuild(guildId.asLong)
+        get() = ydwk.getGuildById(guildId.asLong)
 }

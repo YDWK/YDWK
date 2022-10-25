@@ -40,7 +40,7 @@ open class GenericGuildChannelImpl(
         get() = json["position"].asInt()
 
     override val parent: GuildCategory?
-        get() = json["parent_id"]?.asText()?.let { ydwk.getCategory(it) }
+        get() = json["parent_id"]?.asText()?.let { ydwk.getCategoryById(it) }
 
     override fun asGuildCategory(): GuildCategory? {
         return if (isCategory) {

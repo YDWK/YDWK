@@ -37,7 +37,7 @@ class AuditLogEntryImpl(
         get() = json["changes"].map { AuditLogChangeImpl(ydwk, it) }
 
     override val user: User?
-        get() = if (json.has("user_id")) ydwk.getUser(json["user_id"].asLong()) else null
+        get() = if (json.has("user_id")) ydwk.getUserById(json["user_id"].asLong()) else null
 
     override val type: AuditLogType
         get() = AuditLogType.fromType(json["action_type"].asInt())

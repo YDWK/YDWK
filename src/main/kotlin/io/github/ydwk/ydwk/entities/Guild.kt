@@ -738,4 +738,22 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
                 memberList
             }
     }
+
+    /**
+     * Gets the member by its user id.
+     *
+     * @param userId The id of the user.
+     * @return The member, or null if it doesn't exist.
+     */
+    fun getMemberById(userId: Long): Member? {
+        return ydwk.getMemberById(idAsLong, userId)
+    }
+
+    /**
+     * Gets the member by its user id.
+     *
+     * @param userId The id of the user.
+     * @return The member, or null if it doesn't exist.
+     */
+    fun getMemberById(userId: String): Member? = getMemberById(userId.toLong())
 }

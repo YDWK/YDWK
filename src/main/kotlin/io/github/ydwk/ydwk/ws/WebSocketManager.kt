@@ -24,37 +24,40 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import com.neovisionaries.ws.client.*
 import io.github.ydwk.ydwk.YDWKInfo
 import io.github.ydwk.ydwk.cache.CacheIds
-import io.github.ydwk.ydwk.eventmanager.handler.handlers.ban.GuildBanAddHandler
-import io.github.ydwk.ydwk.eventmanager.handler.handlers.ban.GuildBanRemoveHandler
-import io.github.ydwk.ydwk.eventmanager.handler.handlers.channel.ChannelCreateHandler
-import io.github.ydwk.ydwk.eventmanager.handler.handlers.channel.ChannelDeleteHandler
-import io.github.ydwk.ydwk.eventmanager.handler.handlers.channel.ChannelPinsUpdateHandler
-import io.github.ydwk.ydwk.eventmanager.handler.handlers.channel.ChannelUpdateHandler
-import io.github.ydwk.ydwk.eventmanager.handler.handlers.emoji.GuildEmojisUpdateHandler
-import io.github.ydwk.ydwk.eventmanager.handler.handlers.guild.GuildCreateHandler
-import io.github.ydwk.ydwk.eventmanager.handler.handlers.guild.GuildDeleteHandler
-import io.github.ydwk.ydwk.eventmanager.handler.handlers.guild.GuildUpdateHandler
-import io.github.ydwk.ydwk.eventmanager.handler.handlers.interactions.InteractionCreateHandler
-import io.github.ydwk.ydwk.eventmanager.handler.handlers.intergration.GuildIntegrationsUpdateHandler
-import io.github.ydwk.ydwk.eventmanager.handler.handlers.intergration.IntegrationCreateHandler
-import io.github.ydwk.ydwk.eventmanager.handler.handlers.intergration.IntegrationDeleteHandler
-import io.github.ydwk.ydwk.eventmanager.handler.handlers.intergration.IntegrationUpdateHandler
-import io.github.ydwk.ydwk.eventmanager.handler.handlers.invite.InviteCreateHandler
-import io.github.ydwk.ydwk.eventmanager.handler.handlers.invite.InviteDeleteHandler
-import io.github.ydwk.ydwk.eventmanager.handler.handlers.member.GuildMemberAddHandler
-import io.github.ydwk.ydwk.eventmanager.handler.handlers.member.GuildMemberRemoveHandler
-import io.github.ydwk.ydwk.eventmanager.handler.handlers.member.GuildMemberUpdateHandler
-import io.github.ydwk.ydwk.eventmanager.handler.handlers.message.*
-import io.github.ydwk.ydwk.eventmanager.handler.handlers.presence.PresenceUpdateHandler
-import io.github.ydwk.ydwk.eventmanager.handler.handlers.role.GuildRoleCreateHandler
-import io.github.ydwk.ydwk.eventmanager.handler.handlers.role.GuildRoleDeleteHandler
-import io.github.ydwk.ydwk.eventmanager.handler.handlers.role.GuildRoleUpdateHandler
-import io.github.ydwk.ydwk.eventmanager.handler.handlers.schedule.*
-import io.github.ydwk.ydwk.eventmanager.handler.handlers.thread.*
-import io.github.ydwk.ydwk.eventmanager.handler.handlers.user.UserUpdateHandler
-import io.github.ydwk.ydwk.eventmanager.handler.handlers.voice.VoiceServerUpdateHandler
-import io.github.ydwk.ydwk.eventmanager.handler.handlers.voice.VoiceStateUpdateHandler
-import io.github.ydwk.ydwk.eventmanager.handler.handlers.webhook.WebhooksUpdateHandler
+import io.github.ydwk.ydwk.evm.event.events.gateway.ReadyEvent
+import io.github.ydwk.ydwk.evm.event.events.gateway.ReconnectEvent
+import io.github.ydwk.ydwk.evm.event.events.gateway.ResumeEvent
+import io.github.ydwk.ydwk.evm.handler.handlers.ban.GuildBanAddHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.ban.GuildBanRemoveHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.channel.ChannelCreateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.channel.ChannelDeleteHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.channel.ChannelPinsUpdateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.channel.ChannelUpdateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.emoji.GuildEmojisUpdateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.guild.GuildCreateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.guild.GuildDeleteHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.guild.GuildUpdateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.interactions.InteractionCreateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.intergration.GuildIntegrationsUpdateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.intergration.IntegrationCreateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.intergration.IntegrationDeleteHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.intergration.IntegrationUpdateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.invite.InviteCreateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.invite.InviteDeleteHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.member.GuildMemberAddHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.member.GuildMemberRemoveHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.member.GuildMemberUpdateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.message.*
+import io.github.ydwk.ydwk.evm.handler.handlers.presence.PresenceUpdateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.role.GuildRoleCreateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.role.GuildRoleDeleteHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.role.GuildRoleUpdateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.schedule.*
+import io.github.ydwk.ydwk.evm.handler.handlers.thread.*
+import io.github.ydwk.ydwk.evm.handler.handlers.user.UserUpdateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.voice.VoiceServerUpdateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.voice.VoiceStateUpdateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.webhook.WebhooksUpdateHandler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.BotImpl
 import io.github.ydwk.ydwk.impl.entities.MessageImpl
@@ -228,7 +231,7 @@ open class WebSocketManager(
             "Disconnected from websocket with close code $closeCodeAsString and reason $closeCodeReason")
 
         ydwk.emitEvent(
-            io.github.ydwk.ydwk.eventmanager.event.events.gateway.DisconnectEvent(
+            io.github.ydwk.ydwk.evm.event.events.gateway.DisconnectEvent(
                 ydwk, closeCodeAsString, closeCodeReason, Instant.now()))
 
         heartbeatThread?.cancel(false)
@@ -241,7 +244,7 @@ open class WebSocketManager(
         } else {
             logger.info("Not able to reconnect to websocket, shutting down")
             ydwk.emitEvent(
-                io.github.ydwk.ydwk.eventmanager.event.events.gateway.ShutDownEvent(
+                io.github.ydwk.ydwk.evm.event.events.gateway.ShutDownEvent(
                     ydwk, closeCode, Instant.now()))
             ydwk.shutdownAPI()
         }
@@ -435,7 +438,7 @@ open class WebSocketManager(
                 // do nothing
             }
             EventNames.READY -> {
-                // get ride of ?v=
+                // get rid of ?v=
                 val libraryVersion = YDWKInfo.DISCORD_GATEWAY_VERSION.toString().substring(3)
                 if (libraryVersion != d.get("v").asText()) {
                     logger.warn(
@@ -474,19 +477,15 @@ open class WebSocketManager(
                         unAvailableGuildsAmount += 1
                     }
                 }
-                ydwk.emitEvent(
-                    io.github.ydwk.ydwk.eventmanager.event.events.gateway.ReadyEvent(
-                        ydwk, availableGuildsAmount, unAvailableGuildsAmount))
+                ydwk.emitEvent(ReadyEvent(ydwk, availableGuildsAmount, unAvailableGuildsAmount))
             }
             EventNames.RESUMED -> {
                 attemptedToResume = false
-                ydwk.emitEvent(
-                    io.github.ydwk.ydwk.eventmanager.event.events.gateway.ResumeEvent(ydwk))
+                ydwk.emitEvent(ResumeEvent(ydwk))
             }
             EventNames.RECONNECT -> {
                 attemptedToResume = false
-                ydwk.emitEvent(
-                    io.github.ydwk.ydwk.eventmanager.event.events.gateway.ReconnectEvent(ydwk))
+                ydwk.emitEvent(ReconnectEvent(ydwk))
             }
             EventNames.INVALID_SESSION -> {
                 sessionId = null

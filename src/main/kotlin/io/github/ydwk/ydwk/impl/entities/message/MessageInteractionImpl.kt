@@ -48,7 +48,7 @@ class MessageInteractionImpl(
                 MemberImpl(
                     ydwk,
                     json.get("member"),
-                    ydwk.getGuild(json.get("guild_id").asLong())
+                    ydwk.getGuildById(json.get("guild_id").asLong())
                         ?: throw IllegalStateException("Bot is not in guild"))
             else null
 }

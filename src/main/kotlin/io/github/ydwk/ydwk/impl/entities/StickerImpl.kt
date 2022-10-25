@@ -49,7 +49,7 @@ class StickerImpl(
     override var available: Boolean = json.get("available").asBoolean()
 
     override val guild: Guild?
-        get() = if (json.has("guild_id")) ydwk.getGuild(json["guild_id"].asLong()) else null
+        get() = if (json.has("guild_id")) ydwk.getGuildById(json["guild_id"].asLong()) else null
 
     override var user: User? =
         if (json.has("user")) UserImpl(json["user"], json["user"]["id"].asLong(), ydwk) else null
