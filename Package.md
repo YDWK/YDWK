@@ -5,11 +5,11 @@ A discord wrapper made in kotlin
 ## In progress and to be done
 
 - [ ] Create entities - in progress
-- [ ] Handle events - In progress
 
 ## Future Features
 
-- [ ] Support for channels
+- [ ] Handling Rate Limit for rest api requests
+- [ ] Handling Voice
 
 ## Implemented
 
@@ -25,6 +25,8 @@ A discord wrapper made in kotlin
 - [x] Embed builder
 - [x] Support for messages
 - [x] Handle rate limiting in websocket
+- [x] Support for channels
+- [x] Handle events
 
 ## Installation
 

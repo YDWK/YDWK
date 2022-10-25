@@ -21,11 +21,11 @@ to solve the following problems:
 ## In progress and to be done
 
 - [ ] Create entities - in progress
-- [ ] Handle events - In progress
 
 ## Future Features
 
-- [ ] Support for channels
+- [ ] Handling Rate Limit for rest api requests
+- [ ] Handling Voice
 
 ## Implemented
 
@@ -41,6 +41,8 @@ to solve the following problems:
 - [x] Embed builder
 - [x] Support for messages
 - [x] Handle rate limiting in websocket
+- [x] Support for channels
+- [x] Handle events
 
 ## Getting started
 
