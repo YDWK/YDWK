@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.evm.handler.handlers.guild
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.cache.CacheIds
 import io.github.ydwk.ydwk.entities.Guild
+import io.github.ydwk.ydwk.evm.event.events.guild.GuildDeleteEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.GuildImpl
@@ -40,5 +41,6 @@ class GuildDeleteHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
         }
         guild.stickers.forEach { sticker -> ydwk.cache.remove(sticker.id, CacheIds.STICKER) }
         ydwk.cache.remove(guild.id, CacheIds.GUILD)
+        ydwk.emitEvent(GuildDeleteEvent(ydwk, guild))
     }
 }

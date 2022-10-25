@@ -30,6 +30,8 @@ import io.github.ydwk.ydwk.evm.event.events.gateway.DisconnectEvent
 import io.github.ydwk.ydwk.evm.event.events.gateway.ReadyEvent
 import io.github.ydwk.ydwk.evm.event.events.gateway.ResumeEvent
 import io.github.ydwk.ydwk.evm.event.events.gateway.ShutDownEvent
+import io.github.ydwk.ydwk.evm.event.events.guild.GuildCreateEvent
+import io.github.ydwk.ydwk.evm.event.events.guild.GuildDeleteEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.*
 import java.lang.invoke.MethodHandle
 import java.lang.invoke.MethodHandles
@@ -125,6 +127,21 @@ abstract class ListenerAdapter : IEventListener {
      * @param event The ChannelDeleteEvent
      */
     open fun onChannelDelete(event: ChannelDeleteEvent) {}
+
+    // guild
+    /**
+     * Listens to GuildCreateEvent
+     *
+     * @param event The GuildCreateEvent
+     */
+    open fun onGuildCreate(event: GuildCreateEvent) {}
+
+    /**
+     * Listens to GuildDeleteEvent
+     *
+     * @param event The GuildDeleteEvent
+     */
+    open fun onGuildDelete(event: GuildDeleteEvent) {}
 
     // ban
     /**
