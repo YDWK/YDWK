@@ -20,10 +20,8 @@ package io.github.ydwk.ydwk.bot
 
 import io.github.realyusufismail.jconfig.util.JConfigUtils
 import io.github.ydwk.ydwk.createDefaultBot
-import io.github.ydwk.ydwk.event.ListenerAdapter
-import io.github.ydwk.ydwk.event.backend.event.on
-import io.github.ydwk.ydwk.event.events.ReadyEvent
-import io.github.ydwk.ydwk.event.events.interaction.SlashCommandEvent
+import io.github.ydwk.ydwk.eventmanager.ListenerAdapter
+import io.github.ydwk.ydwk.eventmanager.backend.event.on
 import io.github.ydwk.ydwk.slash.Slash
 import io.github.ydwk.ydwk.slash.SlashOption
 import io.github.ydwk.ydwk.slash.SlashOptionType
@@ -32,7 +30,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class Bot : ListenerAdapter() {
-    override fun onReady(event: ReadyEvent) {
+    override fun onReady(event: io.github.ydwk.ydwk.eventmanager.event.events.gateway.ReadyEvent) {
         println("Bot is ready!")
     }
 }
@@ -55,7 +53,7 @@ fun main() {
                         "member", "The member to test the option with", SlashOptionType.USER)))
         .build()
 
-    ydwk.on<SlashCommandEvent> {
+    ydwk.on<io.github.ydwk.ydwk.eventmanager.event.events.interaction.SlashCommandEvent> {
         when (it.slash.name) {
             "embed" -> {
                 withContext(Dispatchers.IO) {

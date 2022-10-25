@@ -36,11 +36,11 @@ import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildVoiceChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
-import io.github.ydwk.ydwk.event.backend.event.CoroutineEventListener
-import io.github.ydwk.ydwk.event.backend.event.GenericEvent
-import io.github.ydwk.ydwk.event.backend.event.IEventListener
-import io.github.ydwk.ydwk.event.backend.managers.CoroutineEventManager
-import io.github.ydwk.ydwk.event.backend.managers.SampleEventManager
+import io.github.ydwk.ydwk.eventmanager.backend.event.CoroutineEventListener
+import io.github.ydwk.ydwk.eventmanager.backend.event.GenericEvent
+import io.github.ydwk.ydwk.eventmanager.backend.event.IEventListener
+import io.github.ydwk.ydwk.eventmanager.backend.managers.CoroutineEventManager
+import io.github.ydwk.ydwk.eventmanager.backend.managers.SampleEventManager
 import io.github.ydwk.ydwk.impl.entities.UserImpl
 import io.github.ydwk.ydwk.impl.entities.channel.DmChannelImpl
 import io.github.ydwk.ydwk.impl.entities.message.embed.builder.EmbedBuilderImpl

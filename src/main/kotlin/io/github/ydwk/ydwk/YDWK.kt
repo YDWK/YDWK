@@ -33,7 +33,7 @@ import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildVoiceChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
-import io.github.ydwk.ydwk.event.backend.event.GenericEvent
+import io.github.ydwk.ydwk.eventmanager.backend.event.GenericEvent
 import io.github.ydwk.ydwk.rest.RestApiManager
 import io.github.ydwk.ydwk.slash.SlashBuilder
 import io.github.ydwk.ydwk.ws.WebSocketManager

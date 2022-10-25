@@ -54,4 +54,8 @@ class DummyCache : Cache {
     override fun values(cacheType: CacheIds): List<Any> {
         return dummyMap.filter { it.key.endsWith(cacheType.toString()) }.values.toList()
     }
+
+    override fun update(key: String, cacheType: CacheIds, value: Any) {
+        dummyMap[key + cacheType.toString()] = value
+    }
 }
