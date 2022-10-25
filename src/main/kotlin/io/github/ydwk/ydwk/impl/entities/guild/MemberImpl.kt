@@ -49,7 +49,9 @@ class MemberImpl(
 
     override val roles: List<Role?>
         get() =
-            roleIds.map { if (guild.getRole(it.asLong) != null) guild.getRole(it.asLong) else null }
+            roleIds.map {
+                if (guild.getRoleById(it.asLong) != null) guild.getRoleById(it.asLong) else null
+            }
 
     override var joinedAt: String? =
         if (json.has("joined_at")) formatZonedDateTime(json["joined_at"].asText()) else null
