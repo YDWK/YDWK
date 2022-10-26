@@ -18,11 +18,13 @@
  */ 
 package io.github.ydwk.ydwk.evm.event.events.channel
 
-import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildChannel
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.channel.GuildChannel
 import io.github.ydwk.ydwk.evm.backend.update.IEventUpdate
 
-class GenericChannelUpdateEvent<T>(
-    override val entity: GenericGuildChannel,
+open class GenericChannelUpdateEvent<T>(
+    override val ydwk: YDWK,
+    override val entity: GuildChannel,
     override val oldValue: T,
     override val newValue: T
-) : IEventUpdate<GenericGuildChannel, T>
+) : IEventUpdate<GuildChannel, T>

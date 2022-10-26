@@ -16,15 +16,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.evm.event.events.user
+package io.github.ydwk.ydwk.evm.event.events.channel.update.voice
 
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.User
-import io.github.ydwk.ydwk.evm.backend.update.IEventUpdate
+import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
+import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildVoiceChannel
+import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
-class GenericUserUpdateEvent<T>(
+class VoiceChannelNameUpdateEvent(
     override val ydwk: YDWK,
-    override val entity: User,
-    override val oldValue: T,
-    override val newValue: T
-) : IEventUpdate<User, T>
+    override val entity: GenericGuildVoiceChannel,
+    val channelType: ChannelType,
+    val oldName: String,
+    val newName: String
+) : GenericChannelUpdateEvent<String>(ydwk, entity, oldName, newName)

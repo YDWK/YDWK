@@ -16,15 +16,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.evm.event.events.user
+package io.github.ydwk.ydwk.evm.event.events.guild.update
 
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.User
-import io.github.ydwk.ydwk.evm.backend.update.IEventUpdate
+import io.github.ydwk.ydwk.entities.Guild
+import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
-class GenericUserUpdateEvent<T>(
-    override val ydwk: YDWK,
-    override val entity: User,
-    override val oldValue: T,
-    override val newValue: T
-) : IEventUpdate<User, T>
+class GuildIconUpdateEvent(ydwk: YDWK, entity: Guild, val oldIcon: String?, val newIcon: String) :
+    GenericGuildUpdateEvent<String>(ydwk, entity, oldIcon, newIcon)

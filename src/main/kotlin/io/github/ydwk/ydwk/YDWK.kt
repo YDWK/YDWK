@@ -27,10 +27,12 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.application.PartialApplication
 import io.github.ydwk.ydwk.entities.channel.DmChannel
-import io.github.ydwk.ydwk.entities.channel.GuildChannel
+import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildVoiceChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
+import io.github.ydwk.ydwk.entities.channel.guild.message.news.GuildNewsChannel
+import io.github.ydwk.ydwk.entities.channel.guild.message.text.GuildTextChannel
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
 import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
@@ -208,9 +210,9 @@ interface YDWK {
     /**
      * Gets all the guild channels the bot is in.
      *
-     * @return A list of [GuildChannel] objects.
+     * @return A list of [GenericGuildChannel] objects.
      */
-    val guildChannels: List<GuildChannel>
+    val guildChannels: List<GenericGuildChannel>
 
     /**
      * Gets a guild text channel by its id.
@@ -218,7 +220,7 @@ interface YDWK {
      * @param id The id of the text channel.
      * @return The [GenericGuildTextChannel] object.
      */
-    fun getGuildTextChannelById(id: Long): GenericGuildTextChannel?
+    fun getGenericGuildTextChannelById(id: Long): GenericGuildTextChannel?
 
     /**
      * Gets a guild text channel by its id.
@@ -226,8 +228,8 @@ interface YDWK {
      * @param id The id of the text channel.
      * @return The [GenericGuildTextChannel] object.
      */
-    fun getGuildTextChannelById(id: String): GenericGuildTextChannel? =
-        getGuildTextChannelById(id.toLong())
+    fun getGenericGuildTextChannelById(id: String): GenericGuildTextChannel? =
+        getGenericGuildTextChannelById(id.toLong())
 
     /**
      * Gets all the guild text channels the bot is in.
@@ -235,6 +237,38 @@ interface YDWK {
      * @return A list of [GenericGuildTextChannel] objects.
      */
     val guildTextChannels: List<GenericGuildTextChannel>
+
+    /**
+     * Gets a guild text channel by its id.
+     *
+     * @param id The id of the text channel.
+     */
+    fun getGuildTextChannelById(id: Long): GuildTextChannel? =
+        getGenericGuildTextChannelById(id) as GuildTextChannel?
+
+    /**
+     * Gets a guild text channel by its id.
+     *
+     * @param id The id of the text channel.
+     */
+    fun getGuildTextChannelById(id: String): GuildTextChannel? =
+        getGenericGuildTextChannelById(id)?.asGuildTextChannel()
+
+    /**
+     * Gets a guild news channel by its id.
+     *
+     * @param id The id of the news channel.
+     */
+    fun getGuildNewsChannelById(id: Long): GuildNewsChannel? =
+        getGenericGuildTextChannelById(id)?.asGuildNewsChannel()
+
+    /**
+     * Gets a guild news channel by its id.
+     *
+     * @param id The id of the news channel.
+     */
+    fun getGuildNewsChannelById(id: String): GuildNewsChannel? =
+        getGenericGuildTextChannelById(id)?.asGuildNewsChannel()
 
     /**
      * Gets a voice guild channel by its id.

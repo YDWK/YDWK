@@ -56,6 +56,27 @@ interface GenericGuildChannel : GuildChannel, Comparable<GenericGuildChannel> {
      */
     val isCategory: Boolean
 
+    /**
+     * Gets the channel as Guild Category.
+     *
+     * @return the channel as Guild Category.
+     */
+    fun asGuildCategory(): GuildCategory?
+
+    /**
+     * Gets the channel as a generic guild text channel.
+     *
+     * @return the channel as a generic guild text channel.
+     */
+    fun asGenericGuildTextChannel(): GenericGuildTextChannel
+
+    /**
+     * Gets the channel as a generic guild voice channel.
+     *
+     * @return the channel as a generic guild voice channel.
+     */
+    fun asGenericGuildVoiceChannel(): GenericGuildVoiceChannel
+
     override fun compareTo(other: GenericGuildChannel): Int {
         if (guild != other.guild) {
             throw IllegalArgumentException("Cannot compare channels from different guilds")

@@ -22,6 +22,7 @@ import io.github.realyusufismail.jconfig.util.JConfigUtils
 import io.github.ydwk.ydwk.createDefaultBot
 import io.github.ydwk.ydwk.evm.ListenerAdapter
 import io.github.ydwk.ydwk.evm.backend.event.on
+import io.github.ydwk.ydwk.evm.event.events.guild.update.GuildNameUpdateEvent
 import io.github.ydwk.ydwk.slash.Slash
 import io.github.ydwk.ydwk.slash.SlashOption
 import io.github.ydwk.ydwk.slash.SlashOptionType
@@ -94,6 +95,12 @@ fun main() {
                     it.slash.reply(it.slash.getOption("member")!!.asUser.name).get()
                 }
             }
+        }
+    }
+
+    ydwk.on<GuildNameUpdateEvent> {
+        it.oldName.let { oldName ->
+            it.newName.let { newName -> println("Guild name changed from $oldName to $newName") }
         }
     }
 }

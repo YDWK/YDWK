@@ -16,15 +16,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.evm.event.events.user
+package io.github.ydwk.ydwk.evm.event.events.channel.update.text
 
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.User
-import io.github.ydwk.ydwk.evm.backend.update.IEventUpdate
+import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
+import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
+import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
-class GenericUserUpdateEvent<T>(
+class TextChannelSlowModeUpdateEvent(
     override val ydwk: YDWK,
-    override val entity: User,
-    override val oldValue: T,
-    override val newValue: T
-) : IEventUpdate<User, T>
+    override val entity: GenericGuildTextChannel,
+    val channelType: ChannelType,
+    val oldSlowMode: Int,
+    val newSlowMode: Int
+) : GenericChannelUpdateEvent<Int>(ydwk, entity, oldSlowMode, newSlowMode)

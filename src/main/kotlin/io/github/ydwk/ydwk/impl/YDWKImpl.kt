@@ -29,7 +29,6 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.application.PartialApplication
 import io.github.ydwk.ydwk.entities.channel.DmChannel
-import io.github.ydwk.ydwk.entities.channel.GuildChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildVoiceChannel
@@ -147,7 +146,7 @@ class YDWKImpl(
         allowedCache.removeAll(cacheTypes.toSet())
     }
 
-    override fun getGuildTextChannelById(id: Long): GenericGuildTextChannel? {
+    override fun getGenericGuildTextChannelById(id: Long): GenericGuildTextChannel? {
         val channel = cache[id.toString(), CacheIds.TEXT_CHANNEL] as GenericGuildChannel?
         if (channel != null) {
             if (channel.isTextChannel) {
@@ -271,11 +270,12 @@ class YDWKImpl(
         }
     }
 
-    override val guildChannels: List<GuildChannel>
+    override val guildChannels: List<GenericGuildChannel>
         get() =
-            cache.values(CacheIds.TEXT_CHANNEL).map { it as GuildChannel } +
-                cache.values(CacheIds.VOICE_CHANNEL).map { it as GuildChannel } +
-                cache.values(CacheIds.CATEGORY).map { it as GuildChannel }
+            (cache.values(CacheIds.TEXT_CHANNEL).map { it as GenericGuildTextChannel } +
+                cache.values(CacheIds.VOICE_CHANNEL).map { it as GenericGuildVoiceChannel } +
+                cache.values(CacheIds.CATEGORY).map { it as GuildCategory })
+                as List<GenericGuildChannel>
 
     override var bot: Bot? = null
         get() {

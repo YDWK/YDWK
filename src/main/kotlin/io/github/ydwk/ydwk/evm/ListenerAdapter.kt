@@ -32,6 +32,9 @@ import io.github.ydwk.ydwk.evm.event.events.gateway.ResumeEvent
 import io.github.ydwk.ydwk.evm.event.events.gateway.ShutDownEvent
 import io.github.ydwk.ydwk.evm.event.events.guild.GuildCreateEvent
 import io.github.ydwk.ydwk.evm.event.events.guild.GuildDeleteEvent
+import io.github.ydwk.ydwk.evm.event.events.guild.update.GuildIconUpdateEvent
+import io.github.ydwk.ydwk.evm.event.events.guild.update.GuildNameUpdateEvent
+import io.github.ydwk.ydwk.evm.event.events.guild.update.GuildSplashUpdateEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.*
 import java.lang.invoke.MethodHandle
 import java.lang.invoke.MethodHandles
@@ -135,6 +138,27 @@ abstract class ListenerAdapter : IEventListener {
      * @param event The GuildCreateEvent
      */
     open fun onGuildCreate(event: GuildCreateEvent) {}
+
+    /**
+     * Listens to GuildNameUpdateEvent
+     *
+     * @param event The GuildNameUpdateEvent
+     */
+    open fun onGuildNameUpdate(event: GuildNameUpdateEvent) {}
+
+    /**
+     * Listens to GuildIconUpdateEvent
+     *
+     * @param event The GuildIconUpdateEvent
+     */
+    open fun onGuildIconUpdate(event: GuildIconUpdateEvent) {}
+
+    /**
+     * Listens to GuildSplashUpdateEvent
+     *
+     * @param event The GuildSplashUpdateEvent
+     */
+    open fun onGuildSplashUpdate(event: GuildSplashUpdateEvent) {}
 
     /**
      * Listens to GuildDeleteEvent

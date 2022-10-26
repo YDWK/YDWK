@@ -19,10 +19,9 @@
 package io.github.ydwk.ydwk.evm.backend.event
 
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.evm.event.Event
 
-inline fun <reified T : Event> YDWK.on(
-    crossinline consumer: suspend Event.(T) -> Unit
+inline fun <reified T : GenericEvent> YDWK.on(
+    crossinline consumer: suspend GenericEvent.(T) -> Unit
 ): CoroutineEventListener {
     return object : CoroutineEventListener {
             override suspend fun onEvent(event: GenericEvent) {

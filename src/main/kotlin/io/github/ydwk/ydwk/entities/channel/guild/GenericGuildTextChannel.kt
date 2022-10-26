@@ -18,12 +18,13 @@
  */ 
 package io.github.ydwk.ydwk.entities.channel.guild
 
+import io.github.ydwk.ydwk.entities.channel.GuildChannel
 import io.github.ydwk.ydwk.entities.channel.TextChannel
 import io.github.ydwk.ydwk.entities.channel.guild.forum.GuildForumChannel
 import io.github.ydwk.ydwk.entities.channel.guild.message.news.GuildNewsChannel
 import io.github.ydwk.ydwk.entities.channel.guild.message.text.GuildTextChannel
 
-interface GenericGuildTextChannel : TextChannel {
+interface GenericGuildTextChannel : TextChannel, GuildChannel {
     /**
      * Gets the channel as Guild Text Channel.
      *

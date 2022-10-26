@@ -35,7 +35,7 @@ class GuildCategoryImpl(
             Collections.unmodifiableList(
                 guild.getUnorderedChannels
                     .stream()
-                    .filter { channel -> channel.asGuildCategory()?.equals(this) ?: false }
+                    .filter { this.asGuildCategory()?.equals(this) ?: false }
                     .map { it as GenericGuildChannel }
                     .toList())
 

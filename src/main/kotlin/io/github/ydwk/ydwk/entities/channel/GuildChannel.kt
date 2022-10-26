@@ -20,9 +20,6 @@ package io.github.ydwk.ydwk.entities.channel
 
 import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.entities.Guild
-import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
-import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildVoiceChannel
-import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
 import io.github.ydwk.ydwk.util.NameAbleEntity
 
 interface GuildChannel : Channel, NameAbleEntity {
@@ -32,25 +29,4 @@ interface GuildChannel : Channel, NameAbleEntity {
      * @return the guild of this channel.
      */
     val guild: Guild
-
-    /**
-     * Gets the channel as Guild Category.
-     *
-     * @return the channel as Guild Category.
-     */
-    fun asGuildCategory(): GuildCategory?
-
-    /**
-     * Gets the channel as a generic guild text channel.
-     *
-     * @return the channel as a generic guild text channel.
-     */
-    fun asGenericGuildTextChannel(): GenericGuildTextChannel
-
-    /**
-     * Gets the channel as a generic guild voice channel.
-     *
-     * @return the channel as a generic guild voice channel.
-     */
-    fun asGenericGuildVoiceChannel(): GenericGuildVoiceChannel
 }

@@ -21,6 +21,9 @@ package io.github.ydwk.ydwk.evm.handler.handlers.guild
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.cache.CacheIds
 import io.github.ydwk.ydwk.entities.guild.enums.*
+import io.github.ydwk.ydwk.evm.event.events.guild.update.GuildIconUpdateEvent
+import io.github.ydwk.ydwk.evm.event.events.guild.update.GuildNameUpdateEvent
+import io.github.ydwk.ydwk.evm.event.events.guild.update.GuildSplashUpdateEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.EmojiImpl
@@ -36,6 +39,7 @@ class GuildUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
         if (!ydwk.cache.contains(guild.id, CacheIds.GUILD)) {
             ydwk.logger.warn("GuildUpdateHandler: Guild ${guild.id} is not cached, will add it")
             ydwk.cache[guild.id, guild] = CacheIds.GUILD
+            return
         }
 
         val oldName = guild.name
@@ -112,88 +116,134 @@ class GuildUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
         val newEmoji = json["emojis"]
         val newFeatures = json["features"]
 
-        when {
-            !Objects.deepEquals(oldName, newName) -> guild.name = newName
-            if (oldIcon != null) !Objects.deepEquals(oldIcon, newIcon) else newIcon != null ->
-                guild.icon = newIcon
-            if (oldSplash != null) !Objects.deepEquals(oldSplash, newSplash)
-            else newSplash != null -> guild.splash = newSplash
-            if (oldDiscoverySplash != null)
-                !Objects.deepEquals(oldDiscoverySplash, newDiscoverySplash)
-            else newDiscoverySplash != null -> guild.discoverySplash = newDiscoverySplash
-            oldOwnerId.asLong != newOwnerId -> guild.ownerId = GetterSnowFlake.of(newOwnerId)
-            !Objects.deepEquals(oldPermissions, newPermissions) ->
-                guild.permissions = newPermissions
-            if (oldAfkChannelId != null) oldAfkChannelId.asLong != newAfkChannelId
-            else newAfkChannelId != 0L -> guild.afkChannelId = GetterSnowFlake.of(newAfkChannelId)
-            oldAfkTimeout != newAfkTimeout -> guild.afkTimeout = newAfkTimeout
-            oldWidgetEnabled != newWidgetEnabled -> guild.isWidgetEnabled = newWidgetEnabled
-            if (oldWidgetChannelId != null) oldWidgetChannelId.asLong != newWidgetChannelId
-            else newWidgetChannelId != 0L ->
-                guild.widgetChannelId = GetterSnowFlake.of(newWidgetChannelId)
-            oldVerificationLevel.level != newVerificationLevel ->
-                guild.verificationLevel = VerificationLevel.fromLevel(newVerificationLevel)
-            oldDefaultMessageNotifications != newDefaultMessageNotifications ->
-                guild.defaultMessageNotificationsLevel =
-                    MessageNotificationLevel.fromValue(newDefaultMessageNotifications)
-            oldExplicitContentFilter != newExplicitContentFilter ->
-                guild.explicitContentFilterLevel =
-                    ExplicitContentFilterLevel.fromValue(newExplicitContentFilter)
-            oldMfaLevel != newMfaLevel -> guild.mfaLevel = MFALevel.fromValue(newMfaLevel)
-            if (oldApplicationId != null) oldApplicationId.asLong != newApplicationId
-            else newApplicationId != 0L ->
-                guild.applicationId = GetterSnowFlake.of(newApplicationId)
-            if (oldSystemChannelId != null) oldSystemChannelId.asLong != newSystemChannelId
-            else newSystemChannelId != 0L ->
-                guild.systemChannelId = GetterSnowFlake.of(newSystemChannelId)
-            oldSystemChannelFlags != newSystemChannelFlags ->
-                guild.systemChannelFlags = SystemChannelFlag.fromValue(newSystemChannelFlags)
-            if (oldRulesChannelId != null) oldRulesChannelId.asLong != newRulesChannelId
-            else newRulesChannelId != 0L ->
-                guild.rulesChannelId = GetterSnowFlake.of(newRulesChannelId)
-            if (oldMaxPresences != null) oldMaxPresences != newMaxPresences
-            else newMaxPresences != 0 -> guild.maxPresences = newMaxPresences
-            oldMaxMembers != newMaxMembers -> guild.maxMembers = newMaxMembers
-            if (oldVanityUrlCode != null) !Objects.deepEquals(oldVanityUrlCode, newVanityUrlCode)
-            else newVanityUrlCode != null -> guild.vanityUrlCode = newVanityUrlCode
-            if (oldDescription != null) !Objects.deepEquals(oldDescription, newDescription)
-            else newDescription != null -> guild.description = newDescription
-            if (oldBanner != null) !Objects.deepEquals(oldBanner, newBanner)
-            else newBanner != null -> guild.banner = newBanner
-            oldPremiumTier.value != newPremiumTier ->
-                guild.premiumTier = PremiumTier.fromValue(newPremiumTier)
-            oldPremiumSubscriptionCount != newPremiumSubscriptionCount ->
-                guild.premiumSubscriptionCount = newPremiumSubscriptionCount
-            oldPreferredLocale != newPreferredLocale -> guild.preferredLocale = newPreferredLocale
-            if (oldPublicUpdatesChannelId != null)
-                oldPublicUpdatesChannelId.asLong != newPublicUpdatesChannelId
-            else newPublicUpdatesChannelId != 0L ->
-                guild.publicUpdatesChannelId = GetterSnowFlake.of(newPublicUpdatesChannelId)
-            if (oldMaxVideoChannelUsers != null) oldMaxVideoChannelUsers != newMaxVideoChannelUsers
-            else newMaxVideoChannelUsers != 0 ->
-                guild.maxVideoChannelUsers = newMaxVideoChannelUsers
-            if (oldApproximateMemberCount != null)
-                oldApproximateMemberCount != newApproximateMemberCount
-            else newApproximateMemberCount != 0 ->
-                guild.approximateMemberCount = newApproximateMemberCount
-            if (oldApproximatePresenceCount != null)
-                oldApproximatePresenceCount != newApproximatePresenceCount
-            else newApproximatePresenceCount != 0 ->
-                guild.approximatePresenceCount = newApproximatePresenceCount
-            if (oldWelcomeScreen != null) !Objects.deepEquals(oldWelcomeScreen, newWelcomeScreen)
-            else newWelcomeScreen != null ->
-                guild.welcomeScreen = WelcomeScreenImpl(ydwk, newWelcomeScreen)
-            oldNSFWLevel != newNSFWLevel -> guild.nsfwLevel = NSFWLeveL.fromValue(newNSFWLevel)
-            oldStickers != newStickers ->
-                guild.stickers =
-                    newStickers.map { it: JsonNode -> StickerImpl(ydwk, it, it["id"].asLong()) }
-            wasBoostProgressBarEnabled != newBoostProgressBarEnabled ->
-                guild.isBoostProgressBarEnabled = newBoostProgressBarEnabled
-            oldEmoji != newEmoji ->
-                guild.emojis = newEmoji.map { it: JsonNode -> EmojiImpl(ydwk, it) }
-            oldFeatures != newFeatures ->
-                guild.features =
-                    newFeatures.map { it: JsonNode -> GuildFeature.fromString(it.asText()) }.toSet()
+        if (!Objects.deepEquals(oldName, newName)) {
+            guild.name = newName
+            ydwk.emitEvent(GuildNameUpdateEvent(ydwk, guild, oldName, newName))
         }
+
+        if (if (oldIcon != null) !Objects.deepEquals(oldIcon, newIcon) else newIcon != null) {
+            guild.icon = newIcon
+            ydwk.emitEvent(GuildIconUpdateEvent(ydwk, guild, oldIcon, newIcon))
+        }
+
+        if (if (oldSplash != null) !Objects.deepEquals(oldSplash, newSplash)
+        else newSplash != null) {
+            guild.splash = newSplash
+            ydwk.emitEvent(GuildSplashUpdateEvent(ydwk, guild, oldSplash, newSplash))
+        }
+
+        if (if (oldDiscoverySplash != null)
+            !Objects.deepEquals(oldDiscoverySplash, newDiscoverySplash)
+        else newDiscoverySplash != null)
+            guild.discoverySplash = newDiscoverySplash
+
+        if (oldOwnerId.asLong != newOwnerId) guild.ownerId = GetterSnowFlake.of(newOwnerId)
+
+        if (!Objects.deepEquals(oldPermissions, newPermissions)) guild.permissions = newPermissions
+
+        if (if (oldAfkChannelId != null) oldAfkChannelId.asLong != newAfkChannelId
+        else newAfkChannelId != 0L)
+            guild.afkChannelId = GetterSnowFlake.of(newAfkChannelId)
+
+        if (oldAfkTimeout != newAfkTimeout) guild.afkTimeout = newAfkTimeout
+
+        if (oldWidgetEnabled != newWidgetEnabled) guild.isWidgetEnabled = newWidgetEnabled
+
+        if (if (oldWidgetChannelId != null) oldWidgetChannelId.asLong != newWidgetChannelId
+        else newWidgetChannelId != 0L)
+            guild.widgetChannelId = GetterSnowFlake.of(newWidgetChannelId)
+
+        if (oldVerificationLevel.level != newVerificationLevel)
+            guild.verificationLevel = VerificationLevel.fromLevel(newVerificationLevel)
+
+        if (oldDefaultMessageNotifications != newDefaultMessageNotifications)
+            guild.defaultMessageNotificationsLevel =
+                MessageNotificationLevel.fromValue(newDefaultMessageNotifications)
+
+        if (oldExplicitContentFilter != newExplicitContentFilter)
+            guild.explicitContentFilterLevel =
+                ExplicitContentFilterLevel.fromValue(newExplicitContentFilter)
+
+        if (oldMfaLevel != newMfaLevel) guild.mfaLevel = MFALevel.fromValue(newMfaLevel)
+
+        if (if (oldApplicationId != null) oldApplicationId.asLong != newApplicationId
+        else newApplicationId != 0L)
+            guild.applicationId = GetterSnowFlake.of(newApplicationId)
+
+        if (if (oldSystemChannelId != null) oldSystemChannelId.asLong != newSystemChannelId
+        else newSystemChannelId != 0L)
+            guild.systemChannelId = GetterSnowFlake.of(newSystemChannelId)
+
+        if (oldSystemChannelFlags != newSystemChannelFlags)
+            guild.systemChannelFlags = SystemChannelFlag.fromValue(newSystemChannelFlags)
+
+        if (if (oldRulesChannelId != null) oldRulesChannelId.asLong != newRulesChannelId
+        else newRulesChannelId != 0L)
+            guild.rulesChannelId = GetterSnowFlake.of(newRulesChannelId)
+
+        if (if (oldMaxPresences != null) oldMaxPresences != newMaxPresences
+        else newMaxPresences != 0)
+            guild.maxPresences = newMaxPresences
+
+        if (oldMaxMembers != newMaxMembers) guild.maxMembers = newMaxMembers
+
+        if (if (oldVanityUrlCode != null) !Objects.deepEquals(oldVanityUrlCode, newVanityUrlCode)
+        else newVanityUrlCode != null)
+            guild.vanityUrlCode = newVanityUrlCode
+
+        if (if (oldDescription != null) !Objects.deepEquals(oldDescription, newDescription)
+        else newDescription != null)
+            guild.description = newDescription
+        if (if (oldBanner != null) !Objects.deepEquals(oldBanner, newBanner) else newBanner != null)
+            guild.banner = newBanner
+
+        if (oldPremiumTier.value != newPremiumTier)
+            guild.premiumTier = PremiumTier.fromValue(newPremiumTier)
+
+        if (oldPremiumSubscriptionCount != newPremiumSubscriptionCount)
+            guild.premiumSubscriptionCount = newPremiumSubscriptionCount
+
+        if (oldPreferredLocale != newPreferredLocale) guild.preferredLocale = newPreferredLocale
+
+        if (if (oldPublicUpdatesChannelId != null)
+            oldPublicUpdatesChannelId.asLong != newPublicUpdatesChannelId
+        else newPublicUpdatesChannelId != 0L)
+            guild.publicUpdatesChannelId = GetterSnowFlake.of(newPublicUpdatesChannelId)
+
+        if (if (oldMaxVideoChannelUsers != null) oldMaxVideoChannelUsers != newMaxVideoChannelUsers
+        else newMaxVideoChannelUsers != 0)
+            guild.maxVideoChannelUsers = newMaxVideoChannelUsers
+
+        if (if (oldApproximateMemberCount != null)
+            oldApproximateMemberCount != newApproximateMemberCount
+        else newApproximateMemberCount != 0)
+            guild.approximateMemberCount = newApproximateMemberCount
+
+        if (if (oldApproximatePresenceCount != null) {
+            oldApproximatePresenceCount != newApproximatePresenceCount
+        } else {
+            newApproximatePresenceCount != 0
+        })
+            guild.approximatePresenceCount = newApproximatePresenceCount
+
+        if (if (oldWelcomeScreen != null) !Objects.deepEquals(oldWelcomeScreen, newWelcomeScreen)
+        else newWelcomeScreen != null)
+            guild.welcomeScreen = WelcomeScreenImpl(ydwk, newWelcomeScreen)
+
+        if (oldNSFWLevel != newNSFWLevel) guild.nsfwLevel = NSFWLeveL.fromValue(newNSFWLevel)
+        if (oldStickers != newStickers) {
+            guild.stickers =
+                newStickers.map { it: JsonNode -> StickerImpl(ydwk, it, it["id"].asLong()) }
+        }
+
+        if (wasBoostProgressBarEnabled != newBoostProgressBarEnabled)
+            guild.isBoostProgressBarEnabled = newBoostProgressBarEnabled
+
+        if (oldEmoji != newEmoji)
+            guild.emojis = newEmoji.map { it: JsonNode -> EmojiImpl(ydwk, it) }
+
+        if (oldFeatures != newFeatures)
+            guild.features =
+                newFeatures.map { it: JsonNode -> GuildFeature.fromString(it.asText()) }.toSet()
     }
 }
