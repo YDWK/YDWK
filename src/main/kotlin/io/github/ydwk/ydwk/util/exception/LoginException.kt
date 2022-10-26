@@ -16,18 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.util
+package io.github.ydwk.ydwk.util.exception
 
-import javax.annotation.meta.When
-
-@MustBeDocumented
-@Target(
-    AnnotationTarget.FUNCTION,
-    AnnotationTarget.PROPERTY_GETTER,
-    AnnotationTarget.PROPERTY_SETTER,
-    AnnotationTarget.CONSTRUCTOR,
-    AnnotationTarget.ANNOTATION_CLASS,
-    AnnotationTarget.CLASS,
-    AnnotationTarget.FILE)
-@Retention(AnnotationRetention.RUNTIME)
-annotation class CheckReturnValue(val `when`: When = When.ALWAYS)
+class LoginException(message: String) : Exception(message)

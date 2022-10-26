@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.slash
 
-import io.github.ydwk.ydwk.util.CheckReturnValue
+import javax.annotation.CheckReturnValue
 
 interface SlashBuilder {
     /**
