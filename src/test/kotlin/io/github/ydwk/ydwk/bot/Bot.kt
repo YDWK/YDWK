@@ -55,6 +55,7 @@ fun main() {
                 .addOption(
                     SlashOption(
                         "member", "The member to test the option with", SlashOptionType.USER)))
+        .addSlashCommand(Slash("test", "A test command"))
         .build()
 
     ydwk.on<SlashCommandEvent> {
