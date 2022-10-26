@@ -19,7 +19,7 @@
 package io.github.ydwk.ydwk.bot
 
 import io.github.realyusufismail.jconfig.util.JConfigUtils
-import io.github.ydwk.ydwk.createDefaultBot
+import io.github.ydwk.ydwk.BotBuilder.createDefaultBot
 import io.github.ydwk.ydwk.event.ListenerAdapter
 import io.github.ydwk.ydwk.event.backend.event.on
 import io.github.ydwk.ydwk.event.events.ReadyEvent
@@ -40,6 +40,8 @@ class Bot : ListenerAdapter() {
 fun main() {
     val ydwk =
         createDefaultBot(JConfigUtils.getString("token") ?: throw Exception("Token not found!"))
+            .build()
+
     ydwk.addEvent(Bot())
 
     // TODO: having more than 6 commands leads to rate limit need to fix

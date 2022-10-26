@@ -188,7 +188,8 @@ interface YDWK {
      *
      * @param cacheTypes The cache types to be allowed.
      */
-    fun setAllowedCache(cacheTypes: Set<CacheIds>) = setAllowedCache(*cacheTypes.toTypedArray())
+    fun setAllowedCache(cacheTypes: MutableList<CacheIds>) =
+        setAllowedCache(*cacheTypes.toTypedArray())
 
     /**
      * Sets the disallowed cache types.
@@ -202,7 +203,7 @@ interface YDWK {
      *
      * @param cacheTypes The cache types to be disallowed.
      */
-    fun setDisallowedCache(cacheTypes: Set<CacheIds>) =
+    fun setDisallowedCache(cacheTypes: MutableList<CacheIds>) =
         setDisallowedCache(*cacheTypes.toTypedArray())
 
     /**
