@@ -19,9 +19,11 @@
 package io.github.ydwk.ydwk.bot
 
 import io.github.realyusufismail.jconfig.util.JConfigUtils
-import io.github.ydwk.ydwk.createDefaultBot
-import io.github.ydwk.ydwk.evm.ListenerAdapter
-import io.github.ydwk.ydwk.evm.backend.event.on
+import io.github.ydwk.ydwk.BotBuilder.createDefaultBot
+import io.github.ydwk.ydwk.event.ListenerAdapter
+import io.github.ydwk.ydwk.event.backend.event.on
+import io.github.ydwk.ydwk.event.events.ReadyEvent
+import io.github.ydwk.ydwk.event.events.interaction.SlashCommandEvent
 import io.github.ydwk.ydwk.evm.event.events.guild.update.GuildNameUpdateEvent
 import io.github.ydwk.ydwk.slash.Slash
 import io.github.ydwk.ydwk.slash.SlashOption
@@ -39,6 +41,8 @@ class Bot : ListenerAdapter() {
 fun main() {
     val ydwk =
         createDefaultBot(JConfigUtils.getString("token") ?: throw Exception("Token not found!"))
+            .build()
+
     ydwk.addEvent(Bot())
 
     // TODO: having more than 6 commands leads to rate limit need to fix
@@ -52,6 +56,7 @@ fun main() {
                 .addOption(
                     SlashOption(
                         "member", "The member to test the option with", SlashOptionType.USER)))
+        .addSlashCommand(Slash("test", "A test command"))
         .build()
 
     ydwk.on<io.github.ydwk.ydwk.evm.event.events.interaction.SlashCommandEvent> {

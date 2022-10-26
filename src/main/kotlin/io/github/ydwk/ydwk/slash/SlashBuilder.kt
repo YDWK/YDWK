@@ -18,9 +18,19 @@
  */ 
 package io.github.ydwk.ydwk.slash
 
-import io.github.ydwk.ydwk.util.CheckReturnValue
+import javax.annotation.CheckReturnValue
 
 interface SlashBuilder {
+
+    /**
+     * Adds a slash command to the builder
+     *
+     * @param name The name of the slash command
+     * @param description The description of the slash command
+     * @return The [SlashBuilder] object that was added
+     */
+    @CheckReturnValue fun addSlashCommand(name: String, description: String): SlashBuilder
+
     /**
      * Adds a new Slash Command to the builder
      *

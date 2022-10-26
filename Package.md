@@ -46,7 +46,7 @@ To create a default bot, add the following to your main class:
 
 ```kotlin
 fun main() {
-    createDefaultBot("TOKEN")
+    createDefaultBot("TOKEN").build()
 }
 ```
 
@@ -64,7 +64,7 @@ class Bot : ListenerAdapter() {
 }
 
 fun main() {
-    val ydwk = createDefaultBot(JConfigUtils.getString("token"))
+    val ydwk = createDefaultBot(JConfigUtils.getString("token")).build()
     ydwk.addEvent(Bot())
 }
 ```
@@ -73,7 +73,7 @@ or
 
 ```kotlin
 fun main() {
-    val ydwk = createDefaultBot(JConfigUtils.getString("token"))
+    val ydwk = createDefaultBot(JConfigUtils.getString("token")).build()
 
     ydwk.on<ReadyEvent> { println("Ready!") }
 }
