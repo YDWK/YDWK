@@ -56,7 +56,7 @@ To create a default bot, add the following to your main class:
 
 ```kotlin
 fun main() {
-    createDefaultBot("TOKEN")
+    createDefaultBot("TOKEN").build()
 }
 ```
 

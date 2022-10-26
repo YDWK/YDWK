@@ -41,6 +41,7 @@ fun main() {
     val ydwk =
         createDefaultBot(JConfigUtils.getString("token") ?: throw Exception("Token not found!"))
             .build()
+
     ydwk.addEvent(Bot())
 
     // TODO: having more than 6 commands leads to rate limit need to fix
