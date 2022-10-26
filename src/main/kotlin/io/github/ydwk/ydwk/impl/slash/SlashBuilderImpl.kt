@@ -34,6 +34,11 @@ class SlashBuilderImpl(
 ) : SlashBuilder {
     private val slashCommands: MutableList<Slash> = mutableListOf()
 
+    override fun addSlashCommand(name: String, description: String): SlashBuilder {
+        slashCommands.add(Slash(name, description))
+        return this
+    }
+
     override fun addSlashCommand(slash: Slash): SlashBuilder {
         slashCommands.add(slash)
         return this
@@ -165,24 +170,85 @@ class SlashBuilderImpl(
             }
         }
 
-        for (slash in globalCommandToAdd) {
-            addGlobalSlashCommand(rest, slash.toJson().toString().toRequestBody())
+        decideWhatToDo(
+            rest,
+            globalCommandToAdd,
+            globalCommandsToDelete,
+            guildCommandToAdd,
+            guildCommandsToDelete)
+    }
+
+    private fun decideWhatToDo(
+        rest: RestApiManager,
+        globalCommandToAdd: MutableList<Slash>,
+        globalCommandsToDelete: MutableList<Long>,
+        guildCommandToAdd: MutableList<Slash>,
+        guildCommandsToDelete: MutableMap<Long, Long>
+    ) {
+        if (globalCommandToAdd.isNotEmpty()) {
+            globalCommandToAdd(rest, globalCommandToAdd)
         }
 
-        for (slash in guildCommandToAdd) {
-            if (guildIds.isNotEmpty()) {
-                guildIds.forEach { it ->
-                    addGuildSlashCommand(rest, it, slash.toJson().toString().toRequestBody())
+        if (guildCommandToAdd.isNotEmpty()) {
+            guildCommandToAdd(rest, guildCommandToAdd)
+        }
+
+        if (globalCommandsToDelete.isNotEmpty()) {
+            globalCommandToDelete(rest, globalCommandsToDelete)
+        }
+
+        if (guildCommandsToDelete.isNotEmpty()) {
+            guildCommandToDelete(rest, guildCommandsToDelete)
+        }
+    }
+
+    private fun globalCommandToAdd(rest: RestApiManager, globalCommandToAdd: MutableList<Slash>) {
+        val globalCommandToAddChunks = globalCommandToAdd.chunked(5)
+        for (chunk in globalCommandToAddChunks) {
+            for (slash in chunk) {
+                addGlobalSlashCommand(rest, slash.toJson().toString().toRequestBody())
+            }
+            Thread.sleep(20000)
+        }
+    }
+
+    private fun guildCommandToAdd(rest: RestApiManager, guildCommandToAdd: MutableList<Slash>) {
+        val guildCommandToAddChunks = guildCommandToAdd.chunked(5)
+        for (chunk in guildCommandToAddChunks) {
+            for (slash in chunk) {
+                if (guildIds.isNotEmpty()) {
+                    guildIds.forEach { it ->
+                        addGuildSlashCommand(rest, it, slash.toJson().toString().toRequestBody())
+                    }
                 }
             }
+            Thread.sleep(20000)
         }
+    }
 
-        for (slash in globalCommandsToDelete) {
-            deleteGlobalSlashCommand(rest, slash)
+    private fun globalCommandToDelete(
+        rest: RestApiManager,
+        globalCommandToDelete: MutableList<Long>
+    ) {
+        val globalCommandToDeleteChunks = globalCommandToDelete.chunked(5)
+        for (chunk in globalCommandToDeleteChunks) {
+            for (slash in chunk) {
+                deleteGlobalSlashCommand(rest, slash)
+            }
+            Thread.sleep(20000)
         }
+    }
 
-        for (slash in guildCommandsToDelete) {
-            deleteGuildSlashCommand(rest, slash.key, slash.value)
+    private fun guildCommandToDelete(
+        rest: RestApiManager,
+        guildCommandToDelete: MutableMap<Long, Long>
+    ) {
+        val guildCommandToDeleteChunks = guildCommandToDelete.toList().chunked(5)
+        for (chunk in guildCommandToDeleteChunks) {
+            for (slash in chunk) {
+                deleteGuildSlashCommand(rest, slash.first, slash.second)
+            }
+            Thread.sleep(20000)
         }
     }
 
