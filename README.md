@@ -25,8 +25,6 @@ to solve the following problems:
 
 ## Future Features
 
-- [ ] Support for channels
-
 ## Implemented
 
 - [x] Handle Rest API
@@ -41,6 +39,8 @@ to solve the following problems:
 - [x] Embed builder
 - [x] Support for messages
 - [x] Handle rate limiting in websocket
+- [x] Handle rate limiting in rest
+- [x] Support for channels
 
 ## Getting started
 
@@ -64,5 +64,6 @@ A default bot has all the recommend gateway intents.
 
 ## Getting cached entities and getting entities through the rest api
 
-When you want to get a cached entity, it will be named `getEntity` and when you want to get an entity through the rest api, it will be named `requestEntity`.
+When you want to get a cached entity, it will be named `getEntity` and when you want to get an entity through the rest
+api, it will be named `requestEntity`.
 
