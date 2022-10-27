@@ -20,10 +20,8 @@ package io.github.ydwk.ydwk.bot
 
 import io.github.realyusufismail.jconfig.util.JConfigUtils
 import io.github.ydwk.ydwk.BotBuilder.createDefaultBot
-import io.github.ydwk.ydwk.event.ListenerAdapter
-import io.github.ydwk.ydwk.event.backend.event.on
-import io.github.ydwk.ydwk.event.events.ReadyEvent
-import io.github.ydwk.ydwk.event.events.interaction.SlashCommandEvent
+import io.github.ydwk.ydwk.evm.ListenerAdapter
+import io.github.ydwk.ydwk.evm.backend.event.on
 import io.github.ydwk.ydwk.evm.event.events.guild.update.GuildNameUpdateEvent
 import io.github.ydwk.ydwk.slash.Slash
 import io.github.ydwk.ydwk.slash.SlashOption
