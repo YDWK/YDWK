@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.impl.slash
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.rest.EndPoint
 import io.github.ydwk.ydwk.rest.RestApiManager
+import io.github.ydwk.ydwk.rest.cf.CompletableFutureManager
 import io.github.ydwk.ydwk.slash.Slash
 import io.github.ydwk.ydwk.slash.SlashBuilder
 import io.github.ydwk.ydwk.util.Checks
@@ -103,17 +104,15 @@ class SlashBuilderImpl(
             guildIds.forEach { it ->
                 rest
                     .get(EndPoint.ApplicationCommandsEndpoint.GET_GUILD_COMMANDS, applicationId, it)
-                    .execute { it ->
-                        val jsonBody = it.jsonBody
-                        if (jsonBody == null) {
-                            return@execute emptyMap()
-                        } else {
-                            return@execute jsonBody.associate {
+                    .execute(
+                        fun(it: CompletableFutureManager): Map<MutableMap<Long, Long>, String> {
+                            val jsonBody = it.jsonBody
+                            return jsonBody?.associate {
                                 mutableMapOf(it["guild_id"].asLong() to it["id"].asLong()) to
                                     it["name"].asText()
                             }
-                        }
-                    }
+                                ?: emptyMap()
+                        })
                     .get()
             }
         }

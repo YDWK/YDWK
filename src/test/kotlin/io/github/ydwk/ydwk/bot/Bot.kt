@@ -44,7 +44,6 @@ fun main() {
 
     ydwk.addEvent(Bot())
 
-    // TODO: having more than 6 commands leads to rate limit need to fix
     ydwk.waitForReady.slashBuilder
         .addSlashCommand(Slash("embed", "This is a test command"))
         .addSlashCommand(Slash("json", "Gets the json for member"))
