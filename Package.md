@@ -5,11 +5,9 @@ A discord wrapper made in kotlin
 ## In progress and to be done
 
 - [ ] Create entities - in progress
+- [ ] Handle events - In progress
 
 ## Future Features
-
-- [ ] Handling Rate Limit for rest api requests
-- [ ] Handling Voice
 
 ## Implemented
 
@@ -25,8 +23,8 @@ A discord wrapper made in kotlin
 - [x] Embed builder
 - [x] Support for messages
 - [x] Handle rate limiting in websocket
+- [x] Handle rate limiting in rest
 - [x] Support for channels
-- [x] Handle events
 
 ## Installation
 
@@ -81,4 +79,5 @@ fun main() {
 
 ## Getting cached entities and getting entities through the rest api
 
-When you want to get a cached entity, it will be named `getEntity` and when you want to get an entity through the rest api, it will be named `requestEntity`.
+When you want to get a cached entity, it will be named `getEntity` and when you want to get an entity through the rest
+api, it will be named `requestEntity`.
