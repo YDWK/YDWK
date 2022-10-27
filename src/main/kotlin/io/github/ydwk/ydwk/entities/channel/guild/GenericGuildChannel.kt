@@ -22,20 +22,6 @@ import io.github.ydwk.ydwk.entities.channel.GuildChannel
 
 interface GenericGuildChannel : GuildChannel, Comparable<GenericGuildChannel> {
     /**
-     * Gets the position of this channel.
-     *
-     * @return the position of this channel.
-     */
-    val position: Int
-
-    /**
-     * Gets the parent of this channel.
-     *
-     * @return the parent of this channel.
-     */
-    val parent: GuildCategory?
-
-    /**
      * Weather the channel is voice channel.
      *
      * @return true if the channel is voice channel.

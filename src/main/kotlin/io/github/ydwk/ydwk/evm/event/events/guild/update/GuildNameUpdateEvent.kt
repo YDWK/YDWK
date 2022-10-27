@@ -22,7 +22,7 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
-class GuildNameUpdateEvent(
+data class GuildNameUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,
     val oldName: String,

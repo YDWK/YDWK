@@ -21,4 +21,4 @@ package io.github.ydwk.ydwk.evm.event.events.gateway
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.evm.event.Event
 
-class ResumeEvent(override val ydwk: YDWK) : Event(ydwk)
+data class ResumeEvent(override val ydwk: YDWK) : Event(ydwk)

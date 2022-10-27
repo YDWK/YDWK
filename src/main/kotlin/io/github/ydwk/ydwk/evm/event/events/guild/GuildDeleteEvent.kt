@@ -22,4 +22,4 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.evm.event.Event
 
-class GuildDeleteEvent(ydwk: YDWK, val guild: Guild) : Event(ydwk)
+data class GuildDeleteEvent(override val ydwk: YDWK, val guild: Guild) : Event(ydwk)

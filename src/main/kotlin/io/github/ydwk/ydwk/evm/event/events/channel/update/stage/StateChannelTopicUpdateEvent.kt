@@ -16,9 +16,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.evm.event.events.gateway
+package io.github.ydwk.ydwk.evm.event.events.channel.update.stage
 
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.evm.event.Event
+import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildVoiceChannel
+import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
-data class ReconnectEvent(override val ydwk: YDWK) : Event(ydwk)
+/** Fired when a stage channel's user rate limit is updated. */
+data class StateChannelTopicUpdateEvent(
+    override val ydwk: YDWK,
+    override val entity: GenericGuildVoiceChannel,
+    val oldTopic: String?,
+    val newTopic: String?
+) : GenericChannelUpdateEvent<String?>(ydwk, entity, oldTopic, newTopic)

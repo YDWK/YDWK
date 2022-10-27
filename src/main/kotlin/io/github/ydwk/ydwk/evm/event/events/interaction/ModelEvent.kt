@@ -22,4 +22,4 @@ import io.github.ydwk.ydwk.evm.event.Event
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.interaction.Interaction
 
-class ModelEvent(override val ydwk: YDWKImpl, val interaction: Interaction) : Event(ydwk)
+data class ModelEvent(override val ydwk: YDWKImpl, val interaction: Interaction) : Event(ydwk)

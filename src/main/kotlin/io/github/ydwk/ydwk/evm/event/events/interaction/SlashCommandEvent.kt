@@ -22,4 +22,4 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.evm.event.Event
 import io.github.ydwk.ydwk.interaction.application.SlashCommand
 
-class SlashCommandEvent(override val ydwk: YDWK, val slash: SlashCommand) : Event(ydwk)
+data class SlashCommandEvent(override val ydwk: YDWK, val slash: SlashCommand) : Event(ydwk)

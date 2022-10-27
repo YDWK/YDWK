@@ -20,6 +20,8 @@ package io.github.ydwk.ydwk.entities.channel.guild.message
 
 import io.github.ydwk.ydwk.entities.channel.GuildChannel
 import io.github.ydwk.ydwk.entities.channel.TextChannel
+import io.github.ydwk.ydwk.entities.channel.guild.message.news.GuildNewsChannel
+import io.github.ydwk.ydwk.entities.channel.guild.message.text.GuildTextChannel
 import io.github.ydwk.ydwk.entities.channel.guild.message.text.PermissionOverwrite
 
 interface GuildMessageChannel : TextChannel, GuildChannel {
@@ -28,40 +30,58 @@ interface GuildMessageChannel : TextChannel, GuildChannel {
      *
      * @return the topic of this channel.
      */
-    val topic: String
+    var topic: String
 
     /**
      * Gets the nsfw flag of this channel.
      *
      * @return the nsfw flag of this channel.
      */
-    val nsfw: Boolean
+    var nsfw: Boolean
 
     /**
      * Get the default auto archive duration of this channel.
      *
      * @return the default auto archive duration of this channel.
      */
-    val defaultAutoArchiveDuration: Int
+    var defaultAutoArchiveDuration: Int
 
     /**
      * Gets the last message id of this channel.
      *
      * @return the last message id of this channel.
      */
-    val lastMessageId: String
+    var lastMessageId: String
 
     /**
      * Gets the last pinned message id of this channel.
      *
      * @return the last pinned message id of this channel.
      */
-    val lastPinTimestamp: String
+    var lastPinTimestamp: String
 
     /**
      * Gets the permission overwrites of this channel.
      *
      * @return the permission overwrites of this channel.
      */
-    val permissionOverwrites: List<PermissionOverwrite>
+    var permissionOverwrites: List<PermissionOverwrite>
+
+    /**
+     * Gets the message channel as a guild text channel.
+     *
+     * @return the message channel as a guild text channel.
+     */
+    fun asGuildTextChannel(): GuildTextChannel? {
+        return cast(GuildTextChannel::class.java)
+    }
+
+    /**
+     * Gets the message channel as a guild news channel.
+     *
+     * @return the message channel as a guild news channel.
+     */
+    fun asGuildNewsChannel(): GuildNewsChannel? {
+        return cast(GuildNewsChannel::class.java)
+    }
 }

@@ -22,4 +22,4 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.evm.event.Event
 
-class MessageCreateEvent(ydwk: YDWK, val message: Message) : Event(ydwk)
+data class MessageCreateEvent(override val ydwk: YDWK, val message: Message) : Event(ydwk)

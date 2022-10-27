@@ -22,8 +22,8 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
-class GuildSplashUpdateEvent(
-    ydwk: YDWKImpl,
+data class GuildSplashUpdateEvent(
+    override val ydwk: YDWKImpl,
     override val entity: Guild,
     val oldSplash: String?,
     val newSplash: String

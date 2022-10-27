@@ -21,9 +21,9 @@ package io.github.ydwk.ydwk.evm.event.events.gateway
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.evm.event.Event
 
-class ReadyEvent(
+data class ReadyEvent(
     override val ydwk: YDWK,
-    amountOfAvailableGuilds: Int,
-    unAvailableGuildsAmount: Int,
+    val amountOfAvailableGuilds: Int,
+    val unAvailableGuildsAmount: Int,
     val totalGuildsAmount: Int = amountOfAvailableGuilds + unAvailableGuildsAmount
 ) : Event(ydwk)

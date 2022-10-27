@@ -16,9 +16,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.evm.event.events.gateway
+package io.github.ydwk.ydwk.evm.event.events.channel.update.guild
 
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.evm.event.Event
+import io.github.ydwk.ydwk.entities.channel.GuildChannel
+import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
+import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
-data class ReconnectEvent(override val ydwk: YDWK) : Event(ydwk)
+/** Fired when the position of a guild channel is updated */
+data class GuildChannelPositionUpdateEvent(
+    override val ydwk: YDWK,
+    override val entity: GuildChannel,
+    val type: ChannelType,
+    val oldPosition: Int,
+    val newPosition: Int
+) : GenericChannelUpdateEvent<Int>(ydwk, entity, oldPosition, newPosition)

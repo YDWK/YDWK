@@ -23,4 +23,5 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.evm.event.Event
 
-class GuildBanAddEvent(ydwk: YDWK, val guild: Guild, member: Member?) : Event(ydwk)
+data class GuildBanAddEvent(override val ydwk: YDWK, val guild: Guild, val member: Member?) :
+    Event(ydwk)

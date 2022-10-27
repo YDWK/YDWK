@@ -171,7 +171,7 @@ class YDWKImpl(
             }
         }
 
-    override fun getGuildVoiceChannelById(id: Long): GenericGuildVoiceChannel? {
+    override fun getGenericGuildVoiceChannelById(id: Long): GenericGuildVoiceChannel? {
         val channel = cache[id.toString(), CacheIds.VOICE_CHANNEL] as GenericGuildChannel?
         if (channel != null) {
             if (channel.isVoiceChannel) {
