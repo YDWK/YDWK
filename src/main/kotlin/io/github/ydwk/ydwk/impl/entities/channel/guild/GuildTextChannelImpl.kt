@@ -28,6 +28,5 @@ class GuildTextChannelImpl(
     override val idAsLong: Long
 ) : GuildTextChannel, GuildMessageChannelImpl(ydwk, json, idAsLong) {
 
-    override val rateLimitPerUser: Int
-        get() = json["rate_limit_per_user"].asInt()
+    override var rateLimitPerUser: Int = json["rate_limit_per_user"].asInt()
 }

@@ -19,13 +19,13 @@
 package io.github.ydwk.ydwk.evm.event.events.channel.update.text
 
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.channel.GuildChannel
 import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
-import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
 import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
 class TextChannelSlowModeUpdateEvent(
     override val ydwk: YDWK,
-    override val entity: GenericGuildTextChannel,
+    override val entity: GuildChannel,
     val channelType: ChannelType,
     val oldSlowMode: Int,
     val newSlowMode: Int
