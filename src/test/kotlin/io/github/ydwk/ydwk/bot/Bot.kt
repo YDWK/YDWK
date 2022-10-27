@@ -20,10 +20,9 @@ package io.github.ydwk.ydwk.bot
 
 import io.github.realyusufismail.jconfig.util.JConfigUtils
 import io.github.ydwk.ydwk.BotBuilder.createDefaultBot
-import io.github.ydwk.ydwk.event.ListenerAdapter
-import io.github.ydwk.ydwk.event.backend.event.on
-import io.github.ydwk.ydwk.event.events.ReadyEvent
-import io.github.ydwk.ydwk.event.events.interaction.SlashCommandEvent
+import io.github.ydwk.ydwk.evm.ListenerAdapter
+import io.github.ydwk.ydwk.evm.backend.event.on
+import io.github.ydwk.ydwk.evm.event.events.guild.update.GuildNameUpdateEvent
 import io.github.ydwk.ydwk.slash.Slash
 import io.github.ydwk.ydwk.slash.SlashOption
 import io.github.ydwk.ydwk.slash.SlashOptionType
@@ -32,7 +31,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class Bot : ListenerAdapter() {
-    override fun onReady(event: ReadyEvent) {
+    override fun onReady(event: io.github.ydwk.ydwk.evm.event.events.gateway.ReadyEvent) {
         println("Bot is ready!")
     }
 }
@@ -57,7 +56,7 @@ fun main() {
         .addSlashCommand(Slash("test", "A test command"))
         .build()
 
-    ydwk.on<SlashCommandEvent> {
+    ydwk.on<io.github.ydwk.ydwk.evm.event.events.interaction.SlashCommandEvent> {
         when (it.slash.name) {
             "embed" -> {
                 withContext(Dispatchers.IO) {
@@ -81,7 +80,7 @@ fun main() {
             }
             "forum_json" -> {
                 withContext(Dispatchers.IO) {
-                    val forum = it.slash.ydwk.getGuildTextChannel("1031971612238561390")
+                    val forum = it.slash.ydwk.getGuildTextChannelById("1031971612238561390")
                     if (forum != null) {
                         it.slash.reply(forum.json.toPrettyString()).get()
                     }
@@ -98,6 +97,12 @@ fun main() {
                     it.slash.reply(it.slash.getOption("member")!!.asUser.name).get()
                 }
             }
+        }
+    }
+
+    ydwk.on<GuildNameUpdateEvent> {
+        it.oldName.let { oldName ->
+            it.newName.let { newName -> println("Guild name changed from $oldName to $newName") }
         }
     }
 }

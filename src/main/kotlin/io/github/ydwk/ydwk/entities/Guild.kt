@@ -636,7 +636,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @param roleId The id of the role.
      * @return The role, or null if it doesn't exist.
      */
-    fun getRole(roleId: Long): Role?
+    fun getRoleById(roleId: Long): Role?
 
     /**
      * Gets a role from the guild.
@@ -644,7 +644,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @param roleId The id of the role.
      * @return The role, or null if it doesn't exist.
      */
-    fun getRole(roleId: String): Role? = getRole(roleId.toLong())
+    fun getRoleById(roleId: String): Role? = getRoleById(roleId.toLong())
 
     /**
      * Gets all the channels as unordered list.
@@ -738,4 +738,22 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
                 memberList
             }
     }
+
+    /**
+     * Gets the member by its user id.
+     *
+     * @param userId The id of the user.
+     * @return The member, or null if it doesn't exist.
+     */
+    fun getMemberById(userId: Long): Member? {
+        return ydwk.getMemberById(idAsLong, userId)
+    }
+
+    /**
+     * Gets the member by its user id.
+     *
+     * @param userId The id of the user.
+     * @return The member, or null if it doesn't exist.
+     */
+    fun getMemberById(userId: String): Member? = getMemberById(userId.toLong())
 }

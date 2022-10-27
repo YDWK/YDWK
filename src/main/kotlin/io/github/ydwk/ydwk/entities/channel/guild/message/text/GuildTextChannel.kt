@@ -26,5 +26,5 @@ interface GuildTextChannel : GuildMessageChannel {
      *
      * @return the rate limit per user of this channel.
      */
-    val rateLimitPerUser: Int
+    var rateLimitPerUser: Int
 }

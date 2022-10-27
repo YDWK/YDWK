@@ -23,8 +23,8 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.application.PartialApplication
-import io.github.ydwk.ydwk.entities.channel.TextChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildChannel
+import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.entities.message.*
 import io.github.ydwk.ydwk.entities.sticker.StickerItem
@@ -41,10 +41,10 @@ class MessageImpl(
     override val json: JsonNode,
     override val idAsLong: Long
 ) : Message {
-    override val channel: TextChannel
+    override val channel: GenericGuildTextChannel
         get() =
-            if (ydwk.getGuildTextChannel(json["channel_id"].asLong()) != null)
-                ydwk.getGuildTextChannel(json["channel_id"].asLong())!!
+            if (ydwk.getGenericGuildTextChannelById(json["channel_id"].asLong()) != null)
+                ydwk.getGenericGuildTextChannelById(json["channel_id"].asLong())!!
             else throw IllegalStateException("Channel is null")
 
     override val author: User

@@ -18,10 +18,11 @@
  */ 
 package io.github.ydwk.ydwk.entities.channel.guild.message
 
-import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
+import io.github.ydwk.ydwk.entities.channel.GuildChannel
+import io.github.ydwk.ydwk.entities.channel.TextChannel
 import io.github.ydwk.ydwk.entities.channel.guild.message.text.PermissionOverwrite
 
-interface GuildMessageChannel : GenericGuildTextChannel {
+interface GuildMessageChannel : TextChannel, GuildChannel {
     /**
      * Gets the topic of this channel.
      *

@@ -24,28 +24,44 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import com.neovisionaries.ws.client.*
 import io.github.ydwk.ydwk.YDWKInfo
 import io.github.ydwk.ydwk.cache.CacheIds
-import io.github.ydwk.ydwk.event.events.*
-import io.github.ydwk.ydwk.event.events.member.GuildMemberAddEvent
-import io.github.ydwk.ydwk.event.events.member.GuildMemberRemoveEvent
-import io.github.ydwk.ydwk.event.events.message.MessageCreateEvent
-import io.github.ydwk.ydwk.event.events.message.MessageDeleteBulkEvent
-import io.github.ydwk.ydwk.event.events.message.MessageDeleteEvent
-import io.github.ydwk.ydwk.event.events.role.GuildRoleCreateEvent
-import io.github.ydwk.ydwk.event.events.role.GuildRoleDeleteEvent
+import io.github.ydwk.ydwk.evm.event.events.gateway.ReadyEvent
+import io.github.ydwk.ydwk.evm.event.events.gateway.ReconnectEvent
+import io.github.ydwk.ydwk.evm.event.events.gateway.ResumeEvent
+import io.github.ydwk.ydwk.evm.handler.handlers.ban.GuildBanAddHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.ban.GuildBanRemoveHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.channel.ChannelCreateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.channel.ChannelDeleteHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.channel.ChannelPinsUpdateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.channel.ChannelUpdateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.emoji.GuildEmojisUpdateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.guild.GuildCreateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.guild.GuildDeleteHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.guild.GuildUpdateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.interactions.InteractionCreateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.intergration.GuildIntegrationsUpdateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.intergration.IntegrationCreateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.intergration.IntegrationDeleteHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.intergration.IntegrationUpdateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.invite.InviteCreateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.invite.InviteDeleteHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.member.GuildMemberAddHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.member.GuildMemberRemoveHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.member.GuildMemberUpdateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.message.*
+import io.github.ydwk.ydwk.evm.handler.handlers.presence.PresenceUpdateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.role.GuildRoleCreateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.role.GuildRoleDeleteHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.role.GuildRoleUpdateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.schedule.*
+import io.github.ydwk.ydwk.evm.handler.handlers.thread.*
+import io.github.ydwk.ydwk.evm.handler.handlers.user.UserUpdateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.voice.VoiceServerUpdateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.voice.VoiceStateUpdateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.webhook.WebhooksUpdateHandler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.BotImpl
 import io.github.ydwk.ydwk.impl.entities.MessageImpl
 import io.github.ydwk.ydwk.impl.entities.application.PartialApplicationImpl
-import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
-import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
-import io.github.ydwk.ydwk.impl.handler.handlers.UserUpdateHandler
-import io.github.ydwk.ydwk.impl.handler.handlers.channel.ChannelCreateHandler
-import io.github.ydwk.ydwk.impl.handler.handlers.channel.ChannelDeleteHandler
-import io.github.ydwk.ydwk.impl.handler.handlers.channel.ChannelUpdateHandler
-import io.github.ydwk.ydwk.impl.handler.handlers.guild.GuildCreateHandler
-import io.github.ydwk.ydwk.impl.handler.handlers.guild.GuildDeleteHandler
-import io.github.ydwk.ydwk.impl.handler.handlers.guild.GuildUpdateHandler
-import io.github.ydwk.ydwk.impl.handler.handlers.interactions.InteractionCreateHandler
 import io.github.ydwk.ydwk.util.convertInstantToChronoZonedDateTime
 import io.github.ydwk.ydwk.util.reverseFormatZonedDateTime
 import io.github.ydwk.ydwk.ws.util.CloseCode
@@ -214,7 +230,9 @@ open class WebSocketManager(
         logger.info(
             "Disconnected from websocket with close code $closeCodeAsString and reason $closeCodeReason")
 
-        ydwk.emitEvent(DisconnectEvent(ydwk, closeCodeAsString, closeCodeReason, Instant.now()))
+        ydwk.emitEvent(
+            io.github.ydwk.ydwk.evm.event.events.gateway.DisconnectEvent(
+                ydwk, closeCodeAsString, closeCodeReason, Instant.now()))
 
         heartbeatThread?.cancel(false)
 
@@ -225,7 +243,9 @@ open class WebSocketManager(
             connect()
         } else {
             logger.info("Not able to reconnect to websocket, shutting down")
-            ydwk.emitEvent(ShutDownEvent(ydwk, closeCode, Instant.now()))
+            ydwk.emitEvent(
+                io.github.ydwk.ydwk.evm.event.events.gateway.ShutDownEvent(
+                    ydwk, closeCode, Instant.now()))
             ydwk.shutdownAPI()
         }
     }
@@ -418,7 +438,7 @@ open class WebSocketManager(
                 // do nothing
             }
             EventNames.READY -> {
-                // get ride of ?v=
+                // get rid of ?v=
                 val libraryVersion = YDWKInfo.DISCORD_GATEWAY_VERSION.toString().substring(3)
                 if (libraryVersion != d.get("v").asText()) {
                     logger.warn(
@@ -475,98 +495,55 @@ open class WebSocketManager(
             EventNames.CHANNEL_CREATE -> ChannelCreateHandler(ydwk, d).start()
             EventNames.CHANNEL_UPDATE -> ChannelUpdateHandler(ydwk, d).start()
             EventNames.CHANNEL_DELETE -> ChannelDeleteHandler(ydwk, d).start()
-            EventNames.CHANNEL_PINS_UPDATE -> TODO()
-            EventNames.THREAD_CREATE -> TODO()
-            EventNames.THREAD_UPDATE -> TODO()
-            EventNames.THREAD_DELETE -> TODO()
-            EventNames.THREAD_LIST_SYNC -> TODO()
-            EventNames.THREAD_MEMBERS_UPDATE -> TODO()
+            EventNames.CHANNEL_PINS_UPDATE -> ChannelPinsUpdateHandler(ydwk, d).start()
+            EventNames.THREAD_CREATE -> ThreadCreateHandler(ydwk, d).start()
+            EventNames.THREAD_UPDATE -> ThreadUpdateHandler(ydwk, d).start()
+            EventNames.THREAD_DELETE -> ThreadDeleteHandler(ydwk, d).start()
+            EventNames.THREAD_LIST_SYNC -> ThreadListSyncHandler(ydwk, d).start()
+            EventNames.THREAD_MEMBERS_UPDATE -> ThreadMembersUpdateHandler(ydwk, d).start()
             EventNames.GUILD_CREATE -> GuildCreateHandler(ydwk, d).start()
             EventNames.GUILD_UPDATE -> GuildUpdateHandler(ydwk, d).start()
             EventNames.GUILD_DELETE -> GuildDeleteHandler(ydwk, d).start()
-            EventNames.GUILD_BAN_ADD -> TODO()
-            EventNames.GUILD_BAN_REMOVE -> TODO()
-            EventNames.GUILD_EMOJIS_UPDATE -> TODO()
-            EventNames.GUILD_INTEGRATIONS_UPDATE -> TODO()
-            EventNames.GUILD_MEMBER_ADD -> {
-                val guild = ydwk.getGuild(d.get("guild_id").asLong())
-                if (guild != null) {
-                    val member = MemberImpl(ydwk, d, guild)
-                    ydwk.memberCache.set(d.get("user").get("id").asText(), member)
-                    ydwk.emitEvent(GuildMemberAddEvent(ydwk, member))
-                } else {
-                    logger.warn("Guild is null")
-                }
-            }
-            EventNames.GUILD_MEMBER_REMOVE -> {
-                val guild = ydwk.getGuild(d.get("guild_id").asLong())
-                if (guild != null) {
-                    val member = MemberImpl(ydwk, d, guild)
-                    ydwk.memberCache.remove(d.get("user").get("id").asText())
-                    ydwk.emitEvent(GuildMemberRemoveEvent(ydwk, member))
-                } else {
-                    logger.warn("Guild is null")
-                }
-            }
-            EventNames.GUILD_MEMBER_UPDATE -> TODO()
-            EventNames.GUILD_ROLE_CREATE -> {
-                val guild = ydwk.getGuild(d.get("guild_id").asLong())
-                if (guild != null) {
-                    val role = RoleImpl(ydwk, d.get("role"), d.get("role").get("id").asLong())
-                    ydwk.cache[d.get("role").get("id").asText(), role] = CacheIds.ROLE
-                    ydwk.emitEvent(GuildRoleCreateEvent(ydwk, role))
-                } else {
-                    logger.warn("Guild is null")
-                }
-            }
-            EventNames.GUILD_ROLE_UPDATE -> TODO()
-            EventNames.GUILD_ROLE_DELETE -> {
-                val guild = ydwk.getGuild(d.get("guild_id").asLong())
-                if (guild != null) {
-                    // TODO: broken
-                    val role = RoleImpl(ydwk, d.get("role"), d.get("role").get("id").asLong())
-                    ydwk.cache.remove(d.get("role").get("id").asText(), CacheIds.ROLE)
-                    ydwk.emitEvent(GuildRoleDeleteEvent(ydwk, role))
-                } else {
-                    logger.warn("Guild is null")
-                }
-            }
-            EventNames.GUILD_SCHEDULED_EVENT_CREATE -> TODO()
-            EventNames.GUILD_SCHEDULED_EVENT_UPDATE -> TODO()
-            EventNames.GUILD_SCHEDULED_EVENT_DELETE -> TODO()
-            EventNames.GUILD_SCHEDULED_EVENT_USER_ADD -> TODO()
-            EventNames.GUILD_SCHEDULED_EVENT_USER_REMOVE -> TODO()
-            EventNames.INTEGRATION_CREATE -> TODO()
-            EventNames.INTEGRATION_UPDATE -> TODO()
-            EventNames.INTEGRATION_DELETE -> TODO()
+            EventNames.GUILD_BAN_ADD -> GuildBanAddHandler(ydwk, d).start()
+            EventNames.GUILD_BAN_REMOVE -> GuildBanRemoveHandler(ydwk, d).start()
+            EventNames.GUILD_EMOJIS_UPDATE -> GuildEmojisUpdateHandler(ydwk, d).start()
+            EventNames.GUILD_INTEGRATIONS_UPDATE -> GuildIntegrationsUpdateHandler(ydwk, d).start()
+            EventNames.GUILD_MEMBER_ADD -> GuildMemberAddHandler(ydwk, d).start()
+            EventNames.GUILD_MEMBER_REMOVE -> GuildMemberRemoveHandler(ydwk, d).start()
+            EventNames.GUILD_MEMBER_UPDATE -> GuildMemberUpdateHandler(ydwk, d).start()
+            EventNames.GUILD_ROLE_CREATE -> GuildRoleCreateHandler(ydwk, d).start()
+            EventNames.GUILD_ROLE_UPDATE -> GuildRoleUpdateHandler(ydwk, d).start()
+            EventNames.GUILD_ROLE_DELETE -> GuildRoleDeleteHandler(ydwk, d).start()
+            EventNames.GUILD_SCHEDULED_EVENT_CREATE ->
+                GuildScheduledEventCreateHandler(ydwk, d).start()
+            EventNames.GUILD_SCHEDULED_EVENT_UPDATE ->
+                GuildScheduledEventUpdateHandler(ydwk, d).start()
+            EventNames.GUILD_SCHEDULED_EVENT_DELETE ->
+                GuildScheduledEventDeleteHandler(ydwk, d).start()
+            EventNames.GUILD_SCHEDULED_EVENT_USER_ADD ->
+                GuildScheduledEventUserAddHandler(ydwk, d).start()
+            EventNames.GUILD_SCHEDULED_EVENT_USER_REMOVE ->
+                GuildScheduledEventUserRemoveHandler(ydwk, d).start()
+            EventNames.INTEGRATION_CREATE -> IntegrationCreateHandler(ydwk, d).start()
+            EventNames.INTEGRATION_UPDATE -> IntegrationUpdateHandler(ydwk, d).start()
+            EventNames.INTEGRATION_DELETE -> IntegrationDeleteHandler(ydwk, d).start()
             EventNames.INTERACTION_CREATE -> InteractionCreateHandler(ydwk, d).start()
-            EventNames.INVITE_CREATE -> TODO()
-            EventNames.INVITE_DELETE -> TODO()
-            EventNames.MESSAGE_CREATE -> {
-                val message = MessageImpl(ydwk, d, d.get("id").asLong())
-                ydwk.cache[d.get("id").asText(), message] = CacheIds.MESSAGE
-                ydwk.emitEvent(MessageCreateEvent(ydwk, message))
-            }
-            EventNames.MESSAGE_UPDATE -> TODO()
-            EventNames.MESSAGE_DELETE -> {
-                val message = MessageImpl(ydwk, d, d.get("id").asLong())
-                ydwk.cache.remove(d.get("id").asText(), CacheIds.MESSAGE)
-                ydwk.emitEvent(MessageDeleteEvent(ydwk, message))
-            }
-            EventNames.MESSAGE_DELETE_BULK -> {
-                val messages = d.get("ids").map { MessageImpl(ydwk, d, it.asLong()) }
-                messages.forEach { ydwk.cache.remove(it.id, CacheIds.MESSAGE) }
-                ydwk.emitEvent(MessageDeleteBulkEvent(ydwk, messages))
-            }
-            EventNames.MESSAGE_REACTION_ADD -> TODO()
-            EventNames.MESSAGE_REACTION_REMOVE -> TODO()
-            EventNames.MESSAGE_REACTION_REMOVE_ALL -> TODO()
-            EventNames.PRESENCE_UPDATE -> TODO()
-            EventNames.TYPING_START -> TODO()
+            EventNames.INVITE_CREATE -> InviteCreateHandler(ydwk, d).start()
+            EventNames.INVITE_DELETE -> InviteDeleteHandler(ydwk, d).start()
+            EventNames.MESSAGE_CREATE -> MessageCreateHandler(ydwk, d).start()
+            EventNames.MESSAGE_UPDATE -> MessageUpdateHandler(ydwk, d).start()
+            EventNames.MESSAGE_DELETE -> MessageDeleteHandler(ydwk, d).start()
+            EventNames.MESSAGE_DELETE_BULK -> MessageBulkDeleteHandler(ydwk, d).start()
+            EventNames.MESSAGE_REACTION_ADD -> MessageReactionAddHandler(ydwk, d).start()
+            EventNames.MESSAGE_REACTION_REMOVE -> MessageReactionRemoveHandler(ydwk, d).start()
+            EventNames.MESSAGE_REACTION_REMOVE_ALL ->
+                MessageReactionRemoveAllHandler(ydwk, d).start()
+            EventNames.PRESENCE_UPDATE -> PresenceUpdateHandler(ydwk, d).start()
+            EventNames.TYPING_START -> logger.debug("This event is not supported")
             EventNames.USER_UPDATE -> UserUpdateHandler(ydwk, d).start()
-            EventNames.VOICE_STATE_UPDATE -> TODO()
-            EventNames.VOICE_SERVER_UPDATE -> TODO()
-            EventNames.WEBHOOKS_UPDATE -> TODO()
+            EventNames.VOICE_STATE_UPDATE -> VoiceStateUpdateHandler(ydwk, d).start()
+            EventNames.VOICE_SERVER_UPDATE -> VoiceServerUpdateHandler(ydwk, d).start()
+            EventNames.WEBHOOKS_UPDATE -> WebhooksUpdateHandler(ydwk, d).start()
             EventNames.UNKNOWN -> {
                 logger.error("Unknown event type: $eventType")
             }

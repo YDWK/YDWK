@@ -23,7 +23,7 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.entities.User
-import io.github.ydwk.ydwk.entities.channel.TextChannel
+import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.MessageImpl
@@ -48,10 +48,11 @@ class InteractionImpl(
     override val type: InteractionType = InteractionType.fromInt(json["type"].asInt())
 
     override val guild: Guild? =
-        if (json.has("guild_id")) ydwk.getGuild(json["guild_id"].asLong()) else null
+        if (json.has("guild_id")) ydwk.getGuildById(json["guild_id"].asLong()) else null
 
-    override val channel: TextChannel? =
-        if (json.has("channel_id")) ydwk.getGuildTextChannel(json["channel_id"].asLong()) else null
+    override val channel: GenericGuildTextChannel? =
+        if (json.has("channel_id")) ydwk.getGenericGuildTextChannelById(json["channel_id"].asLong())
+        else null
 
     override val member: Member? =
         if (json.has("member")) guild?.let { MemberImpl(ydwk, json["member"], it) } else null

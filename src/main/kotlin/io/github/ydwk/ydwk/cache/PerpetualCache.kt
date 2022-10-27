@@ -70,4 +70,21 @@ open class PerpetualCache(
     override fun values(cacheType: CacheIds): List<Any> {
         return cache.filter { it.key.endsWith(cacheType.toString()) }.values.toList()
     }
+
+    override fun update(key: String, cacheType: CacheIds, value: Any) {
+        if (cacheType !in allowedCache) {
+            // do nothing
+        } else {
+            // check if the cache exists
+            if (contains(key, cacheType)) {
+                // delete the old cache
+                remove(key, cacheType)
+                // add the new cache
+                set(key, value, cacheType)
+            } else {
+                // add the cache
+                set(key, value, cacheType)
+            }
+        }
+    }
 }

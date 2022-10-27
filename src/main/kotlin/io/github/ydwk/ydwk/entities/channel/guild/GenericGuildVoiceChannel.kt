@@ -18,11 +18,12 @@
  */ 
 package io.github.ydwk.ydwk.entities.channel.guild
 
+import io.github.ydwk.ydwk.entities.channel.GuildChannel
 import io.github.ydwk.ydwk.entities.channel.VoiceChannel
 import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildStageChannel
 import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
 
-interface GenericGuildVoiceChannel : VoiceChannel {
+interface GenericGuildVoiceChannel : VoiceChannel, GuildChannel {
     /**
      * Gets the channel as Guild Voice Channel.
      *

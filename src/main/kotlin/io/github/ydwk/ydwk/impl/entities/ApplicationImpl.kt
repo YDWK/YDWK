@@ -61,7 +61,7 @@ class ApplicationImpl(
         if (json.hasNonNull("verify_key")) json["verify_key"].asText() else null
 
     override var guild: Guild? =
-        if (json.hasNonNull("guild_id")) ydwk.getGuild(json["guild_id"].asLong()) else null
+        if (json.hasNonNull("guild_id")) ydwk.getGuildById(json["guild_id"].asLong()) else null
 
     override var gameSdkId: GetterSnowFlake? =
         if (json.hasNonNull("game_sdk_id")) GetterSnowFlake.of(json["game_sdk_id"].asLong())
