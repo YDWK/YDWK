@@ -63,8 +63,8 @@ jobs:
           labels: |
             release
             automated pr
-          assignees: Bastian
-          reviewers: Bastian
+          assignees: RealYusufIsmail
+          reviewers: RealYusufIsmail
           team-reviewers: |
             owners
             maintainers

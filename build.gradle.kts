@@ -32,6 +32,7 @@ extra.apply {
 }
 
 group = "io.github.realyusufismail" // used for publishing. DONT CHANGE
+
 val releaseVersion by extra(!version.toString().endsWith("-SNAPSHOT"))
 
 repositories { mavenCentral() }
@@ -232,7 +233,7 @@ publishing {
                 // println url
 
                 credentials {
-                    // change roject.hasProperty('ossrhUsername') ? ossrhUsername : "Unknown user"
+                    // change project.hasProperty('ossrhUsername') ? ossrhUsername : "Unknown user"
                     // to kotlin
 
                     // : Type mismatch: inferred type is Any but String? was expected
@@ -254,7 +255,15 @@ signing {
     afterEvaluate {
         // println "sign: " + version
         // println "sign: " + isReleaseVersion
-        val required = releaseVersion && gradle.taskGraph.hasTask("publish")
+        val isRequired =
+            releaseVersion &&
+                (tasks.withType<PublishToMavenRepository>().find { gradle.taskGraph.hasTask(it) } !=
+                    null)
+        setRequired(isRequired)
+
+        val signingKey = System.getenv("SIGNING_KEY")
+        val signingPassword = System.getenv("SIGNING_PASSWORD")
+        useInMemoryPgpKeys(signingKey, signingPassword)
         sign(publishing.publications["mavenJava"])
     }
 }

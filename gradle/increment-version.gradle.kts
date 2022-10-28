@@ -9,10 +9,10 @@ tasks.register("incrementVersion") {
         }
 
         val splitVersion = version.toString().split(".")
-        val newVersion = "${splitVersion[0]}.${splitVersion[1]}.${splitVersion[2].toInt() + 1}-SNAPSHOT"
+        val newVersion =
+            "${splitVersion[0]}.${splitVersion[1]}.${splitVersion[2].toInt() + 1}-SNAPSHOT"
 
-        file("gradle.properties").writeText(
-            file("gradle.properties").readText().replace(version.toString(), newVersion)
-        )
+        file("gradle.properties")
+            .writeText(file("gradle.properties").readText().replace(version.toString(), newVersion))
     }
 }
