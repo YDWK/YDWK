@@ -66,7 +66,7 @@ open class GenericGuildChannelImpl(
     }
 
     override val guild: Guild
-        get() = TODO("Not yet implemented")
+        get() = ydwk.getGuildById(json["guild_id"].asText())!!
 
     override val type: ChannelType
         get() = ChannelType.fromId(json["type"].asInt())

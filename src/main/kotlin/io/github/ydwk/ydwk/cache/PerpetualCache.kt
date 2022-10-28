@@ -39,11 +39,10 @@ open class PerpetualCache(
     }
 
     override fun get(key: String, cacheType: CacheIds): Any? {
-        if (cacheType !in allowedCache) {
-            throw CacheException("The caching of type $cacheType has been disabled")
+        return if (cacheType !in allowedCache) {
+            null
         } else {
-            return cache[key + cacheType.toString()]
-                ?: throw CacheException("The key $key does not exist")
+            cache[key + cacheType.toString()]
         }
     }
 
@@ -51,7 +50,7 @@ open class PerpetualCache(
         if (cacheType !in allowedCache) {
             throw CacheException("The caching of type $cacheType has been disabled")
         } else {
-            return cache.remove(key + cacheType.toString())
+            return null
         }
     }
 

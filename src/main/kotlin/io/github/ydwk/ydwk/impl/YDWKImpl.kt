@@ -147,15 +147,7 @@ class YDWKImpl(
     }
 
     override fun getGenericGuildTextChannelById(id: Long): GenericGuildTextChannel? {
-        val channel = cache[id.toString(), CacheIds.TEXT_CHANNEL] as GenericGuildChannel?
-        if (channel != null) {
-            if (channel.isTextChannel) {
-                return channel.asGenericGuildTextChannel()
-            }
-        } else {
-            return null
-        }
-        return null
+        return cache[id.toString(), CacheIds.TEXT_CHANNEL] as GenericGuildTextChannel?
     }
 
     override val guildTextChannels: List<GenericGuildTextChannel>
@@ -172,15 +164,7 @@ class YDWKImpl(
         }
 
     override fun getGenericGuildVoiceChannelById(id: Long): GenericGuildVoiceChannel? {
-        val channel = cache[id.toString(), CacheIds.VOICE_CHANNEL] as GenericGuildChannel?
-        if (channel != null) {
-            if (channel.isVoiceChannel) {
-                return channel.asGenericGuildVoiceChannel()
-            }
-        } else {
-            return null
-        }
-        return null
+        return cache[id.toString(), CacheIds.VOICE_CHANNEL] as GenericGuildVoiceChannel?
     }
 
     override val guildVoiceChannels: List<GenericGuildVoiceChannel>
@@ -200,15 +184,7 @@ class YDWKImpl(
         get() = EmbedBuilderImpl(this)
 
     override fun getCategoryById(id: Long): GuildCategory? {
-        val channel = cache[id.toString(), CacheIds.CATEGORY] as GenericGuildChannel?
-        if (channel != null) {
-            if (channel.isCategory) {
-                return channel.asGuildCategory()
-            }
-        } else {
-            return null
-        }
-        return null
+        return cache[id.toString(), CacheIds.CATEGORY] as GuildCategory?
     }
 
     override fun getCategories(): List<GuildCategory> {
