@@ -189,7 +189,6 @@ publishing {
     publications {
         create<MavenPublication>("ydwk") {
             from(components["java"])
-            artifacts.removeAll { it.classifier == null && it.extension == "jar" }
             // artifactId = project.artifactId // or maybe archiveBaseName?
             pom {
                 name.set(extra["name"] as String)
