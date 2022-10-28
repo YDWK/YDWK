@@ -29,13 +29,10 @@ extra.apply {
     set("dev_organization_url", "https://github.com/YDWK")
     set("gpl_name", "Apache-2.0 license")
     set("gpl_url", "https://github.com/YDWK/YDWK/blob/master/LICENSE")
-    // Make sure we have a default for initial configuration evaluation
-    set("isReleaseVersion", false)
 }
 
 group = "io.github.realyusufismail" // used for publishing. DONT CHANGE
-
-version = "0.0.3-SNAPSHOT"
+val releaseVersion by extra(!version.toString().endsWith("-SNAPSHOT"))
 
 repositories { mavenCentral() }
 
@@ -182,7 +179,6 @@ java {
 
 afterEvaluate {
     val version = extra["version"] as String
-    extra["isReleaseVersion"] = !version.endsWith("RELEASE")
 }
 
 tasks.javadoc {
@@ -229,7 +225,7 @@ publishing {
                 val releaseRepo =
                     "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
                 val snapshotRepo = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
-                url = uri((if (extra["isReleaseVersion"] == true) releaseRepo else snapshotRepo))
+                url = uri((if (releaseVersion) releaseRepo else snapshotRepo))
 
                 // println "repos: " + version
                 // println "repos: " + isReleaseVersion
@@ -258,7 +254,7 @@ signing {
     afterEvaluate {
         // println "sign: " + version
         // println "sign: " + isReleaseVersion
-        val required = extra["isReleaseVersion"] as Boolean && gradle.taskGraph.hasTask("publish")
+        val required = releaseVersion && gradle.taskGraph.hasTask("publish")
         sign(publishing.publications["mavenJava"])
     }
 }
