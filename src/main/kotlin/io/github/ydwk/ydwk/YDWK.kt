@@ -360,6 +360,14 @@ interface YDWK {
         getGenericGuildVoiceChannelById(id)?.asGuildVoiceChannel()
 
     /**
+     * Gets all the channels in the provided category.
+     *
+     * @param category The category to get the channels from.
+     * @return A list of [GenericGuildChannel] objects.
+     */
+    fun getChannelsByCategory(category: GuildCategory): List<GenericGuildChannel>
+
+    /**
      * Creates a dm channel.
      *
      * @param userId The id of the user.

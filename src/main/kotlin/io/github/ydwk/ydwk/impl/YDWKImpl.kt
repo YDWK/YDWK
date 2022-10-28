@@ -29,6 +29,7 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.application.PartialApplication
 import io.github.ydwk.ydwk.entities.channel.DmChannel
+import io.github.ydwk.ydwk.entities.channel.GuildChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildVoiceChannel
@@ -197,6 +198,23 @@ class YDWKImpl(
             }
                 ?: throw IllegalStateException("Channel is not a category")
         }
+    }
+
+    override fun getChannelsByCategory(category: GuildCategory): List<GenericGuildChannel> {
+        val textChannels = guildTextChannels
+        val voiceChannels = guildVoiceChannels
+
+        val channels = mutableListOf<GuildChannel>()
+        textChannels
+            .filter { if (it.parent != null) it.parent!!.id == category.id else false }
+            .forEach { channels.add(it) }
+        voiceChannels
+            .filter { if (it.parent != null) it.parent!!.id == category.id else false }
+            .forEach { channels.add(it) }
+
+        val genericChannels = mutableListOf<GenericGuildChannel>()
+        channels.forEach { genericChannels.add(it as GenericGuildChannel) }
+        return genericChannels
     }
 
     override fun createDmChannel(userId: Long): CompletableFuture<DmChannel> {

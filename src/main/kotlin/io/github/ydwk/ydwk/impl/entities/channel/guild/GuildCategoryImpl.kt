@@ -20,6 +20,8 @@ package io.github.ydwk.ydwk.impl.entities.channel.guild
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.Guild
+import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
 import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
 import java.util.*
@@ -28,17 +30,21 @@ class GuildCategoryImpl(
     override val ydwk: YDWK,
     override val json: JsonNode,
     override val idAsLong: Long
-) : GuildCategory, GenericGuildChannelImpl(ydwk, json, idAsLong) {
+) : GuildCategory {
 
     override val channels: List<GenericGuildChannel>
-        get() =
-            Collections.unmodifiableList(
-                guild.getUnorderedChannels
-                    .stream()
-                    .filter { this.asGuildCategory()?.equals(this) ?: false }
-                    .map { it as GenericGuildChannel }
-                    .toList())
+        get() = ydwk.getChannelsByCategory(this)
 
     override val nsfw: Boolean
         get() = json.has("nsfw") && json["nsfw"].asBoolean()
+
+    override val guild: Guild = ydwk.getGuildById(json["guild_id"].asText())!!
+
+    override var position: Int = json["position"].asInt()
+
+    override var parent: GuildCategory? = null
+
+    override val type: ChannelType = ChannelType.CATEGORY
+
+    override var name: String = json["name"].asText()
 }
