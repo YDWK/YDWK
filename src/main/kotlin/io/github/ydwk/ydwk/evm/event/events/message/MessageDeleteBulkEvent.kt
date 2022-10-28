@@ -22,4 +22,5 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.evm.event.Event
 
-class MessageDeleteBulkEvent(ydwk: YDWK, val message: List<Message>) : Event(ydwk)
+data class MessageDeleteBulkEvent(override val ydwk: YDWK, val message: List<Message>) :
+    Event(ydwk)

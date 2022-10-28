@@ -26,19 +26,19 @@ interface GuildVoiceChannel : GenericGuildVoiceChannel {
      *
      * @return the bitrate
      */
-    val bitrate: Int
+    var bitrate: Int
 
     /**
      * Gets the user limit of the voice channel
      *
      * @return the user limit
      */
-    val userLimit: Int
+    var userLimit: Int
 
     /**
      * Gets the rate limit per user of the voice channel
      *
      * @return the rate limit per user
      */
-    val rateLimitPerUser: Int
+    var rateLimitPerUser: Int
 }

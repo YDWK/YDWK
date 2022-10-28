@@ -22,4 +22,4 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.evm.event.Event
 
-class GuildMemberAddEvent(ydwk: YDWK, val member: Member) : Event(ydwk)
+data class GuildMemberAddEvent(override val ydwk: YDWK, val member: Member) : Event(ydwk)

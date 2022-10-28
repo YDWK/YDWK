@@ -24,5 +24,5 @@ interface GuildStageChannel : GuildVoiceChannel {
      *
      * @return The topic of the stage channel.
      */
-    val topic: String?
+    var topic: String?
 }

@@ -16,9 +16,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.evm.event.events.gateway
+package io.github.ydwk.ydwk.evm.event.events.channel.update.category
 
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.evm.event.Event
+import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
+import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
-data class ReconnectEvent(override val ydwk: YDWK) : Event(ydwk)
+/** Fired when the name of a guild category is updated */
+data class CategoryNameUpdateEvent(
+    override val ydwk: YDWK,
+    override val entity: GuildCategory,
+    val oldName: String,
+    val newName: String
+) : GenericChannelUpdateEvent<String>(ydwk, entity, oldName, newName)

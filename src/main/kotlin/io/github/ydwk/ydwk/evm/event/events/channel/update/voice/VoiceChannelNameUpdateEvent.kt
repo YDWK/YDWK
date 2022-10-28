@@ -23,7 +23,8 @@ import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
 import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildVoiceChannel
 import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
-class VoiceChannelNameUpdateEvent(
+/** Fired when a voice/stage channel's name is updated. */
+data class VoiceChannelNameUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GenericGuildVoiceChannel,
     val channelType: ChannelType,

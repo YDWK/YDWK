@@ -22,4 +22,4 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.evm.event.Event
 
-class GuildRoleCreateEvent(ydwk: YDWK, val role: Role) : Event(ydwk)
+data class GuildRoleCreateEvent(override val ydwk: YDWK, val role: Role) : Event(ydwk)

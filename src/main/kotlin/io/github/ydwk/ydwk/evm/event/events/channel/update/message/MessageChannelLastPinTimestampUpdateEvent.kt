@@ -16,9 +16,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.evm.event.events.gateway
+package io.github.ydwk.ydwk.evm.event.events.channel.update.message
 
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.evm.event.Event
+import io.github.ydwk.ydwk.entities.channel.guild.message.GuildMessageChannel
+import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
-data class ReconnectEvent(override val ydwk: YDWK) : Event(ydwk)
+/** Fired when the default auto archive duration of a guild news/text channel is updated */
+data class MessageChannelLastPinTimestampUpdateEvent(
+    override val ydwk: YDWK,
+    override val entity: GuildMessageChannel,
+    val oldLastPinTimestamp: String,
+    val newLastPinTimestamp: String
+) : GenericChannelUpdateEvent<String>(ydwk, entity, oldLastPinTimestamp, newLastPinTimestamp)

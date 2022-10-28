@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.impl.entities.channel.guild
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Guild
+import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
 import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
 import io.github.ydwk.ydwk.entities.channel.guild.message.GuildMessageChannel
 import io.github.ydwk.ydwk.entities.channel.guild.message.text.PermissionOverwrite
@@ -29,33 +30,26 @@ open class GuildMessageChannelImpl(
     override val ydwk: YDWK,
     override val json: JsonNode,
     override val idAsLong: Long
-) : GuildMessageChannel, GenericGuildTextChannelImpl(ydwk, json, idAsLong) {
-    override val topic: String
-        get() = json["topic"].asText()
+) : GuildMessageChannel {
 
-    override val nsfw: Boolean
-        get() = json["nsfw"].asBoolean()
+    override var topic: String = json["topic"].asText()
 
-    override val defaultAutoArchiveDuration: Int
-        get() = json["default_auto_archive_duration"].asInt()
+    override var nsfw: Boolean = json["nsfw"].asBoolean()
 
-    override val lastMessageId: String
-        get() = json["last_message_id"].asText()
+    override var defaultAutoArchiveDuration: Int = json["default_auto_archive_duration"].asInt()
 
-    override val lastPinTimestamp: String
-        get() = json["last_pin_timestamp"].asText()
+    override var lastMessageId: String = json["last_message_id"].asText()
 
-    override val permissionOverwrites: List<PermissionOverwrite>
-        get() =
-            json["permission_overwrites"].map {
-                PermissionOverwriteImpl(ydwk, it, it["id"].asLong())
-            }
+    override var lastPinTimestamp: String = json["last_pin_timestamp"].asText()
 
-    override val position: Int
-        get() = json["position"].asInt()
+    override var permissionOverwrites: List<PermissionOverwrite> =
+        json["permission_overwrites"].map { PermissionOverwriteImpl(ydwk, it, it["id"].asLong()) }
+    override val type: ChannelType
+        get() = if (json["type"].asInt() == 0) ChannelType.TEXT else ChannelType.NEWS
 
-    override val parent: GuildCategory?
-        get() = ydwk.getCategoryById(json["parent_id"].asText())
+    override var position: Int = json["position"].asInt()
+
+    override var parent: GuildCategory? = ydwk.getCategoryById(json["parent_id"].asText())
 
     override val guild: Guild
         get() =

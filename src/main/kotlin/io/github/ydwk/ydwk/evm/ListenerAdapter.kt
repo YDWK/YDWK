@@ -26,6 +26,14 @@ import io.github.ydwk.ydwk.evm.event.Event
 import io.github.ydwk.ydwk.evm.event.events.ban.GuildBanAddEvent
 import io.github.ydwk.ydwk.evm.event.events.channel.ChannelCreateEvent
 import io.github.ydwk.ydwk.evm.event.events.channel.ChannelDeleteEvent
+import io.github.ydwk.ydwk.evm.event.events.channel.update.category.CategoryNameUpdateEvent
+import io.github.ydwk.ydwk.evm.event.events.channel.update.message.*
+import io.github.ydwk.ydwk.evm.event.events.channel.update.stage.StateChannelTopicUpdateEvent
+import io.github.ydwk.ydwk.evm.event.events.channel.update.text.TextChannelSlowModeUpdateEvent
+import io.github.ydwk.ydwk.evm.event.events.channel.update.voice.VoiceChannelBitrateUpdateEvent
+import io.github.ydwk.ydwk.evm.event.events.channel.update.voice.VoiceChannelNameUpdateEvent
+import io.github.ydwk.ydwk.evm.event.events.channel.update.voice.VoiceChannelRateLimitPerUserUpdateEvent
+import io.github.ydwk.ydwk.evm.event.events.channel.update.voice.VoiceChannelUserLimitUpdateEvent
 import io.github.ydwk.ydwk.evm.event.events.gateway.DisconnectEvent
 import io.github.ydwk.ydwk.evm.event.events.gateway.ReadyEvent
 import io.github.ydwk.ydwk.evm.event.events.gateway.ResumeEvent
@@ -130,6 +138,114 @@ abstract class ListenerAdapter : IEventListener {
      * @param event The ChannelDeleteEvent
      */
     open fun onChannelDelete(event: ChannelDeleteEvent) {}
+
+    // text/news channel
+
+    /**
+     * Listens to MessageChannelNameUpdateEvent
+     *
+     * @param event The MessageChannelNameUpdateEvent
+     */
+    open fun onMessageChannelNameUpdate(event: MessageChannelNameUpdateEvent) {}
+
+    /**
+     * Listens to MessageChannelTopicUpdateEvent
+     *
+     * @param event The MessageChannelTopicUpdateEvent
+     */
+    open fun onMessageChannelTopicUpdate(event: MessageChannelTopicUpdateEvent) {}
+
+    /**
+     * Listens to MessageChannelNSFWUpdateEvent
+     *
+     * @param event The MessageChannelNSFWUpdateEvent
+     */
+    open fun onMessageChannelNsfwUpdate(event: MessageChannelNsfwUpdateEvent) {}
+
+    /**
+     * Listens to MessageChannelLastMessageIdUpdateEvent
+     *
+     * @param event The MessageChannelLastMessageIdUpdateEvent
+     */
+    open fun onMessageChannelLastMessageIdUpdate(event: MessageChannelLastMessageIdUpdateEvent) {}
+
+    /**
+     * Listens to MessageChannelLastPinTimestampUpdateEvent
+     *
+     * @param event The MessageChannelLastPinTimestampUpdateEvent
+     */
+    open fun onMessageChannelLastPinTimestampUpdate(
+        event: MessageChannelLastPinTimestampUpdateEvent
+    ) {}
+
+    /**
+     * Listens to MessageChannelDefaultAutoArchiveDurationUpdateEvent
+     *
+     * @param event The MessageChannelDefaultAutoArchiveDurationUpdateEvent
+     */
+    open fun onMessageChannelDefaultAutoArchiveDurationUpdate(
+        event: MessageChannelDefaultAutoArchiveDurationUpdateEvent
+    ) {}
+
+    /**
+     * Listens to MessageChannelPermissionOverwritesUpdateEvent
+     *
+     * @param event The MessageChannelPermissionOverwritesUpdateEvent
+     */
+    open fun onMessageChannelPermissionOverwritesUpdate(
+        event: MessageChannelPermissionOverwritesUpdateEvent
+    ) {}
+
+    /**
+     * Listens to TextChannelSlowModeUpdateEvent
+     *
+     * @param event The TextChannelSlowModeUpdateEvent
+     */
+    open fun onTextChannelSlowModeUpdate(event: TextChannelSlowModeUpdateEvent) {}
+
+    /**
+     * Listens to CategoryNameUpdateEvent
+     *
+     * @param event The CategoryNameUpdateEvent
+     */
+    open fun onCategoryNameUpdate(event: CategoryNameUpdateEvent) {}
+
+    // vc/stage channel
+
+    /**
+     * Listens to StateChannelTopicUpdateEvent
+     *
+     * @param event The StateChannelTopicUpdateEvent
+     */
+    open fun onStateChannelTopicUpdate(event: StateChannelTopicUpdateEvent) {}
+
+    /**
+     * Listens to VoiceChannelBitrateUpdateEvent
+     *
+     * @param event The VoiceChannelBitrateUpdateEvent
+     */
+    open fun onVoiceChannelBitrateUpdate(event: VoiceChannelBitrateUpdateEvent) {}
+
+    /**
+     * Listens to VoiceChannelUserLimitUpdateEvent
+     *
+     * @param event The VoiceChannelUserLimitUpdateEvent
+     */
+    open fun onVoiceChannelUserLimitUpdate(event: VoiceChannelUserLimitUpdateEvent) {}
+
+    /**
+     * Listens to VoiceChannelRateLimitPerUserUpdateEvent
+     *
+     * @param event The VoiceChannelRateLimitPerUserUpdateEvent
+     */
+    open fun onVoiceChannelRateLimitPerUserUpdate(event: VoiceChannelRateLimitPerUserUpdateEvent) {}
+
+    /**
+     * Listens to VoiceChannelNameUpdateEvent
+     *
+     * @param event The VoiceChannelNameUpdateEvent
+     */
+    open fun onVoiceChannelNameUpdate(event: VoiceChannelNameUpdateEvent) {}
 
     // guild
     /**

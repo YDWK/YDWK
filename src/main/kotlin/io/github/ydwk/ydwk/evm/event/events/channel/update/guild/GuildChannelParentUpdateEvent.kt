@@ -16,32 +16,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.channel
+package io.github.ydwk.ydwk.evm.event.events.channel.update.guild
 
-import io.github.ydwk.ydwk.entities.Channel
-import io.github.ydwk.ydwk.entities.Guild
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.channel.GuildChannel
+import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
 import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
-import io.github.ydwk.ydwk.util.NameAbleEntity
+import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
-interface GuildChannel : Channel, NameAbleEntity {
-    /**
-     * Gets the guild of this channel.
-     *
-     * @return the guild of this channel.
-     */
-    val guild: Guild
-
-    /**
-     * Gets the position of this channel.
-     *
-     * @return the position of this channel.
-     */
-    var position: Int
-
-    /**
-     * Gets the parent of this channel.
-     *
-     * @return the parent of this channel.
-     */
-    var parent: GuildCategory?
-}
+/** Fired when the parent of a guild channel is updated */
+data class GuildChannelParentUpdateEvent(
+    override val ydwk: YDWK,
+    override val entity: GuildChannel,
+    val type: ChannelType,
+    val oldParent: GuildCategory?,
+    val newParent: GuildCategory?
+) : GenericChannelUpdateEvent<GuildCategory?>(ydwk, entity, oldParent, newParent)

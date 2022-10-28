@@ -22,9 +22,9 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.evm.event.Event
 import java.time.Instant
 
-class DisconnectEvent(
+data class DisconnectEvent(
     override val ydwk: YDWK,
-    closeCode: String,
-    closeCodeReason: String,
-    now: Instant
+    val closeCode: String,
+    val closeCodeReason: String,
+    val now: Instant
 ) : Event(ydwk)

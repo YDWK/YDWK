@@ -22,4 +22,6 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildChannel
 import io.github.ydwk.ydwk.evm.event.Event
 
-class ChannelCreateEvent(ydwk: YDWK, val channel: GenericGuildChannel) : Event(ydwk)
+/** Fired when a channel is created */
+data class ChannelCreateEvent(override val ydwk: YDWK, val channel: GenericGuildChannel) :
+    Event(ydwk)

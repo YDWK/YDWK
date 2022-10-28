@@ -16,25 +16,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.ignore
+package io.github.ydwk.ydwk.evm.event.events.channel.update.voice
 
-import org.junit.jupiter.api.Test
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildVoiceChannel
+import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
-@Test
-fun test() {
-    // How can i do something like where for every 6 of something do function wait 2 seconds and
-    // repeat until list is empty (edited)
-
-    val list = mutableListOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
-
-    val listChunks = list.chunked(6)
-
-    for (chunk in listChunks) {
-        for (i in chunk) {
-            println(i)
-        }
-        Thread.sleep(2000)
-    }
-
-    println("Done")
-}
+/** Fired when a voice/stage channel's user rate limit is updated. */
+data class VoiceChannelUserLimitUpdateEvent(
+    override val ydwk: YDWK,
+    override val entity: GenericGuildVoiceChannel,
+    val oldUserLimit: Int,
+    val newUserLimit: Int
+) : GenericChannelUpdateEvent<Int>(ydwk, entity, oldUserLimit, newUserLimit)

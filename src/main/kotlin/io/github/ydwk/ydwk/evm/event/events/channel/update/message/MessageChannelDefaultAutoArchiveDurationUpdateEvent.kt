@@ -16,16 +16,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.evm.event.events.channel
+package io.github.ydwk.ydwk.evm.event.events.channel.update.message
 
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.channel.GuildChannel
-import io.github.ydwk.ydwk.evm.backend.update.IEventUpdate
+import io.github.ydwk.ydwk.entities.channel.guild.message.GuildMessageChannel
+import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
-/** Fired when a channel is updated */
-open class GenericChannelUpdateEvent<T>(
+/** Fired when the default auto archive duration of a guild news/text channel is updated */
+data class MessageChannelDefaultAutoArchiveDurationUpdateEvent(
     override val ydwk: YDWK,
-    override val entity: GuildChannel,
-    override val oldValue: T,
-    override val newValue: T
-) : IEventUpdate<GuildChannel, T>
+    override val entity: GuildMessageChannel,
+    val oldDefaultAutoArchiveDuration: Int,
+    val newDefaultAutoArchiveDuration: Int
+) :
+    GenericChannelUpdateEvent<Int>(
+        ydwk, entity, oldDefaultAutoArchiveDuration, newDefaultAutoArchiveDuration)

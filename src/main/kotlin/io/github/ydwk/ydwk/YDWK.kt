@@ -33,6 +33,8 @@ import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildVoiceChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
 import io.github.ydwk.ydwk.entities.channel.guild.message.news.GuildNewsChannel
 import io.github.ydwk.ydwk.entities.channel.guild.message.text.GuildTextChannel
+import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildStageChannel
+import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
 import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
@@ -277,7 +279,7 @@ interface YDWK {
      * @param id The id of the voice channel.
      * @return The [GenericGuildVoiceChannel] object.
      */
-    fun getGuildVoiceChannelById(id: Long): GenericGuildVoiceChannel?
+    fun getGenericGuildVoiceChannelById(id: Long): GenericGuildVoiceChannel?
 
     /**
      * Gets a voice guild channel by its id.
@@ -285,8 +287,8 @@ interface YDWK {
      * @param id The id of the voice channel.
      * @return The [GenericGuildVoiceChannel] object.
      */
-    fun getGuildVoiceChannelById(id: String): GenericGuildVoiceChannel? =
-        getGuildVoiceChannelById(id.toLong())
+    fun getGenericGuildVoiceChannelById(id: String): GenericGuildVoiceChannel? =
+        getGenericGuildVoiceChannelById(id.toLong())
 
     /**
      * Gets all the guild voice channels the bot is in.
@@ -324,6 +326,38 @@ interface YDWK {
      * @return A list of [GuildCategory] objects.
      */
     fun getCategories(): List<GuildCategory>
+
+    /**
+     * Gets a guild stage channel by its id.
+     *
+     * @param id The id of the stage channel.
+     */
+    fun getGuildStageChannelById(id: Long): GuildStageChannel? =
+        getGenericGuildVoiceChannelById(id)?.asStageChannel()
+
+    /**
+     * Gets a guild stage channel by its id.
+     *
+     * @param id The id of the stage channel.
+     */
+    fun getGuildStageChannelById(id: String): GuildStageChannel? =
+        getGenericGuildVoiceChannelById(id)?.asStageChannel()
+
+    /**
+     * Gets a guild voice channel by its id.
+     *
+     * @param id The id of the voice channel.
+     */
+    fun getGuildVoiceChannelById(id: Long): GuildVoiceChannel? =
+        getGenericGuildVoiceChannelById(id)?.asGuildVoiceChannel()
+
+    /**
+     * Gets a guild voice channel by its id.
+     *
+     * @param id The id of the voice channel.
+     */
+    fun getGuildVoiceChannelById(id: String): GuildVoiceChannel? =
+        getGenericGuildVoiceChannelById(id)?.asGuildVoiceChannel()
 
     /**
      * Creates a dm channel.

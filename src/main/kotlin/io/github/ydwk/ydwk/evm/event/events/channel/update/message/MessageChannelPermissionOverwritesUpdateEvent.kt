@@ -16,18 +16,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.evm.event.events.channel.update.text
+package io.github.ydwk.ydwk.evm.event.events.channel.update.message
 
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
 import io.github.ydwk.ydwk.entities.channel.guild.message.GuildMessageChannel
+import io.github.ydwk.ydwk.entities.channel.guild.message.text.PermissionOverwrite
 import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
-/** Fired when a text channel's slow mode is updated */
-data class TextChannelSlowModeUpdateEvent(
+/** Fired when the permission overwrites of a guild news/text channel is updated */
+data class MessageChannelPermissionOverwritesUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildMessageChannel,
-    val channelType: ChannelType,
-    val oldSlowMode: Int,
-    val newSlowMode: Int
-) : GenericChannelUpdateEvent<Int>(ydwk, entity, oldSlowMode, newSlowMode)
+    val oldPermissionOverwrites: List<PermissionOverwrite>,
+    val newPermissionOverwrites: List<PermissionOverwrite>
+) :
+    GenericChannelUpdateEvent<List<PermissionOverwrite>>(
+        ydwk, entity, oldPermissionOverwrites, newPermissionOverwrites)

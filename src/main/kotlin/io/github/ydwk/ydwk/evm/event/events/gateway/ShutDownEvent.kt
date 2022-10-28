@@ -23,4 +23,5 @@ import io.github.ydwk.ydwk.evm.event.Event
 import io.github.ydwk.ydwk.ws.util.CloseCode
 import java.time.Instant
 
-class ShutDownEvent(override val ydwk: YDWK, closeCode: CloseCode, now: Instant) : Event(ydwk)
+data class ShutDownEvent(override val ydwk: YDWK, val closeCode: CloseCode, val now: Instant) :
+    Event(ydwk)
