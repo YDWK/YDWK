@@ -234,11 +234,21 @@ publishing {
                 // try to get it from system gradle.properties
                 println("Trying to get credentials from system properties")
                 username =
-                    System.getenv("MAVEN_USERNAME")
-                        ?: project.findProperty("MAVEN_USERNAME") as String
-                password =
+                    if (System.getenv("MAVEN_USERNAME") != null) {
+                        System.getenv("MAVEN_USERNAME")
+                    } else if (project.hasProperty("MAVEN_USERNAME")) {
+                        project.property("MAVEN_USERNAME") as String
+                    } else {
+                        ""
+                    }
+
+                password = if (System.getenv("MAVEN_PASSWORD") != null) {
                     System.getenv("MAVEN_PASSWORD")
-                        ?: project.findProperty("MAVEN_PASSWORD") as String
+                } else if (project.hasProperty("MAVEN_PASSWORD")) {
+                    project.property("MAVEN_PASSWORD") as String
+                } else {
+                    ""
+                }
             }
         }
     }

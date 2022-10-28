@@ -1,0 +1,24 @@
+# If the version contains the SNAPSHOT suffix it will run publishAllPublicationsToMavenCentralRepository
+
+name: Snapshot
+on:
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  snapshot:
+    name: Create Snapshot
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Read Version
+        id: read-version
+        run: |
+          version=`cat gradle.properties | sed -n "s/^.*version\s*=\s*\(\S*\).*$/\1/p"`
+          echo "::set-output name=version::$version"
+      - name: Create Snapshot
+        if: ${{ endsWith(steps.read-version.outputs.version, 'SNAPSHOT') }}
+        run: |
+          ./gradlew publishAllPublicationsToMavenCentralRepository
