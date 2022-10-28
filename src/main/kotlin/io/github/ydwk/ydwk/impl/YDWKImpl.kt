@@ -219,7 +219,7 @@ class YDWKImpl(
     }
 
     override fun getMemberById(guildId: Long, userId: Long): Member? {
-        return memberCache[guildId.toString(), userId.toString()] as Member?
+        return memberCache[guildId.toString(), userId.toString()]
     }
 
     override fun getMembers(): List<Member> {

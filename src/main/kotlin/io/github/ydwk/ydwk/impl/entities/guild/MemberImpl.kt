@@ -82,7 +82,7 @@ class MemberImpl(
         return permissions.contains(permission)
     }
 
-    override var name: String = if (nick != null) nick!! else if (user != null) user!!.name else ""
+    override var name: String = if (nick != null) nick!! else user.name
     override val idAsLong: Long
         get() = user.idAsLong + guild.idAsLong
 }

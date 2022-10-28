@@ -299,7 +299,7 @@ abstract class ListenerAdapter : IEventListener {
     override fun onEvent(event: GenericEvent) {
         onGenericEvent(event)
 
-        if (event is IEventUpdate<*, *>) onGenericUpdate((event as IEventUpdate<*, *>))
+        if (event is IEventUpdate<*, *>) onGenericUpdate(event)
 
         for (clazz in ClassWalker.range(event.javaClass, Event::class.java)) {
             if (unresolved!!.contains(clazz)) continue
