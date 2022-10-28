@@ -178,10 +178,6 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
-afterEvaluate {
-    val version = extra["version"] as String
-}
-
 tasks.javadoc {
     if (JavaVersion.current().isJava9Compatible) {
         (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
@@ -189,20 +185,28 @@ tasks.javadoc {
 }
 
 publishing {
+    val isReleaseVersion = !version.toString().endsWith("SNAPSHOT")
     publications {
-        create<MavenPublication>("mavenJava") {
+        create<MavenPublication>("ydwk") {
             from(components["java"])
+            artifacts.removeAll { it.classifier == null && it.extension == "jar" }
             // artifactId = project.artifactId // or maybe archiveBaseName?
             pom {
                 name.set(extra["name"] as String)
                 description.set(extra["description"] as String)
-                url.set("https://github.com/RealYusufIsmail/YDWK")
+                url.set("https://www.ydwk.org")
+                issueManagement {
+                    system.set("GitHub")
+                    url.set("https://github.com/YDWK/YDWK/issues")
+                }
                 licenses {
                     license {
                         name.set(extra["gpl_name"] as String)
                         url.set(extra["gpl_url"] as String)
                     }
                 }
+                ciManagement { system.set("GitHub Actions") }
+                inceptionYear.set("2022")
                 developers {
                     developer {
                         id.set(extra["dev_id"] as String)
@@ -222,50 +226,37 @@ publishing {
     }
     repositories {
         maven {
-            afterEvaluate {
-                val releaseRepo =
-                    "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-                val snapshotRepo = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
-                url = uri((if (releaseVersion) releaseRepo else snapshotRepo))
+            name = "OSSRH"
+            val releaseRepo = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            val snapshotRepo = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            url = uri((if (isReleaseVersion) releaseRepo else snapshotRepo))
 
-                // println "repos: " + version
-                // println "repos: " + isReleaseVersion
-                // println url
-
-                credentials {
-                    // change project.hasProperty('ossrhUsername') ? ossrhUsername : "Unknown user"
-                    // to kotlin
-
-                    // : Type mismatch: inferred type is Any but String? was expected
-                    username =
-                        if (project.hasProperty("ossrhUsername"))
-                            project.property("ossrhUsername") as String
-                        else "Unknown user"
-                    password =
-                        if (project.hasProperty("ossrhPassword"))
-                            project.property("ossrhPassword") as String
-                        else "Unknown password"
-                }
+            credentials {
+                // try to get it from system gradle.properties
+                println("Trying to get credentials from system properties")
+                username =
+                    System.getenv("MAVEN_USERNAME")
+                        ?: project.findProperty("MAVEN_USERNAME") as String
+                password =
+                    System.getenv("MAVEN_PASSWORD")
+                        ?: project.findProperty("MAVEN_PASSWORD") as String
             }
         }
     }
 }
 
 signing {
-    afterEvaluate {
-        // println "sign: " + version
-        // println "sign: " + isReleaseVersion
-        val isRequired =
-            releaseVersion &&
-                (tasks.withType<PublishToMavenRepository>().find { gradle.taskGraph.hasTask(it) } !=
-                    null)
-        setRequired(isRequired)
+    // println "sign: " + isReleaseVersion
+    val isRequired =
+        releaseVersion &&
+            (tasks.withType<PublishToMavenRepository>().find { gradle.taskGraph.hasTask(it) } !=
+                null)
+    setRequired(isRequired)
 
-        val signingKey = System.getenv("SIGNING_KEY")
-        val signingPassword = System.getenv("SIGNING_PASSWORD")
-        useInMemoryPgpKeys(signingKey, signingPassword)
-        sign(publishing.publications["mavenJava"])
-    }
+    val signingKey = System.getenv("SIGNING_KEY")
+    val signingPassword = System.getenv("SIGNING_PASSWORD")
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign(publishing.publications["ydwk"])
 }
 
 tasks.getByName("dokkaHtml", DokkaTask::class) {
