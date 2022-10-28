@@ -1,5 +1,4 @@
 # If the version contains the SNAPSHOT suffix it will run publishAllPublicationsToMavenCentralRepository
-
 name: Snapshot
 on:
   push:

@@ -242,13 +242,14 @@ publishing {
                         ""
                     }
 
-                password = if (System.getenv("MAVEN_PASSWORD") != null) {
-                    System.getenv("MAVEN_PASSWORD")
-                } else if (project.hasProperty("MAVEN_PASSWORD")) {
-                    project.property("MAVEN_PASSWORD") as String
-                } else {
-                    ""
-                }
+                password =
+                    if (System.getenv("MAVEN_PASSWORD") != null) {
+                        System.getenv("MAVEN_PASSWORD")
+                    } else if (project.hasProperty("MAVEN_PASSWORD")) {
+                        project.property("MAVEN_PASSWORD") as String
+                    } else {
+                        ""
+                    }
             }
         }
     }
