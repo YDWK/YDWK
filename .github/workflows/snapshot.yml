@@ -1,4 +1,4 @@
-# If the version contains the SNAPSHOT suffix it will run publishAllPublicationsToMavenCentralRepository
+# If the version contains the SNAPSHOT suffix it will run publishYdwkPublicationToMavenCentralRepository
 name: Snapshot
 on:
   push:
@@ -20,4 +20,4 @@ jobs:
       - name: Create Snapshot
         if: ${{ endsWith(steps.read-version.outputs.version, 'SNAPSHOT') }}
         run: |
-          ./gradlew publishAllPublicationsToMavenCentralRepository
+          ./gradlew publishYdwkPublicationToMavenCentralRepository
