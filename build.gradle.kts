@@ -184,6 +184,8 @@ tasks.javadoc {
     }
 }
 
+apply(from = "gradle/increment-version.gradle.kts")
+
 publishing {
     val isReleaseVersion = !version.toString().endsWith("SNAPSHOT")
     publications {
@@ -249,7 +251,7 @@ publishing {
 
                 password =
                     when {
-                         systemHasEnvVar("MAVEN_PASSWORD") -> {
+                        systemHasEnvVar("MAVEN_PASSWORD") -> {
                             System.getenv("MAVEN_PASSWORD")
                         }
                         project.hasProperty("MAVEN_PASSWORD") -> {
