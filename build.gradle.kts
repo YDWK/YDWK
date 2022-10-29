@@ -234,7 +234,7 @@ publishing {
                 println("Trying to get credentials from system properties")
                 username =
                     when {
-                        System.getenv("MAVEN_USERNAME") != null -> {
+                        systemHasEnvVar("MAVEN_USERNAME") -> {
                             System.getenv("MAVEN_USERNAME")
                         }
                         project.hasProperty("MAVEN_USERNAME") -> {
@@ -243,13 +243,13 @@ publishing {
                         else -> {
                             logger.warn(
                                 "MAVEN_USERNAME not found in system properties, meaning if you are trying to publish to maven central, it will fail")
-                            ""
+                            null
                         }
                     }
 
                 password =
                     when {
-                        System.getenv("MAVEN_PASSWORD") != null -> {
+                         systemHasEnvVar("MAVEN_PASSWORD") -> {
                             System.getenv("MAVEN_PASSWORD")
                         }
                         project.hasProperty("MAVEN_PASSWORD") -> {
@@ -258,12 +258,16 @@ publishing {
                         else -> {
                             logger.warn(
                                 "MAVEN_PASSWORD not found in system properties, meaning if you are trying to publish to maven central, it will fail")
-                            ""
+                            null
                         }
                     }
             }
         }
     }
+}
+
+fun systemHasEnvVar(varName: String): Boolean {
+    return System.getenv(varName) != null
 }
 
 signing {
