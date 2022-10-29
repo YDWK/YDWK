@@ -33,6 +33,8 @@ extra.apply {
 
 group = "io.github.realyusufismail" // used for publishing. DONT CHANGE
 
+apply(from = "gradle/increment-version.gradle.kts")
+
 val releaseVersion by extra(!version.toString().endsWith("-SNAPSHOT"))
 
 repositories { mavenCentral() }
@@ -183,8 +185,6 @@ tasks.javadoc {
         (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
     }
 }
-
-apply(from = "gradle/increment-version.gradle.kts")
 
 publishing {
     val isReleaseVersion = !version.toString().endsWith("SNAPSHOT")
