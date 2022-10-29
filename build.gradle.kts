@@ -256,17 +256,15 @@ publishing {
 }
 
 signing {
-    // println "sign: " + isReleaseVersion
-    val isRequired =
-        releaseVersion &&
-            (tasks.withType<PublishToMavenRepository>().find { gradle.taskGraph.hasTask(it) } !=
-                null)
-    setRequired(isRequired)
-
-    val signingKey = System.getenv("SIGNING_KEY")
-    val signingPassword = System.getenv("SIGNING_PASSWORD")
-    useInMemoryPgpKeys(signingKey, signingPassword)
-    sign(publishing.publications["ydwk"])
+    afterEvaluate {
+        // println "sign: " + isReleaseVersion
+        val isRequired =
+            releaseVersion &&
+                (tasks.withType<PublishToMavenRepository>().find { gradle.taskGraph.hasTask(it) } !=
+                    null)
+        setRequired(isRequired)
+        sign(publishing.publications["ydwk"])
+    }
 }
 
 tasks.getByName("dokkaHtml", DokkaTask::class) {
