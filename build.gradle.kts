@@ -229,26 +229,37 @@ publishing {
             val releaseRepo = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
             val snapshotRepo = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
             url = uri((if (isReleaseVersion) releaseRepo else snapshotRepo))
-
             credentials {
                 // try to get it from system gradle.properties
                 println("Trying to get credentials from system properties")
                 username =
-                    if (System.getenv("MAVEN_USERNAME") != null) {
-                        System.getenv("MAVEN_USERNAME")
-                    } else if (project.hasProperty("MAVEN_USERNAME")) {
-                        project.property("MAVEN_USERNAME") as String
-                    } else {
-                        ""
+                    when {
+                        System.getenv("MAVEN_USERNAME") != null -> {
+                            System.getenv("MAVEN_USERNAME")
+                        }
+                        project.hasProperty("MAVEN_USERNAME") -> {
+                            project.property("MAVEN_USERNAME") as String
+                        }
+                        else -> {
+                            logger.warn(
+                                "MAVEN_USERNAME not found in system properties, meaning if you are trying to publish to maven central, it will fail")
+                            ""
+                        }
                     }
 
                 password =
-                    if (System.getenv("MAVEN_PASSWORD") != null) {
-                        System.getenv("MAVEN_PASSWORD")
-                    } else if (project.hasProperty("MAVEN_PASSWORD")) {
-                        project.property("MAVEN_PASSWORD") as String
-                    } else {
-                        ""
+                    when {
+                        System.getenv("MAVEN_PASSWORD") != null -> {
+                            System.getenv("MAVEN_PASSWORD")
+                        }
+                        project.hasProperty("MAVEN_PASSWORD") -> {
+                            project.property("MAVEN_PASSWORD") as String
+                        }
+                        else -> {
+                            logger.warn(
+                                "MAVEN_PASSWORD not found in system properties, meaning if you are trying to publish to maven central, it will fail")
+                            ""
+                        }
                     }
             }
         }
