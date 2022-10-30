@@ -393,6 +393,24 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * Bans a user from the guild.
      *
      * @param userId The id of the user.
+     * @param reason The reason for the ban.
+     * @return A [CompletableFuture] that completes when the ban is created.
+     */
+    fun banUser(userId: Long, reason: String? = null) = banUser(userId, Duration.ZERO, reason)
+
+    /**
+     * Bans a user from the guild.
+     *
+     * @param userId The id of the user.
+     * @param reason The reason for the ban.
+     * @return A [CompletableFuture] that completes when the ban is created.
+     */
+    fun banUser(userId: String, reason: String? = null) = banUser(userId, Duration.ZERO, reason)
+
+    /**
+     * Bans a user from the guild.
+     *
+     * @param userId The id of the user.
      * @param deleteMessageDuration The duration of the messages to delete.
      * @param reason The reason for the ban.
      * @return A [CompletableFuture] that completes when the ban is created.
