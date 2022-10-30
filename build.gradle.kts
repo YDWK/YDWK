@@ -43,7 +43,7 @@ repositories { mavenCentral() }
 
 dependencies {
     // json
-    api("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.0-rc2")
+    api("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.0-rc3")
     // logger
     api("ch.qos.logback:logback-classic:1.4.4")
     api("ch.qos.logback:logback-core:1.4.4")
