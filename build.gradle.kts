@@ -4,7 +4,11 @@ import org.jetbrains.dokka.base.DokkaBaseConfiguration
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-buildscript { dependencies { classpath("org.jetbrains.dokka:dokka-base:1.7.20") } }
+buildscript {
+    repositories { mavenCentral() }
+
+    dependencies { classpath("org.jetbrains.dokka:dokka-base:1.7.20") }
+}
 
 plugins {
     kotlin("jvm") version "1.7.20"
@@ -32,8 +36,6 @@ extra.apply {
 }
 
 group = "io.github.realyusufismail" // used for publishing. DONT CHANGE
-
-apply(from = "gradle/increment-version.gradle.kts")
 
 val releaseVersion by extra(!version.toString().endsWith("-SNAPSHOT"))
 
