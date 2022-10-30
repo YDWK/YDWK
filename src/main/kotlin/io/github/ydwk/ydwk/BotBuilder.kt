@@ -32,7 +32,7 @@ object BotBuilder {
     private var disallowedCache: MutableList<CacheIds> = mutableListOf()
     private var guildIds = mutableListOf<String>()
     private var userStatus: UserStatus? = null
-    private var activity: Activity? = null
+    private var activity: ActivityPayload? = null
 
     /**
      * Creates a new bot builder with the default settings
@@ -202,10 +202,10 @@ object BotBuilder {
     /**
      * Sets the activity of the bot
      *
-     * @param activity The activity to use
+     * @param activity use [Activity] as [ActivityPayload] is just returned by the function.
      * @return The bot builder
      */
-    fun setActivity(activity: Activity): BotBuilder {
+    fun setActivity(activity: ActivityPayload): BotBuilder {
         this.activity = activity
         return this
     }

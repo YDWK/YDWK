@@ -21,7 +21,7 @@ package io.github.ydwk.ydwk.impl
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
-import io.github.ydwk.ydwk.Activity
+import io.github.ydwk.ydwk.ActivityPayload
 import io.github.ydwk.ydwk.GateWayIntent
 import io.github.ydwk.ydwk.UserStatus
 import io.github.ydwk.ydwk.YDWK
@@ -414,9 +414,9 @@ class YDWKImpl(
         token: String,
         intents: List<GateWayIntent>,
         userStatus: UserStatus? = null,
-        activity: Activity? = null
+        activity: ActivityPayload? = null
     ) {
-        var ws: WebSocketManager?
+        val ws: WebSocketManager?
         ws = WebSocketManager(this, token, intents, userStatus, activity)
         this.webSocketManager = ws.connect()
         this.timer(Timer(), ws)
