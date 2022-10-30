@@ -19,6 +19,7 @@
 package io.github.ydwk.ydwk.bot
 
 import io.github.realyusufismail.jconfig.util.JConfigUtils
+import io.github.ydwk.ydwk.Activity
 import io.github.ydwk.ydwk.BotBuilder.createDefaultBot
 import io.github.ydwk.ydwk.evm.ListenerAdapter
 import io.github.ydwk.ydwk.evm.backend.event.on
@@ -39,6 +40,7 @@ class Bot : ListenerAdapter() {
 fun main() {
     val ydwk =
         createDefaultBot(JConfigUtils.getString("token") ?: throw Exception("Token not found!"))
+            .setActivity(Activity.playing("YDWK"))
             .build()
 
     ydwk.addEvent(Bot())

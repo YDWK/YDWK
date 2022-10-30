@@ -22,10 +22,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.neovisionaries.ws.client.*
-import io.github.ydwk.ydwk.Activity
-import io.github.ydwk.ydwk.GateWayIntent
-import io.github.ydwk.ydwk.UserStatus
-import io.github.ydwk.ydwk.YDWKInfo
+import io.github.ydwk.ydwk.*
 import io.github.ydwk.ydwk.cache.CacheIds
 import io.github.ydwk.ydwk.evm.event.events.gateway.ReadyEvent
 import io.github.ydwk.ydwk.evm.event.events.gateway.ReconnectEvent
@@ -92,7 +89,7 @@ open class WebSocketManager(
     private var token: String,
     private var intents: List<GateWayIntent>,
     private var userStatus: UserStatus? = null,
-    private var activity: Activity? = null,
+    private var activity: ActivityPayload? = null,
 ) : WebSocketAdapter(), WebSocketListener {
     private val logger: Logger = LoggerFactory.getLogger(javaClass) as Logger
 
@@ -286,18 +283,15 @@ open class WebSocketManager(
         val presence: ObjectNode = ydwk.objectNode.objectNode()
 
         if (activity != null) {
-            val activities: ArrayNode = ydwk.objectNode.arrayNode()
-            activities.add(
+            val activitiesPayload: ArrayNode = ydwk.objectNode.arrayNode()
+            activitiesPayload.add(
                 ydwk.objectNode
                     .objectNode()
-                    .put(
-                        "name",
-                        activity?.activityName
-                            ?: throw IllegalStateException("Activity name is null"))
-                    .put(
-                        "type",
-                        activity?.activity ?: throw IllegalStateException("Activity is null")))
-            presence.set<ObjectNode>("activities", activities)
+                    .put("name", activity!!.name)
+                    .put("type", activity!!.type)
+                    .put("url", activity!!.url))
+
+            presence.set<ArrayNode>("activities", activitiesPayload)
         }
 
         if (userStatus != null) {

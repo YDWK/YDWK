@@ -56,7 +56,19 @@ enum class GateWayIntent(var value: Int, var privileged: Boolean? = false) {
 
         /** Gets the default intents for the gateway. */
         fun getDefaultIntents(): List<GateWayIntent> {
-            return values().filter { it.privileged == false }
+            return listOf(
+                GUILD_MEMBERS,
+                GUILD_BANS,
+                GUILD_WEBHOOKS,
+                GUILD_INVITES,
+                GUILD_VOICE_STATES,
+                GUILD_MESSAGES,
+                GUILD_MESSAGE_REACTIONS,
+                GUILD_MESSAGE_TYPING,
+                DIRECT_MESSAGES,
+                DIRECT_MESSAGE_REACTIONS,
+                AUTO_MODERATION_CONFIGURATION,
+                AUTO_MODERATION_EXECUTION)
         }
     }
 
