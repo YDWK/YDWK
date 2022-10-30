@@ -32,6 +32,7 @@ object BotBuilder {
     private var allowedCache: MutableList<CacheIds> = mutableListOf()
     private var disallowedCache: MutableList<CacheIds> = mutableListOf()
     private var guildIds = mutableListOf<String>()
+    private var userStatus: UserStatus? = null
 
     /**
      * Creates a new bot builder with the default settings
@@ -188,6 +189,17 @@ object BotBuilder {
     }
 
     /**
+     * Sets the user status to use
+     *
+     * @param userStatus The user status to use
+     * @return The bot builder
+     */
+    fun setUserStatus(userStatus: UserStatus): BotBuilder {
+        this.userStatus = userStatus
+        return this
+    }
+
+    /**
      * Builds the bot
      *
      * @return The bot
@@ -199,7 +211,7 @@ object BotBuilder {
             throw LoginException("Token cannot be null or empty")
         }
 
-        ydwk.setWebSocketManager(token!!, intents)
+        ydwk.setWebSocketManager(token!!, intents, userStatus)
         ydwk.setAllowedCache(allowedCache)
         ydwk.setDisallowedCache(disallowedCache)
         return ydwk
