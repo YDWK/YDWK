@@ -21,7 +21,6 @@ package io.github.ydwk.ydwk
 import io.github.ydwk.ydwk.cache.CacheIds
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.util.exception.LoginException
-import io.github.ydwk.ydwk.ws.util.GateWayIntent
 import javax.annotation.CheckReturnValue
 import okhttp3.OkHttpClient
 
@@ -33,6 +32,7 @@ object BotBuilder {
     private var disallowedCache: MutableList<CacheIds> = mutableListOf()
     private var guildIds = mutableListOf<String>()
     private var userStatus: UserStatus? = null
+    private var activity: Activity? = null
 
     /**
      * Creates a new bot builder with the default settings
@@ -200,6 +200,17 @@ object BotBuilder {
     }
 
     /**
+     * Sets the activity of the bot
+     *
+     * @param activity The activity to use
+     * @return The bot builder
+     */
+    fun setActivity(activity: Activity): BotBuilder {
+        this.activity = activity
+        return this
+    }
+
+    /**
      * Builds the bot
      *
      * @return The bot
@@ -211,7 +222,7 @@ object BotBuilder {
             throw LoginException("Token cannot be null or empty")
         }
 
-        ydwk.setWebSocketManager(token!!, intents, userStatus)
+        ydwk.setWebSocketManager(token!!, intents, userStatus, activity)
         ydwk.setAllowedCache(allowedCache)
         ydwk.setDisallowedCache(disallowedCache)
         return ydwk

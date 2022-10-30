@@ -16,29 +16,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.ws.util
+package io.github.ydwk.ydwk
 
-enum class GateWayIntent(var value: Int, var privileged: Boolean) {
-    GUILDS(0, false),
-    GUILD_MEMBERS(1, true),
-    GUILD_BANS(2, false),
-    GUILD_EMOJIS_AND_STICKERS(3, false),
-    GUILD_INTEGRATIONS(4, false),
-    GUILD_WEBHOOKS(5, false),
-    GUILD_INVITES(6, false),
-    GUILD_VOICE_STATES(7, false),
+enum class GateWayIntent(var value: Int, var privileged: Boolean? = false) {
+    GUILD_MEMBERS(1),
+    GUILD_BANS(2),
+    GUILD_WEBHOOKS(5),
+    GUILD_INVITES(6),
+    GUILD_VOICE_STATES(7),
     GUILD_PRESENCES(8, true),
-    GUILD_MESSAGES(9, false),
-    GUILD_MESSAGE_REACTIONS(10, false),
-    GUILD_MESSAGE_TYPING(11, false),
-    DIRECT_MESSAGES(12, false),
-    DIRECT_MESSAGE_REACTIONS(13, false),
-    DIRECT_MESSAGE_TYPING(14, false),
+    GUILD_MESSAGES(9),
+    GUILD_MESSAGE_REACTIONS(10),
+    GUILD_MESSAGE_TYPING(11),
+    DIRECT_MESSAGES(12),
+    DIRECT_MESSAGE_REACTIONS(13),
+    DIRECT_MESSAGE_TYPING(14),
     MESSAGE_CONTENT(15, true),
-    GUILD_SCHEDULED_EVENTS(16, false),
-    AUTO_MODERATION_CONFIGURATION(20, false),
-    CHANNEL_STATS(21, false),
-    UNKNOWN(-1, false);
+    AUTO_MODERATION_CONFIGURATION(20),
+    AUTO_MODERATION_EXECUTION(21),
+    UNKNOWN(-1);
 
     companion object {
         fun from(value: Int): GateWayIntent {
@@ -60,18 +56,7 @@ enum class GateWayIntent(var value: Int, var privileged: Boolean) {
 
         /** Gets the default intents for the gateway. */
         fun getDefaultIntents(): List<GateWayIntent> {
-            return listOf(
-                GUILDS,
-                GUILD_BANS,
-                GUILD_EMOJIS_AND_STICKERS,
-                GUILD_INTEGRATIONS,
-                GUILD_INVITES,
-                GUILD_VOICE_STATES,
-                GUILD_MESSAGES,
-                GUILD_MESSAGE_REACTIONS,
-                DIRECT_MESSAGES,
-                DIRECT_MESSAGE_REACTIONS,
-                CHANNEL_STATS)
+            return values().filter { it.privileged == false }
         }
     }
 
