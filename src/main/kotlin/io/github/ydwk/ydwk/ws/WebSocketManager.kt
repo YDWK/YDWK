@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.neovisionaries.ws.client.*
+import io.github.ydwk.ydwk.UserStatus
 import io.github.ydwk.ydwk.YDWKInfo
 import io.github.ydwk.ydwk.cache.CacheIds
 import io.github.ydwk.ydwk.evm.event.events.gateway.ReadyEvent
@@ -89,6 +90,7 @@ open class WebSocketManager(
     protected var ydwk: YDWKImpl,
     private var token: String,
     private var intents: List<GateWayIntent>,
+    private var userStatus: UserStatus? = null,
 ) : WebSocketAdapter(), WebSocketListener {
     private val logger: Logger = LoggerFactory.getLogger(javaClass) as Logger
 
@@ -278,6 +280,10 @@ open class WebSocketManager(
                         .put("os", System.getProperty("os.name"))
                         .put("browser", "YDWK")
                         .put("device", "YDWK"))
+
+        if (userStatus != null) {
+            d.put("status", userStatus!!.toString())
+        }
 
         val json: JsonNode = ydwk.objectNode.put("op", IDENTIFY.code).set("d", d)
         webSocket?.sendText(json.toString())

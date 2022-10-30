@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.impl
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
+import io.github.ydwk.ydwk.UserStatus
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.cache.*
 import io.github.ydwk.ydwk.entities.Application
@@ -408,9 +409,13 @@ class YDWKImpl(
      * @param token The token of the bot which is used to authenticate the bot.
      * @param intents The gateway intent which will decide what events are sent by discord.
      */
-    fun setWebSocketManager(token: String, intents: List<GateWayIntent>) {
+    fun setWebSocketManager(
+        token: String,
+        intents: List<GateWayIntent>,
+        userStatus: UserStatus? = null
+    ) {
         var ws: WebSocketManager?
-        ws = WebSocketManager(this, token, intents)
+        ws = WebSocketManager(this, token, intents, userStatus)
         this.webSocketManager = ws.connect()
         this.timer(Timer(), ws)
         this.token = token
