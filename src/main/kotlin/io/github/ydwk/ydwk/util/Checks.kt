@@ -18,36 +18,42 @@
  */ 
 package io.github.ydwk.ydwk.util
 
-class Checks {
-    companion object {
-        fun checkNotNull(obj: Any?, message: String) {
-            if (obj == null) {
-                throw NullPointerException(message)
-            }
-        }
+import java.util.regex.Pattern
 
-        fun checkLength(obj: String, length: Int, message: String) {
-            if (obj.length >= length) {
-                throw IllegalArgumentException(message)
-            }
+object Checks {
+    fun checkNotNull(obj: Any?, message: String) {
+        if (obj == null) {
+            throw NullPointerException(message)
         }
+    }
 
-        fun checkLength(obj: CharSequence, length: Int, message: String) {
-            if (obj.length >= length) {
-                throw IllegalArgumentException(message)
-            }
+    fun checkLength(obj: String, length: Int, message: String) {
+        if (obj.length >= length) {
+            throw IllegalArgumentException(message)
         }
+    }
 
-        fun checkLength(obj: String, min: Int, max: Int, message: String) {
-            if (obj.length < min || obj.length > max) {
-                throw IllegalArgumentException(message)
-            }
+    fun checkLength(obj: CharSequence, length: Int, message: String) {
+        if (obj.length >= length) {
+            throw IllegalArgumentException(message)
         }
+    }
 
-        fun checkIfCapital(name: String, s: String) {
-            if (name[0].isUpperCase()) {
-                throw IllegalArgumentException(s)
-            }
+    fun checkLength(obj: String, min: Int, max: Int, message: String) {
+        if (obj.length < min || obj.length > max) {
+            throw IllegalArgumentException(message)
+        }
+    }
+
+    fun checkIfCapital(name: String, s: String) {
+        if (name[0].isUpperCase()) {
+            throw IllegalArgumentException(s)
+        }
+    }
+
+    fun checkUrl(url: String, pattern: Pattern) {
+        if (!pattern.matcher(url).matches()) {
+            throw IllegalArgumentException("Invalid url")
         }
     }
 }

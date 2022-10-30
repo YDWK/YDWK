@@ -21,6 +21,8 @@ package io.github.ydwk.ydwk.impl
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
+import io.github.ydwk.ydwk.Activity
+import io.github.ydwk.ydwk.GateWayIntent
 import io.github.ydwk.ydwk.UserStatus
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.cache.*
@@ -51,7 +53,6 @@ import io.github.ydwk.ydwk.rest.EndPoint
 import io.github.ydwk.ydwk.rest.RestApiManager
 import io.github.ydwk.ydwk.slash.SlashBuilder
 import io.github.ydwk.ydwk.ws.WebSocketManager
-import io.github.ydwk.ydwk.ws.util.GateWayIntent
 import io.github.ydwk.ydwk.ws.util.LoggedIn
 import java.time.Instant
 import java.util.*
@@ -412,10 +413,11 @@ class YDWKImpl(
     fun setWebSocketManager(
         token: String,
         intents: List<GateWayIntent>,
-        userStatus: UserStatus? = null
+        userStatus: UserStatus? = null,
+        activity: Activity? = null
     ) {
         var ws: WebSocketManager?
-        ws = WebSocketManager(this, token, intents, userStatus)
+        ws = WebSocketManager(this, token, intents, userStatus, activity)
         this.webSocketManager = ws.connect()
         this.timer(Timer(), ws)
         this.token = token

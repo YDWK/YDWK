@@ -22,6 +22,8 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.neovisionaries.ws.client.*
+import io.github.ydwk.ydwk.Activity
+import io.github.ydwk.ydwk.GateWayIntent
 import io.github.ydwk.ydwk.UserStatus
 import io.github.ydwk.ydwk.YDWKInfo
 import io.github.ydwk.ydwk.cache.CacheIds
@@ -67,7 +69,6 @@ import io.github.ydwk.ydwk.util.convertInstantToChronoZonedDateTime
 import io.github.ydwk.ydwk.util.reverseFormatZonedDateTime
 import io.github.ydwk.ydwk.ws.util.CloseCode
 import io.github.ydwk.ydwk.ws.util.EventNames
-import io.github.ydwk.ydwk.ws.util.GateWayIntent
 import io.github.ydwk.ydwk.ws.util.OpCode
 import io.github.ydwk.ydwk.ws.util.OpCode.*
 import io.github.ydwk.ydwk.ws.util.impl.LoggedInImpl
@@ -91,6 +92,7 @@ open class WebSocketManager(
     private var token: String,
     private var intents: List<GateWayIntent>,
     private var userStatus: UserStatus? = null,
+    private var activity: Activity? = null,
 ) : WebSocketAdapter(), WebSocketListener {
     private val logger: Logger = LoggerFactory.getLogger(javaClass) as Logger
 
@@ -281,9 +283,28 @@ open class WebSocketManager(
                         .put("browser", "YDWK")
                         .put("device", "YDWK"))
 
-        if (userStatus != null) {
-            d.put("status", userStatus!!.toString())
+        val presence: ObjectNode = ydwk.objectNode.objectNode()
+
+        if (activity != null) {
+            val activities: ArrayNode = ydwk.objectNode.arrayNode()
+            activities.add(
+                ydwk.objectNode
+                    .objectNode()
+                    .put(
+                        "name",
+                        activity?.activityName
+                            ?: throw IllegalStateException("Activity name is null"))
+                    .put(
+                        "type",
+                        activity?.activity ?: throw IllegalStateException("Activity is null")))
+            presence.set<ObjectNode>("activities", activities)
         }
+
+        if (userStatus != null) {
+            presence.put("status", userStatus!!.toString())
+        }
+
+        d.set<ObjectNode>("presence", presence)
 
         val json: JsonNode = ydwk.objectNode.put("op", IDENTIFY.code).set("d", d)
         webSocket?.sendText(json.toString())
