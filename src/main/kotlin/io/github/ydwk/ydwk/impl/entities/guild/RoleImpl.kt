@@ -21,10 +21,11 @@ package io.github.ydwk.ydwk.impl.entities.guild
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.guild.Role
-import io.github.ydwk.ydwk.entities.guild.enums.MemberPermission
+import io.github.ydwk.ydwk.entities.guild.enums.GuildPermission
 import io.github.ydwk.ydwk.entities.guild.role.RoleTag
 import io.github.ydwk.ydwk.impl.entities.guild.role.RoleTagImpl
 import java.awt.Color
+import java.util.*
 
 class RoleImpl(override val ydwk: YDWK, override val json: JsonNode, override val idAsLong: Long) :
     Role {
@@ -40,14 +41,23 @@ class RoleImpl(override val ydwk: YDWK, override val json: JsonNode, override va
 
     override var position: Int = json["position"].asInt()
 
-    override var permissions: MemberPermission =
-        MemberPermission.fromValue(json["permissions"].asLong())
+    override fun hasPermission(vararg permission: GuildPermission): Boolean {
+        return permissions.containsAll(listOf(*permission))
+    }
+
+    override fun hasPermission(permission: Collection<GuildPermission>): Boolean {
+        return permissions.containsAll(permission)
+    }
 
     override var isManaged: Boolean = json["managed"].asBoolean()
 
     override var isMentionable: Boolean = json["mentionable"].asBoolean()
 
     override var tags: RoleTag? = if (json["tags"].isNull) null else RoleTagImpl(ydwk, json["tags"])
+
+    override var rawPermissions: Long = json["permissions"].asLong()
+
+    override var permissions: EnumSet<GuildPermission> = GuildPermission.fromValues(rawPermissions)
 
     override var name: String = json["name"].asText()
 }

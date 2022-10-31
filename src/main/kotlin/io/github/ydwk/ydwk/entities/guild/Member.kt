@@ -19,9 +19,9 @@
 package io.github.ydwk.ydwk.entities.guild
 
 import io.github.ydwk.ydwk.entities.Guild
+import io.github.ydwk.ydwk.entities.PermissionEntity
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.channel.DmChannel
-import io.github.ydwk.ydwk.entities.guild.enums.MemberPermission
 import io.github.ydwk.ydwk.entities.message.Sendeadble
 import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.util.GetterSnowFlake
@@ -31,18 +31,34 @@ import java.util.*
 import java.util.concurrent.CompletableFuture
 
 /** This class is used to represent a discord guild member entity. */
-interface Member : NameAbleEntity, GenericEntity, Sendeadble, SnowFlake {
+interface Member : NameAbleEntity, GenericEntity, Sendeadble, SnowFlake, PermissionEntity {
 
-    /** Gets thw member's Guild */
+    /**
+     * Gets thw member's Guild
+     *
+     * @return The member's Guild
+     */
     val guild: Guild
 
-    /** The user this guild member represents. */
+    /**
+     * Gets the user this guild member represents.
+     *
+     * @return The user this guild member represents.
+     */
     var user: User
 
-    /** This users guild nickname. */
+    /**
+     * Gets this member guild nickname.
+     *
+     * @return This member guild nickname.
+     */
     var nick: String?
 
-    /** The user's avatar hash. */
+    /**
+     * Gets the member's avatar hash.
+     *
+     * @return The member's avatar hash.
+     */
     var avatar: String?
 
     /**
@@ -59,35 +75,62 @@ interface Member : NameAbleEntity, GenericEntity, Sendeadble, SnowFlake {
      */
     val roles: List<Role?>
 
-    /** The date the user joined the guild. */
+    /**
+     * Gets the time this member joined the guild.
+     *
+     * @return The time this member joined the guild.
+     */
     var joinedAt: String?
 
-    /** The date the user started boosting the guild. */
+    /**
+     * Gets the date the member started boosting the guild.
+     *
+     * @return The date the member started boosting the guild.
+     */
     var premiumSince: String?
 
-    /** Whether the user is deafened in voice channels. */
+    /**
+     * Whether the member is deafened in voice channels.
+     *
+     * @return Whether the member is deafened in voice channels.
+     */
     var deaf: Boolean
 
-    /** Whether the user is muted in voice channels. */
+    /**
+     * Whether the member is muted in voice channels.
+     *
+     * @return Whether the member is muted in voice channels.
+     */
     var mute: Boolean
 
-    /** Whether the user has not yet passed the guild's Membership Screening requirements. */
+    /**
+     * Whether the user has not yet passed the guild's Membership Screening requirements.
+     *
+     * @return Whether the user has not yet passed the guild's Membership Screening requirements.
+     */
     var pending: Boolean
 
-    /** Weather this user is timed out. */
+    /**
+     * If the member is timed out, then this is the time at which the timeout will end.
+     *
+     * @return If the member is timed out, then this is the time at which the timeout will end.
+     */
     var timedOutUntil: String?
 
-    /** Gets the permissions of this member. */
-    val permissions: EnumSet<MemberPermission>
+    /**
+     * Weather this member is timed out.
+     *
+     * @return Weather this member is timed out.
+     */
+    val isTimedOut: Boolean
+        get() = timedOutUntil != null
 
     /**
-     * Checks if the member has a specific permission.
+     * Whether the member is the owner of the guild.
      *
-     * @param permission The permission to check.
-     * @return True if the member has the permission, false otherwise.
+     * @return Whether the member is the owner of the guild.
      */
-    // TODO: double check this
-    fun hasPermission(permission: MemberPermission): Boolean
+    val isOwner: Boolean
 
     /**
      * Creates a direct message channel with this member.

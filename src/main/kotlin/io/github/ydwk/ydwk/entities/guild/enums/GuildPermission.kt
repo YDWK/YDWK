@@ -18,7 +18,9 @@
  */ 
 package io.github.ydwk.ydwk.entities.guild.enums
 
-enum class MemberPermission(
+import java.util.*
+
+enum class GuildPermission(
     private val value: Long,
     private val description: String,
     private val textChannel: Boolean = false,
@@ -109,46 +111,55 @@ enum class MemberPermission(
     MODERATE_MEMBERS(
         1 shl 40,
         "Allows for timing out users to prevent them from sending or reacting to messages in chat and threads, and from speaking in voice and stage channels"),
-    UNKNOWN(-1, "Unknown permission");
+    UNKNOWN(-1, "Unknown permission"),
+    NONE(0, "No permissions");
 
     companion object {
+        val ALL_PERMS: Long = values().map { it.value }.reduce { acc, l -> acc or l }
+
         /**
-         * Returns the [MemberPermission] with the given [value]. If no [MemberPermission] is found,
+         * Returns the [GuildPermission] with the given [value]. If no [GuildPermission] is found,
          * [UNKNOWN] is returned.
          *
-         * @param value The value of the [MemberPermission] to find.
-         * @return The [MemberPermission] with the given [value].
+         * @param value The value of the [GuildPermission] to find.
+         * @return The [GuildPermission] with the given [value].
          */
-        fun fromValue(value: Long): MemberPermission {
+        fun fromValue(value: Long): GuildPermission {
             return values().firstOrNull { it.value == value } ?: UNKNOWN
+        }
+
+        fun fromValues(permissions: Long): EnumSet<GuildPermission> {
+            return values()
+                .filter { it.value != -1L && permissions and it.value == it.value }
+                .toCollection(EnumSet.noneOf(GuildPermission::class.java))
         }
     }
 
     /**
-     * The value of this [MemberPermission].
+     * The value of this [GuildPermission].
      *
-     * @return The value of this [MemberPermission].
+     * @return The value of this [GuildPermission].
      */
     fun value(): Long = value
 
     /**
-     * The description of this [MemberPermission].
+     * The description of this [GuildPermission].
      *
-     * @return The description of this [MemberPermission].
+     * @return The description of this [GuildPermission].
      */
     fun description(): String = description
 
     /**
-     * Whether this [MemberPermission] is a textChannel permission.
+     * Whether this [GuildPermission] is a textChannel permission.
      *
-     * @return Whether this [MemberPermission] is a textChannel permission.
+     * @return Whether this [GuildPermission] is a textChannel permission.
      */
     fun isTextChannelPermission(): Boolean = textChannel
 
     /**
-     * Whether this [MemberPermission] is a voiceChannel permission.
+     * Whether this [GuildPermission] is a voiceChannel permission.
      *
-     * @return Whether this [MemberPermission] is a voiceChannel permission.
+     * @return Whether this [GuildPermission] is a voiceChannel permission.
      */
     fun isVoiceChannelPermission(): Boolean = voiceChannel
 }

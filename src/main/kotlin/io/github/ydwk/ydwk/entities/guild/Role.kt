@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.entities.guild
 
-import io.github.ydwk.ydwk.entities.guild.enums.MemberPermission
+import io.github.ydwk.ydwk.entities.PermissionEntity
 import io.github.ydwk.ydwk.entities.guild.role.RoleTag
 import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.util.NameAbleEntity
@@ -26,7 +26,7 @@ import io.github.ydwk.ydwk.util.SnowFlake
 import java.awt.Color
 
 /** This class is used to represent a discord guild role entity. */
-interface Role : SnowFlake, GenericEntity, NameAbleEntity {
+interface Role : SnowFlake, GenericEntity, NameAbleEntity, PermissionEntity {
     /**
      * Gets the color of this role.
      *
@@ -63,13 +63,6 @@ interface Role : SnowFlake, GenericEntity, NameAbleEntity {
     var position: Int
 
     /**
-     * Gets the permissions of this role.
-     *
-     * @return The permissions of this role.
-     */
-    var permissions: MemberPermission
-
-    /**
      * Gets the managed status of this role.
      *
      * @return The managed status of this role.
@@ -89,4 +82,11 @@ interface Role : SnowFlake, GenericEntity, NameAbleEntity {
      * @return The tags of this role.
      */
     var tags: RoleTag?
+
+    /**
+     * Gets the raw permissions of this role.
+     *
+     * @return The raw permissions of this role.
+     */
+    var rawPermissions: Long
 }
