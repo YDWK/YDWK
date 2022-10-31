@@ -25,7 +25,7 @@ extra.apply {
     set("name", "YDWK")
     set("description", "YDWK (Yusuf's Discord Wrapper Kotlin) My own Discord Wrapper in Kotlin")
     set("group", "io.github.realyusufismail")
-    set("version", "0.0.3")
+    set("version", "0.0.4")
     set("dev_id", "yusuf")
     set("dev_name", "Yusuf Ismail")
     set("dev_email", "yusufgamer222@gmail.com")
