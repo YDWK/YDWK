@@ -774,4 +774,14 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @return The member, or null if it doesn't exist.
      */
     fun getMemberById(userId: String): Member? = getMemberById(userId.toLong())
+
+    /**
+     * Gets the @everyone role. This role is always present.
+     *
+     * @return The @everyone role.
+     */
+    val everyoneRole: Role
+        get() =
+            getRoleById(idAsLong)
+                ?: throw IllegalStateException("The @everyone role is not present.")
 }

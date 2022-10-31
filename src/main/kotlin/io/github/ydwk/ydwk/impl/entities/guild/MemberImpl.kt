@@ -27,7 +27,6 @@ import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.entities.guild.enums.GuildPermission
 import io.github.ydwk.ydwk.impl.entities.UserImpl
 import io.github.ydwk.ydwk.util.GetterSnowFlake
-import io.github.ydwk.ydwk.util.PermissionUtil
 import io.github.ydwk.ydwk.util.formatZonedDateTime
 import java.util.*
 
@@ -35,7 +34,7 @@ class MemberImpl(
     override val ydwk: YDWK,
     override val json: JsonNode,
     override val guild: Guild,
-    backupUser: User? = null
+    backupUser: User? = null,
 ) : Member {
 
     override var user: User =
@@ -70,11 +69,39 @@ class MemberImpl(
         if (json.has("communication_disabled_until"))
             formatZonedDateTime(json["communication_disabled_until"].asText())
         else null
+
     override val isOwner: Boolean
         get() = guild.ownerId.asString == user.id
 
     override val permissions: EnumSet<GuildPermission>
-        get() = GuildPermission.fromValues(PermissionUtil.getPermissions(this))
+        get() = GuildPermission.fromValues(getPermissions(this))
+
+    private fun getPermissions(member: Member): Long {
+        if (member.isOwner) return GuildPermission.ALL_PERMS
+
+        var perms: Long = guild.everyoneRole.rawPermissions
+        for (role in member.roles) {
+            if (role != null) {
+                perms = perms or role.rawPermissions
+
+                if (perms and GuildPermission.ADMINISTRATOR.value() ==
+                    GuildPermission.ADMINISTRATOR.value()) {
+                    return GuildPermission.ALL_PERMS
+                }
+            } else {
+                perms = perms or GuildPermission.NONE.value()
+            }
+        }
+
+        if (member.isTimedOut) {
+            perms =
+                perms and
+                    (GuildPermission.VIEW_CHANNEL.value() or
+                        GuildPermission.READ_MESSAGE_HISTORY.value())
+        }
+
+        return perms
+    }
 
     override fun hasPermission(vararg permission: GuildPermission): Boolean {
         return permissions.containsAll(permission.toList())

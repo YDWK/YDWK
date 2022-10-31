@@ -111,11 +111,19 @@ interface Member : NameAbleEntity, GenericEntity, Sendeadble, SnowFlake, Permiss
     var pending: Boolean
 
     /**
+     * If the member is timed out, then this is the time at which the timeout will end.
+     *
+     * @return If the member is timed out, then this is the time at which the timeout will end.
+     */
+    var timedOutUntil: String?
+
+    /**
      * Weather this member is timed out.
      *
      * @return Weather this member is timed out.
      */
-    var timedOutUntil: String?
+    val isTimedOut: Boolean
+        get() = timedOutUntil != null
 
     /**
      * Whether the member is the owner of the guild.

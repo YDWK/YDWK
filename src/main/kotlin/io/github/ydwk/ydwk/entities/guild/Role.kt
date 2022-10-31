@@ -82,4 +82,11 @@ interface Role : SnowFlake, GenericEntity, NameAbleEntity, PermissionEntity {
      * @return The tags of this role.
      */
     var tags: RoleTag?
+
+    /**
+     * Gets the raw permissions of this role.
+     *
+     * @return The raw permissions of this role.
+     */
+    var rawPermissions: Long
 }

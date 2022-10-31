@@ -111,7 +111,8 @@ enum class GuildPermission(
     MODERATE_MEMBERS(
         1 shl 40,
         "Allows for timing out users to prevent them from sending or reacting to messages in chat and threads, and from speaking in voice and stage channels"),
-    UNKNOWN(-1, "Unknown permission");
+    UNKNOWN(-1, "Unknown permission"),
+    NONE(0, "No permissions");
 
     companion object {
         val ALL_PERMS: Long = values().map { it.value }.reduce { acc, l -> acc or l }
