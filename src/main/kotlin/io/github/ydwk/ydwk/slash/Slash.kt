@@ -24,7 +24,20 @@ import com.fasterxml.jackson.databind.node.ArrayNode
 import io.github.ydwk.ydwk.interaction.application.ApplicationCommandType
 import io.github.ydwk.ydwk.util.Checks
 
-class Slash(val name: String, val description: String, val guildOnly: Boolean = false) {
+/**
+ * A builder for Slash Commands
+ *
+ * @param name The name of the slash command.
+ * @param description The description of the slash command.
+ * @param guildOnly Whether the slash command can only be used in guilds.
+ * @param specificGuildOnly Whether the slash command can only be used in a specific guild/s.
+ */
+class Slash(
+    val name: String,
+    val description: String,
+    private val guildOnly: Boolean = false,
+    val specificGuildOnly: Boolean = false
+) {
     private var options: MutableList<SlashOption> = mutableListOf()
 
     fun addOption(option: SlashOption): Slash {
@@ -47,6 +60,9 @@ class Slash(val name: String, val description: String, val guildOnly: Boolean = 
         json.put("name", name)
         json.put("description", description)
         json.put("type", ApplicationCommandType.CHAT_INPUT.toInt())
+        if (guildOnly) {
+            json.put("dm_permission", false)
+        }
         val options: ArrayNode = ObjectMapper().createArrayNode()
         this.options.forEach { it ->
             Checks.checkLength(
