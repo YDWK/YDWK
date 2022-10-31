@@ -24,9 +24,10 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.guild.Role
-import io.github.ydwk.ydwk.entities.guild.enums.MemberPermission
+import io.github.ydwk.ydwk.entities.guild.enums.GuildPermission
 import io.github.ydwk.ydwk.impl.entities.UserImpl
 import io.github.ydwk.ydwk.util.GetterSnowFlake
+import io.github.ydwk.ydwk.util.PermissionUtil
 import io.github.ydwk.ydwk.util.formatZonedDateTime
 import java.util.*
 
@@ -69,17 +70,18 @@ class MemberImpl(
         if (json.has("communication_disabled_until"))
             formatZonedDateTime(json["communication_disabled_until"].asText())
         else null
+    override val isOwner: Boolean
+        get() = guild.ownerId.asString == user.id
 
-    override val permissions: EnumSet<MemberPermission>
-        get() {
-            val roles = roles.filterNotNull()
-            val permissions = EnumSet.noneOf(MemberPermission::class.java)
-            roles.forEach { permissions.addAll(listOf(it.permissions)) }
-            return permissions
-        }
+    override val permissions: EnumSet<GuildPermission>
+        get() = GuildPermission.fromValues(PermissionUtil.getPermissions(this))
 
-    override fun hasPermission(permission: MemberPermission): Boolean {
-        return permissions.contains(permission)
+    override fun hasPermission(vararg permission: GuildPermission): Boolean {
+        return permissions.containsAll(permission.toList())
+    }
+
+    override fun hasPermission(permission: Collection<GuildPermission>): Boolean {
+        return permissions.containsAll(permission)
     }
 
     override var name: String = if (nick != null) nick!! else user.name
