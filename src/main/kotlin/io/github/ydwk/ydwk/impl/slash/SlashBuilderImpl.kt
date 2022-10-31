@@ -98,7 +98,7 @@ class SlashBuilderImpl(
                 .get()
 
         // first id of the guild,
-        val currentGuildCommandIdAndNameMap: MutableMap<MutableMap<Long, Long>, String> =
+        val currentSpecificGuildCommandIdAndNameMap: MutableMap<MutableMap<Long, Long>, String> =
             mutableMapOf()
         if (guildIds.isNotEmpty()) {
             guildIds.forEach { it ->
@@ -118,11 +118,11 @@ class SlashBuilderImpl(
         }
 
         val globalSlash = mutableListOf<Slash>()
-        val guildSlash = mutableListOf<Slash>()
+        val specificGuildSlash = mutableListOf<Slash>()
         val globalCommandsToDelete = mutableListOf<Long>()
-        val guildCommandsToDelete: MutableMap<Long, Long> = mutableMapOf()
+        val specificGuildCommandsToDelete: MutableMap<Long, Long> = mutableMapOf()
         val globalCommandToAdd = mutableListOf<Slash>()
-        val guildCommandToAdd = mutableListOf<Slash>()
+        val specificGuildCommandToAdd = mutableListOf<Slash>()
 
         for (slash in slashCommands) {
             Checks.checkIfCapital(slash.name, "Slash command name must be lowercase")
@@ -133,8 +133,8 @@ class SlashBuilderImpl(
                 100,
                 "Slash command description can not be longer than 100 characters")
 
-            if (slash.guildOnly) {
-                guildSlash.add(slash)
+            if (slash.specificGuildOnly) {
+                specificGuildSlash.add(slash)
             } else {
                 globalSlash.add(slash)
             }
@@ -155,17 +155,20 @@ class SlashBuilderImpl(
             }
         }
 
-        for (slash in guildSlash) {
-            if (currentGuildCommandIdAndNameMap.containsValue(slash.name)) {
+        for (slash in specificGuildSlash) {
+            if (currentSpecificGuildCommandIdAndNameMap.containsValue(slash.name)) {
                 ydwk.logger.debug("Guild slash command ${slash.name} already exists, updating...")
-                guildCommandToAdd.add(slash)
-            } else if (!currentGuildCommandIdAndNameMap.containsValue(slash.name)) {
+                specificGuildCommandToAdd.add(slash)
+            } else if (!currentSpecificGuildCommandIdAndNameMap.containsValue(slash.name)) {
                 ydwk.logger.debug("Guild slash command ${slash.name} does not exist, creating...")
-                guildCommandToAdd.add(slash)
+                specificGuildCommandToAdd.add(slash)
             } else {
                 ydwk.logger.debug("Guild slash command ${slash.name} no longer exists, deleting...")
-                guildCommandsToDelete.putAll(
-                    currentGuildCommandIdAndNameMap.filterValues { it == slash.name }.keys.first())
+                specificGuildCommandsToDelete.putAll(
+                    currentSpecificGuildCommandIdAndNameMap
+                        .filterValues { it == slash.name }
+                        .keys
+                        .first())
             }
         }
 
@@ -173,8 +176,8 @@ class SlashBuilderImpl(
             rest,
             globalCommandToAdd,
             globalCommandsToDelete,
-            guildCommandToAdd,
-            guildCommandsToDelete)
+            specificGuildCommandToAdd,
+            specificGuildCommandsToDelete)
     }
 
     private fun decideWhatToDo(
