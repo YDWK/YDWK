@@ -44,6 +44,7 @@ import io.github.ydwk.ydwk.rest.EndPoint
 import io.github.ydwk.ydwk.rest.json.replyJsonBody
 import io.github.ydwk.ydwk.slash.SlashOptionGetter
 import io.github.ydwk.ydwk.slash.SlashOptionGetterImpl
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 import java.util.concurrent.CompletableFuture
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -191,4 +192,8 @@ class SlashCommandImpl(
 
             return applicationOptions?.map { SlashOptionGetterImpl(it, map) } ?: emptyList()
         }
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).name(this.name).toString()
+    }
 }

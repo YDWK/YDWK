@@ -33,6 +33,7 @@ import io.github.ydwk.ydwk.impl.entities.channel.guild.GenericGuildChannelImpl
 import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
 import io.github.ydwk.ydwk.impl.entities.message.*
 import io.github.ydwk.ydwk.impl.entities.sticker.StickerItemImpl
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 import io.github.ydwk.ydwk.util.formatZonedDateTime
 
@@ -186,4 +187,8 @@ class MessageImpl(
 
     override val position: Long?
         get() = if (json.has("position")) json.get("position").asLong() else null
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).toString()
+    }
 }

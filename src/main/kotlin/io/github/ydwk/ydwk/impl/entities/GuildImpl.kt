@@ -37,6 +37,7 @@ import io.github.ydwk.ydwk.impl.entities.guild.BanImpl
 import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
 import io.github.ydwk.ydwk.impl.entities.guild.WelcomeScreenImpl
 import io.github.ydwk.ydwk.rest.EndPoint
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 import java.util.concurrent.CompletableFuture
 
@@ -200,4 +201,8 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
     }
 
     override var name: String = json["name"].asText()
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).name(this.name).toString()
+    }
 }

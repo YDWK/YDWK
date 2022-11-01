@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.impl.entities.message
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.message.Attachment
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import java.net.URL
 
 class AttachmentImpl(
@@ -52,7 +53,9 @@ class AttachmentImpl(
     override val ephemeral: Boolean
         get() = json.get("ephemeral").asBoolean()
 
-    override var name: String
-        get() = json.get("name").asText()
-        set(value) {}
+    override var name: String = json.get("name").asText()
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).name(this.name).toString()
+    }
 }

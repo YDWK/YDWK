@@ -23,6 +23,7 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.guild.Ban
 import io.github.ydwk.ydwk.impl.entities.UserImpl
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class BanImpl(override val ydwk: YDWK, override val json: JsonNode) : Ban {
 
@@ -31,4 +32,8 @@ class BanImpl(override val ydwk: YDWK, override val json: JsonNode) : Ban {
 
     override val user: User
         get() = UserImpl(json["user"], json["user"]["id"].asLong(), ydwk)
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).toString()
+    }
 }

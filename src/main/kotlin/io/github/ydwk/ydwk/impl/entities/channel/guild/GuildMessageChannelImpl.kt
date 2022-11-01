@@ -25,6 +25,7 @@ import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
 import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
 import io.github.ydwk.ydwk.entities.channel.guild.message.GuildMessageChannel
 import io.github.ydwk.ydwk.entities.channel.guild.message.text.PermissionOverwrite
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 open class GuildMessageChannelImpl(
     override val ydwk: YDWK,
@@ -57,7 +58,9 @@ open class GuildMessageChannelImpl(
                 ydwk.getGuildById(json["guild_id"].asText())!!
             else throw IllegalStateException("Guild is null")
 
-    override var name: String
-        get() = json["name"].asText()
-        set(value) {}
+    override var name: String = json["name"].asText()
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).name(this.name).toString()
+    }
 }

@@ -24,6 +24,7 @@ import io.github.ydwk.ydwk.entities.AuditLog
 import io.github.ydwk.ydwk.entities.audit.AuditLogEntry
 import io.github.ydwk.ydwk.impl.entities.audit.AuditLogEntryImpl
 import io.github.ydwk.ydwk.interaction.application.SlashCommand
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class AuditLogImpl(override val ydwk: YDWK, override val json: JsonNode) : AuditLog {
 
@@ -32,4 +33,8 @@ class AuditLogImpl(override val ydwk: YDWK, override val json: JsonNode) : Audit
 
     override val entries: List<AuditLogEntry>
         get() = json["entries"].map { AuditLogEntryImpl(ydwk, it, it["id"].asLong()) }
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).name("AuditLog").toString()
+    }
 }

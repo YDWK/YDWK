@@ -24,6 +24,7 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
 import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import java.util.*
 
 class GuildCategoryImpl(
@@ -47,4 +48,8 @@ class GuildCategoryImpl(
     override val type: ChannelType = ChannelType.CATEGORY
 
     override var name: String = json["name"].asText()
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).name(this.name).toString()
+    }
 }

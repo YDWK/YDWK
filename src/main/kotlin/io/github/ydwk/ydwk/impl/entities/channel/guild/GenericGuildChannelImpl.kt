@@ -26,6 +26,7 @@ import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildVoiceChannel
 import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 open class GenericGuildChannelImpl(
     override val ydwk: YDWK,
@@ -71,7 +72,9 @@ open class GenericGuildChannelImpl(
     override val type: ChannelType
         get() = ChannelType.fromId(json["type"].asInt())
 
-    override var name: String
-        get() = json["name"].asText()
-        set(value) {}
+    override var name: String = json["name"].asText()
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).name(this.name).toString()
+    }
 }

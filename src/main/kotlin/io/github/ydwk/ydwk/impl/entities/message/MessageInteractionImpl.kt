@@ -26,6 +26,7 @@ import io.github.ydwk.ydwk.entities.message.MessageInteraction
 import io.github.ydwk.ydwk.impl.entities.UserImpl
 import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
 import io.github.ydwk.ydwk.interaction.sub.InteractionType
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class MessageInteractionImpl(
     override val ydwk: YDWK,
@@ -51,4 +52,8 @@ class MessageInteractionImpl(
                     ydwk.getGuildById(json.get("guild_id").asLong())
                         ?: throw IllegalStateException("Bot is not in guild"))
             else null
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).name(this.name).toString()
+    }
 }

@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.message.MessageReference
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 
 class MessageReferenceImpl(override val ydwk: YDWK, override val json: JsonNode) :
@@ -38,4 +39,8 @@ class MessageReferenceImpl(override val ydwk: YDWK, override val json: JsonNode)
 
     override val guild: Guild?
         get() = ydwk.getGuildById(guildId.asLong)
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).toString()
+    }
 }

@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.impl.entities.message.embed
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.message.embed.Field
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class FieldImpl(override val ydwk: YDWK, override val json: JsonNode) : Field {
 
@@ -32,4 +33,8 @@ class FieldImpl(override val ydwk: YDWK, override val json: JsonNode) : Field {
 
     override val inline: Boolean?
         get() = if (json.has("inline")) json["inline"].asBoolean() else null
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).name(this.name).toString()
+    }
 }
