@@ -65,7 +65,7 @@ fun main() {
                     val embed = ydwk.embedBuilder
                     val member = it.slash.member
                     if (member != null) {
-                        embed.setTitle(member.user!!.name)
+                        embed.setTitle(member.user.name)
                         embed.setDescription("Yo this is a test embed")
                         embed.setColor(Color.blue)
                         it.slash.reply(embed.build()).get()
