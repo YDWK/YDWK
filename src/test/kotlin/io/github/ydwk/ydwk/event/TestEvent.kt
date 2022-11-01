@@ -16,21 +16,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.evm
+package io.github.ydwk.ydwk.event
 
-import io.github.ydwk.ydwk.evm.backend.event.on
-import io.github.ydwk.ydwk.impl.YDWKImpl
-import okhttp3.OkHttpClient
-import org.junit.jupiter.api.Test
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.event.Event
 
-object EvenTester {
-    var name = "YDWK"
-
-    @Test
-    fun testEvent() {
-        val ydwk = YDWKImpl(OkHttpClient())
-        ydwk.emitEvent(TestEvent(ydwk))
-
-        ydwk.on<io.github.ydwk.ydwk.evm.event.events.gateway.ReadyEvent> { println("Ready!") }
-    }
-}
+class TestEvent(override val ydwk: YDWK) : Event(ydwk)

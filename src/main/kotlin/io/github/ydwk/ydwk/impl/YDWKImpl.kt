@@ -52,6 +52,7 @@ import io.github.ydwk.ydwk.impl.slash.SlashBuilderImpl
 import io.github.ydwk.ydwk.rest.EndPoint
 import io.github.ydwk.ydwk.rest.RestApiManager
 import io.github.ydwk.ydwk.slash.SlashBuilder
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import io.github.ydwk.ydwk.ws.WebSocketManager
 import io.github.ydwk.ydwk.ws.util.LoggedIn
 import java.time.Instant
@@ -264,6 +265,14 @@ class YDWKImpl(
                 UserImpl(jsonBody, jsonBody["id"].asLong(), this)
             }
         }
+    }
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this)
+            .add("token", token)
+            .add("applicationId", applicationId)
+            .add("uptime", uptime)
+            .toString()
     }
 
     override val guildChannels: List<GenericGuildChannel>

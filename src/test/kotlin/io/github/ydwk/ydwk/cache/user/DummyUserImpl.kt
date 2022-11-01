@@ -16,9 +16,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.cache
+package io.github.ydwk.ydwk.cache.user
 
 import com.fasterxml.jackson.databind.JsonNode
+import io.github.ydwk.ydwk.cache.DummyUser
 
 class DummyUserImpl(private val json: JsonNode) : DummyUser {
     override val idAsLong: Long

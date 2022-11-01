@@ -16,13 +16,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.ignore
+package io.github.ydwk.ydwk.thread
 
-import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
-import kotlin.reflect.jvm.jvmName
+import kotlin.test.assertEquals
 import org.junit.jupiter.api.Test
 
-class RandomTest {
+class ThreadTest {
     @Test
     fun test() {
         // How can i do something like where for every 6 of something do function wait 2 seconds and
@@ -32,18 +31,15 @@ class RandomTest {
 
         val listChunks = list.chunked(6)
 
+        val newList = mutableListOf<Int>()
+
         for (chunk in listChunks) {
             for (i in chunk) {
-                println(i)
+                newList.add(i)
             }
             Thread.sleep(2000)
         }
 
-        println("Done")
-    }
-
-    @Test
-    fun test2() {
-        println(GenericEvent::class.jvmName)
+        assertEquals(list, newList)
     }
 }

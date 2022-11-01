@@ -21,21 +21,13 @@ package io.github.ydwk.ydwk.bot
 import io.github.realyusufismail.jconfig.util.JConfigUtils
 import io.github.ydwk.ydwk.Activity
 import io.github.ydwk.ydwk.BotBuilder.createDefaultBot
-import io.github.ydwk.ydwk.evm.ListenerAdapter
 import io.github.ydwk.ydwk.evm.backend.event.on
-import io.github.ydwk.ydwk.evm.event.events.guild.update.GuildNameUpdateEvent
+import io.github.ydwk.ydwk.evm.event.events.interaction.SlashCommandEvent
 import io.github.ydwk.ydwk.slash.Slash
 import io.github.ydwk.ydwk.slash.SlashOption
 import io.github.ydwk.ydwk.slash.SlashOptionType
-import java.awt.Color
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-
-class Bot : ListenerAdapter() {
-    override fun onReady(event: io.github.ydwk.ydwk.evm.event.events.gateway.ReadyEvent) {
-        println("Bot is ready!")
-    }
-}
 
 fun main() {
     val ydwk =
@@ -43,11 +35,8 @@ fun main() {
             .setActivity(Activity.playing("YDWK"))
             .build()
 
-    ydwk.addEvent(Bot())
-
     ydwk.waitForReady.slashBuilder
         .addSlashCommand(Slash("embed", "This is a test command"))
-        .addSlashCommand(Slash("json", "Gets the json for member"))
         .addSlashCommand(Slash("forum_json", "Gets the json for forum"))
         .addSlashCommand(Slash("create_dm", "Creates a dm channel"))
         .addSlashCommand(
@@ -55,23 +44,10 @@ fun main() {
                 .addOption(
                     SlashOption(
                         "member", "The member to test the option with", SlashOptionType.USER)))
-        .addSlashCommand(Slash("test", "A test command"))
         .build()
 
-    ydwk.on<io.github.ydwk.ydwk.evm.event.events.interaction.SlashCommandEvent> {
+    ydwk.on<SlashCommandEvent> {
         when (it.slash.name) {
-            "embed" -> {
-                withContext(Dispatchers.IO) {
-                    val embed = ydwk.embedBuilder
-                    val member = it.slash.member
-                    if (member != null) {
-                        embed.setTitle(member.user.name)
-                        embed.setDescription("Yo this is a test embed")
-                        embed.setColor(Color.blue)
-                        it.slash.reply(embed.build()).get()
-                    }
-                }
-            }
             "json" -> {
                 withContext(Dispatchers.IO) {
                     val member = it.slash.member
@@ -99,12 +75,6 @@ fun main() {
                     it.slash.reply(it.slash.getOption("member")!!.asUser.name).get()
                 }
             }
-        }
-    }
-
-    ydwk.on<GuildNameUpdateEvent> {
-        it.oldName.let { oldName ->
-            it.newName.let { newName -> println("Guild name changed from $oldName to $newName") }
         }
     }
 }

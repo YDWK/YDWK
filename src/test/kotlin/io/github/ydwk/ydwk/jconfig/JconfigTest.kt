@@ -16,6 +16,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.cache
+package io.github.ydwk.ydwk.jconfig
 
-class DummyCache(allowedCache: Set<CacheIds>) : PerpetualCache(allowedCache)
+import io.github.realyusufismail.jconfig.classes.JConfigBuilder
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import org.junit.jupiter.api.Test
+
+class JconfigTest {
+
+    @Test
+    fun test() {
+        val jconfig =
+            JConfigBuilder()
+                .setDirectoryPath("src/test/resources/jconfig")
+                .setFilename("sample")
+                .build()
+
+        val sampleToken: Int? = jconfig["sample_token"]?.asInt
+
+        assertNotNull(sampleToken)
+        assertEquals(21, sampleToken)
+    }
+}

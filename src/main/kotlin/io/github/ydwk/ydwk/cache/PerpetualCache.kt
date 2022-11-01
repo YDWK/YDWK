@@ -50,7 +50,7 @@ open class PerpetualCache(
         if (cacheType !in allowedCache) {
             throw CacheException("The caching of type $cacheType has been disabled")
         } else {
-            return null
+            return cache.remove(key + cacheType.toString())
         }
     }
 

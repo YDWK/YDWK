@@ -16,9 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.evm
+package io.github.ydwk.ydwk.tostring
 
-import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.evm.event.Event
-
-class TestEvent(override val ydwk: YDWK) : Event(ydwk)
+class SampleEntity

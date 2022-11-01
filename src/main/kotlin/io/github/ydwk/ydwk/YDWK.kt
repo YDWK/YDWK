@@ -456,4 +456,11 @@ interface YDWK {
      * @return The [CompletableFuture] object.
      */
     fun requestUser(id: String): CompletableFuture<User> = requestUser(id.toLong())
+
+    /**
+     * Overrides the custom to string method.
+     *
+     * @return The string representation of the object.
+     */
+    override fun toString(): String
 }

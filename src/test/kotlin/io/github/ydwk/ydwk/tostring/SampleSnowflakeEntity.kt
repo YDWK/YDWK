@@ -16,20 +16,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.bot
+package io.github.ydwk.ydwk.tostring
 
-import io.github.realyusufismail.jconfig.JConfig
+import io.github.ydwk.ydwk.util.SnowFlake
 
-class CustomConfig {
-    private val config = JConfig.builder().setDirectoryPath("")
-
-    fun build(): JConfig {
-        return config.build()
-    }
-}
-
-fun main() {
-    val config = CustomConfig().build()
-
-    println(config["name"]?.asString)
-}
+class SampleSnowflakeEntity(override val idAsLong: Long) : SnowFlake

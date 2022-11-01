@@ -23,6 +23,7 @@ import java.util.*
 class EntityToStringBuilder(val entity: Any) {
     private var type: Any? = null
     private var name: String? = null
+    private var customFields: MutableMap<String, Any?> = HashMap()
 
     fun type(type: Any): EntityToStringBuilder {
         this.type = type
@@ -39,12 +40,23 @@ class EntityToStringBuilder(val entity: Any) {
         return this
     }
 
+    fun add(field: String, value: Any?): EntityToStringBuilder {
+        customFields[field] = value
+        return this
+    }
+
     override fun toString(): String {
         val name: String =
-            if (this.name is String) {
-                this.name as String
-            } else {
-                entity.javaClass.simpleName
+            when (this.entity) {
+                is String -> {
+                    entity
+                }
+                is Class<*> -> {
+                    cleanUpClassName(entity)
+                }
+                else -> {
+                    cleanUpClassName(entity.javaClass)
+                }
             }
 
         val sb = StringBuilder(name)
@@ -57,16 +69,28 @@ class EntityToStringBuilder(val entity: Any) {
             sb.append(':').append(this.name)
         }
 
+        if (customFields.isNotEmpty()) {
+            sb.append('{')
+            for ((key, value) in customFields) {
+                sb.append(key).append('=').append(value).append(',')
+            }
+            sb.setCharAt(sb.length - 1, '}')
+        }
+
         val snowflakeEntity = entity is SnowFlake
         if (snowflakeEntity) {
-            val s: StringJoiner = StringJoiner(", ", "(", ")")
-            s.add("id=${(entity as SnowFlake).id}")
-            s.add("createTime=${(entity as SnowFlake).asTimestamp}")
-            s.add("workerId=${(entity as SnowFlake).asWorkerId}")
-            s.add("increment=${(entity as SnowFlake).asIncrement}")
-            sb.append(s)
+            sb.append('(')
+            sb.append("id=").append((entity as SnowFlake).id).append(',')
+            sb.append("createTime=").append(entity.asTimestamp).append(',')
+            sb.append("workerId=").append(entity.asWorkerId).append(',')
+            sb.append("increment=").append(entity.asIncrement)
+            sb.append(')')
         }
 
         return sb.toString()
+    }
+
+    private fun cleanUpClassName(clazz: Class<*>): String {
+        return clazz.simpleName.replace("Impl", "")
     }
 }

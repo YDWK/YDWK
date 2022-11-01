@@ -35,7 +35,7 @@ extra.apply {
     set("gpl_url", "https://github.com/YDWK/YDWK/blob/master/LICENSE")
 }
 
-group = "io.github.realyusufismail" // used for publishing. DONT CHANGE
+group = "io.github.realyusufismail" // used for publishing. DON'T CHANGE
 
 val releaseVersion by extra(!version.toString().endsWith("-SNAPSHOT"))
 

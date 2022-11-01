@@ -19,48 +19,71 @@
 package io.github.ydwk.ydwk.cache
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import io.github.ydwk.ydwk.cache.user.DummyUserImpl
 import java.nio.file.Files
-import java.util.Objects
-import kotlin.io.path.Path
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.DisplayName
+import java.nio.file.Path
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
+import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 
 class CacheTester {
+    private val objectMapper = ObjectMapper()
+    private val cache = DummyCache(setOf(CacheIds.USER))
+    private val userJson =
+        objectMapper.readTree(Files.readString(Path.of("src/test/resources/cache/user.json")))
+    private val newUserJson =
+        objectMapper.readTree(Files.readString(Path.of("src/test/resources/cache/newUser.json")))
+    private val userId = "1000488829532440204"
 
     @Test
-    @DisplayName("Test Cache")
-    fun testCache() {
-        val userJson =
-            ObjectMapper()
-                .readTree(
-                    Files.readString(
-                        Path("src/test/kotlin/io/github/ydwk/ydwk/cache/user/user.json")))
+    @Order(1)
+    fun storeCacheTest() {
+        val user: DummyUser = DummyUserImpl(userJson)
+        cache[userId, user] = CacheIds.USER
+    }
 
-        val user = DummyUserImpl(userJson)
-        val cache = DummyCache()
+    @Test
+    @Order(2)
+    fun checkCacheSizeTest() {
+        storeCacheTest()
+        assertNotNull(cache.size)
+        assertEquals(1, cache.size)
+    }
 
+    @Test
+    @Order(3)
+    fun getCacheTest() {
+        storeCacheTest()
+        val user = cache[userId, CacheIds.USER]
+        assertNotNull(user)
+    }
+
+    @Test
+    @Order(3)
+    fun updateCacheTest() {
+        storeCacheTest()
+        val user = DummyUserImpl(newUserJson)
         cache[user.id, user] = CacheIds.USER
+        val updatedUser = cache[userId, CacheIds.USER] as DummyUserImpl
+        assert(updatedUser.id == userId)
+    }
 
-        // TODO: problem here
-        val cachedUser = cache[user.id, CacheIds.USER] as DummyUserImpl
+    @Test
+    @Order(4)
+    fun deleteCacheTest() {
+        storeCacheTest()
+        cache.remove(userId, CacheIds.USER)
+        assertEquals(0, cache.size)
+        assertNull(cache[userId, CacheIds.USER])
+    }
 
-        Assertions.assertEquals(user.idAsLong, cachedUser.idAsLong, "User ID is not equal")
-        Assertions.assertEquals(user.name, cachedUser.name, "User name is not equal")
-
-        val newUserJson =
-            ObjectMapper()
-                .readTree(
-                    Files.readString(
-                        Path("src/test/kotlin/io/github/ydwk/ydwk/cache/user/newUser.json")))
-
-        val oldName = cachedUser.name
-        val newName = newUserJson["name"].asText()
-        if (!Objects.deepEquals(oldName, newName)) {
-            user.name = newName
-        }
-
-        Assertions.assertNotEquals(oldName, newName, "User name is equal")
-        Assertions.assertEquals(user.name, cachedUser.name, "User name is not equal")
+    @Test
+    @Order(5)
+    fun clearCacheTest() {
+        storeCacheTest()
+        cache.clear()
+        assert(cache.size == 0)
     }
 }
