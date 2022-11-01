@@ -19,9 +19,10 @@
 package io.github.ydwk.ydwk.entities
 
 import io.github.ydwk.ydwk.entities.guild.enums.GuildPermission
+import io.github.ydwk.ydwk.entities.util.GenericEntity
 import java.util.*
 
-interface PermissionEntity {
+interface PermissionEntity : GenericEntity {
     /**
      * Gets the permissions of this member.
      *

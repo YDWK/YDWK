@@ -18,7 +18,9 @@
  */ 
 package io.github.ydwk.ydwk.entities
 
-interface Bot : User {
+import io.github.ydwk.ydwk.entities.util.GenericEntity
+
+interface Bot : User, GenericEntity {
 
     /** The user's email */
     var email: String

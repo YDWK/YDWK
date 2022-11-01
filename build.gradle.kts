@@ -39,6 +39,12 @@ group = "io.github.realyusufismail" // used for publishing. DONT CHANGE
 
 val releaseVersion by extra(!version.toString().endsWith("-SNAPSHOT"))
 
+apply(from = "gradle/tasks/checkEntities.gradle.kts")
+
+apply(from = "gradle/tasks/incrementVersion.gradle.kts")
+
+apply(from = "gradle/tasks/checkEvents.gradle.kts")
+
 repositories { mavenCentral() }
 
 dependencies {
@@ -64,64 +70,12 @@ tasks.test {
     finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "17"
-    checkForDataClasses()
-}
+tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "17" }
 
-fun checkForDataClasses() {
-    if (File("src/main/kotlin/io/github/ydwk/ydwk/evm/backend/event/GenericEvent.kt").exists()) {
-        val files = File("src/main/kotlin/io/github/ydwk/ydwk/evm/event/events").listFiles()
-        // converse these files to kotlin classes
-
-        if (files.isNullOrEmpty()) {
-            throw Exception("No files found in the events folder")
-        } else {
-            for (file in files) {
-                val folder =
-                    File("src/main/kotlin/io/github/ydwk/ydwk/evm/event/events/" + file.name)
-                if (folder.exists()) {
-                    if (!folder.listFiles().isNullOrEmpty()) {
-                        checkForDataClassesProcess(folder)
-                    }
-                } else {
-                    throw Exception("Folder $folder does not exist")
-                }
-            }
-        }
-    }
-}
-
-fun checkForDataClassesProcess(folder: File) {
-    for (subFiles in folder.listFiles()!!) {
-
-        if (subFiles.isDirectory) {
-            val subFilesDir = File(subFiles.path)
-            if (subFilesDir.exists()) {
-                if (!subFilesDir.listFiles().isNullOrEmpty()) {
-                    checkForDataClassesProcess(subFilesDir)
-                }
-            } else {
-                throw Exception("Folder $subFilesDir does not exist")
-            }
-        } else {
-            val classFile: File = subFiles!!
-            val className = classFile.nameWithoutExtension
-            // need to take a different approach
-            // since i cant get the class from the file name, I will use the raw data from the file
-            // and look to see if before class it has data
-            // if it does, then it is a data class
-            // if it doesn't, then it is not a data class and throw an exception
-
-            val dataClass = classFile.readText().contains("data class")
-            val openClass = classFile.readText().contains("open class")
-
-            if (!dataClass && !openClass) {
-                throw Exception(
-                    "The class $className is not a data class. Please make it a data class")
-            }
-        }
-    }
+tasks.build {
+    // dependsOn on custom tasks
+    dependsOn(tasks.getByName("checkEvents"))
+    dependsOn(tasks.getByName("checkEntities"))
 }
 
 tasks.jacocoTestReport {
@@ -300,24 +254,5 @@ tasks.getByName("dokkaHtml", DokkaTask::class) {
         pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
             footerMessage = "Copyright © 2022 Yusuf Arfan Ismail and other YDWK contributors."
         }
-    }
-}
-
-/*
- * If the current version is not a snapshot version, this task will update the version by one
- * patch level, append "-SNAPSHOT", and replace the old version in the gradle.properties file.
- */
-tasks.register("incrementVersion") {
-    doLast {
-        if (version.toString().endsWith("-SNAPSHOT")) {
-            return@doLast
-        }
-
-        val splitVersion = version.toString().split(".")
-        val newVersion =
-            "${splitVersion[0]}.${splitVersion[1]}.${splitVersion[2].toInt() + 1}-SNAPSHOT"
-
-        file("gradle.properties")
-            .writeText(file("gradle.properties").readText().replace(version.toString(), newVersion))
     }
 }
