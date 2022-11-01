@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.impl.entities.guild.ws
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.guild.ws.WelcomeChannel
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 
 class WelcomeChannelImpl(override val ydwk: YDWK, override val json: JsonNode) : WelcomeChannel {
@@ -36,4 +37,8 @@ class WelcomeChannelImpl(override val ydwk: YDWK, override val json: JsonNode) :
 
     override var emojiName: String? =
         if (json.has("emoji_name")) json.get("emoji_name").asText() else null
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).toString()
+    }
 }

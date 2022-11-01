@@ -26,6 +26,7 @@ import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.entities.guild.enums.GuildPermission
 import io.github.ydwk.ydwk.impl.entities.UserImpl
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 import io.github.ydwk.ydwk.util.formatZonedDateTime
 import java.util.*
@@ -114,4 +115,8 @@ class MemberImpl(
     override var name: String = if (nick != null) nick!! else user.name
     override val idAsLong: Long
         get() = user.idAsLong + guild.idAsLong
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).name(this.name).toString()
+    }
 }

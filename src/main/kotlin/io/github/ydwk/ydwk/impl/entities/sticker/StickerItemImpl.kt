@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.sticker.StickerItem
 import io.github.ydwk.ydwk.entities.sticker.StickerType
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class StickerItemImpl(
     override val ydwk: YDWK,
@@ -34,4 +35,8 @@ class StickerItemImpl(
 
     override val type: StickerType
         get() = StickerType.fromValue(json.get("type").asInt())
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).name(this.name).toString()
+    }
 }

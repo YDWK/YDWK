@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.message.MessageActivity
 import io.github.ydwk.ydwk.entities.message.activity.MessageActivityType
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class MessageActivityImpl(override val ydwk: YDWK, override val json: JsonNode) : MessageActivity {
     override val type: MessageActivityType
@@ -29,4 +30,8 @@ class MessageActivityImpl(override val ydwk: YDWK, override val json: JsonNode) 
 
     override val partyId: String?
         get() = if (json.has("party_id")) json.get("party_id").asText() else null
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).toString()
+    }
 }

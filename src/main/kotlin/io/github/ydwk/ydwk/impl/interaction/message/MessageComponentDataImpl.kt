@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.interaction.message.MessageComponentData
 import io.github.ydwk.ydwk.interaction.message.MessageComponentType
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class MessageComponentDataImpl(override val ydwk: YDWK, override val json: JsonNode) :
     MessageComponentData {
@@ -30,4 +31,8 @@ class MessageComponentDataImpl(override val ydwk: YDWK, override val json: JsonN
 
     override val componentType: MessageComponentType =
         MessageComponentType.fromInt(json["component_type"].asInt())
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).toString()
+    }
 }

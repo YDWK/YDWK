@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.impl.entities
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.UnavailableGuild
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class UnavailableGuildImpl(
     override val ydwk: YDWK,
@@ -28,4 +29,7 @@ class UnavailableGuildImpl(
     override val idAsLong: Long,
 ) : UnavailableGuild {
     override var unavailable: Boolean = json["unavailable"].asBoolean()
+    override fun toString(): String {
+        return EntityToStringBuilder(this).name("UnavailableGuild").toString()
+    }
 }

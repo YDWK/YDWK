@@ -23,6 +23,7 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Emoji
 import io.github.ydwk.ydwk.entities.message.Reaction
 import io.github.ydwk.ydwk.impl.entities.EmojiImpl
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class ReactionImpl(override val ydwk: YDWK, override val json: JsonNode) : Reaction {
     override val count: Int
@@ -33,4 +34,8 @@ class ReactionImpl(override val ydwk: YDWK, override val json: JsonNode) : React
 
     override val emoji: Emoji
         get() = EmojiImpl(ydwk, json.get("emoji"))
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).toString()
+    }
 }

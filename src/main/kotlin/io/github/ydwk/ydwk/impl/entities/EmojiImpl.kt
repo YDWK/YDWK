@@ -24,6 +24,7 @@ import io.github.ydwk.ydwk.entities.Emoji
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class EmojiImpl(override val ydwk: YDWK, override val json: JsonNode) : Emoji {
     override val idLong: Long?
@@ -49,4 +50,8 @@ class EmojiImpl(override val ydwk: YDWK, override val json: JsonNode) : Emoji {
         if (json.has("available")) json["available"].asBoolean() else false
 
     override var name: String = if (json.has("name")) json["name"].asText() else ""
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).name(this.name).toString()
+    }
 }

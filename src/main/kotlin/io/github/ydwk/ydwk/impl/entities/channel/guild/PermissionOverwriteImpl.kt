@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.impl.entities.channel.guild
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.channel.guild.message.text.PermissionOverwrite
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class PermissionOverwriteImpl(
     override val ydwk: YDWK,
@@ -33,4 +34,8 @@ class PermissionOverwriteImpl(
         get() = json["allow"].asText()
     override val deny: String
         get() = json["deny"].asText()
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).toString()
+    }
 }

@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.interaction.application.ApplicationCommandOption
 import io.github.ydwk.ydwk.slash.SlashOptionType
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class ApplicationCommandOptionImpl(override val ydwk: YDWK, override val json: JsonNode) :
     ApplicationCommandOption {
@@ -36,4 +37,8 @@ class ApplicationCommandOptionImpl(override val ydwk: YDWK, override val json: J
         else emptyList()
 
     override val focused: Boolean? = if (json.has("focused")) json["focused"].asBoolean() else null
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).name(this.name).toString()
+    }
 }

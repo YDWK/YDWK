@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.impl.entities
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.User
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import java.awt.Color
 import java.util.*
 
@@ -58,6 +59,10 @@ open class UserImpl(
 
     override var publicFlags: Int? =
         if (json.hasNonNull("public_flags")) json.get("public_flags").asInt() else null
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).name(this.name).toString()
+    }
 
     override var name: String = json["username"].asText()
 

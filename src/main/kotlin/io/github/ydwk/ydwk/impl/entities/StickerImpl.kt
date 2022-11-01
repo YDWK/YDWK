@@ -25,6 +25,7 @@ import io.github.ydwk.ydwk.entities.Sticker
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.sticker.StickerFormatType
 import io.github.ydwk.ydwk.entities.sticker.StickerType
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 
 class StickerImpl(
@@ -56,6 +57,10 @@ class StickerImpl(
 
     override var sortvarue: Int? =
         if (json.has("sort_value")) json.get("sort_value").asInt() else null
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).name(this.name).toString()
+    }
 
     override var name: String = json.get("name").asText()
 }

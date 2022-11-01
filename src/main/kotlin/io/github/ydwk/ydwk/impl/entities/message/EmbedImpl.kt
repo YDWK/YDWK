@@ -23,6 +23,7 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.message.Embed
 import io.github.ydwk.ydwk.entities.message.embed.*
 import io.github.ydwk.ydwk.impl.entities.message.embed.*
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import java.awt.Color
 import java.net.URL
 
@@ -68,4 +69,8 @@ class EmbedImpl(override val ydwk: YDWK, override val json: JsonNode) : Embed {
         get() =
             if (json.hasNonNull("fields")) json["fields"].map { FieldImpl(ydwk, it) }
             else emptyList()
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).toString()
+    }
 }

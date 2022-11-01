@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.impl.entities.message.embed
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.message.embed.Footer
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class FooterImpl(override val ydwk: YDWK, override val json: JsonNode) : Footer {
     override val text: String
@@ -31,4 +32,8 @@ class FooterImpl(override val ydwk: YDWK, override val json: JsonNode) : Footer 
 
     override val proxyIconUrl: String?
         get() = if (json.has("proxy_icon_url")) json["proxy_icon_url"].asText() else null
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).toString()
+    }
 }

@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.impl.entities.guild.role
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.guild.role.RoleTag
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 
 class RoleTagImpl(override val ydwk: YDWK, override val json: JsonNode) : RoleTag {
@@ -32,4 +33,8 @@ class RoleTagImpl(override val ydwk: YDWK, override val json: JsonNode) : RoleTa
         get() =
             if (json.has("integration_id")) GetterSnowFlake.of(json.get("integration_id").asLong())
             else null
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).toString()
+    }
 }

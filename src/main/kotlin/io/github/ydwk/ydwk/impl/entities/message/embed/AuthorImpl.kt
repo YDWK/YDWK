@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.impl.entities.message.embed
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.message.embed.Author
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import java.net.URL
 
 class AuthorImpl(override val ydwk: YDWK, override val json: JsonNode) : Author {
@@ -36,4 +37,8 @@ class AuthorImpl(override val ydwk: YDWK, override val json: JsonNode) : Author 
 
     override val proxyIconUrl: String?
         get() = if (json.has("proxy_icon_url")) json["proxy_icon_url"].asText() else null
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).name(this.name).toString()
+    }
 }

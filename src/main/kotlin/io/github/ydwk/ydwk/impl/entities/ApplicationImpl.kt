@@ -23,6 +23,7 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Application
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.User
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 import java.net.URL
 
@@ -78,4 +79,8 @@ class ApplicationImpl(
         if (json.hasNonNull("tags")) json["tags"].asText().split(",").toTypedArray() else null
 
     override var name: String = json["name"].asText()
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).name(this.name).toString()
+    }
 }

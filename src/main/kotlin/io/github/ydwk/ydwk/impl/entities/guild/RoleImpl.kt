@@ -24,6 +24,7 @@ import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.entities.guild.enums.GuildPermission
 import io.github.ydwk.ydwk.entities.guild.role.RoleTag
 import io.github.ydwk.ydwk.impl.entities.guild.role.RoleTagImpl
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import java.awt.Color
 import java.util.*
 
@@ -60,4 +61,8 @@ class RoleImpl(override val ydwk: YDWK, override val json: JsonNode, override va
     override var permissions: EnumSet<GuildPermission> = GuildPermission.fromValues(rawPermissions)
 
     override var name: String = json["name"].asText()
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).name(this.name).toString()
+    }
 }

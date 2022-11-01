@@ -24,6 +24,7 @@ import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.audit.AuditLogChange
 import io.github.ydwk.ydwk.entities.audit.AuditLogEntry
 import io.github.ydwk.ydwk.entities.audit.AuditLogType
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class AuditLogEntryImpl(
     override val ydwk: YDWK,
@@ -44,4 +45,8 @@ class AuditLogEntryImpl(
 
     override val reason: String?
         get() = if (json.has("reason")) json["reason"].asText() else null
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).toString()
+    }
 }

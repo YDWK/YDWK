@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.impl.entities.message.embed
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.message.embed.Thumbnail
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import java.net.URL
 
 class ThumbnailImpl(override val ydwk: YDWK, override val json: JsonNode) : Thumbnail {
@@ -36,4 +37,8 @@ class ThumbnailImpl(override val ydwk: YDWK, override val json: JsonNode) : Thum
 
     override val width: Int?
         get() = if (json.has("width")) json["width"].asInt() else null
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).toString()
+    }
 }

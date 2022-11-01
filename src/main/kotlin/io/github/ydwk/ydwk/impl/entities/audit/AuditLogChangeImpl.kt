@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.impl.entities.audit
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.audit.AuditLogChange
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class AuditLogChangeImpl(override val ydwk: YDWK, override val json: JsonNode) : AuditLogChange {
     override val newValue: Any?
@@ -42,4 +43,8 @@ class AuditLogChangeImpl(override val ydwk: YDWK, override val json: JsonNode) :
 
     override val key: String
         get() = json["key"].asText()
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).toString()
+    }
 }

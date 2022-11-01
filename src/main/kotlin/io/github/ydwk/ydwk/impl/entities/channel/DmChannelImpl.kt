@@ -24,6 +24,7 @@ import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
 import io.github.ydwk.ydwk.impl.entities.UserImpl
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 
 class DmChannelImpl(
@@ -44,7 +45,9 @@ class DmChannelImpl(
     override val type: ChannelType
         get() = ChannelType.DM
 
-    override var name: String
-        get() = json["name"].asText()
-        set(value) {}
+    override var name: String = json["name"].asText()
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).name(this.name).toString()
+    }
 }

@@ -28,4 +28,11 @@ interface GenericEntity {
 
     /** The json representation of this entity. */
     val json: JsonNode
+
+    /**
+     * Converts this entity to a string using the [io.github.ydwk.ydwk.util.EntityToStringBuilder].
+     *
+     * @return The string representation of this entity.
+     */
+    override fun toString(): String
 }

@@ -34,6 +34,7 @@ import io.github.ydwk.ydwk.impl.interaction.message.MessageComponentDataImpl
 import io.github.ydwk.ydwk.interaction.Interaction
 import io.github.ydwk.ydwk.interaction.sub.GenericCommandData
 import io.github.ydwk.ydwk.interaction.sub.InteractionType
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 
 class InteractionImpl(
@@ -86,4 +87,8 @@ class InteractionImpl(
                 null
             }
         }
+
+    override fun toString(): String {
+        return EntityToStringBuilder(this).toString()
+    }
 }
