@@ -145,11 +145,11 @@ class SlashBuilderImpl(
                 ydwk.logger.debug("Global slash command ${slash.name} already exists, updating...")
                 globalCommandToAdd.add(slash)
             } else if (!currentGlobalCommandIdAndNameMap.containsValue(slash.name)) {
-                ydwk.logger.debug("Global slash command ${slash.name} does not exist, creating...")
+                ydwk.logger.debug("New global slash command ${slash.name} found")
                 globalCommandToAdd.add(slash)
             } else {
                 ydwk.logger.debug(
-                    "Global slash command ${slash.name} no longer exists, deleting...")
+                    "Global slash command ${slash.name} is not found in new list, deleting...")
                 globalCommandsToDelete.add(
                     currentGlobalCommandIdAndNameMap.filterValues { it == slash.name }.keys.first())
             }
@@ -157,18 +157,28 @@ class SlashBuilderImpl(
 
         for (slash in specificGuildSlash) {
             if (currentSpecificGuildCommandIdAndNameMap.containsValue(slash.name)) {
-                ydwk.logger.debug("Guild slash command ${slash.name} already exists, updating...")
+                ydwk.logger.debug(
+                    "Specific guild slash command ${slash.name} already exists, updating...")
                 specificGuildCommandToAdd.add(slash)
             } else if (!currentSpecificGuildCommandIdAndNameMap.containsValue(slash.name)) {
-                ydwk.logger.debug("Guild slash command ${slash.name} does not exist, creating...")
+                ydwk.logger.debug("New specific guild slash command ${slash.name} found")
                 specificGuildCommandToAdd.add(slash)
             } else {
-                ydwk.logger.debug("Guild slash command ${slash.name} no longer exists, deleting...")
-                specificGuildCommandsToDelete.putAll(
+                ydwk.logger.debug(
+                    "Specific guild slash command ${slash.name} is not found in new list, deleting...")
+                specificGuildCommandsToDelete[
                     currentSpecificGuildCommandIdAndNameMap
                         .filterValues { it == slash.name }
                         .keys
-                        .first())
+                        .first()
+                        .keys
+                        .first()] =
+                    currentSpecificGuildCommandIdAndNameMap
+                        .filterValues { it == slash.name }
+                        .keys
+                        .first()
+                        .values
+                        .first()
             }
         }
 
