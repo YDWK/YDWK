@@ -23,60 +23,60 @@ import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.util.NameAbleEntity
 
 interface Emoji : NameAbleEntity, GenericEntity {
-    /**
-     * Gets the id of the emoji.
-     *
-     * @return The id of the emoji.
-     */
-    val idLong: Long?
+  /**
+   * Gets the id of the emoji.
+   *
+   * @return The id of the emoji.
+   */
+  val idLong: Long?
 
-    /**
-     * Gets the id of the emoji as String.
-     *
-     * @return The id of the emoji as String.
-     */
-    val id: String?
-        get() = if (idLong == 0L) null else idLong.toString()
+  /**
+   * Gets the id of the emoji as String.
+   *
+   * @return The id of the emoji as String.
+   */
+  val id: String?
+    get() = if (idLong == 0L) null else idLong.toString()
 
-    /**
-     * Gets the roles that are allowed to use this emoji.
-     *
-     * @return The roles that are allowed to use this emoji.
-     */
-    var roles: List<Role>
+  /**
+   * Gets the roles that are allowed to use this emoji.
+   *
+   * @return The roles that are allowed to use this emoji.
+   */
+  var roles: List<Role>
 
-    /**
-     * Gets the user that created this emoji.
-     *
-     * @return The user that created this emoji.
-     */
-    var user: User?
+  /**
+   * Gets the user that created this emoji.
+   *
+   * @return The user that created this emoji.
+   */
+  var user: User?
 
-    /**
-     * Gets whether this emoji must be wrapped in colons.
-     *
-     * @return Whether this emoji must be wrapped in colons
-     */
-    var requireColons: Boolean
+  /**
+   * Gets whether this emoji must be wrapped in colons.
+   *
+   * @return Whether this emoji must be wrapped in colons
+   */
+  var requireColons: Boolean
 
-    /**
-     * Gets whether this emoji is managed by an external service.
-     *
-     * @return Whether this emoji is managed by an external service.
-     */
-    var isManaged: Boolean
+  /**
+   * Gets whether this emoji is managed by an external service.
+   *
+   * @return Whether this emoji is managed by an external service.
+   */
+  var isManaged: Boolean
 
-    /**
-     * Gets whether this emoji is animated.
-     *
-     * @return Whether this emoji is animated.
-     */
-    var isAnimated: Boolean
+  /**
+   * Gets whether this emoji is animated.
+   *
+   * @return Whether this emoji is animated.
+   */
+  var isAnimated: Boolean
 
-    /**
-     * Gets whether this emoji is available.
-     *
-     * @return Whether this emoji is available.
-     */
-    var isAvailable: Boolean
+  /**
+   * Gets whether this emoji is available.
+   *
+   * @return Whether this emoji is available.
+   */
+  var isAvailable: Boolean
 }

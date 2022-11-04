@@ -19,30 +19,30 @@
 package io.github.ydwk.ydwk.interaction.message
 
 enum class MessageComponentType(private val type: Int) {
-    /** A container for other components. */
-    ACTION_ROW(1),
+  /** A container for other components. */
+  ACTION_ROW(1),
 
-    /** A button object */
-    BUTTON(2),
+  /** A button object */
+  BUTTON(2),
 
-    /** A select menu for picking from choices */
-    SELECT_MENU(3),
+  /** A select menu for picking from choices */
+  SELECT_MENU(3),
 
-    /** A text input object */
-    TEXT_INPUT(4),
+  /** A text input object */
+  TEXT_INPUT(4),
 
-    /** Unknown component type */
-    UNKNOWN(-1);
+  /** Unknown component type */
+  UNKNOWN(-1);
 
-    companion object {
-        /** Get the [MessageComponentType] from the value */
-        fun fromInt(value: Int): MessageComponentType {
-            return values().firstOrNull { it.type == value } ?: UNKNOWN
-        }
+  companion object {
+    /** Get the [MessageComponentType] from the value */
+    fun fromInt(value: Int): MessageComponentType {
+      return values().firstOrNull { it.type == value } ?: UNKNOWN
     }
+  }
 
-    /** Get the value of the [MessageComponentType] */
-    fun toInt(): Int {
-        return type
-    }
+  /** Get the value of the [MessageComponentType] */
+  fun toInt(): Int {
+    return type
+  }
 }

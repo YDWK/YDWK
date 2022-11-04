@@ -29,61 +29,61 @@ import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 
 class CacheTester {
-    private val objectMapper = ObjectMapper()
-    private val cache = DummyCache(setOf(CacheIds.USER))
-    private val userJson =
-        objectMapper.readTree(Files.readString(Path.of("src/test/resources/cache/user.json")))
-    private val newUserJson =
-        objectMapper.readTree(Files.readString(Path.of("src/test/resources/cache/newUser.json")))
-    private val userId = "1000488829532440204"
+  private val objectMapper = ObjectMapper()
+  private val cache = DummyCache(setOf(CacheIds.USER))
+  private val userJson =
+    objectMapper.readTree(Files.readString(Path.of("src/test/resources/cache/user.json")))
+  private val newUserJson =
+    objectMapper.readTree(Files.readString(Path.of("src/test/resources/cache/newUser.json")))
+  private val userId = "1000488829532440204"
 
-    @Test
-    @Order(1)
-    fun storeCacheTest() {
-        val user: DummyUser = DummyUserImpl(userJson)
-        cache[userId, user] = CacheIds.USER
-    }
+  @Test
+  @Order(1)
+  fun storeCacheTest() {
+    val user: DummyUser = DummyUserImpl(userJson)
+    cache[userId, user] = CacheIds.USER
+  }
 
-    @Test
-    @Order(2)
-    fun checkCacheSizeTest() {
-        storeCacheTest()
-        assertNotNull(cache.size)
-        assertEquals(1, cache.size)
-    }
+  @Test
+  @Order(2)
+  fun checkCacheSizeTest() {
+    storeCacheTest()
+    assertNotNull(cache.size)
+    assertEquals(1, cache.size)
+  }
 
-    @Test
-    @Order(3)
-    fun getCacheTest() {
-        storeCacheTest()
-        val user = cache[userId, CacheIds.USER]
-        assertNotNull(user)
-    }
+  @Test
+  @Order(3)
+  fun getCacheTest() {
+    storeCacheTest()
+    val user = cache[userId, CacheIds.USER]
+    assertNotNull(user)
+  }
 
-    @Test
-    @Order(3)
-    fun updateCacheTest() {
-        storeCacheTest()
-        val user = DummyUserImpl(newUserJson)
-        cache[user.id, user] = CacheIds.USER
-        val updatedUser = cache[userId, CacheIds.USER] as DummyUserImpl
-        assert(updatedUser.id == userId)
-    }
+  @Test
+  @Order(3)
+  fun updateCacheTest() {
+    storeCacheTest()
+    val user = DummyUserImpl(newUserJson)
+    cache[user.id, user] = CacheIds.USER
+    val updatedUser = cache[userId, CacheIds.USER] as DummyUserImpl
+    assert(updatedUser.id == userId)
+  }
 
-    @Test
-    @Order(4)
-    fun deleteCacheTest() {
-        storeCacheTest()
-        cache.remove(userId, CacheIds.USER)
-        assertEquals(0, cache.size)
-        assertNull(cache[userId, CacheIds.USER])
-    }
+  @Test
+  @Order(4)
+  fun deleteCacheTest() {
+    storeCacheTest()
+    cache.remove(userId, CacheIds.USER)
+    assertEquals(0, cache.size)
+    assertNull(cache[userId, CacheIds.USER])
+  }
 
-    @Test
-    @Order(5)
-    fun clearCacheTest() {
-        storeCacheTest()
-        cache.clear()
-        assert(cache.size == 0)
-    }
+  @Test
+  @Order(5)
+  fun clearCacheTest() {
+    storeCacheTest()
+    cache.clear()
+    assert(cache.size == 0)
+  }
 }

@@ -27,46 +27,48 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CoroutineEventManager : IEventManager, CoroutineScope by CoroutineScope(Dispatchers.Default) {
-    private val listeners: MutableList<CoroutineEventListener> = ArrayList()
+  private val listeners: MutableList<CoroutineEventListener> = ArrayList()
 
-    override fun emitEvent(event: GenericEvent) {
-        launch {
-            for (listener in listeners) {
-                try {
-                    listener.onEvent(event)
-                } catch (e: Throwable) {
-                    YDWKImpl.logger.error(
-                        "Error while emitting event ${event.javaClass.simpleName} to ${listener.javaClass.simpleName}",
-                        e)
-                    if (e is Error) {
-                        throw e
-                    }
-                }
-            }
+  override fun emitEvent(event: GenericEvent) {
+    launch {
+      for (listener in listeners) {
+        try {
+          listener.onEvent(event)
+        } catch (e: Throwable) {
+          YDWKImpl.logger.error(
+            "Error while emitting event ${event.javaClass.simpleName} to ${listener.javaClass.simpleName}",
+            e
+          )
+          if (e is Error) {
+            throw e
+          }
         }
+      }
     }
+  }
 
-    override fun addEvent(event: Any) {
-        if (event is CoroutineEventListener) {
-            listeners.add(event)
-        } else {
-            throw IllegalArgumentException(
-                "Event ${event.javaClass.simpleName} is not a valid event listener")
-        }
+  override fun addEvent(event: Any) {
+    if (event is CoroutineEventListener) {
+      listeners.add(event)
+    } else {
+      throw IllegalArgumentException(
+        "Event ${event.javaClass.simpleName} is not a valid event listener"
+      )
     }
+  }
 
-    override fun removeEvent(event: Any) {
-        if (event is CoroutineEventListener) {
-            listeners.remove(event)
-        } else {
-            throw IllegalArgumentException("Event must be an instance of EventListener")
-        }
+  override fun removeEvent(event: Any) {
+    if (event is CoroutineEventListener) {
+      listeners.remove(event)
+    } else {
+      throw IllegalArgumentException("Event must be an instance of EventListener")
     }
+  }
 
-    override fun removeAllEvents() {
-        listeners.clear()
-    }
+  override fun removeAllEvents() {
+    listeners.clear()
+  }
 
-    override val events: MutableList<Any>
-        get() = Collections.unmodifiableList(ArrayList(listeners))
+  override val events: MutableList<Any>
+    get() = Collections.unmodifiableList(ArrayList(listeners))
 }

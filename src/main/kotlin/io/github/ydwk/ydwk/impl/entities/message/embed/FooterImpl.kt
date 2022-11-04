@@ -24,16 +24,16 @@ import io.github.ydwk.ydwk.entities.message.embed.Footer
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class FooterImpl(override val ydwk: YDWK, override val json: JsonNode) : Footer {
-    override val text: String
-        get() = json["text"].asText()
+  override val text: String
+    get() = json["text"].asText()
 
-    override val iconUrl: String?
-        get() = if (json.has("icon_url")) json["icon_url"].asText() else null
+  override val iconUrl: String?
+    get() = if (json.has("icon_url")) json["icon_url"].asText() else null
 
-    override val proxyIconUrl: String?
-        get() = if (json.has("proxy_icon_url")) json["proxy_icon_url"].asText() else null
+  override val proxyIconUrl: String?
+    get() = if (json.has("proxy_icon_url")) json["proxy_icon_url"].asText() else null
 
-    override fun toString(): String {
-        return EntityToStringBuilder(this).toString()
-    }
+  override fun toString(): String {
+    return EntityToStringBuilder(this).toString()
+  }
 }

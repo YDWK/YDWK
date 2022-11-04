@@ -23,26 +23,26 @@ import io.github.ydwk.ydwk.entities.util.GenericEntity
 import java.util.*
 
 interface PermissionEntity : GenericEntity {
-    /**
-     * Gets the permissions of this member.
-     *
-     * @return The permissions of this member.
-     */
-    val permissions: EnumSet<GuildPermission>
+  /**
+   * Gets the permissions of this member.
+   *
+   * @return The permissions of this member.
+   */
+  val permissions: EnumSet<GuildPermission>
 
-    /**
-     * Checks if the member has a specific permission.
-     *
-     * @param permission The permission to check.
-     * @return True if the member has the permission, false otherwise.
-     */
-    fun hasPermission(vararg permission: GuildPermission): Boolean
+  /**
+   * Checks if the member has a specific permission.
+   *
+   * @param permission The permission to check.
+   * @return True if the member has the permission, false otherwise.
+   */
+  fun hasPermission(vararg permission: GuildPermission): Boolean
 
-    /**
-     * Checks if the member has a specific permission.
-     *
-     * @param permission The permission to check.
-     * @return True if the member has the permission, false otherwise.
-     */
-    fun hasPermission(permission: Collection<GuildPermission>): Boolean
+  /**
+   * Checks if the member has a specific permission.
+   *
+   * @param permission The permission to check.
+   * @return True if the member has the permission, false otherwise.
+   */
+  fun hasPermission(permission: Collection<GuildPermission>): Boolean
 }

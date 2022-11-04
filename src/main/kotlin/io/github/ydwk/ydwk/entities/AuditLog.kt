@@ -23,17 +23,17 @@ import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.interaction.application.SlashCommand
 
 interface AuditLog : GenericEntity {
-    /**
-     * Gets a list of application commands referenced in the audit log.
-     *
-     * @return A list of application commands referenced in the audit log.
-     */
-    val applicationCommands: List<SlashCommand>
+  /**
+   * Gets a list of application commands referenced in the audit log.
+   *
+   * @return A list of application commands referenced in the audit log.
+   */
+  val applicationCommands: List<SlashCommand>
 
-    /**
-     * Gets a list of audit log entries, sorted from most to least recent.
-     *
-     * @return A list of audit log entries, sorted from most to least recent.
-     */
-    val entries: List<AuditLogEntry>
+  /**
+   * Gets a list of audit log entries, sorted from most to least recent.
+   *
+   * @return A list of audit log entries, sorted from most to least recent.
+   */
+  val entries: List<AuditLogEntry>
 }

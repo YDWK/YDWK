@@ -23,7 +23,7 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.channel.guild.forum.GuildForumChannel
 
 class GuildForumChannelImpl(
-    override val ydwk: YDWK,
-    override val json: JsonNode,
-    override val idAsLong: Long
+  override val ydwk: YDWK,
+  override val json: JsonNode,
+  override val idAsLong: Long
 ) : GuildForumChannel, GenericGuildTextChannelImpl(ydwk, json, idAsLong)

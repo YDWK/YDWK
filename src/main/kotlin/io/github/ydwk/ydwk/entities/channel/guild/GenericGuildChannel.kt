@@ -21,52 +21,52 @@ package io.github.ydwk.ydwk.entities.channel.guild
 import io.github.ydwk.ydwk.entities.channel.GuildChannel
 
 interface GenericGuildChannel : GuildChannel, Comparable<GenericGuildChannel> {
-    /**
-     * Weather the channel is voice channel.
-     *
-     * @return true if the channel is voice channel.
-     */
-    val isVoiceChannel: Boolean
+  /**
+   * Weather the channel is voice channel.
+   *
+   * @return true if the channel is voice channel.
+   */
+  val isVoiceChannel: Boolean
 
-    /**
-     * Weather the channel is a text channel.
-     *
-     * @return true if the channel is a text channel.
-     */
-    val isTextChannel: Boolean
+  /**
+   * Weather the channel is a text channel.
+   *
+   * @return true if the channel is a text channel.
+   */
+  val isTextChannel: Boolean
 
-    /**
-     * Weather the channel is a category channel.
-     *
-     * @return true if the channel is a category channel.
-     */
-    val isCategory: Boolean
+  /**
+   * Weather the channel is a category channel.
+   *
+   * @return true if the channel is a category channel.
+   */
+  val isCategory: Boolean
 
-    /**
-     * Gets the channel as Guild Category.
-     *
-     * @return the channel as Guild Category.
-     */
-    fun asGuildCategory(): GuildCategory?
+  /**
+   * Gets the channel as Guild Category.
+   *
+   * @return the channel as Guild Category.
+   */
+  fun asGuildCategory(): GuildCategory?
 
-    /**
-     * Gets the channel as a generic guild text channel.
-     *
-     * @return the channel as a generic guild text channel.
-     */
-    fun asGenericGuildTextChannel(): GenericGuildTextChannel
+  /**
+   * Gets the channel as a generic guild text channel.
+   *
+   * @return the channel as a generic guild text channel.
+   */
+  fun asGenericGuildTextChannel(): GenericGuildTextChannel
 
-    /**
-     * Gets the channel as a generic guild voice channel.
-     *
-     * @return the channel as a generic guild voice channel.
-     */
-    fun asGenericGuildVoiceChannel(): GenericGuildVoiceChannel
+  /**
+   * Gets the channel as a generic guild voice channel.
+   *
+   * @return the channel as a generic guild voice channel.
+   */
+  fun asGenericGuildVoiceChannel(): GenericGuildVoiceChannel
 
-    override fun compareTo(other: GenericGuildChannel): Int {
-        if (guild != other.guild) {
-            throw IllegalArgumentException("Cannot compare channels from different guilds")
-        }
-        return position.compareTo(other.position)
+  override fun compareTo(other: GenericGuildChannel): Int {
+    if (guild != other.guild) {
+      throw IllegalArgumentException("Cannot compare channels from different guilds")
     }
+    return position.compareTo(other.position)
+  }
 }

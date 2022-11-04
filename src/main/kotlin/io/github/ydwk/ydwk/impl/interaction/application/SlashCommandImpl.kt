@@ -50,150 +50,145 @@ import java.util.concurrent.CompletableFuture
 import okhttp3.RequestBody.Companion.toRequestBody
 
 class SlashCommandImpl(
-    override val ydwk: YDWK,
-    override val json: JsonNode,
-    override val idAsLong: Long,
-    val interaction: Interaction
+  override val ydwk: YDWK,
+  override val json: JsonNode,
+  override val idAsLong: Long,
+  val interaction: Interaction
 ) : SlashCommand {
-    override val name: String = json["name"].asText()
+  override val name: String = json["name"].asText()
 
-    override val type: ApplicationCommandType = ApplicationCommandType.fromInt(json["type"].asInt())
+  override val type: ApplicationCommandType = ApplicationCommandType.fromInt(json["type"].asInt())
 
-    // ignore
-    private val applicationOptions: List<ApplicationCommandOption>? =
-        if (json.has("options")) json["options"].map { ApplicationCommandOptionImpl(ydwk, it) }
-        else null
+  // ignore
+  private val applicationOptions: List<ApplicationCommandOption>? =
+    if (json.has("options")) json["options"].map { ApplicationCommandOptionImpl(ydwk, it) }
+    else null
 
-    override val guild: Guild? = interaction.guild
+  override val guild: Guild? = interaction.guild
 
-    override val targetId: GetterSnowFlake? =
-        if (json.has("target_id")) GetterSnowFlake.of(json["target_id"].asLong()) else null
+  override val targetId: GetterSnowFlake? =
+    if (json.has("target_id")) GetterSnowFlake.of(json["target_id"].asLong()) else null
 
-    override val user: User? = interaction.user
+  override val user: User? = interaction.user
 
-    override val member: Member? = interaction.member
+  override val member: Member? = interaction.member
 
-    override val applicationId: GetterSnowFlake = interaction.applicationId
+  override val applicationId: GetterSnowFlake = interaction.applicationId
 
-    override val interactionType: InteractionType = interaction.type
+  override val interactionType: InteractionType = interaction.type
 
-    override val channel: TextChannel? = interaction.channel
+  override val channel: TextChannel? = interaction.channel
 
-    override val token: String = interaction.token
+  override val token: String = interaction.token
 
-    override val version: Int = interaction.version
+  override val version: Int = interaction.version
 
-    override val message: Message? = interaction.message
+  override val message: Message? = interaction.message
 
-    override val permissions: Long? = interaction.permissions
+  override val permissions: Long? = interaction.permissions
 
-    override val locale: String? = interaction.locale
-    override fun reply(content: String, tts: Boolean, ephemeral: Boolean): CompletableFuture<Void> {
-        return ydwk.restApiManager
-            .post(
-                replyJsonBody(ydwk, content, tts, if (ephemeral) MessageFlag.EPHEMERAL else null)
-                    .toString()
-                    .toRequestBody(),
-                EndPoint.ApplicationCommandsEndpoint.REPLY_TO_SLASH_COMMAND,
-                interaction.id,
-                token)
-            .executeWithNoResult()
-    }
+  override val locale: String? = interaction.locale
+  override fun reply(content: String, tts: Boolean, ephemeral: Boolean): CompletableFuture<Void> {
+    return ydwk.restApiManager
+      .post(
+        replyJsonBody(ydwk, content, tts, if (ephemeral) MessageFlag.EPHEMERAL else null)
+          .toString()
+          .toRequestBody(),
+        EndPoint.ApplicationCommandsEndpoint.REPLY_TO_SLASH_COMMAND,
+        interaction.id,
+        token
+      )
+      .executeWithNoResult()
+  }
 
-    override fun reply(embed: Embed, tts: Boolean, ephemeral: Boolean): CompletableFuture<Void> {
-        return ydwk.restApiManager
-            .post(
-                replyJsonBody(ydwk, embed, tts, if (ephemeral) MessageFlag.EPHEMERAL else null)
-                    .toString()
-                    .toRequestBody(),
-                EndPoint.ApplicationCommandsEndpoint.REPLY_TO_SLASH_COMMAND,
-                interaction.id,
-                token)
-            .executeWithNoResult()
-    }
+  override fun reply(embed: Embed, tts: Boolean, ephemeral: Boolean): CompletableFuture<Void> {
+    return ydwk.restApiManager
+      .post(
+        replyJsonBody(ydwk, embed, tts, if (ephemeral) MessageFlag.EPHEMERAL else null)
+          .toString()
+          .toRequestBody(),
+        EndPoint.ApplicationCommandsEndpoint.REPLY_TO_SLASH_COMMAND,
+        interaction.id,
+        token
+      )
+      .executeWithNoResult()
+  }
 
-    override val options: List<SlashOptionGetter>
-        get() {
-            val map: MutableMap<Long, GenericEntity> = mutableMapOf()
-            val resolved = json["resolved"]
-            resolved["users"]?.let {
-                it.fields().forEach { (id, node) ->
-                    map[id.toLong()] = UserImpl(node, node["id"].asLong(), ydwk)
-                    (ydwk as YDWKImpl)
-                        .cache
-                        .update(
-                            node["id"].asText(),
-                            CacheIds.USER,
-                            UserImpl(node, node["id"].asLong(), ydwk))
-                }
+  override val options: List<SlashOptionGetter>
+    get() {
+      val map: MutableMap<Long, GenericEntity> = mutableMapOf()
+      val resolved = json["resolved"]
+      resolved["users"]?.let {
+        it.fields().forEach { (id, node) ->
+          map[id.toLong()] = UserImpl(node, node["id"].asLong(), ydwk)
+          (ydwk as YDWKImpl)
+            .cache
+            .update(node["id"].asText(), CacheIds.USER, UserImpl(node, node["id"].asLong(), ydwk))
+        }
+      }
+      resolved["attachments"]?.let {
+        it.fields().forEach { (id, node) ->
+          map[id.toLong()] = AttachmentImpl(ydwk, node, node["id"].asLong())
+          (ydwk as YDWKImpl)
+            .cache
+            .update(
+              node["id"].asText(),
+              CacheIds.ATTACHMENT,
+              AttachmentImpl(ydwk, node, node["id"].asLong())
+            )
+        }
+      }
+
+      if (guild != null) {
+        resolved["members"]?.let {
+          it.fields().forEach { (id, node) ->
+            resolved["users"]?.let { users ->
+              val user = users[id]
+              map[id.toLong()] =
+                MemberImpl(ydwk, node, guild, UserImpl(user, user["id"].asLong(), ydwk))
             }
-            resolved["attachments"]?.let {
-                it.fields().forEach { (id, node) ->
-                    map[id.toLong()] = AttachmentImpl(ydwk, node, node["id"].asLong())
-                    (ydwk as YDWKImpl)
-                        .cache
-                        .update(
-                            node["id"].asText(),
-                            CacheIds.ATTACHMENT,
-                            AttachmentImpl(ydwk, node, node["id"].asLong()))
-                }
-            }
-
-            if (guild != null) {
-                resolved["members"]?.let {
-                    it.fields().forEach { (id, node) ->
-                        resolved["users"]?.let { users ->
-                            val user = users[id]
-                            map[id.toLong()] =
-                                MemberImpl(
-                                    ydwk, node, guild, UserImpl(user, user["id"].asLong(), ydwk))
-                        }
-                        (ydwk as YDWKImpl)
-                            .memberCache
-                            .update(
-                                node["id"].asText(),
-                                CacheIds.MEMBER,
-                                MemberImpl(
-                                    ydwk,
-                                    node,
-                                    guild,
-                                    UserImpl(
-                                        resolved["users"][id],
-                                        resolved["users"][id]["id"].asLong(),
-                                        ydwk)))
-                    }
-                }
-
-                resolved["roles"]?.let {
-                    it.fields().forEach { (id, node) ->
-                        map[id.toLong()] = RoleImpl(ydwk, node, node["id"].asLong())
-                        (ydwk as YDWKImpl)
-                            .cache
-                            .update(
-                                node["id"].asText(),
-                                CacheIds.ROLE,
-                                RoleImpl(ydwk, node, node["id"].asLong()))
-                    }
-                }
-
-                resolved["channels"]?.let {
-                    it.fields().forEach { (id, node) ->
-                        map[id.toLong()] =
-                            GenericGuildTextChannelImpl(ydwk, node, node["id"].asLong())
-                        (ydwk as YDWKImpl)
-                            .cache
-                            .update(
-                                node["id"].asText(),
-                                CacheIds.TEXT_CHANNEL,
-                                GenericGuildTextChannelImpl(ydwk, node, node["id"].asLong()))
-                    }
-                }
-            }
-
-            return applicationOptions?.map { SlashOptionGetterImpl(it, map) } ?: emptyList()
+            (ydwk as YDWKImpl)
+              .memberCache
+              .update(
+                node["id"].asText(),
+                CacheIds.MEMBER,
+                MemberImpl(
+                  ydwk,
+                  node,
+                  guild,
+                  UserImpl(resolved["users"][id], resolved["users"][id]["id"].asLong(), ydwk)
+                )
+              )
+          }
         }
 
-    override fun toString(): String {
-        return EntityToStringBuilder(this).name(this.name).toString()
+        resolved["roles"]?.let {
+          it.fields().forEach { (id, node) ->
+            map[id.toLong()] = RoleImpl(ydwk, node, node["id"].asLong())
+            (ydwk as YDWKImpl)
+              .cache
+              .update(node["id"].asText(), CacheIds.ROLE, RoleImpl(ydwk, node, node["id"].asLong()))
+          }
+        }
+
+        resolved["channels"]?.let {
+          it.fields().forEach { (id, node) ->
+            map[id.toLong()] = GenericGuildTextChannelImpl(ydwk, node, node["id"].asLong())
+            (ydwk as YDWKImpl)
+              .cache
+              .update(
+                node["id"].asText(),
+                CacheIds.TEXT_CHANNEL,
+                GenericGuildTextChannelImpl(ydwk, node, node["id"].asLong())
+              )
+          }
+        }
+      }
+
+      return applicationOptions?.map { SlashOptionGetterImpl(it, map) } ?: emptyList()
     }
+
+  override fun toString(): String {
+    return EntityToStringBuilder(this).name(this.name).toString()
+  }
 }

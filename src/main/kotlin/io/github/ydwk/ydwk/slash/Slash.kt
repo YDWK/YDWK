@@ -33,47 +33,47 @@ import io.github.ydwk.ydwk.util.Checks
  * @param specificGuildOnly Whether the slash command can only be used in a specific guild/s.
  */
 class Slash(
-    val name: String,
-    val description: String,
-    private val guildOnly: Boolean = false,
-    val specificGuildOnly: Boolean = false
+  val name: String,
+  val description: String,
+  private val guildOnly: Boolean = false,
+  val specificGuildOnly: Boolean = false
 ) {
-    private var options: MutableList<SlashOption> = mutableListOf()
+  private var options: MutableList<SlashOption> = mutableListOf()
 
-    fun addOption(option: SlashOption): Slash {
-        options.add(option)
-        return this
-    }
+  fun addOption(option: SlashOption): Slash {
+    options.add(option)
+    return this
+  }
 
-    fun addOptions(options: List<SlashOption>): Slash {
-        this.options.addAll(options)
-        return this
-    }
+  fun addOptions(options: List<SlashOption>): Slash {
+    this.options.addAll(options)
+    return this
+  }
 
-    fun addOptions(vararg options: SlashOption): Slash {
-        this.options.addAll(options)
-        return this
-    }
+  fun addOptions(vararg options: SlashOption): Slash {
+    this.options.addAll(options)
+    return this
+  }
 
-    fun toJson(): JsonNode {
-        val json = ObjectMapper().createObjectNode()
-        json.put("name", name)
-        json.put("description", description)
-        json.put("type", ApplicationCommandType.CHAT_INPUT.toInt())
-        if (guildOnly) {
-            json.put("dm_permission", false)
-        }
-        val options: ArrayNode = ObjectMapper().createArrayNode()
-        this.options.forEach { it ->
-            Checks.checkLength(
-                it.name, 32, "Option command name can not be longer than 32 characters")
-            Checks.checkLength(
-                it.description,
-                100,
-                "Option command description can not be longer than 100 characters")
-            options.add(it.toJson())
-        }
-        json.set<ArrayNode>("options", options)
-        return json
+  fun toJson(): JsonNode {
+    val json = ObjectMapper().createObjectNode()
+    json.put("name", name)
+    json.put("description", description)
+    json.put("type", ApplicationCommandType.CHAT_INPUT.toInt())
+    if (guildOnly) {
+      json.put("dm_permission", false)
     }
+    val options: ArrayNode = ObjectMapper().createArrayNode()
+    this.options.forEach { it ->
+      Checks.checkLength(it.name, 32, "Option command name can not be longer than 32 characters")
+      Checks.checkLength(
+        it.description,
+        100,
+        "Option command description can not be longer than 100 characters"
+      )
+      options.add(it.toJson())
+    }
+    json.set<ArrayNode>("options", options)
+    return json
+  }
 }

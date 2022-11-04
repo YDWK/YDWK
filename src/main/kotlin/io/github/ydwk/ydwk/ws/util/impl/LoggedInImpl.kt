@@ -23,36 +23,36 @@ import io.github.ydwk.ydwk.ws.util.formatInstant
 import java.time.Instant
 
 class LoggedInImpl(
-    override val loggedIn: Boolean,
+  override val loggedIn: Boolean,
 ) : LoggedIn {
-    private var loggedInInstant: Instant? = null
-    private var disconnectedInstant: Instant? = null
+  private var loggedInInstant: Instant? = null
+  private var disconnectedInstant: Instant? = null
 
-    override var loggedInTime: String? = null
-        get() {
-            if (loggedInInstant != null) {
-                return formatInstant(loggedInInstant!!)
-            }
-            return null
-        }
-
-    override var disconnectionTime: String? = null
-        get() {
-            if (disconnectedInstant != null) {
-                return formatInstant(disconnectedInstant!!)
-            }
-            return null
-        }
-
-    /** Sets the logged in time */
-    fun setLoggedInTime(): LoggedIn {
-        loggedInInstant = Instant.now()
-        return this
+  override var loggedInTime: String? = null
+    get() {
+      if (loggedInInstant != null) {
+        return formatInstant(loggedInInstant!!)
+      }
+      return null
     }
 
-    /** Sets the disconnected time */
-    fun setDisconnectedTime(): LoggedIn {
-        disconnectedInstant = Instant.now()
-        return this
+  override var disconnectionTime: String? = null
+    get() {
+      if (disconnectedInstant != null) {
+        return formatInstant(disconnectedInstant!!)
+      }
+      return null
     }
+
+  /** Sets the logged in time */
+  fun setLoggedInTime(): LoggedIn {
+    loggedInInstant = Instant.now()
+    return this
+  }
+
+  /** Sets the disconnected time */
+  fun setDisconnectedTime(): LoggedIn {
+    disconnectedInstant = Instant.now()
+    return this
+  }
 }

@@ -29,52 +29,52 @@ import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 open class GenericGuildChannelImpl(
-    override val ydwk: YDWK,
-    override val json: JsonNode,
-    override val idAsLong: Long,
-    override val isTextChannel: Boolean = false,
-    override val isVoiceChannel: Boolean = false,
-    override val isCategory: Boolean = false
+  override val ydwk: YDWK,
+  override val json: JsonNode,
+  override val idAsLong: Long,
+  override val isTextChannel: Boolean = false,
+  override val isVoiceChannel: Boolean = false,
+  override val isCategory: Boolean = false
 ) : GenericGuildChannel {
 
-    override var position: Int = json["position"].asInt()
+  override var position: Int = json["position"].asInt()
 
-    override var parent: GuildCategory? =
-        json["parent_id"]?.asText()?.let { ydwk.getCategoryById(it) }
+  override var parent: GuildCategory? =
+    json["parent_id"]?.asText()?.let { ydwk.getCategoryById(it) }
 
-    override fun asGuildCategory(): GuildCategory? {
-        return if (isCategory) {
-            GuildCategoryImpl(ydwk, json, idAsLong)
-        } else {
-            null
-        }
+  override fun asGuildCategory(): GuildCategory? {
+    return if (isCategory) {
+      GuildCategoryImpl(ydwk, json, idAsLong)
+    } else {
+      null
     }
+  }
 
-    override fun asGenericGuildTextChannel(): GenericGuildTextChannel {
-        return if (isTextChannel) {
-            GenericGuildTextChannelImpl(ydwk, json, idAsLong)
-        } else {
-            throw IllegalStateException("This channel is not a text channel")
-        }
+  override fun asGenericGuildTextChannel(): GenericGuildTextChannel {
+    return if (isTextChannel) {
+      GenericGuildTextChannelImpl(ydwk, json, idAsLong)
+    } else {
+      throw IllegalStateException("This channel is not a text channel")
     }
+  }
 
-    override fun asGenericGuildVoiceChannel(): GenericGuildVoiceChannel {
-        return if (isVoiceChannel) {
-            GenericGuildVoiceChannelImpl(ydwk, json, idAsLong)
-        } else {
-            throw IllegalStateException("This channel is not a voice channel")
-        }
+  override fun asGenericGuildVoiceChannel(): GenericGuildVoiceChannel {
+    return if (isVoiceChannel) {
+      GenericGuildVoiceChannelImpl(ydwk, json, idAsLong)
+    } else {
+      throw IllegalStateException("This channel is not a voice channel")
     }
+  }
 
-    override val guild: Guild
-        get() = ydwk.getGuildById(json["guild_id"].asText())!!
+  override val guild: Guild
+    get() = ydwk.getGuildById(json["guild_id"].asText())!!
 
-    override val type: ChannelType
-        get() = ChannelType.fromId(json["type"].asInt())
+  override val type: ChannelType
+    get() = ChannelType.fromId(json["type"].asInt())
 
-    override var name: String = json["name"].asText()
+  override var name: String = json["name"].asText()
 
-    override fun toString(): String {
-        return EntityToStringBuilder(this).name(this.name).toString()
-    }
+  override fun toString(): String {
+    return EntityToStringBuilder(this).name(this.name).toString()
+  }
 }

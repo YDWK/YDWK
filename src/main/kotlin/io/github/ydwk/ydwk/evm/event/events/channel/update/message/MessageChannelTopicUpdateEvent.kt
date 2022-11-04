@@ -24,8 +24,8 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
 /** Fired when the topic of a guild news/text channel is updated */
 data class MessageChannelTopicUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: GuildMessageChannel,
-    val oldTopic: String,
-    val newTopic: String
+  override val ydwk: YDWK,
+  override val entity: GuildMessageChannel,
+  val oldTopic: String,
+  val newTopic: String
 ) : GenericChannelUpdateEvent<String>(ydwk, entity, oldTopic, newTopic)

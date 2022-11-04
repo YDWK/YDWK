@@ -26,32 +26,32 @@ import io.github.ydwk.ydwk.entities.channel.guild.message.news.GuildNewsChannel
 import io.github.ydwk.ydwk.entities.channel.guild.message.text.GuildTextChannel
 
 open class GenericGuildTextChannelImpl(
-    override val ydwk: YDWK,
-    override val json: JsonNode,
-    override val idAsLong: Long
+  override val ydwk: YDWK,
+  override val json: JsonNode,
+  override val idAsLong: Long
 ) : GenericGuildTextChannel, GenericGuildChannelImpl(ydwk, json, idAsLong, true, false, false) {
 
-    override fun asGuildTextChannel(): GuildTextChannel? {
-        return if (isCastable(GuildTextChannel::class.java)) {
-            GuildTextChannelImpl(ydwk, json, idAsLong)
-        } else {
-            null
-        }
+  override fun asGuildTextChannel(): GuildTextChannel? {
+    return if (isCastable(GuildTextChannel::class.java)) {
+      GuildTextChannelImpl(ydwk, json, idAsLong)
+    } else {
+      null
     }
+  }
 
-    override fun asGuildNewsChannel(): GuildNewsChannel? {
-        return if (isCastable(GuildNewsChannel::class.java)) {
-            GuildNewsChannelImpl(ydwk, json, idAsLong)
-        } else {
-            null
-        }
+  override fun asGuildNewsChannel(): GuildNewsChannel? {
+    return if (isCastable(GuildNewsChannel::class.java)) {
+      GuildNewsChannelImpl(ydwk, json, idAsLong)
+    } else {
+      null
     }
+  }
 
-    override fun asGuildForumChannel(): GuildForumChannel? {
-        return if (isCastable(GuildForumChannel::class.java)) {
-            GuildForumChannelImpl(ydwk, json, idAsLong)
-        } else {
-            null
-        }
+  override fun asGuildForumChannel(): GuildForumChannel? {
+    return if (isCastable(GuildForumChannel::class.java)) {
+      GuildForumChannelImpl(ydwk, json, idAsLong)
+    } else {
+      null
     }
+  }
 }

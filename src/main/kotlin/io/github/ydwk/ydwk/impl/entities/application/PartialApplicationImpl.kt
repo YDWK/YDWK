@@ -24,14 +24,14 @@ import io.github.ydwk.ydwk.entities.application.PartialApplication
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class PartialApplicationImpl(
-    override val json: JsonNode,
-    override val idAsLong: Long,
-    override val ydwk: YDWK,
+  override val json: JsonNode,
+  override val idAsLong: Long,
+  override val ydwk: YDWK,
 ) : PartialApplication {
 
-    override var flags: Int = json.get("flags").asInt()
+  override var flags: Int = json.get("flags").asInt()
 
-    override fun toString(): String {
-        return EntityToStringBuilder(this).toString()
-    }
+  override fun toString(): String {
+    return EntityToStringBuilder(this).toString()
+  }
 }

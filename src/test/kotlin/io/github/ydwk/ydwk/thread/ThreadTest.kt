@@ -22,24 +22,25 @@ import kotlin.test.assertEquals
 import org.junit.jupiter.api.Test
 
 class ThreadTest {
-    @Test
-    fun test() {
-        // How can i do something like where for every 6 of something do function wait 2 seconds and
-        // repeat until list is empty (edited)
+  @Test
+  fun test() {
+    // How can i do something like where for every 6 of something do function wait 2
+    // seconds and
+    // repeat until list is empty (edited)
 
-        val list = mutableListOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+    val list = mutableListOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 
-        val listChunks = list.chunked(6)
+    val listChunks = list.chunked(6)
 
-        val newList = mutableListOf<Int>()
+    val newList = mutableListOf<Int>()
 
-        for (chunk in listChunks) {
-            for (i in chunk) {
-                newList.add(i)
-            }
-            Thread.sleep(2000)
-        }
-
-        assertEquals(list, newList)
+    for (chunk in listChunks) {
+      for (i in chunk) {
+        newList.add(i)
+      }
+      Thread.sleep(2000)
     }
+
+    assertEquals(list, newList)
+  }
 }

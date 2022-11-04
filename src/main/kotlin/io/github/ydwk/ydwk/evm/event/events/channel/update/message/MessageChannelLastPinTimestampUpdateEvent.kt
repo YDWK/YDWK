@@ -24,8 +24,8 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
 /** Fired when the default auto archive duration of a guild news/text channel is updated */
 data class MessageChannelLastPinTimestampUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: GuildMessageChannel,
-    val oldLastPinTimestamp: String,
-    val newLastPinTimestamp: String
+  override val ydwk: YDWK,
+  override val entity: GuildMessageChannel,
+  val oldLastPinTimestamp: String,
+  val newLastPinTimestamp: String
 ) : GenericChannelUpdateEvent<String>(ydwk, entity, oldLastPinTimestamp, newLastPinTimestamp)

@@ -29,48 +29,47 @@ import java.net.URL
 
 class EmbedImpl(override val ydwk: YDWK, override val json: JsonNode) : Embed {
 
-    override val title: String?
-        get() = if (json.hasNonNull("title")) json["title"].asText() else null
+  override val title: String?
+    get() = if (json.hasNonNull("title")) json["title"].asText() else null
 
-    override val type: EmbedType?
-        get() = if (json.hasNonNull("type")) EmbedType.from(json["type"].asText()) else null
+  override val type: EmbedType?
+    get() = if (json.hasNonNull("type")) EmbedType.from(json["type"].asText()) else null
 
-    override val description: String?
-        get() = if (json.hasNonNull("description")) json["description"].asText() else null
+  override val description: String?
+    get() = if (json.hasNonNull("description")) json["description"].asText() else null
 
-    override val url: URL?
-        get() = if (json.hasNonNull("url")) URL(json["url"].asText()) else null
+  override val url: URL?
+    get() = if (json.hasNonNull("url")) URL(json["url"].asText()) else null
 
-    override val timestamp: String?
-        get() = if (json.hasNonNull("timestamp")) json["timestamp"].asText() else null
+  override val timestamp: String?
+    get() = if (json.hasNonNull("timestamp")) json["timestamp"].asText() else null
 
-    override val color: Color?
-        get() = if (json.hasNonNull("color")) Color(json["color"].asInt()) else null
+  override val color: Color?
+    get() = if (json.hasNonNull("color")) Color(json["color"].asInt()) else null
 
-    override val footer: Footer?
-        get() = if (json.hasNonNull("footer")) FooterImpl(ydwk, json["footer"]) else null
+  override val footer: Footer?
+    get() = if (json.hasNonNull("footer")) FooterImpl(ydwk, json["footer"]) else null
 
-    override val image: Image?
-        get() = if (json.hasNonNull("image")) ImageImpl(ydwk, json["image"]) else null
+  override val image: Image?
+    get() = if (json.hasNonNull("image")) ImageImpl(ydwk, json["image"]) else null
 
-    override val thumbnail: Thumbnail?
-        get() = if (json.hasNonNull("thumbnail")) ThumbnailImpl(ydwk, json["thumbnail"]) else null
+  override val thumbnail: Thumbnail?
+    get() = if (json.hasNonNull("thumbnail")) ThumbnailImpl(ydwk, json["thumbnail"]) else null
 
-    override val video: Video?
-        get() = if (json.hasNonNull("video")) VideoImpl(ydwk, json["video"]) else null
+  override val video: Video?
+    get() = if (json.hasNonNull("video")) VideoImpl(ydwk, json["video"]) else null
 
-    override val provider: Provider?
-        get() = if (json.hasNonNull("provider")) ProviderImpl(ydwk, json["provider"]) else null
+  override val provider: Provider?
+    get() = if (json.hasNonNull("provider")) ProviderImpl(ydwk, json["provider"]) else null
 
-    override val author: Author?
-        get() = if (json.hasNonNull("author")) AuthorImpl(ydwk, json["author"]) else null
+  override val author: Author?
+    get() = if (json.hasNonNull("author")) AuthorImpl(ydwk, json["author"]) else null
 
-    override val fields: List<Field>
-        get() =
-            if (json.hasNonNull("fields")) json["fields"].map { FieldImpl(ydwk, it) }
-            else emptyList()
+  override val fields: List<Field>
+    get() =
+      if (json.hasNonNull("fields")) json["fields"].map { FieldImpl(ydwk, it) } else emptyList()
 
-    override fun toString(): String {
-        return EntityToStringBuilder(this).toString()
-    }
+  override fun toString(): String {
+    return EntityToStringBuilder(this).toString()
+  }
 }

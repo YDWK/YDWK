@@ -21,8 +21,8 @@ package io.github.ydwk.ydwk.entities.message.embed.builder
 import java.net.URL
 
 class EmbedThumbnailBuilder(
-    var url: URL,
-    var proxyUrl: URL? = null,
-    var width: Int? = null,
-    var height: Int? = null
+  var url: URL,
+  var proxyUrl: URL? = null,
+  var width: Int? = null,
+  var height: Int? = null
 )

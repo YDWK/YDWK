@@ -23,7 +23,7 @@ import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class ThreadDeleteHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override fun start() {
-        TODO("Not yet implemented")
-    }
+  override fun start() {
+    TODO("Not yet implemented")
+  }
 }

@@ -26,19 +26,19 @@ import java.net.URL
 
 class AuthorImpl(override val ydwk: YDWK, override val json: JsonNode) : Author {
 
-    override val name: String
-        get() = json["name"].asText()
+  override val name: String
+    get() = json["name"].asText()
 
-    override val url: URL?
-        get() = if (json.has("url")) URL(json["url"].asText()) else null
+  override val url: URL?
+    get() = if (json.has("url")) URL(json["url"].asText()) else null
 
-    override val iconUrl: String?
-        get() = if (json.has("icon_url")) json["icon_url"].asText() else null
+  override val iconUrl: String?
+    get() = if (json.has("icon_url")) json["icon_url"].asText() else null
 
-    override val proxyIconUrl: String?
-        get() = if (json.has("proxy_icon_url")) json["proxy_icon_url"].asText() else null
+  override val proxyIconUrl: String?
+    get() = if (json.has("proxy_icon_url")) json["proxy_icon_url"].asText() else null
 
-    override fun toString(): String {
-        return EntityToStringBuilder(this).name(this.name).toString()
-    }
+  override fun toString(): String {
+    return EntityToStringBuilder(this).name(this.name).toString()
+  }
 }

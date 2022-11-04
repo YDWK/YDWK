@@ -25,65 +25,65 @@ import io.github.ydwk.ydwk.entities.*
  * This is the implementation of the [Cache] interface that uses a [Map] to store and retrieve data.
  */
 open class PerpetualCache(
-    private val allowedCache: Set<CacheIds>,
+  private val allowedCache: Set<CacheIds>,
 ) : Cache {
-    private val cache = HashMap<String, Any>()
+  private val cache = HashMap<String, Any>()
 
-    override val size: Int
-        get() = cache.size
+  override val size: Int
+    get() = cache.size
 
-    override fun set(key: String, value: Any, cacheType: CacheIds) {
-        if (cacheType in allowedCache) {
-            cache[key + cacheType.toString()] = value
-        }
+  override fun set(key: String, value: Any, cacheType: CacheIds) {
+    if (cacheType in allowedCache) {
+      cache[key + cacheType.toString()] = value
     }
+  }
 
-    override fun get(key: String, cacheType: CacheIds): Any? {
-        return if (cacheType !in allowedCache) {
-            null
-        } else {
-            cache[key + cacheType.toString()]
-        }
+  override fun get(key: String, cacheType: CacheIds): Any? {
+    return if (cacheType !in allowedCache) {
+      null
+    } else {
+      cache[key + cacheType.toString()]
     }
+  }
 
-    override fun remove(key: String, cacheType: CacheIds): Any? {
-        if (cacheType !in allowedCache) {
-            throw CacheException("The caching of type $cacheType has been disabled")
-        } else {
-            return cache.remove(key + cacheType.toString())
-        }
+  override fun remove(key: String, cacheType: CacheIds): Any? {
+    if (cacheType !in allowedCache) {
+      throw CacheException("The caching of type $cacheType has been disabled")
+    } else {
+      return cache.remove(key + cacheType.toString())
     }
+  }
 
-    override fun contains(key: String): Boolean {
-        return cache.containsKey(key)
-    }
+  override fun contains(key: String): Boolean {
+    return cache.containsKey(key)
+  }
 
-    override fun contains(key: String, cacheType: CacheIds): Boolean {
-        return cache.containsKey(key + cacheType.toString())
-    }
+  override fun contains(key: String, cacheType: CacheIds): Boolean {
+    return cache.containsKey(key + cacheType.toString())
+  }
 
-    override fun clear() {
-        cache.clear()
-    }
+  override fun clear() {
+    cache.clear()
+  }
 
-    override fun values(cacheType: CacheIds): List<Any> {
-        return cache.filter { it.key.endsWith(cacheType.toString()) }.values.toList()
-    }
+  override fun values(cacheType: CacheIds): List<Any> {
+    return cache.filter { it.key.endsWith(cacheType.toString()) }.values.toList()
+  }
 
-    override fun update(key: String, cacheType: CacheIds, value: Any) {
-        if (cacheType !in allowedCache) {
-            // do nothing
-        } else {
-            // check if the cache exists
-            if (contains(key, cacheType)) {
-                // delete the old cache
-                remove(key, cacheType)
-                // add the new cache
-                set(key, value, cacheType)
-            } else {
-                // add the cache
-                set(key, value, cacheType)
-            }
-        }
+  override fun update(key: String, cacheType: CacheIds, value: Any) {
+    if (cacheType !in allowedCache) {
+      // do nothing
+    } else {
+      // check if the cache exists
+      if (contains(key, cacheType)) {
+        // delete the old cache
+        remove(key, cacheType)
+        // add the new cache
+        set(key, value, cacheType)
+      } else {
+        // add the cache
+        set(key, value, cacheType)
+      }
     }
+  }
 }

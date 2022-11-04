@@ -21,39 +21,39 @@ package io.github.ydwk.ydwk.util
 import java.util.regex.Pattern
 
 object Checks {
-    fun checkNotNull(obj: Any?, message: String) {
-        if (obj == null) {
-            throw NullPointerException(message)
-        }
+  fun checkNotNull(obj: Any?, message: String) {
+    if (obj == null) {
+      throw NullPointerException(message)
     }
+  }
 
-    fun checkLength(obj: String, length: Int, message: String) {
-        if (obj.length >= length) {
-            throw IllegalArgumentException(message)
-        }
+  fun checkLength(obj: String, length: Int, message: String) {
+    if (obj.length >= length) {
+      throw IllegalArgumentException(message)
     }
+  }
 
-    fun checkLength(obj: CharSequence, length: Int, message: String) {
-        if (obj.length >= length) {
-            throw IllegalArgumentException(message)
-        }
+  fun checkLength(obj: CharSequence, length: Int, message: String) {
+    if (obj.length >= length) {
+      throw IllegalArgumentException(message)
     }
+  }
 
-    fun checkLength(obj: String, min: Int, max: Int, message: String) {
-        if (obj.length < min || obj.length > max) {
-            throw IllegalArgumentException(message)
-        }
+  fun checkLength(obj: String, min: Int, max: Int, message: String) {
+    if (obj.length < min || obj.length > max) {
+      throw IllegalArgumentException(message)
     }
+  }
 
-    fun checkIfCapital(name: String, s: String) {
-        if (name[0].isUpperCase()) {
-            throw IllegalArgumentException(s)
-        }
+  fun checkIfCapital(name: String, s: String) {
+    if (name[0].isUpperCase()) {
+      throw IllegalArgumentException(s)
     }
+  }
 
-    fun checkUrl(url: String, pattern: Pattern) {
-        if (!pattern.matcher(url).matches()) {
-            throw IllegalArgumentException("Invalid url")
-        }
+  fun checkUrl(url: String, pattern: Pattern) {
+    if (!pattern.matcher(url).matches()) {
+      throw IllegalArgumentException("Invalid url")
     }
+  }
 }

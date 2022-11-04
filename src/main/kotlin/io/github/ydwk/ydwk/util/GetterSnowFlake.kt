@@ -25,67 +25,67 @@ package io.github.ydwk.ydwk.util
  */
 interface GetterSnowFlake {
 
-    /**
-     * Gets the id of this snowflake as a Long.
-     *
-     * @return the id of this snowflake as a [Long]
-     */
-    val asLong: Long
+  /**
+   * Gets the id of this snowflake as a Long.
+   *
+   * @return the id of this snowflake as a [Long]
+   */
+  val asLong: Long
 
-    /**
-     * Gets the id of this snowflake as a String.
-     *
-     * @return the id of this snowflake as a [String]
-     */
-    val asString: String
-        get() = asLong.toString()
+  /**
+   * Gets the id of this snowflake as a String.
+   *
+   * @return the id of this snowflake as a [String]
+   */
+  val asString: String
+    get() = asLong.toString()
 
-    /**
-     * Gets the timestamp of this snowflake. (Milliseconds since Discord Epoch, the first second of
-     * 2015 or 1420070400000.)
-     *
-     * @return the timestamp of this snowflake.
-     */
-    val asTimestamp: Long
-        get() = (asLong shr 22) + 1420070400000
+  /**
+   * Gets the timestamp of this snowflake. (Milliseconds since Discord Epoch, the first second of
+   * 2015 or 1420070400000.)
+   *
+   * @return the timestamp of this snowflake.
+   */
+  val asTimestamp: Long
+    get() = (asLong shr 22) + 1420070400000
 
-    /**
-     * Gets the worker id of this snowflake.
-     *
-     * @return the worker id of this snowflake.
-     */
-    val asWorkerId: Long
-        get() = (asLong and 0x3E0000) shr 17
+  /**
+   * Gets the worker id of this snowflake.
+   *
+   * @return the worker id of this snowflake.
+   */
+  val asWorkerId: Long
+    get() = (asLong and 0x3E0000) shr 17
 
-    /**
-     * Gets the process id of this snowflake.
-     *
-     * @return the process id of this snowflake.
-     */
-    val asProcessId: Long
-        get() = (asLong and 0x1F000) shr 12
+  /**
+   * Gets the process id of this snowflake.
+   *
+   * @return the process id of this snowflake.
+   */
+  val asProcessId: Long
+    get() = (asLong and 0x1F000) shr 12
 
-    /**
-     * Gets the increment of this snowflake.
-     *
-     * @return the increment of this snowflake.
-     */
-    val asIncrement: Long
-        get() = asLong and 0xFFF
+  /**
+   * Gets the increment of this snowflake.
+   *
+   * @return the increment of this snowflake.
+   */
+  val asIncrement: Long
+    get() = asLong and 0xFFF
 
-    companion object {
-        val asNull: GetterSnowFlake? = null
+  companion object {
+    val asNull: GetterSnowFlake? = null
 
-        fun of(id: Long): GetterSnowFlake {
-            return object : GetterSnowFlake {
-                override val asLong: Long = id
-            }
-        }
-
-        fun of(id: String): GetterSnowFlake {
-            return object : GetterSnowFlake {
-                override val asLong: Long = id.toLong()
-            }
-        }
+    fun of(id: Long): GetterSnowFlake {
+      return object : GetterSnowFlake {
+        override val asLong: Long = id
+      }
     }
+
+    fun of(id: String): GetterSnowFlake {
+      return object : GetterSnowFlake {
+        override val asLong: Long = id.toLong()
+      }
+    }
+  }
 }

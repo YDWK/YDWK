@@ -29,40 +29,40 @@ import java.awt.Color
 import java.util.*
 
 class RoleImpl(override val ydwk: YDWK, override val json: JsonNode, override val idAsLong: Long) :
-    Role {
+  Role {
 
-    override var color: Color = Color(json["color"].asInt())
+  override var color: Color = Color(json["color"].asInt())
 
-    override var isHoisted: Boolean = json["hoist"].asBoolean()
+  override var isHoisted: Boolean = json["hoist"].asBoolean()
 
-    override var icon: String? = if (json["icon"].isNull) null else json["icon"].asText()
+  override var icon: String? = if (json["icon"].isNull) null else json["icon"].asText()
 
-    override var unicodeEmoji: String? =
-        if (json["unicode_emoji"].isNull) null else json["unicode_emoji"].asText()
+  override var unicodeEmoji: String? =
+    if (json["unicode_emoji"].isNull) null else json["unicode_emoji"].asText()
 
-    override var position: Int = json["position"].asInt()
+  override var position: Int = json["position"].asInt()
 
-    override fun hasPermission(vararg permission: GuildPermission): Boolean {
-        return permissions.containsAll(listOf(*permission))
-    }
+  override fun hasPermission(vararg permission: GuildPermission): Boolean {
+    return permissions.containsAll(listOf(*permission))
+  }
 
-    override fun hasPermission(permission: Collection<GuildPermission>): Boolean {
-        return permissions.containsAll(permission)
-    }
+  override fun hasPermission(permission: Collection<GuildPermission>): Boolean {
+    return permissions.containsAll(permission)
+  }
 
-    override var isManaged: Boolean = json["managed"].asBoolean()
+  override var isManaged: Boolean = json["managed"].asBoolean()
 
-    override var isMentionable: Boolean = json["mentionable"].asBoolean()
+  override var isMentionable: Boolean = json["mentionable"].asBoolean()
 
-    override var tags: RoleTag? = if (json["tags"].isNull) null else RoleTagImpl(ydwk, json["tags"])
+  override var tags: RoleTag? = if (json["tags"].isNull) null else RoleTagImpl(ydwk, json["tags"])
 
-    override var rawPermissions: Long = json["permissions"].asLong()
+  override var rawPermissions: Long = json["permissions"].asLong()
 
-    override var permissions: EnumSet<GuildPermission> = GuildPermission.fromValues(rawPermissions)
+  override var permissions: EnumSet<GuildPermission> = GuildPermission.fromValues(rawPermissions)
 
-    override var name: String = json["name"].asText()
+  override var name: String = json["name"].asText()
 
-    override fun toString(): String {
-        return EntityToStringBuilder(this).name(this.name).toString()
-    }
+  override fun toString(): String {
+    return EntityToStringBuilder(this).name(this.name).toString()
+  }
 }

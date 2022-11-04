@@ -23,31 +23,33 @@ import io.github.ydwk.ydwk.ws.util.ActivityType
 import java.util.regex.Pattern
 
 object Activity {
-    private val allowedStreamingUrls: Pattern =
-        Pattern.compile(
-            "https?://(www\\.)?(twitch\\.tv/|youtube\\.com/watch\\?v=).+", Pattern.CASE_INSENSITIVE)
+  private val allowedStreamingUrls: Pattern =
+    Pattern.compile(
+      "https?://(www\\.)?(twitch\\.tv/|youtube\\.com/watch\\?v=).+",
+      Pattern.CASE_INSENSITIVE
+    )
 
-    fun watching(name: String, url: String): ActivityPayload {
-        Checks.checkLength(name, 128, "name")
-        Checks.checkUrl(url, allowedStreamingUrls)
-        return ActivityPayload(name, ActivityType.WATCHING.activity, url)
-    }
+  fun watching(name: String, url: String): ActivityPayload {
+    Checks.checkLength(name, 128, "name")
+    Checks.checkUrl(url, allowedStreamingUrls)
+    return ActivityPayload(name, ActivityType.WATCHING.activity, url)
+  }
 
-    fun playing(name: String): ActivityPayload {
-        Checks.checkLength(name, 128, "name")
-        return ActivityPayload(name, ActivityType.PLAYING.activity)
-    }
+  fun playing(name: String): ActivityPayload {
+    Checks.checkLength(name, 128, "name")
+    return ActivityPayload(name, ActivityType.PLAYING.activity)
+  }
 
-    fun listening(name: String): ActivityPayload {
-        Checks.checkLength(name, 128, "name")
-        return ActivityPayload(name, ActivityType.LISTENING.activity)
-    }
+  fun listening(name: String): ActivityPayload {
+    Checks.checkLength(name, 128, "name")
+    return ActivityPayload(name, ActivityType.LISTENING.activity)
+  }
 
-    fun streaming(name: String, url: String): ActivityPayload {
-        Checks.checkLength(name, 128, "name")
-        Checks.checkUrl(url, allowedStreamingUrls)
-        return ActivityPayload(name, ActivityType.STREAMING.activity, url)
-    }
+  fun streaming(name: String, url: String): ActivityPayload {
+    Checks.checkLength(name, 128, "name")
+    Checks.checkUrl(url, allowedStreamingUrls)
+    return ActivityPayload(name, ActivityType.STREAMING.activity, url)
+  }
 }
 
 /** Returned when setting an activity. */

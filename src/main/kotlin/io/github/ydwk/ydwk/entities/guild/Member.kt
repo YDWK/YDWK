@@ -33,110 +33,110 @@ import java.util.concurrent.CompletableFuture
 /** This class is used to represent a discord guild member entity. */
 interface Member : NameAbleEntity, GenericEntity, Sendeadble, SnowFlake, PermissionEntity {
 
-    /**
-     * Gets thw member's Guild
-     *
-     * @return The member's Guild
-     */
-    val guild: Guild
+  /**
+   * Gets thw member's Guild
+   *
+   * @return The member's Guild
+   */
+  val guild: Guild
 
-    /**
-     * Gets the user this guild member represents.
-     *
-     * @return The user this guild member represents.
-     */
-    var user: User
+  /**
+   * Gets the user this guild member represents.
+   *
+   * @return The user this guild member represents.
+   */
+  var user: User
 
-    /**
-     * Gets this member guild nickname.
-     *
-     * @return This member guild nickname.
-     */
-    var nick: String?
+  /**
+   * Gets this member guild nickname.
+   *
+   * @return This member guild nickname.
+   */
+  var nick: String?
 
-    /**
-     * Gets the member's avatar hash.
-     *
-     * @return The member's avatar hash.
-     */
-    var avatar: String?
+  /**
+   * Gets the member's avatar hash.
+   *
+   * @return The member's avatar hash.
+   */
+  var avatar: String?
 
-    /**
-     * Gets the ids of the roles this member is assigned.
-     *
-     * @return The ids of the roles this member is assigned.
-     */
-    val roleIds: List<GetterSnowFlake>
+  /**
+   * Gets the ids of the roles this member is assigned.
+   *
+   * @return The ids of the roles this member is assigned.
+   */
+  val roleIds: List<GetterSnowFlake>
 
-    /**
-     * Gets the roles of this member.
-     *
-     * @return The roles of this member.
-     */
-    val roles: List<Role?>
+  /**
+   * Gets the roles of this member.
+   *
+   * @return The roles of this member.
+   */
+  val roles: List<Role?>
 
-    /**
-     * Gets the time this member joined the guild.
-     *
-     * @return The time this member joined the guild.
-     */
-    var joinedAt: String?
+  /**
+   * Gets the time this member joined the guild.
+   *
+   * @return The time this member joined the guild.
+   */
+  var joinedAt: String?
 
-    /**
-     * Gets the date the member started boosting the guild.
-     *
-     * @return The date the member started boosting the guild.
-     */
-    var premiumSince: String?
+  /**
+   * Gets the date the member started boosting the guild.
+   *
+   * @return The date the member started boosting the guild.
+   */
+  var premiumSince: String?
 
-    /**
-     * Whether the member is deafened in voice channels.
-     *
-     * @return Whether the member is deafened in voice channels.
-     */
-    var deaf: Boolean
+  /**
+   * Whether the member is deafened in voice channels.
+   *
+   * @return Whether the member is deafened in voice channels.
+   */
+  var deaf: Boolean
 
-    /**
-     * Whether the member is muted in voice channels.
-     *
-     * @return Whether the member is muted in voice channels.
-     */
-    var mute: Boolean
+  /**
+   * Whether the member is muted in voice channels.
+   *
+   * @return Whether the member is muted in voice channels.
+   */
+  var mute: Boolean
 
-    /**
-     * Whether the user has not yet passed the guild's Membership Screening requirements.
-     *
-     * @return Whether the user has not yet passed the guild's Membership Screening requirements.
-     */
-    var pending: Boolean
+  /**
+   * Whether the user has not yet passed the guild's Membership Screening requirements.
+   *
+   * @return Whether the user has not yet passed the guild's Membership Screening requirements.
+   */
+  var pending: Boolean
 
-    /**
-     * If the member is timed out, then this is the time at which the timeout will end.
-     *
-     * @return If the member is timed out, then this is the time at which the timeout will end.
-     */
-    var timedOutUntil: String?
+  /**
+   * If the member is timed out, then this is the time at which the timeout will end.
+   *
+   * @return If the member is timed out, then this is the time at which the timeout will end.
+   */
+  var timedOutUntil: String?
 
-    /**
-     * Weather this member is timed out.
-     *
-     * @return Weather this member is timed out.
-     */
-    val isTimedOut: Boolean
-        get() = timedOutUntil != null
+  /**
+   * Weather this member is timed out.
+   *
+   * @return Weather this member is timed out.
+   */
+  val isTimedOut: Boolean
+    get() = timedOutUntil != null
 
-    /**
-     * Whether the member is the owner of the guild.
-     *
-     * @return Whether the member is the owner of the guild.
-     */
-    val isOwner: Boolean
+  /**
+   * Whether the member is the owner of the guild.
+   *
+   * @return Whether the member is the owner of the guild.
+   */
+  val isOwner: Boolean
 
-    /**
-     * Creates a direct message channel with this member.
-     *
-     * @return A future that completes with the created channel.
-     */
-    val createDmChannel: CompletableFuture<DmChannel>
-        get() = user.createDmChannel
+  /**
+   * Creates a direct message channel with this member.
+   *
+   * @return A future that completes with the created channel.
+   */
+  val createDmChannel: CompletableFuture<DmChannel>
+    get() = user.createDmChannel
 }

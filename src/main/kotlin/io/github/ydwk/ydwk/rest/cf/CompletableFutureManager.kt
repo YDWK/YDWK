@@ -26,30 +26,30 @@ import okhttp3.Response
 import okhttp3.ResponseBody
 
 class CompletableFutureManager(var response: Response, val ydwk: YDWKImpl) {
-    var jsonBody: JsonNode? = null
-    private var stringBody: String? = null
+  var jsonBody: JsonNode? = null
+  private var stringBody: String? = null
 
-    init {
-        val body = response.body
-        if (body.isNullOrEmpty()) {
-            stringBody = null
-            jsonBody = NullNode.instance
-        } else {
-            stringBody = body.string()
-            val objectMapper = ydwk.objectMapper
-            jsonBody =
-                try {
-                    objectMapper.readTree(stringBody)
-                } catch (e: JsonParseException) {
-                    throw RuntimeException("Error while parsing json", e)
-                    null
-                }
-
-            jsonBody = if (jsonBody == null) NullNode.instance else jsonBody
+  init {
+    val body = response.body
+    if (body.isNullOrEmpty()) {
+      stringBody = null
+      jsonBody = NullNode.instance
+    } else {
+      stringBody = body.string()
+      val objectMapper = ydwk.objectMapper
+      jsonBody =
+        try {
+          objectMapper.readTree(stringBody)
+        } catch (e: JsonParseException) {
+          throw RuntimeException("Error while parsing json", e)
+          null
         }
+
+      jsonBody = if (jsonBody == null) NullNode.instance else jsonBody
     }
+  }
 }
 
 private fun ResponseBody.isNullOrEmpty(): Boolean {
-    return this.contentLength() == 0L
+  return this.contentLength() == 0L
 }

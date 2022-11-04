@@ -25,19 +25,19 @@ import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import java.net.URL
 
 class ImageImpl(override val ydwk: YDWK, override val json: JsonNode) : Image {
-    override val url: URL
-        get() = URL(json["url"].asText())
+  override val url: URL
+    get() = URL(json["url"].asText())
 
-    override val proxyUrl: URL?
-        get() = if (json.has("proxy_url")) URL(json["proxy_url"].asText()) else null
+  override val proxyUrl: URL?
+    get() = if (json.has("proxy_url")) URL(json["proxy_url"].asText()) else null
 
-    override val height: Int?
-        get() = if (json.has("height")) json["height"].asInt() else null
+  override val height: Int?
+    get() = if (json.has("height")) json["height"].asInt() else null
 
-    override val width: Int?
-        get() = if (json.has("width")) json["width"].asInt() else null
+  override val width: Int?
+    get() = if (json.has("width")) json["width"].asInt() else null
 
-    override fun toString(): String {
-        return EntityToStringBuilder(this).toString()
-    }
+  override fun toString(): String {
+    return EntityToStringBuilder(this).toString()
+  }
 }

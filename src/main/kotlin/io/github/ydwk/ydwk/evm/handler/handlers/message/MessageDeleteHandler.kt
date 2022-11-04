@@ -26,9 +26,9 @@ import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.MessageImpl
 
 class MessageDeleteHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override fun start() {
-        val message = MessageImpl(ydwk, json, json.get("id").asLong())
-        ydwk.cache.remove(json.get("id").asText(), CacheIds.MESSAGE)
-        ydwk.emitEvent(MessageDeleteEvent(ydwk, message))
-    }
+  override fun start() {
+    val message = MessageImpl(ydwk, json, json.get("id").asLong())
+    ydwk.cache.remove(json.get("id").asText(), CacheIds.MESSAGE)
+    ydwk.emitEvent(MessageDeleteEvent(ydwk, message))
+  }
 }

@@ -28,19 +28,19 @@ import io.github.ydwk.ydwk.impl.entities.GuildImpl
 import io.github.ydwk.ydwk.impl.entities.UnavailableGuildImpl
 
 class GuildDeleteHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override fun start() {
-        val unavailableGuild = UnavailableGuildImpl(ydwk, json, json.get("id").asLong())
-        val guild: Guild = ydwk.cache[unavailableGuild.id, CacheIds.GUILD] as GuildImpl
-        guild.roles.forEach { role -> ydwk.cache.remove(role.id, CacheIds.ROLE) }
-        guild.emojis.forEach { emoji ->
-            run {
-                if (emoji.idLong != null) {
-                    ydwk.cache.remove(emoji.id!!, CacheIds.EMOJI)
-                }
-            }
+  override fun start() {
+    val unavailableGuild = UnavailableGuildImpl(ydwk, json, json.get("id").asLong())
+    val guild: Guild = ydwk.cache[unavailableGuild.id, CacheIds.GUILD] as GuildImpl
+    guild.roles.forEach { role -> ydwk.cache.remove(role.id, CacheIds.ROLE) }
+    guild.emojis.forEach { emoji ->
+      run {
+        if (emoji.idLong != null) {
+          ydwk.cache.remove(emoji.id!!, CacheIds.EMOJI)
         }
-        guild.stickers.forEach { sticker -> ydwk.cache.remove(sticker.id, CacheIds.STICKER) }
-        ydwk.cache.remove(guild.id, CacheIds.GUILD)
-        ydwk.emitEvent(GuildDeleteEvent(ydwk, guild))
+      }
     }
+    guild.stickers.forEach { sticker -> ydwk.cache.remove(sticker.id, CacheIds.STICKER) }
+    ydwk.cache.remove(guild.id, CacheIds.GUILD)
+    ydwk.emitEvent(GuildDeleteEvent(ydwk, guild))
+  }
 }

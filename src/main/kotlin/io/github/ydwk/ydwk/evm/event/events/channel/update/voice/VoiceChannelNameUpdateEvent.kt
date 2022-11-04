@@ -25,9 +25,9 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
 /** Fired when a voice/stage channel's name is updated. */
 data class VoiceChannelNameUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: GenericGuildVoiceChannel,
-    val channelType: ChannelType,
-    val oldName: String,
-    val newName: String
+  override val ydwk: YDWK,
+  override val entity: GenericGuildVoiceChannel,
+  val channelType: ChannelType,
+  val oldName: String,
+  val newName: String
 ) : GenericChannelUpdateEvent<String>(ydwk, entity, oldName, newName)

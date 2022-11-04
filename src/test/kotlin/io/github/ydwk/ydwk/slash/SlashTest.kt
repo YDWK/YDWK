@@ -26,60 +26,65 @@ import kotlin.test.assertEquals
 import org.junit.jupiter.api.Test
 
 class SlashTest {
-    @Test
-    fun toJson() {
-        val json = ObjectMapper().createObjectNode()
-        json.put("name", "test")
-        json.put("description", "test")
-        json.put("type", ApplicationCommandType.CHAT_INPUT.toInt())
-        val options: ArrayNode = ObjectMapper().createArrayNode()
-        options.add(
-            ObjectMapper().createObjectNode().apply {
+  @Test
+  fun toJson() {
+    val json = ObjectMapper().createObjectNode()
+    json.put("name", "test")
+    json.put("description", "test")
+    json.put("type", ApplicationCommandType.CHAT_INPUT.toInt())
+    val options: ArrayNode = ObjectMapper().createArrayNode()
+    options.add(
+      ObjectMapper().createObjectNode().apply {
+        put("name", "test")
+        put("description", "test")
+        put("type", SlashOptionType.STRING.toInt())
+        put("required", true)
+        set<ArrayNode>(
+          "choices",
+          ObjectMapper()
+            .createArrayNode()
+            .add(
+              ObjectMapper().createObjectNode().apply {
                 put("name", "test")
-                put("description", "test")
-                put("type", SlashOptionType.STRING.toInt())
-                put("required", true)
-                set<ArrayNode>(
-                    "choices",
-                    ObjectMapper()
-                        .createArrayNode()
-                        .add(
-                            ObjectMapper().createObjectNode().apply {
-                                put("name", "test")
-                                put("value", "test")
-                            })
-                        .add(
-                            ObjectMapper().createObjectNode().apply {
-                                put("name", "test")
-                                put("value", 1)
-                            })
-                        .add(
-                            ObjectMapper().createObjectNode().apply {
-                                put("name", "test")
-                                put("value", 1.0)
-                            }))
-            })
-        json.set<ArrayNode>("options", options)
+                put("value", "test")
+              }
+            )
+            .add(
+              ObjectMapper().createObjectNode().apply {
+                put("name", "test")
+                put("value", 1)
+              }
+            )
+            .add(
+              ObjectMapper().createObjectNode().apply {
+                put("name", "test")
+                put("value", 1.0)
+              }
+            )
+        )
+      }
+    )
+    json.set<ArrayNode>("options", options)
 
-        // println(json.toPrettyString())
-        assertEquals(json.get("name").asText(), "test")
-        assertEquals(json.get("description").asText(), "test")
-        assertEquals(json.get("type").asInt(), ApplicationCommandType.CHAT_INPUT.toInt())
-        assertEquals(json.get("options").size(), 1)
-        assertEquals(json.get("options").get(0).get("name").asText(), "test")
-        assertEquals(json.get("options").get(0).get("description").asText(), "test")
-        assertEquals(json.get("options").get(0).get("type").asInt(), SlashOptionType.STRING.toInt())
-        assertEquals(json.get("options").get(0).get("required").asBoolean(), true)
-        assertEquals(json.get("options").get(0).get("choices").size(), 3)
-        assertEquals(json.get("options").get(0).get("choices").get(0).get("name").asText(), "test")
-        assertEquals(json.get("options").get(0).get("choices").get(0).get("value").asText(), "test")
-        assertEquals(json.get("options").get(0).get("choices").get(1).get("name").asText(), "test")
-        assertEquals(json.get("options").get(0).get("choices").get(1).get("value").asInt(), 1)
-        assertEquals(json.get("options").get(0).get("choices").get(2).get("name").asText(), "test")
-        assertEquals(json.get("options").get(0).get("choices").get(2).get("value").asDouble(), 1.0)
+    // println(json.toPrettyString())
+    assertEquals(json.get("name").asText(), "test")
+    assertEquals(json.get("description").asText(), "test")
+    assertEquals(json.get("type").asInt(), ApplicationCommandType.CHAT_INPUT.toInt())
+    assertEquals(json.get("options").size(), 1)
+    assertEquals(json.get("options").get(0).get("name").asText(), "test")
+    assertEquals(json.get("options").get(0).get("description").asText(), "test")
+    assertEquals(json.get("options").get(0).get("type").asInt(), SlashOptionType.STRING.toInt())
+    assertEquals(json.get("options").get(0).get("required").asBoolean(), true)
+    assertEquals(json.get("options").get(0).get("choices").size(), 3)
+    assertEquals(json.get("options").get(0).get("choices").get(0).get("name").asText(), "test")
+    assertEquals(json.get("options").get(0).get("choices").get(0).get("value").asText(), "test")
+    assertEquals(json.get("options").get(0).get("choices").get(1).get("name").asText(), "test")
+    assertEquals(json.get("options").get(0).get("choices").get(1).get("value").asInt(), 1)
+    assertEquals(json.get("options").get(0).get("choices").get(2).get("name").asText(), "test")
+    assertEquals(json.get("options").get(0).get("choices").get(2).get("value").asDouble(), 1.0)
 
-        val actualJson =
-            """
+    val actualJson =
+      """
             {
               "name" : "test",
               "description" : "test",
@@ -103,6 +108,6 @@ class SlashTest {
             }
         """.trimIndent()
 
-        assertEquals(json.toPrettyString(), actualJson)
-    }
+    assertEquals(json.toPrettyString(), actualJson)
+  }
 }

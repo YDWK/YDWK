@@ -25,37 +25,37 @@ import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import java.net.URL
 
 class AttachmentImpl(
-    override val ydwk: YDWK,
-    override val json: JsonNode,
-    override val idAsLong: Long
+  override val ydwk: YDWK,
+  override val json: JsonNode,
+  override val idAsLong: Long
 ) : Attachment {
-    override val description: String?
-        get() = if (json.has("description")) json.get("description").asText() else null
+  override val description: String?
+    get() = if (json.has("description")) json.get("description").asText() else null
 
-    override val mediaType: String?
-        get() = if (json.has("media_type")) json.get("media_type").asText() else null
+  override val mediaType: String?
+    get() = if (json.has("media_type")) json.get("media_type").asText() else null
 
-    override val url: URL
-        get() = URL(json.get("url").asText())
+  override val url: URL
+    get() = URL(json.get("url").asText())
 
-    override val proxyUrl: URL
-        get() = URL(json.get("proxy_url").asText())
+  override val proxyUrl: URL
+    get() = URL(json.get("proxy_url").asText())
 
-    override val size: Int
-        get() = json.get("size").asInt()
+  override val size: Int
+    get() = json.get("size").asInt()
 
-    override val height: Int?
-        get() = if (json.has("height")) json.get("height").asInt() else null
+  override val height: Int?
+    get() = if (json.has("height")) json.get("height").asInt() else null
 
-    override val width: Int?
-        get() = if (json.has("width")) json.get("width").asInt() else null
+  override val width: Int?
+    get() = if (json.has("width")) json.get("width").asInt() else null
 
-    override val ephemeral: Boolean
-        get() = json.get("ephemeral").asBoolean()
+  override val ephemeral: Boolean
+    get() = json.get("ephemeral").asBoolean()
 
-    override var name: String = json.get("name").asText()
+  override var name: String = json.get("name").asText()
 
-    override fun toString(): String {
-        return EntityToStringBuilder(this).name(this.name).toString()
-    }
+  override fun toString(): String {
+    return EntityToStringBuilder(this).name(this.name).toString()
+  }
 }

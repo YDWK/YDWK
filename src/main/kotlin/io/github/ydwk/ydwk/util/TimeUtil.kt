@@ -26,54 +26,55 @@ import java.time.temporal.TemporalAccessor
 import java.util.*
 
 fun formatZonedDateTime(time: String): String {
-    return if (time == "null") {
-        "null"
-    } else {
-        val formatter =
-            DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
-                .withLocale(Locale.ENGLISH)
-                .withZone(ZoneId.systemDefault())
+  return if (time == "null") {
+    "null"
+  } else {
+    val formatter =
+      DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
+        .withLocale(Locale.ENGLISH)
+        .withZone(ZoneId.systemDefault())
 
-        formatter.format(ZonedDateTime.parse(time))
-    }
+    formatter.format(ZonedDateTime.parse(time))
+  }
 }
 
 fun reverseFormatZonedDateTime(time: String): ZonedDateTime {
-    val formatter =
-        DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
-            .withLocale(Locale.ENGLISH)
-            .withZone(ZoneId.systemDefault())
+  val formatter =
+    DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
+      .withLocale(Locale.ENGLISH)
+      .withZone(ZoneId.systemDefault())
 
-    return ZonedDateTime.from(formatter.parse(time))
+  return ZonedDateTime.from(formatter.parse(time))
 }
 
 fun convertInstantToChronoZonedDateTime(instant: Instant): ChronoZonedDateTime<*> {
-    return instant.atZone(ZoneId.systemDefault())
+  return instant.atZone(ZoneId.systemDefault())
 }
 
 fun toOffsetDateTime(time: TemporalAccessor): OffsetDateTime {
-    if (time is OffsetDateTime) {
-        return time
-    } else {
+  if (time is OffsetDateTime) {
+    return time
+  } else {
 
-        val offset: ZoneOffset =
-            try {
-                ZoneOffset.from(time)
-            } catch (e: DateTimeException) {
-                ZoneOffset.UTC
-            }
+    val offset: ZoneOffset =
+      try {
+        ZoneOffset.from(time)
+      } catch (e: DateTimeException) {
+        ZoneOffset.UTC
+      }
 
-        return try {
-            val localDateTime = LocalDateTime.from(time)
-            OffsetDateTime.of(localDateTime, offset)
-        } catch (e: DateTimeException) {
-            try {
-                val instant = Instant.from(time)
-                OffsetDateTime.ofInstant(instant, offset)
-            } catch (e: DateTimeException) {
-                throw DateTimeException(
-                    "Unable to obtain OffsetDateTime from TemporalAccessor: $time of type ${time.javaClass.name}")
-            }
-        }
+    return try {
+      val localDateTime = LocalDateTime.from(time)
+      OffsetDateTime.of(localDateTime, offset)
+    } catch (e: DateTimeException) {
+      try {
+        val instant = Instant.from(time)
+        OffsetDateTime.ofInstant(instant, offset)
+      } catch (e: DateTimeException) {
+        throw DateTimeException(
+          "Unable to obtain OffsetDateTime from TemporalAccessor: $time of type ${time.javaClass.name}"
+        )
+      }
     }
+  }
 }

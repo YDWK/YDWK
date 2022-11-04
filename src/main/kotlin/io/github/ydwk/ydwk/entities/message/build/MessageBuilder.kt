@@ -31,64 +31,61 @@ import java.util.concurrent.CompletableFuture
 import okhttp3.RequestBody.Companion.toRequestBody
 
 class MessageBuilder {
-    private var content: String? = null
-    private var embed: Embed? = null
-    private var tts: Boolean? = null
+  private var content: String? = null
+  private var embed: Embed? = null
+  private var tts: Boolean? = null
 
-    fun setContent(message: String): MessageBuilder {
-        content = message
-        return this
+  fun setContent(message: String): MessageBuilder {
+    content = message
+    return this
+  }
+
+  fun setTts(tts: Boolean): MessageBuilder {
+    this.tts = tts
+    return this
+  }
+
+  fun setEmbed(embed: Embed): MessageBuilder {
+    this.embed = embed
+    return this
+  }
+
+  fun send(sendeadble: Sendeadble): CompletableFuture<Message> {
+    return when (sendeadble) {
+      is TextChannel -> {
+        sendToTextChannel(sendeadble)
+      }
+      is Member -> {
+        sendToMember(sendeadble)
+      }
+      is User -> {
+        sendToUser(sendeadble)
+      }
+      else -> {
+        throw IllegalArgumentException("Sendeadble must be a TextChannel, Member, or User")
+      }
     }
+  }
 
-    fun setTts(tts: Boolean): MessageBuilder {
-        this.tts = tts
-        return this
-    }
-
-    fun setEmbed(embed: Embed): MessageBuilder {
-        this.embed = embed
-        return this
-    }
-
-    fun send(sendeadble: Sendeadble): CompletableFuture<Message> {
-        return when (sendeadble) {
-            is TextChannel -> {
-                sendToTextChannel(sendeadble)
-            }
-            is Member -> {
-                sendToMember(sendeadble)
-            }
-            is User -> {
-                sendToUser(sendeadble)
-            }
-            else -> {
-                throw IllegalArgumentException("Sendeadble must be a TextChannel, Member, or User")
-            }
+  private fun sendToTextChannel(channel: TextChannel): CompletableFuture<Message> {
+    val body = sendMessageToChannelBody(channel.ydwk, content, tts, embed)
+    return channel.ydwk.restApiManager
+      .post(body.toString().toRequestBody(), EndPoint.ChannelEndpoint.CREATE_MESSAGE, channel.id)
+      .execute { response ->
+        val json = response.jsonBody
+        if (json == null) {
+          throw IllegalStateException("Response body is null")
+        } else {
+          MessageImpl(channel.ydwk, json, json["id"].asLong())
         }
-    }
+      }
+  }
 
-    private fun sendToTextChannel(channel: TextChannel): CompletableFuture<Message> {
-        val body = sendMessageToChannelBody(channel.ydwk, content, tts, embed)
-        return channel.ydwk.restApiManager
-            .post(
-                body.toString().toRequestBody(),
-                EndPoint.ChannelEndpoint.CREATE_MESSAGE,
-                channel.id)
-            .execute { response ->
-                val json = response.jsonBody
-                if (json == null) {
-                    throw IllegalStateException("Response body is null")
-                } else {
-                    MessageImpl(channel.ydwk, json, json["id"].asLong())
-                }
-            }
-    }
+  private fun sendToMember(member: Member): CompletableFuture<Message> {
+    return send(member.user as Sendeadble)
+  }
 
-    private fun sendToMember(member: Member): CompletableFuture<Message> {
-        return send(member.user as Sendeadble)
-    }
-
-    private fun sendToUser(user: User): CompletableFuture<Message> {
-        return user.createDmChannel.thenCompose { channel -> send(channel) }
-    }
+  private fun sendToUser(user: User): CompletableFuture<Message> {
+    return user.createDmChannel.thenCompose { channel -> send(channel) }
+  }
 }

@@ -21,24 +21,24 @@ package io.github.ydwk.ydwk.entities.message.embed
 import io.github.ydwk.ydwk.entities.util.GenericEntity
 
 interface Field : GenericEntity {
-    /**
-     * Gets the name of this field.
-     *
-     * @return The name of this field.
-     */
-    val name: String
+  /**
+   * Gets the name of this field.
+   *
+   * @return The name of this field.
+   */
+  val name: String
 
-    /**
-     * Gets the value of this field.
-     *
-     * @return The value of this field.
-     */
-    val value: String
+  /**
+   * Gets the value of this field.
+   *
+   * @return The value of this field.
+   */
+  val value: String
 
-    /**
-     * Gets weather this field is inline.
-     *
-     * @return True if this field is inline, false otherwise.
-     */
-    val inline: Boolean?
+  /**
+   * Gets weather this field is inline.
+   *
+   * @return True if this field is inline, false otherwise.
+   */
+  val inline: Boolean?
 }

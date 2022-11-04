@@ -25,24 +25,24 @@ import io.github.ydwk.ydwk.entities.channel.guild.message.news.GuildNewsChannel
 import io.github.ydwk.ydwk.entities.channel.guild.message.text.GuildTextChannel
 
 interface GenericGuildTextChannel : TextChannel, GuildChannel {
-    /**
-     * Gets the channel as Guild Text Channel.
-     *
-     * @return the channel as Guild Text Channel.
-     */
-    fun asGuildTextChannel(): GuildTextChannel?
+  /**
+   * Gets the channel as Guild Text Channel.
+   *
+   * @return the channel as Guild Text Channel.
+   */
+  fun asGuildTextChannel(): GuildTextChannel?
 
-    /**
-     * Gets the channel as Guild News Channel.
-     *
-     * @return the channel as Guild News Channel.
-     */
-    fun asGuildNewsChannel(): GuildNewsChannel?
+  /**
+   * Gets the channel as Guild News Channel.
+   *
+   * @return the channel as Guild News Channel.
+   */
+  fun asGuildNewsChannel(): GuildNewsChannel?
 
-    /**
-     * Gets the channel as Guild Forum Channel.
-     *
-     * @return the channel as Guild Forum Channel.
-     */
-    fun asGuildForumChannel(): GuildForumChannel?
+  /**
+   * Gets the channel as Guild Forum Channel.
+   *
+   * @return the channel as Guild Forum Channel.
+   */
+  fun asGuildForumChannel(): GuildForumChannel?
 }

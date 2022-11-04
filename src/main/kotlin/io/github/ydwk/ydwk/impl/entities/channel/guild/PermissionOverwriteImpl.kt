@@ -24,18 +24,18 @@ import io.github.ydwk.ydwk.entities.channel.guild.message.text.PermissionOverwri
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class PermissionOverwriteImpl(
-    override val ydwk: YDWK,
-    override val json: JsonNode,
-    override val idAsLong: Long
+  override val ydwk: YDWK,
+  override val json: JsonNode,
+  override val idAsLong: Long
 ) : PermissionOverwrite {
-    override val type: Int
-        get() = json["type"].asInt()
-    override val allow: String
-        get() = json["allow"].asText()
-    override val deny: String
-        get() = json["deny"].asText()
+  override val type: Int
+    get() = json["type"].asInt()
+  override val allow: String
+    get() = json["allow"].asText()
+  override val deny: String
+    get() = json["deny"].asText()
 
-    override fun toString(): String {
-        return EntityToStringBuilder(this).toString()
-    }
+  override fun toString(): String {
+    return EntityToStringBuilder(this).toString()
+  }
 }

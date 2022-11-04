@@ -24,7 +24,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 
 class DeleteRestApiImpl(
-    private val ydwk: YDWKImpl,
-    private val client: OkHttpClient,
-    private val builder: Request.Builder,
+  private val ydwk: YDWKImpl,
+  private val client: OkHttpClient,
+  private val builder: Request.Builder,
 ) : DeleteRestApi, SimilarRestApiImpl(ydwk, builder, client)

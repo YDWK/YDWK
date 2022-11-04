@@ -27,14 +27,14 @@ import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
 
 class GuildRoleCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
 
-    override fun start() {
-        val guild = ydwk.getGuildById(json.get("guild_id").asLong())
-        if (guild != null) {
-            val role = RoleImpl(ydwk, json.get("role"), json.get("role").get("id").asLong())
-            ydwk.cache[json.get("role").get("id").asText(), role] = CacheIds.ROLE
-            ydwk.emitEvent(GuildRoleCreateEvent(ydwk, role))
-        } else {
-            ydwk.logger.warn("Guild is null")
-        }
+  override fun start() {
+    val guild = ydwk.getGuildById(json.get("guild_id").asLong())
+    if (guild != null) {
+      val role = RoleImpl(ydwk, json.get("role"), json.get("role").get("id").asLong())
+      ydwk.cache[json.get("role").get("id").asText(), role] = CacheIds.ROLE
+      ydwk.emitEvent(GuildRoleCreateEvent(ydwk, role))
+    } else {
+      ydwk.logger.warn("Guild is null")
     }
+  }
 }

@@ -23,16 +23,16 @@ import io.github.ydwk.ydwk.YDWK
 
 interface GenericEntity {
 
-    /** The main YDWK instance. */
-    val ydwk: YDWK
+  /** The main YDWK instance. */
+  val ydwk: YDWK
 
-    /** The json representation of this entity. */
-    val json: JsonNode
+  /** The json representation of this entity. */
+  val json: JsonNode
 
-    /**
-     * Converts this entity to a string using the [io.github.ydwk.ydwk.util.EntityToStringBuilder].
-     *
-     * @return The string representation of this entity.
-     */
-    override fun toString(): String
+  /**
+   * Converts this entity to a string using the [io.github.ydwk.ydwk.util.EntityToStringBuilder].
+   *
+   * @return The string representation of this entity.
+   */
+  override fun toString(): String
 }

@@ -23,4 +23,4 @@ import io.github.ydwk.ydwk.evm.event.Event
 import io.github.ydwk.ydwk.interaction.message.MessageComponentData
 
 data class MessageComponentEvent(override val ydwk: YDWK, val interaction: MessageComponentData) :
-    Event(ydwk)
+  Event(ydwk)

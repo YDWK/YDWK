@@ -26,144 +26,157 @@ import io.github.ydwk.ydwk.entities.message.MessageFlag
 import io.github.ydwk.ydwk.interaction.sub.InteractionCallbackType
 
 fun replyJsonBody(
-    ydwk: YDWK,
-    content: String? = null,
-    embeds: List<Embed> = emptyList(),
-    tts: Boolean? = null,
-    flags: List<MessageFlag> = emptyList(),
-    allowedMentions: List<String> = emptyList(),
+  ydwk: YDWK,
+  content: String? = null,
+  embeds: List<Embed> = emptyList(),
+  tts: Boolean? = null,
+  flags: List<MessageFlag> = emptyList(),
+  allowedMentions: List<String> = emptyList(),
 ): ObjectNode {
-    val mainBody =
-        ydwk.objectNode.put("type", InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE.toInt())
-    val secondBody = ydwk.objectNode
+  val mainBody =
+    ydwk.objectNode.put("type", InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE.toInt())
+  val secondBody = ydwk.objectNode
 
-    if (content != null) secondBody.put("content", content)
+  if (content != null) secondBody.put("content", content)
 
-    if (tts != null) secondBody.put("tts", tts)
+  if (tts != null) secondBody.put("tts", tts)
 
-    if (embeds.isNotEmpty()) {
-        val embedArray = ydwk.objectNode.arrayNode()
-        embeds.forEach { embedArray.add(it.json) }
-        secondBody.set<ArrayNode>("embeds", embedArray)
-    }
+  if (embeds.isNotEmpty()) {
+    val embedArray = ydwk.objectNode.arrayNode()
+    embeds.forEach { embedArray.add(it.json) }
+    secondBody.set<ArrayNode>("embeds", embedArray)
+  }
 
-    if (flags.isNotEmpty()) secondBody.put("flags", flags.sumOf { it.getValue() })
+  if (flags.isNotEmpty()) secondBody.put("flags", flags.sumOf { it.getValue() })
 
-    if (allowedMentions.isNotEmpty()) {
-        val allowedMentionsArray = ydwk.objectNode.arrayNode()
-        allowedMentions.forEach { allowedMentionsArray.add(it) }
-        secondBody.set<ArrayNode>("allowed_mentions", allowedMentionsArray)
-    }
+  if (allowedMentions.isNotEmpty()) {
+    val allowedMentionsArray = ydwk.objectNode.arrayNode()
+    allowedMentions.forEach { allowedMentionsArray.add(it) }
+    secondBody.set<ArrayNode>("allowed_mentions", allowedMentionsArray)
+  }
 
-    return mainBody.set("data", secondBody)
+  return mainBody.set("data", secondBody)
 }
 
 fun replyJsonBody(
-    ydwk: YDWK,
-    embeds: List<Embed> = emptyList(),
-    tts: Boolean? = null,
-    flags: List<MessageFlag> = emptyList(),
-    allowedMentions: List<String> = emptyList()
+  ydwk: YDWK,
+  embeds: List<Embed> = emptyList(),
+  tts: Boolean? = null,
+  flags: List<MessageFlag> = emptyList(),
+  allowedMentions: List<String> = emptyList()
 ): ObjectNode {
-    return replyJsonBody(ydwk, null, embeds, tts, flags, allowedMentions)
+  return replyJsonBody(ydwk, null, embeds, tts, flags, allowedMentions)
 }
 
 fun replyJsonBody(
-    ydwk: YDWK,
-    embeds: Embed,
-    tts: Boolean? = null,
-    flag: MessageFlag? = null
+  ydwk: YDWK,
+  embeds: Embed,
+  tts: Boolean? = null,
+  flag: MessageFlag? = null
 ): ObjectNode {
-    return replyJsonBody(
-        ydwk,
-        null,
-        listOf(embeds),
-        tts,
-        if (flag != null) listOf(flag) else emptyList(),
-        emptyList())
+  return replyJsonBody(
+    ydwk,
+    null,
+    listOf(embeds),
+    tts,
+    if (flag != null) listOf(flag) else emptyList(),
+    emptyList()
+  )
 }
 
 fun replyJsonBody(
-    ydwk: YDWK,
-    embeds: Embed,
-    tts: Boolean? = null,
-    flag: MessageFlag? = null,
-    allowedMentions: List<String> = emptyList()
+  ydwk: YDWK,
+  embeds: Embed,
+  tts: Boolean? = null,
+  flag: MessageFlag? = null,
+  allowedMentions: List<String> = emptyList()
 ): ObjectNode {
-    return replyJsonBody(
-        ydwk,
-        null,
-        listOf(embeds),
-        tts,
-        if (flag != null) listOf(flag) else emptyList(),
-        allowedMentions)
+  return replyJsonBody(
+    ydwk,
+    null,
+    listOf(embeds),
+    tts,
+    if (flag != null) listOf(flag) else emptyList(),
+    allowedMentions
+  )
 }
 
 fun replyJsonBody(
-    ydwk: YDWK,
-    content: String,
-    tts: Boolean? = null,
-    flag: MessageFlag? = null
+  ydwk: YDWK,
+  content: String,
+  tts: Boolean? = null,
+  flag: MessageFlag? = null
 ): ObjectNode {
-    return replyJsonBody(
-        ydwk, content, listOf(), tts, if (flag != null) listOf(flag) else emptyList(), emptyList())
+  return replyJsonBody(
+    ydwk,
+    content,
+    listOf(),
+    tts,
+    if (flag != null) listOf(flag) else emptyList(),
+    emptyList()
+  )
 }
 
 fun replyJsonBody(
-    ydwk: YDWK,
-    content: String,
-    tts: Boolean? = null,
-    flag: MessageFlag? = null,
-    allowedMentions: List<String> = emptyList()
+  ydwk: YDWK,
+  content: String,
+  tts: Boolean? = null,
+  flag: MessageFlag? = null,
+  allowedMentions: List<String> = emptyList()
 ): ObjectNode {
-    return replyJsonBody(
-        ydwk,
-        content,
-        listOf(),
-        tts,
-        if (flag != null) listOf(flag) else emptyList(),
-        allowedMentions)
+  return replyJsonBody(
+    ydwk,
+    content,
+    listOf(),
+    tts,
+    if (flag != null) listOf(flag) else emptyList(),
+    allowedMentions
+  )
 }
 
 fun sendMessageToChannelBody(
-    ydwk: YDWK,
-    content: String?,
-    tts: Boolean? = null,
-    embeds: List<Embed> = emptyList()
+  ydwk: YDWK,
+  content: String?,
+  tts: Boolean? = null,
+  embeds: List<Embed> = emptyList()
 ): ObjectNode {
-    val body = ydwk.objectNode
-    if (content != null) body.put("content", content)
-    if (tts != null) body.put("tts", tts)
-    if (embeds.isNotEmpty()) {
-        val embedArray = ydwk.objectNode.arrayNode()
-        embeds.forEach { embedArray.add(it.json) }
-        body.set<ArrayNode>("embeds", embedArray)
-    }
-    return body
+  val body = ydwk.objectNode
+  if (content != null) body.put("content", content)
+  if (tts != null) body.put("tts", tts)
+  if (embeds.isNotEmpty()) {
+    val embedArray = ydwk.objectNode.arrayNode()
+    embeds.forEach { embedArray.add(it.json) }
+    body.set<ArrayNode>("embeds", embedArray)
+  }
+  return body
 }
 
 fun sendMessageToChannelBody(
-    ydwk: YDWK,
-    content: String? = null,
-    tts: Boolean? = null,
-    embed: Embed? = null
+  ydwk: YDWK,
+  content: String? = null,
+  tts: Boolean? = null,
+  embed: Embed? = null
 ): ObjectNode {
-    return sendMessageToChannelBody(
-        ydwk, content, tts, if (embed != null) listOf(embed) else emptyList())
+  return sendMessageToChannelBody(
+    ydwk,
+    content,
+    tts,
+    if (embed != null) listOf(embed) else emptyList()
+  )
 }
 
 fun sendMessageToChannelBody(ydwk: YDWK, embed: Embed, tts: Boolean? = null): ObjectNode {
-    return sendMessageToChannelBody(ydwk, null, tts, listOf(embed))
+  return sendMessageToChannelBody(ydwk, null, tts, listOf(embed))
 }
 
 fun sendMessageToChannelBody(
-    ydwk: YDWK,
-    embeds: List<Embed> = emptyList(),
-    tts: Boolean? = null
+  ydwk: YDWK,
+  embeds: List<Embed> = emptyList(),
+  tts: Boolean? = null
 ): ObjectNode {
-    return sendMessageToChannelBody(ydwk, null, tts, embeds)
+  return sendMessageToChannelBody(ydwk, null, tts, embeds)
 }
 
 fun sendMessageToChannelBody(ydwk: YDWK, content: String, tts: Boolean? = null): ObjectNode {
-    return sendMessageToChannelBody(ydwk, content, tts, listOf())
+  return sendMessageToChannelBody(ydwk, content, tts, listOf())
 }

@@ -23,8 +23,8 @@ import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.evm.backend.update.IEventUpdate
 
 data class GenericUserUpdateEvent<T>(
-    override val ydwk: YDWK,
-    override val entity: User,
-    override val oldValue: T,
-    override val newValue: T
+  override val ydwk: YDWK,
+  override val entity: User,
+  override val oldValue: T,
+  override val newValue: T
 ) : IEventUpdate<User, T>

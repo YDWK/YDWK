@@ -24,5 +24,5 @@ import io.github.ydwk.ydwk.entities.Bot
 
 class BotImpl(json: JsonNode, id: Long, ydwk: YDWK) : UserImpl(json, id, ydwk), Bot {
 
-    override var email: String = json["email"].asText()
+  override var email: String = json["email"].asText()
 }

@@ -26,16 +26,16 @@ import io.github.ydwk.ydwk.impl.entities.EmojiImpl
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class ReactionImpl(override val ydwk: YDWK, override val json: JsonNode) : Reaction {
-    override val count: Int
-        get() = json.get("count").asInt()
+  override val count: Int
+    get() = json.get("count").asInt()
 
-    override val me: Boolean
-        get() = json.get("me").asBoolean()
+  override val me: Boolean
+    get() = json.get("me").asBoolean()
 
-    override val emoji: Emoji
-        get() = EmojiImpl(ydwk, json.get("emoji"))
+  override val emoji: Emoji
+    get() = EmojiImpl(ydwk, json.get("emoji"))
 
-    override fun toString(): String {
-        return EntityToStringBuilder(this).toString()
-    }
+  override fun toString(): String {
+    return EntityToStringBuilder(this).toString()
+  }
 }

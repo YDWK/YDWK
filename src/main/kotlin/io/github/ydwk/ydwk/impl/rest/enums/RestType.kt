@@ -19,9 +19,9 @@
 package io.github.ydwk.ydwk.impl.rest.enums
 
 enum class RestType {
-    GET,
-    POST,
-    PATCH,
-    DELETE,
-    PUT
+  GET,
+  POST,
+  PATCH,
+  DELETE,
+  PUT
 }

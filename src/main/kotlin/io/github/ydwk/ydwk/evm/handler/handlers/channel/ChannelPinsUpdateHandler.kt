@@ -24,7 +24,7 @@ import io.github.ydwk.ydwk.evm.handler.handlers.user.UserUpdateHandler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class ChannelPinsUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override fun start() {
-        UserUpdateHandler(ydwk, json["user"]).start()
-    }
+  override fun start() {
+    UserUpdateHandler(ydwk, json["user"]).start()
+  }
 }

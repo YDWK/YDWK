@@ -30,57 +30,54 @@ import java.util.concurrent.CompletableFuture
 import okhttp3.RequestBody.Companion.toRequestBody
 
 interface User : SnowFlake, GenericEntity, NameAbleEntity, Sendeadble {
-    /** The user's 4-digit discord-tag */
-    var discriminator: String
+  /** The user's 4-digit discord-tag */
+  var discriminator: String
 
-    /** The user's avatar hash */
-    var avatar: String
+  /** The user's avatar hash */
+  var avatar: String
 
-    /** Whether the user belongs to an OAuth2 application */
-    val bot: Boolean?
+  /** Whether the user belongs to an OAuth2 application */
+  val bot: Boolean?
 
-    /** Whether the user is an Official Discord System user (part of the urgent message system) */
-    var system: Boolean?
+  /** Whether the user is an Official Discord System user (part of the urgent message system) */
+  var system: Boolean?
 
-    /** Whether the user has two factor enabled on their account */
-    var mfaEnabled: Boolean?
+  /** Whether the user has two factor enabled on their account */
+  var mfaEnabled: Boolean?
 
-    /** The user's banner hash */
-    var banner: String?
+  /** The user's banner hash */
+  var banner: String?
 
-    /** The user's banner color encoded as an integer representation of hexadecimal color code */
-    var accentColor: Color?
+  /** The user's banner color encoded as an integer representation of hexadecimal color code */
+  var accentColor: Color?
 
-    /** The user's chosen language option */
-    var locale: String?
+  /** The user's chosen language option */
+  var locale: String?
 
-    /** Whether the email on this account has been verified */
-    var verified: Boolean?
+  /** Whether the email on this account has been verified */
+  var verified: Boolean?
 
-    /** The flags on a user's account */
-    var flags: Int?
+  /** The flags on a user's account */
+  var flags: Int?
 
-    /** The public flags on a user's account */
-    var publicFlags: Int?
+  /** The public flags on a user's account */
+  var publicFlags: Int?
 
-    /** Creates a dm channel with this user. */
-    val createDmChannel: CompletableFuture<DmChannel>
-        get() {
-            return ydwk.restApiManager
-                .post(
-                    ydwk.objectMapper
-                        .createObjectNode()
-                        .put("recipient_id", id)
-                        .toString()
-                        .toRequestBody(),
-                    EndPoint.UserEndpoint.CREATE_DM)
-                .execute { it ->
-                    val jsonBody = it.jsonBody
-                    if (jsonBody == null) {
-                        throw IllegalStateException("json body is null")
-                    } else {
-                        DmChannelImpl(ydwk, jsonBody, jsonBody["id"].asLong())
-                    }
-                }
+  /** Creates a dm channel with this user. */
+  val createDmChannel: CompletableFuture<DmChannel>
+    get() {
+      return ydwk.restApiManager
+        .post(
+          ydwk.objectMapper.createObjectNode().put("recipient_id", id).toString().toRequestBody(),
+          EndPoint.UserEndpoint.CREATE_DM
+        )
+        .execute { it ->
+          val jsonBody = it.jsonBody
+          if (jsonBody == null) {
+            throw IllegalStateException("json body is null")
+          } else {
+            DmChannelImpl(ydwk, jsonBody, jsonBody["id"].asLong())
+          }
         }
+    }
 }

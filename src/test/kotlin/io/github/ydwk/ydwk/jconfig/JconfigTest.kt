@@ -25,17 +25,14 @@ import org.junit.jupiter.api.Test
 
 class JconfigTest {
 
-    @Test
-    fun test() {
-        val jconfig =
-            JConfigBuilder()
-                .setDirectoryPath("src/test/resources/jconfig")
-                .setFilename("sample")
-                .build()
+  @Test
+  fun test() {
+    val jconfig =
+      JConfigBuilder().setDirectoryPath("src/test/resources/jconfig").setFilename("sample").build()
 
-        val sampleToken: Int? = jconfig["sample_token"]?.asInt
+    val sampleToken: Int? = jconfig["sample_token"]?.asInt
 
-        assertNotNull(sampleToken)
-        assertEquals(21, sampleToken)
-    }
+    assertNotNull(sampleToken)
+    assertEquals(21, sampleToken)
+  }
 }

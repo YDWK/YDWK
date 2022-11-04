@@ -22,29 +22,29 @@ import io.github.ydwk.ydwk.entities.guild.Member
 
 /** Discord's Member do not have a unique ID, so we need to use a combination of the user id */
 interface MemberCache : Cache {
-    /**
-     * Adds a new item to the cache
-     *
-     * @param guildId The guild id of the member
-     * @param userId The user id of the member
-     * @param value The value of the item
-     */
-    operator fun set(guildId: String, userId: String, value: Member)
+  /**
+   * Adds a new item to the cache
+   *
+   * @param guildId The guild id of the member
+   * @param userId The user id of the member
+   * @param value The value of the item
+   */
+  operator fun set(guildId: String, userId: String, value: Member)
 
-    /**
-     * Gets an item from the cache
-     *
-     * @param guildId The guild id of the member
-     * @param userId The user id of the member
-     * @return The value of the item
-     */
-    operator fun get(guildId: String, userId: String): Member?
+  /**
+   * Gets an item from the cache
+   *
+   * @param guildId The guild id of the member
+   * @param userId The user id of the member
+   * @return The value of the item
+   */
+  operator fun get(guildId: String, userId: String): Member?
 
-    /**
-     * Removes an item from the cache
-     *
-     * @param guildId The guild id of the member
-     * @param userId The user id of the member
-     */
-    fun remove(guildId: String, userId: String)
+  /**
+   * Removes an item from the cache
+   *
+   * @param guildId The guild id of the member
+   * @param userId The user id of the member
+   */
+  fun remove(guildId: String, userId: String)
 }

@@ -19,31 +19,31 @@
 package io.github.ydwk.ydwk.entities.guild.enums
 
 enum class NSFWLeveL(val level: Int) {
-    /** No NSFW content is allowed. */
-    DEFAULT(0),
+  /** No NSFW content is allowed. */
+  DEFAULT(0),
 
-    /** NSFW content is allowed, but must be marked as such. */
-    EXPLICIT(1),
+  /** NSFW content is allowed, but must be marked as such. */
+  EXPLICIT(1),
 
-    /** NSFW content is allowed without any special marking. */
-    SAFE(2),
+  /** NSFW content is allowed without any special marking. */
+  SAFE(2),
 
-    /** NSFW content is not allowed. */
-    AGE_RESTRICTED(3),
+  /** NSFW content is not allowed. */
+  AGE_RESTRICTED(3),
 
-    /** An unknown NSFW level. */
-    UNKNOWN(-1);
+  /** An unknown NSFW level. */
+  UNKNOWN(-1);
 
-    companion object {
-        /** Gets the [NSFWLeveL] for the provided [level]. */
-        fun fromValue(level: Int): NSFWLeveL {
-            return when (level) {
-                0 -> DEFAULT
-                1 -> EXPLICIT
-                2 -> SAFE
-                3 -> AGE_RESTRICTED
-                else -> UNKNOWN
-            }
-        }
+  companion object {
+    /** Gets the [NSFWLeveL] for the provided [level]. */
+    fun fromValue(level: Int): NSFWLeveL {
+      return when (level) {
+        0 -> DEFAULT
+        1 -> EXPLICIT
+        2 -> SAFE
+        3 -> AGE_RESTRICTED
+        else -> UNKNOWN
+      }
     }
+  }
 }

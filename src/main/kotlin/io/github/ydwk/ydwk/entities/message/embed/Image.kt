@@ -22,31 +22,31 @@ import io.github.ydwk.ydwk.entities.util.GenericEntity
 import java.net.URL
 
 interface Image : GenericEntity {
-    /**
-     * Gets the url of this image.
-     *
-     * @return The url of this image.
-     */
-    val url: URL
+  /**
+   * Gets the url of this image.
+   *
+   * @return The url of this image.
+   */
+  val url: URL
 
-    /**
-     * Gets the proxy url of this image.
-     *
-     * @return The proxy url of this image.
-     */
-    val proxyUrl: URL?
+  /**
+   * Gets the proxy url of this image.
+   *
+   * @return The proxy url of this image.
+   */
+  val proxyUrl: URL?
 
-    /**
-     * Gets the height of this image.
-     *
-     * @return The height of this image.
-     */
-    val height: Int?
+  /**
+   * Gets the height of this image.
+   *
+   * @return The height of this image.
+   */
+  val height: Int?
 
-    /**
-     * Gets the width of this image.
-     *
-     * @return The width of this image.
-     */
-    val width: Int?
+  /**
+   * Gets the width of this image.
+   *
+   * @return The width of this image.
+   */
+  val width: Int?
 }

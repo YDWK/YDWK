@@ -29,38 +29,38 @@ import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 
 class StickerImpl(
-    override val ydwk: YDWK,
-    override val json: JsonNode,
-    override val idAsLong: Long,
+  override val ydwk: YDWK,
+  override val json: JsonNode,
+  override val idAsLong: Long,
 ) : Sticker {
-    override val packId: GetterSnowFlake?
-        get() = if (json.has("pack_id")) GetterSnowFlake.of(json.get("pack_id").asLong()) else null
+  override val packId: GetterSnowFlake?
+    get() = if (json.has("pack_id")) GetterSnowFlake.of(json.get("pack_id").asLong()) else null
 
-    override var description: String? =
-        if (json.has("description")) json.get("description").asText() else null
+  override var description: String? =
+    if (json.has("description")) json.get("description").asText() else null
 
-    override var tags: List<String> =
-        if (json.has("tags")) json.get("tags").map { it.asText() } else emptyList()
+  override var tags: List<String> =
+    if (json.has("tags")) json.get("tags").map { it.asText() } else emptyList()
 
-    override var type: StickerType = StickerType.fromValue(json.get("type").asInt())
+  override var type: StickerType = StickerType.fromValue(json.get("type").asInt())
 
-    override var formatType: StickerFormatType =
-        StickerFormatType.fromValue(json.get("format_type").asInt())
+  override var formatType: StickerFormatType =
+    StickerFormatType.fromValue(json.get("format_type").asInt())
 
-    override var available: Boolean = json.get("available").asBoolean()
+  override var available: Boolean = json.get("available").asBoolean()
 
-    override val guild: Guild?
-        get() = if (json.has("guild_id")) ydwk.getGuildById(json["guild_id"].asLong()) else null
+  override val guild: Guild?
+    get() = if (json.has("guild_id")) ydwk.getGuildById(json["guild_id"].asLong()) else null
 
-    override var user: User? =
-        if (json.has("user")) UserImpl(json["user"], json["user"]["id"].asLong(), ydwk) else null
+  override var user: User? =
+    if (json.has("user")) UserImpl(json["user"], json["user"]["id"].asLong(), ydwk) else null
 
-    override var sortvarue: Int? =
-        if (json.has("sort_value")) json.get("sort_value").asInt() else null
+  override var sortvarue: Int? =
+    if (json.has("sort_value")) json.get("sort_value").asInt() else null
 
-    override fun toString(): String {
-        return EntityToStringBuilder(this).name(this.name).toString()
-    }
+  override fun toString(): String {
+    return EntityToStringBuilder(this).name(this.name).toString()
+  }
 
-    override var name: String = json.get("name").asText()
+  override var name: String = json.get("name").asText()
 }

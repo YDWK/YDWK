@@ -29,22 +29,22 @@ import org.junit.jupiter.api.Test
 
 class EmbedTest {
 
-    @Test
-    fun testEmbed() {
-        val ydwk = YDWKImpl(OkHttpClient())
-        val embed =
-            EmbedBuilderImpl(ydwk)
-                .setTitle("test")
-                .setDescription("test")
-                .setUrl(URL("https://www.google.com"))
-                .setTimestamp(Instant.now())
-                .setImage(EmbedImageBuilder(URL("https://www.google.com")))
-                .setAuthor("test", URL("https://www.google.com"), URL("https://www.google.com"))
-                .setFooter("test", URL("https://www.google.com"))
-                .addField("test", "test", true)
-                .build()
+  @Test
+  fun testEmbed() {
+    val ydwk = YDWKImpl(OkHttpClient())
+    val embed =
+      EmbedBuilderImpl(ydwk)
+        .setTitle("test")
+        .setDescription("test")
+        .setUrl(URL("https://www.google.com"))
+        .setTimestamp(Instant.now())
+        .setImage(EmbedImageBuilder(URL("https://www.google.com")))
+        .setAuthor("test", URL("https://www.google.com"), URL("https://www.google.com"))
+        .setFooter("test", URL("https://www.google.com"))
+        .addField("test", "test", true)
+        .build()
 
-        assertEquals("test", embed.title)
-        assertEquals("test", embed.description)
-    }
+    assertEquals("test", embed.title)
+    assertEquals("test", embed.description)
+  }
 }

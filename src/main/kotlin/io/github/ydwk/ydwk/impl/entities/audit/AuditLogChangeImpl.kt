@@ -24,27 +24,27 @@ import io.github.ydwk.ydwk.entities.audit.AuditLogChange
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class AuditLogChangeImpl(override val ydwk: YDWK, override val json: JsonNode) : AuditLogChange {
-    override val newValue: Any?
-        get() = if (json.has("new_value")) checkType(json["new_value"]) else null
+  override val newValue: Any?
+    get() = if (json.has("new_value")) checkType(json["new_value"]) else null
 
-    override val oldValue: Any?
-        get() = if (json.has("old_value")) checkType(json["old_value"]) else null
+  override val oldValue: Any?
+    get() = if (json.has("old_value")) checkType(json["old_value"]) else null
 
-    private fun checkType(node: JsonNode): Any? {
-        return when {
-            node.isTextual -> node.asText()
-            node.isInt -> node.asInt()
-            node.isBoolean -> node.asBoolean()
-            node.isLong -> node.asLong()
-            node.isDouble or node.isFloat -> node.asDouble()
-            else -> null
-        }
+  private fun checkType(node: JsonNode): Any? {
+    return when {
+      node.isTextual -> node.asText()
+      node.isInt -> node.asInt()
+      node.isBoolean -> node.asBoolean()
+      node.isLong -> node.asLong()
+      node.isDouble or node.isFloat -> node.asDouble()
+      else -> null
     }
+  }
 
-    override val key: String
-        get() = json["key"].asText()
+  override val key: String
+    get() = json["key"].asText()
 
-    override fun toString(): String {
-        return EntityToStringBuilder(this).toString()
-    }
+  override fun toString(): String {
+    return EntityToStringBuilder(this).toString()
+  }
 }

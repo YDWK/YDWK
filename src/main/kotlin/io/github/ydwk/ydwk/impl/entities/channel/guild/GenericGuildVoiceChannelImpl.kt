@@ -25,28 +25,28 @@ import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildStageChannel
 import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
 
 open class GenericGuildVoiceChannelImpl(
-    override val ydwk: YDWK,
-    override val json: JsonNode,
-    override val idAsLong: Long
+  override val ydwk: YDWK,
+  override val json: JsonNode,
+  override val idAsLong: Long
 ) : GenericGuildVoiceChannel, GenericGuildChannelImpl(ydwk, json, idAsLong, false, true, false) {
 
-    override fun asGuildVoiceChannel(): GuildVoiceChannel? {
-        return if (isCastable(GuildVoiceChannel::class.java)) {
-            GuildVoiceChannelImpl(ydwk, json, idAsLong)
-        } else {
-            null
-        }
+  override fun asGuildVoiceChannel(): GuildVoiceChannel? {
+    return if (isCastable(GuildVoiceChannel::class.java)) {
+      GuildVoiceChannelImpl(ydwk, json, idAsLong)
+    } else {
+      null
     }
+  }
 
-    override fun asStageChannel(): GuildStageChannel? {
-        return if (isCastable(GuildStageChannel::class.java)) {
-            GuildStageChannelImpl(ydwk, json, idAsLong)
-        } else {
-            null
-        }
+  override fun asStageChannel(): GuildStageChannel? {
+    return if (isCastable(GuildStageChannel::class.java)) {
+      GuildStageChannelImpl(ydwk, json, idAsLong)
+    } else {
+      null
     }
+  }
 
-    override fun asGenericGuildVoiceChannel(): GenericGuildVoiceChannel {
-        return this
-    }
+  override fun asGenericGuildVoiceChannel(): GenericGuildVoiceChannel {
+    return this
+  }
 }

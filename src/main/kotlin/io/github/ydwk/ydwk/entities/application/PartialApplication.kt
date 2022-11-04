@@ -22,6 +22,6 @@ import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.util.SnowFlake
 
 interface PartialApplication : SnowFlake, GenericEntity {
-    /** The application's public flags. */
-    var flags: Int
+  /** The application's public flags. */
+  var flags: Int
 }

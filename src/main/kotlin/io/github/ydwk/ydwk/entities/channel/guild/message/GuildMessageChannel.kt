@@ -25,63 +25,63 @@ import io.github.ydwk.ydwk.entities.channel.guild.message.text.GuildTextChannel
 import io.github.ydwk.ydwk.entities.channel.guild.message.text.PermissionOverwrite
 
 interface GuildMessageChannel : TextChannel, GuildChannel {
-    /**
-     * Gets the topic of this channel.
-     *
-     * @return the topic of this channel.
-     */
-    var topic: String
+  /**
+   * Gets the topic of this channel.
+   *
+   * @return the topic of this channel.
+   */
+  var topic: String
 
-    /**
-     * Gets the nsfw flag of this channel.
-     *
-     * @return the nsfw flag of this channel.
-     */
-    var nsfw: Boolean
+  /**
+   * Gets the nsfw flag of this channel.
+   *
+   * @return the nsfw flag of this channel.
+   */
+  var nsfw: Boolean
 
-    /**
-     * Get the default auto archive duration of this channel.
-     *
-     * @return the default auto archive duration of this channel.
-     */
-    var defaultAutoArchiveDuration: Int
+  /**
+   * Get the default auto archive duration of this channel.
+   *
+   * @return the default auto archive duration of this channel.
+   */
+  var defaultAutoArchiveDuration: Int
 
-    /**
-     * Gets the last message id of this channel.
-     *
-     * @return the last message id of this channel.
-     */
-    var lastMessageId: String
+  /**
+   * Gets the last message id of this channel.
+   *
+   * @return the last message id of this channel.
+   */
+  var lastMessageId: String
 
-    /**
-     * Gets the last pinned message id of this channel.
-     *
-     * @return the last pinned message id of this channel.
-     */
-    var lastPinTimestamp: String
+  /**
+   * Gets the last pinned message id of this channel.
+   *
+   * @return the last pinned message id of this channel.
+   */
+  var lastPinTimestamp: String
 
-    /**
-     * Gets the permission overwrites of this channel.
-     *
-     * @return the permission overwrites of this channel.
-     */
-    var permissionOverwrites: List<PermissionOverwrite>
+  /**
+   * Gets the permission overwrites of this channel.
+   *
+   * @return the permission overwrites of this channel.
+   */
+  var permissionOverwrites: List<PermissionOverwrite>
 
-    /**
-     * Gets the message channel as a guild text channel.
-     *
-     * @return the message channel as a guild text channel.
-     */
-    fun asGuildTextChannel(): GuildTextChannel? {
-        return cast(GuildTextChannel::class.java)
-    }
+  /**
+   * Gets the message channel as a guild text channel.
+   *
+   * @return the message channel as a guild text channel.
+   */
+  fun asGuildTextChannel(): GuildTextChannel? {
+    return cast(GuildTextChannel::class.java)
+  }
 
-    /**
-     * Gets the message channel as a guild news channel.
-     *
-     * @return the message channel as a guild news channel.
-     */
-    fun asGuildNewsChannel(): GuildNewsChannel? {
-        return cast(GuildNewsChannel::class.java)
-    }
+  /**
+   * Gets the message channel as a guild news channel.
+   *
+   * @return the message channel as a guild news channel.
+   */
+  fun asGuildNewsChannel(): GuildNewsChannel? {
+    return cast(GuildNewsChannel::class.java)
+  }
 }

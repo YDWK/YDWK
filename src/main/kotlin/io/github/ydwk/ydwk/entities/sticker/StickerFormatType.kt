@@ -19,20 +19,20 @@
 package io.github.ydwk.ydwk.entities.sticker
 
 enum class StickerFormatType(val value: Int) {
-    /** The file is a PNG image. */
-    PNG(1),
+  /** The file is a PNG image. */
+  PNG(1),
 
-    /** The file is a TGS animation. */
-    APNG(2),
+  /** The file is a TGS animation. */
+  APNG(2),
 
-    /** The file is a TGS animation. */
-    LOTTIE(3),
+  /** The file is a TGS animation. */
+  LOTTIE(3),
 
-    /** An unknown format. */
-    UNKNOWN(-1);
+  /** An unknown format. */
+  UNKNOWN(-1);
 
-    companion object {
-        /** Get the [StickerFormatType] from the given [value] */
-        fun fromValue(value: Int) = values().firstOrNull { it.value == value } ?: UNKNOWN
-    }
+  companion object {
+    /** Get the [StickerFormatType] from the given [value] */
+    fun fromValue(value: Int) = values().firstOrNull { it.value == value } ?: UNKNOWN
+  }
 }

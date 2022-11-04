@@ -28,13 +28,13 @@ import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class AuditLogImpl(override val ydwk: YDWK, override val json: JsonNode) : AuditLog {
 
-    override val applicationCommands: List<SlashCommand>
-        get() = emptyList()
+  override val applicationCommands: List<SlashCommand>
+    get() = emptyList()
 
-    override val entries: List<AuditLogEntry>
-        get() = json["entries"].map { AuditLogEntryImpl(ydwk, it, it["id"].asLong()) }
+  override val entries: List<AuditLogEntry>
+    get() = json["entries"].map { AuditLogEntryImpl(ydwk, it, it["id"].asLong()) }
 
-    override fun toString(): String {
-        return EntityToStringBuilder(this).name("AuditLog").toString()
-    }
+  override fun toString(): String {
+    return EntityToStringBuilder(this).name("AuditLog").toString()
+  }
 }

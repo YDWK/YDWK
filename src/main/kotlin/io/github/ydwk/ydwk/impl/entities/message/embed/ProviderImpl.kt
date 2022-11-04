@@ -25,13 +25,13 @@ import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class ProviderImpl(override val ydwk: YDWK, override val json: JsonNode) : Provider {
 
-    override val name: String?
-        get() = if (json.has("name")) json["name"].asText() else null
+  override val name: String?
+    get() = if (json.has("name")) json["name"].asText() else null
 
-    override val url: String?
-        get() = if (json.has("url")) json["url"].asText() else null
+  override val url: String?
+    get() = if (json.has("url")) json["url"].asText() else null
 
-    override fun toString(): String {
-        return EntityToStringBuilder(this).name(this.name ?: "null").toString()
-    }
+  override fun toString(): String {
+    return EntityToStringBuilder(this).name(this.name ?: "null").toString()
+  }
 }

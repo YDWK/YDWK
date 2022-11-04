@@ -19,28 +19,28 @@
 package io.github.ydwk.ydwk.slash
 
 enum class SlashOptionType(private val value: Int) {
-    SUB_COMMAND(1),
-    SUB_COMMAND_GROUP(2),
-    STRING(3),
-    INTEGER(4),
-    BOOLEAN(5),
-    USER(6),
-    CHANNEL(7),
-    ROLE(8),
-    MENTIONABLE(9),
-    NUMBER(10),
-    ATTACHMENT(11),
-    UNKNOWN(-1);
+  SUB_COMMAND(1),
+  SUB_COMMAND_GROUP(2),
+  STRING(3),
+  INTEGER(4),
+  BOOLEAN(5),
+  USER(6),
+  CHANNEL(7),
+  ROLE(8),
+  MENTIONABLE(9),
+  NUMBER(10),
+  ATTACHMENT(11),
+  UNKNOWN(-1);
 
-    companion object {
-        /** Get the [SlashOptionType] from the value */
-        fun fromInt(value: Int): SlashOptionType {
-            return values().firstOrNull { it.value == value } ?: UNKNOWN
-        }
+  companion object {
+    /** Get the [SlashOptionType] from the value */
+    fun fromInt(value: Int): SlashOptionType {
+      return values().firstOrNull { it.value == value } ?: UNKNOWN
     }
+  }
 
-    /** Get the value of the [SlashOptionType] */
-    fun toInt(): Int {
-        return value
-    }
+  /** Get the value of the [SlashOptionType] */
+  fun toInt(): Int {
+    return value
+  }
 }
