@@ -20,6 +20,4 @@ package io.github.ydwk.ydwk.evm.event
 
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
-
-// TODO: make all event classes data classes
-abstract class Event(override val ydwk: YDWK) : GenericEvent
+data class Event(override val ydwk: YDWK) : GenericEvent
