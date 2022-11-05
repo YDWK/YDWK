@@ -19,6 +19,7 @@
 package io.github.ydwk.ydwk.event
 
 import io.github.ydwk.ydwk.evm.backend.event.on
+import io.github.ydwk.ydwk.exception.TestException
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -28,6 +29,7 @@ import org.junit.jupiter.api.Test
 
 object EvenTester {
     private var embedJson: String? = null
+    private var retriedAmount = 0
 
     @Test
     @Order(1)
@@ -37,15 +39,29 @@ object EvenTester {
 
         ydwk.on<TestEvent> { onTest() }
 
-        Thread.sleep(5000)
-        assertNotNull(embedJson)
-        assertEquals(
-            """
+        if (embedJson == null) {
+            retriedAmount++
+            // wait for event and try again
+            Thread.sleep(5000)
+            runEvent()
+        } else {
+            assert(embedJson)
+        }
+    }
+
+    private fun assert(embedJson: String?) {
+        if (retriedAmount > 3) {
+            throw TestException("Failed to get event after 5 retries")
+        } else {
+            assertNotNull(embedJson)
+            assertEquals(
+                """
             {
               "title" : "Event Test"
             }
         """.trimIndent(),
-            embedJson)
+                embedJson)
+        }
     }
 
     private fun emitTestEvent(ydwk: YDWKImpl) {

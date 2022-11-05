@@ -16,15 +16,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.evm.event.events.guild
+package io.github.ydwk.ydwk.evm.event.events.guild.update
 
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Guild
-import io.github.ydwk.ydwk.evm.backend.update.IEventUpdate
+import io.github.ydwk.ydwk.entities.guild.enums.MessageNotificationLevel
+import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
-open class GenericGuildUpdateEvent<T>(
+data class GuildDefaultMessageNotificationLevelUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,
-    override val oldValue: T,
-    override val newValue: T
-) : IEventUpdate<Guild, T>
+    val oldDefaultMessageNotificationLevel: Int,
+    val newDefaultMessageNotificationLevel: MessageNotificationLevel
+) :
+    GenericGuildUpdateEvent<Int>(
+        ydwk, entity, oldDefaultMessageNotificationLevel, newDefaultMessageNotificationLevel.value)

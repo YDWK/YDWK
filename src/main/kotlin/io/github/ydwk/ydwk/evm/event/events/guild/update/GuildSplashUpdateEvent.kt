@@ -26,5 +26,5 @@ data class GuildSplashUpdateEvent(
     override val ydwk: YDWKImpl,
     override val entity: Guild,
     val oldSplash: String?,
-    val newSplash: String
-) : GenericGuildUpdateEvent<String>(ydwk, entity, oldSplash, newSplash)
+    val newSplash: String?
+) : GenericGuildUpdateEvent<String?>(ydwk, entity, oldSplash, newSplash)

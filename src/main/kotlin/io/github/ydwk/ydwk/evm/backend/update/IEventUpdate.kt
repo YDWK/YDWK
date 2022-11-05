@@ -24,7 +24,7 @@ interface IEventUpdate<E, V> : GenericEvent {
 
     val entity: E
 
-    val oldValue: V?
+    val oldValue: V
 
     val newValue: V
 }
