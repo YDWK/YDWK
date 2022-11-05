@@ -23,8 +23,8 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
 data class GuildPreferredLocaleUpdateEvent(
-  override val ydwk: YDWK,
-  override val entity: Guild,
-  val oldPreferredLocale: String,
-  val newPreferredLocale: String
+    override val ydwk: YDWK,
+    override val entity: Guild,
+    val oldPreferredLocale: String,
+    val newPreferredLocale: String
 ) : GenericGuildUpdateEvent<String>(ydwk, entity, oldPreferredLocale, newPreferredLocale)

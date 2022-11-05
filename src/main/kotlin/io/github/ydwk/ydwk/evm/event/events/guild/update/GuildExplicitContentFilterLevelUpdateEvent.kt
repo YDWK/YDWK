@@ -24,14 +24,10 @@ import io.github.ydwk.ydwk.entities.guild.enums.ExplicitContentFilterLevel
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
 data class GuildExplicitContentFilterLevelUpdateEvent(
-  override val ydwk: YDWK,
-  override val entity: Guild,
-  val oldExplicitContentFilterLevel: Int,
-  val newExplicitContentFilterLevel: ExplicitContentFilterLevel
+    override val ydwk: YDWK,
+    override val entity: Guild,
+    val oldExplicitContentFilterLevel: Int,
+    val newExplicitContentFilterLevel: ExplicitContentFilterLevel
 ) :
-  GenericGuildUpdateEvent<Int>(
-    ydwk,
-    entity,
-    oldExplicitContentFilterLevel,
-    newExplicitContentFilterLevel.value
-  )
+    GenericGuildUpdateEvent<Int>(
+        ydwk, entity, oldExplicitContentFilterLevel, newExplicitContentFilterLevel.value)

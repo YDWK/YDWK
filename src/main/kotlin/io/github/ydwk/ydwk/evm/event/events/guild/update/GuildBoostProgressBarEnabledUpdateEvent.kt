@@ -23,14 +23,10 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
 data class GuildBoostProgressBarEnabledUpdateEvent(
-  override val ydwk: YDWK,
-  override val entity: Guild,
-  val oldBoostProgressBarEnabled: Boolean,
-  val newBoostProgressBarEnabled: Boolean
+    override val ydwk: YDWK,
+    override val entity: Guild,
+    val oldBoostProgressBarEnabled: Boolean,
+    val newBoostProgressBarEnabled: Boolean
 ) :
-  GenericGuildUpdateEvent<Boolean>(
-    ydwk,
-    entity,
-    oldBoostProgressBarEnabled,
-    newBoostProgressBarEnabled
-  )
+    GenericGuildUpdateEvent<Boolean>(
+        ydwk, entity, oldBoostProgressBarEnabled, newBoostProgressBarEnabled)

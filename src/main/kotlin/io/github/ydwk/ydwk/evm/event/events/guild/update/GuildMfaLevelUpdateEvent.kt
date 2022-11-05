@@ -24,8 +24,8 @@ import io.github.ydwk.ydwk.entities.guild.enums.MFALevel
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
 data class GuildMfaLevelUpdateEvent(
-  override val ydwk: YDWK,
-  override val entity: Guild,
-  val oldMfaLevel: Int,
-  val newMfaLevel: MFALevel
+    override val ydwk: YDWK,
+    override val entity: Guild,
+    val oldMfaLevel: Int,
+    val newMfaLevel: MFALevel
 ) : GenericGuildUpdateEvent<Int>(ydwk, entity, oldMfaLevel, newMfaLevel.value)

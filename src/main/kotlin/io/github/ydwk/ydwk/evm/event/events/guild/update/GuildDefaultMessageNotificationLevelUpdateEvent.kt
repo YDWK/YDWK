@@ -24,14 +24,10 @@ import io.github.ydwk.ydwk.entities.guild.enums.MessageNotificationLevel
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
 data class GuildDefaultMessageNotificationLevelUpdateEvent(
-  override val ydwk: YDWK,
-  override val entity: Guild,
-  val oldDefaultMessageNotificationLevel: Int,
-  val newDefaultMessageNotificationLevel: MessageNotificationLevel
+    override val ydwk: YDWK,
+    override val entity: Guild,
+    val oldDefaultMessageNotificationLevel: Int,
+    val newDefaultMessageNotificationLevel: MessageNotificationLevel
 ) :
-  GenericGuildUpdateEvent<Int>(
-    ydwk,
-    entity,
-    oldDefaultMessageNotificationLevel,
-    newDefaultMessageNotificationLevel.value
-  )
+    GenericGuildUpdateEvent<Int>(
+        ydwk, entity, oldDefaultMessageNotificationLevel, newDefaultMessageNotificationLevel.value)

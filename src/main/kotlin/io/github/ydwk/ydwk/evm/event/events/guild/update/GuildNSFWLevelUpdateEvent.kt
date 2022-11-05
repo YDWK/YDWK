@@ -24,8 +24,8 @@ import io.github.ydwk.ydwk.entities.guild.enums.NSFWLeveL
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
 data class GuildNSFWLevelUpdateEvent(
-  override val ydwk: YDWK,
-  override val entity: Guild,
-  val oldNSFWLevel: Int,
-  val newNSFWLevel: NSFWLeveL
+    override val ydwk: YDWK,
+    override val entity: Guild,
+    val oldNSFWLevel: Int,
+    val newNSFWLevel: NSFWLeveL
 ) : GenericGuildUpdateEvent<Int>(ydwk, entity, oldNSFWLevel, newNSFWLevel.level)

@@ -23,9 +23,10 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
 data class GuildApproximateMemberCountUpdateEvent(
-  override val ydwk: YDWK,
-  override val entity: Guild,
-  val oldApproximateMemberCount: Int?,
-  val newApproximateMemberCount: Int?
+    override val ydwk: YDWK,
+    override val entity: Guild,
+    val oldApproximateMemberCount: Int?,
+    val newApproximateMemberCount: Int?
 ) :
-  GenericGuildUpdateEvent<Int?>(ydwk, entity, oldApproximateMemberCount, newApproximateMemberCount)
+    GenericGuildUpdateEvent<Int?>(
+        ydwk, entity, oldApproximateMemberCount, newApproximateMemberCount)

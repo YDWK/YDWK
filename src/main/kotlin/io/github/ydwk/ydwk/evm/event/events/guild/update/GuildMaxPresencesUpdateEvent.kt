@@ -23,8 +23,8 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
 data class GuildMaxPresencesUpdateEvent(
-  override val ydwk: YDWK,
-  override val entity: Guild,
-  val oldMaxPresences: Int?,
-  val newMaxPresences: Int?
+    override val ydwk: YDWK,
+    override val entity: Guild,
+    val oldMaxPresences: Int?,
+    val newMaxPresences: Int?
 ) : GenericGuildUpdateEvent<Int?>(ydwk, entity, oldMaxPresences, newMaxPresences)

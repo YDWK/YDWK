@@ -23,8 +23,8 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
 data class GuildPermissionsUpdateEvent(
-  override val ydwk: YDWK,
-  override val entity: Guild,
-  val oldPermissions: String?,
-  val newPermissions: String?
+    override val ydwk: YDWK,
+    override val entity: Guild,
+    val oldPermissions: String?,
+    val newPermissions: String?
 ) : GenericGuildUpdateEvent<String?>(ydwk, entity, oldPermissions, newPermissions)

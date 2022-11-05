@@ -23,14 +23,10 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
 data class GuildApproximatePresenceCountUpdateEvent(
-  override val ydwk: YDWK,
-  override val entity: Guild,
-  val oldApproximatePresenceCount: Int?,
-  val newApproximatePresenceCount: Int?
+    override val ydwk: YDWK,
+    override val entity: Guild,
+    val oldApproximatePresenceCount: Int?,
+    val newApproximatePresenceCount: Int?
 ) :
-  GenericGuildUpdateEvent<Int?>(
-    ydwk,
-    entity,
-    oldApproximatePresenceCount,
-    newApproximatePresenceCount
-  )
+    GenericGuildUpdateEvent<Int?>(
+        ydwk, entity, oldApproximatePresenceCount, newApproximatePresenceCount)

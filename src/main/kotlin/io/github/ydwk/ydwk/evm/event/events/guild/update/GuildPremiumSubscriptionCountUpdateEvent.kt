@@ -23,14 +23,10 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
 data class GuildPremiumSubscriptionCountUpdateEvent(
-  override val ydwk: YDWK,
-  override val entity: Guild,
-  val oldPremiumSubscriptionCount: Int,
-  val newPremiumSubscriptionCount: Int
+    override val ydwk: YDWK,
+    override val entity: Guild,
+    val oldPremiumSubscriptionCount: Int,
+    val newPremiumSubscriptionCount: Int
 ) :
-  GenericGuildUpdateEvent<Int>(
-    ydwk,
-    entity,
-    oldPremiumSubscriptionCount,
-    newPremiumSubscriptionCount
-  )
+    GenericGuildUpdateEvent<Int>(
+        ydwk, entity, oldPremiumSubscriptionCount, newPremiumSubscriptionCount)

@@ -23,8 +23,8 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
 data class GuildMaxVideoChannelUsersUpdateEvent(
-  override val ydwk: YDWK,
-  override val entity: Guild,
-  val oldMaxVideoChannelUsers: Int?,
-  val newMaxVideoChannelUsers: Int?
+    override val ydwk: YDWK,
+    override val entity: Guild,
+    val oldMaxVideoChannelUsers: Int?,
+    val newMaxVideoChannelUsers: Int?
 ) : GenericGuildUpdateEvent<Int?>(ydwk, entity, oldMaxVideoChannelUsers, newMaxVideoChannelUsers)

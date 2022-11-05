@@ -23,8 +23,8 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
 data class GuildAfkChannelUpdateEvent(
-  override val ydwk: YDWK,
-  override val entity: Guild,
-  val oldAfkChannel: Long?,
-  val newAfkChannel: Long?
+    override val ydwk: YDWK,
+    override val entity: Guild,
+    val oldAfkChannel: Long?,
+    val newAfkChannel: Long?
 ) : GenericGuildUpdateEvent<Long?>(ydwk, entity, oldAfkChannel, newAfkChannel)

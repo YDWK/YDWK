@@ -23,8 +23,8 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
 data class GuildWidgetEnabledUpdateEvent(
-  override val ydwk: YDWK,
-  override val entity: Guild,
-  val oldWidgetEnabled: Boolean?,
-  val newWidgetEnabled: Boolean?
+    override val ydwk: YDWK,
+    override val entity: Guild,
+    val oldWidgetEnabled: Boolean?,
+    val newWidgetEnabled: Boolean?
 ) : GenericGuildUpdateEvent<Boolean?>(ydwk, entity, oldWidgetEnabled, newWidgetEnabled)

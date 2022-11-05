@@ -23,8 +23,8 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
 data class GuildBannerUpdateEvent(
-  override val ydwk: YDWK,
-  override val entity: Guild,
-  val oldBanner: String?,
-  val newBanner: String?
+    override val ydwk: YDWK,
+    override val entity: Guild,
+    val oldBanner: String?,
+    val newBanner: String?
 ) : GenericGuildUpdateEvent<String?>(ydwk, entity, oldBanner, newBanner)
