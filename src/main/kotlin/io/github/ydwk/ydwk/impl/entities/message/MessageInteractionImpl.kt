@@ -29,32 +29,31 @@ import io.github.ydwk.ydwk.interaction.sub.InteractionType
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class MessageInteractionImpl(
-  override val ydwk: YDWK,
-  override val json: JsonNode,
-  override val idAsLong: Long
+    override val ydwk: YDWK,
+    override val json: JsonNode,
+    override val idAsLong: Long
 ) : MessageInteraction {
 
-  override val type: InteractionType
-    get() = InteractionType.fromInt(json.get("type").asInt())
+    override val type: InteractionType
+        get() = InteractionType.fromInt(json.get("type").asInt())
 
-  override val name: String
-    get() = json.get("name").asText()
+    override val name: String
+        get() = json.get("name").asText()
 
-  override val user: User
-    get() = UserImpl(json.get("user"), json.get("user").get("id").asLong(), ydwk)
+    override val user: User
+        get() = UserImpl(json.get("user"), json.get("user").get("id").asLong(), ydwk)
 
-  override val member: Member?
-    get() =
-      if (json.has("member"))
-        MemberImpl(
-          ydwk,
-          json.get("member"),
-          ydwk.getGuildById(json.get("guild_id").asLong())
-            ?: throw IllegalStateException("Bot is not in guild")
-        )
-      else null
+    override val member: Member?
+        get() =
+            if (json.has("member"))
+                MemberImpl(
+                    ydwk,
+                    json.get("member"),
+                    ydwk.getGuildById(json.get("guild_id").asLong())
+                        ?: throw IllegalStateException("Bot is not in guild"))
+            else null
 
-  override fun toString(): String {
-    return EntityToStringBuilder(this).name(this.name).toString()
-  }
+    override fun toString(): String {
+        return EntityToStringBuilder(this).name(this.name).toString()
+    }
 }

@@ -22,14 +22,14 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 
 class SlashOptionChoice(val name: String, val value: String) {
-  constructor(name: String, value: Int) : this(name, value.toString())
-  constructor(name: String, value: Long) : this(name, value.toString())
-  constructor(name: String, value: Double) : this(name, value.toString())
+    constructor(name: String, value: Int) : this(name, value.toString())
+    constructor(name: String, value: Long) : this(name, value.toString())
+    constructor(name: String, value: Double) : this(name, value.toString())
 
-  fun toJson(): JsonNode {
-    val json = ObjectMapper().createObjectNode()
-    json.put("name", name)
-    json.put("value", value)
-    return json
-  }
+    fun toJson(): JsonNode {
+        val json = ObjectMapper().createObjectNode()
+        json.put("name", name)
+        json.put("value", value)
+        return json
+    }
 }

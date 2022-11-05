@@ -22,8 +22,8 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.evm.event.Event
 
 data class ReadyEvent(
-  override val ydwk: YDWK,
-  val amountOfAvailableGuilds: Int,
-  val unAvailableGuildsAmount: Int,
-  val totalGuildsAmount: Int = amountOfAvailableGuilds + unAvailableGuildsAmount
+    override val ydwk: YDWK,
+    val amountOfAvailableGuilds: Int,
+    val unAvailableGuildsAmount: Int,
+    val totalGuildsAmount: Int = amountOfAvailableGuilds + unAvailableGuildsAmount
 ) : Event(ydwk)

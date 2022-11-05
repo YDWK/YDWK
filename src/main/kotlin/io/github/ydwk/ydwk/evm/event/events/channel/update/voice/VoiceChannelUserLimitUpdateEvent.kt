@@ -24,8 +24,8 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
 /** Fired when a voice/stage channel's user rate limit is updated. */
 data class VoiceChannelUserLimitUpdateEvent(
-  override val ydwk: YDWK,
-  override val entity: GenericGuildVoiceChannel,
-  val oldUserLimit: Int,
-  val newUserLimit: Int
+    override val ydwk: YDWK,
+    override val entity: GenericGuildVoiceChannel,
+    val oldUserLimit: Int,
+    val newUserLimit: Int
 ) : GenericChannelUpdateEvent<Int>(ydwk, entity, oldUserLimit, newUserLimit)

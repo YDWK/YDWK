@@ -21,24 +21,24 @@ package io.github.ydwk.ydwk.entities.message.embed
 import io.github.ydwk.ydwk.entities.util.GenericEntity
 
 interface Footer : GenericEntity {
-  /**
-   * Gets the text of this footer.
-   *
-   * @return The text of this footer.
-   */
-  val text: String
+    /**
+     * Gets the text of this footer.
+     *
+     * @return The text of this footer.
+     */
+    val text: String
 
-  /**
-   * Gets the icon url of this footer.
-   *
-   * @return The icon url of this footer.
-   */
-  val iconUrl: String?
+    /**
+     * Gets the icon url of this footer.
+     *
+     * @return The icon url of this footer.
+     */
+    val iconUrl: String?
 
-  /**
-   * Gets the proxy icon url of this footer.
-   *
-   * @return The proxy icon url of this footer.
-   */
-  val proxyIconUrl: String?
+    /**
+     * Gets the proxy icon url of this footer.
+     *
+     * @return The proxy icon url of this footer.
+     */
+    val proxyIconUrl: String?
 }

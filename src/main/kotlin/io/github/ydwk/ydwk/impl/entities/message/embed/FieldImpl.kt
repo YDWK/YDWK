@@ -25,16 +25,16 @@ import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class FieldImpl(override val ydwk: YDWK, override val json: JsonNode) : Field {
 
-  override val name: String
-    get() = json["name"].asText()
+    override val name: String
+        get() = json["name"].asText()
 
-  override val value: String
-    get() = json["value"].asText()
+    override val value: String
+        get() = json["value"].asText()
 
-  override val inline: Boolean?
-    get() = if (json.has("inline")) json["inline"].asBoolean() else null
+    override val inline: Boolean?
+        get() = if (json.has("inline")) json["inline"].asBoolean() else null
 
-  override fun toString(): String {
-    return EntityToStringBuilder(this).name(this.name).toString()
-  }
+    override fun toString(): String {
+        return EntityToStringBuilder(this).name(this.name).toString()
+    }
 }

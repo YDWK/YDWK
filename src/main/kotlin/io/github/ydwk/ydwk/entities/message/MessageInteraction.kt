@@ -25,31 +25,31 @@ import io.github.ydwk.ydwk.interaction.sub.InteractionType
 import io.github.ydwk.ydwk.util.SnowFlake
 
 interface MessageInteraction : GenericEntity, SnowFlake {
-  /**
-   * Gets the type of interaction.
-   *
-   * @return The type of interaction.
-   */
-  val type: InteractionType
+    /**
+     * Gets the type of interaction.
+     *
+     * @return The type of interaction.
+     */
+    val type: InteractionType
 
-  /**
-   * Gets the name of the interaction command.
-   *
-   * @return The name of the interaction command.
-   */
-  val name: String
+    /**
+     * Gets the name of the interaction command.
+     *
+     * @return The name of the interaction command.
+     */
+    val name: String
 
-  /**
-   * Gets the user who invoked the interaction.
-   *
-   * @return The user who invoked the interaction.
-   */
-  val user: User
+    /**
+     * Gets the user who invoked the interaction.
+     *
+     * @return The user who invoked the interaction.
+     */
+    val user: User
 
-  /**
-   * Gets the member who invoked the interaction.
-   *
-   * @return The member who invoked the interaction.
-   */
-  val member: Member?
+    /**
+     * Gets the member who invoked the interaction.
+     *
+     * @return The member who invoked the interaction.
+     */
+    val member: Member?
 }

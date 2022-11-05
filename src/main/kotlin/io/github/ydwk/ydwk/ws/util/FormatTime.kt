@@ -25,13 +25,13 @@ import java.time.format.FormatStyle
 import java.util.*
 
 fun formatInstant(instant: Instant): String {
-  // format the instant
-  // Unsupported field: YearOfEra
+    // format the instant
+    // Unsupported field: YearOfEra
 
-  val formatter =
-    DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
-      .withLocale(Locale.ENGLISH)
-      .withZone(ZoneId.systemDefault())
+    val formatter =
+        DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
+            .withLocale(Locale.ENGLISH)
+            .withZone(ZoneId.systemDefault())
 
-  return formatter.format(instant)
+    return formatter.format(instant)
 }

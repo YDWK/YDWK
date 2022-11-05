@@ -19,53 +19,52 @@
 package io.github.ydwk.ydwk.cache
 
 enum class CacheIds(private val value: String, private val cacheType: CacheType) {
-  GUILD("guild", CacheType.GUILD),
-  USER("user", CacheType.USER),
-  VOICE_CHANNEL("voice_channel", CacheType.VOICE_CHANNEL),
-  TEXT_CHANNEL("text_channel", CacheType.TEXT_CHANNEL),
-  CATEGORY("category", CacheType.CATEGORY),
-  ROLE("role", CacheType.ROLE),
-  EMOJI("emoji", CacheType.EMOJI),
-  MESSAGE("message", CacheType.MESSAGE),
-  STICKER("sticker", CacheType.STICKER),
-  VOICE_STATE("voice_state", CacheType.VOICE_STATE),
-  MEMBER("member", CacheType.MEMBER),
-  APPLICATION_COMMAND("application_command", CacheType.APPLICATION_COMMAND),
-  APPLICATION("application", CacheType.APPLICATION),
-  ATTACHMENT("attachment", CacheType.ATTACHMENT),
-  UNKNOWN("unknown", CacheType.UNKNOWN);
+    GUILD("guild", CacheType.GUILD),
+    USER("user", CacheType.USER),
+    VOICE_CHANNEL("voice_channel", CacheType.VOICE_CHANNEL),
+    TEXT_CHANNEL("text_channel", CacheType.TEXT_CHANNEL),
+    CATEGORY("category", CacheType.CATEGORY),
+    ROLE("role", CacheType.ROLE),
+    EMOJI("emoji", CacheType.EMOJI),
+    MESSAGE("message", CacheType.MESSAGE),
+    STICKER("sticker", CacheType.STICKER),
+    VOICE_STATE("voice_state", CacheType.VOICE_STATE),
+    MEMBER("member", CacheType.MEMBER),
+    APPLICATION_COMMAND("application_command", CacheType.APPLICATION_COMMAND),
+    APPLICATION("application", CacheType.APPLICATION),
+    ATTACHMENT("attachment", CacheType.ATTACHMENT),
+    UNKNOWN("unknown", CacheType.UNKNOWN);
 
-  companion object {
-    /** Get the [CacheIds] from a [String] type. */
-    fun fromString(string: String): CacheIds {
-      return values().firstOrNull { it.value == string } ?: UNKNOWN
+    companion object {
+        /** Get the [CacheIds] from a [String] type. */
+        fun fromString(string: String): CacheIds {
+            return values().firstOrNull { it.value == string } ?: UNKNOWN
+        }
+
+        fun getDefaultCache(): Set<CacheIds> {
+            return setOf(
+                GUILD,
+                USER,
+                VOICE_CHANNEL,
+                TEXT_CHANNEL,
+                CATEGORY,
+                MESSAGE,
+                MEMBER,
+                APPLICATION,
+                ATTACHMENT,
+                ROLE)
+        }
+
+        fun getAllCache(): Set<CacheIds> {
+            return values().toSet()
+        }
     }
 
-    fun getDefaultCache(): Set<CacheIds> {
-      return setOf(
-        GUILD,
-        USER,
-        VOICE_CHANNEL,
-        TEXT_CHANNEL,
-        CATEGORY,
-        MESSAGE,
-        MEMBER,
-        APPLICATION,
-        ATTACHMENT,
-        ROLE
-      )
+    override fun toString(): String {
+        return value
     }
 
-    fun getAllCache(): Set<CacheIds> {
-      return values().toSet()
+    fun getCacheType(): CacheType {
+        return cacheType
     }
-  }
-
-  override fun toString(): String {
-    return value
-  }
-
-  fun getCacheType(): CacheType {
-    return cacheType
-  }
 }

@@ -27,38 +27,37 @@ import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 
 object EvenTester {
-  private var embedJson: String? = null
+    private var embedJson: String? = null
 
-  @Test
-  @Order(1)
-  fun runEvent() {
-    val ydwk = YDWKImpl(OkHttpClient())
-    emitTestEvent(ydwk)
+    @Test
+    @Order(1)
+    fun runEvent() {
+        val ydwk = YDWKImpl(OkHttpClient())
+        emitTestEvent(ydwk)
 
-    ydwk.on<TestEvent> { onTest() }
+        ydwk.on<TestEvent> { onTest() }
 
-    Thread.sleep(5000)
-    assertNotNull(embedJson)
-    assertEquals(
-      """
+        Thread.sleep(5000)
+        assertNotNull(embedJson)
+        assertEquals(
+            """
             {
               "title" : "Event Test"
             }
         """.trimIndent(),
-      embedJson
-    )
-  }
+            embedJson)
+    }
 
-  private fun emitTestEvent(ydwk: YDWKImpl) {
-    ydwk.emitEvent(TestEvent(ydwk))
-  }
+    private fun emitTestEvent(ydwk: YDWKImpl) {
+        ydwk.emitEvent(TestEvent(ydwk))
+    }
 
-  private fun onTest() {
-    embedJson =
-      """
+    private fun onTest() {
+        embedJson =
+            """
             {
               "title" : "Event Test"
             }
         """.trimIndent()
-  }
+    }
 }

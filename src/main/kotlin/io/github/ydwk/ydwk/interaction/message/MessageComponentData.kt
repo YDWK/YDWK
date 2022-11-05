@@ -21,17 +21,17 @@ package io.github.ydwk.ydwk.interaction.message
 import io.github.ydwk.ydwk.interaction.sub.GenericCommandData
 
 interface MessageComponentData : GenericCommandData {
-  /**
-   * Gets the custom id of this component.
-   *
-   * @return The custom id of this component.
-   */
-  val customId: String
+    /**
+     * Gets the custom id of this component.
+     *
+     * @return The custom id of this component.
+     */
+    val customId: String
 
-  /**
-   * Gets the component type of this component.
-   *
-   * @return The component type of this component.
-   */
-  val componentType: MessageComponentType
+    /**
+     * Gets the component type of this component.
+     *
+     * @return The component type of this component.
+     */
+    val componentType: MessageComponentType
 }

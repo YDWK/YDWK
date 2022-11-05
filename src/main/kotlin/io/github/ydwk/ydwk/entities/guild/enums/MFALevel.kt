@@ -19,19 +19,19 @@
 package io.github.ydwk.ydwk.entities.guild.enums
 
 enum class MFALevel(val value: Int) {
-  /** Guild has no MFA/2FA requirement for moderation actions */
-  NONE(0),
+    /** Guild has no MFA/2FA requirement for moderation actions */
+    NONE(0),
 
-  /** Guild has a 2FA requirement for moderation actions */
-  ELEVATED(1),
+    /** Guild has a 2FA requirement for moderation actions */
+    ELEVATED(1),
 
-  /** An unknown MFA level was returned */
-  UNKNOWN(-1);
+    /** An unknown MFA level was returned */
+    UNKNOWN(-1);
 
-  companion object {
-    /** Gets the [MFALevel] for the given [value]. */
-    fun fromValue(value: Int): MFALevel {
-      return values().firstOrNull { it.value == value } ?: UNKNOWN
+    companion object {
+        /** Gets the [MFALevel] for the given [value]. */
+        fun fromValue(value: Int): MFALevel {
+            return values().firstOrNull { it.value == value } ?: UNKNOWN
+        }
     }
-  }
 }

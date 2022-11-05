@@ -24,19 +24,19 @@ import java.util.function.Function
 import okhttp3.Headers
 
 interface SimilarRestApi {
-  fun header(name: String, value: String): SimilarRestApi
+    fun header(name: String, value: String): SimilarRestApi
 
-  fun addHeader(name: String, value: String): SimilarRestApi
+    fun addHeader(name: String, value: String): SimilarRestApi
 
-  fun removeHeader(name: String): SimilarRestApi
+    fun removeHeader(name: String): SimilarRestApi
 
-  fun headers(headers: Headers): SimilarRestApi
+    fun headers(headers: Headers): SimilarRestApi
 
-  fun addReason(reason: String?): SimilarRestApi
+    fun addReason(reason: String?): SimilarRestApi
 
-  fun execute()
+    fun execute()
 
-  fun <T : Any> execute(function: Function<CompletableFutureManager, T>): CompletableFuture<T>
+    fun <T : Any> execute(function: Function<CompletableFutureManager, T>): CompletableFuture<T>
 
-  fun executeWithNoResult(): CompletableFuture<Void>
+    fun executeWithNoResult(): CompletableFuture<Void>
 }

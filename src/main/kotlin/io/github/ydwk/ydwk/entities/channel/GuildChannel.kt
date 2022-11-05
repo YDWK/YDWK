@@ -24,24 +24,24 @@ import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
 import io.github.ydwk.ydwk.util.NameAbleEntity
 
 interface GuildChannel : Channel, NameAbleEntity {
-  /**
-   * Gets the guild of this channel.
-   *
-   * @return the guild of this channel.
-   */
-  val guild: Guild
+    /**
+     * Gets the guild of this channel.
+     *
+     * @return the guild of this channel.
+     */
+    val guild: Guild
 
-  /**
-   * Gets the position of this channel.
-   *
-   * @return the position of this channel.
-   */
-  var position: Int
+    /**
+     * Gets the position of this channel.
+     *
+     * @return the position of this channel.
+     */
+    var position: Int
 
-  /**
-   * Gets the parent of this channel.
-   *
-   * @return the parent of this channel.
-   */
-  var parent: GuildCategory?
+    /**
+     * Gets the parent of this channel.
+     *
+     * @return the parent of this channel.
+     */
+    var parent: GuildCategory?
 }

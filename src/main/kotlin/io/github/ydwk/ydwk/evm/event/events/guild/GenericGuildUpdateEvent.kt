@@ -23,8 +23,8 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.evm.backend.update.IEventUpdate
 
 open class GenericGuildUpdateEvent<T>(
-  override val ydwk: YDWK,
-  override val entity: Guild,
-  override val oldValue: T,
-  override val newValue: T
+    override val ydwk: YDWK,
+    override val entity: Guild,
+    override val oldValue: T?,
+    override val newValue: T
 ) : IEventUpdate<Guild, T>

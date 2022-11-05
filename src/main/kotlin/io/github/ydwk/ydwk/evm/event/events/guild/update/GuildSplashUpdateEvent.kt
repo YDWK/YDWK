@@ -18,13 +18,13 @@
  */ 
 package io.github.ydwk.ydwk.evm.event.events.guild.update
 
-import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
+import io.github.ydwk.ydwk.impl.YDWKImpl
 
 data class GuildSplashUpdateEvent(
-  override val ydwk: YDWK,
-  override val entity: Guild,
-  val oldSplash: String?,
-  val newSplash: String?
-) : GenericGuildUpdateEvent<String?>(ydwk, entity, oldSplash, newSplash)
+    override val ydwk: YDWKImpl,
+    override val entity: Guild,
+    val oldSplash: String?,
+    val newSplash: String
+) : GenericGuildUpdateEvent<String>(ydwk, entity, oldSplash, newSplash)

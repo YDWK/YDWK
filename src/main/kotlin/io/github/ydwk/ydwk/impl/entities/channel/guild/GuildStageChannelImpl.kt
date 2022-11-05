@@ -23,7 +23,7 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildStageChannel
 
 class GuildStageChannelImpl(ydwk: YDWK, override val json: JsonNode, idAsLong: Long) :
-  GuildStageChannel, GuildVoiceChannelImpl(ydwk, json, idAsLong) {
+    GuildStageChannel, GuildVoiceChannelImpl(ydwk, json, idAsLong) {
 
-  override var topic: String? = if (json["topic"].isNull) null else json["topic"].asText()
+    override var topic: String? = if (json["topic"].isNull) null else json["topic"].asText()
 }

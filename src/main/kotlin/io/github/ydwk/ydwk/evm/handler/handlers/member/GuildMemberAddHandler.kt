@@ -25,14 +25,14 @@ import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
 
 class GuildMemberAddHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-  override fun start() {
-    val guild = ydwk.getGuildById(json.get("guild_id").asLong())
-    if (guild != null) {
-      val member = MemberImpl(ydwk, json, guild)
-      ydwk.memberCache[guild.id, json.get("user").get("id").asText()] = member
-      ydwk.emitEvent(GuildMemberAddEvent(ydwk, member))
-    } else {
-      ydwk.logger.warn("Guild is null")
+    override fun start() {
+        val guild = ydwk.getGuildById(json.get("guild_id").asLong())
+        if (guild != null) {
+            val member = MemberImpl(ydwk, json, guild)
+            ydwk.memberCache[guild.id, json.get("user").get("id").asText()] = member
+            ydwk.emitEvent(GuildMemberAddEvent(ydwk, member))
+        } else {
+            ydwk.logger.warn("Guild is null")
+        }
     }
-  }
 }

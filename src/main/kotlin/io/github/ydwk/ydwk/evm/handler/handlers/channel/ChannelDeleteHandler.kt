@@ -27,32 +27,33 @@ import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.channel.guild.GenericGuildChannelImpl
 
 class ChannelDeleteHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-  override fun start() {
-    val channelType = ChannelType.fromId(json.get("type").asInt())
-    when {
-      channelType.isGuildText -> {
-        val channel =
-          GenericGuildChannelImpl(ydwk, json, json.get("id").asLong(), true)
-            .asGenericGuildTextChannel()
-        ydwk.cache.remove(json.get("id").asText(), CacheIds.TEXT_CHANNEL)
-        ydwk.emitEvent(ChannelDeleteEvent(ydwk, channel))
-      }
-      channelType.isVoice -> {
-        val channel =
-          GenericGuildChannelImpl(ydwk, json, json.get("id").asLong(), isVoiceChannel = true)
-            .asGenericGuildVoiceChannel()
-        ydwk.cache.remove(json.get("id").asText(), CacheIds.VOICE_CHANNEL)
-        ydwk.emitEvent(ChannelDeleteEvent(ydwk, channel))
-      }
-      channelType.isCategory -> {
-        val channel =
-          GenericGuildChannelImpl(ydwk, json, json.get("id").asLong(), isCategory = true)
-        ydwk.cache.remove(json.get("id").asText(), CacheIds.CATEGORY)
-        ydwk.emitEvent(ChannelDeleteEvent(ydwk, channel))
-      }
-      channelType == ChannelType.DM || channelType == ChannelType.GROUP_DM -> {
-        ydwk.logger.warn("DM and Group DM are not supported and will be ignored.")
-      }
+    override fun start() {
+        val channelType = ChannelType.fromId(json.get("type").asInt())
+        when {
+            channelType.isGuildText -> {
+                val channel =
+                    GenericGuildChannelImpl(ydwk, json, json.get("id").asLong(), true)
+                        .asGenericGuildTextChannel()
+                ydwk.cache.remove(json.get("id").asText(), CacheIds.TEXT_CHANNEL)
+                ydwk.emitEvent(ChannelDeleteEvent(ydwk, channel))
+            }
+            channelType.isVoice -> {
+                val channel =
+                    GenericGuildChannelImpl(
+                            ydwk, json, json.get("id").asLong(), isVoiceChannel = true)
+                        .asGenericGuildVoiceChannel()
+                ydwk.cache.remove(json.get("id").asText(), CacheIds.VOICE_CHANNEL)
+                ydwk.emitEvent(ChannelDeleteEvent(ydwk, channel))
+            }
+            channelType.isCategory -> {
+                val channel =
+                    GenericGuildChannelImpl(ydwk, json, json.get("id").asLong(), isCategory = true)
+                ydwk.cache.remove(json.get("id").asText(), CacheIds.CATEGORY)
+                ydwk.emitEvent(ChannelDeleteEvent(ydwk, channel))
+            }
+            channelType == ChannelType.DM || channelType == ChannelType.GROUP_DM -> {
+                ydwk.logger.warn("DM and Group DM are not supported and will be ignored.")
+            }
+        }
     }
-  }
 }

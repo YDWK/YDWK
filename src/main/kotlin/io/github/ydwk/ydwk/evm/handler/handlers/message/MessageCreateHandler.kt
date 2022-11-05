@@ -26,9 +26,9 @@ import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.MessageImpl
 
 class MessageCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-  override fun start() {
-    val message = MessageImpl(ydwk, json, json.get("id").asLong())
-    ydwk.cache[json.get("id").asText(), message] = CacheIds.MESSAGE
-    ydwk.emitEvent(MessageCreateEvent(ydwk, message))
-  }
+    override fun start() {
+        val message = MessageImpl(ydwk, json, json.get("id").asLong())
+        ydwk.cache[json.get("id").asText(), message] = CacheIds.MESSAGE
+        ydwk.emitEvent(MessageCreateEvent(ydwk, message))
+    }
 }

@@ -27,13 +27,13 @@ import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class BanImpl(override val ydwk: YDWK, override val json: JsonNode) : Ban {
 
-  override val reason: String?
-    get() = if (json.has("reason")) json["reason"].asText() else null
+    override val reason: String?
+        get() = if (json.has("reason")) json["reason"].asText() else null
 
-  override val user: User
-    get() = UserImpl(json["user"], json["user"]["id"].asLong(), ydwk)
+    override val user: User
+        get() = UserImpl(json["user"], json["user"]["id"].asLong(), ydwk)
 
-  override fun toString(): String {
-    return EntityToStringBuilder(this).toString()
-  }
+    override fun toString(): String {
+        return EntityToStringBuilder(this).toString()
+    }
 }

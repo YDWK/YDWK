@@ -30,52 +30,51 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 fun main() {
-  val ydwk =
-    createDefaultBot(JConfigUtils.getString("token") ?: throw Exception("Token not found!"))
-      .setActivity(Activity.playing("YDWK"))
-      .build()
+    val ydwk =
+        createDefaultBot(JConfigUtils.getString("token") ?: throw Exception("Token not found!"))
+            .setActivity(Activity.playing("YDWK"))
+            .build()
 
-  ydwk.waitForReady.slashBuilder
-    .addSlashCommand(Slash("embed", "This is a test command"))
-    .addSlashCommand(Slash("forum_json", "Gets the json for forum"))
-    .addSlashCommand(Slash("create_dm", "Creates a dm channel"))
-    .addSlashCommand(
-      Slash("option", "An option test")
-        .addOption(
-          SlashOption("member", "The member to test the option with", SlashOptionType.USER)
-        )
-    )
-    .build()
+    ydwk.waitForReady.slashBuilder
+        .addSlashCommand(Slash("embed", "This is a test command"))
+        .addSlashCommand(Slash("forum_json", "Gets the json for forum"))
+        .addSlashCommand(Slash("create_dm", "Creates a dm channel"))
+        .addSlashCommand(
+            Slash("option", "An option test")
+                .addOption(
+                    SlashOption(
+                        "member", "The member to test the option with", SlashOptionType.USER)))
+        .build()
 
-  ydwk.on<SlashCommandEvent> {
-    when (it.slash.name) {
-      "json" -> {
-        withContext(Dispatchers.IO) {
-          val member = it.slash.member
-          if (member != null) {
-            it.slash.reply(member.json.toPrettyString()).get()
-          }
+    ydwk.on<SlashCommandEvent> {
+        when (it.slash.name) {
+            "json" -> {
+                withContext(Dispatchers.IO) {
+                    val member = it.slash.member
+                    if (member != null) {
+                        it.slash.reply(member.json.toPrettyString()).get()
+                    }
+                }
+            }
+            "forum_json" -> {
+                withContext(Dispatchers.IO) {
+                    val forum = it.slash.ydwk.getGuildTextChannelById("1031971612238561390")
+                    if (forum != null) {
+                        it.slash.reply(forum.json.toPrettyString()).get()
+                    }
+                }
+            }
+            "create_dm" -> {
+                withContext(Dispatchers.IO) {
+                    val member = it.slash.member
+                    member?.createDmChannel?.get()?.sendMessage("Hello!")?.get()
+                }
+            }
+            "option" -> {
+                withContext(Dispatchers.IO) {
+                    it.slash.reply(it.slash.getOption("member")!!.asUser.name).get()
+                }
+            }
         }
-      }
-      "forum_json" -> {
-        withContext(Dispatchers.IO) {
-          val forum = it.slash.ydwk.getGuildTextChannelById("1031971612238561390")
-          if (forum != null) {
-            it.slash.reply(forum.json.toPrettyString()).get()
-          }
-        }
-      }
-      "create_dm" -> {
-        withContext(Dispatchers.IO) {
-          val member = it.slash.member
-          member?.createDmChannel?.get()?.sendMessage("Hello!")?.get()
-        }
-      }
-      "option" -> {
-        withContext(Dispatchers.IO) {
-          it.slash.reply(it.slash.getOption("member")!!.asUser.name).get()
-        }
-      }
     }
-  }
 }

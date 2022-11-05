@@ -32,108 +32,108 @@ import io.github.ydwk.ydwk.util.GetterSnowFlake
 import io.github.ydwk.ydwk.util.SnowFlake
 
 interface Interaction : SnowFlake, GenericEntity {
-  /**
-   * Gets the Id of the application that this interaction is for.
-   *
-   * @return The Id of the application that this interaction is for.
-   */
-  val applicationId: GetterSnowFlake
+    /**
+     * Gets the Id of the application that this interaction is for.
+     *
+     * @return The Id of the application that this interaction is for.
+     */
+    val applicationId: GetterSnowFlake
 
-  /**
-   * Gets the type of this interaction.
-   *
-   * @return The type of this interaction.
-   */
-  val type: InteractionType
+    /**
+     * Gets the type of this interaction.
+     *
+     * @return The type of this interaction.
+     */
+    val type: InteractionType
 
-  /**
-   * Gets the data of this interaction.
-   *
-   * @return The data of this interaction.
-   */
-  val data: GenericCommandData?
+    /**
+     * Gets the data of this interaction.
+     *
+     * @return The data of this interaction.
+     */
+    val data: GenericCommandData?
 
-  /**
-   * Gets the message command data of this interaction.
-   *
-   * @return The message command data of this interaction.
-   */
-  val messageData
-    get() = data as? MessageComponentData
+    /**
+     * Gets the message command data of this interaction.
+     *
+     * @return The message command data of this interaction.
+     */
+    val messageData
+        get() = data as? MessageComponentData
 
-  /**
-   * Gets the application command data of this interaction
-   *
-   * @return The application command data of this interaction
-   */
-  val slashCommand
-    get() = data as? SlashCommand
+    /**
+     * Gets the application command data of this interaction
+     *
+     * @return The application command data of this interaction
+     */
+    val slashCommand
+        get() = data as? SlashCommand
 
-  /**
-   * Gets the guild that this interaction is for.
-   *
-   * @return The guild that this interaction is for.
-   */
-  val guild: Guild?
+    /**
+     * Gets the guild that this interaction is for.
+     *
+     * @return The guild that this interaction is for.
+     */
+    val guild: Guild?
 
-  /**
-   * Gets the channel that this interaction is for.
-   *
-   * @return The channel that this interaction is for.
-   */
-  val channel: GenericGuildTextChannel?
+    /**
+     * Gets the channel that this interaction is for.
+     *
+     * @return The channel that this interaction is for.
+     */
+    val channel: GenericGuildTextChannel?
 
-  /**
-   * Gets the member who invoked this interaction.
-   *
-   * @return The member who invoked this interaction.
-   */
-  val member: Member?
+    /**
+     * Gets the member who invoked this interaction.
+     *
+     * @return The member who invoked this interaction.
+     */
+    val member: Member?
 
-  /**
-   * Gets the user who invoked this interaction.
-   *
-   * @return The user who invoked this interaction.
-   */
-  val user: User?
+    /**
+     * Gets the user who invoked this interaction.
+     *
+     * @return The user who invoked this interaction.
+     */
+    val user: User?
 
-  /**
-   * Gets the token of this interaction.
-   *
-   * @return The token of this interaction.
-   */
-  val token: String
+    /**
+     * Gets the token of this interaction.
+     *
+     * @return The token of this interaction.
+     */
+    val token: String
 
-  /**
-   * Gets the version of this interaction.
-   *
-   * @return The version of this interaction.
-   */
-  val version: Int
+    /**
+     * Gets the version of this interaction.
+     *
+     * @return The version of this interaction.
+     */
+    val version: Int
 
-  /**
-   * Gets the message of this interaction.
-   *
-   * @return The message of this interaction.
-   */
-  val message: Message?
+    /**
+     * Gets the message of this interaction.
+     *
+     * @return The message of this interaction.
+     */
+    val message: Message?
 
-  /**
-   * Gets bitwise set of permissions the app or bot has within the channel the interaction was sent
-   * from
-   *
-   * @return bitwise set of permissions the app or bot has within the channel the interaction was
-   * sent from
-   */
-  val permissions: Long?
+    /**
+     * Gets bitwise set of permissions the app or bot has within the channel the interaction was
+     * sent from
+     *
+     * @return bitwise set of permissions the app or bot has within the channel the interaction was
+     * sent from
+     */
+    val permissions: Long?
 
-  /**
-   * Gets the selected language of the invoking user
-   *
-   * @return the selected language of the invoking user
-   */
-  val locale: String?
+    /**
+     * Gets the selected language of the invoking user
+     *
+     * @return the selected language of the invoking user
+     */
+    val locale: String?
 
-  /** Gets the Guild's preferred locale, if invoked in a guild */
-  val guildLocale: String?
+    /** Gets the Guild's preferred locale, if invoked in a guild */
+    val guildLocale: String?
 }

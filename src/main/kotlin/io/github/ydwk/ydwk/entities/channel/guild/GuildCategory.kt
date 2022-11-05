@@ -21,17 +21,17 @@ package io.github.ydwk.ydwk.entities.channel.guild
 import io.github.ydwk.ydwk.entities.channel.GuildChannel
 
 interface GuildCategory : GuildChannel {
-  /**
-   * Gets all the channels in this category.
-   *
-   * @return all the channels in this category.
-   */
-  val channels: List<GenericGuildChannel>
+    /**
+     * Gets all the channels in this category.
+     *
+     * @return all the channels in this category.
+     */
+    val channels: List<GenericGuildChannel>
 
-  /**
-   * Weather this category is nsfw.
-   *
-   * @return true if this category is nsfw.
-   */
-  val nsfw: Boolean
+    /**
+     * Weather this category is nsfw.
+     *
+     * @return true if this category is nsfw.
+     */
+    val nsfw: Boolean
 }

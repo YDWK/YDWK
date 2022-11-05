@@ -20,34 +20,34 @@ package io.github.ydwk.ydwk
 
 /** Used to set the user status. */
 enum class UserStatus(private val status: String) {
-  ONLINE("online"),
-  /** Do not disturb. */
-  DND("dnd"),
-  /** Afk. */
-  IDLE("idle"),
-  /** Invisible and shown as offline. */
-  INVISIBLE("invisible"),
-  OFFLINE("offline");
+    ONLINE("online"),
+    /** Do not disturb. */
+    DND("dnd"),
+    /** Afk. */
+    IDLE("idle"),
+    /** Invisible and shown as offline. */
+    INVISIBLE("invisible"),
+    OFFLINE("offline");
 
-  companion object {
-    /**
-     * Gets the UserStatus from the status string.
-     *
-     * @param status The status string.
-     * @return The UserStatus.
-     */
-    fun fromString(status: String): UserStatus {
-      return when (status) {
-        "online" -> ONLINE
-        "dnd" -> DND
-        "idle" -> IDLE
-        "invisible" -> INVISIBLE
-        else -> OFFLINE
-      }
+    companion object {
+        /**
+         * Gets the UserStatus from the status string.
+         *
+         * @param status The status string.
+         * @return The UserStatus.
+         */
+        fun fromString(status: String): UserStatus {
+            return when (status) {
+                "online" -> ONLINE
+                "dnd" -> DND
+                "idle" -> IDLE
+                "invisible" -> INVISIBLE
+                else -> OFFLINE
+            }
+        }
     }
-  }
 
-  override fun toString(): String {
-    return status
-  }
+    override fun toString(): String {
+        return status
+    }
 }

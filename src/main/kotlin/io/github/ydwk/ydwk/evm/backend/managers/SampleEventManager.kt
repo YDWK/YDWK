@@ -24,35 +24,35 @@ import io.github.ydwk.ydwk.evm.event.Event
 import java.util.*
 
 class SampleEventManager(private var eventListeners: MutableList<IEventListener> = ArrayList()) :
-  IEventManager {
-  // Null as there is no default value for this parameter
-  var event: Event? = null
+    IEventManager {
+    // Null as there is no default value for this parameter
+    var event: Event? = null
 
-  override fun emitEvent(event: GenericEvent) {
-    this.event = event as Event
-    eventListeners.forEach { listener -> listener.onEvent(event) }
-  }
-
-  override fun addEvent(event: Any) {
-    if (event is IEventListener) {
-      eventListeners.add(event)
-    } else {
-      throw IllegalArgumentException("Event must be an instance of EventListener")
+    override fun emitEvent(event: GenericEvent) {
+        this.event = event as Event
+        eventListeners.forEach { listener -> listener.onEvent(event) }
     }
-  }
 
-  override fun removeEvent(event: Any) {
-    if (event is IEventListener) {
-      eventListeners.remove(event)
-    } else {
-      throw IllegalArgumentException("Event must be an instance of EventListener")
+    override fun addEvent(event: Any) {
+        if (event is IEventListener) {
+            eventListeners.add(event)
+        } else {
+            throw IllegalArgumentException("Event must be an instance of EventListener")
+        }
     }
-  }
 
-  override fun removeAllEvents() {
-    eventListeners.clear()
-  }
+    override fun removeEvent(event: Any) {
+        if (event is IEventListener) {
+            eventListeners.remove(event)
+        } else {
+            throw IllegalArgumentException("Event must be an instance of EventListener")
+        }
+    }
 
-  override val events: MutableList<Any>
-    get() = Collections.unmodifiableList(ArrayList(eventListeners))
+    override fun removeAllEvents() {
+        eventListeners.clear()
+    }
+
+    override val events: MutableList<Any>
+        get() = Collections.unmodifiableList(ArrayList(eventListeners))
 }

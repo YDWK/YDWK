@@ -28,39 +28,39 @@ import io.github.ydwk.ydwk.entities.channel.guild.message.text.PermissionOverwri
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 open class GuildMessageChannelImpl(
-  override val ydwk: YDWK,
-  override val json: JsonNode,
-  override val idAsLong: Long
+    override val ydwk: YDWK,
+    override val json: JsonNode,
+    override val idAsLong: Long
 ) : GuildMessageChannel {
 
-  override var topic: String = json["topic"].asText()
+    override var topic: String = json["topic"].asText()
 
-  override var nsfw: Boolean = json["nsfw"].asBoolean()
+    override var nsfw: Boolean = json["nsfw"].asBoolean()
 
-  override var defaultAutoArchiveDuration: Int = json["default_auto_archive_duration"].asInt()
+    override var defaultAutoArchiveDuration: Int = json["default_auto_archive_duration"].asInt()
 
-  override var lastMessageId: String = json["last_message_id"].asText()
+    override var lastMessageId: String = json["last_message_id"].asText()
 
-  override var lastPinTimestamp: String = json["last_pin_timestamp"].asText()
+    override var lastPinTimestamp: String = json["last_pin_timestamp"].asText()
 
-  override var permissionOverwrites: List<PermissionOverwrite> =
-    json["permission_overwrites"].map { PermissionOverwriteImpl(ydwk, it, it["id"].asLong()) }
-  override val type: ChannelType
-    get() = if (json["type"].asInt() == 0) ChannelType.TEXT else ChannelType.NEWS
+    override var permissionOverwrites: List<PermissionOverwrite> =
+        json["permission_overwrites"].map { PermissionOverwriteImpl(ydwk, it, it["id"].asLong()) }
+    override val type: ChannelType
+        get() = if (json["type"].asInt() == 0) ChannelType.TEXT else ChannelType.NEWS
 
-  override var position: Int = json["position"].asInt()
+    override var position: Int = json["position"].asInt()
 
-  override var parent: GuildCategory? = ydwk.getCategoryById(json["parent_id"].asText())
+    override var parent: GuildCategory? = ydwk.getCategoryById(json["parent_id"].asText())
 
-  override val guild: Guild
-    get() =
-      if (ydwk.getGuildById(json["guild_id"].asText()) != null)
-        ydwk.getGuildById(json["guild_id"].asText())!!
-      else throw IllegalStateException("Guild is null")
+    override val guild: Guild
+        get() =
+            if (ydwk.getGuildById(json["guild_id"].asText()) != null)
+                ydwk.getGuildById(json["guild_id"].asText())!!
+            else throw IllegalStateException("Guild is null")
 
-  override var name: String = json["name"].asText()
+    override var name: String = json["name"].asText()
 
-  override fun toString(): String {
-    return EntityToStringBuilder(this).name(this.name).toString()
-  }
+    override fun toString(): String {
+        return EntityToStringBuilder(this).name(this.name).toString()
+    }
 }

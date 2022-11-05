@@ -28,28 +28,28 @@ import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import java.util.*
 
 class GuildCategoryImpl(
-  override val ydwk: YDWK,
-  override val json: JsonNode,
-  override val idAsLong: Long
+    override val ydwk: YDWK,
+    override val json: JsonNode,
+    override val idAsLong: Long
 ) : GuildCategory {
 
-  override val channels: List<GenericGuildChannel>
-    get() = ydwk.getChannelsByCategory(this)
+    override val channels: List<GenericGuildChannel>
+        get() = ydwk.getChannelsByCategory(this)
 
-  override val nsfw: Boolean
-    get() = json.has("nsfw") && json["nsfw"].asBoolean()
+    override val nsfw: Boolean
+        get() = json.has("nsfw") && json["nsfw"].asBoolean()
 
-  override val guild: Guild = ydwk.getGuildById(json["guild_id"].asText())!!
+    override val guild: Guild = ydwk.getGuildById(json["guild_id"].asText())!!
 
-  override var position: Int = json["position"].asInt()
+    override var position: Int = json["position"].asInt()
 
-  override var parent: GuildCategory? = null
+    override var parent: GuildCategory? = null
 
-  override val type: ChannelType = ChannelType.CATEGORY
+    override val type: ChannelType = ChannelType.CATEGORY
 
-  override var name: String = json["name"].asText()
+    override var name: String = json["name"].asText()
 
-  override fun toString(): String {
-    return EntityToStringBuilder(this).name(this.name).toString()
-  }
+    override fun toString(): String {
+        return EntityToStringBuilder(this).name(this.name).toString()
+    }
 }

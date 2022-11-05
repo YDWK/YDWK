@@ -27,26 +27,26 @@ import io.github.ydwk.ydwk.entities.audit.AuditLogType
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class AuditLogEntryImpl(
-  override val ydwk: YDWK,
-  override val json: JsonNode,
-  override val idAsLong: Long
+    override val ydwk: YDWK,
+    override val json: JsonNode,
+    override val idAsLong: Long
 ) : AuditLogEntry {
-  override val targetId: String?
-    get() = if (json.has("target_id")) json["target_id"].asText() else null
+    override val targetId: String?
+        get() = if (json.has("target_id")) json["target_id"].asText() else null
 
-  override val changes: List<AuditLogChange>
-    get() = json["changes"].map { AuditLogChangeImpl(ydwk, it) }
+    override val changes: List<AuditLogChange>
+        get() = json["changes"].map { AuditLogChangeImpl(ydwk, it) }
 
-  override val user: User?
-    get() = if (json.has("user_id")) ydwk.getUserById(json["user_id"].asLong()) else null
+    override val user: User?
+        get() = if (json.has("user_id")) ydwk.getUserById(json["user_id"].asLong()) else null
 
-  override val type: AuditLogType
-    get() = AuditLogType.fromType(json["action_type"].asInt())
+    override val type: AuditLogType
+        get() = AuditLogType.fromType(json["action_type"].asInt())
 
-  override val reason: String?
-    get() = if (json.has("reason")) json["reason"].asText() else null
+    override val reason: String?
+        get() = if (json.has("reason")) json["reason"].asText() else null
 
-  override fun toString(): String {
-    return EntityToStringBuilder(this).toString()
-  }
+    override fun toString(): String {
+        return EntityToStringBuilder(this).toString()
+    }
 }

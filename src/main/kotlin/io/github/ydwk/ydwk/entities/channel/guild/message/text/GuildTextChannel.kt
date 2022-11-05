@@ -21,10 +21,10 @@ package io.github.ydwk.ydwk.entities.channel.guild.message.text
 import io.github.ydwk.ydwk.entities.channel.guild.message.GuildMessageChannel
 
 interface GuildTextChannel : GuildMessageChannel {
-  /**
-   * Gets the rate limit per user of this channel.
-   *
-   * @return the rate limit per user of this channel.
-   */
-  var rateLimitPerUser: Int
+    /**
+     * Gets the rate limit per user of this channel.
+     *
+     * @return the rate limit per user of this channel.
+     */
+    var rateLimitPerUser: Int
 }

@@ -21,92 +21,92 @@ package io.github.ydwk.ydwk.rest
 import io.github.ydwk.ydwk.YDWKInfo
 
 open class EndPoint {
-  interface IEnumEndpoint {
-    /**
-     * Gets the endpoint.
-     *
-     * @return the endpoint
-     */
-    fun getEndpoint(): String
+    interface IEnumEndpoint {
+        /**
+         * Gets the endpoint.
+         *
+         * @return the endpoint
+         */
+        fun getEndpoint(): String
 
-    /**
-     * Gets the endpoint with the rest api url.
-     *
-     * @return the endpoint with the rest api url
-     */
-    fun getFullEndpoint(): String {
-      return YDWKInfo.FULL_DISCORD_REST_URL.url + getEndpoint()
+        /**
+         * Gets the endpoint with the rest api url.
+         *
+         * @return the endpoint with the rest api url
+         */
+        fun getFullEndpoint(): String {
+            return YDWKInfo.FULL_DISCORD_REST_URL.url + getEndpoint()
+        }
+
+        /**
+         * Gets the rest api url.
+         *
+         * @return the rest api url
+         */
+        fun getRestApiUrl(): String {
+            return YDWKInfo.FULL_DISCORD_REST_URL.url
+        }
+
+        fun containsParam(): Boolean {
+            return getEndpoint().contains("%s")
+        }
+
+        /**
+         * Gets the full endpoint with the rest api url, including the parameters.
+         *
+         * @param params the parameters
+         * @return the full endpoint with the rest api url, including the parameters
+         */
+        // vararg = variable number of arguments
+        fun getFullEndpointWithParams(vararg params: String): String {
+            val endpoint = getEndpoint()
+            val sb = StringBuilder(endpoint)
+            sb.insert(0, getRestApiUrl())
+            params.forEach { param -> sb.replace(sb.indexOf("%s"), sb.indexOf("%s") + 2, param) }
+            return sb.toString()
+        }
     }
 
-    /**
-     * Gets the rest api url.
-     *
-     * @return the rest api url
-     */
-    fun getRestApiUrl(): String {
-      return YDWKInfo.FULL_DISCORD_REST_URL.url
+    enum class GuildEndpoint(private val endPoint: String) : IEnumEndpoint {
+        GET_BANS("/guilds/%s/bans"),
+        BAN("/guilds/%s/bans/%s"),
+        KICK("/guilds/%s/members/%s"),
+        GET_AUDIT_LOGS("/guilds/%s/audit-logs"),
+        GET_MEMBERS("/guilds/%s/members");
+
+        override fun getEndpoint(): String {
+            return endPoint
+        }
     }
 
-    fun containsParam(): Boolean {
-      return getEndpoint().contains("%s")
+    enum class UserEndpoint(private val endPoint: String) : IEnumEndpoint {
+        CREATE_DM("/users/@me/channels"),
+        GET_USER("/users/%s");
+
+        override fun getEndpoint(): String {
+            return endPoint
+        }
     }
 
-    /**
-     * Gets the full endpoint with the rest api url, including the parameters.
-     *
-     * @param params the parameters
-     * @return the full endpoint with the rest api url, including the parameters
-     */
-    // vararg = variable number of arguments
-    fun getFullEndpointWithParams(vararg params: String): String {
-      val endpoint = getEndpoint()
-      val sb = StringBuilder(endpoint)
-      sb.insert(0, getRestApiUrl())
-      params.forEach { param -> sb.replace(sb.indexOf("%s"), sb.indexOf("%s") + 2, param) }
-      return sb.toString()
+    enum class ApplicationCommandsEndpoint(private val endPoint: String) : IEnumEndpoint {
+        CREATE_GLOBAL_COMMAND("/applications/%s/commands"),
+        GET_GLOBAL_COMMANDS("/applications/%s/commands"),
+        CREATE_GUILD_COMMAND("/applications/%s/guilds/%s/commands"),
+        GET_GUILD_COMMANDS("/applications/%s/guilds/%s/commands"),
+        REPLY_TO_SLASH_COMMAND("/interactions/%s/%s/callback"),
+        DELETE_GUILD_COMMAND("/applications/%s/guilds/%s/commands/%s"),
+        DELETE_GLOBAL_COMMAND("/applications/%s/commands/%s");
+
+        override fun getEndpoint(): String {
+            return endPoint
+        }
     }
-  }
 
-  enum class GuildEndpoint(private val endPoint: String) : IEnumEndpoint {
-    GET_BANS("/guilds/%s/bans"),
-    BAN("/guilds/%s/bans/%s"),
-    KICK("/guilds/%s/members/%s"),
-    GET_AUDIT_LOGS("/guilds/%s/audit-logs"),
-    GET_MEMBERS("/guilds/%s/members");
+    enum class ChannelEndpoint(val endPoint: String) : IEnumEndpoint {
+        CREATE_MESSAGE("/channels/%s/messages");
 
-    override fun getEndpoint(): String {
-      return endPoint
+        override fun getEndpoint(): String {
+            return endPoint
+        }
     }
-  }
-
-  enum class UserEndpoint(private val endPoint: String) : IEnumEndpoint {
-    CREATE_DM("/users/@me/channels"),
-    GET_USER("/users/%s");
-
-    override fun getEndpoint(): String {
-      return endPoint
-    }
-  }
-
-  enum class ApplicationCommandsEndpoint(private val endPoint: String) : IEnumEndpoint {
-    CREATE_GLOBAL_COMMAND("/applications/%s/commands"),
-    GET_GLOBAL_COMMANDS("/applications/%s/commands"),
-    CREATE_GUILD_COMMAND("/applications/%s/guilds/%s/commands"),
-    GET_GUILD_COMMANDS("/applications/%s/guilds/%s/commands"),
-    REPLY_TO_SLASH_COMMAND("/interactions/%s/%s/callback"),
-    DELETE_GUILD_COMMAND("/applications/%s/guilds/%s/commands/%s"),
-    DELETE_GLOBAL_COMMAND("/applications/%s/commands/%s");
-
-    override fun getEndpoint(): String {
-      return endPoint
-    }
-  }
-
-  enum class ChannelEndpoint(val endPoint: String) : IEnumEndpoint {
-    CREATE_MESSAGE("/channels/%s/messages");
-
-    override fun getEndpoint(): String {
-      return endPoint
-    }
-  }
 }

@@ -25,25 +25,25 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 
 class GetRestApiImpl(
-  private val ydwk: YDWKImpl,
-  private val client: OkHttpClient,
-  private val builder: Request.Builder,
+    private val ydwk: YDWKImpl,
+    private val client: OkHttpClient,
+    private val builder: Request.Builder,
 ) : GetRestApi, SimilarRestApiImpl(ydwk, builder, client) {
-  override val execute: JsonNode
-    get() {
-      return try {
-        val response = client.newCall(builder.build()).execute()
-        responseBody = response.body
-        if (response.isSuccessful) {
-          ydwk.objectMapper.readTree(responseBody!!.string())
-        } else {
-          error(response.body, response.code, null, null)
-          null!!
+    override val execute: JsonNode
+        get() {
+            return try {
+                val response = client.newCall(builder.build()).execute()
+                responseBody = response.body
+                if (response.isSuccessful) {
+                    ydwk.objectMapper.readTree(responseBody!!.string())
+                } else {
+                    error(response.body, response.code, null, null)
+                    null!!
+                }
+            } catch (e: Exception) {
+                throw RuntimeException("Error while executing request", e)
+            } finally {
+                responseBody?.close()
+            }
         }
-      } catch (e: Exception) {
-        throw RuntimeException("Error while executing request", e)
-      } finally {
-        responseBody?.close()
-      }
-    }
 }

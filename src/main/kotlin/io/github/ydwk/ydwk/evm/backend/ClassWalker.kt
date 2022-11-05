@@ -23,48 +23,48 @@ import org.jetbrains.annotations.NotNull
 
 class ClassWalker
 private constructor(private val clazz: Class<*>, private val end: Class<*> = Any::class.java) :
-  Iterable<Class<*>?> {
-  @NotNull
-  override fun iterator(): Iterator<Class<*>> {
-    return object : MutableIterator<Class<*>> {
-      private val done: MutableSet<Class<*>> = HashSet()
-      private val work: Deque<Class<*>> = LinkedList()
+    Iterable<Class<*>?> {
+    @NotNull
+    override fun iterator(): Iterator<Class<*>> {
+        return object : MutableIterator<Class<*>> {
+            private val done: MutableSet<Class<*>> = HashSet()
+            private val work: Deque<Class<*>> = LinkedList()
 
-      init {
-        work.addLast(clazz)
-        done.add(end)
-      }
+            init {
+                work.addLast(clazz)
+                done.add(end)
+            }
 
-      override fun hasNext(): Boolean {
-        return !work.isEmpty()
-      }
+            override fun hasNext(): Boolean {
+                return !work.isEmpty()
+            }
 
-      override fun next(): Class<*> {
-        val current = work.removeFirst()
-        done.add(current)
-        for (parent in current.interfaces) {
-          if (!done.contains(parent)) work.addLast(parent)
+            override fun next(): Class<*> {
+                val current = work.removeFirst()
+                done.add(current)
+                for (parent in current.interfaces) {
+                    if (!done.contains(parent)) work.addLast(parent)
+                }
+                val parent = current.superclass
+                if (parent != null && !done.contains(parent)) work.addLast(parent)
+                return current
+            }
+
+            override fun remove() {
+                throw UnsupportedOperationException()
+            }
         }
-        val parent = current.superclass
-        if (parent != null && !done.contains(parent)) work.addLast(parent)
-        return current
-      }
-
-      override fun remove() {
-        throw UnsupportedOperationException()
-      }
-    }
-  }
-
-  companion object {
-    @NotNull
-    fun range(start: Class<*>, end: Class<*>): ClassWalker {
-      return ClassWalker(start, end)
     }
 
-    @NotNull
-    fun walk(start: Class<*>): ClassWalker {
-      return ClassWalker(start)
+    companion object {
+        @NotNull
+        fun range(start: Class<*>, end: Class<*>): ClassWalker {
+            return ClassWalker(start, end)
+        }
+
+        @NotNull
+        fun walk(start: Class<*>): ClassWalker {
+            return ClassWalker(start)
+        }
     }
-  }
 }

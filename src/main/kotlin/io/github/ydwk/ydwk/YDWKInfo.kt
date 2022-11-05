@@ -19,22 +19,22 @@
 package io.github.ydwk.ydwk
 
 enum class YDWKInfo(val url: String) {
-  DISCORD_GATEWAY_URL("wss://gateway.discord.gg/"),
-  DISCORD_GATEWAY_VERSION("?v=10"),
-  JSON_ENCODING("&encoding=json"),
-  DISCORD_REST_URL("https://discord.com/api"),
-  DISCORD_REST_VERSION("/v10"),
-  FULL_DISCORD_REST_URL(DISCORD_REST_URL.url + DISCORD_REST_VERSION.url),
-  GITHUB_URL("https://github.com/RealYusufIsmail/YDWK"),
-  YDWK_VERSION("0.0.4");
+    DISCORD_GATEWAY_URL("wss://gateway.discord.gg/"),
+    DISCORD_GATEWAY_VERSION("?v=10"),
+    JSON_ENCODING("&encoding=json"),
+    DISCORD_REST_URL("https://discord.com/api"),
+    DISCORD_REST_VERSION("/v10"),
+    FULL_DISCORD_REST_URL(DISCORD_REST_URL.url + DISCORD_REST_VERSION.url),
+    GITHUB_URL("https://github.com/RealYusufIsmail/YDWK"),
+    YDWK_VERSION("0.0.4");
 
-  override fun toString(): String {
-    return url
-  }
-
-  companion object {
-    fun get(info: YDWKInfo): String {
-      return info.toString()
+    override fun toString(): String {
+        return url
     }
-  }
+
+    companion object {
+        fun get(info: YDWKInfo): String {
+            return info.toString()
+        }
+    }
 }
