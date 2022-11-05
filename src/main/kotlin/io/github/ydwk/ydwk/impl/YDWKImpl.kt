@@ -44,6 +44,8 @@ import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
 import io.github.ydwk.ydwk.evm.backend.event.IEventListener
 import io.github.ydwk.ydwk.evm.backend.managers.CoroutineEventManager
 import io.github.ydwk.ydwk.evm.backend.managers.SampleEventManager
+import io.github.ydwk.ydwk.evm.backend.update.IEventUpdate
+import io.github.ydwk.ydwk.evm.backend.update.UpdateEventType
 import io.github.ydwk.ydwk.impl.entities.UserImpl
 import io.github.ydwk.ydwk.impl.entities.channel.DmChannelImpl
 import io.github.ydwk.ydwk.impl.entities.message.embed.builder.EmbedBuilderImpl
@@ -411,6 +413,11 @@ class YDWKImpl(
     override fun emitEvent(event: GenericEvent) {
         simpleEventManager.emitEvent(event)
         coroutineEventManager.emitEvent(event)
+    }
+
+    override fun <E, T> emitUpdate(updateEventType: UpdateEventType, oldValue: T,
+                                   newValue: T): IEventUpdate<E, T> {
+        return EventUpdateGenerator<E, T>(updateEventType, oldValue, newValue).generate()
     }
 
     /**

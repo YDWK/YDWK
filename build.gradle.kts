@@ -76,6 +76,7 @@ tasks.build {
     // dependsOn on custom tasks
     dependsOn(tasks.getByName("checkEvents"))
     dependsOn(tasks.getByName("checkEntities"))
+    //dependsOn(tasks.getByName("generateEvents"))
 }
 
 tasks.jacocoTestReport {
@@ -254,5 +255,11 @@ tasks.getByName("dokkaHtml", DokkaTask::class) {
         pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
             footerMessage = "Copyright © 2022 Yusuf Arfan Ismail and other YDWK contributors."
         }
+    }
+}
+
+tasks.create("generateEvents") {
+    doLast {
+
     }
 }
