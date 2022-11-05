@@ -3,6 +3,7 @@ import org.jetbrains.dokka.base.DokkaBase
 import org.jetbrains.dokka.base.DokkaBaseConfiguration
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import kotlin.reflect.KClass
 
 buildscript {
     repositories { mavenCentral() }
@@ -44,6 +45,7 @@ apply(from = "gradle/tasks/checkEntities.gradle.kts")
 apply(from = "gradle/tasks/incrementVersion.gradle.kts")
 
 apply(from = "gradle/tasks/checkEvents.gradle.kts")
+
 
 repositories { mavenCentral() }
 
@@ -258,16 +260,13 @@ tasks.getByName("dokkaHtml", DokkaTask::class) {
     }
 }
 
+val mainSrc = project(":")
+
 tasks.create("generateEvents") {
     doLast {
-        // find variables with the annotation @UpdateVariable
-        val variables =
-            project.rootDir
-                .walkTopDown()
-                .filter { it.isFile }
-                .filter { it.extension == "kt" }
-                .map { it.readText() }
+        // search every interface that extends GenericEntity and look for variables with the annotation UpdateVariable
+        val allGenericEntitiesAsKotlin: MutableList<KClass<*>> = mutableListOf()
 
-        val updateVariables = variables
+
     }
 }
