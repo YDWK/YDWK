@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.entities
 import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.message.Sendeadble
 import io.github.ydwk.ydwk.entities.util.GenericEntity
+import io.github.ydwk.ydwk.evm.backend.update.UpdateEntity
 import io.github.ydwk.ydwk.impl.entities.channel.DmChannelImpl
 import io.github.ydwk.ydwk.rest.EndPoint
 import io.github.ydwk.ydwk.util.NameAbleEntity
@@ -34,7 +35,7 @@ interface User : SnowFlake, GenericEntity, NameAbleEntity, Sendeadble {
     var discriminator: String
 
     /** The user's avatar hash */
-    var avatar: String
+    @UpdateEntity("Avatar", User::class) var avatar: String
 
     /** Whether the user belongs to an OAuth2 application */
     val bot: Boolean?

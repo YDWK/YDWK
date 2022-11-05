@@ -38,8 +38,6 @@ import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
 import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
-import io.github.ydwk.ydwk.evm.backend.update.IEventUpdate
-import io.github.ydwk.ydwk.evm.backend.update.UpdateEventType
 import io.github.ydwk.ydwk.rest.RestApiManager
 import io.github.ydwk.ydwk.slash.SlashBuilder
 import io.github.ydwk.ydwk.ws.WebSocketManager
@@ -128,14 +126,6 @@ interface YDWK {
      * @param event The event to be emitted.
      */
     fun emitEvent(event: GenericEvent)
-
-    /**
-     * Emits an update event
-     *
-     * @param event The event to be emitted.
-     */
-    fun <E, T> emitUpdate(updateEventType : UpdateEventType, oldValue: T,
-                          newValue: T) : IEventUpdate<E, T>
 
     /** Shuts down the websocket manager */
     fun shutdownAPI()

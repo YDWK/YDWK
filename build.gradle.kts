@@ -76,7 +76,7 @@ tasks.build {
     // dependsOn on custom tasks
     dependsOn(tasks.getByName("checkEvents"))
     dependsOn(tasks.getByName("checkEntities"))
-    //dependsOn(tasks.getByName("generateEvents"))
+    // dependsOn(tasks.getByName("generateEvents"))
 }
 
 tasks.jacocoTestReport {
@@ -260,6 +260,7 @@ tasks.getByName("dokkaHtml", DokkaTask::class) {
 
 tasks.create("generateEvents") {
     doLast {
+        // find variables with the annotation @UpdateEntity
 
     }
 }
