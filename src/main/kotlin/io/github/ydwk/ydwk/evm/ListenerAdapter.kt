@@ -40,9 +40,7 @@ import io.github.ydwk.ydwk.evm.event.events.gateway.ResumeEvent
 import io.github.ydwk.ydwk.evm.event.events.gateway.ShutDownEvent
 import io.github.ydwk.ydwk.evm.event.events.guild.GuildCreateEvent
 import io.github.ydwk.ydwk.evm.event.events.guild.GuildDeleteEvent
-import io.github.ydwk.ydwk.evm.event.events.guild.update.GuildIconUpdateEvent
-import io.github.ydwk.ydwk.evm.event.events.guild.update.GuildNameUpdateEvent
-import io.github.ydwk.ydwk.evm.event.events.guild.update.GuildSplashUpdateEvent
+import io.github.ydwk.ydwk.evm.event.events.guild.update.*
 import io.github.ydwk.ydwk.evm.event.events.interaction.*
 import java.lang.invoke.MethodHandle
 import java.lang.invoke.MethodHandles
@@ -275,6 +273,227 @@ abstract class ListenerAdapter : IEventListener {
    * @param event The GuildSplashUpdateEvent
    */
   open fun onGuildSplashUpdate(event: GuildSplashUpdateEvent) {}
+
+  /**
+   * Listens to GuildDiscoverySplashUpdateEvent
+   *
+   * @param event The GuildDiscoverySplashUpdateEvent
+   */
+  open fun onGuildDiscoverySplashUpdate(event: GuildDiscoverySplashUpdateEvent) {}
+
+  /**
+   * Listens to GuildOwnerUpdateEvent
+   *
+   * @param event The GuildOwnerUpdateEvent
+   */
+  open fun onGuildOwnerUpdate(event: GuildOwnerUpdateEvent) {}
+
+  /**
+   * Listens to PermissionUpdateEvent
+   *
+   * @param event The PermissionUpdateEvent
+   */
+  open fun onPermissionUpdate(event: GuildPermissionsUpdateEvent) {}
+
+  /**
+   * Listens to GuildAfkChannelUpdateEvent
+   *
+   * @param event The GuildAfkChannelUpdateEvent
+   */
+  open fun onGuildAfkChannelUpdate(event: GuildAfkChannelUpdateEvent) {}
+
+  /**
+   * Listens to GuildAfkTimeoutUpdateEvent
+   *
+   * @param event The GuildAfkTimeoutUpdateEvent
+   */
+  open fun onGuildAfkTimeoutUpdate(event: GuildAfkTimeoutUpdateEvent) {}
+
+  /**
+   * Listens to GuildWidgetEnabledUpdateEvent
+   *
+   * @param event The GuildWidgetEnabledUpdateEvent
+   */
+  open fun onGuildWidgetEnabledUpdate(event: GuildWidgetEnabledUpdateEvent) {}
+
+  /**
+   * Listens to GuildWidgetChannelUpdateEvent
+   *
+   * @param event The GuildWidgetChannelUpdateEvent
+   */
+  open fun onGuildWidgetChannelUpdate(event: GuildWidgetChannelUpdateEvent) {}
+
+  /**
+   * Listens to GuildVerificationLevelUpdateEvent
+   *
+   * @param event The GuildVerificationLevelUpdateEvent
+   */
+  open fun onGuildVerificationLevelUpdate(event: GuildVerificationLevelUpdateEvent) {}
+
+  /**
+   * Listens to GuildDefaultMessageNotificationLevelUpdateEvent
+   *
+   * @param event The GuildDefaultMessageNotificationLevelUpdateEvent
+   */
+  open fun onGuildDefaultMessageNotificationLevelUpdate(
+    event: GuildDefaultMessageNotificationLevelUpdateEvent
+  ) {}
+
+  /**
+   * Listens to GuildExplicitContentFilterLevelUpdateEvent
+   *
+   * @param event The GuildExplicitContentFilterLevelUpdateEvent
+   */
+  open fun onGuildExplicitContentFilterLevelUpdate(
+    event: GuildExplicitContentFilterLevelUpdateEvent
+  ) {}
+
+  /**
+   * Listens to GuildMfaLevelUpdateEvent
+   *
+   * @param event The GuildMfaLevelUpdateEvent
+   */
+  open fun onGuildMfaLevelUpdate(event: GuildMfaLevelUpdateEvent) {}
+
+  /**
+   * Listens to GuildApplicationIdUpdateEvent
+   *
+   * @param event The GuildApplicationIdUpdateEvent
+   */
+  open fun onGuildApplicationIdUpdate(event: GuildApplicationIdUpdateEvent) {}
+
+  /**
+   * Listens to GuildSystemChannelUpdateEvent
+   *
+   * @param event The GuildSystemChannelUpdateEvent
+   */
+  open fun onGuildSystemChannelUpdate(event: GuildSystemChannelUpdateEvent) {}
+
+  /**
+   * Listens to GuildSystemChannelFlagsUpdateEvent
+   *
+   * @param event The GuildSystemChannelFlagsUpdateEvent
+   */
+  open fun onGuildSystemChannelFlagsUpdate(event: GuildSystemChannelFlagsUpdateEvent) {}
+
+  /**
+   * Listens to GuildRulesChannelUpdateEvent
+   *
+   * @param event The GuildRulesChannelUpdateEvent
+   */
+  open fun onGuildRulesChannelUpdate(event: GuildRulesChannelUpdateEvent) {}
+
+  /**
+   * Listens to GuildMaxPresencesUpdateEvent
+   *
+   * @param event The GuildMaxPresencesUpdateEvent
+   */
+  open fun onGuildMaxPresencesUpdate(event: GuildMaxPresencesUpdateEvent) {}
+
+  /**
+   * Listens to GuildVanityUrlUpdateEvent
+   *
+   * @param event The GuildVanityUrlUpdateEvent
+   */
+  open fun onGuildVanityUrlUpdate(event: GuildVanityUrlUpdateEvent) {}
+
+  /**
+   * Listens to GuildDescriptionUpdateEvent
+   *
+   * @param event The GuildDescriptionUpdateEvent
+   */
+  open fun onGuildDescriptionUpdate(event: GuildDescriptionUpdateEvent) {}
+
+  /**
+   * Listens to GuildBannerUpdateEvent
+   *
+   * @param event The GuildBannerUpdateEvent
+   */
+  open fun onGuildBannerUpdate(event: GuildBannerUpdateEvent) {}
+
+  /**
+   * Listens to GuildPremiumTierUpdateEvent
+   *
+   * @param event The GuildPremiumTierUpdateEvent
+   */
+  open fun onGuildPremiumTierUpdate(event: GuildPremiumTierUpdateEvent) {}
+
+  /**
+   * Listens to GuildPremiumSubscriptionCountUpdateEvent
+   *
+   * @param event The GuildPremiumSubscriptionCountUpdateEvent
+   */
+  open fun onGuildPremiumSubscriptionCountUpdate(event: GuildPremiumSubscriptionCountUpdateEvent) {}
+
+  /**
+   * Listens to GuildPreferredLocaleUpdateEvent
+   *
+   * @param event The GuildPreferredLocaleUpdateEvent
+   */
+  open fun onGuildPreferredLocaleUpdate(event: GuildPreferredLocaleUpdateEvent) {}
+
+  /**
+   * Listens to GuildPublicUpdatesChannelUpdateEvent
+   *
+   * @param event The GuildPublicUpdatesChannelUpdateEvent
+   */
+  open fun onGuildPublicUpdatesChannelUpdate(event: GuildPublicUpdatesChannelUpdateEvent) {}
+
+  /**
+   * Listens to GuildMaxVideoChannelUsersUpdateEvent
+   *
+   * @param event The GuildMaxVideoChannelUsersUpdateEvent
+   */
+  open fun onGuildMaxVideoChannelUsersUpdate(event: GuildMaxVideoChannelUsersUpdateEvent) {}
+
+  /**
+   * Listens to GuildApproximateMemberCountUpdateEvent
+   *
+   * @param event The GuildApproximateMemberCountUpdateEvent
+   */
+  open fun onGuildApproximateMemberCountUpdate(event: GuildApproximateMemberCountUpdateEvent) {}
+
+  /**
+   * Listens to GuildWelcomeScreenUpdateEvent
+   *
+   * @param event The GuildWelcomeScreenUpdateEvent
+   */
+  open fun onGuildWelcomeScreenUpdate(event: GuildWelcomeScreenUpdateEvent) {}
+
+  /**
+   * Listens to GuildNSFWLevelUpdateEvent
+   *
+   * @param event The GuildNSFWLevelUpdateEvent
+   */
+  open fun onGuildNSFWLevelUpdate(event: GuildNSFWLevelUpdateEvent) {}
+
+  /**
+   * Listens to GuildStickersUpdateEvent
+   *
+   * @param event The GuildStickersUpdateEvent
+   */
+  open fun onGuildStickersUpdate(event: GuildStickersUpdateEvent) {}
+
+  /**
+   * Listens to GuildBoostProgressBarEnabledUpdateEvent
+   *
+   * @param event The GuildBoostProgressBarEnabledUpdateEvent
+   */
+  open fun onGuildBoostProgressBarEnabledUpdate(event: GuildBoostProgressBarEnabledUpdateEvent) {}
+
+  /**
+   * Listens to GuildEmojisUpdateEvent
+   *
+   * @param event The GuildEmojisUpdateEvent
+   */
+  open fun onGuildEmojisUpdate(event: GuildEmojisUpdateEvent) {}
+
+  /**
+   * Listens to GuildFeaturesUpdateEvent
+   *
+   * @param event The GuildFeaturesUpdateEvent
+   */
+  open fun onGuildFeaturesUpdate(event: GuildFeaturesUpdateEvent) {}
 
   /**
    * Listens to GuildDeleteEvent
