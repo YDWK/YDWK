@@ -21,4 +21,5 @@ package io.github.ydwk.ydwk.evm.backend.update
 import io.github.ydwk.ydwk.entities.util.GenericEntity
 import kotlin.reflect.KClass
 
-annotation class UpdateEntity(val name: String, val entity: KClass<out GenericEntity>)
+/** This annotation is used to generate a update event for the variable */
+annotation class UpdateVariable(val name: String, val entity: KClass<out GenericEntity>)

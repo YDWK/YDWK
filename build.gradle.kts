@@ -260,7 +260,14 @@ tasks.getByName("dokkaHtml", DokkaTask::class) {
 
 tasks.create("generateEvents") {
     doLast {
-        // find variables with the annotation @UpdateEntity
+        // find variables with the annotation @UpdateVariable
+        val variables =
+            project.rootDir
+                .walkTopDown()
+                .filter { it.isFile }
+                .filter { it.extension == "kt" }
+                .map { it.readText() }
 
+        val updateVariables = variables
     }
 }
