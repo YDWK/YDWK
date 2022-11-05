@@ -26,9 +26,9 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
 /** Fired when the parent of a guild channel is updated */
 data class GuildChannelParentUpdateEvent(
-  override val ydwk: YDWK,
-  override val entity: GuildChannel,
-  val type: ChannelType,
-  val oldParent: GuildCategory?,
-  val newParent: GuildCategory?
+    override val ydwk: YDWK,
+    override val entity: GuildChannel,
+    val type: ChannelType,
+    val oldParent: GuildCategory?,
+    val newParent: GuildCategory?
 ) : GenericChannelUpdateEvent<GuildCategory?>(ydwk, entity, oldParent, newParent)

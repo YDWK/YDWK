@@ -19,22 +19,22 @@
 package io.github.ydwk.ydwk.entities.guild.enums
 
 enum class ExplicitContentFilterLevel(val value: Int) {
-  /** Media content will not be scanned */
-  DISABLED(0),
+    /** Media content will not be scanned */
+    DISABLED(0),
 
-  /** Media content sent by members without roles will be scanned */
-  MEMBERS_WITHOUT_ROLES(1),
+    /** Media content sent by members without roles will be scanned */
+    MEMBERS_WITHOUT_ROLES(1),
 
-  /** Media content sent by all members will be scanned */
-  ALL_MEMBERS(2),
+    /** Media content sent by all members will be scanned */
+    ALL_MEMBERS(2),
 
-  /** An unknown explicit content filter level */
-  UNKNOWN(-1);
+    /** An unknown explicit content filter level */
+    UNKNOWN(-1);
 
-  companion object {
-    /** Gets the [ExplicitContentFilterLevel] for the given [value]. */
-    fun fromValue(value: Int): ExplicitContentFilterLevel {
-      return values().firstOrNull { it.value == value } ?: UNKNOWN
+    companion object {
+        /** Gets the [ExplicitContentFilterLevel] for the given [value]. */
+        fun fromValue(value: Int): ExplicitContentFilterLevel {
+            return values().firstOrNull { it.value == value } ?: UNKNOWN
+        }
     }
-  }
 }

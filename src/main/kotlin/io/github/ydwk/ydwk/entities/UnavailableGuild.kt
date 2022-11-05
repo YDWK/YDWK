@@ -22,10 +22,10 @@ import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.util.SnowFlake
 
 interface UnavailableGuild : SnowFlake, GenericEntity {
-  /**
-   * Weather the guild is unavailable or not
-   *
-   * @return true if the guild is unavailable
-   */
-  var unavailable: Boolean
+    /**
+     * Weather the guild is unavailable or not
+     *
+     * @return true if the guild is unavailable
+     */
+    var unavailable: Boolean
 }

@@ -26,18 +26,19 @@ import io.github.ydwk.ydwk.util.GetterSnowFlake
 
 class WelcomeChannelImpl(override val ydwk: YDWK, override val json: JsonNode) : WelcomeChannel {
 
-  override val channelId: GetterSnowFlake
-    get() = GetterSnowFlake.of(json.get("channel_id").asLong())
+    override val channelId: GetterSnowFlake
+        get() = GetterSnowFlake.of(json.get("channel_id").asLong())
 
-  override var description: String = json.get("description").asText()
+    override var description: String = json.get("description").asText()
 
-  override val emojiId: GetterSnowFlake?
-    get() = if (json.has("emoji_id")) GetterSnowFlake.of(json.get("emoji_id").asLong()) else null
+    override val emojiId: GetterSnowFlake?
+        get() =
+            if (json.has("emoji_id")) GetterSnowFlake.of(json.get("emoji_id").asLong()) else null
 
-  override var emojiName: String? =
-    if (json.has("emoji_name")) json.get("emoji_name").asText() else null
+    override var emojiName: String? =
+        if (json.has("emoji_name")) json.get("emoji_name").asText() else null
 
-  override fun toString(): String {
-    return EntityToStringBuilder(this).toString()
-  }
+    override fun toString(): String {
+        return EntityToStringBuilder(this).toString()
+    }
 }

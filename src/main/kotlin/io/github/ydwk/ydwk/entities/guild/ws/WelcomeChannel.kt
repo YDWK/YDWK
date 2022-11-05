@@ -22,31 +22,31 @@ import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 
 interface WelcomeChannel : GenericEntity {
-  /**
-   * The channel's id
-   *
-   * @return The channel's id
-   */
-  val channelId: GetterSnowFlake
+    /**
+     * The channel's id
+     *
+     * @return The channel's id
+     */
+    val channelId: GetterSnowFlake
 
-  /**
-   * The description shown for the channel
-   *
-   * @return The description shown for the channel
-   */
-  var description: String
+    /**
+     * The description shown for the channel
+     *
+     * @return The description shown for the channel
+     */
+    var description: String
 
-  /**
-   * The emoji id, if the emoji is custom
-   *
-   * @return The emoji id, if the emoji is custom
-   */
-  val emojiId: GetterSnowFlake?
+    /**
+     * The emoji id, if the emoji is custom
+     *
+     * @return The emoji id, if the emoji is custom
+     */
+    val emojiId: GetterSnowFlake?
 
-  /**
-   * The emoji name if custom, or the unicode character if standard
-   *
-   * @return The emoji name if custom, or the unicode character if standard
-   */
-  var emojiName: String?
+    /**
+     * The emoji name if custom, or the unicode character if standard
+     *
+     * @return The emoji name if custom, or the unicode character if standard
+     */
+    var emojiName: String?
 }

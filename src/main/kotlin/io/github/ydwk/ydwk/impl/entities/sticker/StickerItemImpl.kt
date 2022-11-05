@@ -25,18 +25,18 @@ import io.github.ydwk.ydwk.entities.sticker.StickerType
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class StickerItemImpl(
-  override val ydwk: YDWK,
-  override val json: JsonNode,
-  override val idAsLong: Long
+    override val ydwk: YDWK,
+    override val json: JsonNode,
+    override val idAsLong: Long
 ) : StickerItem {
 
-  override val name: String
-    get() = json.get("name").asText()
+    override val name: String
+        get() = json.get("name").asText()
 
-  override val type: StickerType
-    get() = StickerType.fromValue(json.get("type").asInt())
+    override val type: StickerType
+        get() = StickerType.fromValue(json.get("type").asInt())
 
-  override fun toString(): String {
-    return EntityToStringBuilder(this).name(this.name).toString()
-  }
+    override fun toString(): String {
+        return EntityToStringBuilder(this).name(this.name).toString()
+    }
 }

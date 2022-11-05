@@ -24,12 +24,12 @@ import io.github.ydwk.ydwk.entities.UnavailableGuild
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class UnavailableGuildImpl(
-  override val ydwk: YDWK,
-  override val json: JsonNode,
-  override val idAsLong: Long,
+    override val ydwk: YDWK,
+    override val json: JsonNode,
+    override val idAsLong: Long,
 ) : UnavailableGuild {
-  override var unavailable: Boolean = json["unavailable"].asBoolean()
-  override fun toString(): String {
-    return EntityToStringBuilder(this).name("UnavailableGuild").toString()
-  }
+    override var unavailable: Boolean = json["unavailable"].asBoolean()
+    override fun toString(): String {
+        return EntityToStringBuilder(this).name("UnavailableGuild").toString()
+    }
 }

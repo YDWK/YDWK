@@ -24,135 +24,135 @@ import java.net.URL
 import java.time.temporal.TemporalAccessor
 
 interface EmbedBuilder {
-  /**
-   * Sets the title of the embed.
-   *
-   * @param title The title of the embed.
-   * @return The current [EmbedBuilder] instance.
-   */
-  fun setTitle(title: String): EmbedBuilder
+    /**
+     * Sets the title of the embed.
+     *
+     * @param title The title of the embed.
+     * @return The current [EmbedBuilder] instance.
+     */
+    fun setTitle(title: String): EmbedBuilder
 
-  /**
-   * Sets the description of the embed.
-   *
-   * @param description The description of the embed.
-   * @return The current [EmbedBuilder] instance.
-   */
-  fun setDescription(description: CharSequence): EmbedBuilder
+    /**
+     * Sets the description of the embed.
+     *
+     * @param description The description of the embed.
+     * @return The current [EmbedBuilder] instance.
+     */
+    fun setDescription(description: CharSequence): EmbedBuilder
 
-  /**
-   * Sets the timestamp of the embed.
-   *
-   * @param timestamp The timestamp of the embed.
-   * @return The current [EmbedBuilder] instance.
-   */
-  fun setTimestamp(timestamp: TemporalAccessor): EmbedBuilder
+    /**
+     * Sets the timestamp of the embed.
+     *
+     * @param timestamp The timestamp of the embed.
+     * @return The current [EmbedBuilder] instance.
+     */
+    fun setTimestamp(timestamp: TemporalAccessor): EmbedBuilder
 
-  /**
-   * Sets the url of the embed.
-   *
-   * @param url The url of the embed.
-   * @return The current [EmbedBuilder] instance.
-   */
-  fun setUrl(url: URL): EmbedBuilder
+    /**
+     * Sets the url of the embed.
+     *
+     * @param url The url of the embed.
+     * @return The current [EmbedBuilder] instance.
+     */
+    fun setUrl(url: URL): EmbedBuilder
 
-  /**
-   * Sets the color of the embed.
-   *
-   * @param color The color of the embed.
-   * @return The current [EmbedBuilder] instance.
-   */
-  fun setColor(color: Color): EmbedBuilder
+    /**
+     * Sets the color of the embed.
+     *
+     * @param color The color of the embed.
+     * @return The current [EmbedBuilder] instance.
+     */
+    fun setColor(color: Color): EmbedBuilder
 
-  /**
-   * Sets the thumbnail of the embed.
-   *
-   * @param url The url of the thumbnail.
-   * @return The current [EmbedBuilder] instance.
-   */
-  fun setThumbnail(url: URL): EmbedBuilder
+    /**
+     * Sets the thumbnail of the embed.
+     *
+     * @param url The url of the thumbnail.
+     * @return The current [EmbedBuilder] instance.
+     */
+    fun setThumbnail(url: URL): EmbedBuilder
 
-  /**
-   * Sets the thumbnail of the embed.
-   *
-   * @param thumbnail The thumbnail of the embed.
-   * @return The current [EmbedBuilder] instance.
-   */
-  fun setThumbnail(thumbnail: EmbedThumbnailBuilder): EmbedBuilder
+    /**
+     * Sets the thumbnail of the embed.
+     *
+     * @param thumbnail The thumbnail of the embed.
+     * @return The current [EmbedBuilder] instance.
+     */
+    fun setThumbnail(thumbnail: EmbedThumbnailBuilder): EmbedBuilder
 
-  /**
-   * Sets the image of the embed.
-   *
-   * @param url The url of the image.
-   * @return The current [EmbedBuilder] instance.
-   */
-  fun setImage(url: URL): EmbedBuilder
+    /**
+     * Sets the image of the embed.
+     *
+     * @param url The url of the image.
+     * @return The current [EmbedBuilder] instance.
+     */
+    fun setImage(url: URL): EmbedBuilder
 
-  /**
-   * Sets the image of the embed.
-   *
-   * @param image The image of the embed.
-   * @return The current [EmbedBuilder] instance.
-   */
-  fun setImage(image: EmbedImageBuilder): EmbedBuilder
+    /**
+     * Sets the image of the embed.
+     *
+     * @param image The image of the embed.
+     * @return The current [EmbedBuilder] instance.
+     */
+    fun setImage(image: EmbedImageBuilder): EmbedBuilder
 
-  /**
-   * Sets the footer of the embed.
-   *
-   * @param text The text of the footer.
-   * @param iconUrl The url of the icon.
-   * @return The current [EmbedBuilder] instance.
-   */
-  fun setFooter(text: String, iconUrl: URL): EmbedBuilder
+    /**
+     * Sets the footer of the embed.
+     *
+     * @param text The text of the footer.
+     * @param iconUrl The url of the icon.
+     * @return The current [EmbedBuilder] instance.
+     */
+    fun setFooter(text: String, iconUrl: URL): EmbedBuilder
 
-  /**
-   * Sets the footer of the embed.
-   *
-   * @param footer The footer of the embed.
-   * @return The current [EmbedBuilder] instance.
-   */
-  fun setFooter(footer: EmbedFooterBuilder): EmbedBuilder
+    /**
+     * Sets the footer of the embed.
+     *
+     * @param footer The footer of the embed.
+     * @return The current [EmbedBuilder] instance.
+     */
+    fun setFooter(footer: EmbedFooterBuilder): EmbedBuilder
 
-  /**
-   * Sets the author of the embed.
-   *
-   * @param name The name of the author.
-   * @param url The url of the author.
-   * @param iconUrl The url of the icon.
-   * @return The current [EmbedBuilder] instance.
-   */
-  fun setAuthor(name: String, url: URL? = null, iconUrl: URL? = null): EmbedBuilder
+    /**
+     * Sets the author of the embed.
+     *
+     * @param name The name of the author.
+     * @param url The url of the author.
+     * @param iconUrl The url of the icon.
+     * @return The current [EmbedBuilder] instance.
+     */
+    fun setAuthor(name: String, url: URL? = null, iconUrl: URL? = null): EmbedBuilder
 
-  /**
-   * Sets the author of the embed.
-   *
-   * @param author The author of the embed.
-   * @return The current [EmbedBuilder] instance.
-   */
-  fun setAuthor(author: EmbedAuthorBuilder): EmbedBuilder
+    /**
+     * Sets the author of the embed.
+     *
+     * @param author The author of the embed.
+     * @return The current [EmbedBuilder] instance.
+     */
+    fun setAuthor(author: EmbedAuthorBuilder): EmbedBuilder
 
-  /**
-   * Adds a field to the embed.
-   *
-   * @param name The name of the field.
-   * @param value The value of the field.
-   * @param inline Whether the field should be inline.
-   * @return The current [EmbedBuilder] instance.
-   */
-  fun addField(name: String, value: CharSequence, inline: Boolean = true): EmbedBuilder
+    /**
+     * Adds a field to the embed.
+     *
+     * @param name The name of the field.
+     * @param value The value of the field.
+     * @param inline Whether the field should be inline.
+     * @return The current [EmbedBuilder] instance.
+     */
+    fun addField(name: String, value: CharSequence, inline: Boolean = true): EmbedBuilder
 
-  /**
-   * Adds a field to the embed.
-   *
-   * @param field The field to add.
-   * @return The current [EmbedBuilder] instance.
-   */
-  fun addField(field: EmbedFieldBuilder): EmbedBuilder
+    /**
+     * Adds a field to the embed.
+     *
+     * @param field The field to add.
+     * @return The current [EmbedBuilder] instance.
+     */
+    fun addField(field: EmbedFieldBuilder): EmbedBuilder
 
-  /**
-   * Builds the embed.
-   *
-   * @return The [Embed] instance.
-   */
-  fun build(): Embed
+    /**
+     * Builds the embed.
+     *
+     * @return The [Embed] instance.
+     */
+    fun build(): Embed
 }

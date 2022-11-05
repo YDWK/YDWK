@@ -26,15 +26,15 @@ import io.github.ydwk.ydwk.util.GetterSnowFlake
 
 class RoleTagImpl(override val ydwk: YDWK, override val json: JsonNode) : RoleTag {
 
-  override val botId: GetterSnowFlake?
-    get() = if (json.has("bot_id")) GetterSnowFlake.of(json.get("bot_id").asLong()) else null
+    override val botId: GetterSnowFlake?
+        get() = if (json.has("bot_id")) GetterSnowFlake.of(json.get("bot_id").asLong()) else null
 
-  override val integrationId: GetterSnowFlake?
-    get() =
-      if (json.has("integration_id")) GetterSnowFlake.of(json.get("integration_id").asLong())
-      else null
+    override val integrationId: GetterSnowFlake?
+        get() =
+            if (json.has("integration_id")) GetterSnowFlake.of(json.get("integration_id").asLong())
+            else null
 
-  override fun toString(): String {
-    return EntityToStringBuilder(this).toString()
-  }
+    override fun toString(): String {
+        return EntityToStringBuilder(this).toString()
+    }
 }

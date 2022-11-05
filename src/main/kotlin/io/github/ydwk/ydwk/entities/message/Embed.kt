@@ -24,94 +24,94 @@ import java.awt.Color
 import java.net.URL
 
 interface Embed : GenericEntity {
-  /**
-   * Gets the title of this embed.
-   *
-   * @return The title of this embed.
-   */
-  val title: String?
+    /**
+     * Gets the title of this embed.
+     *
+     * @return The title of this embed.
+     */
+    val title: String?
 
-  /**
-   * Gets the type of this embed.
-   *
-   * @return The type of this embed.
-   */
-  val type: EmbedType?
+    /**
+     * Gets the type of this embed.
+     *
+     * @return The type of this embed.
+     */
+    val type: EmbedType?
 
-  /**
-   * Gets the description of this embed.
-   *
-   * @return The description of this embed.
-   */
-  val description: String?
+    /**
+     * Gets the description of this embed.
+     *
+     * @return The description of this embed.
+     */
+    val description: String?
 
-  /**
-   * Gets the url of this embed.
-   *
-   * @return The url of this embed.
-   */
-  val url: URL?
+    /**
+     * Gets the url of this embed.
+     *
+     * @return The url of this embed.
+     */
+    val url: URL?
 
-  /**
-   * Gets the timestamp of this embed.
-   *
-   * @return The timestamp of this embed.
-   */
-  val timestamp: String?
+    /**
+     * Gets the timestamp of this embed.
+     *
+     * @return The timestamp of this embed.
+     */
+    val timestamp: String?
 
-  /**
-   * Gets the color of this embed.
-   *
-   * @return The color of this embed.
-   */
-  val color: Color?
+    /**
+     * Gets the color of this embed.
+     *
+     * @return The color of this embed.
+     */
+    val color: Color?
 
-  /**
-   * Gets the footer of this embed.
-   *
-   * @return The footer of this embed.
-   */
-  val footer: Footer?
+    /**
+     * Gets the footer of this embed.
+     *
+     * @return The footer of this embed.
+     */
+    val footer: Footer?
 
-  /**
-   * Gets the image of this embed.
-   *
-   * @return The image of this embed.
-   */
-  val image: Image?
+    /**
+     * Gets the image of this embed.
+     *
+     * @return The image of this embed.
+     */
+    val image: Image?
 
-  /**
-   * Gets the thumbnail of this embed.
-   *
-   * @return The thumbnail of this embed.
-   */
-  val thumbnail: Thumbnail?
+    /**
+     * Gets the thumbnail of this embed.
+     *
+     * @return The thumbnail of this embed.
+     */
+    val thumbnail: Thumbnail?
 
-  /**
-   * Gets the video of this embed.
-   *
-   * @return The video of this embed.
-   */
-  val video: Video?
+    /**
+     * Gets the video of this embed.
+     *
+     * @return The video of this embed.
+     */
+    val video: Video?
 
-  /**
-   * Gets the provider of this embed.
-   *
-   * @return The provider of this embed.
-   */
-  val provider: Provider?
+    /**
+     * Gets the provider of this embed.
+     *
+     * @return The provider of this embed.
+     */
+    val provider: Provider?
 
-  /**
-   * Gets the author of this embed.
-   *
-   * @return The author of this embed.
-   */
-  val author: Author?
+    /**
+     * Gets the author of this embed.
+     *
+     * @return The author of this embed.
+     */
+    val author: Author?
 
-  /**
-   * Gets the fields of this embed.
-   *
-   * @return The fields of this embed.
-   */
-  val fields: List<Field>
+    /**
+     * Gets the fields of this embed.
+     *
+     * @return The fields of this embed.
+     */
+    val fields: List<Field>
 }

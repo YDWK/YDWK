@@ -24,8 +24,8 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
 /** Fired when the name of a guild category is updated */
 data class CategoryNameUpdateEvent(
-  override val ydwk: YDWK,
-  override val entity: GuildCategory,
-  val oldName: String,
-  val newName: String
+    override val ydwk: YDWK,
+    override val entity: GuildCategory,
+    val oldName: String,
+    val newName: String
 ) : GenericChannelUpdateEvent<String>(ydwk, entity, oldName, newName)

@@ -26,14 +26,15 @@ import io.github.ydwk.ydwk.impl.entities.guild.ws.WelcomeChannelImpl
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class WelcomeScreenImpl(override val ydwk: YDWK, override val json: JsonNode) : WelcomeScreen {
-  override var description: String? =
-    if (json.has("description")) json["description"].asText() else null
+    override var description: String? =
+        if (json.has("description")) json["description"].asText() else null
 
-  override var welcomeChannels: List<WelcomeChannel> =
-    if (json.has("welcome_channels")) json["welcome_channels"].map { WelcomeChannelImpl(ydwk, it) }
-    else emptyList()
+    override var welcomeChannels: List<WelcomeChannel> =
+        if (json.has("welcome_channels"))
+            json["welcome_channels"].map { WelcomeChannelImpl(ydwk, it) }
+        else emptyList()
 
-  override fun toString(): String {
-    return EntityToStringBuilder(this).toString()
-  }
+    override fun toString(): String {
+        return EntityToStringBuilder(this).toString()
+    }
 }

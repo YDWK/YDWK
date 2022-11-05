@@ -23,38 +23,38 @@ import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.util.SnowFlake
 
 interface AuditLogEntry : SnowFlake, GenericEntity {
-  /**
-   * Gets the targetId of this audit log entry.
-   *
-   * @return The targetId of this audit log entry.
-   */
-  val targetId: String?
+    /**
+     * Gets the targetId of this audit log entry.
+     *
+     * @return The targetId of this audit log entry.
+     */
+    val targetId: String?
 
-  /**
-   * Gets the changes of this audit log entry.
-   *
-   * @return The changes of this audit log entry.
-   */
-  val changes: List<AuditLogChange>
+    /**
+     * Gets the changes of this audit log entry.
+     *
+     * @return The changes of this audit log entry.
+     */
+    val changes: List<AuditLogChange>
 
-  /**
-   * Gets the user who made this audit log entry.
-   *
-   * @return The user who made this audit log entry.
-   */
-  val user: User?
+    /**
+     * Gets the user who made this audit log entry.
+     *
+     * @return The user who made this audit log entry.
+     */
+    val user: User?
 
-  /**
-   * Gets the type of this audit log entry.
-   *
-   * @return The type of this audit log entry.
-   */
-  val type: AuditLogType
+    /**
+     * Gets the type of this audit log entry.
+     *
+     * @return The type of this audit log entry.
+     */
+    val type: AuditLogType
 
-  /**
-   * Gets the reason of this audit log entry.
-   *
-   * @return The reason of this audit log entry.
-   */
-  val reason: String?
+    /**
+     * Gets the reason of this audit log entry.
+     *
+     * @return The reason of this audit log entry.
+     */
+    val reason: String?
 }

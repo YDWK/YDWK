@@ -20,12 +20,12 @@ package io.github.ydwk.ydwk.ws.util
 
 interface LoggedIn {
 
-  /** Weather the bot is logged in or not. */
-  val loggedIn: Boolean
+    /** Weather the bot is logged in or not. */
+    val loggedIn: Boolean
 
-  /** If the bot is logged in, this will return the time when the bot logged in. */
-  var loggedInTime: String?
+    /** If the bot is logged in, this will return the time when the bot logged in. */
+    var loggedInTime: String?
 
-  /** If the bot disconnected, this will return the time when the bot disconnected. */
-  var disconnectionTime: String?
+    /** If the bot disconnected, this will return the time when the bot disconnected. */
+    var disconnectionTime: String?
 }

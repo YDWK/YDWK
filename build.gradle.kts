@@ -94,7 +94,7 @@ spotless {
     kotlin {
         // Excludes build folder since it contains generated java classes.
         targetExclude("build/**")
-        ktfmt("0.39").googleStyle().configure { steps -> steps.setRemoveUnusedImport(true) }
+        ktfmt("0.39").dropboxStyle()
 
         licenseHeader(
             """/*

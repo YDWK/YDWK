@@ -25,14 +25,14 @@ import io.github.ydwk.ydwk.interaction.message.MessageComponentType
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class MessageComponentDataImpl(override val ydwk: YDWK, override val json: JsonNode) :
-  MessageComponentData {
+    MessageComponentData {
 
-  override val customId: String = json["custom_id"].asText()
+    override val customId: String = json["custom_id"].asText()
 
-  override val componentType: MessageComponentType =
-    MessageComponentType.fromInt(json["component_type"].asInt())
+    override val componentType: MessageComponentType =
+        MessageComponentType.fromInt(json["component_type"].asInt())
 
-  override fun toString(): String {
-    return EntityToStringBuilder(this).toString()
-  }
+    override fun toString(): String {
+        return EntityToStringBuilder(this).toString()
+    }
 }

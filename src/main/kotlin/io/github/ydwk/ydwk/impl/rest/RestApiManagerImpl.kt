@@ -31,94 +31,98 @@ import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 
 class RestApiManagerImpl(
-  private val token: String,
-  private val ydwkImpl: YDWKImpl,
-  private val client: OkHttpClient,
+    private val token: String,
+    private val ydwkImpl: YDWKImpl,
+    private val client: OkHttpClient,
 ) : RestApiManager {
-  private val addQueryParameterMap: MutableMap<String, String> = mutableMapOf()
+    private val addQueryParameterMap: MutableMap<String, String> = mutableMapOf()
 
-  override fun addQueryParameter(key: String, value: String): RestApiManager {
-    addQueryParameterMap[key] = value
-    return this
-  }
-
-  override fun get(endPoint: EndPoint.IEnumEndpoint, vararg params: String): GetRestApi {
-    val builder = requestBuilder(endPoint, *params).get()
-    return GetRestApiImpl(ydwkImpl, client, builder)
-  }
-
-  override fun post(
-    body: RequestBody?,
-    endPoint: EndPoint.IEnumEndpoint,
-    vararg params: String,
-  ): PostRestApi {
-    val builder =
-      requestBuilder(endPoint, *params).post(body ?: ByteArray(0).toRequestBody(null, 0, 0))
-    return PostRestApiImpl(ydwkImpl, client, builder)
-  }
-
-  override fun put(
-    body: RequestBody?,
-    endPoint: EndPoint.IEnumEndpoint,
-    vararg params: String,
-  ): PutRestApi {
-    val builder =
-      requestBuilder(endPoint, *params).put(body ?: ByteArray(0).toRequestBody(null, 0, 0))
-    return PutRestApiImpl(ydwkImpl, client, builder)
-  }
-
-  override fun delete(
-    body: RequestBody?,
-    endPoint: EndPoint.IEnumEndpoint,
-    vararg params: String,
-  ): DeleteRestApi {
-    val builder = requestBuilder(endPoint, *params).delete(body)
-    return DeleteRestApiImpl(ydwkImpl, client, builder)
-  }
-
-  override fun patch(
-    body: RequestBody,
-    endPoint: EndPoint.IEnumEndpoint,
-    vararg params: String,
-  ): PatchRestApi {
-    val builder = requestBuilder(endPoint, *params).patch(body)
-    return PatchRestApiImpl(ydwkImpl, client, builder)
-  }
-
-  private fun requestBuilder(
-    endPoint: EndPoint.IEnumEndpoint,
-    vararg params: String,
-  ): Request.Builder {
-    val builder = Request.Builder().headers(requiredHeaders()).url(getEndpoint(endPoint, *params))
-    if (addQueryParameterMap.isNotEmpty()) {
-      val url = builder.build().url.newBuilder()
-      addQueryParameterMap.forEach { (key, value) -> url.addQueryParameter(key, value) }
-      builder.url(url.build())
+    override fun addQueryParameter(key: String, value: String): RestApiManager {
+        addQueryParameterMap[key] = value
+        return this
     }
-    return builder
-  }
 
-  private fun getEndpoint(endPoint: EndPoint.IEnumEndpoint, vararg params: String): String {
-    return when {
-      params.isEmpty() -> {
-        if (endPoint.containsParam()) {
-          throw IllegalArgumentException("Endpoint ${endPoint.getEndpoint()} requires parameters")
-        } else {
-          endPoint.getFullEndpoint()
+    override fun get(endPoint: EndPoint.IEnumEndpoint, vararg params: String): GetRestApi {
+        val builder = requestBuilder(endPoint, *params).get()
+        return GetRestApiImpl(ydwkImpl, client, builder)
+    }
+
+    override fun post(
+        body: RequestBody?,
+        endPoint: EndPoint.IEnumEndpoint,
+        vararg params: String,
+    ): PostRestApi {
+        val builder =
+            requestBuilder(endPoint, *params).post(body ?: ByteArray(0).toRequestBody(null, 0, 0))
+        return PostRestApiImpl(ydwkImpl, client, builder)
+    }
+
+    override fun put(
+        body: RequestBody?,
+        endPoint: EndPoint.IEnumEndpoint,
+        vararg params: String,
+    ): PutRestApi {
+        val builder =
+            requestBuilder(endPoint, *params).put(body ?: ByteArray(0).toRequestBody(null, 0, 0))
+        return PutRestApiImpl(ydwkImpl, client, builder)
+    }
+
+    override fun delete(
+        body: RequestBody?,
+        endPoint: EndPoint.IEnumEndpoint,
+        vararg params: String,
+    ): DeleteRestApi {
+        val builder = requestBuilder(endPoint, *params).delete(body)
+        return DeleteRestApiImpl(ydwkImpl, client, builder)
+    }
+
+    override fun patch(
+        body: RequestBody,
+        endPoint: EndPoint.IEnumEndpoint,
+        vararg params: String,
+    ): PatchRestApi {
+        val builder = requestBuilder(endPoint, *params).patch(body)
+        return PatchRestApiImpl(ydwkImpl, client, builder)
+    }
+
+    private fun requestBuilder(
+        endPoint: EndPoint.IEnumEndpoint,
+        vararg params: String,
+    ): Request.Builder {
+        val builder =
+            Request.Builder().headers(requiredHeaders()).url(getEndpoint(endPoint, *params))
+        if (addQueryParameterMap.isNotEmpty()) {
+            val url = builder.build().url.newBuilder()
+            addQueryParameterMap.forEach { (key, value) -> url.addQueryParameter(key, value) }
+            builder.url(url.build())
         }
-      }
-      else -> {
-        endPoint.getFullEndpointWithParams(*params)
-      }
+        return builder
     }
-  }
 
-  private fun requiredHeaders(): Headers {
-    return Headers.Builder()
-      .add("Content-Type", "application/json")
-      .add("Authorization", "Bot $token")
-      .add("user-agent", "DiscordBot (" + YDWKInfo.GITHUB_URL + ", " + YDWKInfo.YDWK_VERSION + ")")
-      .add("accept-encoding", "json")
-      .build()
-  }
+    private fun getEndpoint(endPoint: EndPoint.IEnumEndpoint, vararg params: String): String {
+        return when {
+            params.isEmpty() -> {
+                if (endPoint.containsParam()) {
+                    throw IllegalArgumentException(
+                        "Endpoint ${endPoint.getEndpoint()} requires parameters")
+                } else {
+                    endPoint.getFullEndpoint()
+                }
+            }
+            else -> {
+                endPoint.getFullEndpointWithParams(*params)
+            }
+        }
+    }
+
+    private fun requiredHeaders(): Headers {
+        return Headers.Builder()
+            .add("Content-Type", "application/json")
+            .add("Authorization", "Bot $token")
+            .add(
+                "user-agent",
+                "DiscordBot (" + YDWKInfo.GITHUB_URL + ", " + YDWKInfo.YDWK_VERSION + ")")
+            .add("accept-encoding", "json")
+            .build()
+    }
 }

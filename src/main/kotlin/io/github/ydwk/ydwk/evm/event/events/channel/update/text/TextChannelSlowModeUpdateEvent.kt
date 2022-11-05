@@ -25,9 +25,9 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
 /** Fired when a text channel's slow mode is updated */
 data class TextChannelSlowModeUpdateEvent(
-  override val ydwk: YDWK,
-  override val entity: GuildMessageChannel,
-  val channelType: ChannelType,
-  val oldSlowMode: Int,
-  val newSlowMode: Int
+    override val ydwk: YDWK,
+    override val entity: GuildMessageChannel,
+    val channelType: ChannelType,
+    val oldSlowMode: Int,
+    val newSlowMode: Int
 ) : GenericChannelUpdateEvent<Int>(ydwk, entity, oldSlowMode, newSlowMode)

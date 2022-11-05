@@ -26,21 +26,21 @@ import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 
 class MessageReferenceImpl(override val ydwk: YDWK, override val json: JsonNode) :
-  MessageReference {
+    MessageReference {
 
-  override val messageId: GetterSnowFlake
-    get() = GetterSnowFlake.of(json.get("message_id").asLong())
+    override val messageId: GetterSnowFlake
+        get() = GetterSnowFlake.of(json.get("message_id").asLong())
 
-  override val channelId: GetterSnowFlake
-    get() = GetterSnowFlake.of(json.get("channel_id").asLong())
+    override val channelId: GetterSnowFlake
+        get() = GetterSnowFlake.of(json.get("channel_id").asLong())
 
-  override val guildId: GetterSnowFlake
-    get() = GetterSnowFlake.of(json.get("guild_id").asLong())
+    override val guildId: GetterSnowFlake
+        get() = GetterSnowFlake.of(json.get("guild_id").asLong())
 
-  override val guild: Guild?
-    get() = ydwk.getGuildById(guildId.asLong)
+    override val guild: Guild?
+        get() = ydwk.getGuildById(guildId.asLong)
 
-  override fun toString(): String {
-    return EntityToStringBuilder(this).toString()
-  }
+    override fun toString(): String {
+        return EntityToStringBuilder(this).toString()
+    }
 }

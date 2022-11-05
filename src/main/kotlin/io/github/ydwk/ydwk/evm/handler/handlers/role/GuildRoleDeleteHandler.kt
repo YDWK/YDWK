@@ -25,15 +25,16 @@ import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
 
 class GuildRoleDeleteHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-  override fun start() {
-    val guild = ydwk.getGuildById(json.get("guild_id").asLong())
-    if (guild != null) {
-      // TODO: broken
-      val role = RoleImpl(ydwk, json.get("role"), json.get("role").get("id").asLong())
-      ydwk.cache.remove(json.get("role").get("id").asText(), CacheIds.ROLE)
-      ydwk.emitEvent(io.github.ydwk.ydwk.evm.event.events.role.GuildRoleDeleteEvent(ydwk, role))
-    } else {
-      ydwk.logger.warn("Guild is null")
+    override fun start() {
+        val guild = ydwk.getGuildById(json.get("guild_id").asLong())
+        if (guild != null) {
+            // TODO: broken
+            val role = RoleImpl(ydwk, json.get("role"), json.get("role").get("id").asLong())
+            ydwk.cache.remove(json.get("role").get("id").asText(), CacheIds.ROLE)
+            ydwk.emitEvent(
+                io.github.ydwk.ydwk.evm.event.events.role.GuildRoleDeleteEvent(ydwk, role))
+        } else {
+            ydwk.logger.warn("Guild is null")
+        }
     }
-  }
 }

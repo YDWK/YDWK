@@ -22,17 +22,17 @@ import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 
 interface RoleTag : GenericEntity {
-  /**
-   * Gets the id of the bot this role belongs to.
-   *
-   * @return The id of the bot this role belongs to.
-   */
-  val botId: GetterSnowFlake?
+    /**
+     * Gets the id of the bot this role belongs to.
+     *
+     * @return The id of the bot this role belongs to.
+     */
+    val botId: GetterSnowFlake?
 
-  /**
-   * Gets the id of the integration this role belongs to.
-   *
-   * @return The id of the integration this role belongs to.
-   */
-  val integrationId: GetterSnowFlake?
+    /**
+     * Gets the id of the integration this role belongs to.
+     *
+     * @return The id of the integration this role belongs to.
+     */
+    val integrationId: GetterSnowFlake?
 }

@@ -21,8 +21,8 @@ package io.github.ydwk.ydwk.entities.message.embed.builder
 import java.net.URL
 
 class EmbedAuthorBuilder(
-  var name: String,
-  var url: URL? = null,
-  var iconUrl: URL? = null,
-  var proxyIconUrl: URL? = null
+    var name: String,
+    var url: URL? = null,
+    var iconUrl: URL? = null,
+    var proxyIconUrl: URL? = null
 )

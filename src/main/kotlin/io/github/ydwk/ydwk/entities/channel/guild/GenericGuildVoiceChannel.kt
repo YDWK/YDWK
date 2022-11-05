@@ -24,17 +24,17 @@ import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildStageChannel
 import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
 
 interface GenericGuildVoiceChannel : VoiceChannel, GuildChannel {
-  /**
-   * Gets the channel as Guild Voice Channel.
-   *
-   * @return the channel as Guild Voice Channel.
-   */
-  fun asGuildVoiceChannel(): GuildVoiceChannel?
+    /**
+     * Gets the channel as Guild Voice Channel.
+     *
+     * @return the channel as Guild Voice Channel.
+     */
+    fun asGuildVoiceChannel(): GuildVoiceChannel?
 
-  /**
-   * Gets the channel as a guild stage channel.
-   *
-   * @return the channel as a stage channel.
-   */
-  fun asStageChannel(): GuildStageChannel?
+    /**
+     * Gets the channel as a guild stage channel.
+     *
+     * @return the channel as a stage channel.
+     */
+    fun asStageChannel(): GuildStageChannel?
 }

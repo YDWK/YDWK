@@ -28,25 +28,26 @@ import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 
 class DmChannelImpl(
-  override val ydwk: YDWK,
-  override val json: JsonNode,
-  override val idAsLong: Long
+    override val ydwk: YDWK,
+    override val json: JsonNode,
+    override val idAsLong: Long
 ) : DmChannel {
 
-  override var lastMessageId: GetterSnowFlake? =
-    if (json.has("last_message_id")) GetterSnowFlake.of(json["last_message_id"].asLong()) else null
+    override var lastMessageId: GetterSnowFlake? =
+        if (json.has("last_message_id")) GetterSnowFlake.of(json["last_message_id"].asLong())
+        else null
 
-  override var recipient: User? =
-    if (json.has("recipients"))
-      UserImpl(json["recipients"][0], json["recipients"][0]["id"].asLong(), ydwk)
-    else null
+    override var recipient: User? =
+        if (json.has("recipients"))
+            UserImpl(json["recipients"][0], json["recipients"][0]["id"].asLong(), ydwk)
+        else null
 
-  override val type: ChannelType
-    get() = ChannelType.DM
+    override val type: ChannelType
+        get() = ChannelType.DM
 
-  override var name: String = json["name"].asText()
+    override var name: String = json["name"].asText()
 
-  override fun toString(): String {
-    return EntityToStringBuilder(this).name(this.name).toString()
-  }
+    override fun toString(): String {
+        return EntityToStringBuilder(this).name(this.name).toString()
+    }
 }

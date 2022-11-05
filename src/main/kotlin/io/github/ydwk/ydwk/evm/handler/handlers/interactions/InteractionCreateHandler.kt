@@ -26,46 +26,35 @@ import io.github.ydwk.ydwk.interaction.Interaction
 import io.github.ydwk.ydwk.interaction.sub.InteractionType
 
 class InteractionCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-  override fun start() {
-    val interaction: Interaction = InteractionImpl(ydwk, json, json["id"].asLong())
-    when (interaction.type) {
-      InteractionType.APPLICATION_COMMAND -> {
-        ydwk.emitEvent(
-          io.github.ydwk.ydwk.evm.event.events.interaction.SlashCommandEvent(
-            ydwk,
-            interaction.slashCommand!!
-          )
-        )
-      }
-      InteractionType.MESSAGE_COMPONENT -> {
-        ydwk.emitEvent(
-          io.github.ydwk.ydwk.evm.event.events.interaction.MessageComponentEvent(
-            ydwk,
-            interaction.messageData!!
-          )
-        )
-      }
-      InteractionType.APPLICATION_COMMAND_AUTOCOMPLETE -> {
-        ydwk.emitEvent(
-          io.github.ydwk.ydwk.evm.event.events.interaction.AutoCompleteSlashCommandEvent(
-            ydwk,
-            interaction
-          )
-        )
-      }
-      InteractionType.MODAL_SUBMIT -> {
-        ydwk.emitEvent(
-          io.github.ydwk.ydwk.evm.event.events.interaction.ModelEvent(ydwk, interaction)
-        )
-      }
-      InteractionType.PING -> {
-        ydwk.emitEvent(
-          io.github.ydwk.ydwk.evm.event.events.interaction.PingEvent(ydwk, interaction)
-        )
-      }
-      InteractionType.UNKNOWN -> {
-        ydwk.logger.warn("Unknown interaction type: ${interaction.type}")
-      }
+    override fun start() {
+        val interaction: Interaction = InteractionImpl(ydwk, json, json["id"].asLong())
+        when (interaction.type) {
+            InteractionType.APPLICATION_COMMAND -> {
+                ydwk.emitEvent(
+                    io.github.ydwk.ydwk.evm.event.events.interaction.SlashCommandEvent(
+                        ydwk, interaction.slashCommand!!))
+            }
+            InteractionType.MESSAGE_COMPONENT -> {
+                ydwk.emitEvent(
+                    io.github.ydwk.ydwk.evm.event.events.interaction.MessageComponentEvent(
+                        ydwk, interaction.messageData!!))
+            }
+            InteractionType.APPLICATION_COMMAND_AUTOCOMPLETE -> {
+                ydwk.emitEvent(
+                    io.github.ydwk.ydwk.evm.event.events.interaction.AutoCompleteSlashCommandEvent(
+                        ydwk, interaction))
+            }
+            InteractionType.MODAL_SUBMIT -> {
+                ydwk.emitEvent(
+                    io.github.ydwk.ydwk.evm.event.events.interaction.ModelEvent(ydwk, interaction))
+            }
+            InteractionType.PING -> {
+                ydwk.emitEvent(
+                    io.github.ydwk.ydwk.evm.event.events.interaction.PingEvent(ydwk, interaction))
+            }
+            InteractionType.UNKNOWN -> {
+                ydwk.logger.warn("Unknown interaction type: ${interaction.type}")
+            }
+        }
     }
-  }
 }

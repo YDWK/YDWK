@@ -53,298 +53,299 @@ import java.util.concurrent.ConcurrentMap
 
 abstract class ListenerAdapter : IEventListener {
 
-  /** Listens to all events */
-  open fun onGenericEvent(event: GenericEvent) {}
+    /** Listens to all events */
+    open fun onGenericEvent(event: GenericEvent) {}
 
-  /** Listens to all event updates */
-  open fun onGenericUpdate(eventUpdate: IEventUpdate<*, *>) {}
+    /** Listens to all event updates */
+    open fun onGenericUpdate(eventUpdate: IEventUpdate<*, *>) {}
 
-  /**
-   * Listens to ready event
-   *
-   * @param event The ready event
-   */
-  open fun onReady(event: ReadyEvent) {}
+    /**
+     * Listens to ready event
+     *
+     * @param event The ready event
+     */
+    open fun onReady(event: ReadyEvent) {}
 
-  /**
-   * Listens to Disconnect event
-   *
-   * @param event The disconnect event
-   */
-  open fun onDisconnect(event: DisconnectEvent) {}
+    /**
+     * Listens to Disconnect event
+     *
+     * @param event The disconnect event
+     */
+    open fun onDisconnect(event: DisconnectEvent) {}
 
-  /**
-   * Listens to Resume event
-   *
-   * @param event The resume event
-   */
-  open fun onResume(event: ResumeEvent) {}
+    /**
+     * Listens to Resume event
+     *
+     * @param event The resume event
+     */
+    open fun onResume(event: ResumeEvent) {}
 
-  /**
-   * Listens to ShutDown event
-   *
-   * @param event The shutdown event
-   */
-  open fun onShutDown(event: ShutDownEvent) {}
+    /**
+     * Listens to ShutDown event
+     *
+     * @param event The shutdown event
+     */
+    open fun onShutDown(event: ShutDownEvent) {}
 
-  // interactions
+    // interactions
 
-  /**
-   * Listens to SlashCommandEvent
-   *
-   * @param event The SlashCommandEvent
-   */
-  open fun onSlashCommand(event: SlashCommandEvent) {}
+    /**
+     * Listens to SlashCommandEvent
+     *
+     * @param event The SlashCommandEvent
+     */
+    open fun onSlashCommand(event: SlashCommandEvent) {}
 
-  /**
-   * Listens to AutoCompleteSlashCommandEvent
-   *
-   * @param event The AutoCompleteSlashCommandEvent
-   */
-  open fun onAutoCompleteSlashCommand(event: AutoCompleteSlashCommandEvent) {}
+    /**
+     * Listens to AutoCompleteSlashCommandEvent
+     *
+     * @param event The AutoCompleteSlashCommandEvent
+     */
+    open fun onAutoCompleteSlashCommand(event: AutoCompleteSlashCommandEvent) {}
 
-  /**
-   * Listens to Model Event
-   *
-   * @param event The Model Event
-   */
-  open fun onModel(event: ModelEvent) {}
+    /**
+     * Listens to Model Event
+     *
+     * @param event The Model Event
+     */
+    open fun onModel(event: ModelEvent) {}
 
-  /**
-   * Listens to Ping Event
-   *
-   * @param event The Ping Event
-   */
-  open fun onPing(event: PingEvent) {}
+    /**
+     * Listens to Ping Event
+     *
+     * @param event The Ping Event
+     */
+    open fun onPing(event: PingEvent) {}
 
-  /**
-   * Listens to Message Component Event
-   *
-   * @param event The Message Component Event
-   */
-  open fun onMessageComponent(event: MessageComponentEvent) {}
+    /**
+     * Listens to Message Component Event
+     *
+     * @param event The Message Component Event
+     */
+    open fun onMessageComponent(event: MessageComponentEvent) {}
 
-  // Channel
-  /**
-   * Listens to ChannelCreateEvent
-   *
-   * @param event The ChannelCreateEvent
-   */
-  open fun onChannelCreate(event: ChannelCreateEvent) {}
+    // Channel
+    /**
+     * Listens to ChannelCreateEvent
+     *
+     * @param event The ChannelCreateEvent
+     */
+    open fun onChannelCreate(event: ChannelCreateEvent) {}
 
-  /**
-   * Listens to ChannelDeleteEvent
-   *
-   * @param event The ChannelDeleteEvent
-   */
-  open fun onChannelDelete(event: ChannelDeleteEvent) {}
+    /**
+     * Listens to ChannelDeleteEvent
+     *
+     * @param event The ChannelDeleteEvent
+     */
+    open fun onChannelDelete(event: ChannelDeleteEvent) {}
 
-  // text/news channel
+    // text/news channel
 
-  /**
-   * Listens to MessageChannelNameUpdateEvent
-   *
-   * @param event The MessageChannelNameUpdateEvent
-   */
-  open fun onMessageChannelNameUpdate(event: MessageChannelNameUpdateEvent) {}
+    /**
+     * Listens to MessageChannelNameUpdateEvent
+     *
+     * @param event The MessageChannelNameUpdateEvent
+     */
+    open fun onMessageChannelNameUpdate(event: MessageChannelNameUpdateEvent) {}
 
-  /**
-   * Listens to MessageChannelTopicUpdateEvent
-   *
-   * @param event The MessageChannelTopicUpdateEvent
-   */
-  open fun onMessageChannelTopicUpdate(event: MessageChannelTopicUpdateEvent) {}
+    /**
+     * Listens to MessageChannelTopicUpdateEvent
+     *
+     * @param event The MessageChannelTopicUpdateEvent
+     */
+    open fun onMessageChannelTopicUpdate(event: MessageChannelTopicUpdateEvent) {}
 
-  /**
-   * Listens to MessageChannelNSFWUpdateEvent
-   *
-   * @param event The MessageChannelNSFWUpdateEvent
-   */
-  open fun onMessageChannelNsfwUpdate(event: MessageChannelNsfwUpdateEvent) {}
+    /**
+     * Listens to MessageChannelNSFWUpdateEvent
+     *
+     * @param event The MessageChannelNSFWUpdateEvent
+     */
+    open fun onMessageChannelNsfwUpdate(event: MessageChannelNsfwUpdateEvent) {}
 
-  /**
-   * Listens to MessageChannelLastMessageIdUpdateEvent
-   *
-   * @param event The MessageChannelLastMessageIdUpdateEvent
-   */
-  open fun onMessageChannelLastMessageIdUpdate(event: MessageChannelLastMessageIdUpdateEvent) {}
+    /**
+     * Listens to MessageChannelLastMessageIdUpdateEvent
+     *
+     * @param event The MessageChannelLastMessageIdUpdateEvent
+     */
+    open fun onMessageChannelLastMessageIdUpdate(event: MessageChannelLastMessageIdUpdateEvent) {}
 
-  /**
-   * Listens to MessageChannelLastPinTimestampUpdateEvent
-   *
-   * @param event The MessageChannelLastPinTimestampUpdateEvent
-   */
-  open fun onMessageChannelLastPinTimestampUpdate(
-    event: MessageChannelLastPinTimestampUpdateEvent
-  ) {}
+    /**
+     * Listens to MessageChannelLastPinTimestampUpdateEvent
+     *
+     * @param event The MessageChannelLastPinTimestampUpdateEvent
+     */
+    open fun onMessageChannelLastPinTimestampUpdate(
+        event: MessageChannelLastPinTimestampUpdateEvent
+    ) {}
 
-  /**
-   * Listens to MessageChannelDefaultAutoArchiveDurationUpdateEvent
-   *
-   * @param event The MessageChannelDefaultAutoArchiveDurationUpdateEvent
-   */
-  open fun onMessageChannelDefaultAutoArchiveDurationUpdate(
-    event: MessageChannelDefaultAutoArchiveDurationUpdateEvent
-  ) {}
+    /**
+     * Listens to MessageChannelDefaultAutoArchiveDurationUpdateEvent
+     *
+     * @param event The MessageChannelDefaultAutoArchiveDurationUpdateEvent
+     */
+    open fun onMessageChannelDefaultAutoArchiveDurationUpdate(
+        event: MessageChannelDefaultAutoArchiveDurationUpdateEvent
+    ) {}
 
-  /**
-   * Listens to MessageChannelPermissionOverwritesUpdateEvent
-   *
-   * @param event The MessageChannelPermissionOverwritesUpdateEvent
-   */
-  open fun onMessageChannelPermissionOverwritesUpdate(
-    event: MessageChannelPermissionOverwritesUpdateEvent
-  ) {}
+    /**
+     * Listens to MessageChannelPermissionOverwritesUpdateEvent
+     *
+     * @param event The MessageChannelPermissionOverwritesUpdateEvent
+     */
+    open fun onMessageChannelPermissionOverwritesUpdate(
+        event: MessageChannelPermissionOverwritesUpdateEvent
+    ) {}
 
-  /**
-   * Listens to TextChannelSlowModeUpdateEvent
-   *
-   * @param event The TextChannelSlowModeUpdateEvent
-   */
-  open fun onTextChannelSlowModeUpdate(event: TextChannelSlowModeUpdateEvent) {}
+    /**
+     * Listens to TextChannelSlowModeUpdateEvent
+     *
+     * @param event The TextChannelSlowModeUpdateEvent
+     */
+    open fun onTextChannelSlowModeUpdate(event: TextChannelSlowModeUpdateEvent) {}
 
-  /**
-   * Listens to CategoryNameUpdateEvent
-   *
-   * @param event The CategoryNameUpdateEvent
-   */
-  open fun onCategoryNameUpdate(event: CategoryNameUpdateEvent) {}
+    /**
+     * Listens to CategoryNameUpdateEvent
+     *
+     * @param event The CategoryNameUpdateEvent
+     */
+    open fun onCategoryNameUpdate(event: CategoryNameUpdateEvent) {}
 
-  // vc/stage channel
+    // vc/stage channel
 
-  /**
-   * Listens to StateChannelTopicUpdateEvent
-   *
-   * @param event The StateChannelTopicUpdateEvent
-   */
-  open fun onStateChannelTopicUpdate(event: StateChannelTopicUpdateEvent) {}
+    /**
+     * Listens to StateChannelTopicUpdateEvent
+     *
+     * @param event The StateChannelTopicUpdateEvent
+     */
+    open fun onStateChannelTopicUpdate(event: StateChannelTopicUpdateEvent) {}
 
-  /**
-   * Listens to VoiceChannelBitrateUpdateEvent
-   *
-   * @param event The VoiceChannelBitrateUpdateEvent
-   */
-  open fun onVoiceChannelBitrateUpdate(event: VoiceChannelBitrateUpdateEvent) {}
+    /**
+     * Listens to VoiceChannelBitrateUpdateEvent
+     *
+     * @param event The VoiceChannelBitrateUpdateEvent
+     */
+    open fun onVoiceChannelBitrateUpdate(event: VoiceChannelBitrateUpdateEvent) {}
 
-  /**
-   * Listens to VoiceChannelUserLimitUpdateEvent
-   *
-   * @param event The VoiceChannelUserLimitUpdateEvent
-   */
-  open fun onVoiceChannelUserLimitUpdate(event: VoiceChannelUserLimitUpdateEvent) {}
+    /**
+     * Listens to VoiceChannelUserLimitUpdateEvent
+     *
+     * @param event The VoiceChannelUserLimitUpdateEvent
+     */
+    open fun onVoiceChannelUserLimitUpdate(event: VoiceChannelUserLimitUpdateEvent) {}
 
-  /**
-   * Listens to VoiceChannelRateLimitPerUserUpdateEvent
-   *
-   * @param event The VoiceChannelRateLimitPerUserUpdateEvent
-   */
-  open fun onVoiceChannelRateLimitPerUserUpdate(event: VoiceChannelRateLimitPerUserUpdateEvent) {}
+    /**
+     * Listens to VoiceChannelRateLimitPerUserUpdateEvent
+     *
+     * @param event The VoiceChannelRateLimitPerUserUpdateEvent
+     */
+    open fun onVoiceChannelRateLimitPerUserUpdate(event: VoiceChannelRateLimitPerUserUpdateEvent) {}
 
-  /**
-   * Listens to VoiceChannelNameUpdateEvent
-   *
-   * @param event The VoiceChannelNameUpdateEvent
-   */
-  open fun onVoiceChannelNameUpdate(event: VoiceChannelNameUpdateEvent) {}
+    /**
+     * Listens to VoiceChannelNameUpdateEvent
+     *
+     * @param event The VoiceChannelNameUpdateEvent
+     */
+    open fun onVoiceChannelNameUpdate(event: VoiceChannelNameUpdateEvent) {}
 
-  // guild
-  /**
-   * Listens to GuildCreateEvent
-   *
-   * @param event The GuildCreateEvent
-   */
-  open fun onGuildCreate(event: GuildCreateEvent) {}
+    // guild
+    /**
+     * Listens to GuildCreateEvent
+     *
+     * @param event The GuildCreateEvent
+     */
+    open fun onGuildCreate(event: GuildCreateEvent) {}
 
-  /**
-   * Listens to GuildNameUpdateEvent
-   *
-   * @param event The GuildNameUpdateEvent
-   */
-  open fun onGuildNameUpdate(event: GuildNameUpdateEvent) {}
+    /**
+     * Listens to GuildNameUpdateEvent
+     *
+     * @param event The GuildNameUpdateEvent
+     */
+    open fun onGuildNameUpdate(event: GuildNameUpdateEvent) {}
 
-  /**
-   * Listens to GuildIconUpdateEvent
-   *
-   * @param event The GuildIconUpdateEvent
-   */
-  open fun onGuildIconUpdate(event: GuildIconUpdateEvent) {}
+    /**
+     * Listens to GuildIconUpdateEvent
+     *
+     * @param event The GuildIconUpdateEvent
+     */
+    open fun onGuildIconUpdate(event: GuildIconUpdateEvent) {}
 
-  /**
-   * Listens to GuildSplashUpdateEvent
-   *
-   * @param event The GuildSplashUpdateEvent
-   */
-  open fun onGuildSplashUpdate(event: GuildSplashUpdateEvent) {}
+    /**
+     * Listens to GuildSplashUpdateEvent
+     *
+     * @param event The GuildSplashUpdateEvent
+     */
+    open fun onGuildSplashUpdate(event: GuildSplashUpdateEvent) {}
 
-  /**
-   * Listens to GuildDeleteEvent
-   *
-   * @param event The GuildDeleteEvent
-   */
-  open fun onGuildDelete(event: GuildDeleteEvent) {}
+    /**
+     * Listens to GuildDeleteEvent
+     *
+     * @param event The GuildDeleteEvent
+     */
+    open fun onGuildDelete(event: GuildDeleteEvent) {}
 
-  // ban
-  /**
-   * Listens to GuildBanAddEvent
-   *
-   * @param event The GuildBanAddEvent
-   */
-  open fun onGuildBanAdd(event: GuildBanAddEvent) {}
+    // ban
+    /**
+     * Listens to GuildBanAddEvent
+     *
+     * @param event The GuildBanAddEvent
+     */
+    open fun onGuildBanAdd(event: GuildBanAddEvent) {}
 
-  /**
-   * This method is called when an event is received.
-   *
-   * @param event The event that was received.
-   */
-  override fun onEvent(event: GenericEvent) {
-    onGenericEvent(event)
+    /**
+     * This method is called when an event is received.
+     *
+     * @param event The event that was received.
+     */
+    override fun onEvent(event: GenericEvent) {
+        onGenericEvent(event)
 
-    if (event is IEventUpdate<*, *>) onGenericUpdate(event)
+        if (event is IEventUpdate<*, *>) onGenericUpdate(event)
 
-    for (clazz in ClassWalker.range(event.javaClass, Event::class.java)) {
-      if (unresolved!!.contains(clazz)) continue
-      val mh = methods.computeIfAbsent(clazz, Companion::findMethod)
-      if (mh == null) {
-        unresolved!!.add(clazz)
-        continue
-      }
-      try {
-        mh.invoke(this, event)
-      } catch (throwable: Throwable) {
-        if (throwable is RuntimeException) throw throwable
-        if (throwable is Error) throw throwable
-        throw IllegalStateException(throwable)
-      }
-    }
-  }
-
-  companion object {
-    private val lookup = MethodHandles.lookup()
-    private val methods: ConcurrentMap<Class<*>, MethodHandle> = ConcurrentHashMap()
-    private var unresolved: MutableSet<Class<*>>? = null
-
-    init {
-      unresolved = ConcurrentHashMap.newKeySet()
-      unresolved?.let {
-        Collections.addAll(
-          it,
-          Any::class.java, // Objects aren't events
-          Event::class.java, // onEvent is final and would never be found
-          IEventUpdate::class.java, // onBasicUpdate has already been called
-          GenericEvent::class.java // onBasicEvent has already been called
-        )
-      }
+        for (clazz in ClassWalker.range(event.javaClass, Event::class.java)) {
+            if (unresolved!!.contains(clazz)) continue
+            val mh = methods.computeIfAbsent(clazz, Companion::findMethod)
+            if (mh == null) {
+                unresolved!!.add(clazz)
+                continue
+            }
+            try {
+                mh.invoke(this, event)
+            } catch (throwable: Throwable) {
+                if (throwable is RuntimeException) throw throwable
+                if (throwable is Error) throw throwable
+                throw IllegalStateException(throwable)
+            }
+        }
     }
 
-    private fun findMethod(clazz: Class<*>): MethodHandle? {
-      var name = clazz.simpleName
-      val type = MethodType.methodType(Void.TYPE, clazz)
-      try {
-        name = "on" + name.substring(0, name.length - "Event".length)
-        return lookup.findVirtual(ListenerAdapter::class.java, name, type)
-      } catch (ignored: NoSuchMethodException) {} // this means this is probably a custom event!
-      catch (ignored: IllegalAccessException) {}
-      return null
+    companion object {
+        private val lookup = MethodHandles.lookup()
+        private val methods: ConcurrentMap<Class<*>, MethodHandle> = ConcurrentHashMap()
+        private var unresolved: MutableSet<Class<*>>? = null
+
+        init {
+            unresolved = ConcurrentHashMap.newKeySet()
+            unresolved?.let {
+                Collections.addAll(
+                    it,
+                    Any::class.java, // Objects aren't events
+                    Event::class.java, // onEvent is final and would never be found
+                    IEventUpdate::class.java, // onBasicUpdate has already been called
+                    GenericEvent::class.java // onBasicEvent has already been called
+                    )
+            }
+        }
+
+        private fun findMethod(clazz: Class<*>): MethodHandle? {
+            var name = clazz.simpleName
+            val type = MethodType.methodType(Void.TYPE, clazz)
+            try {
+                name = "on" + name.substring(0, name.length - "Event".length)
+                return lookup.findVirtual(ListenerAdapter::class.java, name, type)
+            } catch (
+                ignored: NoSuchMethodException) {} // this means this is probably a custom event!
+            catch (ignored: IllegalAccessException) {}
+            return null
+        }
     }
-  }
 }

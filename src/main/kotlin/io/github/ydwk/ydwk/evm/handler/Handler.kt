@@ -22,5 +22,5 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 abstract class Handler(val ydwk: YDWKImpl, val json: JsonNode) {
-  abstract fun start()
+    abstract fun start()
 }

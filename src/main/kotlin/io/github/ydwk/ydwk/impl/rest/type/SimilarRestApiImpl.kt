@@ -30,182 +30,179 @@ import java.util.function.Function
 import okhttp3.*
 
 open class SimilarRestApiImpl(
-  private val ydwk: YDWKImpl,
-  private val builder: Request.Builder,
-  private val client: OkHttpClient,
+    private val ydwk: YDWKImpl,
+    private val builder: Request.Builder,
+    private val client: OkHttpClient,
 ) : SimilarRestApi {
 
-  override fun header(name: String, value: String): SimilarRestApi {
-    builder.header(name, value)
-    return this
-  }
-
-  override fun addHeader(name: String, value: String): SimilarRestApi {
-    builder.addHeader(name, value)
-    return this
-  }
-
-  override fun removeHeader(name: String): SimilarRestApi {
-    builder.removeHeader(name)
-    return this
-  }
-
-  override fun headers(headers: Headers): SimilarRestApi {
-    builder.headers(headers)
-    return this
-  }
-
-  override fun addReason(reason: String?): SimilarRestApi {
-    if (reason != null) {
-      addHeader(
-        "X-Audit-Log-Reason",
-        URLEncoder.encode(reason, StandardCharsets.UTF_8.name()).replace("+", " ")
-      )
+    override fun header(name: String, value: String): SimilarRestApi {
+        builder.header(name, value)
+        return this
     }
-    return this
-  }
 
-  override fun execute() {
-    try {
-      client.newCall(builder.build()).execute().use { response ->
-        if (!response.isSuccessful) {
-          val code = response.code
-          error(response.body, code, null, null)
+    override fun addHeader(name: String, value: String): SimilarRestApi {
+        builder.addHeader(name, value)
+        return this
+    }
+
+    override fun removeHeader(name: String): SimilarRestApi {
+        builder.removeHeader(name)
+        return this
+    }
+
+    override fun headers(headers: Headers): SimilarRestApi {
+        builder.headers(headers)
+        return this
+    }
+
+    override fun addReason(reason: String?): SimilarRestApi {
+        if (reason != null) {
+            addHeader(
+                "X-Audit-Log-Reason",
+                URLEncoder.encode(reason, StandardCharsets.UTF_8.name()).replace("+", " "))
         }
-      }
-    } catch (e: Exception) {
-      throw RuntimeException("Error while executing request", e)
+        return this
     }
-  }
 
-  override fun <T : Any> execute(
-    function: Function<CompletableFutureManager, T>,
-  ): CompletableFuture<T> {
-    val queue = CompletableFuture<T>()
-    try {
-      client
-        .newCall(builder.build())
-        .enqueue(
-          object : Callback {
-            override fun onFailure(call: Call, e: java.io.IOException) {
-              queue.completeExceptionally(e)
+    override fun execute() {
+        try {
+            client.newCall(builder.build()).execute().use { response ->
+                if (!response.isSuccessful) {
+                    val code = response.code
+                    error(response.body, code, null, null)
+                }
             }
-
-            override fun onResponse(call: Call, response: Response) {
-              if (!response.isSuccessful) {
-                val code = response.code
-                error(response.body, code, null, queue)
-              }
-              val manager = CompletableFutureManager(response, ydwk)
-              val result = function.apply(manager)
-              queue.complete(result)
-            }
-          }
-        )
-    } catch (e: Exception) {
-      throw RuntimeException("Error while executing request", e)
+        } catch (e: Exception) {
+            throw RuntimeException("Error while executing request", e)
+        }
     }
-    return queue
-  }
 
-  override fun executeWithNoResult(): CompletableFuture<Void> {
-    val queue = CompletableFuture<Void>()
-    try {
-      client
-        .newCall(builder.build())
-        .enqueue(
-          object : Callback {
-            override fun onFailure(call: Call, e: java.io.IOException) {
-              queue.completeExceptionally(e)
-            }
+    override fun <T : Any> execute(
+        function: Function<CompletableFutureManager, T>,
+    ): CompletableFuture<T> {
+        val queue = CompletableFuture<T>()
+        try {
+            client
+                .newCall(builder.build())
+                .enqueue(
+                    object : Callback {
+                        override fun onFailure(call: Call, e: java.io.IOException) {
+                            queue.completeExceptionally(e)
+                        }
 
-            override fun onResponse(call: Call, response: Response) {
-              if (!response.isSuccessful) {
-                val code = response.code
-                error(response.body, code, queue, null)
-              }
-              queue.complete(null)
-            }
-          }
-        )
-    } catch (e: Exception) {
-      throw RuntimeException("Error while executing request", e)
+                        override fun onResponse(call: Call, response: Response) {
+                            if (!response.isSuccessful) {
+                                val code = response.code
+                                error(response.body, code, null, queue)
+                            }
+                            val manager = CompletableFutureManager(response, ydwk)
+                            val result = function.apply(manager)
+                            queue.complete(result)
+                        }
+                    })
+        } catch (e: Exception) {
+            throw RuntimeException("Error while executing request", e)
+        }
+        return queue
     }
-    return queue
-  }
 
-  fun error(
-    body: ResponseBody,
-    code: Int,
-    queueWithNoResult: CompletableFuture<Void>?,
-    queueWithResult: CompletableFuture<*>?
-  ) {
-    if (HttpResponseCode.fromCode(code) == HttpResponseCode.TOO_MANY_REQUESTS) {
-      handleRateLimit(body, queueWithNoResult, queueWithResult)
-    } else if (HttpResponseCode.fromCode(code) != HttpResponseCode.UNKNOWN) {
-      handleHttpResponse(body, code)
-    } else if (JsonErrorCode.fromCode(code) != JsonErrorCode.UNKNOWN) {
-      handleJsonError(body, code)
-    } else {
-      ydwk.logger.error("Unknown error occurred while executing request")
+    override fun executeWithNoResult(): CompletableFuture<Void> {
+        val queue = CompletableFuture<Void>()
+        try {
+            client
+                .newCall(builder.build())
+                .enqueue(
+                    object : Callback {
+                        override fun onFailure(call: Call, e: java.io.IOException) {
+                            queue.completeExceptionally(e)
+                        }
+
+                        override fun onResponse(call: Call, response: Response) {
+                            if (!response.isSuccessful) {
+                                val code = response.code
+                                error(response.body, code, queue, null)
+                            }
+                            queue.complete(null)
+                        }
+                    })
+        } catch (e: Exception) {
+            throw RuntimeException("Error while executing request", e)
+        }
+        return queue
     }
-  }
 
-  private fun handleRateLimit(
-    body: ResponseBody,
-    queueWithNoResult: CompletableFuture<Void>?,
-    queueWithResult: CompletableFuture<*>?
-  ) {
-    val jsonNode = ydwk.objectMapper.readTree(body.string())
-    val retryAfter = jsonNode.get("retry_after").asLong()
-    val global = jsonNode.get("global").asBoolean()
-    val message = jsonNode.get("message").asText()
-    ydwk.logger.error("Error while executing request: $message")
-    if (global) {
-      ydwk.logger.error("Global rate limit reached, retrying in $retryAfter ms")
-      Thread.sleep(retryAfter)
-      completeReTry(queueWithNoResult, queueWithResult)
-    } else {
-      ydwk.logger.error("Rate limit reached, retrying in $retryAfter ms")
-      Thread.sleep(retryAfter)
-      completeReTry(queueWithNoResult, queueWithResult)
+    fun error(
+        body: ResponseBody,
+        code: Int,
+        queueWithNoResult: CompletableFuture<Void>?,
+        queueWithResult: CompletableFuture<*>?
+    ) {
+        if (HttpResponseCode.fromCode(code) == HttpResponseCode.TOO_MANY_REQUESTS) {
+            handleRateLimit(body, queueWithNoResult, queueWithResult)
+        } else if (HttpResponseCode.fromCode(code) != HttpResponseCode.UNKNOWN) {
+            handleHttpResponse(body, code)
+        } else if (JsonErrorCode.fromCode(code) != JsonErrorCode.UNKNOWN) {
+            handleJsonError(body, code)
+        } else {
+            ydwk.logger.error("Unknown error occurred while executing request")
+        }
     }
-  }
 
-  private fun completeReTry(
-    queueWithNoResult: CompletableFuture<Void>?,
-    queueWithResult: CompletableFuture<*>?
-  ) {
-    if (queueWithNoResult != null) {
-      executeWithNoResult().thenAccept { queueWithNoResult.complete(null) }
-    } else if (queueWithResult != null) {
-      execute { queueWithResult.complete(null) }
-    } else {
-      execute()
+    private fun handleRateLimit(
+        body: ResponseBody,
+        queueWithNoResult: CompletableFuture<Void>?,
+        queueWithResult: CompletableFuture<*>?
+    ) {
+        val jsonNode = ydwk.objectMapper.readTree(body.string())
+        val retryAfter = jsonNode.get("retry_after").asLong()
+        val global = jsonNode.get("global").asBoolean()
+        val message = jsonNode.get("message").asText()
+        ydwk.logger.error("Error while executing request: $message")
+        if (global) {
+            ydwk.logger.error("Global rate limit reached, retrying in $retryAfter ms")
+            Thread.sleep(retryAfter)
+            completeReTry(queueWithNoResult, queueWithResult)
+        } else {
+            ydwk.logger.error("Rate limit reached, retrying in $retryAfter ms")
+            Thread.sleep(retryAfter)
+            completeReTry(queueWithNoResult, queueWithResult)
+        }
     }
-  }
 
-  private fun handleHttpResponse(body: ResponseBody, code: Int) {
-    val error = HttpResponseCode.fromCode(code)
-    val codeAndName = error.getCode().toString() + " " + error.name
-    var reason = error.getMessage()
-    if (body.toString().isNotEmpty())
-      reason +=
-        " This body contains more detail : " +
-          ydwk.objectMapper.readTree(body.string()).toPrettyString()
-    ydwk.logger.error("Error while executing request: $codeAndName $reason")
-  }
+    private fun completeReTry(
+        queueWithNoResult: CompletableFuture<Void>?,
+        queueWithResult: CompletableFuture<*>?
+    ) {
+        if (queueWithNoResult != null) {
+            executeWithNoResult().thenAccept { queueWithNoResult.complete(null) }
+        } else if (queueWithResult != null) {
+            execute { queueWithResult.complete(null) }
+        } else {
+            execute()
+        }
+    }
 
-  private fun handleJsonError(body: ResponseBody, code: Int) {
-    val jsonCode = JsonErrorCode.fromCode(code).getCode
-    var jsonMessage = JsonErrorCode.fromCode(code).getMessage
-    if (body.toString().isNotEmpty())
-      jsonMessage +=
-        " This body contains more detail : " +
-          ydwk.objectMapper.readTree(body.string()).toPrettyString()
+    private fun handleHttpResponse(body: ResponseBody, code: Int) {
+        val error = HttpResponseCode.fromCode(code)
+        val codeAndName = error.getCode().toString() + " " + error.name
+        var reason = error.getMessage()
+        if (body.toString().isNotEmpty())
+            reason +=
+                " This body contains more detail : " +
+                    ydwk.objectMapper.readTree(body.string()).toPrettyString()
+        ydwk.logger.error("Error while executing request: $codeAndName $reason")
+    }
 
-    ydwk.logger.error("Error while executing request: $jsonCode $jsonMessage")
-  }
+    private fun handleJsonError(body: ResponseBody, code: Int) {
+        val jsonCode = JsonErrorCode.fromCode(code).getCode
+        var jsonMessage = JsonErrorCode.fromCode(code).getMessage
+        if (body.toString().isNotEmpty())
+            jsonMessage +=
+                " This body contains more detail : " +
+                    ydwk.objectMapper.readTree(body.string()).toPrettyString()
 
-  var responseBody: ResponseBody? = null
+        ydwk.logger.error("Error while executing request: $jsonCode $jsonMessage")
+    }
+
+    var responseBody: ResponseBody? = null
 }

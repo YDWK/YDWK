@@ -19,25 +19,25 @@
 package io.github.ydwk.ydwk.entities.guild.enums
 
 enum class SystemChannelFlag(val value: Int) {
-  /** Suppress member join notifications. */
-  SUPPRESS_JOIN_NOTIFICATIONS(1 shl 0),
+    /** Suppress member join notifications. */
+    SUPPRESS_JOIN_NOTIFICATIONS(1 shl 0),
 
-  /** Suppress server boost notifications. */
-  SUPPRESS_PREMIUM_SUBSCRIPTIONS(1 shl 1),
+    /** Suppress server boost notifications. */
+    SUPPRESS_PREMIUM_SUBSCRIPTIONS(1 shl 1),
 
-  /** Suppress server setup tips. */
-  SUPPRESS_GUILD_REMINDER_NOTIFICATIONS(1 shl 2),
+    /** Suppress server setup tips. */
+    SUPPRESS_GUILD_REMINDER_NOTIFICATIONS(1 shl 2),
 
-  /** Hide member join sticker reply buttons. */
-  SUPPRESS_JOIN_NOTIFICATION_REPLIES(1 shl 3),
+    /** Hide member join sticker reply buttons. */
+    SUPPRESS_JOIN_NOTIFICATION_REPLIES(1 shl 3),
 
-  /** An unknown system channel flag. */
-  UNKNOWN(-1);
+    /** An unknown system channel flag. */
+    UNKNOWN(-1);
 
-  companion object {
-    /** Gets the [SystemChannelFlag] by its [value]. */
-    fun fromValue(value: Int): SystemChannelFlag {
-      return values().firstOrNull { it.value == value } ?: UNKNOWN
+    companion object {
+        /** Gets the [SystemChannelFlag] by its [value]. */
+        fun fromValue(value: Int): SystemChannelFlag {
+            return values().firstOrNull { it.value == value } ?: UNKNOWN
+        }
     }
-  }
 }

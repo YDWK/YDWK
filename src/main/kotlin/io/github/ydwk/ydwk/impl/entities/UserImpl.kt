@@ -26,47 +26,47 @@ import java.awt.Color
 import java.util.*
 
 open class UserImpl(
-  final override val json: JsonNode,
-  override val idAsLong: Long,
-  override val ydwk: YDWK,
+    final override val json: JsonNode,
+    override val idAsLong: Long,
+    override val ydwk: YDWK,
 ) : User {
-  override var discriminator: String = json["discriminator"].asText()
+    override var discriminator: String = json["discriminator"].asText()
 
-  override var avatar: String = json["avatar"].asText()
+    override var avatar: String = json["avatar"].asText()
 
-  override val bot: Boolean
-    get() = json.get("bot").asBoolean()
+    override val bot: Boolean
+        get() = json.get("bot").asBoolean()
 
-  override var system: Boolean? = if (json.has("system")) json["system"].asBoolean() else null
+    override var system: Boolean? = if (json.has("system")) json["system"].asBoolean() else null
 
-  override var mfaEnabled: Boolean? =
-    if (json.has("mfa_enabled")) json["mfa_enabled"].asBoolean() else null
+    override var mfaEnabled: Boolean? =
+        if (json.has("mfa_enabled")) json["mfa_enabled"].asBoolean() else null
 
-  // if null return null else return the string
-  override var banner: String? =
-    if (json.hasNonNull("banner")) json.get("banner").asText() else null
+    // if null return null else return the string
+    override var banner: String? =
+        if (json.hasNonNull("banner")) json.get("banner").asText() else null
 
-  override var accentColor: Color? =
-    if (json.hasNonNull("accent_color")) Color(json.get("accent_color").asInt()) else null
+    override var accentColor: Color? =
+        if (json.hasNonNull("accent_color")) Color(json.get("accent_color").asInt()) else null
 
-  override var locale: String? =
-    if (json.hasNonNull("locale")) json.get("locale").asText() else null
+    override var locale: String? =
+        if (json.hasNonNull("locale")) json.get("locale").asText() else null
 
-  override var verified: Boolean? =
-    if (json.hasNonNull("verified")) json.get("verified").asBoolean() else null
+    override var verified: Boolean? =
+        if (json.hasNonNull("verified")) json.get("verified").asBoolean() else null
 
-  override var flags: Int? = if (json.hasNonNull("flags")) json.get("flags").asInt() else null
+    override var flags: Int? = if (json.hasNonNull("flags")) json.get("flags").asInt() else null
 
-  override var publicFlags: Int? =
-    if (json.hasNonNull("public_flags")) json.get("public_flags").asInt() else null
+    override var publicFlags: Int? =
+        if (json.hasNonNull("public_flags")) json.get("public_flags").asInt() else null
 
-  override fun toString(): String {
-    return EntityToStringBuilder(this).name(this.name).toString()
-  }
+    override fun toString(): String {
+        return EntityToStringBuilder(this).name(this.name).toString()
+    }
 
-  override var name: String = json["username"].asText()
+    override var name: String = json["username"].asText()
 
-  override fun formatTo(formatter: Formatter?, flags: Int, width: Int, precision: Int) {
-    formatter?.format("%s#%s", name, discriminator)
-  }
+    override fun formatTo(formatter: Formatter?, flags: Int, width: Int, precision: Int) {
+        formatter?.format("%s#%s", name, discriminator)
+    }
 }

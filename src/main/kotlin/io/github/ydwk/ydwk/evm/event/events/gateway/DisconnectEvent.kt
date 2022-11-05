@@ -23,8 +23,8 @@ import io.github.ydwk.ydwk.evm.event.Event
 import java.time.Instant
 
 data class DisconnectEvent(
-  override val ydwk: YDWK,
-  val closeCode: String,
-  val closeCodeReason: String,
-  val now: Instant
+    override val ydwk: YDWK,
+    val closeCode: String,
+    val closeCodeReason: String,
+    val now: Instant
 ) : Event(ydwk)

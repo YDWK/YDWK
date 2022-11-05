@@ -27,30 +27,31 @@ import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class EmojiImpl(override val ydwk: YDWK, override val json: JsonNode) : Emoji {
-  override val idLong: Long?
-    get() = if (json.has("id")) json["id"].asLong() else null
+    override val idLong: Long?
+        get() = if (json.has("id")) json["id"].asLong() else null
 
-  override var roles: List<Role> =
-    if (json.has("roles")) json["roles"].map { RoleImpl(ydwk, it, it["id"].asLong()) }
-    else emptyList()
+    override var roles: List<Role> =
+        if (json.has("roles")) json["roles"].map { RoleImpl(ydwk, it, it["id"].asLong()) }
+        else emptyList()
 
-  override var user: User? =
-    if (json.has("user")) UserImpl(json["user"], json["user"]["id"].asLong(), ydwk) else null
+    override var user: User? =
+        if (json.has("user")) UserImpl(json["user"], json["user"]["id"].asLong(), ydwk) else null
 
-  override var requireColons: Boolean =
-    if (json.has("require_colons")) json["require_colons"].asBoolean() else false
+    override var requireColons: Boolean =
+        if (json.has("require_colons")) json["require_colons"].asBoolean() else false
 
-  override var isManaged: Boolean = if (json.has("managed")) json["managed"].asBoolean() else false
+    override var isManaged: Boolean =
+        if (json.has("managed")) json["managed"].asBoolean() else false
 
-  override var isAnimated: Boolean =
-    if (json.has("animated")) json["animated"].asBoolean() else false
+    override var isAnimated: Boolean =
+        if (json.has("animated")) json["animated"].asBoolean() else false
 
-  override var isAvailable: Boolean =
-    if (json.has("available")) json["available"].asBoolean() else false
+    override var isAvailable: Boolean =
+        if (json.has("available")) json["available"].asBoolean() else false
 
-  override var name: String = if (json.has("name")) json["name"].asText() else ""
+    override var name: String = if (json.has("name")) json["name"].asText() else ""
 
-  override fun toString(): String {
-    return EntityToStringBuilder(this).name(this.name).toString()
-  }
+    override fun toString(): String {
+        return EntityToStringBuilder(this).name(this.name).toString()
+    }
 }

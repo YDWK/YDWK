@@ -23,10 +23,10 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.channel.guild.message.text.GuildTextChannel
 
 class GuildTextChannelImpl(
-  override val ydwk: YDWK,
-  override val json: JsonNode,
-  override val idAsLong: Long
+    override val ydwk: YDWK,
+    override val json: JsonNode,
+    override val idAsLong: Long
 ) : GuildTextChannel, GuildMessageChannelImpl(ydwk, json, idAsLong) {
 
-  override var rateLimitPerUser: Int = json["rate_limit_per_user"].asInt()
+    override var rateLimitPerUser: Int = json["rate_limit_per_user"].asInt()
 }

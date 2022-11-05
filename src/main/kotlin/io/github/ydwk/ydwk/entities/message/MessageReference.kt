@@ -23,31 +23,31 @@ import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 
 interface MessageReference : GenericEntity {
-  /**
-   * Gets the id of the message.
-   *
-   * @return The id of the message.
-   */
-  val messageId: GetterSnowFlake
+    /**
+     * Gets the id of the message.
+     *
+     * @return The id of the message.
+     */
+    val messageId: GetterSnowFlake
 
-  /**
-   * Gets the id of the channel.
-   *
-   * @return The id of the channel.
-   */
-  val channelId: GetterSnowFlake
+    /**
+     * Gets the id of the channel.
+     *
+     * @return The id of the channel.
+     */
+    val channelId: GetterSnowFlake
 
-  /**
-   * Gets the id of the guild.
-   *
-   * @return The id of the guild.
-   */
-  val guildId: GetterSnowFlake
+    /**
+     * Gets the id of the guild.
+     *
+     * @return The id of the guild.
+     */
+    val guildId: GetterSnowFlake
 
-  /**
-   * Gets the guild of the message.
-   *
-   * @return The guild of the message.
-   */
-  val guild: Guild?
+    /**
+     * Gets the guild of the message.
+     *
+     * @return The guild of the message.
+     */
+    val guild: Guild?
 }

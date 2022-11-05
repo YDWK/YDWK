@@ -19,19 +19,19 @@
 package io.github.ydwk.ydwk.entities.guild.enums
 
 enum class MessageNotificationLevel(val value: Int) {
-  /** Members will receive notifications for all messages by default */
-  ALL_MESSAGES(0),
+    /** Members will receive notifications for all messages by default */
+    ALL_MESSAGES(0),
 
-  /** Members will receive notifications only for messages that @mention them by default */
-  ONLY_MENTIONS(1),
+    /** Members will receive notifications only for messages that @mention them by default */
+    ONLY_MENTIONS(1),
 
-  /** An unknown value */
-  UNKNOWN(-1);
+    /** An unknown value */
+    UNKNOWN(-1);
 
-  companion object {
-    /** Gets the [MessageNotificationLevel] by its [value] */
-    fun fromValue(value: Int): MessageNotificationLevel {
-      return values().firstOrNull { it.value == value } ?: UNKNOWN
+    companion object {
+        /** Gets the [MessageNotificationLevel] by its [value] */
+        fun fromValue(value: Int): MessageNotificationLevel {
+            return values().firstOrNull { it.value == value } ?: UNKNOWN
+        }
     }
-  }
 }

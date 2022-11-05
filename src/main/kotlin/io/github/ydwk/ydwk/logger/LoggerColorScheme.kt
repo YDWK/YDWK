@@ -24,14 +24,14 @@ import ch.qos.logback.core.pattern.color.ANSIConstants
 import ch.qos.logback.core.pattern.color.ForegroundCompositeConverterBase
 
 class LoggerColorScheme : ForegroundCompositeConverterBase<ILoggingEvent>() {
-  override fun getForegroundColorCode(event: ILoggingEvent): String {
-    return when (event.level.toInt()) {
-      Level.DEBUG_INT -> ANSIConstants.BLUE_FG
-      Level.INFO_INT -> ANSIConstants.GREEN_FG
-      Level.WARN_INT -> ANSIConstants.YELLOW_FG
-      Level.ERROR_INT -> ANSIConstants.RED_FG
-      Level.TRACE_INT -> ANSIConstants.CYAN_FG
-      else -> ANSIConstants.DEFAULT_FG
+    override fun getForegroundColorCode(event: ILoggingEvent): String {
+        return when (event.level.toInt()) {
+            Level.DEBUG_INT -> ANSIConstants.BLUE_FG
+            Level.INFO_INT -> ANSIConstants.GREEN_FG
+            Level.WARN_INT -> ANSIConstants.YELLOW_FG
+            Level.ERROR_INT -> ANSIConstants.RED_FG
+            Level.TRACE_INT -> ANSIConstants.CYAN_FG
+            else -> ANSIConstants.DEFAULT_FG
+        }
     }
-  }
 }

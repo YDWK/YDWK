@@ -25,20 +25,20 @@ import io.github.ydwk.ydwk.slash.SlashOptionType
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class ApplicationCommandOptionImpl(override val ydwk: YDWK, override val json: JsonNode) :
-  ApplicationCommandOption {
-  override var name: String = json["name"].asText()
+    ApplicationCommandOption {
+    override var name: String = json["name"].asText()
 
-  override val type: SlashOptionType = SlashOptionType.fromInt(json["type"].asInt())
+    override val type: SlashOptionType = SlashOptionType.fromInt(json["type"].asInt())
 
-  override val value: JsonNode = json["value"]
+    override val value: JsonNode = json["value"]
 
-  override val options: List<ApplicationCommandOption> =
-    if (json.has("options")) json["options"].map { ApplicationCommandOptionImpl(ydwk, it) }
-    else emptyList()
+    override val options: List<ApplicationCommandOption> =
+        if (json.has("options")) json["options"].map { ApplicationCommandOptionImpl(ydwk, it) }
+        else emptyList()
 
-  override val focused: Boolean? = if (json.has("focused")) json["focused"].asBoolean() else null
+    override val focused: Boolean? = if (json.has("focused")) json["focused"].asBoolean() else null
 
-  override fun toString(): String {
-    return EntityToStringBuilder(this).name(this.name).toString()
-  }
+    override fun toString(): String {
+        return EntityToStringBuilder(this).name(this.name).toString()
+    }
 }

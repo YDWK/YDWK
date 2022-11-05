@@ -26,19 +26,19 @@ import java.net.URL
 
 class ThumbnailImpl(override val ydwk: YDWK, override val json: JsonNode) : Thumbnail {
 
-  override val url: URL
-    get() = URL(json["url"].asText())
+    override val url: URL
+        get() = URL(json["url"].asText())
 
-  override val proxyUrl: String?
-    get() = if (json.has("proxy_url")) json["proxy_url"].asText() else null
+    override val proxyUrl: String?
+        get() = if (json.has("proxy_url")) json["proxy_url"].asText() else null
 
-  override val height: Int?
-    get() = if (json.has("height")) json["height"].asInt() else null
+    override val height: Int?
+        get() = if (json.has("height")) json["height"].asInt() else null
 
-  override val width: Int?
-    get() = if (json.has("width")) json["width"].asInt() else null
+    override val width: Int?
+        get() = if (json.has("width")) json["width"].asInt() else null
 
-  override fun toString(): String {
-    return EntityToStringBuilder(this).toString()
-  }
+    override fun toString(): String {
+        return EntityToStringBuilder(this).toString()
+    }
 }

@@ -19,7 +19,7 @@
 package io.github.ydwk.ydwk.impl.rest.exception
 
 class RestApiException(val name: String) : RuntimeException(name) {
-  constructor(name: String, cause: Throwable) : this(name) {
-    initCause(cause)
-  }
+    constructor(name: String, cause: Throwable) : this(name) {
+        initCause(cause)
+    }
 }
