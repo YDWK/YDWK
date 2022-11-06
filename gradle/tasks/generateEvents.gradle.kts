@@ -1,10 +1,16 @@
+import com.github.javaparser.ast.CompilationUnit
+import com.github.javaparser.printer.PrettyPrinter
+import com.github.javaparser.printer.PrettyPrinterConfiguration
 import io.github.classgraph.ClassGraph
 import java.io.FileWriter
 
 buildscript {
     repositories { mavenCentral() }
 
-    dependencies { classpath("io.github.classgraph:classgraph:4.8.149") }
+    dependencies {
+        classpath("io.github.classgraph:classgraph:4.8.149")
+        classpath("com.github.javaparser:javaparser-core:3.24.7")
+    }
 }
 
 apply(plugin = "java")
@@ -60,12 +66,18 @@ fun generateEvents(annotations: List<io.github.classgraph.ClassInfo>) {
     logger.lifecycle("Generating events...")
 
     // generate in the build folder
-    val buildDir =
-        project.buildDir.toString() + "/generated/events"
+    val buildDir = project.buildDir.toString() + "/generated/events"
 
     // create the folder if it doesn't exist
     val buildDirFile = File(buildDir)
-    if (!buildDirFile.exists()) {
+    if (buildDirFile.exists()) {
+        buildDirFile.delete()
+        try {
+            buildDirFile.mkdirs()
+        } catch (e: Exception) {
+            throw RuntimeException("Error creating build directory $e")
+        }
+    } else {
         try {
             buildDirFile.mkdirs()
         } catch (e: Exception) {
@@ -90,57 +102,41 @@ fun generateEvents(annotations: List<io.github.classgraph.ClassInfo>) {
 fun createNewUpdateEvent(className: String, classDir: File) {
     logger.lifecycle("Creating ${className}UpdateEvent.kt...")
 
-    val newUpdateEventFile = File(classDir, "${className}UpdateEvent.kt")
+    val newUpdateEventFile = CompilationUnit("io.github.ydwk.ydwk.entities.events.${className}")
 
-    if (!newUpdateEventFile.exists()) {
-        newUpdateEventFile.createNewFile()
-
-        val newUpdateEventFileWriter = FileWriter(newUpdateEventFile)
-
-        newUpdateEventFileWriter.write("package io.github.ydwk.ydwk.events.${className}")
-        newUpdateEventFileWriter.write("\n")
-        newUpdateEventFileWriter.write("import io.github.ydwk.ydwk.YDWK")
-        newUpdateEventFileWriter.write("\n")
-        newUpdateEventFileWriter.write("import io.github.ydwk.ydwk.entities.${className}")
-        newUpdateEventFileWriter.write("import io.github.ydwk.ydwk.evm.backend.event.IEventUpdate")
-        newUpdateEventFileWriter.write("\n")
-        newUpdateEventFileWriter.write(
-            """
-            open class ${className}UpdateEvent(
-                override val ydwk: YDWK,
-                override val entity: ${className},
-                override val oldValue: ${className}.${className}Variables,
-                override val newValue: ${className}.${className}Variables
-            ) : IEventUpdate<${className}, ${className}.${className}Variables>
-        """.trimIndent())
-
-        newUpdateEventFileWriter.close()
-        logger.info("Created new update event for $className")
-    }
+    newUpdateEventFile.addImport("io.github.ydwk.ydwk.entities.${className}")
+    newUpdateEventFile.addImport("import io.github.ydwk.ydwk.evm.backend.event.IEventUpdate")
+    val newUpdateEventClass =
+        newUpdateEventFile
+            .addClass(className + "UpdateEvent")
+            .addExtends("IEventUpdate<${className}>")
 }
 
 fun createEventFile(buildDir: File) {
-    logger.lifecycle("Creating Event.kt...")
+    val baseEventFile = CompilationUnit("io.github.ydwk.ydwk.events.Event.java")
 
-    val baseEventFile = File(buildDir, "Event.kt")
+    try {
+        logger.lifecycle("Creating Event.kt...")
+        baseEventFile.addImport("io.github.ydwk.ydwk.YDWK")
+        baseEventFile.addImport("io.github.ydwk.ydwk.evm.backend.event.IEvent")
 
-    if (!baseEventFile.exists()) {
-        baseEventFile.createNewFile()
+        val baseEventClass = baseEventFile.addClass("Event").addExtends("IEvent")
 
-        val baseEventFileWriter = FileWriter(baseEventFile)
-
-        baseEventFileWriter.write("package io.github.ydwk.ydwk.events")
-        baseEventFileWriter.write("\n")
-        baseEventFileWriter.write("import io.github.ydwk.ydwk.YDWK")
-        baseEventFileWriter.write("import io.github.ydwk.ydwk.evm.backend.event.IEvent")
-        baseEventFileWriter.write("\n")
-        baseEventFileWriter.write(
-            """
-          open class Event(override val ydwk: YDWK) : GenericEvent
-        """.trimIndent())
-
-        baseEventFileWriter.close()
-        logger.lifecycle("Created Event.kt")
+        baseEventFile.storage.ifPresent {
+            it.save {
+                logger.lifecycle("Saving Event.kt...")
+                PrettyPrinter(
+                        PrettyPrinterConfiguration()
+                            .setOrderImports(true)
+                            .setEndOfLineCharacter("\n")
+                            .setColumnAlignParameters(true)
+                            .setColumnAlignFirstMethodChain(true))
+                    .print(it)
+            }
+        }
+            ?: throw RuntimeException("Error saving Event.kt")
+    } catch (e: Exception) {
+        throw RuntimeException("Error creating base event class $e")
     }
 }
 
