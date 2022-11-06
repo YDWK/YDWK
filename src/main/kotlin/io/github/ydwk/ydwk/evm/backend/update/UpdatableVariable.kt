@@ -24,4 +24,4 @@ import kotlin.reflect.KClass
 /** This annotation is used to generate a update event for the variable */
 @Target(AnnotationTarget.PROPERTY)
 @MustBeDocumented
-annotation class UpdateVariable(val name: String, val entity: KClass<out GenericEntity>)
+annotation class UpdatableVariable(val name: String, val entity: KClass<out GenericEntity>)

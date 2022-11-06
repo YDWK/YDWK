@@ -1,14 +1,18 @@
+import io.github.classgraph.ClassGraph
+import java.io.FileWriter
 import java.net.URL
 import org.jetbrains.dokka.base.DokkaBase
 import org.jetbrains.dokka.base.DokkaBaseConfiguration
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import kotlin.reflect.KClass
 
 buildscript {
     repositories { mavenCentral() }
 
-    dependencies { classpath("org.jetbrains.dokka:dokka-base:1.7.20") }
+    dependencies {
+        classpath("org.jetbrains.dokka:dokka-base:1.7.20")
+        classpath("io.github.classgraph:classgraph:4.8.149")
+    }
 }
 
 plugins {
@@ -45,7 +49,6 @@ apply(from = "gradle/tasks/checkEntities.gradle.kts")
 apply(from = "gradle/tasks/incrementVersion.gradle.kts")
 
 apply(from = "gradle/tasks/checkEvents.gradle.kts")
-
 
 repositories { mavenCentral() }
 
@@ -264,9 +267,190 @@ val mainSrc = project(":")
 
 tasks.create("generateEvents") {
     doLast {
-        // search every interface that extends GenericEntity and look for variables with the annotation UpdateVariable
-        val allGenericEntitiesAsKotlin: MutableList<KClass<*>> = mutableListOf()
+        // search every interface that extends GenericEntity and look for variables with the
+        // annotation @UpdatableVariable
+        val allVariablesContaingUpdatableVariableAnotation:
+            MutableList<io.github.classgraph.ClassInfo> =
+            mutableListOf()
 
+        val rawRootDir: String =
+            mainSrc.projectDir.toString() + "/src/main/kotlin/io/github/ydwk/ydwk"
+        val parsedRootDir: String = parseRootDir(rawRootDir)
 
+        ClassGraph().acceptPackages(parsedRootDir).enableAllInfo().scan().use { scanResult ->
+            val allGenericEntities =
+                scanResult.getClassesImplementing("io.github.ydwk.ydwk.entities.util.GenericEntity")
+            allGenericEntities.forEach { genericEntity ->
+                val allFields = genericEntity.fieldAnnotations.annotations
+
+                allFields.forEach { field ->
+                    if (field.name ==
+                        "io.github.ydwk.ydwk.entities.util.annotations.UpdatableVariable") {
+                        allVariablesContaingUpdatableVariableAnotation.add(genericEntity)
+                    }
+                }
+            }
+        }
+
+        generateEvents(allVariablesContaingUpdatableVariableAnotation)
+    }
+}
+
+fun parseRootDir(rawRootDir: String): String {
+    return rawRootDir.replace("\\", ".")
+}
+
+fun generateEvents(
+    allVariablesContaingUpdatableVariableAnotation: List<io.github.classgraph.ClassInfo>
+) {
+    logger.lifecycle("Generating events...")
+
+    // generate in the build folder
+    val buildDir = File("build")
+
+    try {
+        logger.lifecycle("Creating build directory...")
+
+        if (!buildDir.exists()) {
+            buildDir.mkdir()
+        }
+    } catch (e: Exception) {
+        throw RuntimeException("Failed to create build directory")
+    }
+
+    val eventsDir = File("build/kotlin/io/github/ydwk/ydwk")
+
+    try {
+        logger.lifecycle("Creating events directory...")
+
+        if (!eventsDir.exists()) {
+            eventsDir.mkdirs()
+        }
+    } catch (e: Exception) {
+        throw RuntimeException("Error creating events directory")
+    }
+
+    try {
+        logger.lifecycle("Creating events file...")
+
+        val oldEventFile = File(eventsDir, "Events.kt")
+
+        if (oldEventFile.exists()) {
+            oldEventFile.delete()
+        }
+
+        val newEventFile = File(eventsDir, "Events.kt")
+
+        newEventFile.createNewFile()
+
+        val eventFileWriter = FileWriter(newEventFile)
+
+        eventFileWriter.write("package io.github.ydwk.ydwk.events")
+
+        eventFileWriter.write("import io.github.ydwk.ydwk.YDWK")
+        eventFileWriter.write("import io.github.ydwk.ydwk.evm.backend.event.GenericEvent")
+        eventFileWriter.write("\n")
+        eventFileWriter.write("open class Event(override val ydwk: YDWK) : GenericEvent")
+
+        eventFileWriter.close()
+        logger.lifecycle("Events file created!")
+    } catch (e: Exception) {
+        throw RuntimeException("Error creating events file " + e.message)
+    }
+
+    try {
+        logger.lifecycle("Creating event classes...")
+        allVariablesContaingUpdatableVariableAnotation.forEach { genericEntity ->
+            // get the class name
+            val className = genericEntity.simpleName
+
+            // if a folder does not exist for that class name, create it
+            val classDir = File(eventsDir, className)
+
+            try {
+                if (!classDir.exists()) {
+                    classDir.mkdir()
+                }
+            } catch (e: Exception) {
+                throw RuntimeException("Error creating class directory")
+            }
+
+            // create a Generic + className + UpdateEvent.kt file with a generic T
+            val genericUpdateEventFile = File(classDir, "Generic${className}UpdateEvent.kt")
+
+            if (!genericUpdateEventFile.exists()) {
+                genericUpdateEventFile.createNewFile()
+
+                val genericUpdateEventFileWriter = FileWriter(genericUpdateEventFile)
+
+                genericUpdateEventFileWriter.write(
+                    "package io.github.ydwk.ydwk.events.${className}")
+                genericUpdateEventFileWriter.write("\n")
+                genericUpdateEventFileWriter.write("import io.github.ydwk.ydwk.YDWK")
+                genericUpdateEventFileWriter.write(
+                    "import io.github.ydwk.ydwk.entities.${className}")
+                genericUpdateEventFileWriter.write(
+                    "import io.github.ydwk.ydwk.evm.backend.event.IEventUpdate")
+                genericUpdateEventFileWriter.write("\n")
+                genericUpdateEventFileWriter.write(
+                    """
+                    open class Generic${className}UpdateEvent<T>(
+                        override val ydwk: YDWK,
+                        override val entity: ${className},
+                        override val oldValue: T,
+                        override val newValue: T
+                    ) : IEventUpdate<${className}, T>
+                """.trimIndent())
+            }
+
+            logger.lifecycle("Created Generic${className}UpdateEvent.kt")
+            // create new event file
+            createNewUpdateEvent(className, classDir)
+        }
+    } catch (e: Exception) {
+        throw RuntimeException("Error creating event classes")
+    }
+}
+
+fun createNewUpdateEvent(className: String, classDir: File) {
+    logger.lifecycle("Creating ${className}UpdateEvent.kt...")
+
+    val newUpdateEventFile = File(classDir, "${className}UpdateEvent.kt")
+
+    if (!newUpdateEventFile.exists()) {
+        newUpdateEventFile.createNewFile()
+
+        val newUpdateEventFileWriter = FileWriter(newUpdateEventFile)
+
+        newUpdateEventFileWriter.write("package io.github.ydwk.ydwk.events.${className}")
+        newUpdateEventFileWriter.write("\n")
+        newUpdateEventFileWriter.write("import io.github.ydwk.ydwk.YDWK")
+        newUpdateEventFileWriter.write("import io.github.ydwk.ydwk.entities.${className}")
+        newUpdateEventFileWriter.write("import io.github.ydwk.ydwk.evm.backend.event.IEventUpdate")
+        newUpdateEventFileWriter.write("\n")
+        newUpdateEventFileWriter.write(
+            """
+            open class ${className}UpdateEvent(
+                override val ydwk: YDWK,
+                override val entity: ${className},
+                override val oldValue: ${className}.${className}Variables,
+                override val newValue: ${className}.${className}Variables
+            ) : IEventUpdate<${className}, ${className}.${className}Variables>
+        """.trimIndent())
+
+        newUpdateEventFileWriter.close()
+        logger.info("Created new update event for $className")
+    }
+}
+
+class EventFileWriter(private val eventFile: File) {
+    private val fileWriter: FileWriter = FileWriter(eventFile)
+
+    fun write(s: String) {
+        fileWriter.write(s)
+    }
+
+    fun close() {
+        fileWriter.close()
     }
 }
