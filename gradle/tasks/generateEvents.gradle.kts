@@ -61,7 +61,7 @@ fun generateEvents(annotations: List<io.github.classgraph.ClassInfo>) {
 
     // generate in the build folder
     val buildDir =
-        project.buildDir.toString() + "/src/main/kotlin/io/github/ydwk/ydwk/generated/events"
+        project.buildDir.toString() + "/generated/events"
 
     // create the folder if it doesn't exist
     val buildDirFile = File(buildDir)
