@@ -35,6 +35,6 @@ class FieldImpl(override val ydwk: YDWK, override val json: JsonNode) : Field {
         get() = if (json.has("inline")) json["inline"].asBoolean() else null
 
     override fun toString(): String {
-        return EntityToStringBuilder(this).name(this.name).toString()
+        return EntityToStringBuilder(ydwk, this).name(this.name).toString()
     }
 }

@@ -39,6 +39,6 @@ class ApplicationCommandOptionImpl(override val ydwk: YDWK, override val json: J
     override val focused: Boolean? = if (json.has("focused")) json["focused"].asBoolean() else null
 
     override fun toString(): String {
-        return EntityToStringBuilder(this).name(this.name).toString()
+        return EntityToStringBuilder(ydwk, this).name(this.name).toString()
     }
 }

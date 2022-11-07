@@ -71,6 +71,6 @@ class EmbedImpl(override val ydwk: YDWK, override val json: JsonNode) : Embed {
             else emptyList()
 
     override fun toString(): String {
-        return EntityToStringBuilder(this).toString()
+        return EntityToStringBuilder(ydwk, this).toString()
     }
 }

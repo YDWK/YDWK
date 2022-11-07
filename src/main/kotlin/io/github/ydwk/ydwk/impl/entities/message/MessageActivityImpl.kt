@@ -32,6 +32,6 @@ class MessageActivityImpl(override val ydwk: YDWK, override val json: JsonNode) 
         get() = if (json.has("party_id")) json.get("party_id").asText() else null
 
     override fun toString(): String {
-        return EntityToStringBuilder(this).toString()
+        return EntityToStringBuilder(ydwk, this).toString()
     }
 }

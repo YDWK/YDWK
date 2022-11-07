@@ -52,6 +52,6 @@ class EmojiImpl(override val ydwk: YDWK, override val json: JsonNode) : Emoji {
     override var name: String = if (json.has("name")) json["name"].asText() else ""
 
     override fun toString(): String {
-        return EntityToStringBuilder(this).name(this.name).toString()
+        return EntityToStringBuilder(ydwk, this).name(this.name).toString()
     }
 }

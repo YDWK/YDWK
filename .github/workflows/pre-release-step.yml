@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name : Prepare Release - Update Readme and Remove Snapshot Suffix
+    name: Prepare Release - Update Readme and Remove Snapshot Suffix
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2

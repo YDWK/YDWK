@@ -47,6 +47,6 @@ class AuditLogEntryImpl(
         get() = if (json.has("reason")) json["reason"].asText() else null
 
     override fun toString(): String {
-        return EntityToStringBuilder(this).toString()
+        return EntityToStringBuilder(ydwk, this).toString()
     }
 }

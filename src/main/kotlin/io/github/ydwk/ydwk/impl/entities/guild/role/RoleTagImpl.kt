@@ -35,6 +35,6 @@ class RoleTagImpl(override val ydwk: YDWK, override val json: JsonNode) : RoleTa
             else null
 
     override fun toString(): String {
-        return EntityToStringBuilder(this).toString()
+        return EntityToStringBuilder(ydwk, this).toString()
     }
 }

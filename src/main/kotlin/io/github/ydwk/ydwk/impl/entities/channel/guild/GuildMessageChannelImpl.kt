@@ -61,6 +61,6 @@ open class GuildMessageChannelImpl(
     override var name: String = json["name"].asText()
 
     override fun toString(): String {
-        return EntityToStringBuilder(this).name(this.name).toString()
+        return EntityToStringBuilder(ydwk, this).name(this.name).toString()
     }
 }

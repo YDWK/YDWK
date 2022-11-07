@@ -268,7 +268,7 @@ class YDWKImpl(
     }
 
     override fun toString(): String {
-        return EntityToStringBuilder(this)
+        return EntityToStringBuilder(this, this)
             .add("token", token)
             .add("applicationId", applicationId)
             .add("uptime", uptime)

@@ -203,6 +203,6 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
     override var name: String = json["name"].asText()
 
     override fun toString(): String {
-        return EntityToStringBuilder(this).name(this.name).toString()
+        return EntityToStringBuilder(ydwk, this).name(this.name).toString()
     }
 }

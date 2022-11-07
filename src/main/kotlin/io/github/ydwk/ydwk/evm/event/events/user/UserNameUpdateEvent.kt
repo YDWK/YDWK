@@ -16,20 +16,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.impl.entities
+package io.github.ydwk.ydwk.evm.event.events.user
 
-import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.UnavailableGuild
-import io.github.ydwk.ydwk.util.EntityToStringBuilder
+import io.github.ydwk.ydwk.entities.User
 
-class UnavailableGuildImpl(
+data class UserNameUpdateEvent(
     override val ydwk: YDWK,
-    override val json: JsonNode,
-    override val idAsLong: Long,
-) : UnavailableGuild {
-    override var unavailable: Boolean = json["unavailable"].asBoolean()
-    override fun toString(): String {
-        return EntityToStringBuilder(ydwk, this).name("UnavailableGuild").toString()
-    }
-}
+    override val entity: User,
+    val oldName: String,
+    val newName: String
+) : GenericUserUpdateEvent<String>(ydwk, entity, oldName, newName)

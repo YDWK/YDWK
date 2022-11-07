@@ -41,6 +41,6 @@ class MessageReferenceImpl(override val ydwk: YDWK, override val json: JsonNode)
         get() = ydwk.getGuildById(guildId.asLong)
 
     override fun toString(): String {
-        return EntityToStringBuilder(this).toString()
+        return EntityToStringBuilder(ydwk, this).toString()
     }
 }

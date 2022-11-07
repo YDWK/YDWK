@@ -18,31 +18,39 @@
  */ 
 package io.github.ydwk.ydwk.tostring
 
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import kotlin.test.assertEquals
+import okhttp3.OkHttpClient
 import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 
 class ToStringTest {
+    private val sampleYDWK: YDWK = YDWKImpl(OkHttpClient())
 
     @Test
     @Order(1)
     fun testNameAsClassName() {
-        assertEquals("SampleEntity", EntityToStringBuilder(SampleEntity()).toString())
+        assertEquals(
+            "{\"name\":\"SampleEntity\"}",
+            EntityToStringBuilder(sampleYDWK, SampleEntity()).toString())
 
         assertEquals(
-            "SampleEntity:SampleEntity",
-            EntityToStringBuilder(SampleEntity()).name("SampleEntity").toString())
+            "{\"name\":\"SampleEntity\",\"data\":{\"name\":\"SampleEntity\"}}",
+            EntityToStringBuilder(sampleYDWK, SampleEntity()).name("SampleEntity").toString())
     }
 
     @Test
     @Order(2)
     fun testNameAsString() {
-        assertEquals("SampleEntity", EntityToStringBuilder("SampleEntity").toString())
+        assertEquals(
+            "{\"name\":\"SampleEntity\"}",
+            EntityToStringBuilder(sampleYDWK, "SampleEntity").toString())
 
         assertEquals(
-            "SampleEntity:SampleEntity",
-            EntityToStringBuilder("SampleEntity").name("SampleEntity").toString())
+            "{\"name\":\"SampleEntity\",\"data\":{\"name\":\"SampleEntity\"}}",
+            EntityToStringBuilder(sampleYDWK, "SampleEntity").name("SampleEntity").toString())
     }
 
     @Test
@@ -50,12 +58,12 @@ class ToStringTest {
     fun testSnowflake() {
 
         assertEquals(
-            "SampleSnowflakeEntity(id=1,createTime=1420070400000,workerId=0,increment=1)",
-            EntityToStringBuilder(SampleSnowflakeEntity(1)).toString())
+            "{\"name\":\"SampleSnowflakeEntity\",\"data\":{\"id\":\"1\",\"createTime\":1420070400000,\"workerId\":0,\"increment\":1}}",
+            EntityToStringBuilder(sampleYDWK, SampleSnowflakeEntity(1)).toString())
 
         assertEquals(
-            "SampleSnowflakeEntity:SampleSnowflakeEntity(id=2,createTime=1420070400000,workerId=0,increment=2)",
-            EntityToStringBuilder(SampleSnowflakeEntity(2))
+            "{\"name\":\"SampleSnowflakeEntity\",\"data\":{\"name\":\"SampleSnowflakeEntity\",\"id\":\"2\",\"createTime\":1420070400000,\"workerId\":0,\"increment\":2}}",
+            EntityToStringBuilder(sampleYDWK, SampleSnowflakeEntity(2))
                 .name("SampleSnowflakeEntity")
                 .toString())
     }
@@ -64,12 +72,15 @@ class ToStringTest {
     @Order(4)
     fun testNameAndFields() {
         assertEquals(
-            "SampleEntity{name=Sample,id=1}",
-            EntityToStringBuilder(SampleEntity()).add("id", 1).add("name", "Sample").toString())
+            "{\"name\":\"SampleEntity\",\"data\":{\"name\":\"Sample\",\"id\":\"1\"}}",
+            EntityToStringBuilder(sampleYDWK, SampleEntity())
+                .add("id", 1)
+                .add("name", "Sample")
+                .toString())
 
         assertEquals(
-            "SampleEntity:SampleEntity{name=Sample,id=2}",
-            EntityToStringBuilder(SampleEntity())
+            "{\"name\":\"SampleEntity\",\"data\":{\"name\":\"Sample\",\"id\":\"2\"}}",
+            EntityToStringBuilder(sampleYDWK, SampleEntity())
                 .name("SampleEntity")
                 .add("id", 2)
                 .add("name", "Sample")
@@ -80,36 +91,50 @@ class ToStringTest {
     @Order(5)
     fun testFields() {
         assertEquals(
-            "SampleEntity{name=Sample,id=1}",
-            EntityToStringBuilder(SampleEntity()).add("id", 1).add("name", "Sample").toString())
+            "{\"name\":\"SampleEntity\",\"data\":{\"name\":\"Sample\",\"id\":\"1\"}}",
+            EntityToStringBuilder(sampleYDWK, SampleEntity())
+                .add("id", 1)
+                .add("name", "Sample")
+                .toString())
 
         assertEquals(
-            "SampleEntity{name=Sample,id=2}",
-            EntityToStringBuilder(SampleEntity()).add("id", 2).add("name", "Sample").toString())
+            "{\"name\":\"SampleEntity\",\"data\":{\"name\":\"Sample\",\"id\":\"2\"}}",
+            EntityToStringBuilder(sampleYDWK, SampleEntity())
+                .add("id", 2)
+                .add("name", "Sample")
+                .toString())
     }
 
     @Test
     @Order(6)
     fun testFieldsWithNull() {
         assertEquals(
-            "SampleEntity{name=null,id=1}",
-            EntityToStringBuilder(SampleEntity()).add("id", 1).add("name", null).toString())
+            "{\"name\":\"SampleEntity\",\"data\":{\"name\":\"null\",\"id\":\"1\"}}",
+            EntityToStringBuilder(sampleYDWK, SampleEntity())
+                .add("id", 1)
+                .add("name", null)
+                .toString())
 
         assertEquals(
-            "SampleEntity{name=null,id=2}",
-            EntityToStringBuilder(SampleEntity()).add("id", 2).add("name", null).toString())
+            "{\"name\":\"SampleEntity\",\"data\":{\"name\":\"null\",\"id\":\"2\"}}",
+            EntityToStringBuilder(sampleYDWK, SampleEntity())
+                .add("id", 2)
+                .add("name", null)
+                .toString())
     }
 
     @Test
     @Order(7)
     fun testFieldsWithSnowflake() {
         assertEquals(
-            "SampleSnowflakeEntity{name=Sample}(id=1,createTime=1420070400000,workerId=0,increment=1)",
-            EntityToStringBuilder(SampleSnowflakeEntity(1)).add("name", "Sample").toString())
+            "{\"name\":\"SampleSnowflakeEntity\",\"data\":{\"name\":\"Sample\",\"id\":\"1\",\"createTime\":1420070400000,\"workerId\":0,\"increment\":1}}",
+            EntityToStringBuilder(sampleYDWK, SampleSnowflakeEntity(1))
+                .add("name", "Sample")
+                .toString())
 
         assertEquals(
-            "SampleSnowflakeEntity{name=Sample,age=18}(id=1,createTime=1420070400000,workerId=0,increment=1)",
-            EntityToStringBuilder(SampleSnowflakeEntity(1))
+            "{\"name\":\"SampleSnowflakeEntity\",\"data\":{\"name\":\"Sample\",\"age\":\"18\",\"id\":\"1\",\"createTime\":1420070400000,\"workerId\":0,\"increment\":1}}",
+            EntityToStringBuilder(sampleYDWK, SampleSnowflakeEntity(1))
                 .add("name", "Sample")
                 .add("age", 18)
                 .toString())

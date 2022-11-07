@@ -52,7 +52,7 @@ fun main() {
                 withContext(Dispatchers.IO) {
                     val member = it.slash.member
                     if (member != null) {
-                        it.slash.reply(member.json.toPrettyString()).get()
+                        it.slash.reply(member.json.toPrettyString()).reply()
                     }
                 }
             }
@@ -60,7 +60,7 @@ fun main() {
                 withContext(Dispatchers.IO) {
                     val forum = it.slash.ydwk.getGuildTextChannelById("1031971612238561390")
                     if (forum != null) {
-                        it.slash.reply(forum.json.toPrettyString()).get()
+                        it.slash.reply(forum.json.toPrettyString()).reply()
                     }
                 }
             }
@@ -72,7 +72,7 @@ fun main() {
             }
             "option" -> {
                 withContext(Dispatchers.IO) {
-                    it.slash.reply(it.slash.getOption("member")!!.asUser.name).get()
+                    it.slash.reply(it.slash.getOption("member")!!.asUser.name).reply()
                 }
             }
         }
