@@ -11,7 +11,7 @@ A discord wrapper made in kotlin(Not related to YDW)
 
 ## Problems this wrapper solves
 
-You might ask why should i use this wrapper when there is already a kotlin wrapper out there. Well, this wrapper is made
+You might ask why should I use this wrapper when there is already a kotlin wrapper out there. Well, this wrapper is made
 to solve the following problems:
 
 - This wrapper aims to be as simple and as fast as possible while still being easy to use and understand
@@ -66,3 +66,9 @@ A default bot has all the recommend gateway intents.
 
 When you want to get a cached entity, it will be named `getEntity` and when you want to get an entity through the rest
 api, it will be named `requestEntity`.
+
+## For more information
+
+Check out the [wiki](https://www.ydwk.org/) for more information.
+
+Check out the [kotlindoc](https://ydwk.github.io/YDWK/) for more information.
