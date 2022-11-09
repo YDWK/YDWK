@@ -17,10 +17,10 @@ jobs:
         run: |
           version=`cat gradle.properties | sed -n "s/^.*version\s*=\s*\(\S*\).*$/\1/p"`
           echo "::set-output name=version::$version"
-      - name: Create Snapshot
+      - name: Run maven snapshot
         if: ${{ endsWith(steps.read-version.outputs.version, 'SNAPSHOT') }}
         run: |
           ./gradlew publishYdwkPublicationToMavenCentralRepository
         env:
-            MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
-            MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}

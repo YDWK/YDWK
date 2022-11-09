@@ -42,6 +42,7 @@ import io.github.ydwk.ydwk.evm.event.events.guild.GuildCreateEvent
 import io.github.ydwk.ydwk.evm.event.events.guild.GuildDeleteEvent
 import io.github.ydwk.ydwk.evm.event.events.guild.update.*
 import io.github.ydwk.ydwk.evm.event.events.interaction.*
+import io.github.ydwk.ydwk.evm.event.events.user.*
 import java.lang.invoke.MethodHandle
 import java.lang.invoke.MethodHandles
 import java.lang.invoke.MethodType
@@ -511,6 +512,78 @@ abstract class ListenerAdapter : IEventListener {
      * @param event The GuildBanAddEvent
      */
     open fun onGuildBanAdd(event: GuildBanAddEvent) {}
+
+    // user
+
+    /**
+     * Listens to UserNameUpdateEvent
+     *
+     * @param event The UserNameUpdateEvent
+     */
+    open fun onUserNameUpdate(event: UserNameUpdateEvent) {}
+
+    /**
+     * Listens to UserDiscriminatorUpdateEvent
+     *
+     * @param event The UserDiscriminatorUpdateEvent
+     */
+    open fun onUserDiscriminatorUpdate(event: UserDiscriminatorUpdateEvent) {}
+
+    /**
+     * Listens to UserAvatarUpdateEvent
+     *
+     * @param event The UserAvatarUpdateEvent
+     */
+    open fun onUserAvatarUpdate(event: UserAvatarUpdateEvent) {}
+
+    /**
+     * Listens to UserSystemUpdateEvent
+     *
+     * @param event The UserSystemUpdateEvent
+     */
+    open fun onUserSystemUpdate(event: UserSystemUpdateEvent) {}
+
+    /**
+     * Listens to UserMfaEnabledUpdateEvent
+     *
+     * @param event The UserMfaEnabledUpdateEvent
+     */
+    open fun onUserMfaEnabledUpdate(event: UserMfaEnabledUpdateEvent) {}
+
+    /**
+     * Listens to UserBannerUpdateEvent
+     *
+     * @param event The UserBannerUpdateEvent
+     */
+    open fun onUserBannerUpdate(event: UserBannerUpdateEvent) {}
+
+    /**
+     * Listens to UserAccentColorUpdateEvent
+     *
+     * @param event The UserAccentColorUpdateEvent
+     */
+    open fun onUserAccentColorUpdate(event: UserAccentColorUpdateEvent) {}
+
+    /**
+     * Listens to UserLocaleUpdateEvent
+     *
+     * @param event The UserLocaleUpdateEvent
+     */
+    open fun onUserLocaleUpdate(event: UserLocaleUpdateEvent) {}
+
+    /**
+     * Listens to UserVerifiedUpdateEvent
+     *
+     * @param event The UserVerifiedUpdateEvent
+     */
+    open fun onUserVerifiedUpdate(event: UserVerifiedUpdateEvent) {}
+
+    /**
+     * Listens to UserFlagsUpdateEvent
+     *
+     * @param event The UserFlagsUpdateEvent
+     */
+    open fun onUserFlagsUpdate(event: UserFlagsUpdateEvent) {}
 
     /**
      * This method is called when an event is received.

@@ -39,6 +39,6 @@ class AuthorImpl(override val ydwk: YDWK, override val json: JsonNode) : Author 
         get() = if (json.has("proxy_icon_url")) json["proxy_icon_url"].asText() else null
 
     override fun toString(): String {
-        return EntityToStringBuilder(this).name(this.name).toString()
+        return EntityToStringBuilder(ydwk, this).name(this.name).toString()
     }
 }

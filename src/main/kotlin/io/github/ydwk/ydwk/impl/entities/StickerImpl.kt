@@ -59,7 +59,7 @@ class StickerImpl(
         if (json.has("sort_value")) json.get("sort_value").asInt() else null
 
     override fun toString(): String {
-        return EntityToStringBuilder(this).name(this.name).toString()
+        return EntityToStringBuilder(ydwk, this).name(this.name).toString()
     }
 
     override var name: String = json.get("name").asText()

@@ -61,7 +61,7 @@ open class UserImpl(
         if (json.hasNonNull("public_flags")) json.get("public_flags").asInt() else null
 
     override fun toString(): String {
-        return EntityToStringBuilder(this).name(this.name).toString()
+        return EntityToStringBuilder(ydwk, this).name(this.name).toString()
     }
 
     override var name: String = json["username"].asText()

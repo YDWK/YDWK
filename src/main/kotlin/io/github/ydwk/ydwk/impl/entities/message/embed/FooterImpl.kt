@@ -34,6 +34,6 @@ class FooterImpl(override val ydwk: YDWK, override val json: JsonNode) : Footer 
         get() = if (json.has("proxy_icon_url")) json["proxy_icon_url"].asText() else null
 
     override fun toString(): String {
-        return EntityToStringBuilder(this).toString()
+        return EntityToStringBuilder(ydwk, this).toString()
     }
 }

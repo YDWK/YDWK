@@ -32,6 +32,6 @@ class PartialApplicationImpl(
     override var flags: Int = json.get("flags").asInt()
 
     override fun toString(): String {
-        return EntityToStringBuilder(this).toString()
+        return EntityToStringBuilder(ydwk, this).toString()
     }
 }

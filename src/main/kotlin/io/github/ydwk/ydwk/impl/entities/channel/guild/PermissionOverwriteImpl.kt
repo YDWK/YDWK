@@ -36,6 +36,6 @@ class PermissionOverwriteImpl(
         get() = json["deny"].asText()
 
     override fun toString(): String {
-        return EntityToStringBuilder(this).toString()
+        return EntityToStringBuilder(ydwk, this).toString()
     }
 }

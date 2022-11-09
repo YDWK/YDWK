@@ -34,6 +34,6 @@ class BanImpl(override val ydwk: YDWK, override val json: JsonNode) : Ban {
         get() = UserImpl(json["user"], json["user"]["id"].asLong(), ydwk)
 
     override fun toString(): String {
-        return EntityToStringBuilder(this).toString()
+        return EntityToStringBuilder(ydwk, this).toString()
     }
 }

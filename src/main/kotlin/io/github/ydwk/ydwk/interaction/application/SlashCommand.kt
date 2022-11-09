@@ -24,13 +24,13 @@ import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.channel.TextChannel
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.message.Embed
+import io.github.ydwk.ydwk.interaction.application.sub.Reply
 import io.github.ydwk.ydwk.interaction.sub.GenericCommandData
 import io.github.ydwk.ydwk.interaction.sub.InteractionType
 import io.github.ydwk.ydwk.slash.SlashOptionGetter
 import io.github.ydwk.ydwk.slash.SlashOptionType
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 import io.github.ydwk.ydwk.util.SnowFlake
-import java.util.concurrent.CompletableFuture
 
 interface SlashCommand : SnowFlake, GenericCommandData {
     /**
@@ -137,49 +137,19 @@ interface SlashCommand : SnowFlake, GenericCommandData {
      * Replies to an interaction.
      *
      * @param content The content of the reply.
-     * @param tts Whether the reply should be sent with text-to-speech.
-     * @param ephemeral Whether the reply should be ephemeral.
      * @return The reply.
      */
-    fun reply(
-        content: String,
-        tts: Boolean = false,
-        ephemeral: Boolean = false,
-    ): CompletableFuture<Void>
-
-    /**
-     * Replies to an interaction.
-     *
-     * @param content The content of the reply.
-     * @param ephemeral Whether the reply should be ephemeral.
-     * @return The reply.
-     */
-    fun reply(content: String, ephemeral: Boolean = false): CompletableFuture<Void> =
-        reply(content, false, ephemeral)
+    fun reply(content: String): Reply
 
     /**
      * Replies to an interaction.
      *
      * @param embed The embed of the reply.
-     * @param tts Whether the reply should be sent with text-to-speech.
-     * @param ephemeral Whether the reply should be ephemeral.
      * @return The reply.
      */
     fun reply(
         embed: Embed,
-        tts: Boolean = false,
-        ephemeral: Boolean = false,
-    ): CompletableFuture<Void>
-
-    /**
-     * Replies to an interaction.
-     *
-     * @param embed The embed of the reply.
-     * @param ephemeral Whether the reply should be ephemeral.
-     * @return The reply.
-     */
-    fun reply(embed: Embed, ephemeral: Boolean = false): CompletableFuture<Void> =
-        reply(embed, false, ephemeral)
+    ): Reply
 
     /**
      * Gets all the options of the command.

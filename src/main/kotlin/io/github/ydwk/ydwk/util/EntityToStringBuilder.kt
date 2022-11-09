@@ -18,9 +18,11 @@
  */ 
 package io.github.ydwk.ydwk.util
 
+import com.fasterxml.jackson.databind.JsonNode
+import io.github.ydwk.ydwk.YDWK
 import java.util.*
 
-class EntityToStringBuilder(val entity: Any) {
+class EntityToStringBuilder(val ydwk: YDWK, val entity: Any) {
     private var type: Any? = null
     private var name: String? = null
     private var customFields: MutableMap<String, Any?> = HashMap()
@@ -46,6 +48,8 @@ class EntityToStringBuilder(val entity: Any) {
     }
 
     override fun toString(): String {
+        val mainJson = ydwk.objectMapper.createObjectNode()
+
         val name: String =
             when (this.entity) {
                 is String -> {
@@ -59,35 +63,38 @@ class EntityToStringBuilder(val entity: Any) {
                 }
             }
 
-        val sb = StringBuilder(name)
+        mainJson.put("name", name)
+
+        val subJson = ydwk.objectMapper.createObjectNode()
 
         if (this.type != null) {
-            sb.append('[').append(this.type).append(']')
+            subJson.put("type", this.type.toString())
         }
 
         if (this.name != null) {
-            sb.append(':').append(this.name)
+            subJson.put("name", this.name)
         }
 
-        if (customFields.isNotEmpty()) {
-            sb.append('{')
-            for ((key, value) in customFields) {
-                sb.append(key).append('=').append(value).append(',')
-            }
-            sb.setCharAt(sb.length - 1, '}')
+        // add custom fields
+        for ((key, value) in customFields) {
+            subJson.put(key, value.toString())
         }
 
+        // add snowflake
         val snowflakeEntity = entity is SnowFlake
         if (snowflakeEntity) {
-            sb.append('(')
-            sb.append("id=").append((entity as SnowFlake).id).append(',')
-            sb.append("createTime=").append(entity.asTimestamp).append(',')
-            sb.append("workerId=").append(entity.asWorkerId).append(',')
-            sb.append("increment=").append(entity.asIncrement)
-            sb.append(')')
+            val snowflake = entity as SnowFlake
+            subJson.put("id", snowflake.id)
+            subJson.put("createTime", snowflake.asTimestamp)
+            subJson.put("workerId", snowflake.asWorkerId)
+            subJson.put("increment", snowflake.asIncrement)
         }
 
-        return sb.toString()
+        if (subJson.size() > 0) {
+            mainJson.set<JsonNode>("data", subJson)
+        }
+
+        return mainJson.toString()
     }
 
     private fun cleanUpClassName(clazz: Class<*>): String {

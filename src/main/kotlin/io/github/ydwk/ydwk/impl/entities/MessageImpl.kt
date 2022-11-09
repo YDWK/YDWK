@@ -189,6 +189,6 @@ class MessageImpl(
         get() = if (json.has("position")) json.get("position").asLong() else null
 
     override fun toString(): String {
-        return EntityToStringBuilder(this).toString()
+        return EntityToStringBuilder(ydwk, this).toString()
     }
 }

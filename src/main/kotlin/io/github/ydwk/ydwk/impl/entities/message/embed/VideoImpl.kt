@@ -39,6 +39,6 @@ class VideoImpl(override val ydwk: YDWK, override val json: JsonNode) : Video {
         get() = if (json.has("width")) json["width"].asInt() else null
 
     override fun toString(): String {
-        return EntityToStringBuilder(this).toString()
+        return EntityToStringBuilder(ydwk, this).toString()
     }
 }

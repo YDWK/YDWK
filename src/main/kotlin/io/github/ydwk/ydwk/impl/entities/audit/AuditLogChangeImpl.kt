@@ -45,6 +45,6 @@ class AuditLogChangeImpl(override val ydwk: YDWK, override val json: JsonNode) :
         get() = json["key"].asText()
 
     override fun toString(): String {
-        return EntityToStringBuilder(this).toString()
+        return EntityToStringBuilder(ydwk, this).toString()
     }
 }

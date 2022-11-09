@@ -35,6 +35,6 @@ class WelcomeScreenImpl(override val ydwk: YDWK, override val json: JsonNode) : 
         else emptyList()
 
     override fun toString(): String {
-        return EntityToStringBuilder(this).toString()
+        return EntityToStringBuilder(ydwk, this).toString()
     }
 }

@@ -36,6 +36,6 @@ class ReactionImpl(override val ydwk: YDWK, override val json: JsonNode) : React
         get() = EmojiImpl(ydwk, json.get("emoji"))
 
     override fun toString(): String {
-        return EntityToStringBuilder(this).toString()
+        return EntityToStringBuilder(ydwk, this).toString()
     }
 }

@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.evm.handler.handlers.user
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.cache.CacheIds
 import io.github.ydwk.ydwk.entities.User
+import io.github.ydwk.ydwk.evm.event.events.user.*
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.UserImpl
@@ -35,7 +36,7 @@ class UserUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
         val userCache = ydwk.cache[userJson.get("id").asText(), CacheIds.GUILD]
 
         if (userCache == null) {
-            ydwk.logger.warn(
+            ydwk.logger.debug(
                 "UserUpdateHandler: User with id ${userJson.get("id").asLong()} not found in cache, will add it")
             val user = UserImpl(json, json.get("id").asLong(), ydwk)
             ydwk.cache[user.id, user] = CacheIds.USER
@@ -48,97 +49,76 @@ class UserUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
         val newName = userJson.get("username").asText()
         if (!Objects.deepEquals(oldName, newName)) {
             user.name = newName
+            ydwk.emitEvent(UserNameUpdateEvent(ydwk, user, oldName, newName))
         }
 
         val oldDiscriminator = user.discriminator
         val newDiscriminator = userJson.get("discriminator").asText()
         if (!Objects.deepEquals(oldDiscriminator, newDiscriminator)) {
             user.discriminator = newDiscriminator
+            ydwk.emitEvent(
+                UserDiscriminatorUpdateEvent(ydwk, user, oldDiscriminator, newDiscriminator))
         }
 
         val oldAvatar = user.avatar
         val newAvatar = userJson.get("avatar").asText()
         if (!Objects.deepEquals(oldAvatar, newAvatar)) {
             user.avatar = newAvatar
+            ydwk.emitEvent(UserAvatarUpdateEvent(ydwk, user, oldAvatar, newAvatar))
         }
 
         val oldSystem = user.system
-        val newSystem = userJson.get("system")
-        when {
-            oldSystem == null && newSystem != null -> user.system = newSystem.asBoolean()
-            oldSystem != null && newSystem != null ->
-                if (!Objects.deepEquals(oldSystem, newSystem.asBoolean())) {
-                    user.system = newSystem.asBoolean()
-                }
-            else -> user.system = null
+        val newSystem = userJson.has("system") && userJson.get("system").asBoolean()
+        if (!Objects.deepEquals(oldSystem, newSystem)) {
+            user.system = newSystem
+            ydwk.emitEvent(UserSystemUpdateEvent(ydwk, user, oldSystem.let { false }, newSystem))
         }
 
         val oldMfaEnabled = user.mfaEnabled
-        val newMfaEnabled = userJson.get("mfa_enabled")
-        when {
-            oldMfaEnabled == null && newMfaEnabled != null ->
-                user.mfaEnabled = newMfaEnabled.asBoolean()
-            oldMfaEnabled != null && newMfaEnabled != null ->
-                if (!Objects.deepEquals(oldMfaEnabled, newMfaEnabled)) {
-                    user.mfaEnabled = newMfaEnabled.asBoolean()
-                }
-            else -> user.mfaEnabled = null
+        val newMfaEnabled = userJson.has("mfa_enabled") && userJson.get("mfa_enabled").asBoolean()
+        if (!Objects.deepEquals(oldMfaEnabled, newMfaEnabled)) {
+            user.mfaEnabled = newMfaEnabled
+            ydwk.emitEvent(
+                UserMfaEnabledUpdateEvent(ydwk, user, oldMfaEnabled.let { false }, newMfaEnabled))
         }
 
         val oldBanner = user.banner
-        val newBanner = userJson.get("banner").asText()
-        when {
-            oldBanner == null && newBanner != null -> user.banner = newBanner
-            oldBanner != null && newBanner != null ->
-                if (!Objects.deepEquals(oldBanner, newBanner)) {
-                    user.banner = newBanner
-                }
-            else -> user.banner = null
+        val newBanner: String? =
+            if (userJson.has("banner")) userJson.get("banner").asText() else null
+        if (!Objects.deepEquals(oldBanner, newBanner)) {
+            user.banner = newBanner
+            ydwk.emitEvent(UserBannerUpdateEvent(ydwk, user, oldBanner, newBanner))
         }
 
         val oldAccentColor = user.accentColor
-        val newAccentColor = userJson.get("accent_color")
-        when {
-            oldAccentColor == null && newAccentColor != null ->
-                user.accentColor = Color(newAccentColor.asInt())
-            oldAccentColor != null && newAccentColor != null ->
-                if (!Objects.deepEquals(oldAccentColor, newAccentColor)) {
-                    user.accentColor = Color(newAccentColor.asInt())
-                }
-            else -> user.accentColor = null
+        val newAccentColor: Color? =
+            if (userJson.has("accent_color")) Color(userJson.get("accent_color").asInt()) else null
+        if (!Objects.deepEquals(oldAccentColor, newAccentColor)) {
+            user.accentColor = newAccentColor
+            ydwk.emitEvent(UserAccentColorUpdateEvent(ydwk, user, oldAccentColor, newAccentColor))
         }
 
-        val oldLocale = user.banner
-        val newLocale = userJson.get("locale").asText()
-        when {
-            oldLocale == null && newLocale != null -> user.locale = newLocale
-            oldLocale != null && newLocale != null ->
-                if (!Objects.deepEquals(oldLocale, newLocale)) {
-                    user.locale = newLocale
-                }
-            else -> user.locale = null
+        val oldLocale = user.locale
+        val newLocale: String =
+            if (userJson.has("locale")) userJson.get("locale").asText() else "en-US"
+        if (!Objects.deepEquals(oldLocale, newLocale)) {
+            user.locale = newLocale
+            ydwk.emitEvent(UserLocaleUpdateEvent(ydwk, user, oldLocale, newLocale))
         }
 
         val oldVerified = user.verified
-        val newVerified = userJson.get("verified")
-        when {
-            oldVerified == null && newVerified != null -> user.verified = newVerified.asBoolean()
-            oldVerified != null && newVerified != null ->
-                if (!Objects.deepEquals(oldVerified, newVerified)) {
-                    user.verified = newVerified.asBoolean()
-                }
-            else -> user.verified = null
+        val newVerified = userJson.has("verified") && userJson.get("verified").asBoolean()
+        if (!Objects.deepEquals(oldVerified, newVerified)) {
+            user.verified = newVerified
+            ydwk.emitEvent(
+                UserVerifiedUpdateEvent(ydwk, user, oldVerified.let { false }, newVerified))
         }
 
         val oldFlags = user.flags
-        val newFlags = userJson.get("flags")
-        when {
-            oldFlags == null && newFlags != null -> user.flags = newFlags.asInt()
-            oldFlags != null && newFlags != null ->
-                if (!Objects.deepEquals(oldFlags, newFlags)) {
-                    user.flags = newFlags.asInt()
-                }
-            else -> user.flags = null
+        val newFlags: Int? = if (userJson.has("flags")) userJson.get("flags").asInt() else null
+        if (!Objects.deepEquals(oldFlags, newFlags)) {
+            user.flags = newFlags
+            ydwk.emitEvent(UserFlagsUpdateEvent(ydwk, user, oldFlags, newFlags))
         }
     }
 }
