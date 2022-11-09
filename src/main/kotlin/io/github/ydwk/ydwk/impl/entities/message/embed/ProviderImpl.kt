@@ -32,6 +32,6 @@ class ProviderImpl(override val ydwk: YDWK, override val json: JsonNode) : Provi
         get() = if (json.has("url")) json["url"].asText() else null
 
     override fun toString(): String {
-        return EntityToStringBuilder(this).name(this.name ?: "null").toString()
+        return EntityToStringBuilder(ydwk, this).name(this.name ?: "null").toString()
     }
 }

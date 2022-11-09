@@ -35,6 +35,6 @@ class AuditLogImpl(override val ydwk: YDWK, override val json: JsonNode) : Audit
         get() = json["entries"].map { AuditLogEntryImpl(ydwk, it, it["id"].asLong()) }
 
     override fun toString(): String {
-        return EntityToStringBuilder(this).name("AuditLog").toString()
+        return EntityToStringBuilder(ydwk, this).name("AuditLog").toString()
     }
 }

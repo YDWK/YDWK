@@ -27,7 +27,6 @@ import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.channel.TextChannel
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.message.Embed
-import io.github.ydwk.ydwk.entities.message.MessageFlag
 import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.UserImpl
@@ -35,19 +34,17 @@ import io.github.ydwk.ydwk.impl.entities.channel.guild.GenericGuildTextChannelIm
 import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
 import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
 import io.github.ydwk.ydwk.impl.entities.message.AttachmentImpl
+import io.github.ydwk.ydwk.impl.interaction.application.sub.ReplyImpl
 import io.github.ydwk.ydwk.interaction.Interaction
 import io.github.ydwk.ydwk.interaction.application.ApplicationCommandOption
 import io.github.ydwk.ydwk.interaction.application.ApplicationCommandType
 import io.github.ydwk.ydwk.interaction.application.SlashCommand
+import io.github.ydwk.ydwk.interaction.application.sub.Reply
 import io.github.ydwk.ydwk.interaction.sub.InteractionType
-import io.github.ydwk.ydwk.rest.EndPoint
-import io.github.ydwk.ydwk.rest.json.replyJsonBody
 import io.github.ydwk.ydwk.slash.SlashOptionGetter
 import io.github.ydwk.ydwk.slash.SlashOptionGetterImpl
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import io.github.ydwk.ydwk.util.GetterSnowFlake
-import java.util.concurrent.CompletableFuture
-import okhttp3.RequestBody.Companion.toRequestBody
 
 class SlashCommandImpl(
     override val ydwk: YDWK,
@@ -88,28 +85,12 @@ class SlashCommandImpl(
     override val permissions: Long? = interaction.permissions
 
     override val locale: String? = interaction.locale
-    override fun reply(content: String, tts: Boolean, ephemeral: Boolean): CompletableFuture<Void> {
-        return ydwk.restApiManager
-            .post(
-                replyJsonBody(ydwk, content, tts, if (ephemeral) MessageFlag.EPHEMERAL else null)
-                    .toString()
-                    .toRequestBody(),
-                EndPoint.ApplicationCommandsEndpoint.REPLY_TO_SLASH_COMMAND,
-                interaction.id,
-                token)
-            .executeWithNoResult()
+    override fun reply(content: String): Reply {
+        return ReplyImpl(ydwk, content, null, interaction.id, token)
     }
 
-    override fun reply(embed: Embed, tts: Boolean, ephemeral: Boolean): CompletableFuture<Void> {
-        return ydwk.restApiManager
-            .post(
-                replyJsonBody(ydwk, embed, tts, if (ephemeral) MessageFlag.EPHEMERAL else null)
-                    .toString()
-                    .toRequestBody(),
-                EndPoint.ApplicationCommandsEndpoint.REPLY_TO_SLASH_COMMAND,
-                interaction.id,
-                token)
-            .executeWithNoResult()
+    override fun reply(embed: Embed): Reply {
+        return ReplyImpl(ydwk, null, embed, interaction.id, token)
     }
 
     override val options: List<SlashOptionGetter>
@@ -194,6 +175,6 @@ class SlashCommandImpl(
         }
 
     override fun toString(): String {
-        return EntityToStringBuilder(this).name(this.name).toString()
+        return EntityToStringBuilder(ydwk, this).name(this.name).toString()
     }
 }

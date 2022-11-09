@@ -74,8 +74,9 @@ tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "17" }
 
 tasks.build {
     // dependsOn on custom tasks
-    dependsOn(tasks.getByName("checkEvents"))
-    dependsOn(tasks.getByName("checkEntities"))
+    dependsOn(tasks.getByName("checkEvents")) // check if events are valid
+    dependsOn(tasks.getByName("checkEntities")) // check if entities are valid
+    dependsOn(tasks.test) // run tests before building
 }
 
 tasks.jacocoTestReport {
@@ -189,17 +190,19 @@ publishing {
             url = uri((if (isReleaseVersion) releaseRepo else snapshotRepo))
             credentials {
                 // try to get it from system gradle.properties
-                println("Trying to get credentials from system properties")
+                logger.debug("Trying to get credentials from system gradle.properties")
                 username =
                     when {
                         systemHasEnvVar("MAVEN_USERNAME") -> {
+                            logger.debug("Found username in system gradle.properties")
                             System.getenv("MAVEN_USERNAME")
                         }
                         project.hasProperty("MAVEN_USERNAME") -> {
+                            logger.debug("MAVEN_USERNAME found in gradle.properties")
                             project.property("MAVEN_USERNAME") as String
                         }
                         else -> {
-                            logger.warn(
+                            logger.debug(
                                 "MAVEN_USERNAME not found in system properties, meaning if you are trying to publish to maven central, it will fail")
                             null
                         }
@@ -208,13 +211,15 @@ publishing {
                 password =
                     when {
                         systemHasEnvVar("MAVEN_PASSWORD") -> {
+                            logger.debug("Found password in system gradle.properties")
                             System.getenv("MAVEN_PASSWORD")
                         }
                         project.hasProperty("MAVEN_PASSWORD") -> {
+                            logger.debug("MAVEN_PASSWORD found in gradle.properties")
                             project.property("MAVEN_PASSWORD") as String
                         }
                         else -> {
-                            logger.warn(
+                            logger.debug(
                                 "MAVEN_PASSWORD not found in system properties, meaning if you are trying to publish to maven central, it will fail")
                             null
                         }

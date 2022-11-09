@@ -33,6 +33,6 @@ class MessageComponentDataImpl(override val ydwk: YDWK, override val json: JsonN
         MessageComponentType.fromInt(json["component_type"].asInt())
 
     override fun toString(): String {
-        return EntityToStringBuilder(this).toString()
+        return EntityToStringBuilder(ydwk, this).toString()
     }
 }

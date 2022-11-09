@@ -89,6 +89,6 @@ class InteractionImpl(
         }
 
     override fun toString(): String {
-        return EntityToStringBuilder(this).toString()
+        return EntityToStringBuilder(ydwk, this).toString()
     }
 }
