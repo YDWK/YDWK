@@ -35,7 +35,7 @@ jobs:
       - name: Update Release Version
         if: ${{ !endsWith(steps.read-version.outputs.version, 'SNAPSHOT') }}
         run: |
-          ./gradlew test incrementVersion
+          ./gradlew incrementVersion
           git config --global user.name 'github-actions[bot]'
           git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git checkout -b release-v${{ steps.read-version.outputs.version }}
