@@ -25,6 +25,7 @@ enum class YDWKInfo(val url: String) {
     DISCORD_REST_URL("https://discord.com/api"),
     DISCORD_REST_VERSION("/v10"),
     FULL_DISCORD_REST_URL(DISCORD_REST_URL.url + DISCORD_REST_VERSION.url),
+    VOICE_GATEWAY_VERSION("/?v=4"),
     GITHUB_URL("https://github.com/RealYusufIsmail/YDWK"),
     YDWK_VERSION("0.0.5");
 
