@@ -64,6 +64,7 @@ import io.github.ydwk.ydwk.impl.entities.MessageImpl
 import io.github.ydwk.ydwk.impl.entities.application.PartialApplicationImpl
 import io.github.ydwk.ydwk.util.convertInstantToChronoZonedDateTime
 import io.github.ydwk.ydwk.util.reverseFormatZonedDateTime
+import io.github.ydwk.ydwk.ws.logging.WebsocketLogging
 import io.github.ydwk.ydwk.ws.util.CloseCode
 import io.github.ydwk.ydwk.ws.util.EventNames
 import io.github.ydwk.ydwk.ws.util.OpCode
@@ -102,7 +103,7 @@ open class WebSocketManager(
     private var heartbeatStartTime: Long = 0
     var upTime: Instant? = null
     @Volatile protected var heartbeatThread: Future<*>? = null
-    private val scheduler: ScheduledExecutorService = Executors.newScheduledThreadPool(1)
+    val scheduler: ScheduledExecutorService = Executors.newScheduledThreadPool(1)
     @get:Synchronized @set:Synchronized var connected = false
     @get:Synchronized @set:Synchronized var ready = false
     private var alreadySentConnectMessageOnce: Boolean = false
@@ -130,6 +131,7 @@ open class WebSocketManager(
                     .createSocket(url)
                     .addHeader("Accept-Encoding", "gzip")
                     .addListener(this)
+                    .addListener(WebsocketLogging(logger))
                     .connect()
         } catch (e: IOException) {
             resumeUrl = null

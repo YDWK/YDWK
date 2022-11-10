@@ -75,7 +75,8 @@ class YDWKImpl(
     val memberCache: MemberCache = MemberCacheImpl(allowedCache),
     private var token: String? = null,
     private var guildIdList: MutableList<String> = mutableListOf(),
-    var applicationId: String? = null
+    var applicationId: String? = null,
+    var voiceEndpoint: String? = null
 ) : YDWK {
     // logger
 
@@ -451,6 +452,15 @@ class YDWKImpl(
      */
     fun setLoggedIn(loggedIn: LoggedIn) {
         this.loggedInStatus = loggedIn
+    }
+
+    /**
+     * Sets the voice endpoint
+     *
+     * @param voiceEndpoint The voice endpoint which is used to connect to the voice websocket.
+     */
+    fun setVoiceEndpoint(voiceEndpoint: String) {
+        this.voiceEndpoint = voiceEndpoint
     }
 
     companion object {
