@@ -18,24 +18,29 @@
  */ 
 package io.github.ydwk.ydwk.ws.voice
 
+import com.fasterxml.jackson.databind.JsonNode
 import com.neovisionaries.ws.client.WebSocket
 import com.neovisionaries.ws.client.WebSocketAdapter
 import com.neovisionaries.ws.client.WebSocketFactory
 import com.neovisionaries.ws.client.WebSocketListener
 import io.github.ydwk.ydwk.YDWKInfo
-import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
 import io.github.ydwk.ydwk.ws.logging.WebsocketLogging
+import io.github.ydwk.ydwk.ws.voice.util.VoiceOpcode
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 import org.slf4j.LoggerFactory
 
 /** Handles Voice connections. */
-class VoiceWebSocket(private val ydwk: YDWKImpl) : WebSocketAdapter(), WebSocketListener {
+class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
+    WebSocketAdapter(), WebSocketListener {
     private val logger = LoggerFactory.getLogger(VoiceWebSocket::class.java)
     private var webSocket: WebSocket? = null
+    private val ydwk = voiceConnection.ydwk
     private val webSocketManager =
         ydwk.webSocketManager ?: throw IllegalStateException("WebSocketManager is null!")
     private var timesTriedToConnect = 0
+    @Volatile var resuming = false
 
     init {
         connect()
@@ -48,7 +53,7 @@ class VoiceWebSocket(private val ydwk: YDWKImpl) : WebSocketAdapter(), WebSocket
 
         val url =
             "wss://" +
-                (ydwk.voiceEndpoint?.replace(":80", "")
+                (voiceConnection.voiceEndpoint?.replace(":80", "")
                     ?: throw IllegalStateException("Voice endpoint is null!")) +
                 YDWKInfo.VOICE_GATEWAY_VERSION.url
 
@@ -81,5 +86,37 @@ class VoiceWebSocket(private val ydwk: YDWKImpl) : WebSocketAdapter(), WebSocket
             }
         }
         return this
+    }
+
+    @Throws(Exception::class)
+    override fun onConnected(websocket: WebSocket, headers: Map<String, List<String>>) {
+        if (resuming) {
+            resume()
+        } else {
+            identify()
+        }
+    }
+
+    private fun resume() {
+        val resumePayload = ydwk.objectNode
+        resumePayload.put("op", VoiceOpcode.RESUME.code)
+        val resumeData = ydwk.objectNode
+        resumeData.put("server_id", voiceConnection.guildId)
+        resumeData.put("session_id", voiceConnection.sessionId)
+        resumeData.put("token", voiceConnection.token)
+        resumePayload.set<JsonNode>("d", resumeData)
+        webSocket?.sendText(resumePayload.toString())
+    }
+
+    private fun identify() {
+        val identifyPayload = ydwk.objectNode
+        identifyPayload.put("op", VoiceOpcode.IDENTIFY.code)
+        val identifyData = ydwk.objectNode
+        identifyData.put("server_id", voiceConnection.guildId)
+        identifyData.put("user_id", voiceConnection.userId)
+        identifyData.put("session_id", voiceConnection.sessionId)
+        identifyData.put("token", voiceConnection.token)
+        identifyPayload.set<JsonNode>("d", identifyData)
+        webSocket?.sendText(identifyPayload.toString())
     }
 }

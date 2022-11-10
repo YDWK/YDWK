@@ -24,6 +24,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import com.neovisionaries.ws.client.*
 import io.github.ydwk.ydwk.*
 import io.github.ydwk.ydwk.cache.CacheIds
+import io.github.ydwk.ydwk.entities.Bot
+import io.github.ydwk.ydwk.entities.Guild
+import io.github.ydwk.ydwk.entities.channel.GuildChannel
 import io.github.ydwk.ydwk.evm.event.events.gateway.ReadyEvent
 import io.github.ydwk.ydwk.evm.event.events.gateway.ReconnectEvent
 import io.github.ydwk.ydwk.evm.event.events.gateway.ResumeEvent
@@ -178,13 +181,14 @@ open class WebSocketManager(
 
         connected = true
         attemptedToResume = false
-        if (sessionId == null) {
-            identify()
-            upTime = Instant.now()
-        } else {
-            resume()
-            upTime = Instant.now()
-        }
+        upTime =
+            if (sessionId == null) {
+                identify()
+                Instant.now()
+            } else {
+                resume()
+                Instant.now()
+            }
     }
 
     private fun sendCloseCode(code: CloseCode) {
@@ -453,6 +457,40 @@ open class WebSocketManager(
             webSocket!!.sendText(heartbeat.toString())
             heartbeatStartTime = System.currentTimeMillis()
         }
+    }
+
+    fun sendVoiceStateUpdate(
+        guild: Guild?,
+        channel: GuildChannel?,
+        selfMute: Boolean?,
+        selfDeaf: Boolean?
+    ) {
+        var guildId: String? = null
+
+        val mainVoiceUpdateJson: ObjectNode = ydwk.objectNode.put("op", OpCode.VOICE_STATE.code)
+
+        guildId =
+            when {
+                channel != null -> {
+                    channel.guild.id
+                }
+                guild != null -> {
+                    guild.id
+                }
+                else -> {
+                    throw IllegalArgumentException("Guild and channel cannot both be null")
+                }
+            }
+
+        val bot: Bot = ydwk.bot ?: throw IllegalStateException("Bot is not logged in")
+        val dataVoiceUpdateJson = ydwk.objectNode
+        dataVoiceUpdateJson.put("guild_id", guildId)
+        dataVoiceUpdateJson.put("channel_id", channel?.id)
+        dataVoiceUpdateJson.put("self_mute", selfMute ?: guild?.botAsMember?.mute)
+        dataVoiceUpdateJson.put("self_deaf", selfDeaf ?: guild?.botAsMember?.deaf)
+
+        mainVoiceUpdateJson.set<JsonNode>("d", dataVoiceUpdateJson)
+        webSocket?.sendText(mainVoiceUpdateJson.toString())
     }
 
     private fun onEventType(eventType: String, d: JsonNode) {

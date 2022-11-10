@@ -43,6 +43,7 @@ import io.github.ydwk.ydwk.evm.event.events.guild.GuildDeleteEvent
 import io.github.ydwk.ydwk.evm.event.events.guild.update.*
 import io.github.ydwk.ydwk.evm.event.events.interaction.*
 import io.github.ydwk.ydwk.evm.event.events.user.*
+import io.github.ydwk.ydwk.evm.event.events.voice.VoiceConnectionEvent
 import java.lang.invoke.MethodHandle
 import java.lang.invoke.MethodHandles
 import java.lang.invoke.MethodType
@@ -584,6 +585,15 @@ abstract class ListenerAdapter : IEventListener {
      * @param event The UserFlagsUpdateEvent
      */
     open fun onUserFlagsUpdate(event: UserFlagsUpdateEvent) {}
+
+    // voice
+
+    /**
+     * Listens to VoiceConnectionEvent
+     *
+     * @param event The VoiceConnectionEvent
+     */
+    open fun onVoiceConnection(event: VoiceConnectionEvent) {}
 
     /**
      * This method is called when an event is received.

@@ -53,6 +53,8 @@ import io.github.ydwk.ydwk.rest.EndPoint
 import io.github.ydwk.ydwk.rest.RestApiManager
 import io.github.ydwk.ydwk.slash.SlashBuilder
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
+import io.github.ydwk.ydwk.voice.VoiceConnection
+import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
 import io.github.ydwk.ydwk.ws.WebSocketManager
 import io.github.ydwk.ydwk.ws.util.LoggedIn
 import java.time.Instant
@@ -76,9 +78,7 @@ class YDWKImpl(
     private var token: String? = null,
     private var guildIdList: MutableList<String> = mutableListOf(),
     var applicationId: String? = null,
-    var voiceEndpoint: String? = null
 ) : YDWK {
-    // logger
 
     override val objectNode: ObjectNode
         get() = JsonNodeFactory.instance.objectNode()
@@ -268,6 +268,10 @@ class YDWKImpl(
         }
     }
 
+    override fun createVoiceConnection(guildId: Long): VoiceConnection? {
+        return VoiceConnectionImpl(guildId, this)
+    }
+
     override fun toString(): String {
         return EntityToStringBuilder(this, this)
             .add("token", token)
@@ -452,15 +456,6 @@ class YDWKImpl(
      */
     fun setLoggedIn(loggedIn: LoggedIn) {
         this.loggedInStatus = loggedIn
-    }
-
-    /**
-     * Sets the voice endpoint
-     *
-     * @param voiceEndpoint The voice endpoint which is used to connect to the voice websocket.
-     */
-    fun setVoiceEndpoint(voiceEndpoint: String) {
-        this.voiceEndpoint = voiceEndpoint
     }
 
     companion object {

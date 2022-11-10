@@ -39,6 +39,8 @@ import io.github.ydwk.ydwk.impl.entities.guild.WelcomeScreenImpl
 import io.github.ydwk.ydwk.rest.EndPoint
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import io.github.ydwk.ydwk.util.GetterSnowFlake
+import io.github.ydwk.ydwk.voice.VoiceConnection
+import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
 import java.util.concurrent.CompletableFuture
 
 class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override val idAsLong: Long) :
@@ -199,6 +201,9 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
     override fun getChannelById(channelId: Long): GuildChannel? {
         return getUnorderedChannels.firstOrNull { it.idAsLong == channelId }
     }
+
+    override val createVoiceConnection: VoiceConnection
+        get() = VoiceConnectionImpl(this.idAsLong, ydwk)
 
     override var name: String = json["name"].asText()
 

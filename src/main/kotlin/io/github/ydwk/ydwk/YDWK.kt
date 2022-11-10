@@ -40,6 +40,7 @@ import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
 import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
 import io.github.ydwk.ydwk.rest.RestApiManager
 import io.github.ydwk.ydwk.slash.SlashBuilder
+import io.github.ydwk.ydwk.voice.VoiceConnection
 import io.github.ydwk.ydwk.ws.WebSocketManager
 import io.github.ydwk.ydwk.ws.util.LoggedIn
 import java.time.Instant
@@ -456,6 +457,21 @@ interface YDWK {
      * @return The [CompletableFuture] object.
      */
     fun requestUser(id: String): CompletableFuture<User> = requestUser(id.toLong())
+
+    /**
+     * Gets the voice connection.
+     *
+     * @return The [VoiceConnection] object.
+     */
+    fun createVoiceConnection(guildId: Long): VoiceConnection?
+
+    /**
+     * Gets the voice connection.
+     *
+     * @return The [VoiceConnection] object.
+     */
+    fun createVoiceConnection(guildId: String): VoiceConnection? =
+        createVoiceConnection(guildId.toLong())
 
     /**
      * Overrides the custom to string method.

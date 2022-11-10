@@ -39,6 +39,7 @@ import io.github.ydwk.ydwk.rest.EndPoint
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 import io.github.ydwk.ydwk.util.NameAbleEntity
 import io.github.ydwk.ydwk.util.SnowFlake
+import io.github.ydwk.ydwk.voice.VoiceConnection
 import java.util.concurrent.CompletableFuture
 import kotlin.time.Duration
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -784,4 +785,11 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
         get() =
             getRoleById(idAsLong)
                 ?: throw IllegalStateException("The @everyone role is not present.")
+
+    /**
+     * Creates a new voice connection.
+     *
+     * @return The [VoiceConnection] instance.
+     */
+    val createVoiceConnection: VoiceConnection
 }

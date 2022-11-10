@@ -19,11 +19,18 @@
 package io.github.ydwk.ydwk.evm.handler.handlers.voice
 
 import com.fasterxml.jackson.databind.JsonNode
+import io.github.ydwk.ydwk.evm.event.events.voice.VoiceConnectionEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
 
 class VoiceServerUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
+
     override fun start() {
-        TODO("Not yet implemented")
+        val voiceConnection: VoiceConnectionImpl =
+            ydwk.createVoiceConnection(json["guild_id"].asText()) as VoiceConnectionImpl
+        voiceConnection.voiceEndpoint = json["endpoint"].asText()
+        voiceConnection.token = json["token"].asText()
+        ydwk.emitEvent(VoiceConnectionEvent(ydwk, voiceConnection))
     }
 }
