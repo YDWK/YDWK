@@ -40,5 +40,17 @@ enum class VoiceOpcode(val code: Int, val client: Boolean = true, val server: Bo
     /** Acknowledge a successful session resume. */
     RESUMED(9, false, true),
     /** A client has disconnected from the voice channel. */
-    CLIENT_DISCONNECT(13, false, true)
+    CLIENT_DISCONNECT(13, false, true);
+
+    companion object {
+        /**
+         * Get the [VoiceOpcode] from the given [code].
+         *
+         * @param code The code to get the [VoiceOpcode] from.
+         * @return The [VoiceOpcode] with the given [code].
+         */
+        fun from(code: Int): VoiceOpcode? {
+            return values().firstOrNull { it.code == code }
+        }
+    }
 }

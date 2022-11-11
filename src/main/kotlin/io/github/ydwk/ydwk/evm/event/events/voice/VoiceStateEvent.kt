@@ -16,17 +16,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.evm.handler.handlers.voice
+package io.github.ydwk.ydwk.evm.event.events.voice
 
-import com.fasterxml.jackson.databind.JsonNode
-import io.github.ydwk.ydwk.evm.event.events.voice.VoiceStateEvent
-import io.github.ydwk.ydwk.evm.handler.Handler
-import io.github.ydwk.ydwk.impl.YDWKImpl
-import io.github.ydwk.ydwk.impl.entities.VoiceStateImpl
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.VoiceState
+import io.github.ydwk.ydwk.evm.event.Event
 
-class VoiceStateUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override fun start() {
-        val voiceState = VoiceStateImpl(ydwk, json)
-        ydwk.emitEvent(VoiceStateEvent(ydwk, voiceState))
-    }
-}
+data class VoiceStateEvent(override val ydwk: YDWK, val voiceState: VoiceState) : Event(ydwk)

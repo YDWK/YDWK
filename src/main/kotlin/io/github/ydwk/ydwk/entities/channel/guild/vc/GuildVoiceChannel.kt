@@ -19,8 +19,24 @@
 package io.github.ydwk.ydwk.entities.channel.guild.vc
 
 import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildVoiceChannel
+import io.github.ydwk.ydwk.voice.VoiceConnection
+import java.util.concurrent.CompletableFuture
 
 interface GuildVoiceChannel : GenericGuildVoiceChannel {
+
+    /**
+     * Joins the voice channel.
+     *
+     * @param isMuted Whether the bot should be muted.
+     * @param isDeafened Whether the bot should be deafened.
+     * @return A [CompletableFuture] that completes with the [VoiceConnection] when the bot has
+     * joined the voice channel.
+     */
+    fun join(
+        isMuted: Boolean = false,
+        isDeafened: Boolean = true
+    ): CompletableFuture<VoiceConnection>
+
     /**
      * Gets the bitrate (in bits) of the voice channel
      *

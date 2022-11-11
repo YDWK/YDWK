@@ -19,11 +19,27 @@
 package io.github.ydwk.ydwk.voice.impl
 
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.VoiceState
 import io.github.ydwk.ydwk.voice.VoiceConnection
 
 class VoiceConnectionImpl(val guildId: Long, val ydwk: YDWK) : VoiceConnection {
     var token: String? = null
-    var sessionId: String? = null
+    var sessionId: String? = voiceState.sessionId
     var voiceEndpoint: String? = null
     var userId: Long? = null
+
+    override fun setDeafened(deafened: Boolean): VoiceConnection {
+        TODO("Not yet implemented")
+    }
+
+    override fun setMuted(muted: Boolean): VoiceConnection {
+        TODO("Not yet implemented")
+    }
+
+    override fun disconnect(): VoiceConnection {
+        TODO("Not yet implemented")
+    }
+
+    override val voiceState: VoiceState
+        get() = TODO("Not yet implemented")
 }

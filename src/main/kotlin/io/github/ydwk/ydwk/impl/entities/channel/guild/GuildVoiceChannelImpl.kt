@@ -23,12 +23,18 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
 import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
+import io.github.ydwk.ydwk.voice.VoiceConnection
+import java.util.concurrent.CompletableFuture
 
 open class GuildVoiceChannelImpl(
     override val ydwk: YDWK,
     override val json: JsonNode,
     override val idAsLong: Long
 ) : GuildVoiceChannel, GenericGuildVoiceChannelImpl(ydwk, json, idAsLong) {
+    override fun join(isMuted: Boolean, isDeafened: Boolean): CompletableFuture<VoiceConnection> {
+        TODO("Not yet implemented")
+    }
+
     override var bitrate: Int = json["bitrate"].asInt()
 
     override var userLimit: Int = json["user_limit"].asInt()

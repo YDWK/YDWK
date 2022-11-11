@@ -102,8 +102,16 @@ open class EndPoint {
         }
     }
 
-    enum class ChannelEndpoint(val endPoint: String) : IEnumEndpoint {
+    enum class ChannelEndpoint(private val endPoint: String) : IEnumEndpoint {
         CREATE_MESSAGE("/channels/%s/messages");
+
+        override fun getEndpoint(): String {
+            return endPoint
+        }
+    }
+
+    enum class VoiceEndpoint(private val endPoint: String) : IEnumEndpoint {
+        GET_VOICE_REGIONS("/voice/regions");
 
         override fun getEndpoint(): String {
             return endPoint

@@ -40,7 +40,6 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
     private val webSocketManager =
         ydwk.webSocketManager ?: throw IllegalStateException("WebSocketManager is null!")
     private var timesTriedToConnect = 0
-    @Volatile var resuming = false
 
     init {
         connect()
@@ -90,10 +89,43 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
 
     @Throws(Exception::class)
     override fun onConnected(websocket: WebSocket, headers: Map<String, List<String>>) {
-        if (resuming) {
+        if (voiceConnection.sessionId != null) {
             resume()
         } else {
             identify()
+        }
+    }
+
+    override fun onTextMessage(websocket: WebSocket, text: String) {
+        handleMessage(text)
+    }
+
+    private fun handleMessage(message: String) {
+        try {
+            val payload = ydwk.objectMapper.readTree(message)
+            // logger.info("Received payload: ${payload.toPrettyString()}")
+            onOpCode(payload)
+        } catch (e: Exception) {
+            logger.error("Error while handling message", e)
+        }
+    }
+
+    private fun onOpCode(payload: JsonNode) {
+        when (VoiceOpcode.from(payload.get("op").asInt())) {
+            VoiceOpcode.HELLO -> {}
+            VoiceOpcode.READY -> {
+                val data = payload.get("d")
+            }
+            VoiceOpcode.SESSION_DESCRIPTION -> {}
+            VoiceOpcode.RESUMED -> {}
+            VoiceOpcode.CLIENT_DISCONNECT -> {}
+            VoiceOpcode.HEARTBEAT_ACK -> {
+                logger.debug("Received heartbeat ack")
+            }
+            VoiceOpcode.RESUME -> {}
+            else -> {
+                // do nothing
+            }
         }
     }
 
