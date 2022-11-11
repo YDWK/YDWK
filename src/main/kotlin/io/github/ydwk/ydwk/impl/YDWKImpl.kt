@@ -433,6 +433,7 @@ class YDWKImpl(
         val ws: WebSocketManager?
         ws = WebSocketManager(this, token, intents, userStatus, activity)
         this.webSocketManager = ws.connect()
+        // this.webSocketManager!!.deleteMessageCachePast14Days()
         this.timer(Timer(), ws)
         this.token = token
     }

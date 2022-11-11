@@ -19,10 +19,7 @@
 package io.github.ydwk.ydwk.ws.voice
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.neovisionaries.ws.client.WebSocket
-import com.neovisionaries.ws.client.WebSocketAdapter
-import com.neovisionaries.ws.client.WebSocketFactory
-import com.neovisionaries.ws.client.WebSocketListener
+import com.neovisionaries.ws.client.*
 import io.github.ydwk.ydwk.YDWKInfo
 import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
 import io.github.ydwk.ydwk.ws.logging.WebsocketLogging
@@ -40,6 +37,8 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
     private val webSocketManager =
         ydwk.webSocketManager ?: throw IllegalStateException("WebSocketManager is null!")
     private var timesTriedToConnect = 0
+    @get:Synchronized @set:Synchronized var connected = false
+    private var heartbeatsMissed: Int = 0
 
     init {
         connect()
@@ -89,6 +88,7 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
 
     @Throws(Exception::class)
     override fun onConnected(websocket: WebSocket, headers: Map<String, List<String>>) {
+        connected = true
         if (voiceConnection.sessionId != null) {
             resume()
         } else {
@@ -98,6 +98,16 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
 
     override fun onTextMessage(websocket: WebSocket, text: String) {
         handleMessage(text)
+    }
+
+    @Throws(Exception::class)
+    override fun onDisconnected(
+        websocket: WebSocket,
+        serverCloseFrame: WebSocketFrame?,
+        clientCloseFrame: WebSocketFrame?,
+        closedByServer: Boolean,
+    ) {
+        connected = false
     }
 
     private fun handleMessage(message: String) {
@@ -111,11 +121,12 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
     }
 
     private fun onOpCode(payload: JsonNode) {
+        val data = payload.get("d")
         when (VoiceOpcode.from(payload.get("op").asInt())) {
-            VoiceOpcode.HELLO -> {}
-            VoiceOpcode.READY -> {
-                val data = payload.get("d")
+            VoiceOpcode.HELLO -> {
+                val heartbeatInterval = data.get("heartbeat_interval").asLong()
             }
+            VoiceOpcode.READY -> {}
             VoiceOpcode.SESSION_DESCRIPTION -> {}
             VoiceOpcode.RESUMED -> {}
             VoiceOpcode.CLIENT_DISCONNECT -> {}

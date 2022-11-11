@@ -26,6 +26,7 @@ import io.github.ydwk.ydwk.*
 import io.github.ydwk.ydwk.cache.CacheIds
 import io.github.ydwk.ydwk.entities.Bot
 import io.github.ydwk.ydwk.entities.Guild
+import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.entities.channel.GuildChannel
 import io.github.ydwk.ydwk.evm.event.events.gateway.ReadyEvent
 import io.github.ydwk.ydwk.evm.event.events.gateway.ReconnectEvent
@@ -63,19 +64,15 @@ import io.github.ydwk.ydwk.evm.handler.handlers.voice.VoiceStateUpdateHandler
 import io.github.ydwk.ydwk.evm.handler.handlers.webhook.WebhooksUpdateHandler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.BotImpl
-import io.github.ydwk.ydwk.impl.entities.MessageImpl
 import io.github.ydwk.ydwk.impl.entities.application.PartialApplicationImpl
-import io.github.ydwk.ydwk.util.convertInstantToChronoZonedDateTime
-import io.github.ydwk.ydwk.util.reverseFormatZonedDateTime
 import io.github.ydwk.ydwk.ws.logging.WebsocketLogging
 import io.github.ydwk.ydwk.ws.util.CloseCode
 import io.github.ydwk.ydwk.ws.util.EventNames
+import io.github.ydwk.ydwk.ws.util.HeartBeat
 import io.github.ydwk.ydwk.ws.util.OpCode
 import io.github.ydwk.ydwk.ws.util.OpCode.*
 import io.github.ydwk.ydwk.ws.util.impl.LoggedInImpl
 import java.io.IOException
-import java.net.Socket
-import java.net.SocketException
 import java.net.SocketTimeoutException
 import java.time.Instant
 import java.time.temporal.ChronoUnit
@@ -114,6 +111,9 @@ open class WebSocketManager(
     private var identifyTime = 0L
     private var attemptedToResume = false
     private var timesTriedToConnect = 0
+    private var heartBeat: HeartBeat =
+        HeartBeat(
+            ydwk, webSocket!!, heartbeatThread!!, scheduler, heartbeatsMissed, heartbeatStartTime)
 
     @Synchronized
     fun connect(): WebSocketManager {
@@ -397,66 +397,29 @@ open class WebSocketManager(
     }
 
     @Synchronized
-    private fun deleteMessageCachePast14Days() {
+    fun deleteMessageCachePast14Days() {
+        // timer
+        val timer = Timer()
+        timer.scheduleAtFixedRate(
+            object : TimerTask() {
+                override fun run() {
+                    val now = Instant.now()
+                    val fourteenDaysAgo = now.minus(14, ChronoUnit.DAYS)
+                    val fourteenDaysAgoEpoch = fourteenDaysAgo.epochSecond
+                    val fourteenDaysAgoEpochMilli = fourteenDaysAgoEpoch * 1000
 
-        val now = Instant.now()
-        val fourteenDaysAgo: Instant = now.minus(14, ChronoUnit.DAYS)
-        ydwk.cache.values(CacheIds.MESSAGE).forEach {
-            if (it is MessageImpl &&
-                reverseFormatZonedDateTime(it.time)
-                    .isBefore(convertInstantToChronoZonedDateTime(fourteenDaysAgo))) {
-                ydwk.cache.remove(it.id, CacheIds.MESSAGE)
-            }
-        }
-    }
-
-    private fun sendHeartbeat(heartbeatInterval: Long) {
-        try {
-            if (webSocket != null) {
-                val rawSocket: Socket = webSocket!!.socket
-                rawSocket.soTimeout =
-                    (heartbeatInterval + 10000).toInt() // setup a timeout when we miss
-            } else {
-                logger.error("WebSocket is null")
-            }
-            // heartbeats
-        } catch (ex: SocketException) {
-            logger.warn("Failed to setup timeout for socket", ex)
-        }
-
-        heartbeatThread =
-            scheduler.scheduleAtFixedRate(
-                {
-                    if (connected) {
-                        sendHeartbeat()
-                    } else {
-                        logger.info("Not sending heartbeat because not connected")
+                    val iterator = ydwk.cache.values(CacheIds.MESSAGE).iterator()
+                    while (iterator.hasNext()) {
+                        val entry = iterator.next()
+                        val message = entry as Message
+                        if (message.asTimestamp < fourteenDaysAgoEpochMilli) {
+                            ydwk.cache.remove(message.id, CacheIds.MESSAGE)
+                        }
                     }
-                },
-                0,
-                heartbeatInterval,
-                TimeUnit.MILLISECONDS)
-    }
-
-    fun sendHeartbeat() {
-        if (webSocket == null) {
-            throw IllegalStateException("WebSocket is not connected")
-        }
-
-        val s: Int? = if (seq != null) seq else null
-
-        val heartbeat: JsonNode =
-            ydwk.objectMapper.createObjectNode().put("op", HEARTBEAT.code).put("d", s)
-
-        if (heartbeatsMissed >= 2) {
-            heartbeatsMissed = 0
-            logger.warn("Heartbeat missed, will attempt to reconnect")
-            sendCloseCode(CloseCode.MISSED_HEARTBEAT)
-        } else {
-            heartbeatsMissed += 1
-            webSocket!!.sendText(heartbeat.toString())
-            heartbeatStartTime = System.currentTimeMillis()
-        }
+                }
+            },
+            0,
+            1000 * 60 * 60 * 24)
     }
 
     fun sendVoiceStateUpdate(
