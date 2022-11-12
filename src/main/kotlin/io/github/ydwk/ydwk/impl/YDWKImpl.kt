@@ -79,6 +79,7 @@ class YDWKImpl(
     private var token: String? = null,
     private var guildIdList: MutableList<String> = mutableListOf(),
     var applicationId: String? = null,
+    var voiceConnection: MutableMap<Long, VoiceConnection> = mutableMapOf(),
 ) : YDWK {
     override val defaultScheduledExecutorService: ScheduledExecutorService =
         Executors.newScheduledThreadPool(1)
@@ -273,6 +274,28 @@ class YDWKImpl(
 
     override fun createVoiceConnection(guildId: Long): VoiceConnection? {
         return VoiceConnectionImpl(guildId, this)
+    }
+
+    override fun setVoiceConnection(guildId: Long, voiceConnection: VoiceConnection) {
+        this.voiceConnection[guildId] = voiceConnection
+    }
+
+    override fun getVoiceConnectionById(guildId: Long): VoiceConnection? {
+        return this.voiceConnection[guildId]
+    }
+
+    override fun removeVoiceConnectionById(guildId: Long) {
+        this.voiceConnection.remove(guildId)
+    }
+
+    override fun setPendingVoiceConnection(
+        guildId: Long,
+        voiceConnection: VoiceConnection,
+        muted: Boolean,
+        deafened: Boolean,
+        future: CompletableFuture<VoiceConnection>
+    ) {
+        TODO("Not yet implemented")
     }
 
     override fun toString(): String {

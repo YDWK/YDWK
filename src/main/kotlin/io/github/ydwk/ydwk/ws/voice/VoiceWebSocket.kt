@@ -24,6 +24,7 @@ import io.github.ydwk.ydwk.YDWKInfo
 import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
 import io.github.ydwk.ydwk.ws.logging.WebsocketLogging
 import io.github.ydwk.ydwk.ws.util.HeartBeat
+import io.github.ydwk.ydwk.ws.voice.util.VoiceCloseEventCode
 import io.github.ydwk.ydwk.ws.voice.util.VoiceOpcode
 import io.github.ydwk.ydwk.ws.voice.util.findIp
 import java.io.IOException
@@ -153,6 +154,9 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
                 logger.debug("Received $opCode - Session Description")
                 this.secretKey = data.get("secret_key").binaryValue()
                 sendSpeaking()
+                startSendingAudio()
+                // indicate that the connection has been established
+                voiceConnection.future.complete(voiceConnection)
             }
             VoiceOpcode.RESUMED -> {
                 logger.debug("Received $opCode - RESUMED")
@@ -165,11 +169,19 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
                 logger.debug("Received $opCode - HEARTBEAT_ACK")
                 heartbeatsMissed = 0
             }
-            VoiceOpcode.RESUME -> {}
+            VoiceOpcode.RESUME -> {
+                logger.debug("Received $opCode - RESUME")
+                sendCloseCode(VoiceCloseEventCode.RESUMED)
+            }
             else -> {
                 // do nothing
             }
         }
+    }
+
+    private fun sendCloseCode(code: VoiceCloseEventCode) {
+        checkNotNull(webSocket) { "WebSocket is null" }
+        webSocket!!.sendClose(code.getCode(), code.getReason())
     }
 
     private fun resume() {
@@ -223,5 +235,9 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
         speakingData.put("ssrc", ssrc)
         speakingPayload.set<JsonNode>("d", speakingData)
         webSocket?.sendText(speakingPayload.toString())
+    }
+
+    private fun startSendingAudio() {
+        TODO()
     }
 }

@@ -475,6 +475,56 @@ interface YDWK {
         createVoiceConnection(guildId.toLong())
 
     /**
+     * Sets the voice connection.
+     *
+     * @param guildId The id of the guild.
+     * @param voiceConnection The voice connection.
+     */
+    fun setVoiceConnection(guildId: Long, voiceConnection: VoiceConnection)
+
+    /**
+     * Sets the voice connection.
+     *
+     * @param guildId The id of the guild.
+     * @param voiceConnection The voice connection.
+     */
+    fun setVoiceConnection(guildId: String, voiceConnection: VoiceConnection) =
+        setVoiceConnection(guildId.toLong(), voiceConnection)
+
+    /**
+     * Gets the voice connection.
+     *
+     * @param guildId The id of the guild.
+     * @return The [VoiceConnection] object.
+     */
+    fun getVoiceConnectionById(guildId: Long): VoiceConnection?
+
+    /**
+     * Removes the voice connection.
+     *
+     * @param guildId The id of the guild.
+     */
+    fun removeVoiceConnectionById(guildId: Long)
+
+    /**
+     * Sets the voice connection.
+     *
+     * @param guildId The id of the guild.
+     * @param muted Whether the bot is muted or not.
+     * @param deafened Whether the bot is deafened or not.
+     * @param future The future to complete when the operation is done.
+     * @param voiceConnection The voice connection.
+     * @return The [VoiceConnection] object.
+     */
+    fun setPendingVoiceConnection(
+        guildId: Long,
+        voiceConnection: VoiceConnection,
+        muted: Boolean,
+        deafened: Boolean,
+        future: CompletableFuture<VoiceConnection>
+    )
+
+    /**
      * Gets the default ScheduledExecutorService.
      *
      * @return The [ScheduledExecutorService] object.

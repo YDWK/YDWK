@@ -42,9 +42,12 @@ import io.github.ydwk.ydwk.util.GetterSnowFlake
 import io.github.ydwk.ydwk.voice.VoiceConnection
 import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
 import java.util.concurrent.CompletableFuture
+import java.util.concurrent.locks.ReentrantLock
 
 class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override val idAsLong: Long) :
     Guild {
+    private val audioConnectionLock = ReentrantLock()
+
     override var icon: String? = if (json.hasNonNull("icon")) json["icon"].asText() else null
 
     override var splash: String? = if (json.hasNonNull("splash")) json["splash"].asText() else null
@@ -205,7 +208,43 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
     override val createVoiceConnection: VoiceConnection
         get() = VoiceConnectionImpl(this.idAsLong, ydwk)
 
+    override val voiceConnection: VoiceConnection?
+        get() = ydwk.getVoiceConnectionById(this.idAsLong)
+
     override var name: String = json["name"].asText()
+
+    fun setPendingVoiceConnection(
+        voiceConnection: VoiceConnection,
+        isMuted: Boolean,
+        isDeafened: Boolean,
+        future: CompletableFuture<VoiceConnection>
+    ) {
+        audioConnectionLock.lock()
+        try {
+            ydwk.setPendingVoiceConnection(
+                this.idAsLong, voiceConnection, isMuted, isDeafened, future)
+        } finally {
+            audioConnectionLock.unlock()
+        }
+    }
+
+    fun setVoiceConnection(connection: VoiceConnectionImpl) {
+        audioConnectionLock.lock()
+        try {
+            ydwk.setVoiceConnection(this.idAsLong, connection)
+        } finally {
+            audioConnectionLock.unlock()
+        }
+    }
+
+    fun removeVoiceConnection() {
+        audioConnectionLock.lock()
+        try {
+            ydwk.removeVoiceConnectionById(this.idAsLong)
+        } finally {
+            audioConnectionLock.unlock()
+        }
+    }
 
     override fun toString(): String {
         return EntityToStringBuilder(ydwk, this).name(this.name).toString()

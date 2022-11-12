@@ -35,7 +35,8 @@ enum class VoiceCloseEventCode(private val code: Int, private val reason: String
         "Channel was deleted, you were kicked, voice server changed, or the main gateway session was dropped. Should not reconnect."),
     VOICE_SERVER_CRASHED(4015, "The server crashed. Our bad! Try resuming."),
     MISSED_HEARTBEAT(4997, "You missed too many heartbeats, reconnecting."),
-    UNKNOWN_ENCRYPTION_MODE(4016, "You sent an invalid encoding for the voice gateway.");
+    UNKNOWN_ENCRYPTION_MODE(4016, "You sent an invalid encoding for the voice gateway."),
+    RESUMED(4999, "A request to resume the session was sent.");
 
     fun getCode(): Int {
         return code

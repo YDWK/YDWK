@@ -792,4 +792,11 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @return The [VoiceConnection] instance.
      */
     val createVoiceConnection: VoiceConnection
+
+    /**
+     * Gets a voice connection if it exists.
+     *
+     * @return The [VoiceConnection] instance, or null if it doesn't exist.
+     */
+    val voiceConnection: VoiceConnection?
 }

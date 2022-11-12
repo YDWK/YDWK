@@ -23,8 +23,13 @@ import io.github.ydwk.ydwk.entities.VoiceState
 import io.github.ydwk.ydwk.voice.VoiceConnection
 import io.github.ydwk.ydwk.ws.voice.util.SpeakingFlag
 import java.util.*
+import java.util.concurrent.CompletableFuture
 
-class VoiceConnectionImpl(val guildId: Long, val ydwk: YDWK) : VoiceConnection {
+class VoiceConnectionImpl(
+    val guildId: Long,
+    val ydwk: YDWK,
+    val future: CompletableFuture<VoiceConnectionImpl>
+) : VoiceConnection {
     var token: String? = null
     var sessionId: String? = voiceState.sessionId
     var voiceEndpoint: String? = null
