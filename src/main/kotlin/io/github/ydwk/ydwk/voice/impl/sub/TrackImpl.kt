@@ -16,28 +16,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.voice.sub
+package io.github.ydwk.ydwk.voice.impl.sub
 
-interface Track {
+import io.github.ydwk.ydwk.voice.sub.Track
 
-    /**
-     * Gets the title of the track.
-     *
-     * @return The title of the track.
-     */
-    val title: String
+class TrackImpl : Track {
+    override val title: String
+        get() = TODO("Not yet implemented")
 
-    /**
-     * Gets the author of the track.
-     *
-     * @return The author of the track.
-     */
-    val author: String
+    override val author: String
+        get() = TODO("Not yet implemented")
 
-    /**
-     * Gets the duration of the track.
-     *
-     * @return The duration of the track.
-     */
-    val duration: Long
+    override val duration: Long
+        get() = TODO("Not yet implemented")
 }

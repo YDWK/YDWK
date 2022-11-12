@@ -20,17 +20,19 @@ package io.github.ydwk.ydwk.voice.impl
 
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.VoiceState
+import io.github.ydwk.ydwk.util.BlockingFactor
 import io.github.ydwk.ydwk.voice.VoiceConnection
+import io.github.ydwk.ydwk.voice.VoiceLocation
 import io.github.ydwk.ydwk.ws.voice.util.SpeakingFlag
 import java.util.*
 import java.util.concurrent.CompletableFuture
 
-class VoiceConnectionImpl(
+data class VoiceConnectionImpl(
     val guildId: Long,
     val ydwk: YDWK,
     val future: CompletableFuture<VoiceConnection>,
-    isMuted: Boolean,
-    isDeafened: Boolean
+    var isMuted: Boolean,
+    var isDeafened: Boolean
 ) : VoiceConnection {
     var token: String? = null
     var sessionId: String? = voiceState.sessionId
@@ -38,13 +40,28 @@ class VoiceConnectionImpl(
     var userId: Long? = null
     var channelId: Long? = null
     override val speakingFlags: EnumSet<SpeakingFlag> = EnumSet.noneOf(SpeakingFlag::class.java)
+    private val connectLocation: BlockingFactor<VoiceLocation> = BlockingFactor()
+    val videoLocationBlocked = connectLocation.get()
+    val removeVoiceLocation = connectLocation.set(null)
 
     override fun setDeafened(deafened: Boolean): VoiceConnection {
-        TODO("Not yet implemented")
+        this.isDeafened = deafened
+        ydwk.webSocketManager?.sendVoiceStateUpdate(
+            ydwk.getGuildById(guildId),
+            if (channelId != null) ydwk.getGuildVoiceChannelById(channelId!!) else null,
+            isDeafened,
+            isMuted)
+        return this
     }
 
     override fun setMuted(muted: Boolean): VoiceConnection {
-        TODO("Not yet implemented")
+        this.isMuted = muted
+        ydwk.webSocketManager?.sendVoiceStateUpdate(
+            ydwk.getGuildById(guildId),
+            if (channelId != null) ydwk.getGuildVoiceChannelById(channelId!!) else null,
+            isDeafened,
+            isMuted)
+        return this
     }
 
     override fun isPrioritySpeaker(): Boolean {
@@ -82,5 +99,5 @@ class VoiceConnectionImpl(
     }
 
     override val voiceState: VoiceState
-        get() = TODO("Not yet implemented")
+        get() = ydwk.getPendingVoiceConnectionById(guildId)!!.voiceState
 }

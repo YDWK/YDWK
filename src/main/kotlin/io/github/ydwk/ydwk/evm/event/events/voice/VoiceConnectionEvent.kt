@@ -19,8 +19,7 @@
 package io.github.ydwk.ydwk.evm.event.events.voice
 
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.VoiceState
 import io.github.ydwk.ydwk.evm.event.Event
-import io.github.ydwk.ydwk.voice.VoiceConnection
 
-data class VoiceConnectionEvent(override val ydwk: YDWK, val voiceConnection: VoiceConnection) :
-    Event(ydwk)
+data class VoiceConnectionEvent(override val ydwk: YDWK, val voiceState: VoiceState) : Event(ydwk)

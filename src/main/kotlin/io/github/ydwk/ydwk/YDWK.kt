@@ -492,7 +492,7 @@ interface YDWK {
     fun removeVoiceConnectionById(guildId: Long)
 
     /**
-     * Sets the voice connection.
+     * Sets the pending voice connection.
      *
      * @param guildId The id of the guild.
      * @param voiceConnection The voice connection.
@@ -502,6 +502,21 @@ interface YDWK {
         guildId: Long,
         voiceConnection: VoiceConnection,
     )
+
+    /**
+     * Gets the pending voice connection.
+     *
+     * @param guildId The id of the guild.
+     * @return The [VoiceConnection] object.
+     */
+    fun getPendingVoiceConnectionById(guildId: Long): VoiceConnection?
+
+    /**
+     * Removes the pending voice connection.
+     *
+     * @param guildId The id of the guild.
+     */
+    fun removePendingVoiceConnectionById(guildId: Long)
 
     /**
      * Gets the default ScheduledExecutorService.

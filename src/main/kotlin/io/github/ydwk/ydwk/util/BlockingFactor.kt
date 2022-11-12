@@ -16,28 +16,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.voice.sub
+package io.github.ydwk.ydwk.util
 
-interface Track {
+import java.util.concurrent.locks.ReentrantLock
 
-    /**
-     * Gets the title of the track.
-     *
-     * @return The title of the track.
-     */
-    val title: String
+class BlockingFactor<V> {
+    private val lock = ReentrantLock()
+    private var value: V? = null
 
-    /**
-     * Gets the author of the track.
-     *
-     * @return The author of the track.
-     */
-    val author: String
+    fun set(value: V?) {
+        lock.lock()
+        this.value = value
+        lock.unlock()
+    }
 
-    /**
-     * Gets the duration of the track.
-     *
-     * @return The duration of the track.
-     */
-    val duration: Long
+    fun get(): V? {
+        lock.lock()
+        val value = this.value
+        lock.unlock()
+        return value
+    }
+
+    fun clear() {
+        lock.lock()
+        this.value = null
+        lock.unlock()
+    }
 }

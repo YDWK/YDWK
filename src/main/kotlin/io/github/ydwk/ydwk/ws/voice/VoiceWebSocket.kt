@@ -288,7 +288,18 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
         val guildChannel = ydwk.getGuildVoiceChannelById(voiceConnection.channelId ?: return)
         ydwk.defaultScheduledExecutorService.submit {
             try {
-               TODO()
+                while (attemptToSendAudio) {
+                    val voiceLocation = voiceConnection.videoLocationBlocked
+                    if (voiceLocation == null) {
+                        logger.error("Voice location is null")
+                        return@submit
+                    }
+
+                    if (voiceLocation.isFinished()) {
+                        voiceConnection.removeVoiceLocation
+                    }
+                }
+                TODO()
             } catch (e: Exception) {
                 logger.error("Error while sending audio", e)
             }
