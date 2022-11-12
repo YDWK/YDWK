@@ -112,8 +112,7 @@ open class WebSocketManager(
     private var attemptedToResume = false
     private var timesTriedToConnect = 0
     private var heartBeat: HeartBeat =
-        HeartBeat(
-            ydwk, webSocket!!, heartbeatThread!!, scheduler, heartbeatsMissed, heartbeatStartTime)
+        HeartBeat(ydwk, webSocket!!, heartbeatsMissed, heartbeatStartTime)
 
     @Synchronized
     fun connect(): WebSocketManager {
@@ -344,7 +343,14 @@ open class WebSocketManager(
             }
             HEARTBEAT -> {
                 logger.debug("Received $opCode")
-                sendHeartbeat()
+                heartBeat.sendHeartBeat(
+                    ydwk.objectMapper
+                        .createObjectNode()
+                        .put("op", OpCode.HEARTBEAT.code)
+                        .put("d", seq),
+                    CloseCode.MISSED_HEARTBEAT.code(),
+                    CloseCode.MISSED_HEARTBEAT.getReason())
+                heartbeatsMissed = heartBeat.heartbeatsMissed
             }
             RECONNECT -> {
                 logger.debug("Received $opCode")
@@ -384,7 +390,8 @@ open class WebSocketManager(
             HELLO -> {
                 logger.debug("Received $opCode")
                 val heartbeatInterval: Long = d.get("heartbeat_interval").asLong()
-                sendHeartbeat(heartbeatInterval)
+                heartBeat.startGateWayHeartbeat(heartbeatInterval, connected, seq)
+                heartbeatsMissed = heartBeat.heartbeatsMissed
             }
             HEARTBEAT_ACK -> {
                 logger.debug("Heartbeat acknowledged")

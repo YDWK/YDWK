@@ -58,8 +58,9 @@ import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
 import io.github.ydwk.ydwk.ws.WebSocketManager
 import io.github.ydwk.ydwk.ws.util.LoggedIn
 import java.time.Instant
-import java.util.*
 import java.util.concurrent.CompletableFuture
+import java.util.concurrent.Executors
+import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 import okhttp3.OkHttpClient
@@ -79,6 +80,8 @@ class YDWKImpl(
     private var guildIdList: MutableList<String> = mutableListOf(),
     var applicationId: String? = null,
 ) : YDWK {
+    override val defaultScheduledExecutorService: ScheduledExecutorService =
+        Executors.newScheduledThreadPool(1)
 
     override val objectNode: ObjectNode
         get() = JsonNodeFactory.instance.objectNode()
@@ -434,20 +437,7 @@ class YDWKImpl(
         ws = WebSocketManager(this, token, intents, userStatus, activity)
         this.webSocketManager = ws.connect()
         // this.webSocketManager!!.deleteMessageCachePast14Days()
-        this.timer(Timer(), ws)
         this.token = token
-    }
-
-    @Synchronized
-    private fun timer(timer: Timer, ws: WebSocketManager) {
-        timer.scheduleAtFixedRate(
-            object : TimerTask() {
-                override fun run() {
-                    ws.sendHeartbeat()
-                }
-            },
-            0,
-            14 * 24 * 60 * 60 * 1000)
     }
 
     /**

@@ -32,11 +32,11 @@ import org.slf4j.LoggerFactory
 class HeartBeat(
     private val ydwk: YDWK,
     private val webSocket: WebSocket,
-    private var heartbeatThread: Future<*>,
-    val scheduler: ScheduledExecutorService,
     var heartbeatsMissed: Int,
-    var heartbeatStartTime: Long
+    private var heartbeatStartTime: Long
 ) {
+    private var heartbeatThread: Future<*>? = null
+    private val scheduler: ScheduledExecutorService = ydwk.defaultScheduledExecutorService
     private val logger: Logger = LoggerFactory.getLogger(HeartBeat::class.java)
 
     public fun startGateWayHeartbeat(heartbeatInterval: Long, connected: Boolean, seq: Int?) {
@@ -49,11 +49,17 @@ class HeartBeat(
             logger.warn("Failed to setup timeout for socket", ex)
         }
 
+        val heartbeat: JsonNode =
+            ydwk.objectMapper.createObjectNode().put("op", OpCode.HEARTBEAT.code).put("d", seq)
+
         heartbeatThread =
             scheduler.scheduleAtFixedRate(
                 {
                     if (connected) {
-                        sendGateWayHeartbeat(seq)
+                        sendHeartBeat(
+                            heartbeat,
+                            CloseCode.MISSED_HEARTBEAT.code(),
+                            CloseCode.MISSED_HEARTBEAT.getReason())
                     } else {
                         logger.info("Not sending heartbeat because not connected")
                     }
@@ -63,20 +69,15 @@ class HeartBeat(
                 TimeUnit.MILLISECONDS)
     }
 
-    private fun sendGateWayHeartbeat(seq: Int?) {
-        val s: Int? = seq
-
-        val heartbeat: JsonNode =
-            ydwk.objectMapper.createObjectNode().put("op", OpCode.HEARTBEAT.code).put("d", s)
+    fun sendHeartBeat(json: JsonNode, closeCode: Int, closeReason: String) {
 
         if (heartbeatsMissed >= 2) {
             heartbeatsMissed = 0
             logger.warn("Heartbeat missed, will attempt to reconnect")
-            webSocket.sendClose(
-                CloseCode.MISSED_HEARTBEAT.code(), CloseCode.MISSED_HEARTBEAT.getReason())
+            webSocket.sendClose(closeCode, closeReason)
         } else {
             heartbeatsMissed += 1
-            webSocket.sendText(heartbeat.toString())
+            webSocket.sendText(json.toString())
             heartbeatStartTime = System.currentTimeMillis()
         }
     }

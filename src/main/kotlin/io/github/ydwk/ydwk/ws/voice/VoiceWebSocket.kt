@@ -23,6 +23,7 @@ import com.neovisionaries.ws.client.*
 import io.github.ydwk.ydwk.YDWKInfo
 import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
 import io.github.ydwk.ydwk.ws.logging.WebsocketLogging
+import io.github.ydwk.ydwk.ws.util.HeartBeat
 import io.github.ydwk.ydwk.ws.voice.util.VoiceOpcode
 import java.io.IOException
 import java.util.concurrent.TimeUnit
@@ -39,6 +40,9 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
     private var timesTriedToConnect = 0
     @get:Synchronized @set:Synchronized var connected = false
     private var heartbeatsMissed: Int = 0
+    private var heartbeatStartTime: Long = 0
+    private var heartBeat: HeartBeat =
+        HeartBeat(ydwk, webSocket!!, heartbeatsMissed, heartbeatStartTime)
 
     init {
         connect()

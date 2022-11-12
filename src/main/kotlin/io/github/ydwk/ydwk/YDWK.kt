@@ -45,6 +45,7 @@ import io.github.ydwk.ydwk.ws.WebSocketManager
 import io.github.ydwk.ydwk.ws.util.LoggedIn
 import java.time.Instant
 import java.util.concurrent.CompletableFuture
+import java.util.concurrent.ScheduledExecutorService
 
 interface YDWK {
 
@@ -472,6 +473,13 @@ interface YDWK {
      */
     fun createVoiceConnection(guildId: String): VoiceConnection? =
         createVoiceConnection(guildId.toLong())
+
+    /**
+     * Gets the default ScheduledExecutorService.
+     *
+     * @return The [ScheduledExecutorService] object.
+     */
+    val defaultScheduledExecutorService: ScheduledExecutorService
 
     /**
      * Overrides the custom to string method.
