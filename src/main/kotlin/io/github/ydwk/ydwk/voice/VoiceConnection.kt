@@ -19,6 +19,8 @@
 package io.github.ydwk.ydwk.voice
 
 import io.github.ydwk.ydwk.entities.VoiceState
+import io.github.ydwk.ydwk.ws.voice.util.SpeakingFlag
+import java.util.*
 
 interface VoiceConnection {
 
@@ -37,6 +39,43 @@ interface VoiceConnection {
      * @return The [VoiceConnection] object.
      */
     fun setMuted(muted: Boolean): VoiceConnection
+
+    /**
+     * Whether the bot is priority speaker.
+     *
+     * @return Whether the bot is priority speaker.
+     */
+    fun isPrioritySpeaker(): Boolean
+
+    /**
+     * Set as the priority speaker.
+     *
+     * @param priority Whether the bot should be the priority speaker.
+     * @return The [VoiceConnection] object.
+     */
+    fun setPriority(priority: Boolean): VoiceConnection
+
+    /**
+     * Whether the bot is currently speaking.
+     *
+     * @return Whether the bot is currently speaking.
+     */
+    fun isSpeaking(): Boolean
+
+    /**
+     * Sets the bot as speaking.
+     *
+     * @param speaking Whether the bot should be speaking.
+     * @return The [VoiceConnection] object.
+     */
+    fun setSpeaking(speaking: Boolean): VoiceConnection
+
+    /**
+     * Gets the speaking flags.
+     *
+     * @return The speaking flags.
+     */
+    val speakingFlags: EnumSet<SpeakingFlag>
 
     /**
      * Disconnects the bot from the voice channel.

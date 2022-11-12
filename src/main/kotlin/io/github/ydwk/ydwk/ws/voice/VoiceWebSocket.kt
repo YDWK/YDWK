@@ -48,6 +48,7 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
     private var port: Int? = null
     private var ssrc: Int? = null
     private var modes: List<String>? = null
+    private var secretKey: ByteArray? = null
 
     init {
         connect()
@@ -150,6 +151,8 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
             }
             VoiceOpcode.SESSION_DESCRIPTION -> {
                 logger.debug("Received $opCode - Session Description")
+                this.secretKey = data.get("secret_key").binaryValue()
+                sendSpeaking()
             }
             VoiceOpcode.RESUMED -> {
                 logger.debug("Received $opCode - RESUMED")
@@ -203,5 +206,22 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
         selectProtocolData.put("mode", "xsalsa20_poly1305")
         selectProtocolPayload.set<JsonNode>("d", selectProtocolData)
         webSocket?.sendText(selectProtocolPayload.toString())
+    }
+
+    private fun sendSpeaking() {
+        val speakingPayload = ydwk.objectNode
+        speakingPayload.put("op", VoiceOpcode.SPEAKING.code)
+        val speakingData = ydwk.objectNode
+
+        val speakFlags: Long = 0
+        for (speakFlag in voiceConnection.speakingFlags) {
+            speakFlags.or(speakFlag.getValue())
+        }
+
+        speakingData.put("speaking", speakFlags)
+        speakingData.put("delay", 0)
+        speakingData.put("ssrc", ssrc)
+        speakingPayload.set<JsonNode>("d", speakingData)
+        webSocket?.sendText(speakingPayload.toString())
     }
 }
