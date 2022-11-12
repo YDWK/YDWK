@@ -21,10 +21,13 @@ package io.github.ydwk.ydwk.ws.util
 import com.fasterxml.jackson.databind.JsonNode
 import com.neovisionaries.ws.client.WebSocket
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.ws.voice.util.VoiceCloseEventCode
+import io.github.ydwk.ydwk.ws.voice.util.VoiceOpcode
 import java.net.Socket
 import java.net.SocketException
 import java.util.concurrent.Future
 import java.util.concurrent.ScheduledExecutorService
+import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -40,6 +43,36 @@ class HeartBeat(
     private val logger: Logger = LoggerFactory.getLogger(HeartBeat::class.java)
 
     public fun startGateWayHeartbeat(heartbeatInterval: Long, connected: Boolean, seq: Int?) {
+        tryWebSocket(heartbeatInterval)
+
+        val heartbeat: JsonNode =
+            ydwk.objectMapper.createObjectNode().put("op", OpCode.HEARTBEAT.code).put("d", seq)
+
+        heartbeatThread =
+            heartbeatThread(
+                heartbeatInterval,
+                connected,
+                heartbeat,
+                CloseCode.MISSED_HEARTBEAT.code(),
+                CloseCode.MISSED_HEARTBEAT.getReason())
+    }
+
+    fun startVoiceHeartbeat(heartbeatInterval: Long, connected: Boolean) {
+        tryWebSocket(heartbeatInterval)
+
+        val heartbeat: JsonNode =
+            ydwk.objectMapper.createObjectNode().put("op", VoiceOpcode.HEARTBEAT.code)
+
+        heartbeatThread =
+            heartbeatThread(
+                heartbeatInterval,
+                connected,
+                heartbeat,
+                VoiceCloseEventCode.MISSED_HEARTBEAT.getCode(),
+                VoiceCloseEventCode.MISSED_HEARTBEAT.getReason())
+    }
+
+    private fun tryWebSocket(heartbeatInterval: Long) {
         try {
             val rawSocket: Socket = webSocket.socket
             rawSocket.soTimeout =
@@ -48,28 +81,29 @@ class HeartBeat(
         } catch (ex: SocketException) {
             logger.warn("Failed to setup timeout for socket", ex)
         }
-
-        val heartbeat: JsonNode =
-            ydwk.objectMapper.createObjectNode().put("op", OpCode.HEARTBEAT.code).put("d", seq)
-
-        heartbeatThread =
-            scheduler.scheduleAtFixedRate(
-                {
-                    if (connected) {
-                        sendHeartBeat(
-                            heartbeat,
-                            CloseCode.MISSED_HEARTBEAT.code(),
-                            CloseCode.MISSED_HEARTBEAT.getReason())
-                    } else {
-                        logger.info("Not sending heartbeat because not connected")
-                    }
-                },
-                0,
-                heartbeatInterval,
-                TimeUnit.MILLISECONDS)
     }
 
-    fun sendHeartBeat(json: JsonNode, closeCode: Int, closeReason: String) {
+    private fun heartbeatThread(
+        heartbeatInterval: Long,
+        connected: Boolean,
+        heartbeat: JsonNode,
+        closeCode: Int,
+        closeReason: String
+    ): ScheduledFuture<*> {
+        return scheduler.scheduleAtFixedRate(
+            {
+                if (connected) {
+                    sendHeartBeat(heartbeat, closeCode, closeReason)
+                } else {
+                    logger.info("Not sending heartbeat because not connected")
+                }
+            },
+            0,
+            heartbeatInterval,
+            TimeUnit.MILLISECONDS)
+    }
+
+    private fun sendHeartBeat(json: JsonNode, closeCode: Int, closeReason: String) {
 
         if (heartbeatsMissed >= 2) {
             heartbeatsMissed = 0

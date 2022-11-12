@@ -25,6 +25,7 @@ import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
 import io.github.ydwk.ydwk.ws.logging.WebsocketLogging
 import io.github.ydwk.ydwk.ws.util.HeartBeat
 import io.github.ydwk.ydwk.ws.voice.util.VoiceOpcode
+import io.github.ydwk.ydwk.ws.voice.util.findIp
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 import org.slf4j.LoggerFactory
@@ -43,6 +44,10 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
     private var heartbeatStartTime: Long = 0
     private var heartBeat: HeartBeat =
         HeartBeat(ydwk, webSocket!!, heartbeatsMissed, heartbeatStartTime)
+    private var ip: String? = null
+    private var port: Int? = null
+    private var ssrc: Int? = null
+    private var modes: List<String>? = null
 
     init {
         connect()
@@ -126,16 +131,36 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
 
     private fun onOpCode(payload: JsonNode) {
         val data = payload.get("d")
-        when (VoiceOpcode.from(payload.get("op").asInt())) {
+        val opCode = payload.get("op").asInt()
+        when (VoiceOpcode.from(opCode)) {
             VoiceOpcode.HELLO -> {
+                logger.debug("Received $opCode - HELLO")
                 val heartbeatInterval = data.get("heartbeat_interval").asLong()
+                heartBeat.startVoiceHeartbeat(heartbeatInterval, connected)
+                heartbeatsMissed = heartBeat.heartbeatsMissed
             }
-            VoiceOpcode.READY -> {}
-            VoiceOpcode.SESSION_DESCRIPTION -> {}
-            VoiceOpcode.RESUMED -> {}
-            VoiceOpcode.CLIENT_DISCONNECT -> {}
+            VoiceOpcode.READY -> {
+                logger.debug("Received $opCode - READY")
+                this.ssrc = data.get("ssrc").asInt()
+                this.port = data.get("port").asInt()
+                this.ip = data.get("ip").asText()
+                this.modes = data.get("modes").toList().map { it.asText() }
+                onSelectProtocol()
+                Thread.sleep(1000)
+            }
+            VoiceOpcode.SESSION_DESCRIPTION -> {
+                logger.debug("Received $opCode - Session Description")
+            }
+            VoiceOpcode.RESUMED -> {
+                logger.debug("Received $opCode - RESUMED")
+                logger.info("Successfully resumed voice connection")
+            }
+            VoiceOpcode.CLIENT_DISCONNECT -> {
+                logger.debug("Received $opCode - Client disconnected")
+            }
             VoiceOpcode.HEARTBEAT_ACK -> {
-                logger.debug("Received heartbeat ack")
+                logger.debug("Received $opCode - HEARTBEAT_ACK")
+                heartbeatsMissed = 0
             }
             VoiceOpcode.RESUME -> {}
             else -> {
@@ -165,5 +190,18 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
         identifyData.put("token", voiceConnection.token)
         identifyPayload.set<JsonNode>("d", identifyData)
         webSocket?.sendText(identifyPayload.toString())
+    }
+
+    private fun onSelectProtocol() {
+        val address = findIp(ip, port, ssrc)
+        val selectProtocolPayload = ydwk.objectNode
+        selectProtocolPayload.put("op", VoiceOpcode.SELECT_PROTOCOL.code)
+        val selectProtocolData = ydwk.objectNode
+        selectProtocolData.put("protocol", "udp")
+        selectProtocolData.put("data", address.hostString)
+        selectProtocolData.put("port", address.port)
+        selectProtocolData.put("mode", "xsalsa20_poly1305")
+        selectProtocolPayload.set<JsonNode>("d", selectProtocolData)
+        webSocket?.sendText(selectProtocolPayload.toString())
     }
 }

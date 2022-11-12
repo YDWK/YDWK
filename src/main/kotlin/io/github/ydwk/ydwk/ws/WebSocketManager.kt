@@ -341,23 +341,12 @@ open class WebSocketManager(
                 val event: String = rawJson.get("t").asText()
                 onEventType(event, d)
             }
-            HEARTBEAT -> {
-                logger.debug("Received $opCode")
-                heartBeat.sendHeartBeat(
-                    ydwk.objectMapper
-                        .createObjectNode()
-                        .put("op", OpCode.HEARTBEAT.code)
-                        .put("d", seq),
-                    CloseCode.MISSED_HEARTBEAT.code(),
-                    CloseCode.MISSED_HEARTBEAT.getReason())
-                heartbeatsMissed = heartBeat.heartbeatsMissed
-            }
             RECONNECT -> {
-                logger.debug("Received $opCode")
+                logger.debug("Received $opCode - RECONNECT")
                 sendCloseCode(CloseCode.RECONNECT)
             }
             INVALID_SESSION -> {
-                logger.debug("Received $opCode")
+                logger.debug("Received $opCode - INVALID_SESSION")
                 identifyRateLimit =
                     identifyRateLimit && System.currentTimeMillis() - identifyTime < 5000
 
@@ -388,17 +377,17 @@ open class WebSocketManager(
                 sendCloseCode(CloseCode.INVALID_SESSION)
             }
             HELLO -> {
-                logger.debug("Received $opCode")
+                logger.debug("Received $opCode - HELLO")
                 val heartbeatInterval: Long = d.get("heartbeat_interval").asLong()
                 heartBeat.startGateWayHeartbeat(heartbeatInterval, connected, seq)
                 heartbeatsMissed = heartBeat.heartbeatsMissed
             }
             HEARTBEAT_ACK -> {
-                logger.debug("Heartbeat acknowledged")
+                logger.debug("Received $opCode - HEARTBEAT_ACK")
                 heartbeatsMissed = 0
             }
             else -> {
-                logger.error("Unknown opcode: $opCode")
+                // do nothing
             }
         }
     }
