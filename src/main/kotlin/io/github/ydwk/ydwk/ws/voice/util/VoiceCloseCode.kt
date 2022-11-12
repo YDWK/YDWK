@@ -18,11 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.ws.voice.util
 
-enum class VoiceCloseEventCode(
-    private val code: Int,
-    private val reason: String,
-    val isReconnect: Boolean = false
-) {
+enum class VoiceCloseCode(val code: Int, val reason: String, val isReconnect: Boolean = false) {
     UNKNOWN_OPCODE(4001, "You sent an invalid opcode."),
     DECODE_ERROR(4002, "You sent an invalid payload in your identifying to the Gateway."),
     NOT_AUTHENTICATED(4003, "You sent a payload prior to identifying."),
@@ -45,18 +41,10 @@ enum class VoiceCloseEventCode(
     UNKNOWN_ENCRYPTION_MODE(4016, "You sent an invalid encoding for the voice gateway."),
     RESUMED(4999, "A request to resume the session was sent.", true);
 
-    fun getCode(): Int {
-        return code
-    }
-
-    fun getReason(): String {
-        return reason
-    }
-
     companion object {
-        fun fromCode(code: Int): VoiceCloseEventCode {
+        fun fromCode(code: Int): VoiceCloseCode {
             for (value in values()) {
-                if (value.getCode() == code) {
+                if (value.code == code) {
                     return value
                 }
             }

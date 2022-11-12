@@ -19,9 +19,9 @@
 package io.github.ydwk.ydwk.ws.util
 
 enum class CloseCode(
-    private val code: Int,
-    private val reason: String,
-    private val reconnect: Boolean = true,
+    val code: Int,
+    val reason: String,
+    val reconnect: Boolean = true,
 ) {
     TERMINATION(
         1008,
@@ -62,24 +62,6 @@ enum class CloseCode(
         fun from(code: Int): CloseCode {
             return values().firstOrNull { it.code == code } ?: UNKNOWN
         }
-    }
-
-    fun code(): Int {
-        return code
-    }
-
-    fun getReason(): String {
-        return reason
-    }
-
-    fun codeAsString() = code.toString()
-
-    fun isReconnect(): Boolean {
-        return reconnect
-    }
-
-    fun isDisconnect(): Boolean {
-        return !reconnect
     }
 
     override fun toString(): String {

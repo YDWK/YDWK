@@ -191,7 +191,7 @@ open class WebSocketManager(
 
     private fun sendCloseCode(code: CloseCode) {
         checkNotNull(webSocket) { "WebSocket is null" }
-        webSocket!!.sendClose(code.code(), code.getReason())
+        webSocket!!.sendClose(code.code, code.reason)
     }
 
     @Throws(Exception::class)
@@ -241,7 +241,7 @@ open class WebSocketManager(
 
         val closeCode = CloseCode.from(closeFrame?.closeCode ?: 1000)
 
-        if (closeCode.isReconnect()) {
+        if (closeCode.reconnect) {
             logger.info("Reconnecting to websocket")
             connect()
         } else {

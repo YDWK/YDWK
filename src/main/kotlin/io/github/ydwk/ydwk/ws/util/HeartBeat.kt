@@ -21,7 +21,7 @@ package io.github.ydwk.ydwk.ws.util
 import com.fasterxml.jackson.databind.JsonNode
 import com.neovisionaries.ws.client.WebSocket
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.ws.voice.util.VoiceCloseEventCode
+import io.github.ydwk.ydwk.ws.voice.util.VoiceCloseCode
 import io.github.ydwk.ydwk.ws.voice.util.VoiceOpcode
 import java.net.Socket
 import java.net.SocketException
@@ -53,8 +53,8 @@ class HeartBeat(
                 heartbeatInterval,
                 connected,
                 heartbeat,
-                CloseCode.MISSED_HEARTBEAT.code(),
-                CloseCode.MISSED_HEARTBEAT.getReason())
+                CloseCode.MISSED_HEARTBEAT.code,
+                CloseCode.MISSED_HEARTBEAT.reason)
     }
 
     fun startVoiceHeartbeat(heartbeatInterval: Long, connected: Boolean) {
@@ -68,8 +68,8 @@ class HeartBeat(
                 heartbeatInterval,
                 connected,
                 heartbeat,
-                VoiceCloseEventCode.MISSED_HEARTBEAT.getCode(),
-                VoiceCloseEventCode.MISSED_HEARTBEAT.getReason())
+                VoiceCloseCode.MISSED_HEARTBEAT.code,
+                VoiceCloseCode.MISSED_HEARTBEAT.reason)
     }
 
     private fun tryWebSocket(heartbeatInterval: Long) {

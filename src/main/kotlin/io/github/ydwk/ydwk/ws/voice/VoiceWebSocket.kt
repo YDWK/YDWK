@@ -24,7 +24,7 @@ import io.github.ydwk.ydwk.YDWKInfo
 import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
 import io.github.ydwk.ydwk.ws.logging.WebsocketLogging
 import io.github.ydwk.ydwk.ws.util.HeartBeat
-import io.github.ydwk.ydwk.ws.voice.util.VoiceCloseEventCode
+import io.github.ydwk.ydwk.ws.voice.util.VoiceCloseCode
 import io.github.ydwk.ydwk.ws.voice.util.VoiceOpcode
 import io.github.ydwk.ydwk.ws.voice.util.findIp
 import java.io.IOException
@@ -128,7 +128,7 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
 
         val closeCodeAsString: String =
             if (closeFrame != null)
-                VoiceCloseEventCode.fromCode(closeFrame.closeCode).name +
+                VoiceCloseCode.fromCode(closeFrame.closeCode).name +
                     " (" +
                     closeFrame.closeCode +
                     ")"
@@ -139,7 +139,7 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
 
         heartBeat.heartbeatThread?.cancel(false)
 
-        val closeCode = VoiceCloseEventCode.fromCode(closeFrame?.closeCode ?: 1000)
+        val closeCode = VoiceCloseCode.fromCode(closeFrame?.closeCode ?: 1000)
 
         if (closeCode.isReconnect) {
             logger.info("Reconnecting to voice gateway")
@@ -215,7 +215,7 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
             }
             VoiceOpcode.RESUME -> {
                 logger.debug("Received $opCode - RESUME")
-                sendCloseCode(VoiceCloseEventCode.RESUMED)
+                sendCloseCode(VoiceCloseCode.RESUMED)
             }
             else -> {
                 // do nothing
@@ -223,9 +223,9 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
         }
     }
 
-    private fun sendCloseCode(code: VoiceCloseEventCode) {
+    private fun sendCloseCode(code: VoiceCloseCode) {
         checkNotNull(webSocket) { "WebSocket is null" }
-        webSocket!!.sendClose(code.getCode(), code.getReason())
+        webSocket!!.sendClose(code.code, code.reason)
     }
 
     private fun resume() {
