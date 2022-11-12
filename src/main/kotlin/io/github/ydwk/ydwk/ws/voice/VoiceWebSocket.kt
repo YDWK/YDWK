@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.ws.voice
 import com.fasterxml.jackson.databind.JsonNode
 import com.neovisionaries.ws.client.*
 import io.github.ydwk.ydwk.YDWKInfo
+import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
 import io.github.ydwk.ydwk.ws.logging.WebsocketLogging
 import io.github.ydwk.ydwk.ws.util.HeartBeat
@@ -37,7 +38,7 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
     WebSocketAdapter(), WebSocketListener {
     private val logger = LoggerFactory.getLogger(VoiceWebSocket::class.java)
     private var webSocket: WebSocket? = null
-    private val ydwk = voiceConnection.ydwk
+    private val ydwk = (voiceConnection.ydwk as YDWKImpl)
     private val webSocketManager =
         ydwk.webSocketManager ?: throw IllegalStateException("WebSocketManager is null!")
     private var timesTriedToConnect = 0
@@ -51,6 +52,7 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
     private var ssrc: Int? = null
     private var modes: List<String>? = null
     private var secretKey: ByteArray? = null
+    private var attemptToSendAudio = false
 
     init {
         connect()
@@ -103,6 +105,7 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
         connected = true
         if (voiceConnection.sessionId != null) {
             resume()
+            startSendingAudio()
         } else {
             identify()
         }
@@ -213,10 +216,6 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
                 logger.debug("Received $opCode - HEARTBEAT_ACK")
                 heartbeatsMissed = 0
             }
-            VoiceOpcode.RESUME -> {
-                logger.debug("Received $opCode - RESUME")
-                sendCloseCode(VoiceCloseCode.RESUMED)
-            }
             else -> {
                 // do nothing
             }
@@ -282,6 +281,22 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
     }
 
     private fun startSendingAudio() {
+        if (attemptToSendAudio) {
+            return
+        }
+        attemptToSendAudio = true
+        val guildChannel = ydwk.getGuildVoiceChannelById(voiceConnection.channelId ?: return)
+        ydwk.defaultScheduledExecutorService.submit {
+            try {
+               TODO()
+            } catch (e: Exception) {
+                logger.error("Error while sending audio", e)
+            }
+        }
+    }
+
+    private fun stopSendingAudio() {
+        attemptToSendAudio = false
         TODO()
     }
 }

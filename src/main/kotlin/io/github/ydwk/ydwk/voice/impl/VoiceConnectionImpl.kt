@@ -36,6 +36,7 @@ class VoiceConnectionImpl(
     var sessionId: String? = voiceState.sessionId
     var voiceEndpoint: String? = null
     var userId: Long? = null
+    var channelId: Long? = null
     override val speakingFlags: EnumSet<SpeakingFlag> = EnumSet.noneOf(SpeakingFlag::class.java)
 
     override fun setDeafened(deafened: Boolean): VoiceConnection {
@@ -77,7 +78,7 @@ class VoiceConnectionImpl(
     }
 
     override fun disconnect(): VoiceConnection {
-        TODO("Not yet implemented")
+        TODO()
     }
 
     override val voiceState: VoiceState
