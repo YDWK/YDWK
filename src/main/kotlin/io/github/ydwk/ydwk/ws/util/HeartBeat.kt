@@ -38,7 +38,7 @@ class HeartBeat(
     var heartbeatsMissed: Int,
     private var heartbeatStartTime: Long
 ) {
-    private var heartbeatThread: Future<*>? = null
+    var heartbeatThread: Future<*>? = null
     private val scheduler: ScheduledExecutorService = ydwk.defaultScheduledExecutorService
     private val logger: Logger = LoggerFactory.getLogger(HeartBeat::class.java)
 

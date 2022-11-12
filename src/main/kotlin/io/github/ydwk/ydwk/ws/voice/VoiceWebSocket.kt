@@ -28,6 +28,7 @@ import io.github.ydwk.ydwk.ws.voice.util.VoiceCloseEventCode
 import io.github.ydwk.ydwk.ws.voice.util.VoiceOpcode
 import io.github.ydwk.ydwk.ws.voice.util.findIp
 import java.io.IOException
+import java.net.SocketTimeoutException
 import java.util.concurrent.TimeUnit
 import org.slf4j.LoggerFactory
 
@@ -119,6 +120,49 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
         closedByServer: Boolean,
     ) {
         connected = false
+
+        val closeFrame: WebSocketFrame? = if (closedByServer) serverCloseFrame else clientCloseFrame
+
+        val closeCodeReason: String =
+            if (closeFrame != null) closeFrame.closeReason else "Unknown reason"
+
+        val closeCodeAsString: String =
+            if (closeFrame != null)
+                VoiceCloseEventCode.fromCode(closeFrame.closeCode).name +
+                    " (" +
+                    closeFrame.closeCode +
+                    ")"
+            else "Unknown code"
+
+        logger.info(
+            "Disconnected from websocket with close code $closeCodeAsString and reason $closeCodeReason")
+
+        heartBeat.heartbeatThread?.cancel(false)
+
+        val closeCode = VoiceCloseEventCode.fromCode(closeFrame?.closeCode ?: 1000)
+
+        if (closeCode.isReconnect) {
+            logger.info("Reconnecting to voice gateway")
+            connect()
+        } else {
+            logger.info("Not reconnecting to voice gateway")
+        }
+    }
+
+    override fun onError(websocket: WebSocket, cause: WebSocketException) {
+        when (cause.cause) {
+            is SocketTimeoutException -> {
+                logger.error(
+                    "Voice Socket timeout due to {}",
+                    (cause.cause as SocketTimeoutException).message)
+            }
+            is IOException -> {
+                logger.error("Voice IO error {}", (cause.cause as IOException).message)
+            }
+            else -> {
+                logger.error("Voice Unknown error", cause)
+            }
+        }
     }
 
     private fun handleMessage(message: String) {

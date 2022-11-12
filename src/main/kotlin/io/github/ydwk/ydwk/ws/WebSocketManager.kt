@@ -28,6 +28,7 @@ import io.github.ydwk.ydwk.entities.Bot
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.entities.channel.GuildChannel
+import io.github.ydwk.ydwk.evm.event.events.gateway.DisconnectEvent
 import io.github.ydwk.ydwk.evm.event.events.gateway.ReadyEvent
 import io.github.ydwk.ydwk.evm.event.events.gateway.ReconnectEvent
 import io.github.ydwk.ydwk.evm.event.events.gateway.ResumeEvent
@@ -78,7 +79,6 @@ import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.*
 import java.util.concurrent.Executors
-import java.util.concurrent.Future
 import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
@@ -102,7 +102,6 @@ open class WebSocketManager(
     private var heartbeatsMissed: Int = 0
     private var heartbeatStartTime: Long = 0
     var upTime: Instant? = null
-    @Volatile protected var heartbeatThread: Future<*>? = null
     val scheduler: ScheduledExecutorService = Executors.newScheduledThreadPool(1)
     @get:Synchronized @set:Synchronized var connected = false
     @get:Synchronized @set:Synchronized var ready = false
@@ -236,11 +235,9 @@ open class WebSocketManager(
         logger.info(
             "Disconnected from websocket with close code $closeCodeAsString and reason $closeCodeReason")
 
-        ydwk.emitEvent(
-            io.github.ydwk.ydwk.evm.event.events.gateway.DisconnectEvent(
-                ydwk, closeCodeAsString, closeCodeReason, Instant.now()))
+        ydwk.emitEvent(DisconnectEvent(ydwk, closeCodeAsString, closeCodeReason, Instant.now()))
 
-        heartbeatThread?.cancel(false)
+        heartBeat.heartbeatThread?.cancel(false)
 
         val closeCode = CloseCode.from(closeFrame?.closeCode ?: 1000)
 
@@ -574,7 +571,7 @@ open class WebSocketManager(
         sessionId = null
         resumeUrl = null
         ydwk.cache.clear()
-        heartbeatThread?.cancel(false)
+        heartBeat.heartbeatThread?.cancel(false)
         ydwk.setLoggedIn(LoggedInImpl(false).setDisconnectedTime())
         scheduler.shutdownNow()
         upTime = null

@@ -18,7 +18,11 @@
  */ 
 package io.github.ydwk.ydwk.ws.voice.util
 
-enum class VoiceCloseEventCode(private val code: Int, private val reason: String) {
+enum class VoiceCloseEventCode(
+    private val code: Int,
+    private val reason: String,
+    val isReconnect: Boolean = false
+) {
     UNKNOWN_OPCODE(4001, "You sent an invalid opcode."),
     DECODE_ERROR(4002, "You sent an invalid payload in your identifying to the Gateway."),
     NOT_AUTHENTICATED(4003, "You sent a payload prior to identifying."),
@@ -26,17 +30,20 @@ enum class VoiceCloseEventCode(private val code: Int, private val reason: String
     ALREADY_AUTHENTICATED(4005, "More than one identify payload was sent."),
     SESSION_NO_LONGER_VALID(
         4006,
-        "The session has been invalidated. You should reconnect and identify/resume accordingly."),
+        "The session has been invalidated. Will reconnect and resume automatically, " +
+            "or you can reconnect and start a new session.",
+        true),
     SESSION_TIMEOUT(4009, "Your session timed out. Reconnect and re-identify."),
     SERVER_NOT_FOUND(4011, "The server you requested is not available."),
     UNKNOWN_PROTOCOL(4012, "You sent an invalid protocol for the voice gateway."),
     DISCONNECTED(
         4014,
         "Channel was deleted, you were kicked, voice server changed, or the main gateway session was dropped. Should not reconnect."),
-    VOICE_SERVER_CRASHED(4015, "The server crashed. Our bad! Try resuming."),
-    MISSED_HEARTBEAT(4997, "You missed too many heartbeats, reconnecting."),
+    VOICE_SERVER_CRASHED(
+        4015, "The server crashed. Our bad! Will try to automatically reconnect.", true),
+    MISSED_HEARTBEAT(4997, "You missed too many heartbeats, reconnecting.", true),
     UNKNOWN_ENCRYPTION_MODE(4016, "You sent an invalid encoding for the voice gateway."),
-    RESUMED(4999, "A request to resume the session was sent.");
+    RESUMED(4999, "A request to resume the session was sent.", true);
 
     fun getCode(): Int {
         return code

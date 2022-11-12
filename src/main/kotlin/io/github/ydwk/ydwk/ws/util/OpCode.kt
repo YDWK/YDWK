@@ -59,14 +59,6 @@ enum class OpCode(
     /** For future use or unknown opcodes. */
     UNKNOWN(-1, false, false);
 
-    fun isSend(): Boolean {
-        return send
-    }
-
-    fun isReceive(): Boolean {
-        return receive
-    }
-
     companion object {
         fun fromCode(code: Int): OpCode {
             for (opCode in values()) {
