@@ -28,7 +28,9 @@ import java.util.concurrent.CompletableFuture
 class VoiceConnectionImpl(
     val guildId: Long,
     val ydwk: YDWK,
-    val future: CompletableFuture<VoiceConnectionImpl>
+    val future: CompletableFuture<VoiceConnection>,
+    isMuted: Boolean,
+    isDeafened: Boolean
 ) : VoiceConnection {
     var token: String? = null
     var sessionId: String? = voiceState.sessionId

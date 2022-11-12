@@ -37,8 +37,8 @@ open class GuildVoiceChannelImpl(
     override fun join(isMuted: Boolean, isDeafened: Boolean): CompletableFuture<VoiceConnection> {
         guild.voiceConnection?.disconnect()
         val future = CompletableFuture<VoiceConnection>()
-        val connection = VoiceConnectionImpl(guild.idAsLong, ydwk)
-        (guild as GuildImpl).setPendingVoiceConnection(connection, isMuted, isDeafened, future)
+        val connection = VoiceConnectionImpl(guild.idAsLong, ydwk, future, isMuted, isDeafened)
+        (guild as GuildImpl).setPendingVoiceConnection(connection)
         (guild as GuildImpl).setVoiceConnection(connection)
         return future
     }

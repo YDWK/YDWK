@@ -54,7 +54,6 @@ import io.github.ydwk.ydwk.rest.RestApiManager
 import io.github.ydwk.ydwk.slash.SlashBuilder
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import io.github.ydwk.ydwk.voice.VoiceConnection
-import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
 import io.github.ydwk.ydwk.ws.WebSocketManager
 import io.github.ydwk.ydwk.ws.util.LoggedIn
 import java.time.Instant
@@ -272,10 +271,6 @@ class YDWKImpl(
         }
     }
 
-    override fun createVoiceConnection(guildId: Long): VoiceConnection? {
-        return VoiceConnectionImpl(guildId, this)
-    }
-
     override fun setVoiceConnection(guildId: Long, voiceConnection: VoiceConnection) {
         this.voiceConnection[guildId] = voiceConnection
     }
@@ -288,13 +283,7 @@ class YDWKImpl(
         this.voiceConnection.remove(guildId)
     }
 
-    override fun setPendingVoiceConnection(
-        guildId: Long,
-        voiceConnection: VoiceConnection,
-        muted: Boolean,
-        deafened: Boolean,
-        future: CompletableFuture<VoiceConnection>
-    ) {
+    override fun setPendingVoiceConnection(guildId: Long, voiceConnection: VoiceConnection) {
         TODO("Not yet implemented")
     }
 

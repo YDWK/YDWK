@@ -27,8 +27,8 @@ import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
 class VoiceServerUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
 
     override fun start() {
-        val voiceConnection: VoiceConnectionImpl =
-            ydwk.createVoiceConnection(json["guild_id"].asText()) as VoiceConnectionImpl
+        // TODO : Fix this
+        val voiceConnection: VoiceConnectionImpl = null!!
         voiceConnection.voiceEndpoint = json["endpoint"].asText()
         voiceConnection.token = json["token"].asText()
         ydwk.emitEvent(VoiceConnectionEvent(ydwk, voiceConnection))

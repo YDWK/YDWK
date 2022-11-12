@@ -460,21 +460,6 @@ interface YDWK {
     fun requestUser(id: String): CompletableFuture<User> = requestUser(id.toLong())
 
     /**
-     * Gets the voice connection.
-     *
-     * @return The [VoiceConnection] object.
-     */
-    fun createVoiceConnection(guildId: Long): VoiceConnection?
-
-    /**
-     * Gets the voice connection.
-     *
-     * @return The [VoiceConnection] object.
-     */
-    fun createVoiceConnection(guildId: String): VoiceConnection? =
-        createVoiceConnection(guildId.toLong())
-
-    /**
      * Sets the voice connection.
      *
      * @param guildId The id of the guild.
@@ -510,18 +495,12 @@ interface YDWK {
      * Sets the voice connection.
      *
      * @param guildId The id of the guild.
-     * @param muted Whether the bot is muted or not.
-     * @param deafened Whether the bot is deafened or not.
-     * @param future The future to complete when the operation is done.
      * @param voiceConnection The voice connection.
      * @return The [VoiceConnection] object.
      */
     fun setPendingVoiceConnection(
         guildId: Long,
         voiceConnection: VoiceConnection,
-        muted: Boolean,
-        deafened: Boolean,
-        future: CompletableFuture<VoiceConnection>
     )
 
     /**

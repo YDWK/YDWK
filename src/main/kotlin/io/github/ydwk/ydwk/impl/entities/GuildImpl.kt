@@ -205,9 +205,6 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
         return getUnorderedChannels.firstOrNull { it.idAsLong == channelId }
     }
 
-    override val createVoiceConnection: VoiceConnection
-        get() = VoiceConnectionImpl(this.idAsLong, ydwk)
-
     override val voiceConnection: VoiceConnection?
         get() = ydwk.getVoiceConnectionById(this.idAsLong)
 
@@ -215,14 +212,10 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
 
     fun setPendingVoiceConnection(
         voiceConnection: VoiceConnection,
-        isMuted: Boolean,
-        isDeafened: Boolean,
-        future: CompletableFuture<VoiceConnection>
     ) {
         audioConnectionLock.lock()
         try {
-            ydwk.setPendingVoiceConnection(
-                this.idAsLong, voiceConnection, isMuted, isDeafened, future)
+            ydwk.setPendingVoiceConnection(this.idAsLong, voiceConnection)
         } finally {
             audioConnectionLock.unlock()
         }
