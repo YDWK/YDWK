@@ -44,8 +44,6 @@ interface MemberCache : Cache {
      * Used to check the cache for any changes in the specified object. If the object is not in the
      * cache, it will be added. If the object is in the cache, it will be updated.
      *
-     * @param key The key of the item
-     * @param cacheType The type of the item
      * @param value The value of the item
      */
     fun update(value: Member)
