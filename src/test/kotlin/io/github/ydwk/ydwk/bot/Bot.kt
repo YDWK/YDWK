@@ -36,7 +36,7 @@ fun main() {
             .build()
 
     ydwk.waitForReady.slashBuilder
-        .addSlashCommand(Slash("embed", "This is a test command"))
+        .addSlashCommand(Slash("join_vc", "Joins a vc"))
         .addSlashCommand(Slash("forum_json", "Gets the json for forum"))
         .addSlashCommand(Slash("create_dm", "Creates a dm channel"))
         .addSlashCommand(
@@ -48,11 +48,13 @@ fun main() {
 
     ydwk.on<SlashCommandEvent> {
         when (it.slash.name) {
-            "json" -> {
+            "join_vc" -> {
                 withContext(Dispatchers.IO) {
                     val member = it.slash.member
-                    if (member != null) {
-                        it.slash.reply(member.json.toPrettyString()).reply()
+                    val voiceState = member?.voiceState
+                    if (voiceState != null) {
+                        val voiceChannel = voiceState.channel
+                        if (voiceChannel != null) {}
                     }
                 }
             }

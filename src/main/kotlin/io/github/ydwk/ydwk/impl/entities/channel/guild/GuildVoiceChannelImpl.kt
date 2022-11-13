@@ -34,13 +34,13 @@ open class GuildVoiceChannelImpl(
     override val idAsLong: Long
 ) : GuildVoiceChannel, GenericGuildVoiceChannelImpl(ydwk, json, idAsLong) {
 
-    override fun join(isMuted: Boolean, isDeafened: Boolean): CompletableFuture<VoiceConnection> {
+    override fun join(isMuted: Boolean, isDeafened: Boolean): VoiceConnection {
         guild.voiceConnection?.disconnect()
         val future = CompletableFuture<VoiceConnection>()
         val connection = VoiceConnectionImpl(guild.idAsLong, ydwk, future, isMuted, isDeafened)
         (guild as GuildImpl).setPendingVoiceConnection(connection)
         (guild as GuildImpl).setVoiceConnection(connection)
-        return future
+        return future.join()
     }
 
     override var bitrate: Int = json["bitrate"].asInt()

@@ -201,6 +201,7 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
                 logger.debug("Received $opCode - Session Description")
                 this.secretKey = data.get("secret_key").binaryValue()
                 sendSpeaking()
+                TODO("Opus encoded data over the UDP connection")
             }
             VoiceOpcode.RESUMED -> {
                 logger.debug("Received $opCode - RESUMED")

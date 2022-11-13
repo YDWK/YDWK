@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.entities.guild
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.PermissionEntity
 import io.github.ydwk.ydwk.entities.User
+import io.github.ydwk.ydwk.entities.VoiceState
 import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.message.Sendeadble
 import io.github.ydwk.ydwk.entities.util.GenericEntity
@@ -139,4 +140,11 @@ interface Member : NameAbleEntity, GenericEntity, Sendeadble, SnowFlake, Permiss
      */
     val createDmChannel: CompletableFuture<DmChannel>
         get() = user.createDmChannel
+
+    /**
+     * If the member is in avc it will get there voice state.
+     *
+     * @return The voice state of the member.
+     */
+    val voiceState: VoiceState?
 }

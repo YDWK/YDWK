@@ -32,10 +32,7 @@ interface GuildVoiceChannel : GenericGuildVoiceChannel {
      * @return A [CompletableFuture] that completes with the [VoiceConnection] when the bot has
      * joined the voice channel.
      */
-    fun join(
-        isMuted: Boolean = false,
-        isDeafened: Boolean = true
-    ): CompletableFuture<VoiceConnection>
+    fun join(isMuted: Boolean = false, isDeafened: Boolean = true): VoiceConnection
 
     /**
      * Gets the bitrate (in bits) of the voice channel

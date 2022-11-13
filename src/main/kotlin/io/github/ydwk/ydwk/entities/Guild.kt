@@ -717,6 +717,23 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     fun getChannelById(channelId: String): GuildChannel? = getChannelById(channelId.toLong())
 
     /**
+     * Gets a voice channel by its id.
+     *
+     * @param channelId The id of the channel.
+     * @return The channel, or null if it doesn't exist.
+     */
+    fun getVoiceChannelById(channelId: Long): GuildVoiceChannel? =
+        getChannelById(channelId) as? GuildVoiceChannel
+
+    /**
+     * Gets a voice channel by its id.
+     *
+     * @param channelId The id of the channel.
+     */
+    fun getVoiceChannelById(channelId: String): GuildVoiceChannel? =
+        getVoiceChannelById(channelId.toLong())
+
+    /**
      * Used to get all the members of the guild.
      *
      * @return The members.

@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.User
+import io.github.ydwk.ydwk.entities.VoiceState
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.entities.guild.enums.GuildPermission
@@ -73,6 +74,8 @@ class MemberImpl(
 
     override val isOwner: Boolean
         get() = guild.ownerId.asString == user.id
+    override val voiceState: VoiceState?
+        get() = return TODO("have your bot listen for the VOICE_STATE_UPDATE event")
 
     override val permissions: EnumSet<GuildPermission>
         get() = GuildPermission.fromValues(getPermissions(this))
