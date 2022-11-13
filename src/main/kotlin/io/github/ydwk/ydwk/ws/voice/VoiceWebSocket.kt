@@ -23,7 +23,6 @@ import com.neovisionaries.ws.client.*
 import io.github.ydwk.ydwk.YDWKInfo
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
-import io.github.ydwk.ydwk.voice.sub.VoicePacket
 import io.github.ydwk.ydwk.ws.logging.WebsocketLogging
 import io.github.ydwk.ydwk.ws.util.HeartBeat
 import io.github.ydwk.ydwk.ws.voice.util.VoiceCloseCode
@@ -107,7 +106,6 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
         connected = true
         if (voiceConnection.sessionId != null) {
             resume()
-            startSendingAudio()
         } else {
             identify()
         }
@@ -143,7 +141,6 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
             "Disconnected from websocket with close code $closeCodeAsString and reason $closeCodeReason")
 
         heartBeat.heartbeatThread?.cancel(false)
-        stopSendingAudio()
 
         val closeCode = VoiceCloseCode.fromCode(closeFrame?.closeCode ?: 1000)
 
@@ -204,9 +201,6 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
                 logger.debug("Received $opCode - Session Description")
                 this.secretKey = data.get("secret_key").binaryValue()
                 sendSpeaking()
-                startSendingAudio()
-                // indicate that the connection has been established
-                voiceConnection.future.complete(voiceConnection)
             }
             VoiceOpcode.RESUMED -> {
                 logger.debug("Received $opCode - RESUMED")
@@ -281,54 +275,6 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
         speakingData.put("ssrc", ssrc)
         speakingPayload.set<JsonNode>("d", speakingData)
         webSocket?.sendText(speakingPayload.toString())
-    }
-
-    private fun startSendingAudio() {
-        if (attemptToSendAudio) {
-            return
-        }
-        attemptToSendAudio = true
-        val guildChannel = ydwk.getGuildVoiceChannelById(voiceConnection.channelId ?: return)
-        ydwk.threadFactory.createThreadExecutor(voiceConnection.threadName).submit {
-            try {
-                while (attemptToSendAudio) {
-                    val voiceLocation = voiceConnection.videoLocationBlocked
-                    if (voiceLocation == null) {
-                        logger.error("Voice location is null")
-                        return@submit
-                    }
-
-                    if (voiceLocation.isFinished()) {
-                        voiceConnection.removeVoiceLocation
-                        continue
-                    }
-
-                    var voicePacket: VoicePacket? = null
-                    var frame = if (voiceLocation.hasNext()) voiceLocation.next() else null
-                    if (voiceLocation.isMuted()) {
-                        frame = null
-                    }
-
-                    if (frame != null) {
-                        voicePacket = ssrc?.let { VoicePacket(frame, it, sequence, sequence * 960) }
-                    }
-
-                    voicePacket?.encrypt()
-                }
-                TODO()
-            } catch (e: Exception) {
-                if (attemptToSendAudio) {
-                    logger.error("Error while sending audio", e)
-                } else {
-                    logger.debug("Stopped sending audio")
-                }
-            }
-        }
-    }
-
-    private fun stopSendingAudio() {
-        attemptToSendAudio = false
-        ydwk.threadFactory.getThreadExecutorByName(voiceConnection.threadName)?.shutdown()
     }
 }
 

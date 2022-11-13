@@ -20,9 +20,7 @@ package io.github.ydwk.ydwk.voice.impl
 
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.VoiceState
-import io.github.ydwk.ydwk.util.BlockingFactor
 import io.github.ydwk.ydwk.voice.VoiceConnection
-import io.github.ydwk.ydwk.voice.VoiceLocation
 import io.github.ydwk.ydwk.ws.voice.util.SpeakingFlag
 import java.util.*
 import java.util.concurrent.CompletableFuture
@@ -40,9 +38,6 @@ data class VoiceConnectionImpl(
     var userId: Long? = null
     var channelId: Long? = null
     override val speakingFlags: EnumSet<SpeakingFlag> = EnumSet.noneOf(SpeakingFlag::class.java)
-    private val connectLocation: BlockingFactor<VoiceLocation> = BlockingFactor()
-    val videoLocationBlocked = connectLocation.get()
-    val removeVoiceLocation = connectLocation.set(null)
     val threadName = "YDWK Voice Connection Thread for Guild $guildId"
 
     override fun setDeafened(deafened: Boolean): VoiceConnection {
