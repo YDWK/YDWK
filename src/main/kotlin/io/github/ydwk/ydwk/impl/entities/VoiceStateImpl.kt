@@ -25,6 +25,7 @@ import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.VoiceState
 import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.ydwk.entities.guild.Member
+import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
 import io.github.ydwk.ydwk.rest.EndPoint
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import io.github.ydwk.ydwk.util.formatZonedDateTime
@@ -44,7 +45,9 @@ class VoiceStateImpl(override val ydwk: YDWK, override val json: JsonNode) : Voi
                 ?: throw IllegalStateException("User not found")
 
     override val member: Member?
-        get() = guild?.getMemberById(user.id)
+        get() =
+            if (json.hasNonNull("member")) MemberImpl(ydwk, json["member"], guild!!, user, this)
+            else null
 
     override val sessionId: String
         get() = json["session_id"].asText()

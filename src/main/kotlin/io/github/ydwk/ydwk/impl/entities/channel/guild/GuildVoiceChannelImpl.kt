@@ -59,7 +59,5 @@ open class GuildVoiceChannelImpl(
                 ydwk.getGuildById(json["guild_id"].asText())!!
             else throw IllegalStateException("Guild is null")
 
-    override var name: String
-        get() = json["name"].asText()
-        set(value) {}
+    override var name: String = json["name"].asText()
 }

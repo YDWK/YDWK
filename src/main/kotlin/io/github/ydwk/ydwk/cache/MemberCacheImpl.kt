@@ -30,6 +30,10 @@ class MemberCacheImpl(allowedCache: Set<CacheIds>) : MemberCache, PerpetualCache
         return super.get(guildId + userId, CacheIds.MEMBER) as Member?
     }
 
+    override fun update(value: Member) {
+        super.update(value.id, CacheIds.MEMBER, value)
+    }
+
     override fun remove(guildId: String, userId: String) {
         super.remove(guildId + userId, CacheIds.MEMBER)
     }

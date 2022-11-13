@@ -65,6 +65,7 @@ import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.bouncycastle.util.Arrays
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -305,6 +306,10 @@ class YDWKImpl(
             .add("applicationId", applicationId)
             .add("uptime", uptime)
             .toString()
+    }
+
+    override fun iterator(): Iterator<YDWK> {
+        return Arrays.Iterator(arrayOf(this))
     }
 
     override val guildChannels: List<GenericGuildChannel>

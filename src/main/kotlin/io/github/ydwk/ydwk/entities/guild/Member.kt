@@ -146,5 +146,5 @@ interface Member : NameAbleEntity, GenericEntity, Sendeadble, SnowFlake, Permiss
      *
      * @return The voice state of the member.
      */
-    val voiceState: VoiceState?
+    var voiceState: VoiceState?
 }

@@ -37,6 +37,7 @@ class MemberImpl(
     override val json: JsonNode,
     override val guild: Guild,
     backupUser: User? = null,
+    override var voiceState: VoiceState? = null
 ) : Member {
 
     override var user: User =
@@ -74,8 +75,6 @@ class MemberImpl(
 
     override val isOwner: Boolean
         get() = guild.ownerId.asString == user.id
-    override val voiceState: VoiceState?
-        get() = return TODO("have your bot listen for the VOICE_STATE_UPDATE event")
 
     override val permissions: EnumSet<GuildPermission>
         get() = GuildPermission.fromValues(getPermissions(this))
@@ -117,7 +116,7 @@ class MemberImpl(
 
     override var name: String = if (nick != null) nick!! else user.name
     override val idAsLong: Long
-        get() = user.idAsLong + guild.idAsLong
+        get() = guild.idAsLong + user.idAsLong
 
     override fun toString(): String {
         return EntityToStringBuilder(ydwk, this).name(this.name).toString()
