@@ -20,29 +20,16 @@ package io.github.ydwk.ydwk.voice.impl
 
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.voice.VoiceLocation
-import io.github.ydwk.ydwk.voice.sub.Track
 
 class VoiceLocationImpl : VoiceLocation {
     override val ydwk: YDWK
         get() = TODO("Not yet implemented")
 
-    override fun skip(): Track {
+    override fun hasNext(): Boolean {
         TODO("Not yet implemented")
     }
 
-    override fun previous(): Track {
-        TODO("Not yet implemented")
-    }
-
-    override fun skipTo(index: Int): Track {
-        TODO("Not yet implemented")
-    }
-
-    override fun skipTo(track: Track): Track {
-        TODO("Not yet implemented")
-    }
-
-    override fun addTrack(track: Track): Track {
+    override fun next(): ByteArray {
         TODO("Not yet implemented")
     }
 
@@ -50,51 +37,15 @@ class VoiceLocationImpl : VoiceLocation {
         TODO("Not yet implemented")
     }
 
-    override fun isPlaying(): Boolean {
+    override fun mute(): VoiceLocation {
         TODO("Not yet implemented")
     }
 
-    override fun isPaused(): Boolean {
+    override fun unmute(): VoiceLocation {
         TODO("Not yet implemented")
     }
 
-    override fun isStopped(): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    override fun mute(): Track {
-        TODO("Not yet implemented")
-    }
-
-    override fun unmute(): Track {
-        TODO("Not yet implemented")
-    }
-
-    override fun pause(): Track {
-        TODO("Not yet implemented")
-    }
-
-    override fun resume(): Track {
-        TODO("Not yet implemented")
-    }
-
-    override fun stop(): Track {
-        TODO("Not yet implemented")
-    }
-
-    override fun setVolume(volume: Int): Track {
-        TODO("Not yet implemented")
-    }
-
-    override fun getVolume(): Int {
-        TODO("Not yet implemented")
-    }
-
-    override fun getCurrentTrack(): Track {
-        TODO("Not yet implemented")
-    }
-
-    override fun getTracks(): List<Track> {
+    override fun isMuted(): Boolean {
         TODO("Not yet implemented")
     }
 

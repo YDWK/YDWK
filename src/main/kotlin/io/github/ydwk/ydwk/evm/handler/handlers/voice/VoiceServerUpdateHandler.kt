@@ -29,8 +29,12 @@ class VoiceServerUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, j
 
     override fun start() {
         val voiceState: VoiceState = VoiceStateImpl(ydwk, json)
-        ydwk.setPendingVoiceConnection(
-            json["guild_id"].asLong(), ydwk.getVoiceConnectionById(json["guild_id"].asLong())!!)
+
+        val voiceConnection = ydwk.getVoiceConnectionById(json["guild_id"].asLong())
+        if (voiceConnection != null) {
+            ydwk.setPendingVoiceConnection(
+                json["guild_id"].asLong(), ydwk.getVoiceConnectionById(json["guild_id"].asLong())!!)
+        }
         ydwk.emitEvent(VoiceConnectionEvent(ydwk, voiceState))
     }
 }

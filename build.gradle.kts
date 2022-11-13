@@ -59,6 +59,7 @@ dependencies {
     // ws and https
     api("com.squareup.okhttp3:okhttp:5.0.0-alpha.10")
     api("com.neovisionaries:nv-websocket-client:2.14")
+    api("com.codahale:xsalsa20poly1305:0.11.0")
     // kotlin
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.7.20")
     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")

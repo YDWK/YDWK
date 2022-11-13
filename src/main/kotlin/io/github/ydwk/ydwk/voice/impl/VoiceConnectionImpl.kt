@@ -43,6 +43,7 @@ data class VoiceConnectionImpl(
     private val connectLocation: BlockingFactor<VoiceLocation> = BlockingFactor()
     val videoLocationBlocked = connectLocation.get()
     val removeVoiceLocation = connectLocation.set(null)
+    val threadName = "YDWK Voice Connection Thread for Guild $guildId"
 
     override fun setDeafened(deafened: Boolean): VoiceConnection {
         this.isDeafened = deafened

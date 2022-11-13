@@ -53,6 +53,7 @@ import io.github.ydwk.ydwk.rest.EndPoint
 import io.github.ydwk.ydwk.rest.RestApiManager
 import io.github.ydwk.ydwk.slash.SlashBuilder
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
+import io.github.ydwk.ydwk.util.ThreadFactory
 import io.github.ydwk.ydwk.voice.VoiceConnection
 import io.github.ydwk.ydwk.ws.WebSocketManager
 import io.github.ydwk.ydwk.ws.util.LoggedIn
@@ -83,6 +84,8 @@ class YDWKImpl(
 ) : YDWK {
     override val defaultScheduledExecutorService: ScheduledExecutorService =
         Executors.newScheduledThreadPool(1)
+    override val threadFactory: ThreadFactory
+        get() = ThreadFactory
 
     override val objectNode: ObjectNode
         get() = JsonNodeFactory.instance.objectNode()

@@ -23,6 +23,7 @@ import com.neovisionaries.ws.client.*
 import io.github.ydwk.ydwk.YDWKInfo
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
+import io.github.ydwk.ydwk.voice.sub.VoicePacket
 import io.github.ydwk.ydwk.ws.logging.WebsocketLogging
 import io.github.ydwk.ydwk.ws.util.HeartBeat
 import io.github.ydwk.ydwk.ws.voice.util.VoiceCloseCode
@@ -53,6 +54,7 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
     private var modes: List<String>? = null
     private var secretKey: ByteArray? = null
     private var attemptToSendAudio = false
+    private var sequence: Char = 0.toChar()
 
     init {
         connect()
@@ -141,6 +143,7 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
             "Disconnected from websocket with close code $closeCodeAsString and reason $closeCodeReason")
 
         heartBeat.heartbeatThread?.cancel(false)
+        stopSendingAudio()
 
         val closeCode = VoiceCloseCode.fromCode(closeFrame?.closeCode ?: 1000)
 
@@ -286,7 +289,7 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
         }
         attemptToSendAudio = true
         val guildChannel = ydwk.getGuildVoiceChannelById(voiceConnection.channelId ?: return)
-        ydwk.defaultScheduledExecutorService.submit {
+        ydwk.threadFactory.createThreadExecutor(voiceConnection.threadName).submit {
             try {
                 while (attemptToSendAudio) {
                     val voiceLocation = voiceConnection.videoLocationBlocked
@@ -297,17 +300,38 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
 
                     if (voiceLocation.isFinished()) {
                         voiceConnection.removeVoiceLocation
+                        continue
                     }
+
+                    var voicePacket: VoicePacket? = null
+                    var frame = if (voiceLocation.hasNext()) voiceLocation.next() else null
+                    if (voiceLocation.isMuted()) {
+                        frame = null
+                    }
+
+                    if (frame != null) {
+                        voicePacket = ssrc?.let { VoicePacket(frame, it, sequence, sequence * 960) }
+                    }
+
+                    voicePacket?.encrypt()
                 }
                 TODO()
             } catch (e: Exception) {
-                logger.error("Error while sending audio", e)
+                if (attemptToSendAudio) {
+                    logger.error("Error while sending audio", e)
+                } else {
+                    logger.debug("Stopped sending audio")
+                }
             }
         }
     }
 
     private fun stopSendingAudio() {
         attemptToSendAudio = false
-        TODO()
+        ydwk.threadFactory.getThreadExecutorByName(voiceConnection.threadName)?.shutdown()
     }
+}
+
+private operator fun Char.times(i: Int): Int {
+    return this.code * i
 }

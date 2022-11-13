@@ -40,6 +40,7 @@ import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
 import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
 import io.github.ydwk.ydwk.rest.RestApiManager
 import io.github.ydwk.ydwk.slash.SlashBuilder
+import io.github.ydwk.ydwk.util.ThreadFactory
 import io.github.ydwk.ydwk.voice.VoiceConnection
 import io.github.ydwk.ydwk.ws.WebSocketManager
 import io.github.ydwk.ydwk.ws.util.LoggedIn
@@ -524,6 +525,13 @@ interface YDWK {
      * @return The [ScheduledExecutorService] object.
      */
     val defaultScheduledExecutorService: ScheduledExecutorService
+
+    /**
+     * Gets the thread factory.
+     *
+     * @return The [ThreadFactory] object.
+     */
+    val threadFactory: ThreadFactory
 
     /**
      * Overrides the custom to string method.
