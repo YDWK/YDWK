@@ -43,7 +43,7 @@ open class GuildVoiceChannelImpl(
         }
 
         val future = CompletableFuture<VoiceConnection>()
-        val connection = VoiceConnectionImpl(guild.idAsLong, ydwk, future, isMuted, isDeafened)
+        val connection = VoiceConnectionImpl(this, ydwk, future, isMuted, isDeafened)
         (guild as GuildImpl).setPendingVoiceConnection(connection)
         return future
             .thenApply {

@@ -65,7 +65,6 @@ import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.toRequestBody
-import org.bouncycastle.util.Arrays
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -308,16 +307,14 @@ class YDWKImpl(
             .toString()
     }
 
-    override fun iterator(): Iterator<YDWK> {
-        return Arrays.Iterator(arrayOf(this))
-    }
-
     override val guildChannels: List<GenericGuildChannel>
-        get() =
-            (cache.values(CacheIds.TEXT_CHANNEL).map { it as GenericGuildTextChannel } +
-                cache.values(CacheIds.VOICE_CHANNEL).map { it as GenericGuildVoiceChannel } +
-                cache.values(CacheIds.CATEGORY).map { it as GuildCategory })
-                as List<GenericGuildChannel>
+        get() {
+            return (cache.values(CacheIds.TEXT_CHANNEL).map { it as GenericGuildTextChannel } +
+                    cache.values(CacheIds.VOICE_CHANNEL).map { it as GenericGuildVoiceChannel } +
+                    cache.values(CacheIds.CATEGORY).map { it as GuildCategory })
+                // check if can be cast to List<GenericGuildChannel>
+                .map { it as GenericGuildChannel }
+        }
 
     override var bot: Bot? = null
         get() {

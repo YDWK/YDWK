@@ -24,7 +24,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import com.neovisionaries.ws.client.*
 import io.github.ydwk.ydwk.*
 import io.github.ydwk.ydwk.cache.CacheIds
-import io.github.ydwk.ydwk.entities.Bot
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.entities.channel.GuildChannel
@@ -421,11 +420,10 @@ open class WebSocketManager(
         selfMute: Boolean?,
         selfDeaf: Boolean?
     ) {
-        var guildId: String? = null
 
         val mainVoiceUpdateJson: ObjectNode = ydwk.objectNode.put("op", OpCode.VOICE_STATE.code)
 
-        guildId =
+        val guildId: String? =
             when {
                 channel != null -> {
                     channel.guild.id
@@ -438,7 +436,6 @@ open class WebSocketManager(
                 }
             }
 
-        val bot: Bot = ydwk.bot ?: throw IllegalStateException("Bot is not logged in")
         val dataVoiceUpdateJson = ydwk.objectNode
         dataVoiceUpdateJson.put("guild_id", guildId)
         dataVoiceUpdateJson.put("channel_id", channel?.id)

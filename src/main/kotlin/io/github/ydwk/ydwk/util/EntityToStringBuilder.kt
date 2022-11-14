@@ -53,7 +53,7 @@ class EntityToStringBuilder(val ydwk: YDWK, val entity: Any) {
         val name: String =
             when (this.entity) {
                 is String -> {
-                    entity
+                    cleanUpClassName(this.entity)
                 }
                 is Class<*> -> {
                     cleanUpClassName(entity)
@@ -99,5 +99,9 @@ class EntityToStringBuilder(val ydwk: YDWK, val entity: Any) {
 
     private fun cleanUpClassName(clazz: Class<*>): String {
         return clazz.simpleName.replace("Impl", "")
+    }
+
+    private fun cleanUpClassName(name: String): String {
+        return name.replace("Impl", "")
     }
 }

@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.voice.impl
 
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.VoiceState
+import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.ydwk.voice.VoiceConnection
 import io.github.ydwk.ydwk.ws.voice.VoiceWebSocket
 import io.github.ydwk.ydwk.ws.voice.util.SpeakingFlag
@@ -27,7 +28,7 @@ import java.util.*
 import java.util.concurrent.CompletableFuture
 
 data class VoiceConnectionImpl(
-    val guildId: Long,
+    val channel: GuildVoiceChannel,
     val ydwk: YDWK,
     val future: CompletableFuture<VoiceConnection>,
     var isMuted: Boolean,
@@ -37,28 +38,19 @@ data class VoiceConnectionImpl(
     var sessionId: String? = voiceState.sessionId
     var voiceEndpoint: String? = null
     var userId: Long? = null
-    var channelId: Long? = null
     override val speakingFlags: EnumSet<SpeakingFlag> = EnumSet.noneOf(SpeakingFlag::class.java)
     private var disconnectFuture: CompletableFuture<Void> = CompletableFuture()
-    val voiceWebSocket: VoiceWebSocket? = null
+    private val voiceWebSocket: VoiceWebSocket? = null
 
     override fun setDeafened(deafened: Boolean): VoiceConnection {
         this.isDeafened = deafened
-        ydwk.webSocketManager?.sendVoiceStateUpdate(
-            ydwk.getGuildById(guildId),
-            if (channelId != null) ydwk.getGuildVoiceChannelById(channelId!!) else null,
-            isDeafened,
-            isMuted)
+        ydwk.webSocketManager?.sendVoiceStateUpdate(channel.guild, channel, isDeafened, isMuted)
         return this
     }
 
     override fun setMuted(muted: Boolean): VoiceConnection {
         this.isMuted = muted
-        ydwk.webSocketManager?.sendVoiceStateUpdate(
-            ydwk.getGuildById(guildId),
-            if (channelId != null) ydwk.getGuildVoiceChannelById(channelId!!) else null,
-            isDeafened,
-            isMuted)
+        ydwk.webSocketManager?.sendVoiceStateUpdate(channel.guild, channel, isDeafened, isMuted)
         return this
     }
 
@@ -95,12 +87,11 @@ data class VoiceConnectionImpl(
     override fun disconnect(): Void {
         disconnectFuture = CompletableFuture()
         voiceWebSocket?.close()
-        ydwk.webSocketManager?.sendVoiceStateUpdate(
-            ydwk.getGuildById(guildId), null, isDeafened, isMuted)
+        ydwk.webSocketManager?.sendVoiceStateUpdate(channel.guild, null, isDeafened, isMuted)
 
         return disconnectFuture.get()
     }
 
     override val voiceState: VoiceState
-        get() = ydwk.getPendingVoiceConnectionById(guildId)!!.voiceState
+        get() = ydwk.getPendingVoiceConnectionById(channel.guild.idAsLong)!!.voiceState
 }

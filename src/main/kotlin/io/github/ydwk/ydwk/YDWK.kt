@@ -48,7 +48,7 @@ import java.time.Instant
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.ScheduledExecutorService
 
-interface YDWK : Iterable<YDWK> {
+interface YDWK {
 
     /**
      * Creates a json object
