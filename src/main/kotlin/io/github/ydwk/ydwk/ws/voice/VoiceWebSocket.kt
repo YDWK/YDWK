@@ -30,6 +30,7 @@ import io.github.ydwk.ydwk.ws.voice.util.VoiceOpcode
 import io.github.ydwk.ydwk.ws.voice.util.findIp
 import java.io.IOException
 import java.net.SocketTimeoutException
+import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 import org.slf4j.LoggerFactory
 
@@ -52,8 +53,6 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
     private var ssrc: Int? = null
     private var modes: List<String>? = null
     private var secretKey: ByteArray? = null
-    private var attemptToSendAudio = false
-    private var sequence: Char = 0.toChar()
 
     init {
         connect()
@@ -276,6 +275,13 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
         speakingData.put("ssrc", ssrc)
         speakingPayload.set<JsonNode>("d", speakingData)
         webSocket?.sendText(speakingPayload.toString())
+    }
+
+    fun close() {
+        sendCloseCode(VoiceCloseCode.DISCONNECTED)
+        // in one minute stop heartbeat
+        ScheduledThreadPoolExecutor(1)
+            .schedule({ heartBeat.heartbeatThread?.cancel(false) }, 1, TimeUnit.MINUTES)
     }
 }
 

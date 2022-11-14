@@ -82,7 +82,7 @@ interface VoiceConnection {
      *
      * @return The [VoiceConnection] object.
      */
-    fun disconnect(): VoiceConnection
+    fun disconnect(): Void
 
     /**
      * Gets the [VoiceState] of the bot.

@@ -26,6 +26,7 @@ import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.ydwk.impl.entities.GuildImpl
 import io.github.ydwk.ydwk.voice.VoiceConnection
 import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
+import java.util.*
 import java.util.concurrent.CompletableFuture
 
 open class GuildVoiceChannelImpl(
@@ -35,12 +36,21 @@ open class GuildVoiceChannelImpl(
 ) : GuildVoiceChannel, GenericGuildVoiceChannelImpl(ydwk, json, idAsLong) {
 
     override fun join(isMuted: Boolean, isDeafened: Boolean): VoiceConnection {
-        guild.voiceConnection?.disconnect()
+        if (guild.voiceConnection != null) {
+            guild.voiceConnection!!.disconnect()
+        } else {
+            CompletableFuture.completedFuture(null)
+        }
+
         val future = CompletableFuture<VoiceConnection>()
         val connection = VoiceConnectionImpl(guild.idAsLong, ydwk, future, isMuted, isDeafened)
         (guild as GuildImpl).setPendingVoiceConnection(connection)
-        (guild as GuildImpl).setVoiceConnection(connection)
-        return future.join()
+        return future
+            .thenApply {
+                (guild as GuildImpl).setVoiceConnection(it as VoiceConnectionImpl)
+                it
+            }
+            .join()
     }
 
     override var bitrate: Int = json["bitrate"].asInt()
