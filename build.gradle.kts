@@ -45,7 +45,10 @@ apply(from = "gradle/tasks/incrementVersion.gradle.kts")
 
 apply(from = "gradle/tasks/checkEvents.gradle.kts")
 
-repositories { mavenCentral() }
+repositories {
+    mavenCentral()
+    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+}
 
 dependencies {
     // json
@@ -59,7 +62,7 @@ dependencies {
     // ws and https
     api("com.squareup.okhttp3:okhttp:5.0.0-alpha.10")
     api("com.neovisionaries:nv-websocket-client:2.14")
-    api("com.codahale:xsalsa20poly1305:0.11.0")
+    api("io.github.realyusufismail:xsalsa20poly1305-fork:0.11.2-SNAPSHOT")
     // kotlin
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.7.20")
     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")

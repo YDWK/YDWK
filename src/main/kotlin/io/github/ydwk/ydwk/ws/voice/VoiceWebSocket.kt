@@ -33,6 +33,7 @@ import java.net.SocketTimeoutException
 import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 import org.slf4j.LoggerFactory
+import java.net.DatagramPacket
 
 /** Handles Voice connections. */
 class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
@@ -200,6 +201,7 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
                 logger.debug("Received $opCode - Session Description")
                 this.secretKey = data.get("secret_key").binaryValue()
                 sendSpeaking()
+                sendEncodedData()
                 TODO("Opus encoded data over the UDP connection")
             }
             VoiceOpcode.RESUMED -> {
@@ -282,6 +284,24 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
         // in one minute stop heartbeat
         ScheduledThreadPoolExecutor(1)
             .schedule({ heartBeat.heartbeatThread?.cancel(false) }, 1, TimeUnit.MINUTES)
+    }
+
+    private fun sendEncodedData() {
+        //val audioData = voiceConnection.audioData
+        //val encodedData = voiceConnection.encoder.encode(audioData)
+        //val packet = DatagramPacket(encodedData, encodedData.size, findIp(ip, port, ssrc))
+        //voiceConnection.udpSocket.send(packet)
+    }
+
+    private fun stopSpeaking() {
+        val speakingPayload = ydwk.objectNode
+        speakingPayload.put("op", VoiceOpcode.SPEAKING.code)
+        val speakingData = ydwk.objectNode
+        speakingData.put("speaking", 0)
+        speakingData.put("delay", 0)
+        speakingData.put("ssrc", ssrc)
+        speakingPayload.set<JsonNode>("d", speakingData)
+        webSocket?.sendText(speakingPayload.toString())
     }
 }
 

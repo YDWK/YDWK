@@ -31,7 +31,7 @@ class VoicePacket(
     private var encrypted: Boolean = false
 
     init {
-        if (data != null) {
+        header = if (data != null) {
             val buffer: ByteBuffer =
                 ByteBuffer.allocate(12)
                     .put(0, 0x80.toByte())
@@ -39,15 +39,15 @@ class VoicePacket(
                     .putChar(2, sequence)
                     .putInt(4, timestamp)
                     .putInt(8, ssrc)
-            header = buffer.array()
+            buffer.array()
         } else {
-            header = null
+            null
         }
     }
     fun encrypt() {
         val nonce = ByteArray(24)
         header?.let { System.arraycopy(it, 0, nonce, 0, 12) }
-        data = SecretBox(nonce).seal(nonce, data)
+        data = data?.let { SecretBox(nonce).seal(nonce, it) }
         encrypted = true
     }
 }

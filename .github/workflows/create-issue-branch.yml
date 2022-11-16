@@ -9,6 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create Issue Branch
-        uses: RealYusufIsmail/YDW@master
+        uses: YDWK/YDWK@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
