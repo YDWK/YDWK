@@ -77,6 +77,19 @@ tasks.build {
     dependsOn(tasks.getByName("checkEvents")) // check if events are valid
     dependsOn(tasks.getByName("checkEntities")) // check if entities are valid
     dependsOn(tasks.test) // run tests before building
+
+    // check if version is not snapshot
+    if (releaseVersion) {
+        //check if MAVEN_PASSWORD is set
+        if (System.getenv("MAVEN_PASSWORD") != null) {
+            //run publishYdwkPublicationToMavenCentralRepository
+            dependsOn(tasks.getByName("publishYdwkPublicationToMavenCentralRepository"))
+            //then increment version
+            dependsOn(tasks.getByName("incrementVersion"))
+        } else {
+            //ignore
+        }
+    }
 }
 
 tasks.jacocoTestReport {
