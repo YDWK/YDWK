@@ -26,6 +26,7 @@ import io.github.ydwk.ydwk.entities.message.MessageFlag
 import io.github.ydwk.ydwk.interaction.application.sub.Reply
 import io.github.ydwk.ydwk.interaction.sub.InteractionCallbackType
 import io.github.ydwk.ydwk.rest.EndPoint
+import io.github.ydwk.ydwk.rest.result.NoResult
 import java.util.concurrent.CompletableFuture
 import okhttp3.RequestBody.Companion.toRequestBody
 
@@ -49,7 +50,7 @@ class ReplyImpl(
         return this
     }
 
-    override fun replyWithFuture(): CompletableFuture<Void> {
+    override fun replyWithFuture(): CompletableFuture<NoResult> {
         val mainBody =
             ydwk.objectNode.put("type", InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE.toInt())
 

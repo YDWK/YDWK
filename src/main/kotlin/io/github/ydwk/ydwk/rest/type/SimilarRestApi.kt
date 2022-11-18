@@ -19,6 +19,7 @@
 package io.github.ydwk.ydwk.rest.type
 
 import io.github.ydwk.ydwk.rest.cf.CompletableFutureManager
+import io.github.ydwk.ydwk.rest.result.NoResult
 import java.util.concurrent.CompletableFuture
 import java.util.function.Function
 import okhttp3.Headers
@@ -38,5 +39,5 @@ interface SimilarRestApi {
 
     fun <T : Any> execute(function: Function<CompletableFutureManager, T>): CompletableFuture<T>
 
-    fun executeWithNoResult(): CompletableFuture<Void>
+    fun executeWithNoResult(): CompletableFuture<NoResult>
 }

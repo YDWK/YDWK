@@ -36,6 +36,7 @@ import io.github.ydwk.ydwk.impl.entities.AuditLogImpl
 import io.github.ydwk.ydwk.impl.entities.channel.DmChannelImpl
 import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
 import io.github.ydwk.ydwk.rest.EndPoint
+import io.github.ydwk.ydwk.rest.result.NoResult
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 import io.github.ydwk.ydwk.util.NameAbleEntity
 import io.github.ydwk.ydwk.util.SnowFlake
@@ -375,7 +376,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
         userId: Long,
         deleteMessageDuration: Duration = Duration.ZERO,
         reason: String? = null
-    ): CompletableFuture<Void> {
+    ): CompletableFuture<NoResult> {
         return ydwk.restApiManager
             .put(
                 ydwk.objectMapper
@@ -420,7 +421,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
         userId: String,
         deleteMessageDuration: Duration = Duration.ZERO,
         reason: String? = null
-    ): CompletableFuture<Void> = banUser(userId.toLong(), deleteMessageDuration, reason)
+    ): CompletableFuture<NoResult> = banUser(userId.toLong(), deleteMessageDuration, reason)
 
     /**
      * Bans a user from the guild.
@@ -433,7 +434,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
         user: User,
         deleteMessageDuration: Duration = Duration.ZERO,
         reason: String? = null
-    ): CompletableFuture<Void> = banUser(user.id, deleteMessageDuration, reason)
+    ): CompletableFuture<NoResult> = banUser(user.id, deleteMessageDuration, reason)
 
     /**
      * Bans a member from the guild.
@@ -447,7 +448,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
         member: Member,
         deleteMessageDuration: Duration = Duration.ZERO,
         reason: String? = null
-    ): CompletableFuture<Void> = banUser(member.user, deleteMessageDuration, reason)
+    ): CompletableFuture<NoResult> = banUser(member.user, deleteMessageDuration, reason)
 
     /**
      * Unbans a user from the guild.
@@ -456,7 +457,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @param reason The reason for the unban.
      * @return A [CompletableFuture] that completes when the unban is created.
      */
-    fun unbanUser(userId: Long, reason: String? = null): CompletableFuture<Void> {
+    fun unbanUser(userId: Long, reason: String? = null): CompletableFuture<NoResult> {
         return ydwk.restApiManager
             .delete(EndPoint.GuildEndpoint.BAN, id, userId.toString())
             .addReason(reason)
@@ -470,7 +471,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @param reason The reason for the unban.
      * @return A [CompletableFuture] that completes when the unban is created.
      */
-    fun unbanUser(userId: String, reason: String? = null): CompletableFuture<Void> =
+    fun unbanUser(userId: String, reason: String? = null): CompletableFuture<NoResult> =
         unbanUser(userId.toLong(), reason)
 
     /**
@@ -480,7 +481,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @param reason The reason for the unban.
      * @return A [CompletableFuture] that completes when the unban is created.
      */
-    fun unbanUser(user: User, reason: String? = null): CompletableFuture<Void> =
+    fun unbanUser(user: User, reason: String? = null): CompletableFuture<NoResult> =
         unbanUser(user.id, reason)
 
     /**
@@ -490,7 +491,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @param reason The reason for the kick.
      * @return A [CompletableFuture] that completes when the kick is created.
      */
-    fun kickMember(userId: Long, reason: String? = null): CompletableFuture<Void> {
+    fun kickMember(userId: Long, reason: String? = null): CompletableFuture<NoResult> {
         return ydwk.restApiManager
             .delete(EndPoint.GuildEndpoint.KICK, id, userId.toString())
             .addReason(reason)
@@ -504,7 +505,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @param reason The reason for the kick.
      * @return A [CompletableFuture] that completes when the kick is created.
      */
-    fun kickMember(userId: String, reason: String? = null): CompletableFuture<Void> =
+    fun kickMember(userId: String, reason: String? = null): CompletableFuture<NoResult> =
         kickMember(userId.toLong(), reason)
 
     /**
@@ -514,7 +515,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @param reason The reason for the kick.
      * @return A [CompletableFuture] that completes when the kick is created.
      */
-    fun kickMember(member: Member, reason: String? = null): CompletableFuture<Void> =
+    fun kickMember(member: Member, reason: String? = null): CompletableFuture<NoResult> =
         kickMember(member.user.id, reason)
 
     /**

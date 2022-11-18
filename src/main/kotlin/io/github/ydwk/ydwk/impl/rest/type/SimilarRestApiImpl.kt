@@ -22,9 +22,12 @@ import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.rest.cf.CompletableFutureManager
 import io.github.ydwk.ydwk.rest.error.HttpResponseCode
 import io.github.ydwk.ydwk.rest.error.JsonErrorCode
+import io.github.ydwk.ydwk.rest.result.NoResult
 import io.github.ydwk.ydwk.rest.type.SimilarRestApi
+import io.github.ydwk.ydwk.ws.util.formatInstant
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
+import java.time.Instant
 import java.util.concurrent.CompletableFuture
 import java.util.function.Function
 import okhttp3.*
@@ -109,8 +112,8 @@ open class SimilarRestApiImpl(
         return queue
     }
 
-    override fun executeWithNoResult(): CompletableFuture<Void> {
-        val queue = CompletableFuture<Void>()
+    override fun executeWithNoResult(): CompletableFuture<NoResult> {
+        val queue = CompletableFuture<NoResult>()
         try {
             client
                 .newCall(builder.build())
@@ -125,7 +128,7 @@ open class SimilarRestApiImpl(
                                 val code = response.code
                                 error(response.body, code, queue, null)
                             }
-                            queue.complete(null)
+                            queue.complete(NoResult(formatInstant(Instant.now())))
                             logger.debug("Request completed")
                         }
                     })
@@ -138,7 +141,7 @@ open class SimilarRestApiImpl(
     fun error(
         body: ResponseBody,
         code: Int,
-        queueWithNoResult: CompletableFuture<Void>?,
+        queueWithNoResult: CompletableFuture<NoResult>?,
         queueWithResult: CompletableFuture<*>?
     ) {
         if (HttpResponseCode.fromCode(code) == HttpResponseCode.TOO_MANY_REQUESTS) {
@@ -154,7 +157,7 @@ open class SimilarRestApiImpl(
 
     private fun handleRateLimit(
         body: ResponseBody,
-        queueWithNoResult: CompletableFuture<Void>?,
+        queueWithNoResult: CompletableFuture<NoResult>?,
         queueWithResult: CompletableFuture<*>?
     ) {
         val jsonNode = ydwk.objectMapper.readTree(body.string())
@@ -174,7 +177,7 @@ open class SimilarRestApiImpl(
     }
 
     private fun completeReTry(
-        queueWithNoResult: CompletableFuture<Void>?,
+        queueWithNoResult: CompletableFuture<NoResult>?,
         queueWithResult: CompletableFuture<*>?
     ) {
         if (queueWithNoResult != null) {
