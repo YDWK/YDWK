@@ -28,12 +28,14 @@ import java.nio.charset.StandardCharsets
 import java.util.concurrent.CompletableFuture
 import java.util.function.Function
 import okhttp3.*
+import org.slf4j.LoggerFactory
 
 open class SimilarRestApiImpl(
     private val ydwk: YDWKImpl,
     private val builder: Request.Builder,
     private val client: OkHttpClient,
 ) : SimilarRestApi {
+    private val logger = LoggerFactory.getLogger(SimilarRestApi::class.java)
 
     override fun header(name: String, value: String): SimilarRestApi {
         builder.header(name, value)
@@ -98,6 +100,7 @@ open class SimilarRestApiImpl(
                             val manager = CompletableFutureManager(response, ydwk)
                             val result = function.apply(manager)
                             queue.complete(result)
+                            logger.debug("Request completed")
                         }
                     })
         } catch (e: Exception) {
@@ -123,6 +126,7 @@ open class SimilarRestApiImpl(
                                 error(response.body, code, queue, null)
                             }
                             queue.complete(null)
+                            logger.debug("Request completed")
                         }
                     })
         } catch (e: Exception) {
@@ -144,7 +148,7 @@ open class SimilarRestApiImpl(
         } else if (JsonErrorCode.fromCode(code) != JsonErrorCode.UNKNOWN) {
             handleJsonError(body, code)
         } else {
-            ydwk.logger.error("Unknown error occurred while executing request")
+            logger.error("Unknown error occurred while executing request")
         }
     }
 
@@ -157,13 +161,13 @@ open class SimilarRestApiImpl(
         val retryAfter = jsonNode.get("retry_after").asLong()
         val global = jsonNode.get("global").asBoolean()
         val message = jsonNode.get("message").asText()
-        ydwk.logger.error("Error while executing request: $message")
+        logger.error("Error while executing request: $message")
         if (global) {
-            ydwk.logger.error("Global rate limit reached, retrying in $retryAfter ms")
+            logger.error("Global rate limit reached, retrying in $retryAfter ms")
             Thread.sleep(retryAfter)
             completeReTry(queueWithNoResult, queueWithResult)
         } else {
-            ydwk.logger.error("Rate limit reached, retrying in $retryAfter ms")
+            logger.error("Rate limit reached, retrying in $retryAfter ms")
             Thread.sleep(retryAfter)
             completeReTry(queueWithNoResult, queueWithResult)
         }
@@ -175,10 +179,13 @@ open class SimilarRestApiImpl(
     ) {
         if (queueWithNoResult != null) {
             executeWithNoResult().thenAccept { queueWithNoResult.complete(null) }
+            logger.debug("Request completed")
         } else if (queueWithResult != null) {
             execute { queueWithResult.complete(null) }
+            logger.debug("Request completed")
         } else {
             execute()
+            logger.debug("Request completed")
         }
     }
 

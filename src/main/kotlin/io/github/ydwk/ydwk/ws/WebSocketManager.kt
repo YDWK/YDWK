@@ -98,8 +98,6 @@ open class WebSocketManager(
     private var resumeUrl: String? = null
     private var sessionId: String? = null
     private var seq: Int? = null
-    private var heartbeatsMissed: Int = 0
-    private var heartbeatStartTime: Long = 0
     var upTime: Instant? = null
     val scheduler: ScheduledExecutorService = Executors.newScheduledThreadPool(1)
     @get:Synchronized @set:Synchronized var connected = false
@@ -109,8 +107,7 @@ open class WebSocketManager(
     private var identifyTime = 0L
     private var attemptedToResume = false
     private var timesTriedToConnect = 0
-    private var heartBeat: HeartBeat =
-        HeartBeat(ydwk, webSocket!!, heartbeatsMissed, heartbeatStartTime)
+    private var heartBeat: HeartBeat? = null
 
     @Synchronized
     fun connect(): WebSocketManager {
@@ -236,7 +233,7 @@ open class WebSocketManager(
 
         ydwk.emitEvent(DisconnectEvent(ydwk, closeCodeAsString, closeCodeReason, Instant.now()))
 
-        heartBeat.heartbeatThread?.cancel(false)
+        heartBeat?.heartbeatThread?.cancel(false)
 
         val closeCode = CloseCode.from(closeFrame?.closeCode ?: 1000)
 
@@ -375,12 +372,12 @@ open class WebSocketManager(
             HELLO -> {
                 logger.debug("Received $opCode - HELLO")
                 val heartbeatInterval: Long = d.get("heartbeat_interval").asLong()
-                heartBeat.startGateWayHeartbeat(heartbeatInterval, connected, seq)
-                heartbeatsMissed = heartBeat.heartbeatsMissed
+                heartBeat = HeartBeat(ydwk, webSocket!!)
+                heartBeat?.startGateWayHeartbeat(heartbeatInterval, connected, seq)
             }
             HEARTBEAT_ACK -> {
                 logger.debug("Received $opCode - HEARTBEAT_ACK")
-                heartbeatsMissed = 0
+                heartBeat?.receivedHeartbeatAck()
             }
             else -> {
                 // do nothing
@@ -568,7 +565,7 @@ open class WebSocketManager(
         sessionId = null
         resumeUrl = null
         ydwk.cache.clear()
-        heartBeat.heartbeatThread?.cancel(false)
+        heartBeat?.heartbeatThread?.cancel(false)
         ydwk.setLoggedIn(LoggedInImpl(false).setDisconnectedTime())
         scheduler.shutdownNow()
         upTime = null

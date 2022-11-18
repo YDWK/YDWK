@@ -45,10 +45,7 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
         ydwk.webSocketManager ?: throw IllegalStateException("WebSocketManager is null!")
     private var timesTriedToConnect = 0
     @get:Synchronized @set:Synchronized var connected = false
-    private var heartbeatsMissed: Int = 0
-    private var heartbeatStartTime: Long = 0
-    private var heartBeat: HeartBeat =
-        HeartBeat(ydwk, webSocket!!, heartbeatsMissed, heartbeatStartTime)
+    private var heartBeat: HeartBeat? = null
     private var secretKey: ByteArray? = null
     private var address: InetSocketAddress? = null
     private var ssrc: Int? = null
@@ -81,6 +78,7 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
                     .addListener(this)
                     .addListener(WebsocketLogging(logger))
                     .connect()
+            heartBeat = HeartBeat(ydwk, webSocket!!)
         } catch (e: IOException) {
             logger.error("Failed to connect to voice gateway, will try again in 10 seconds", e)
             if (timesTriedToConnect > 3) {
@@ -138,7 +136,7 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
         logger.info(
             "Disconnected from websocket with close code $closeCodeAsString and reason $closeCodeReason")
 
-        heartBeat.heartbeatThread?.cancel(false)
+        heartBeat?.heartbeatThread?.cancel(false)
 
         val closeCode = VoiceCloseCode.fromCode(closeFrame?.closeCode ?: 1000)
 
@@ -183,12 +181,11 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
             VoiceOpcode.HELLO -> {
                 logger.debug("Received $opCode - HELLO")
                 val heartbeatInterval = data.get("heartbeat_interval").asLong()
-                heartBeat.stopVoiceHeartbeat()
+                heartBeat?.stopVoiceHeartbeat()
                 address?.let {
-                    heartBeat.startVoiceHeartbeat(
+                    heartBeat?.startVoiceHeartbeat(
                         heartbeatInterval, connected, voiceConnection, udpHeartbeat, it)
                 }
-                heartbeatsMissed = heartBeat.heartbeatsMissed
             }
             VoiceOpcode.READY -> {
                 logger.debug("Received $opCode - READY")
@@ -219,7 +216,7 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
             }
             VoiceOpcode.HEARTBEAT_ACK -> {
                 logger.debug("Received $opCode - HEARTBEAT_ACK")
-                heartbeatsMissed = 0
+                heartBeat?.receivedHeartbeatAck()
             }
             else -> {
                 // do nothing
@@ -294,7 +291,7 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
         sendCloseCode(VoiceCloseCode.DISCONNECTED)
         // in one minute stop heartbeat
         ScheduledThreadPoolExecutor(1)
-            .schedule({ heartBeat.heartbeatThread?.cancel(false) }, 1, TimeUnit.MINUTES)
+            .schedule({ heartBeat?.heartbeatThread?.cancel(false) }, 1, TimeUnit.MINUTES)
     }
 
     private fun sendEncodedData(address: InetSocketAddress): InetSocketAddress? {

@@ -18,6 +18,8 @@
  */ 
 package io.github.ydwk.ydwk.interaction.application.sub
 
+import java.util.concurrent.CompletableFuture
+
 interface Reply {
 
     /**
@@ -41,5 +43,14 @@ interface Reply {
      *
      * @return The [Void] instance.
      */
-    fun reply(): Void
+    fun reply(): Void? {
+        return replyWithFuture().get()
+    }
+
+    /**
+     * Replies and return a [CompletableFuture] that will be completed when the reply is sent.
+     *
+     * @return The [CompletableFuture] instance.
+     */
+    fun replyWithFuture(): CompletableFuture<Void>
 }

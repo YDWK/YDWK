@@ -53,8 +53,9 @@ fun main() {
                     val member = it.slash.member
                     val voiceState = member?.voiceState
                     if (voiceState != null) {
-                        val voiceChannel = voiceState.channel
-                        if (voiceChannel != null) {}
+                        voiceState.channel?.join()
+                    } else {
+                        it.slash.reply("You are not in a voice channel!").reply()
                     }
                 }
             }
@@ -63,8 +64,13 @@ fun main() {
                     val forum = it.slash.ydwk.getGuildTextChannelById("1031971612238561390")
                     if (forum != null) {
                         it.slash.reply(forum.json.toPrettyString()).reply()
+                    } else {
+                        it.slash.reply("Forum not found!").reply()
                     }
                 }
+            }
+            "ping" -> {
+                it.slash.reply("Pong!").reply()
             }
             "create_dm" -> {
                 withContext(Dispatchers.IO) {

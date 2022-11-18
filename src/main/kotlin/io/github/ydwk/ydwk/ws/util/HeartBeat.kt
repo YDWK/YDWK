@@ -38,10 +38,10 @@ import org.slf4j.LoggerFactory
 class HeartBeat(
     private val ydwk: YDWK,
     private val webSocket: WebSocket,
-    var heartbeatsMissed: Int,
-    private var heartbeatStartTime: Long,
     var heartbeatThread: Future<*>? = null,
 ) {
+    private var heartbeatsMissed: Int = 0
+    private var heartbeatStartTime: Long = 0
     private val scheduler: ScheduledExecutorService = ydwk.defaultScheduledExecutorService
     private val logger: Logger = LoggerFactory.getLogger(HeartBeat::class.java)
 
@@ -152,5 +152,11 @@ class HeartBeat(
 
     fun stopVoiceHeartbeat() {
         heartbeatThread?.cancel(true)
+    }
+
+    fun receivedHeartbeatAck() {
+        heartbeatsMissed = 0
+        val heartbeatTime = System.currentTimeMillis() - heartbeatStartTime
+        logger.debug("Heartbeat acknowledged, took {}ms", heartbeatTime)
     }
 }

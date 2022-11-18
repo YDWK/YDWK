@@ -46,8 +46,7 @@ class VoiceStateImpl(override val ydwk: YDWK, override val json: JsonNode) : Voi
 
     override val member: Member?
         get() =
-            if (json.hasNonNull("member")) MemberImpl(ydwk, json["member"], guild!!, user, this)
-            else null
+            if (json.has("member")) MemberImpl(ydwk, json["member"], guild!!, user, this) else null
 
     override val sessionId: String
         get() = json["session_id"].asText()
