@@ -1,0 +1,33 @@
+{
+  "member" : {
+    "user" : {
+      "username" : "Yusuf.I",
+      "public_flags" : 4194560,
+      "id" : "422708001976221697",
+      "discriminator" : "2642",
+      "bot" : false,
+      "avatar" : "f41bc30da291dbb710d67cf216fa8de2"
+    },
+    "roles" : [ "947211155812790314", "946909516052701244" ],
+    "premium_since" : null,
+    "pending" : false,
+    "nick" : null,
+    "mute" : false,
+    "joined_at" : "2022-02-01T17:22:25.752000+00:00",
+    "flags" : 0,
+    "deaf" : false,
+    "communication_disabled_until" : null,
+    "avatar" : null
+  },
+  "user_id" : "422708001976221697",
+  "suppress" : false,
+  "session_id" : "c75658987f8dd1287abf77b4e69a658c",
+  "self_video" : false,
+  "self_mute" : true,
+  "self_deaf" : false,
+  "request_to_speak_timestamp" : null,
+  "mute" : false,
+  "guild_id" : "938122131949097052",
+  "deaf" : false,
+  "channel_id" : "938122131949097056"
+}

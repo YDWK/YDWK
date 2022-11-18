@@ -45,8 +45,12 @@ class VoiceStateImpl(override val ydwk: YDWK, override val json: JsonNode) : Voi
                 ?: throw IllegalStateException("User not found")
 
     override val member: Member?
-        get() =
-            if (json.has("member")) MemberImpl(ydwk, json["member"], guild!!, user, this) else null
+        get() {
+            return if (guild == null) null
+            else if (json.has("member")) MemberImpl(ydwk, json["member"], guild!!, null, this)
+            else if (guild!!.getMemberById(user.id) != null) guild!!.getMemberById(user.id)
+            else null
+        }
 
     override val sessionId: String
         get() = json["session_id"].asText()

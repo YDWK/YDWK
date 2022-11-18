@@ -49,15 +49,7 @@ fun main() {
     ydwk.on<SlashCommandEvent> {
         when (it.slash.name) {
             "join_vc" -> {
-                withContext(Dispatchers.IO) {
-                    val member = it.slash.member
-                    val voiceState = member?.voiceState
-                    if (voiceState != null) {
-                        voiceState.channel?.join()
-                    } else {
-                        it.slash.reply("You are not in a voice channel!").reply()
-                    }
-                }
+                withContext(Dispatchers.IO) {}
             }
             "forum_json" -> {
                 withContext(Dispatchers.IO) {
