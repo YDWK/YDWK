@@ -31,11 +31,3 @@ jobs:
           body: |
             Version ${{ steps.read-version.outputs.version }}
           draft: true
-          prerelease: false
-      - name: Run maven release
-        if: ${{ !endsWith(steps.read-version.outputs.version, 'SNAPSHOT') }}
-        run: |
-          ./gradlew publishYdwkPublicationToMavenCentralRepository
-        env:
-          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}

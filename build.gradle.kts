@@ -64,7 +64,7 @@ dependencies {
     api("com.neovisionaries:nv-websocket-client:2.14")
     api("io.github.realyusufismail:xsalsa20poly1305-fork:0.11.2-SNAPSHOT")
     // kotlin
-    testImplementation("org.jetbrains.kotlin:kotlin-test:1.7.20")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:1.7.21")
     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation("com.google.code.findbugs:jsr305:3.0.2")
 }
@@ -81,6 +81,19 @@ tasks.build {
     dependsOn(tasks.getByName("checkEvents")) // check if events are valid
     dependsOn(tasks.getByName("checkEntities")) // check if entities are valid
     dependsOn(tasks.test) // run tests before building
+
+    // check if version is not snapshot
+    if (releaseVersion) {
+        //check if MAVEN_PASSWORD is set
+        if (System.getenv("MAVEN_PASSWORD") != null) {
+            //run publishYdwkPublicationToMavenCentralRepository
+            dependsOn(tasks.getByName("publishYdwkPublicationToMavenCentralRepository"))
+            //then increment version
+            dependsOn(tasks.getByName("incrementVersion"))
+        } else {
+            //ignore
+        }
+    }
 }
 
 tasks.jacocoTestReport {
