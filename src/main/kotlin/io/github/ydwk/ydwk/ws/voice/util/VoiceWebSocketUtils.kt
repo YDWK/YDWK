@@ -23,11 +23,9 @@ import java.net.DatagramSocket
 import java.net.InetSocketAddress
 import java.nio.ByteBuffer
 
-/** Utilities for Voice WebSockets. */
-fun findIp(ip: String?, port: Int?, ssrc: Int?): InetSocketAddress {
+fun findIp(inetSocketAddress: InetSocketAddress): InetSocketAddress {
     val socket = DatagramSocket()
-    ByteBuffer.wrap(byteArrayOf(0x01, 0x04)).putInt(ssrc ?: 0)
-    val address = InetSocketAddress(ip, port ?: 0)
+    val address = InetSocketAddress(inetSocketAddress.hostName, inetSocketAddress.port)
     socket.send(DatagramPacket(byteArrayOf(0x01, 0x04), 2, address))
     val buffer = ByteArray(70)
     val packet = DatagramPacket(buffer, buffer.size)

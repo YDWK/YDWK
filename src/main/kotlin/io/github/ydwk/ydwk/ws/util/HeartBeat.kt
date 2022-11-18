@@ -21,8 +21,11 @@ package io.github.ydwk.ydwk.ws.util
 import com.fasterxml.jackson.databind.JsonNode
 import com.neovisionaries.ws.client.WebSocket
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
 import io.github.ydwk.ydwk.ws.voice.util.VoiceCloseCode
 import io.github.ydwk.ydwk.ws.voice.util.VoiceOpcode
+import java.net.DatagramPacket
+import java.net.InetSocketAddress
 import java.net.Socket
 import java.net.SocketException
 import java.util.concurrent.Future
@@ -36,13 +39,13 @@ class HeartBeat(
     private val ydwk: YDWK,
     private val webSocket: WebSocket,
     var heartbeatsMissed: Int,
-    private var heartbeatStartTime: Long
+    private var heartbeatStartTime: Long,
+    var heartbeatThread: Future<*>? = null,
 ) {
-    var heartbeatThread: Future<*>? = null
     private val scheduler: ScheduledExecutorService = ydwk.defaultScheduledExecutorService
     private val logger: Logger = LoggerFactory.getLogger(HeartBeat::class.java)
 
-    public fun startGateWayHeartbeat(heartbeatInterval: Long, connected: Boolean, seq: Int?) {
+    fun startGateWayHeartbeat(heartbeatInterval: Long, connected: Boolean, seq: Int?) {
         tryWebSocket(heartbeatInterval)
 
         val heartbeat: JsonNode =
@@ -54,10 +57,19 @@ class HeartBeat(
                 connected,
                 heartbeat,
                 CloseCode.MISSED_HEARTBEAT.code,
-                CloseCode.MISSED_HEARTBEAT.reason)
+                CloseCode.MISSED_HEARTBEAT.reason,
+                null,
+                null,
+                null)
     }
 
-    fun startVoiceHeartbeat(heartbeatInterval: Long, connected: Boolean) {
+    fun startVoiceHeartbeat(
+        heartbeatInterval: Long,
+        connected: Boolean,
+        voiceConnection: VoiceConnectionImpl,
+        udpHeartbeat: ByteArray,
+        address: InetSocketAddress
+    ) {
         tryWebSocket(heartbeatInterval)
 
         val heartbeat: JsonNode =
@@ -69,7 +81,10 @@ class HeartBeat(
                 connected,
                 heartbeat,
                 VoiceCloseCode.MISSED_HEARTBEAT.code,
-                VoiceCloseCode.MISSED_HEARTBEAT.reason)
+                VoiceCloseCode.MISSED_HEARTBEAT.reason,
+                voiceConnection,
+                udpHeartbeat,
+                address)
     }
 
     private fun tryWebSocket(heartbeatInterval: Long) {
@@ -88,12 +103,18 @@ class HeartBeat(
         connected: Boolean,
         heartbeat: JsonNode,
         closeCode: Int,
-        closeReason: String
+        closeReason: String,
+        voiceConnection: VoiceConnectionImpl?,
+        udpHeartbeat: ByteArray?,
+        address: InetSocketAddress?
     ): ScheduledFuture<*> {
         return scheduler.scheduleAtFixedRate(
             {
                 if (connected) {
                     sendHeartBeat(heartbeat, closeCode, closeReason)
+                    if (voiceConnection != null && udpHeartbeat != null && address != null) {
+                        sendUdpHeartBeat(voiceConnection, udpHeartbeat, address)
+                    }
                 } else {
                     logger.info("Not sending heartbeat because not connected")
                 }
@@ -101,6 +122,19 @@ class HeartBeat(
             0,
             heartbeatInterval,
             TimeUnit.MILLISECONDS)
+    }
+
+    private fun sendUdpHeartBeat(
+        voiceConnection: VoiceConnectionImpl,
+        udpHeartbeat: ByteArray,
+        address: InetSocketAddress
+    ) {
+        try {
+            val heartbeatPacket = DatagramPacket(udpHeartbeat, udpHeartbeat.size, address)
+            voiceConnection.udpsocket?.send(heartbeatPacket)
+        } catch (ex: Exception) {
+            logger.warn("Failed to send UDP heartbeat", ex)
+        }
     }
 
     private fun sendHeartBeat(json: JsonNode, closeCode: Int, closeReason: String) {
@@ -114,5 +148,9 @@ class HeartBeat(
             webSocket.sendText(json.toString())
             heartbeatStartTime = System.currentTimeMillis()
         }
+    }
+
+    fun stopVoiceHeartbeat() {
+        heartbeatThread?.cancel(true)
     }
 }

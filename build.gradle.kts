@@ -84,14 +84,14 @@ tasks.build {
 
     // check if version is not snapshot
     if (releaseVersion) {
-        //check if MAVEN_PASSWORD is set
+        // check if MAVEN_PASSWORD is set
         if (System.getenv("MAVEN_PASSWORD") != null) {
-            //run publishYdwkPublicationToMavenCentralRepository
+            // run publishYdwkPublicationToMavenCentralRepository
             dependsOn(tasks.getByName("publishYdwkPublicationToMavenCentralRepository"))
-            //then increment version
+            // then increment version
             dependsOn(tasks.getByName("incrementVersion"))
         } else {
-            //ignore
+            // ignore
         }
     }
 }
