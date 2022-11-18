@@ -24,6 +24,7 @@ import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.ydwk.voice.VoiceConnection
 import io.github.ydwk.ydwk.ws.voice.VoiceWebSocket
 import io.github.ydwk.ydwk.ws.voice.util.SpeakingFlag
+import java.net.DatagramSocket
 import java.util.*
 import java.util.concurrent.CompletableFuture
 
@@ -41,6 +42,7 @@ data class VoiceConnectionImpl(
     override val speakingFlags: EnumSet<SpeakingFlag> = EnumSet.noneOf(SpeakingFlag::class.java)
     private var disconnectFuture: CompletableFuture<Void> = CompletableFuture()
     private val voiceWebSocket: VoiceWebSocket? = null
+    var udpsocket: DatagramSocket? = null
 
     override fun setDeafened(deafened: Boolean): VoiceConnection {
         this.isDeafened = deafened
