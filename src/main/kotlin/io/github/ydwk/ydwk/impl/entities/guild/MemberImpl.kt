@@ -19,13 +19,13 @@
 package io.github.ydwk.ydwk.impl.entities.guild
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.VoiceState
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.entities.guild.enums.GuildPermission
+import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.UserImpl
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import io.github.ydwk.ydwk.util.GetterSnowFlake
@@ -33,12 +33,19 @@ import io.github.ydwk.ydwk.util.formatZonedDateTime
 import java.util.*
 
 class MemberImpl(
-    override val ydwk: YDWK,
+    override val ydwk: YDWKImpl,
     override val json: JsonNode,
     override val guild: Guild,
     backupUser: User? = null,
-    override var voiceState: VoiceState? = null
+    override var voiceState: VoiceState? = null,
+    val triggerUpdate: Boolean = false
 ) : Member {
+
+    init {
+        if (triggerUpdate) {
+            ydwk.memberCache.update(this)
+        }
+    }
 
     override var user: User =
         if (json.has("user")) UserImpl(json["user"], json["user"]["id"].asLong(), ydwk)

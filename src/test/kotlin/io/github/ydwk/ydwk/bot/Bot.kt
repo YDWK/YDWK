@@ -49,7 +49,11 @@ fun main() {
     ydwk.on<SlashCommandEvent> {
         when (it.slash.name) {
             "join_vc" -> {
-                withContext(Dispatchers.IO) {}
+                withContext(Dispatchers.IO) {
+                    it.slash
+                        .reply(it.slash.member?.json?.toPrettyString() ?: "No member found")
+                        .reply()
+                }
             }
             "forum_json" -> {
                 withContext(Dispatchers.IO) {

@@ -31,7 +31,7 @@ class MemberCacheImpl(allowedCache: Set<CacheIds>) : MemberCache, PerpetualCache
     }
 
     override fun update(value: Member) {
-        super.update(value.id, CacheIds.MEMBER, value)
+        TODO("Start working on this")
     }
 
     override fun remove(guildId: String, userId: String) {

@@ -85,6 +85,7 @@ class SlashCommandImpl(
     override val permissions: Long? = interaction.permissions
 
     override val locale: String? = interaction.locale
+
     override fun reply(content: String): Reply {
         return ReplyImpl(ydwk, content, null, interaction.id, token)
     }
@@ -100,12 +101,6 @@ class SlashCommandImpl(
             resolved["users"]?.let {
                 it.fields().forEach { (id, node) ->
                     map[id.toLong()] = UserImpl(node, node["id"].asLong(), ydwk)
-                    (ydwk as YDWKImpl)
-                        .cache
-                        .update(
-                            node["id"].asText(),
-                            CacheIds.USER,
-                            UserImpl(node, node["id"].asLong(), ydwk))
                 }
             }
             resolved["attachments"]?.let {
@@ -129,19 +124,6 @@ class SlashCommandImpl(
                                 MemberImpl(
                                     ydwk, node, guild, UserImpl(user, user["id"].asLong(), ydwk))
                         }
-                        (ydwk as YDWKImpl)
-                            .memberCache
-                            .update(
-                                node["id"].asText(),
-                                CacheIds.MEMBER,
-                                MemberImpl(
-                                    ydwk,
-                                    node,
-                                    guild,
-                                    UserImpl(
-                                        resolved["users"][id],
-                                        resolved["users"][id]["id"].asLong(),
-                                        ydwk)))
                     }
                 }
 
