@@ -20,7 +20,6 @@ package io.github.ydwk.ydwk.impl.interaction.application
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.cache.CacheIds
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.entities.User
@@ -96,6 +95,7 @@ class SlashCommandImpl(
 
     override val options: List<SlashOptionGetter>
         get() {
+            // TODO : replace with getOrPut
             val map: MutableMap<Long, GenericEntity> = mutableMapOf()
             val resolved = json["resolved"]
             resolved["users"]?.let {
@@ -106,12 +106,6 @@ class SlashCommandImpl(
             resolved["attachments"]?.let {
                 it.fields().forEach { (id, node) ->
                     map[id.toLong()] = AttachmentImpl(ydwk, node, node["id"].asLong())
-                    (ydwk as YDWKImpl)
-                        .cache
-                        .update(
-                            node["id"].asText(),
-                            CacheIds.ATTACHMENT,
-                            AttachmentImpl(ydwk, node, node["id"].asLong()))
                 }
             }
 
@@ -120,9 +114,16 @@ class SlashCommandImpl(
                     it.fields().forEach { (id, node) ->
                         resolved["users"]?.let { users ->
                             val user = users[id]
-                            map[id.toLong()] =
+                            val member =
                                 MemberImpl(
-                                    ydwk, node, guild, UserImpl(user, user["id"].asLong(), ydwk))
+                                    ydwk as YDWKImpl,
+                                    node,
+                                    guild,
+                                    UserImpl(user, user["id"].asLong(), ydwk))
+
+                            val newMember =
+                                ydwk.memberCache.getOrPut(member.guild.id, member.user.id, member)
+                            map[id.toLong()] = newMember
                         }
                     }
                 }
@@ -130,12 +131,6 @@ class SlashCommandImpl(
                 resolved["roles"]?.let {
                     it.fields().forEach { (id, node) ->
                         map[id.toLong()] = RoleImpl(ydwk, node, node["id"].asLong())
-                        (ydwk as YDWKImpl)
-                            .cache
-                            .update(
-                                node["id"].asText(),
-                                CacheIds.ROLE,
-                                RoleImpl(ydwk, node, node["id"].asLong()))
                     }
                 }
 
@@ -143,12 +138,6 @@ class SlashCommandImpl(
                     it.fields().forEach { (id, node) ->
                         map[id.toLong()] =
                             GenericGuildTextChannelImpl(ydwk, node, node["id"].asLong())
-                        (ydwk as YDWKImpl)
-                            .cache
-                            .update(
-                                node["id"].asText(),
-                                CacheIds.TEXT_CHANNEL,
-                                GenericGuildTextChannelImpl(ydwk, node, node["id"].asLong()))
                     }
                 }
             }

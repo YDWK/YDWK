@@ -25,6 +25,7 @@ import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.VoiceState
 import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.ydwk.entities.guild.Member
+import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
 import io.github.ydwk.ydwk.rest.EndPoint
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
@@ -46,10 +47,12 @@ class VoiceStateImpl(override val ydwk: YDWK, override val json: JsonNode) : Voi
 
     override val member: Member?
         get() {
-            return if (guild == null) null
-            else if (json.has("member")) MemberImpl(ydwk, json["member"], guild!!, null, this)
-            else if (guild!!.getMemberById(user.id) != null) guild!!.getMemberById(user.id)
-            else null
+            if (json.has("member")) {
+                val member =
+                    MemberImpl(ydwk as YDWKImpl, json["member"], guild!!, voiceState = this)
+                return ydwk.memberCache.getOrPut(guild!!.id, member.user.id, member)
+            }
+            return null
         }
 
     override val sessionId: String

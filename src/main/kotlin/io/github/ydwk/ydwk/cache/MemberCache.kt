@@ -21,7 +21,7 @@ package io.github.ydwk.ydwk.cache
 import io.github.ydwk.ydwk.entities.guild.Member
 
 /** Discord's Member do not have a unique ID, so we need to use a combination of the user id */
-interface MemberCache : Cache {
+interface MemberCache {
     /**
      * Adds a new item to the cache
      *
@@ -41,12 +41,13 @@ interface MemberCache : Cache {
     operator fun get(guildId: String, userId: String): Member?
 
     /**
-     * Used to check the cache for any changes in the specified object. If the object is not in the
-     * cache, it will be added. If the object is in the cache, it will be updated.
+     * Gets an item from the cache but adds it if it doesn't exist
      *
+     * @param key The key of the item
      * @param value The value of the item
+     * @return The value of the item
      */
-    fun update(value: Member)
+    fun getOrPut(guildId: String, userId: String, value: Member): Member
 
     /**
      * Removes an item from the cache
@@ -55,4 +56,19 @@ interface MemberCache : Cache {
      * @param userId The user id of the member
      */
     fun remove(guildId: String, userId: String)
+
+    /**
+     * Check's if this properties exists in the cache and value exists
+     *
+     * @param key The key of the item
+     * @param cacheType The type of the item
+     * @return True if the item exists, false otherwise
+     */
+    fun contains(guildId: String, userId: String): Boolean
+
+    /** Clears the cache */
+    fun clear()
+
+    /** Gets a list of objects in the cache */
+    fun values(): List<Member>
 }

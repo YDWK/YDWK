@@ -30,11 +30,19 @@ class MemberCacheImpl(allowedCache: Set<CacheIds>) : MemberCache, PerpetualCache
         return super.get(guildId + userId, CacheIds.MEMBER) as Member?
     }
 
-    override fun update(value: Member) {
-        TODO("Start working on this")
+    override fun getOrPut(guildId: String, userId: String, value: Member): Member {
+        return super.getOrPut(guildId + userId, value, CacheIds.MEMBER) as Member
     }
 
     override fun remove(guildId: String, userId: String) {
         super.remove(guildId + userId, CacheIds.MEMBER)
+    }
+
+    override fun contains(guildId: String, userId: String): Boolean {
+        return super.contains(guildId + userId, CacheIds.MEMBER)
+    }
+
+    override fun values(): List<Member> {
+        return super.values(CacheIds.MEMBER) as List<Member>
     }
 }

@@ -38,14 +38,7 @@ class MemberImpl(
     override val guild: Guild,
     backupUser: User? = null,
     override var voiceState: VoiceState? = null,
-    val triggerUpdate: Boolean = false
 ) : Member {
-
-    init {
-        if (triggerUpdate) {
-            ydwk.memberCache.update(this)
-        }
-    }
 
     override var user: User =
         if (json.has("user")) UserImpl(json["user"], json["user"]["id"].asLong(), ydwk)

@@ -28,9 +28,6 @@ class VoiceStateUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, js
     override fun start() {
         val voiceState = VoiceStateImpl(ydwk, json)
         val voiceStateMember = voiceState.member
-        if (voiceStateMember != null && voiceState.guild != null) {
-            ydwk.memberCache.update(voiceStateMember)
-        }
         ydwk.emitEvent(VoiceStateEvent(ydwk, voiceState))
     }
 }

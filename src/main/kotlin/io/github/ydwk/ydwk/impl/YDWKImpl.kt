@@ -252,7 +252,7 @@ class YDWKImpl(
     }
 
     override fun getMembers(): List<Member> {
-        return memberCache.values(CacheIds.MEMBER).map { it as Member }
+        return memberCache.values().map { it as Member }
     }
 
     override fun getUserById(id: Long): User? {

@@ -32,6 +32,7 @@ import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.entities.guild.WelcomeScreen
 import io.github.ydwk.ydwk.entities.guild.enums.*
 import io.github.ydwk.ydwk.entities.util.GenericEntity
+import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.AuditLogImpl
 import io.github.ydwk.ydwk.impl.entities.channel.DmChannelImpl
 import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
@@ -749,7 +750,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
                     val members: ArrayNode = jsonBody as ArrayNode
                     val memberList = mutableListOf<Member>()
                     for (member in members) {
-                        memberList.add(MemberImpl(ydwk, member, this))
+                        memberList.add(MemberImpl(ydwk as YDWKImpl, member, this))
                     }
                     memberList
                 }
@@ -770,7 +771,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
                 val members: ArrayNode = jsonBody as ArrayNode
                 val memberList = mutableListOf<Member>()
                 for (member in members) {
-                    memberList.add(MemberImpl(ydwk, member, this))
+                    memberList.add(MemberImpl(ydwk as YDWKImpl, member, this))
                 }
                 memberList
             }
