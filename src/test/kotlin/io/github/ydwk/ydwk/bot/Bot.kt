@@ -50,9 +50,10 @@ fun main() {
         when (it.slash.name) {
             "join_vc" -> {
                 withContext(Dispatchers.IO) {
-                    it.slash
-                        .reply(it.slash.member?.json?.toPrettyString() ?: "No member found")
-                        .reply()
+                    if (it.slash.member?.voiceState != null) {
+                        it.slash.member!!.voiceState?.channel?.join()
+                        it.slash.reply("Joined vc!").reply()
+                    }
                 }
             }
             "forum_json" -> {
