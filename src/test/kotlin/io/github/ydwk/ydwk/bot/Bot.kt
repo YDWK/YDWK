@@ -50,9 +50,27 @@ fun main() {
         when (it.slash.name) {
             "join_vc" -> {
                 withContext(Dispatchers.IO) {
-                    if (it.slash.member?.voiceState != null) {
-                        it.slash.member!!.voiceState?.channel?.join()
-                        it.slash.reply("Joined vc!").reply()
+                    val member = it.slash.member
+                    if (member != null) {
+                        if (member.voiceState != null) {
+                            val voiceState = member.voiceState
+                            if (voiceState != null) {
+                                if (voiceState.channel != null) {
+                                    voiceState.channel?.join()
+                                } else {
+                                    it.slash
+                                        .reply("Voice channel is null!")
+                                        .isEphemeral(true)
+                                        .reply()
+                                }
+                            } else {
+                                it.slash.reply("Voice state is null!").isEphemeral(true).reply()
+                            }
+                        } else {
+                            it.slash.reply("Member voice state is null!").isEphemeral(true).reply()
+                        }
+                    } else {
+                        it.slash.reply("Member is null!").isEphemeral(true).reply()
                     }
                 }
             }

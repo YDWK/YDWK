@@ -27,7 +27,8 @@ import io.github.ydwk.ydwk.impl.entities.VoiceStateImpl
 class VoiceStateUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override fun start() {
         val voiceState = VoiceStateImpl(ydwk, json)
-        val voiceStateMember = voiceState.member
-        ydwk.emitEvent(VoiceStateEvent(ydwk, voiceState))
+        val newMember = ydwk.memberCache.getOrPut(voiceState.member!!)
+        ydwk.memberCache.updateVoiceState(newMember, voiceState, true)
+        ydwk.emitEvent(VoiceStateEvent(ydwk, voiceState, newMember))
     }
 }

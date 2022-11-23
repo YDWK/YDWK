@@ -18,6 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.cache
 
+import io.github.ydwk.ydwk.entities.VoiceState
 import io.github.ydwk.ydwk.entities.guild.Member
 
 /** Discord's Member do not have a unique ID, so we need to use a combination of the user id */
@@ -43,11 +44,20 @@ interface MemberCache {
     /**
      * Gets an item from the cache but adds it if it doesn't exist
      *
-     * @param key The key of the item
      * @param value The value of the item
      * @return The value of the item
      */
-    fun getOrPut(guildId: String, userId: String, value: Member): Member
+    fun getOrPut(value: Member): Member
+
+    /**
+     * updates the member's voice state
+     *
+     * @param member The member which voice state is to be updated
+     * @param voiceState The new voice state
+     * @param add If true, the voice state will be added to the member's voice states, otherwise it
+     * will be removed
+     */
+    fun updateVoiceState(member: Member, voiceState: VoiceState, add: Boolean)
 
     /**
      * Removes an item from the cache
@@ -69,6 +79,10 @@ interface MemberCache {
     /** Clears the cache */
     fun clear()
 
-    /** Gets a list of objects in the cache */
+    /**
+     * Gets a list of objects in the cache
+     *
+     * @return A list of objects in the cache
+     */
     fun values(): List<Member>
 }

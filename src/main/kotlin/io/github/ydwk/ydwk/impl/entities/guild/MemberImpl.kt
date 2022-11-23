@@ -36,8 +36,7 @@ class MemberImpl(
     override val ydwk: YDWKImpl,
     override val json: JsonNode,
     override val guild: Guild,
-    backupUser: User? = null,
-    override var voiceState: VoiceState? = null,
+    backupUser: User? = null
 ) : Member {
 
     override var user: User =
@@ -75,6 +74,8 @@ class MemberImpl(
 
     override val isOwner: Boolean
         get() = guild.ownerId.asString == user.id
+
+    override var voiceState: VoiceState? = null
 
     override val permissions: EnumSet<GuildPermission>
         get() = GuildPermission.fromValues(getPermissions(this))

@@ -56,7 +56,11 @@ class InteractionImpl(
         else null
 
     override val member: Member? =
-        if (json.has("member")) guild?.let { MemberImpl(ydwk as YDWKImpl, json["member"], it) }
+        if (json.has("member"))
+            guild?.let { it ->
+                val member = MemberImpl(ydwk as YDWKImpl, json["member"], it)
+                ydwk.memberCache.getOrPut(member)
+            }
         else null
 
     override val user: User? =

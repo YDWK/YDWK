@@ -20,6 +20,18 @@ package io.github.ydwk.ydwk.evm.event.events.voice
 
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.VoiceState
+import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.evm.event.Event
 
-data class VoiceStateEvent(override val ydwk: YDWK, val voiceState: VoiceState) : Event(ydwk)
+/**
+ * Emitted when a member's voice state changes.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param voiceState The new voice state of the member.
+ * @param member The member whose voice state changed.
+ */
+data class VoiceStateEvent(
+    override val ydwk: YDWK,
+    val voiceState: VoiceState,
+    val member: Member
+) : Event(ydwk)

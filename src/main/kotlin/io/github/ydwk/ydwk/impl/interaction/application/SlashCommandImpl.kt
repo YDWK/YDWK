@@ -121,8 +121,7 @@ class SlashCommandImpl(
                                     guild,
                                     UserImpl(user, user["id"].asLong(), ydwk))
 
-                            val newMember =
-                                ydwk.memberCache.getOrPut(member.guild.id, member.user.id, member)
+                            val newMember = ydwk.memberCache.getOrPut(member)
                             map[id.toLong()] = newMember
                         }
                     }

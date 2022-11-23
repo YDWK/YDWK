@@ -47,11 +47,12 @@ class VoiceStateImpl(override val ydwk: YDWK, override val json: JsonNode) : Voi
 
     override val member: Member?
         get() {
-            if (json.has("member")) {
-                val member =
-                    MemberImpl(ydwk as YDWKImpl, json["member"], guild!!, voiceState = this)
-                return ydwk.memberCache.getOrPut(guild!!.id, member.user.id, member)
-            }
+            if (json.has("member") && guild != null) {
+                val member = MemberImpl(ydwk as YDWKImpl, json["member"], guild!!)
+                val newMember = ydwk.memberCache.getOrPut(member)
+                ydwk.memberCache.updateVoiceState(newMember, this, true)
+                return newMember
+            } else (ydwk as YDWKImpl).logger.debug("Member or guild is null")
             return null
         }
 

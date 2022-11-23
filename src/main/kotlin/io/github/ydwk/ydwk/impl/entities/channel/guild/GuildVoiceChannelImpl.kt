@@ -28,25 +28,31 @@ import io.github.ydwk.ydwk.voice.VoiceConnection
 import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
 import java.util.*
 import java.util.concurrent.CompletableFuture
+import org.slf4j.LoggerFactory
 
 open class GuildVoiceChannelImpl(
     override val ydwk: YDWK,
     override val json: JsonNode,
     override val idAsLong: Long
 ) : GuildVoiceChannel, GenericGuildVoiceChannelImpl(ydwk, json, idAsLong) {
+    private val logger = LoggerFactory.getLogger(GuildVoiceChannelImpl::class.java)
 
     override fun join(isMuted: Boolean, isDeafened: Boolean): VoiceConnection {
         if (guild.voiceConnection != null) {
+            logger.debug("Already connected to a voice channel!")
             guild.voiceConnection!!.disconnect()
         } else {
+            logger.debug("Connecting to a voice channel!")
             CompletableFuture.completedFuture(null)
         }
 
         val future = CompletableFuture<VoiceConnection>()
+        logger.debug("Connecting to voice channel $name")
         val connection = VoiceConnectionImpl(this, ydwk, future, isMuted, isDeafened)
         (guild as GuildImpl).setPendingVoiceConnection(connection)
         return future
             .thenApply {
+                logger.debug("Connected to voice channel $name")
                 (guild as GuildImpl).setVoiceConnection(it as VoiceConnectionImpl)
                 it
             }
