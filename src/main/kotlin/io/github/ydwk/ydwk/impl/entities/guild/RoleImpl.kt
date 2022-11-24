@@ -35,10 +35,10 @@ class RoleImpl(override val ydwk: YDWK, override val json: JsonNode, override va
 
     override var isHoisted: Boolean = json["hoist"].asBoolean()
 
-    override var icon: String? = if (json["icon"].isNull) null else json["icon"].asText()
+    override var icon: String? = if (json.has("icon")) json["icon"].asText() else null
 
     override var unicodeEmoji: String? =
-        if (json["unicode_emoji"].isNull) null else json["unicode_emoji"].asText()
+        if (json.has("unicode_emoji")) json["unicode_emoji"].asText() else null
 
     override var position: Int = json["position"].asInt()
 
@@ -54,7 +54,7 @@ class RoleImpl(override val ydwk: YDWK, override val json: JsonNode, override va
 
     override var isMentionable: Boolean = json["mentionable"].asBoolean()
 
-    override var tags: RoleTag? = if (json["tags"].isNull) null else RoleTagImpl(ydwk, json["tags"])
+    override var tags: RoleTag? = if (json.has("tags")) RoleTagImpl(ydwk, json["tags"]) else null
 
     override var rawPermissions: Long = json["permissions"].asLong()
 
