@@ -55,13 +55,16 @@ class InteractionImpl(
         if (json.has("channel_id")) ydwk.getGenericGuildTextChannelById(json["channel_id"].asLong())
         else null
 
-    override val member: Member? =
-        if (json.has("member"))
-            guild?.let { it ->
-                val member = MemberImpl(ydwk as YDWKImpl, json["member"], it)
-                ydwk.memberCache.getOrPut(member)
+    override val member: Member?
+        get() {
+            if (json.has("member")) {
+                if (json.has("member")) {
+                    val member = MemberImpl(ydwk as YDWKImpl, json["member"], guild!!)
+                    return ydwk.memberCache.getOrPut(member)
+                }
             }
-        else null
+            return null
+        }
 
     override val user: User? =
         if (json.has("user")) UserImpl(json["user"], json["user"]["id"].asLong(), ydwk) else null

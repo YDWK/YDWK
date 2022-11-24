@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.cache
 
 import io.github.ydwk.ydwk.cache.exception.CacheException
 import io.github.ydwk.ydwk.entities.*
+import org.slf4j.LoggerFactory
 
 /**
  * This is the implementation of the [Cache] interface that uses a [Map] to store and retrieve data.
@@ -28,13 +29,23 @@ open class PerpetualCache(
     private val allowedCache: Set<CacheIds>,
 ) : Cache {
     private val cache = HashMap<String, Any>()
+    private val logger = LoggerFactory.getLogger(PerpetualCache::class.java)
 
     override val size: Int
         get() = cache.size
 
     override fun set(key: String, value: Any, cacheType: CacheIds) {
         if (cacheType in allowedCache) {
-            cache[key + cacheType.toString()] = value
+            logger.debug("Adding to cache: $key")
+
+            if (cache.containsKey(key) && (value !is Guild || value !is UnavailableGuild)) {
+                logger.debug("Cache already contains key: $key")
+            } else if (value !is Guild || value !is UnavailableGuild) {
+                cache[key + cacheType.toString()] = value
+            } else {
+                cache.remove(key + cacheType.toString())
+                cache[key + cacheType.toString()] = value
+            }
         }
     }
 
@@ -58,6 +69,7 @@ open class PerpetualCache(
         if (cacheType !in allowedCache) {
             throw CacheException("The caching of type $cacheType has been disabled")
         } else {
+            logger.debug("Removing from cache: $key")
             return cache.remove(key + cacheType.toString())
         }
     }

@@ -72,7 +72,8 @@ open class EndPoint {
         BAN("/guilds/%s/bans/%s"),
         KICK("/guilds/%s/members/%s"),
         GET_AUDIT_LOGS("/guilds/%s/audit-logs"),
-        GET_MEMBERS("/guilds/%s/members");
+        GET_MEMBERS("/guilds/%s/members"),
+        GET_GUILD("/guilds/%s");
 
         override fun getEndpoint(): String {
             return endPoint

@@ -44,6 +44,7 @@ import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
 import io.github.ydwk.ydwk.evm.backend.event.IEventListener
 import io.github.ydwk.ydwk.evm.backend.managers.CoroutineEventManager
 import io.github.ydwk.ydwk.evm.backend.managers.SampleEventManager
+import io.github.ydwk.ydwk.impl.entities.GuildImpl
 import io.github.ydwk.ydwk.impl.entities.UserImpl
 import io.github.ydwk.ydwk.impl.entities.channel.DmChannelImpl
 import io.github.ydwk.ydwk.impl.entities.message.embed.builder.EmbedBuilderImpl
@@ -273,6 +274,19 @@ class YDWKImpl(
                 UserImpl(jsonBody, jsonBody["id"].asLong(), this)
             }
         }
+    }
+
+    override fun requestGuild(guildId: Long): CompletableFuture<Guild> {
+        return this.restApiManager
+            .get(EndPoint.GuildEndpoint.GET_GUILD, guildId.toString())
+            .execute { it ->
+                val jsonBody = it.jsonBody
+                if (jsonBody == null) {
+                    throw IllegalStateException("json body is null")
+                } else {
+                    GuildImpl(this, jsonBody, jsonBody["id"].asLong())
+                }
+            }
     }
 
     override fun setVoiceConnection(guildId: Long, voiceConnection: VoiceConnection) {

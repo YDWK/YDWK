@@ -80,9 +80,9 @@ interface MemberCache {
     fun clear()
 
     /**
-     * Gets a list of objects in the cache
+     * Gets a list of members in the cache
      *
-     * @return A list of objects in the cache
+     * @return A list of members in the cache
      */
     fun values(): List<Member>
 }

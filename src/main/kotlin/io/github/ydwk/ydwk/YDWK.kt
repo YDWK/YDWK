@@ -461,6 +461,22 @@ interface YDWK {
     fun requestUser(id: String): CompletableFuture<User> = requestUser(id.toLong())
 
     /**
+     * Requests a guild using its id.
+     *
+     * @param id The id of the guild.
+     * @return The [CompletableFuture] object.
+     */
+    fun requestGuild(guildId: Long): CompletableFuture<Guild>
+
+    /**
+     * Requests a guild using its id.
+     *
+     * @param id The id of the guild.
+     * @return The [CompletableFuture] object.
+     */
+    fun requestGuild(guildId: String): CompletableFuture<Guild> = requestGuild(guildId.toLong())
+
+    /**
      * Sets the voice connection.
      *
      * @param guildId The id of the guild.

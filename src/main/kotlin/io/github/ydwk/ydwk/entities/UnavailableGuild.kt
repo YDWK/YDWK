@@ -21,6 +21,10 @@ package io.github.ydwk.ydwk.entities
 import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.util.SnowFlake
 
+/**
+ * Unavailable means that the guild data is currently not accessible. Discord knows it exists, but
+ * the services can't access the data at the moment.
+ */
 interface UnavailableGuild : SnowFlake, GenericEntity {
     /**
      * Weather the guild is unavailable or not

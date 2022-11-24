@@ -28,7 +28,6 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.entities.channel.GuildChannel
 import io.github.ydwk.ydwk.evm.event.events.gateway.DisconnectEvent
-import io.github.ydwk.ydwk.evm.event.events.gateway.ReadyEvent
 import io.github.ydwk.ydwk.evm.event.events.gateway.ReconnectEvent
 import io.github.ydwk.ydwk.evm.event.events.gateway.ResumeEvent
 import io.github.ydwk.ydwk.evm.handler.handlers.ban.GuildBanAddHandler
@@ -62,9 +61,8 @@ import io.github.ydwk.ydwk.evm.handler.handlers.user.UserUpdateHandler
 import io.github.ydwk.ydwk.evm.handler.handlers.voice.VoiceServerUpdateHandler
 import io.github.ydwk.ydwk.evm.handler.handlers.voice.VoiceStateUpdateHandler
 import io.github.ydwk.ydwk.evm.handler.handlers.webhook.WebhooksUpdateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.ws.ReadyHandler
 import io.github.ydwk.ydwk.impl.YDWKImpl
-import io.github.ydwk.ydwk.impl.entities.BotImpl
-import io.github.ydwk.ydwk.impl.entities.application.PartialApplicationImpl
 import io.github.ydwk.ydwk.ws.logging.WebsocketLogging
 import io.github.ydwk.ydwk.ws.util.CloseCode
 import io.github.ydwk.ydwk.ws.util.EventNames
@@ -463,32 +461,7 @@ open class WebSocketManager(
                 identifyRateLimit = false
                 attemptedToResume = false
                 ready = true
-
-                val bot = BotImpl(d.get("user"), d.get("user").get("id").asLong(), ydwk)
-                ydwk.bot = bot
-                ydwk.cache[d.get("user").get("id").asText(), bot] = CacheIds.USER
-
-                val partialApplication =
-                    PartialApplicationImpl(
-                        d.get("application"), d.get("application").get("id").asLong(), ydwk)
-                ydwk.applicationId = partialApplication.id
-                ydwk.partialApplication = partialApplication
-                ydwk.cache[d.get("application").get("id").asText(), partialApplication] =
-                    CacheIds.APPLICATION
-
-                val guilds: ArrayNode = d.get("guilds") as ArrayNode
-
-                var availableGuildsAmount: Int = 0
-                var unAvailableGuildsAmount: Int = 0
-
-                for (guild in guilds) {
-                    if (!guild.get("unavailable").asBoolean()) {
-                        availableGuildsAmount += 1
-                    } else {
-                        unAvailableGuildsAmount += 1
-                    }
-                }
-                ydwk.emitEvent(ReadyEvent(ydwk, availableGuildsAmount, unAvailableGuildsAmount))
+                ReadyHandler(ydwk, d).start()
             }
             EventNames.RESUMED -> {
                 attemptedToResume = false

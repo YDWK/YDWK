@@ -76,6 +76,11 @@ interface Cache {
     /** Clears the cache */
     fun clear()
 
-    /** Gets a list of objects in the cache */
+    /**
+     * Gets a list of objects in the cache
+     *
+     * @param cacheType The type of the item
+     * @return A list of objects in the cache
+     */
     fun values(cacheType: CacheIds): List<Any>
 }
