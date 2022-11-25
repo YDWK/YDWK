@@ -36,7 +36,7 @@ open class PerpetualCache(
 
     override fun set(key: String, value: Any, cacheType: CacheIds) {
         if (cacheType in allowedCache) {
-            logger.debug("Adding to cache: $key")
+            // logger.debug("Adding to cache: $key")
 
             if (cache.containsKey(key) && (value !is Guild || value !is UnavailableGuild)) {
                 logger.debug("Cache already contains key: $key")

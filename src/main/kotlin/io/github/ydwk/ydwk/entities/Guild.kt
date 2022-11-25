@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode
 import io.github.ydwk.ydwk.entities.audit.AuditLogType
 import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.channel.GuildChannel
-import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildChannel
+import io.github.ydwk.ydwk.entities.channel.getter.guild.GuildChannelGetter
 import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
 import io.github.ydwk.ydwk.entities.channel.guild.message.text.GuildTextChannel
 import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
@@ -679,7 +679,8 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      *
      * @return The channels.
      */
-    val getChannels: List<GenericGuildChannel>
+    val getChannels: List<GuildChannel>
+        get() = getUnorderedChannels.sortedBy { it.position }
 
     /**
      * Gets all the categories as sorted list.
@@ -687,6 +688,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @return The categories.
      */
     val getCategories: List<GuildCategory>
+        get() = getChannels.filterIsInstance<GuildCategory>()
 
     /**
      * Gets all the text channels as sorted list.
@@ -694,6 +696,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @return The text channels.
      */
     val getTextChannels: List<GuildTextChannel>
+        get() = getChannels.filterIsInstance<GuildTextChannel>()
 
     /**
      * Gets all the voice channels as sorted list.
@@ -701,6 +704,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @return The voice channels.
      */
     val getVoiceChannels: List<GuildVoiceChannel>
+        get() = getChannels.filterIsInstance<GuildVoiceChannel>()
 
     /**
      * Gets the channel by its id.
@@ -719,21 +723,22 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     fun getChannelById(channelId: String): GuildChannel? = getChannelById(channelId.toLong())
 
     /**
-     * Gets a voice channel by its id.
+     * Gets the channel getter by its id.
      *
      * @param channelId The id of the channel.
-     * @return The channel, or null if it doesn't exist.
+     * @return The channel getter.
      */
-    fun getVoiceChannelById(channelId: Long): GuildVoiceChannel? =
-        getChannelById(channelId) as? GuildVoiceChannel
+    fun getChannelGetterById(channelId: Long): GuildChannelGetter? =
+        getChannelById(channelId)?.guildChannelGetter
 
     /**
-     * Gets a voice channel by its id.
+     * Gets the channel getter by its id.
      *
      * @param channelId The id of the channel.
+     * @return The channel getter.
      */
-    fun getVoiceChannelById(channelId: String): GuildVoiceChannel? =
-        getVoiceChannelById(channelId.toLong())
+    fun getChannelGetterById(channelId: String): GuildChannelGetter? =
+        getChannelGetterById(channelId.toLong())
 
     /**
      * Used to get all the members of the guild.

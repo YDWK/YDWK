@@ -26,7 +26,7 @@ interface GuildCategory : GuildChannel {
      *
      * @return all the channels in this category.
      */
-    val channels: List<GenericGuildChannel>
+    val channels: List<GuildChannel>
 
     /**
      * Weather this category is nsfw.

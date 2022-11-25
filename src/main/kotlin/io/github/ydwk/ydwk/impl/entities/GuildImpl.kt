@@ -24,10 +24,6 @@ import io.github.ydwk.ydwk.entities.Emoji
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.Sticker
 import io.github.ydwk.ydwk.entities.channel.GuildChannel
-import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildChannel
-import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
-import io.github.ydwk.ydwk.entities.channel.guild.message.text.GuildTextChannel
-import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.ydwk.entities.guild.Ban
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.guild.Role
@@ -187,19 +183,7 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
     }
 
     override val getUnorderedChannels: List<GuildChannel>
-        get() = ydwk.guildChannels.filter { it.guild.id == id }
-
-    override val getChannels: List<GenericGuildChannel>
-        get() = getUnorderedChannels.filterIsInstance<GenericGuildChannel>()
-
-    override val getCategories: List<GuildCategory>
-        get() = getUnorderedChannels.filterIsInstance<GuildCategory>()
-
-    override val getTextChannels: List<GuildTextChannel>
-        get() = getUnorderedChannels.filterIsInstance<GuildTextChannel>()
-
-    override val getVoiceChannels: List<GuildVoiceChannel>
-        get() = getUnorderedChannels.filterIsInstance<GuildVoiceChannel>()
+        get() = ydwk.getGuildChannels().filter { it.idAsLong == this.idAsLong }
 
     override fun getChannelById(channelId: Long): GuildChannel? {
         return getUnorderedChannels.firstOrNull { it.idAsLong == channelId }

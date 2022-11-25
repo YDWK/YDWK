@@ -20,8 +20,7 @@ package io.github.ydwk.ydwk.entities.channel.guild.message
 
 import io.github.ydwk.ydwk.entities.channel.GuildChannel
 import io.github.ydwk.ydwk.entities.channel.TextChannel
-import io.github.ydwk.ydwk.entities.channel.guild.message.news.GuildNewsChannel
-import io.github.ydwk.ydwk.entities.channel.guild.message.text.GuildTextChannel
+import io.github.ydwk.ydwk.entities.channel.getter.guild.GuildMessageChannelGetter
 import io.github.ydwk.ydwk.entities.channel.guild.message.text.PermissionOverwrite
 
 interface GuildMessageChannel : TextChannel, GuildChannel {
@@ -68,20 +67,9 @@ interface GuildMessageChannel : TextChannel, GuildChannel {
     var permissionOverwrites: List<PermissionOverwrite>
 
     /**
-     * Gets the message channel as a guild text channel.
+     * Gets the guild message channel getter.
      *
-     * @return the message channel as a guild text channel.
+     * @return the guild message channel getter.
      */
-    fun asGuildTextChannel(): GuildTextChannel? {
-        return cast(GuildTextChannel::class.java)
-    }
-
-    /**
-     * Gets the message channel as a guild news channel.
-     *
-     * @return the message channel as a guild news channel.
-     */
-    fun asGuildNewsChannel(): GuildNewsChannel? {
-        return cast(GuildNewsChannel::class.java)
-    }
+    val guildMessageChannelGetter: GuildMessageChannelGetter
 }

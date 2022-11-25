@@ -24,35 +24,22 @@ import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
 import io.github.ydwk.ydwk.evm.event.events.channel.ChannelDeleteEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
-import io.github.ydwk.ydwk.impl.entities.channel.guild.GenericGuildChannelImpl
+import io.github.ydwk.ydwk.impl.entities.ChannelImpl
+import io.github.ydwk.ydwk.impl.entities.channel.guild.GuildChannelImpl
 
 class ChannelDeleteHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override fun start() {
         val channelType = ChannelType.fromId(json.get("type").asInt())
         when {
-            channelType.isGuildText -> {
-                val channel =
-                    GenericGuildChannelImpl(ydwk, json, json.get("id").asLong(), true)
-                        .asGenericGuildTextChannel()
-                ydwk.cache.remove(json.get("id").asText(), CacheIds.TEXT_CHANNEL)
+            channelType.isGuildChannel -> {
+                val channel = GuildChannelImpl(ydwk, json, json.get("id").asLong())
+                ydwk.cache.remove(json.get("id").asText(), CacheIds.CHANNEL)
                 ydwk.emitEvent(ChannelDeleteEvent(ydwk, channel))
             }
-            channelType.isVoice -> {
-                val channel =
-                    GenericGuildChannelImpl(
-                            ydwk, json, json.get("id").asLong(), isVoiceChannel = true)
-                        .asGenericGuildVoiceChannel()
-                ydwk.cache.remove(json.get("id").asText(), CacheIds.VOICE_CHANNEL)
+            channelType.isNonGuildChannel -> {
+                val channel = ChannelImpl(ydwk, json, json.get("id").asLong(), false, true)
+                ydwk.cache.remove(json.get("id").asText(), CacheIds.CHANNEL)
                 ydwk.emitEvent(ChannelDeleteEvent(ydwk, channel))
-            }
-            channelType.isCategory -> {
-                val channel =
-                    GenericGuildChannelImpl(ydwk, json, json.get("id").asLong(), isCategory = true)
-                ydwk.cache.remove(json.get("id").asText(), CacheIds.CATEGORY)
-                ydwk.emitEvent(ChannelDeleteEvent(ydwk, channel))
-            }
-            channelType == ChannelType.DM || channelType == ChannelType.GROUP_DM -> {
-                ydwk.logger.warn("DM and Group DM are not supported and will be ignored.")
             }
         }
     }

@@ -18,11 +18,11 @@
  */ 
 package io.github.ydwk.ydwk.entities.channel.guild.vc
 
-import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildVoiceChannel
+import io.github.ydwk.ydwk.entities.channel.GuildChannel
 import io.github.ydwk.ydwk.voice.VoiceConnection
 import java.util.concurrent.CompletableFuture
 
-interface GuildVoiceChannel : GenericGuildVoiceChannel {
+interface GuildVoiceChannel : GuildChannel {
 
     /**
      * Joins the voice channel.

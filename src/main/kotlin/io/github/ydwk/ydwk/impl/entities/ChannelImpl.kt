@@ -16,39 +16,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.impl.entities.channel
+package io.github.ydwk.ydwk.impl.entities
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.User
-import io.github.ydwk.ydwk.entities.channel.DmChannel
+import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
-import io.github.ydwk.ydwk.impl.entities.ChannelImpl
-import io.github.ydwk.ydwk.impl.entities.UserImpl
+import io.github.ydwk.ydwk.entities.channel.getter.ChannelGetter
+import io.github.ydwk.ydwk.impl.entities.channel.getter.ChannelGetterImpl
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
-import io.github.ydwk.ydwk.util.GetterSnowFlake
 
-class DmChannelImpl(
+open class ChannelImpl(
     override val ydwk: YDWK,
     override val json: JsonNode,
-    override val idAsLong: Long
-) : ChannelImpl(ydwk, json, idAsLong, false, true), DmChannel {
-
-    override var lastMessageId: GetterSnowFlake? =
-        if (json.has("last_message_id")) GetterSnowFlake.of(json["last_message_id"].asLong())
-        else null
-
-    override var recipient: User? =
-        if (json.has("recipients"))
-            UserImpl(json["recipients"][0], json["recipients"][0]["id"].asLong(), ydwk)
-        else null
+    override val idAsLong: Long,
+    override val isGuildChannel: Boolean,
+    override val isDmChannel: Boolean
+) : Channel {
 
     override val type: ChannelType
-        get() = ChannelType.DM
+        get() = ChannelType.fromId(json["type"].asInt())
 
-    override var name: String = json["name"].asText()
+    override val channelGetter: ChannelGetter
+        get() = ChannelGetterImpl(ydwk, json, idAsLong, isGuildChannel, isDmChannel)
 
     override fun toString(): String {
-        return EntityToStringBuilder(ydwk, this).name(this.name).toString()
+        return EntityToStringBuilder(ydwk, this).toString()
     }
 }

@@ -20,16 +20,17 @@ package io.github.ydwk.ydwk.impl.entities
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.application.PartialApplication
-import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildChannel
-import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
+import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.entities.message.*
 import io.github.ydwk.ydwk.entities.sticker.StickerItem
 import io.github.ydwk.ydwk.impl.entities.application.PartialApplicationImpl
-import io.github.ydwk.ydwk.impl.entities.channel.guild.GenericGuildChannelImpl
+import io.github.ydwk.ydwk.impl.entities.channel.DmChannelImpl
+import io.github.ydwk.ydwk.impl.entities.channel.guild.GuildChannelImpl
 import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
 import io.github.ydwk.ydwk.impl.entities.message.*
 import io.github.ydwk.ydwk.impl.entities.sticker.StickerItemImpl
@@ -42,10 +43,10 @@ class MessageImpl(
     override val json: JsonNode,
     override val idAsLong: Long
 ) : Message {
-    override val channel: GenericGuildTextChannel
+    override val channel: Channel
         get() =
-            if (ydwk.getGenericGuildTextChannelById(json["channel_id"].asLong()) != null)
-                ydwk.getGenericGuildTextChannelById(json["channel_id"].asLong())!!
+            if (ydwk.getChannelById(json["channel_id"].asLong()) != null)
+                ydwk.getChannelById(json["channel_id"].asLong())!!
             else throw IllegalStateException("Channel is null")
 
     override val author: User
@@ -85,11 +86,16 @@ class MessageImpl(
             return list
         }
 
-    override val mentionedChannels: List<GenericGuildChannel>
+    override val mentionedChannels: List<Channel>
         get() {
-            val list = mutableListOf<GenericGuildChannel>()
+            val list = mutableListOf<Channel>()
             json.get("mention_channels").forEach {
-                list.add(GenericGuildChannelImpl(ydwk, it, it.get("id").asLong()))
+                val channelType = ChannelType.fromId(it["type"].asInt())
+                if (ChannelType.isGuildChannel(channelType)) {
+                    list.add(GuildChannelImpl(ydwk, it, it["id"].asLong()))
+                } else {
+                    list.add(DmChannelImpl(ydwk, it, it["id"].asLong()))
+                }
             }
             return list
         }
@@ -166,12 +172,17 @@ class MessageImpl(
                     ydwk, json.get("interaction"), json.get("interaction").get("id").asLong())
             else null
 
-    override val thread: GenericGuildChannel?
+    override val thread: Channel?
         get() =
-            if (json.has("thread"))
-                GenericGuildChannelImpl(
-                    ydwk, json.get("thread"), json.get("thread").get("id").asLong())
-            else null
+            if (json.has("thread")) {
+                val newJson = json.get("thread")
+                val channelType = ChannelType.fromId(newJson["type"].asInt())
+                if (ChannelType.isGuildChannel(channelType)) {
+                    GuildChannelImpl(ydwk, newJson, newJson["id"].asLong())
+                } else {
+                    DmChannelImpl(ydwk, newJson, newJson["id"].asLong())
+                }
+            } else null
 
     override val components: List<MessageComponent>
         get() = TODO("Not yet implemented")

@@ -73,7 +73,8 @@ open class EndPoint {
         KICK("/guilds/%s/members/%s"),
         GET_AUDIT_LOGS("/guilds/%s/audit-logs"),
         GET_MEMBERS("/guilds/%s/members"),
-        GET_GUILD("/guilds/%s");
+        GET_GUILD("/guilds/%s"),
+        GET_GUILD_CHANNELS("/guilds/%s/channels");
 
         override fun getEndpoint(): String {
             return endPoint
@@ -104,7 +105,8 @@ open class EndPoint {
     }
 
     enum class ChannelEndpoint(private val endPoint: String) : IEnumEndpoint {
-        CREATE_MESSAGE("/channels/%s/messages");
+        CREATE_MESSAGE("/channels/%s/messages"),
+        GET_CHANNEL("/channels/%s");
 
         override fun getEndpoint(): String {
             return endPoint

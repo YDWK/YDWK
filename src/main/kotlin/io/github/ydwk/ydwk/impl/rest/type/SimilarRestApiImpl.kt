@@ -103,7 +103,7 @@ open class SimilarRestApiImpl(
                             val manager = CompletableFutureManager(response, ydwk)
                             val result = function.apply(manager)
                             queue.complete(result)
-                            logger.debug("Request completed")
+                            logger.debug(HttpResponseCode.OK.getMessage())
                         }
                     })
         } catch (e: Exception) {
@@ -129,7 +129,7 @@ open class SimilarRestApiImpl(
                                 error(response.body, code, queue, null)
                             }
                             queue.complete(NoResult(formatInstant(Instant.now())))
-                            logger.debug("Request completed")
+                            logger.debug(HttpResponseCode.OK.getMessage())
                         }
                     })
         } catch (e: Exception) {
@@ -182,13 +182,13 @@ open class SimilarRestApiImpl(
     ) {
         if (queueWithNoResult != null) {
             executeWithNoResult().thenAccept { queueWithNoResult.complete(null) }
-            logger.debug("Request completed")
+            logger.debug(HttpResponseCode.OK.getMessage())
         } else if (queueWithResult != null) {
             execute { queueWithResult.complete(null) }
-            logger.debug("Request completed")
+            logger.debug(HttpResponseCode.OK.getMessage())
         } else {
             execute()
-            logger.debug("Request completed")
+            logger.debug(HttpResponseCode.OK.getMessage())
         }
     }
 

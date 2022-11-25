@@ -26,4 +26,4 @@ class GuildForumChannelImpl(
     override val ydwk: YDWK,
     override val json: JsonNode,
     override val idAsLong: Long
-) : GuildForumChannel, GenericGuildTextChannelImpl(ydwk, json, idAsLong)
+) : GuildForumChannel, GuildChannelImpl(ydwk, json, idAsLong)

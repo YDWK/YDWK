@@ -38,7 +38,14 @@ class VoiceStateImpl(override val ydwk: YDWK, override val json: JsonNode) : Voi
         get() = ydwk.getGuildById(json["guild_id"].asLong())
 
     override val channel: GuildVoiceChannel?
-        get() = ydwk.getGuildVoiceChannelById(json["channel_id"].asLong())
+        get() =
+            ydwk
+                .requestChannelById(json["channel_id"].asLong())
+                .get()
+                .channelGetter
+                .asGuildChannel()
+                ?.guildChannelGetter
+                ?.asGuildVoiceChannel()
 
     override val user: User
         get() =

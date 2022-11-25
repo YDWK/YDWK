@@ -19,15 +19,36 @@
 package io.github.ydwk.ydwk.entities
 
 import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
-import io.github.ydwk.ydwk.entities.util.AssignableEntity
+import io.github.ydwk.ydwk.entities.channel.getter.ChannelGetter
 import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.util.SnowFlake
 
-interface Channel : SnowFlake, GenericEntity, AssignableEntity<Channel> {
+interface Channel : SnowFlake, GenericEntity {
     /**
      * Get the channel type
      *
      * @return the channel type
      */
     val type: ChannelType
+
+    /**
+     * Weather the channel is a guild channel.
+     *
+     * @return true if the channel is a guild channel.
+     */
+    val isGuildChannel: Boolean
+
+    /**
+     * Weather the channel is a dm channel.
+     *
+     * @return true if the channel is a dm channel.
+     */
+    val isDmChannel: Boolean
+
+    /**
+     * Gets the channel getter which gives access to the channels.
+     *
+     * @return the channel getter which gives access to the channels.
+     */
+    val channelGetter: ChannelGetter
 }

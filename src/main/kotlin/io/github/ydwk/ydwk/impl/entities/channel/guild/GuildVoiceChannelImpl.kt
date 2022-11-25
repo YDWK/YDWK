@@ -20,8 +20,6 @@ package io.github.ydwk.ydwk.impl.entities.channel.guild
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.Guild
-import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
 import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.ydwk.impl.entities.GuildImpl
 import io.github.ydwk.ydwk.voice.VoiceConnection
@@ -34,7 +32,7 @@ open class GuildVoiceChannelImpl(
     override val ydwk: YDWK,
     override val json: JsonNode,
     override val idAsLong: Long
-) : GuildVoiceChannel, GenericGuildVoiceChannelImpl(ydwk, json, idAsLong) {
+) : GuildVoiceChannel, GuildChannelImpl(ydwk, json, idAsLong) {
     private val logger = LoggerFactory.getLogger(GuildVoiceChannelImpl::class.java)
 
     override fun join(isMuted: Boolean, isDeafened: Boolean): VoiceConnection {
@@ -64,16 +62,4 @@ open class GuildVoiceChannelImpl(
     override var userLimit: Int = json["user_limit"].asInt()
 
     override var rateLimitPerUser: Int = json["rate_limit_per_user"].asInt()
-
-    override var position: Int = json["position"].asInt()
-
-    override var parent: GuildCategory? = ydwk.getCategoryById(json["parent_id"].asText())
-
-    override val guild: Guild
-        get() =
-            if (ydwk.getGuildById(json["guild_id"].asText()) != null)
-                ydwk.getGuildById(json["guild_id"].asText())!!
-            else throw IllegalStateException("Guild is null")
-
-    override var name: String = json["name"].asText()
 }
