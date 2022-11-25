@@ -71,16 +71,16 @@ class ReadyHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
             }
         }
 
-        availableGuild.forEach { ydwk.cache[it.id, it] = CacheIds.GUILD }
+        // availableGuild.forEach { ydwk.cache[it.id, it] = CacheIds.GUILD }
 
-        unavailableGuild.forEach { ydwk.cache[it.id, it] = CacheIds.GUILD }
+        // unavailableGuild.forEach { ydwk.cache[it.id, it] = CacheIds.GUILD }
+
+        cacheGuild.forEach { ydwk.cache[it.id, it] = CacheIds.GUILD }
 
         ydwk.emitEvent(ReadyEvent(ydwk, availableGuildsAmount, unAvailableGuildsAmount))
     }
 
     private fun requestGuild(guildId: Long): Guild {
-        // TODO: check if this is the correct way to request a guild. According to discord devs you
-        // cant request an unavailable guild.
         val guild = ydwk.requestGuild(guildId).get()
         return GuildImpl(ydwk, guild.json, guildId)
     }
