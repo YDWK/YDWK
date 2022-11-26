@@ -46,6 +46,7 @@ open class GuildVoiceChannelImpl(
 
         val future = CompletableFuture<VoiceConnection>()
         logger.debug("Connecting to voice channel $name")
+        // TODO : Problem here
         val connection = VoiceConnectionImpl(this, ydwk, future, isMuted, isDeafened)
         (guild as GuildImpl).setPendingVoiceConnection(connection)
         return future

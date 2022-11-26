@@ -95,5 +95,8 @@ data class VoiceConnectionImpl(
     }
 
     override val voiceState: VoiceState
-        get() = ydwk.getPendingVoiceConnectionById(channel.guild.idAsLong)!!.voiceState
+        get() =
+            ydwk
+                .getPendingVoiceConnectionById(channel.guild.idAsLong)!!
+                .voiceState // TODO fix this, shows null
 }
