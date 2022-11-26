@@ -18,6 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.entities.channel.guild.thread
 
-import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
+import io.github.ydwk.ydwk.entities.channel.GuildChannel
 
-interface GuildThreadChannel : GenericGuildTextChannel {}
+// TODO : Add functionality to this class
+interface GuildThreadChannel : GuildChannel {}

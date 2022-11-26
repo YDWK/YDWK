@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ArrayNode
 import io.github.ydwk.ydwk.cache.CacheIds
 import io.github.ydwk.ydwk.entities.Guild
+import io.github.ydwk.ydwk.entities.channel.GuildChannel
 import io.github.ydwk.ydwk.evm.event.events.gateway.ReadyEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
@@ -62,6 +63,7 @@ class ReadyHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
             if (!guild.get("unavailable").asBoolean()) {
                 availableGuild.add(GuildImpl(ydwk, guild, guild.get("id").asLong()))
             } else {
+                // unavailableGuild.add(UnavailableGuildImpl(ydwk, guild, guild.get("id").asLong()))
                 unavailableGuild.add(requestGuild(guild.get("id").asLong()))
             }
         }
@@ -70,11 +72,26 @@ class ReadyHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
 
         unavailableGuild.forEach { ydwk.cache[it.id, it] = CacheIds.GUILD }
 
+        val guildChannels: MutableList<GuildChannel> = mutableListOf()
+        for (guild in guildArray) {
+            if (guild.get("unavailable").asBoolean()) {
+                val guildChannelsArray = requestGuildChannels(guild.get("id").asLong())
+                for (guildChannel in guildChannelsArray) {
+                    guildChannels.add(guildChannel)
+                }
+            }
+        }
+
+        guildChannels.forEach { ydwk.cache[it.id, it] = CacheIds.CHANNEL }
         ydwk.emitEvent(ReadyEvent(ydwk, availableGuildsAmount, unAvailableGuildsAmount))
     }
 
     private fun requestGuild(guildId: Long): Guild {
         val guild = ydwk.requestGuild(guildId).get()
         return GuildImpl(ydwk, guild.json, guildId)
+    }
+
+    private fun requestGuildChannels(guildId: Long): List<GuildChannel> {
+        return ydwk.requestGuildChannels(guildId).get()
     }
 }

@@ -23,7 +23,7 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.AuditLog
 import io.github.ydwk.ydwk.entities.audit.AuditLogEntry
 import io.github.ydwk.ydwk.impl.entities.audit.AuditLogEntryImpl
-import io.github.ydwk.ydwk.interaction.application.SlashCommand
+import io.github.ydwk.ydwk.interaction.application.type.SlashCommand
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class AuditLogImpl(override val ydwk: YDWK, override val json: JsonNode) : AuditLog {

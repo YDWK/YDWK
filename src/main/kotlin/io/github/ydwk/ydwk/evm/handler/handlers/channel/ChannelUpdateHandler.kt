@@ -44,8 +44,7 @@ import java.util.*
 
 class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override fun start() {
-        val type = ChannelType.fromId(json["type"].asInt())
-        when (type) {
+        when (ChannelType.fromId(json["type"].asInt())) {
             ChannelType.TEXT -> updateTextChannel()
             ChannelType.DM -> ydwk.logger.warn("Dm is not supported")
             ChannelType.VOICE -> updateVoiceChannel()
@@ -63,12 +62,18 @@ class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json)
     }
 
     private fun updateTextChannel() {
-        val channel: GuildTextChannel? = ydwk.getGuildTextChannelById(json["id"].asText())
+        val channel: GuildTextChannel? =
+            ydwk
+                .getGuildChannelById(json["id"].asText())
+                ?.guildChannelGetter
+                ?.asGuildMessageChannel()
+                ?.guildMessageChannelGetter
+                ?.asGuildTextChannel()
 
         if (channel == null) {
             ydwk.logger.info("Channel ${json["id"].asText()} is not cached, creating new one.")
             ydwk.cache[json["id"].asText(), GuildTextChannelImpl(ydwk, json, json["id"].asLong())] =
-                CacheIds.TEXT_CHANNEL
+                CacheIds.CHANNEL
             return
         }
 
@@ -86,12 +91,18 @@ class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json)
     }
 
     private fun updateNewsChannel() {
-        val channel: GuildNewsChannel? = ydwk.getGuildNewsChannelById(json["id"].asText())
+        val channel: GuildNewsChannel? =
+            ydwk
+                .getGuildChannelById(json["id"].asText())
+                ?.guildChannelGetter
+                ?.asGuildMessageChannel()
+                ?.guildMessageChannelGetter
+                ?.asGuildNewsChannel()
 
         if (channel == null) {
             ydwk.logger.info("Channel ${json["id"].asText()} is not cached, creating new one.")
             ydwk.cache[json["id"].asText(), GuildNewsChannelImpl(ydwk, json, json["id"].asLong())] =
-                CacheIds.TEXT_CHANNEL
+                CacheIds.CHANNEL
             return
         }
 
@@ -170,12 +181,13 @@ class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json)
     }
 
     private fun updateCategory() {
-        val channel: GuildCategory? = ydwk.getCategoryById(json["id"].asLong())
+        val channel: GuildCategory? =
+            ydwk.getGuildChannelById(json["id"].asText())?.guildChannelGetter?.asGuildCategory()
 
         if (channel == null) {
             ydwk.logger.info("Channel ${json["id"].asText()} is not cached, creating new one.")
             ydwk.cache[json["id"].asText(), GuildCategoryImpl(ydwk, json, json["id"].asLong())] =
-                CacheIds.TEXT_CHANNEL
+                CacheIds.CHANNEL
             return
         }
 
@@ -202,7 +214,10 @@ class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json)
         }
 
         val oldParent: GuildCategory? = channel.parent
-        val newParent = json["parent_id"]?.asText()?.let { ydwk.getCategoryById(it) }
+        val newParent =
+            json["parent_id"]?.asText()?.let {
+                ydwk.getGuildChannelById(json["id"].asText())?.guildChannelGetter?.asGuildCategory()
+            }
         if (!Objects.deepEquals(oldParent, newParent)) {
             channel.parent = newParent
             ydwk.emitEvent(
@@ -211,13 +226,14 @@ class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json)
     }
 
     private fun updateStageChannel() {
-        val channel: GuildStageChannel? = ydwk.getGuildStageChannelById(json["id"].asText())
+        val channel: GuildStageChannel? =
+            ydwk.getGuildChannelById(json["id"].asText())?.guildChannelGetter?.asGuildStageChannel()
 
         if (channel == null) {
             ydwk.logger.info("Channel ${json["id"].asText()} is not cached, creating new one.")
             ydwk.cache[
                     json["id"].asText(), GuildStageChannelImpl(ydwk, json, json["id"].asLong())] =
-                CacheIds.TEXT_CHANNEL
+                CacheIds.CHANNEL
             return
         }
 
@@ -234,13 +250,14 @@ class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json)
     }
 
     private fun updateVoiceChannel() {
-        val channel: GuildVoiceChannel? = ydwk.getGuildVoiceChannelById(json["id"].asText())
+        val channel: GuildVoiceChannel? =
+            ydwk.getGuildChannelById(json["id"].asText())?.guildChannelGetter?.asGuildVoiceChannel()
 
         if (channel == null) {
             ydwk.logger.info("Channel ${json["id"].asText()} is not cached, creating new one.")
             ydwk.cache[
                     json["id"].asText(), GuildVoiceChannelImpl(ydwk, json, json["id"].asLong())] =
-                CacheIds.TEXT_CHANNEL
+                CacheIds.CHANNEL
             return
         }
 

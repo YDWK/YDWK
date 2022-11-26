@@ -59,6 +59,20 @@ enum class ChannelType(private val id: Int) {
         fun fromId(id: Int): ChannelType {
             return values().firstOrNull { it.id == id } ?: UNKNOWN
         }
+
+        fun isGuildChannel(type: ChannelType): Boolean {
+            return type == TEXT ||
+                type == VOICE ||
+                type == NEWS ||
+                type == NEWS_THREAD ||
+                type == PUBLIC_THREAD ||
+                type == PRIVATE_THREAD ||
+                type == STAGE_VOICE
+        }
+
+        fun isDmChannel(type: ChannelType): Boolean {
+            return type == DM || type == GROUP_DM
+        }
     }
 
     /**
@@ -70,19 +84,19 @@ enum class ChannelType(private val id: Int) {
         return id
     }
 
-    val isCategory: Boolean
-        get() = this == CATEGORY
-
-    val isGuildText: Boolean
+    val isGuildChannel
         get() =
             this == TEXT ||
+                this == VOICE ||
+                this == CATEGORY ||
                 this == NEWS ||
                 this == NEWS_THREAD ||
                 this == PUBLIC_THREAD ||
                 this == PRIVATE_THREAD ||
-                this == FORUM ||
-                this == DIRECTORY
+                this == STAGE_VOICE ||
+                this == DIRECTORY ||
+                this == FORUM
 
-    val isVoice: Boolean
-        get() = this == VOICE || this == STAGE_VOICE
+    val isNonGuildChannel
+        get() = this == DM || this == GROUP_DM
 }

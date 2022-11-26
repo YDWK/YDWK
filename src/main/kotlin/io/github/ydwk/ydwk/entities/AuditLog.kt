@@ -20,7 +20,7 @@ package io.github.ydwk.ydwk.entities
 
 import io.github.ydwk.ydwk.entities.audit.AuditLogEntry
 import io.github.ydwk.ydwk.entities.util.GenericEntity
-import io.github.ydwk.ydwk.interaction.application.SlashCommand
+import io.github.ydwk.ydwk.interaction.application.type.SlashCommand
 
 interface AuditLog : GenericEntity {
     /**

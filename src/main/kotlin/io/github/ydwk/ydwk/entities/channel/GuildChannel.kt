@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.entities.channel
 
 import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.entities.Guild
+import io.github.ydwk.ydwk.entities.channel.getter.guild.GuildChannelGetter
 import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
 import io.github.ydwk.ydwk.util.NameAbleEntity
 
@@ -44,4 +45,11 @@ interface GuildChannel : Channel, NameAbleEntity {
      * @return the parent of this channel.
      */
     var parent: GuildCategory?
+
+    /**
+     * Gets the channel getter which gives access to the channels of this guild.
+     *
+     * @return the channel getter which gives access to the channels of this guild.
+     */
+    val guildChannelGetter: GuildChannelGetter
 }

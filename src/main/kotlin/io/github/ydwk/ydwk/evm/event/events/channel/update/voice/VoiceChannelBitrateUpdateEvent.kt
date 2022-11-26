@@ -19,13 +19,13 @@
 package io.github.ydwk.ydwk.evm.event.events.channel.update.voice
 
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildVoiceChannel
+import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
 /** Fired when a voice/stage channel's bitrate is updated. */
 data class VoiceChannelBitrateUpdateEvent(
     override val ydwk: YDWK,
-    override val entity: GenericGuildVoiceChannel,
+    override val entity: GuildVoiceChannel,
     val oldBitrate: Int,
     val newBitrate: Int
 ) : GenericChannelUpdateEvent<Int>(ydwk, entity, oldBitrate, newBitrate)

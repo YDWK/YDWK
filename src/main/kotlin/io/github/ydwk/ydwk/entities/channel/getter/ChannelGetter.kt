@@ -16,19 +16,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.util
+package io.github.ydwk.ydwk.entities.channel.getter
 
-import io.github.ydwk.ydwk.util.Checks
+import io.github.ydwk.ydwk.entities.channel.DmChannel
+import io.github.ydwk.ydwk.entities.channel.GuildChannel
 
-interface AssignableEntity<E> {
+interface ChannelGetter {
+    /**
+     * Gets the channel as a [GuildChannel] if it is a guild channel.
+     *
+     * @return the channel as a [GuildChannel] if it is a guild channel.
+     */
+    fun asGuildChannel(): GuildChannel?
 
-    fun <T : E> cast(type: Class<T>): T? {
-        Checks.checkNotNull(type, "type cannot be null")
-        return if (type.isAssignableFrom(javaClass)) type.cast(this) else null
-    }
-
-    fun <T : E> isCastable(type: Class<T>): Boolean {
-        Checks.checkNotNull(type, "type cannot be null")
-        return type.isAssignableFrom(javaClass)
-    }
+    /**
+     * Gets the channel as a [DmChannel] if it is a dm channel.
+     *
+     * @return the channel as a [DmChannel] if it is a dm channel.
+     */
+    fun asDmChannel(): DmChannel?
 }

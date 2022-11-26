@@ -20,19 +20,21 @@ package io.github.ydwk.ydwk.evm.handler.handlers.guild
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.cache.CacheIds
+import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.entities.Emoji
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.Sticker
+import io.github.ydwk.ydwk.entities.channel.GuildChannel
 import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
-import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildChannel
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.impl.entities.ChannelImpl
 import io.github.ydwk.ydwk.impl.entities.EmojiImpl
 import io.github.ydwk.ydwk.impl.entities.GuildImpl
 import io.github.ydwk.ydwk.impl.entities.StickerImpl
-import io.github.ydwk.ydwk.impl.entities.channel.guild.GenericGuildChannelImpl
+import io.github.ydwk.ydwk.impl.entities.channel.guild.GuildChannelImpl
 import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
 import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
 import java.util.EnumSet
@@ -81,55 +83,30 @@ class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
                 .map { ChannelType.fromId(it["type"].asInt()) }
                 .toCollection(EnumSet.noneOf(ChannelType::class.java))
 
-        val textChannel = ArrayList<GenericGuildChannel>()
-        val voiceChannel = ArrayList<GenericGuildChannel>()
-        val category = ArrayList<GenericGuildChannel>()
+        val guildChannels = ArrayList<GuildChannel>()
+        val nonGuildChannels = ArrayList<Channel>()
         channelType.forEach {
             when {
-                it.isGuildText -> {
+                it.isGuildChannel -> {
                     channelJson.forEach { channel ->
                         if (channel["type"].asInt() == it.getId()) {
-                            textChannel.add(
-                                GenericGuildChannelImpl(
-                                    ydwk, channel, channel["id"].asLong(), true))
+                            guildChannels.add(
+                                GuildChannelImpl(ydwk, channel, channel["id"].asLong()))
                         }
                     }
                 }
-                it.isVoice -> {
+                it.isNonGuildChannel -> {
                     channelJson.forEach { channel ->
                         if (channel["type"].asInt() == it.getId()) {
-                            voiceChannel.add(
-                                GenericGuildChannelImpl(
-                                    ydwk, channel, channel["id"].asLong(), isVoiceChannel = true))
-                        }
-                    }
-                }
-                it.isCategory -> {
-                    channelJson.forEach { channel ->
-                        if (channel["type"].asInt() == it.getId()) {
-                            category.add(
-                                GenericGuildChannelImpl(
-                                    ydwk, channel, channel["id"].asLong(), isCategory = true))
+                            nonGuildChannels.add(
+                                ChannelImpl(ydwk, channel, channel["id"].asLong(), false, true))
                         }
                     }
                 }
             }
         }
 
-        if (textChannel.isNotEmpty()) {
-            textChannel.forEach { channel ->
-                ydwk.cache[channel.id, channel] = CacheIds.TEXT_CHANNEL
-            }
-        }
-
-        if (voiceChannel.isNotEmpty()) {
-            voiceChannel.forEach { channel ->
-                ydwk.cache[channel.id, channel] = CacheIds.VOICE_CHANNEL
-            }
-        }
-
-        if (category.isNotEmpty()) {
-            category.forEach { channel -> ydwk.cache[channel.id, channel] = CacheIds.CATEGORY }
-        }
+        guildChannels.forEach { channel -> ydwk.cache[channel.id, channel] = CacheIds.CHANNEL }
+        nonGuildChannels.forEach { channel -> ydwk.cache[channel.id, channel] = CacheIds.CHANNEL }
     }
 }

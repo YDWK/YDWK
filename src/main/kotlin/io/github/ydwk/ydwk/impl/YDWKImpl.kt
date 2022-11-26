@@ -26,17 +26,11 @@ import io.github.ydwk.ydwk.GateWayIntent
 import io.github.ydwk.ydwk.UserStatus
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.cache.*
-import io.github.ydwk.ydwk.entities.Application
-import io.github.ydwk.ydwk.entities.Bot
-import io.github.ydwk.ydwk.entities.Guild
-import io.github.ydwk.ydwk.entities.User
+import io.github.ydwk.ydwk.entities.*
 import io.github.ydwk.ydwk.entities.application.PartialApplication
 import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.channel.GuildChannel
-import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildChannel
-import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
-import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildVoiceChannel
-import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
+import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
 import io.github.ydwk.ydwk.evm.backend.event.CoroutineEventListener
@@ -47,6 +41,7 @@ import io.github.ydwk.ydwk.evm.backend.managers.SampleEventManager
 import io.github.ydwk.ydwk.impl.entities.GuildImpl
 import io.github.ydwk.ydwk.impl.entities.UserImpl
 import io.github.ydwk.ydwk.impl.entities.channel.DmChannelImpl
+import io.github.ydwk.ydwk.impl.entities.channel.guild.GuildChannelImpl
 import io.github.ydwk.ydwk.impl.entities.message.embed.builder.EmbedBuilderImpl
 import io.github.ydwk.ydwk.impl.rest.RestApiManagerImpl
 import io.github.ydwk.ydwk.impl.slash.SlashBuilderImpl
@@ -87,6 +82,55 @@ class YDWKImpl(
         Executors.newScheduledThreadPool(1)
     override val threadFactory: ThreadFactory
         get() = ThreadFactory
+
+    override fun getChannelById(id: Long): Channel? {
+        return cache[id.toString(), CacheIds.CHANNEL] as Channel?
+    }
+
+    override fun getChannels(): List<Channel> {
+        return cache.values(CacheIds.CHANNEL).map { it as Channel }
+    }
+
+    override fun requestChannelById(id: Long): CompletableFuture<Channel> {
+        return this.restApiManager
+            .get(EndPoint.ChannelEndpoint.GET_CHANNEL, id.toString())
+            .execute { it ->
+                val jsonBody = it.jsonBody
+                if (jsonBody == null) {
+                    throw IllegalStateException("json body is null")
+                } else {
+                    val channelType = ChannelType.fromId(jsonBody["type"].asInt())
+                    if (ChannelType.isGuildChannel(channelType)) {
+                        GuildChannelImpl(this, jsonBody, jsonBody["id"].asLong())
+                    } else {
+                        DmChannelImpl(this, jsonBody, jsonBody["id"].asLong())
+                    }
+                }
+            }
+    }
+
+    override fun requestGuildChannelById(id: Long, guildId: Long): CompletableFuture<GuildChannel> {
+        return this.restApiManager
+            .get(EndPoint.ChannelEndpoint.GET_CHANNEL, id.toString())
+            .execute { it ->
+                val jsonBody = it.jsonBody
+                if (jsonBody == null) {
+                    throw IllegalStateException("json body is null")
+                } else {
+                    GuildChannelImpl(this, jsonBody, jsonBody["id"].asLong())
+                }
+            }
+    }
+
+    override fun requestGuildChannels(guildId: Long): CompletableFuture<List<GuildChannel>> {
+        return this.restApiManager
+            .get(EndPoint.GuildEndpoint.GET_GUILD_CHANNELS, guildId.toString())
+            .execute { it ->
+                val jsonBody = it.jsonBody
+                jsonBody?.map { GuildChannelImpl(this, it, it["id"].asLong()) }
+                    ?: throw IllegalStateException("json body is null")
+            }
+    }
 
     override val objectNode: ObjectNode
         get() = JsonNodeFactory.instance.objectNode()
@@ -159,75 +203,8 @@ class YDWKImpl(
         allowedCache.removeAll(cacheTypes.toSet())
     }
 
-    override fun getGenericGuildTextChannelById(id: Long): GenericGuildTextChannel? {
-        return cache[id.toString(), CacheIds.TEXT_CHANNEL] as GenericGuildTextChannel?
-    }
-
-    override val guildTextChannels: List<GenericGuildTextChannel>
-        get() {
-            return cache.values(CacheIds.TEXT_CHANNEL).map { it ->
-                val genericGuildChannel = it as GenericGuildChannel
-                if (genericGuildChannel.isTextChannel) {
-                    genericGuildChannel.asGenericGuildTextChannel()
-                } else {
-                    null
-                }
-                    ?: throw IllegalStateException("Channel is not a text channel")
-            }
-        }
-
-    override fun getGenericGuildVoiceChannelById(id: Long): GenericGuildVoiceChannel? {
-        return cache[id.toString(), CacheIds.VOICE_CHANNEL] as GenericGuildVoiceChannel?
-    }
-
-    override val guildVoiceChannels: List<GenericGuildVoiceChannel>
-        get() {
-            return cache.values(CacheIds.VOICE_CHANNEL).map { it ->
-                val genericGuildChannel = it as GenericGuildChannel
-                if (genericGuildChannel.isVoiceChannel) {
-                    genericGuildChannel.asGenericGuildVoiceChannel()
-                } else {
-                    null
-                }
-                    ?: throw IllegalStateException("Channel is not a voice channel")
-            }
-        }
-
     override val embedBuilder: EmbedBuilder
         get() = EmbedBuilderImpl(this)
-
-    override fun getCategoryById(id: Long): GuildCategory? {
-        return cache[id.toString(), CacheIds.CATEGORY] as GuildCategory?
-    }
-
-    override fun getCategories(): List<GuildCategory> {
-        return cache.values(CacheIds.CATEGORY).map { it ->
-            val genericGuildChannel = it as GenericGuildChannel
-            if (genericGuildChannel.isCategory) {
-                genericGuildChannel.asGuildCategory()
-            } else {
-                null
-            }
-                ?: throw IllegalStateException("Channel is not a category")
-        }
-    }
-
-    override fun getChannelsByCategory(category: GuildCategory): List<GenericGuildChannel> {
-        val textChannels = guildTextChannels
-        val voiceChannels = guildVoiceChannels
-
-        val channels = mutableListOf<GuildChannel>()
-        textChannels
-            .filter { if (it.parent != null) it.parent!!.id == category.id else false }
-            .forEach { channels.add(it) }
-        voiceChannels
-            .filter { if (it.parent != null) it.parent!!.id == category.id else false }
-            .forEach { channels.add(it) }
-
-        val genericChannels = mutableListOf<GenericGuildChannel>()
-        channels.forEach { genericChannels.add(it as GenericGuildChannel) }
-        return genericChannels
-    }
 
     override fun createDmChannel(userId: Long): CompletableFuture<DmChannel> {
         return this.restApiManager
@@ -320,15 +297,6 @@ class YDWKImpl(
             .add("uptime", uptime)
             .toString()
     }
-
-    override val guildChannels: List<GenericGuildChannel>
-        get() {
-            return (cache.values(CacheIds.TEXT_CHANNEL).map { it as GenericGuildTextChannel } +
-                    cache.values(CacheIds.VOICE_CHANNEL).map { it as GenericGuildVoiceChannel } +
-                    cache.values(CacheIds.CATEGORY).map { it as GuildCategory })
-                // check if can be cast to List<GenericGuildChannel>
-                .map { it as GenericGuildChannel }
-        }
 
     override var bot: Bot? = null
         get() {

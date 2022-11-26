@@ -18,8 +18,8 @@
  */ 
 package io.github.ydwk.ydwk.slash
 
+import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.entities.User
-import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.entities.message.Attachment
@@ -68,10 +68,10 @@ class SlashOptionGetterImpl(
                 optionObjects[applicationCommandOption.value.asLong()] as Member
             else throw IllegalArgumentException("The option type ${type.name} is not a member")
 
-    override val asChannel: GenericGuildTextChannel
+    override val asChannel: Channel
         get() =
             if (type == SlashOptionType.CHANNEL)
-                optionObjects[applicationCommandOption.value.asLong()] as GenericGuildTextChannel
+                optionObjects[applicationCommandOption.value.asLong()] as Channel
             else throw IllegalArgumentException("The option type ${type.name} is not a channel")
 
     override val asRole: Role

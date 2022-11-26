@@ -20,19 +20,15 @@ package io.github.ydwk.ydwk.cache
 
 enum class CacheType(private val ids: CacheIds) {
     GUILD(CacheIds.GUILD),
-    TEXT_CHANNEL(CacheIds.TEXT_CHANNEL),
-    VOICE_CHANNEL(CacheIds.VOICE_CHANNEL),
-    CATEGORY(CacheIds.CATEGORY),
+    CHANNEL(CacheIds.CHANNEL),
     USER(CacheIds.USER),
     MEMBER(CacheIds.MEMBER),
     ROLE(CacheIds.ROLE),
     MESSAGE(CacheIds.MESSAGE),
     EMOJI(CacheIds.EMOJI),
-    VOICE_STATE(CacheIds.VOICE_STATE),
     STICKER(CacheIds.STICKER),
-    APPLICATION_COMMAND(CacheIds.APPLICATION_COMMAND),
-    APPLICATION(CacheIds.APPLICATION),
     ATTACHMENT(CacheIds.ATTACHMENT),
+    APPLICATION(CacheIds.APPLICATION),
     UNKNOWN(CacheIds.UNKNOWN);
 
     companion object {

@@ -77,11 +77,22 @@ fun main() {
             }
             "forum_json" -> {
                 withContext(Dispatchers.IO) {
-                    val forum = it.slash.ydwk.getGuildTextChannelById("1031971612238561390")
-                    if (forum != null) {
-                        it.slash.reply(forum.json.toPrettyString()).reply()
+                    if (it.slash.ydwk
+                        .getGuildChannelById("1031971612238561390")
+                        ?.guildChannelGetter != null) {
+                        val forum =
+                            it.slash.ydwk
+                                .getGuildChannelById("1031971612238561390")
+                                ?.guildChannelGetter
+                                ?.asGuildForumChannel()
+
+                        if (forum != null) {
+                            it.slash.reply(forum.json.toPrettyString()).isEphemeral(true).reply()
+                        } else {
+                            it.slash.reply("Forum is null!").isEphemeral(true).reply()
+                        }
                     } else {
-                        it.slash.reply("Forum not found!").reply()
+                        it.slash.reply("Forum is null!").isEphemeral(true).reply()
                     }
                 }
             }
