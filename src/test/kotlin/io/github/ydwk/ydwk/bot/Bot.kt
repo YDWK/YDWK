@@ -44,6 +44,7 @@ fun main() {
                 .addOption(
                     SlashOption(
                         "member", "The member to test the option with", SlashOptionType.USER)))
+        .addSlashCommand(Slash("leave_vc", "Leaves a vc"))
         .build()
 
     ydwk.on<SlashCommandEvent> {
@@ -57,6 +58,32 @@ fun main() {
                             if (voiceState != null) {
                                 if (voiceState.channel != null) {
                                     voiceState.channel?.join()
+                                } else {
+                                    it.slash
+                                        .reply("Voice channel is null!")
+                                        .isEphemeral(true)
+                                        .reply()
+                                }
+                            } else {
+                                it.slash.reply("Voice state is null!").isEphemeral(true).reply()
+                            }
+                        } else {
+                            it.slash.reply("Member voice state is null!").isEphemeral(true).reply()
+                        }
+                    } else {
+                        it.slash.reply("Member is null!").isEphemeral(true).reply()
+                    }
+                }
+            }
+            "leave_vc" -> {
+                withContext(Dispatchers.IO) {
+                    val member = it.slash.member
+                    if (member != null) {
+                        if (member.voiceState != null) {
+                            val voiceState = member.voiceState
+                            if (voiceState != null) {
+                                if (voiceState.channel != null) {
+                                    voiceState.channel?.leaveNow()
                                 } else {
                                     it.slash
                                         .reply("Voice channel is null!")

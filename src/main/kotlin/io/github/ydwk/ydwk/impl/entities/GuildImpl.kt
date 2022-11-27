@@ -214,14 +214,18 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
                 setPendingVoiceConnection(voiceConnection)
                 return@thenCompose completableFutureVoiceConnection
             }
-            .thenApply { it ->
+            .thenApply {
                 setVoiceConnection(it)
                 return@thenApply it
             }
     }
 
     override fun leaveVoiceChannel(guildVoiceChannelId: Long): CompletableFuture<Void> {
-        return voiceConnection?.disconnect() ?: CompletableFuture.completedFuture(null)
+        // TODO : null for some reason
+        return (voiceConnection as VoiceConnectionImpl)
+            .takeIf { it.channel.idAsLong == guildVoiceChannelId }
+            ?.disconnect()
+            ?: CompletableFuture.completedFuture(null)
     }
 
     override var name: String = json["name"].asText()
@@ -241,6 +245,7 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
     override fun setVoiceConnection(voiceConnection: VoiceConnection) {
         audioConnectionLock.lock()
         try {
+            (ydwk as YDWKImpl).logger.debug("Setting voice connection for guild $id")
             ydwk.setVoiceConnection(this.idAsLong, voiceConnection)
         } finally {
             audioConnectionLock.unlock()
@@ -250,6 +255,7 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
     override fun removeVoiceConnection(voiceConnection: VoiceConnection) {
         audioConnectionLock.lock()
         try {
+            (ydwk as YDWKImpl).logger.debug("Removing voice connection for guild $id")
             ydwk.removeVoiceConnectionById(this.idAsLong)
         } finally {
             audioConnectionLock.unlock()
