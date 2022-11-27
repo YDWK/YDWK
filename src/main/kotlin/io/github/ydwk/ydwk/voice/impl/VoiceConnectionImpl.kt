@@ -43,7 +43,11 @@ data class VoiceConnectionImpl(
     private var changedChannelFuture: CompletableFuture<Void>? = CompletableFuture()
     private var voiceWebSocket: VoiceWebSocket? = null
     var udpsocket: DatagramSocket? = null
-    var attemptingToConnectOrConnected = false
+    private var attemptingToConnectOrConnected = false
+
+    init {
+        ydwk.webSocketManager?.sendVoiceStateUpdate(channel.guild, channel, isMuted, isDeafened)
+    }
 
     override fun setDeafened(deafened: Boolean): VoiceConnection {
         this.isDeafened = deafened
