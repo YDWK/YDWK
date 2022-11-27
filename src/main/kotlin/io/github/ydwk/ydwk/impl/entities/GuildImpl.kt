@@ -215,6 +215,8 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
                 return@thenCompose completableFutureVoiceConnection
             }
             .thenApply {
+                // Does not work
+                (ydwk as YDWKImpl).logger.debug("Voice connection created")
                 setVoiceConnection(it)
                 return@thenApply it
             }

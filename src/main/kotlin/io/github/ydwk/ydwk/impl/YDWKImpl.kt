@@ -267,14 +267,17 @@ class YDWKImpl(
     }
 
     override fun setVoiceConnection(guildId: Long, voiceConnection: VoiceConnection) {
+        logger.debug("Setting voice connection for guild $guildId")
         this.voiceConnection[guildId] = voiceConnection
     }
 
     override fun getVoiceConnectionById(guildId: Long): VoiceConnection? {
+        logger.debug("Getting voice connection for guild $guildId")
         return this.voiceConnection[guildId]
     }
 
     override fun removeVoiceConnectionById(guildId: Long) {
+        logger.debug("Removing voice connection for guild $guildId")
         this.voiceConnection.remove(guildId)
     }
 
