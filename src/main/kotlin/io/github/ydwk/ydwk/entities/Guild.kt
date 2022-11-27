@@ -801,7 +801,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     fun getMemberById(userId: String): Member? = getMemberById(userId.toLong())
 
     /**
-     * Used to join a vc.
+     * Joins a vc.
      *
      * @param guildVoiceChannelId the guild vc id to join.
      * @param muted if the bot should be muted.
@@ -815,7 +815,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     ): CompletableFuture<VoiceConnection>
 
     /**
-     * Used to join a vc.
+     * Joins a vc.
      *
      * @param guildVoiceChannelId the guild vc id to join.
      * @param muted if the bot should be muted.
@@ -830,7 +830,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
         joinVoiceChannel(guildVoiceChannelId.toLong(), muted, deafened)
 
     /**
-     * Used to join a vc.
+     * Joins a vc.
      *
      * @param guildVoiceChannel the guild vc to join.
      * @param muted if the bot should be muted.
@@ -842,6 +842,32 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
         muted: Boolean,
         deafened: Boolean
     ): CompletableFuture<VoiceConnection> = joinVoiceChannel(guildVoiceChannel.id, muted, deafened)
+
+    /**
+     * Leaves a vc.
+     *
+     * @param guildVoiceChannelId the guild vc id to leave.
+     * @return A [CompletableFuture] that completes when the bot leaves the vc.
+     */
+    fun leaveVoiceChannel(guildVoiceChannelId: Long): CompletableFuture<Void>
+
+    /**
+     * Leaves a vc.
+     *
+     * @param guildVoiceChannelId the guild vc id to leave.
+     * @return A [CompletableFuture] that completes when the bot leaves the vc.
+     */
+    fun leaveVoiceChannel(guildVoiceChannelId: String): CompletableFuture<Void> =
+        leaveVoiceChannel(guildVoiceChannelId.toLong())
+
+    /**
+     * Leaves a vc.
+     *
+     * @param guildVoiceChannel the guild vc to leave.
+     * @return A [CompletableFuture] that completes when the bot leaves the vc.
+     */
+    fun leaveVoiceChannel(guildVoiceChannel: GuildVoiceChannel): CompletableFuture<Void> =
+        leaveVoiceChannel(guildVoiceChannel.id)
 
     /**
      * Gets the @everyone role. This role is always present.

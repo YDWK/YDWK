@@ -49,6 +49,18 @@ interface GuildVoiceChannel : GuildChannel {
     ): CompletableFuture<VoiceConnection>
 
     /**
+     * Leaves the voice channel.
+     *
+     * @return A [CompletableFuture] that completes when the bot has left the voice channel.
+     */
+    fun leave(): CompletableFuture<Void>
+
+    /** Leaves the voice channel. */
+    fun leaveNow() {
+        leave().join()
+    }
+
+    /**
      * Gets the bitrate (in bits) of the voice channel
      *
      * @return the bitrate

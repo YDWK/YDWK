@@ -24,8 +24,8 @@ import io.github.ydwk.ydwk.entities.Bot
 import io.github.ydwk.ydwk.evm.event.events.voice.VoiceStateEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.impl.entities.ChannelImpl
 import io.github.ydwk.ydwk.impl.entities.VoiceStateImpl
-import io.github.ydwk.ydwk.impl.entities.channel.guild.GuildChannelImpl
 import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
 
 class VoiceStateUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
@@ -46,8 +46,11 @@ class VoiceStateUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, js
     private fun handleBotVoiceStateUpdate(voiceState: VoiceStateImpl) {
         val sessionId = json.get("session_id").asText()
         val channelId = json.get("channel_id").asText()
-        val guildChannel = ydwk.cache.get(channelId, CacheIds.CHANNEL) as GuildChannelImpl
-        val vc = guildChannel.guildChannelGetter.asGuildVoiceChannel()
+        val guildChannel =
+            (ydwk.cache.get(channelId, CacheIds.CHANNEL) as ChannelImpl)
+                .channelGetter
+                .asGuildChannel()
+        val vc = guildChannel?.guildChannelGetter?.asGuildVoiceChannel()
         if (vc != null) {
             val voiceConnection: VoiceConnectionImpl? =
                 (ydwk.getPendingVoiceConnectionById(vc.guild.idAsLong) as VoiceConnectionImpl?)

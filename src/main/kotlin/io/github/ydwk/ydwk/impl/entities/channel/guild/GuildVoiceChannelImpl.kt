@@ -37,6 +37,10 @@ open class GuildVoiceChannelImpl(ydwk: YDWK, json: JsonNode, idAsLong: Long) :
         return guild.joinVoiceChannel(this, isMuted, isDeafened)
     }
 
+    override fun leave(): CompletableFuture<Void> {
+        return guild.leaveVoiceChannel(this)
+    }
+
     override var bitrate: Int = json["bitrate"].asInt()
 
     override var userLimit: Int = json["user_limit"].asInt()

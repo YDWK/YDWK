@@ -220,6 +220,10 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
             }
     }
 
+    override fun leaveVoiceChannel(guildVoiceChannelId: Long): CompletableFuture<Void> {
+        TODO("Not yet implemented")
+    }
+
     override var name: String = json["name"].asText()
 
     private fun setPendingVoiceConnection(
