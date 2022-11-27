@@ -19,7 +19,6 @@
 package io.github.ydwk.ydwk.voice.impl
 
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.VoiceState
 import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.ydwk.voice.VoiceConnection
 import io.github.ydwk.ydwk.ws.voice.VoiceWebSocket
@@ -29,20 +28,22 @@ import java.util.*
 import java.util.concurrent.CompletableFuture
 
 data class VoiceConnectionImpl(
-    val channel: GuildVoiceChannel,
+    var channel: GuildVoiceChannel,
     val ydwk: YDWK,
     val future: CompletableFuture<VoiceConnection>,
-    var isMuted: Boolean,
-    var isDeafened: Boolean,
+    override var isMuted: Boolean,
+    override var isDeafened: Boolean,
 ) : VoiceConnection {
     var token: String? = null
-    var sessionId: String? = voiceState.sessionId
+    var sessionId: String? = null
     var voiceEndpoint: String? = null
     var userId: Long? = null
     override val speakingFlags: EnumSet<SpeakingFlag> = EnumSet.noneOf(SpeakingFlag::class.java)
     private var disconnectFuture: CompletableFuture<Void> = CompletableFuture()
-    private val voiceWebSocket: VoiceWebSocket? = null
+    private var changedChannelFuture: CompletableFuture<Void>? = CompletableFuture()
+    private var voiceWebSocket: VoiceWebSocket? = null
     var udpsocket: DatagramSocket? = null
+    var attemptingToConnectOrConnected = false
 
     override fun setDeafened(deafened: Boolean): VoiceConnection {
         this.isDeafened = deafened
@@ -86,17 +87,33 @@ data class VoiceConnectionImpl(
         return this
     }
 
-    override fun disconnect(): Void {
+    override fun disconnect(): CompletableFuture<Void> {
         disconnectFuture = CompletableFuture()
         voiceWebSocket?.close()
         ydwk.webSocketManager?.sendVoiceStateUpdate(channel.guild, null, isDeafened, isMuted)
-
-        return disconnectFuture.get()
+        channel.guild.removeVoiceConnection(this)
+        return disconnectFuture
     }
 
-    override val voiceState: VoiceState
-        get() =
-            ydwk
-                .getPendingVoiceConnectionById(channel.guild.idAsLong)!!
-                .voiceState // TODO fix this, shows null
+    @Synchronized
+    fun attemptConnect(): Boolean {
+        if (changedChannelFuture != null && !changedChannelFuture!!.isDone) {
+            changedChannelFuture!!.complete(null)
+        }
+
+        if (attemptingToConnectOrConnected ||
+            sessionId == null ||
+            token == null ||
+            voiceEndpoint == null ||
+            userId == null) {
+            return false
+        }
+
+        attemptingToConnectOrConnected = true
+        voiceWebSocket = VoiceWebSocket(this)
+        channel =
+            ydwk.getGuildChannelById(channel.id)?.guildChannelGetter?.asGuildVoiceChannel()
+                ?: channel
+        return true
+    }
 }

@@ -750,7 +750,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
             return ydwk.restApiManager
                 .addQueryParameter("limit", "")
                 .get(EndPoint.GuildEndpoint.GET_MEMBERS, id)
-                .execute { it ->
+                .execute {
                     val jsonBody = it.jsonBody
                     val members: ArrayNode = jsonBody as ArrayNode
                     val memberList = mutableListOf<Member>()
@@ -771,7 +771,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
         return ydwk.restApiManager
             .addQueryParameter("limit", limit.toString())
             .get(EndPoint.GuildEndpoint.GET_MEMBERS, id)
-            .execute { it ->
+            .execute {
                 val jsonBody = it.jsonBody
                 val members: ArrayNode = jsonBody as ArrayNode
                 val memberList = mutableListOf<Member>()
@@ -801,6 +801,49 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     fun getMemberById(userId: String): Member? = getMemberById(userId.toLong())
 
     /**
+     * Used to join a vc.
+     *
+     * @param guildVoiceChannelId the guild vc id to join.
+     * @param muted if the bot should be muted.
+     * @param deafened if the bot should be deafened.
+     * @return A [CompletableFuture] that completes when the bot joins the vc.
+     */
+    fun joinVoiceChannel(
+        guildVoiceChannelId: Long,
+        muted: Boolean,
+        deafened: Boolean
+    ): CompletableFuture<VoiceConnection>
+
+    /**
+     * Used to join a vc.
+     *
+     * @param guildVoiceChannelId the guild vc id to join.
+     * @param muted if the bot should be muted.
+     * @param deafened if the bot should be deafened.
+     * @return A [CompletableFuture] that completes when the bot joins the vc.
+     */
+    fun joinVoiceChannel(
+        guildVoiceChannelId: String,
+        muted: Boolean,
+        deafened: Boolean
+    ): CompletableFuture<VoiceConnection> =
+        joinVoiceChannel(guildVoiceChannelId.toLong(), muted, deafened)
+
+    /**
+     * Used to join a vc.
+     *
+     * @param guildVoiceChannel the guild vc to join.
+     * @param muted if the bot should be muted.
+     * @param deafened if the bot should be deafened.
+     * @return A [CompletableFuture] that completes when the bot joins the vc.
+     */
+    fun joinVoiceChannel(
+        guildVoiceChannel: GuildVoiceChannel,
+        muted: Boolean,
+        deafened: Boolean
+    ): CompletableFuture<VoiceConnection> = joinVoiceChannel(guildVoiceChannel.id, muted, deafened)
+
+    /**
      * Gets the @everyone role. This role is always present.
      *
      * @return The @everyone role.
@@ -816,4 +859,18 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @return The [VoiceConnection] instance, or null if it doesn't exist.
      */
     val voiceConnection: VoiceConnection?
+
+    /**
+     * Sets the voice connection.
+     *
+     * @param voiceConnection The voice connection.
+     */
+    fun setVoiceConnection(voiceConnection: VoiceConnection)
+
+    /**
+     * Removes the voice connection.
+     *
+     * @param voiceConnection The voice connection.
+     */
+    fun removeVoiceConnection(voiceConnection: VoiceConnection)
 }

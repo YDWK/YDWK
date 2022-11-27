@@ -26,11 +26,8 @@ import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
 import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
-class GuildCategoryImpl(
-    override val ydwk: YDWK,
-    override val json: JsonNode,
-    override val idAsLong: Long
-) : GuildCategory, GuildChannelImpl(ydwk, json, idAsLong) {
+class GuildCategoryImpl(ydwk: YDWK, json: JsonNode, idAsLong: Long) :
+    GuildCategory, GuildChannelImpl(ydwk, json, idAsLong) {
 
     override val channels: List<GuildChannel>
         get() = ydwk.getGuildChannels().filter { it.parent == this }

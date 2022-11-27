@@ -29,10 +29,24 @@ interface GuildVoiceChannel : GuildChannel {
      *
      * @param isMuted Whether the bot should be muted.
      * @param isDeafened Whether the bot should be deafened.
+     * @return The [VoiceConnection] object.
+     */
+    fun join(isMuted: Boolean = false, isDeafened: Boolean = true): VoiceConnection {
+        return joinCompletableFuture(isMuted, isDeafened).join()
+    }
+
+    /**
+     * Connect the voice channel.
+     *
+     * @param isMuted Whether the bot should be muted.
+     * @param isDeafened Whether the bot should be deafened.
      * @return A [CompletableFuture] that completes with the [VoiceConnection] when the bot has
      * joined the voice channel.
      */
-    fun join(isMuted: Boolean = false, isDeafened: Boolean = true): VoiceConnection
+    fun joinCompletableFuture(
+        isMuted: Boolean = false,
+        isDeafened: Boolean = true
+    ): CompletableFuture<VoiceConnection>
 
     /**
      * Gets the bitrate (in bits) of the voice channel

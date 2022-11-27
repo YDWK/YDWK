@@ -21,41 +21,20 @@ package io.github.ydwk.ydwk.impl.entities.channel.guild
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
-import io.github.ydwk.ydwk.impl.entities.GuildImpl
 import io.github.ydwk.ydwk.voice.VoiceConnection
-import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
 import java.util.*
 import java.util.concurrent.CompletableFuture
 import org.slf4j.LoggerFactory
 
-open class GuildVoiceChannelImpl(
-    override val ydwk: YDWK,
-    override val json: JsonNode,
-    override val idAsLong: Long
-) : GuildVoiceChannel, GuildChannelImpl(ydwk, json, idAsLong) {
+open class GuildVoiceChannelImpl(ydwk: YDWK, json: JsonNode, idAsLong: Long) :
+    GuildVoiceChannel, GuildChannelImpl(ydwk, json, idAsLong) {
     private val logger = LoggerFactory.getLogger(GuildVoiceChannelImpl::class.java)
 
-    override fun join(isMuted: Boolean, isDeafened: Boolean): VoiceConnection {
-        if (guild.voiceConnection != null) {
-            logger.debug("Already connected to a voice channel!")
-            guild.voiceConnection!!.disconnect()
-        } else {
-            logger.debug("Connecting to a voice channel!")
-            CompletableFuture.completedFuture(null)
-        }
-
-        val future = CompletableFuture<VoiceConnection>()
-        logger.debug("Connecting to voice channel $name")
-        // TODO : Problem here
-        val connection = VoiceConnectionImpl(this, ydwk, future, isMuted, isDeafened)
-        (guild as GuildImpl).setPendingVoiceConnection(connection)
-        return future
-            .thenApply {
-                logger.debug("Connected to voice channel $name")
-                (guild as GuildImpl).setVoiceConnection(it as VoiceConnectionImpl)
-                it
-            }
-            .join()
+    override fun joinCompletableFuture(
+        isMuted: Boolean,
+        isDeafened: Boolean
+    ): CompletableFuture<VoiceConnection> {
+        return guild.joinVoiceChannel(this, isMuted, isDeafened)
     }
 
     override var bitrate: Int = json["bitrate"].asInt()

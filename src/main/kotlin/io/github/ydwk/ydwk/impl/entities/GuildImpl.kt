@@ -24,6 +24,7 @@ import io.github.ydwk.ydwk.entities.Emoji
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.Sticker
 import io.github.ydwk.ydwk.entities.channel.GuildChannel
+import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.ydwk.entities.guild.Ban
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.guild.Role
@@ -189,8 +190,34 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
         return getUnorderedChannels.firstOrNull { it.idAsLong == channelId }
     }
 
-    override val voiceConnection: VoiceConnection?
-        get() = ydwk.getVoiceConnectionById(this.idAsLong)
+    override val voiceConnection: VoiceConnection? = ydwk.getVoiceConnectionById(idAsLong)
+
+    override fun joinVoiceChannel(
+        guildVoiceChannelId: Long,
+        muted: Boolean,
+        deafened: Boolean
+    ): CompletableFuture<VoiceConnection> {
+        return voiceConnection
+            .let { voiceConnection?.disconnect() ?: CompletableFuture.completedFuture(null) }
+            .thenCompose {
+                val completableFutureVoiceConnection = CompletableFuture<VoiceConnection>()
+                val voiceChannel: GuildVoiceChannel =
+                    ydwk
+                        .getGuildChannelById(guildVoiceChannelId)
+                        ?.guildChannelGetter
+                        ?.asGuildVoiceChannel()
+                        ?: throw IllegalStateException("Channel is not a voice channel")
+                val voiceConnection =
+                    VoiceConnectionImpl(
+                        voiceChannel, ydwk, completableFutureVoiceConnection, muted, deafened)
+                setPendingVoiceConnection(voiceConnection)
+                return@thenCompose completableFutureVoiceConnection
+            }
+            .thenApply { it ->
+                setVoiceConnection(it)
+                return@thenApply it
+            }
+    }
 
     override var name: String = json["name"].asText()
 
@@ -205,16 +232,16 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
         }
     }
 
-    fun setVoiceConnection(connection: VoiceConnectionImpl) {
+    override fun setVoiceConnection(voiceConnection: VoiceConnection) {
         audioConnectionLock.lock()
         try {
-            ydwk.setVoiceConnection(this.idAsLong, connection)
+            ydwk.setVoiceConnection(this.idAsLong, voiceConnection)
         } finally {
             audioConnectionLock.unlock()
         }
     }
 
-    fun removeVoiceConnection() {
+    override fun removeVoiceConnection(voiceConnection: VoiceConnection) {
         audioConnectionLock.lock()
         try {
             ydwk.removeVoiceConnectionById(this.idAsLong)

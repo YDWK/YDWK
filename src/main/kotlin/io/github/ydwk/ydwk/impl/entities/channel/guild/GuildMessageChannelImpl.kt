@@ -27,11 +27,8 @@ import io.github.ydwk.ydwk.entities.channel.guild.message.text.PermissionOverwri
 import io.github.ydwk.ydwk.impl.entities.channel.getter.guild.GuildMessageChannelGetterImpl
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
-open class GuildMessageChannelImpl(
-    override val ydwk: YDWK,
-    override val json: JsonNode,
-    override val idAsLong: Long
-) : GuildMessageChannel, GuildChannelImpl(ydwk, json, idAsLong) {
+open class GuildMessageChannelImpl(ydwk: YDWK, json: JsonNode, idAsLong: Long) :
+    GuildMessageChannel, GuildChannelImpl(ydwk, json, idAsLong) {
 
     override var topic: String = json["topic"].asText()
 

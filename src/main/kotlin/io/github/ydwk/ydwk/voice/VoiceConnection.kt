@@ -18,9 +18,9 @@
  */ 
 package io.github.ydwk.ydwk.voice
 
-import io.github.ydwk.ydwk.entities.VoiceState
 import io.github.ydwk.ydwk.ws.voice.util.SpeakingFlag
 import java.util.*
+import java.util.concurrent.CompletableFuture
 
 interface VoiceConnection {
 
@@ -39,6 +39,20 @@ interface VoiceConnection {
      * @return The [VoiceConnection] object.
      */
     fun setMuted(muted: Boolean): VoiceConnection
+
+    /**
+     * Whether the bot is deafened.
+     *
+     * @return Whether the bot is deafened.
+     */
+    val isDeafened: Boolean
+
+    /**
+     * Whether the bot is muted.
+     *
+     * @return Whether the bot is muted.
+     */
+    val isMuted: Boolean
 
     /**
      * Whether the bot is priority speaker.
@@ -80,14 +94,7 @@ interface VoiceConnection {
     /**
      * Disconnects the bot from the voice channel.
      *
-     * @return The [VoiceConnection] object.
+     * @return The [CompletableFuture] object.
      */
-    fun disconnect(): Void
-
-    /**
-     * Gets the [VoiceState] of the bot.
-     *
-     * @return The [VoiceState] of the bot.
-     */
-    val voiceState: VoiceState
+    fun disconnect(): CompletableFuture<Void>
 }
