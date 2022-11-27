@@ -30,6 +30,7 @@ import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.entities.guild.WelcomeScreen
 import io.github.ydwk.ydwk.entities.guild.enums.*
+import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.guild.BanImpl
 import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
 import io.github.ydwk.ydwk.impl.entities.guild.WelcomeScreenImpl
@@ -221,11 +222,12 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
 
     override var name: String = json["name"].asText()
 
-    fun setPendingVoiceConnection(
+    private fun setPendingVoiceConnection(
         voiceConnection: VoiceConnection,
     ) {
         audioConnectionLock.lock()
         try {
+            (ydwk as YDWKImpl).logger.debug("Setting pending voice connection for guild $id")
             ydwk.setPendingVoiceConnection(this.idAsLong, voiceConnection)
         } finally {
             audioConnectionLock.unlock()

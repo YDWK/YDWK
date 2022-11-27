@@ -58,7 +58,6 @@ fun main() {
                                 if (voiceState.channel != null) {
                                     voiceState.channel?.join()
                                 } else {
-                                    // TODO : vc is not null but this is sent, fix
                                     it.slash
                                         .reply("Voice channel is null!")
                                         .isEphemeral(true)

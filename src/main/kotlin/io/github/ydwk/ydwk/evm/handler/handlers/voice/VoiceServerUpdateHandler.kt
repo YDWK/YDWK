@@ -24,17 +24,25 @@ import io.github.ydwk.ydwk.evm.event.events.voice.VoiceConnectionEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.VoiceStateImpl
+import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
 
 class VoiceServerUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
 
     override fun start() {
         val voiceState: VoiceState = VoiceStateImpl(ydwk, json)
+        val token = json.get("token").asText()
+        val endPoint = json.get("endpoint").asText()
+        val guildId = json.get("guild_id").asLong()
 
-        val voiceConnection = ydwk.getVoiceConnectionById(json["guild_id"].asLong())
+        val voiceConnection: VoiceConnectionImpl? =
+            (ydwk.getPendingVoiceConnectionById(guildId) as VoiceConnectionImpl?)
+
         if (voiceConnection != null) {
-            ydwk.setPendingVoiceConnection(
-                json["guild_id"].asLong(), ydwk.getVoiceConnectionById(json["guild_id"].asLong())!!)
+            voiceConnection.token = token
+            voiceConnection.voiceEndpoint = endPoint
+            voiceConnection.attemptConnect()
         }
+
         ydwk.emitEvent(VoiceConnectionEvent(ydwk, voiceState))
     }
 }
