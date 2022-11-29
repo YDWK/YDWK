@@ -58,6 +58,7 @@ class InteractionImpl(
         get() {
             if (json.has("member")) {
                 if (json.has("member")) {
+                    // TODO : Not updating when the bot joins a new guild
                     val member = MemberImpl(ydwk as YDWKImpl, json["member"], guild!!)
                     return ydwk.memberCache.getOrPut(member)
                 }

@@ -213,6 +213,7 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
             }
             VoiceOpcode.CLIENT_DISCONNECT -> {
                 logger.debug("Received $opCode - Client disconnected")
+                stopSpeaking()
             }
             VoiceOpcode.HEARTBEAT_ACK -> {
                 logger.debug("Received $opCode - HEARTBEAT_ACK")

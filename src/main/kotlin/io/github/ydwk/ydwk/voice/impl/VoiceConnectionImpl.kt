@@ -28,7 +28,7 @@ import java.util.*
 import java.util.concurrent.CompletableFuture
 
 data class VoiceConnectionImpl(
-    var channel: GuildVoiceChannel,
+    override var channel: GuildVoiceChannel,
     val ydwk: YDWK,
     val future: CompletableFuture<VoiceConnection>,
     override var isMuted: Boolean,

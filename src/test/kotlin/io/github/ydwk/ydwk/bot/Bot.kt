@@ -52,12 +52,19 @@ fun main() {
             "join_vc" -> {
                 withContext(Dispatchers.IO) {
                     val member = it.slash.member
+                    val slash = it.slash
                     if (member != null) {
                         if (member.voiceState != null) {
                             val voiceState = member.voiceState
                             if (voiceState != null) {
                                 if (voiceState.channel != null) {
-                                    voiceState.channel?.join()
+                                    voiceState.channel?.joinCompletableFuture()?.thenAccept {
+                                        voiceConnection ->
+                                        voiceConnection.setDeafened(true)
+                                        voiceConnection.setMuted(true)
+                                        slash.reply("Joined vc!").reply()
+                                    }
+                                        ?: slash.reply("Failed to join vc!").reply()
                                 } else {
                                     it.slash
                                         .reply("Voice channel is null!")
@@ -78,12 +85,21 @@ fun main() {
             "leave_vc" -> {
                 withContext(Dispatchers.IO) {
                     val member = it.slash.member
+                    val slash = it.slash
                     if (member != null) {
                         if (member.voiceState != null) {
                             val voiceState = member.voiceState
                             if (voiceState != null) {
                                 if (voiceState.channel != null) {
-                                    voiceState.channel?.leaveNow()
+                                    voiceState.channel?.leave()?.thenAccept {
+                                        slash.reply("Left vc!").reply()
+                                    }
+                                        ?: run {
+                                            slash
+                                                .reply("Channel is null!")
+                                                .isEphemeral(true)
+                                                .reply()
+                                        }
                                 } else {
                                     it.slash
                                         .reply("Voice channel is null!")

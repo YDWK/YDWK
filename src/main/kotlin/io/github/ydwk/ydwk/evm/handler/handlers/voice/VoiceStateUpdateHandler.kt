@@ -47,9 +47,7 @@ class VoiceStateUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, js
         val sessionId = json.get("session_id").asText()
         val channelId = json.get("channel_id").asText()
         val guildChannel =
-            (ydwk.cache.get(channelId, CacheIds.CHANNEL) as ChannelImpl)
-                .channelGetter
-                .asGuildChannel()
+            (ydwk.cache[channelId, CacheIds.CHANNEL] as ChannelImpl).channelGetter.asGuildChannel()
         val vc = guildChannel?.guildChannelGetter?.asGuildVoiceChannel()
         if (vc != null) {
             val voiceConnection: VoiceConnectionImpl? =

@@ -18,6 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.voice
 
+import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.ydwk.ws.voice.util.SpeakingFlag
 import java.util.*
 import java.util.concurrent.CompletableFuture
@@ -97,4 +98,11 @@ interface VoiceConnection {
      * @return The [CompletableFuture] object.
      */
     fun disconnect(): CompletableFuture<Void>
+
+    /**
+     * Gets the voice channel the bot is connected to.
+     *
+     * @return The voice channel the bot is connected to.
+     */
+    val channel: GuildVoiceChannel
 }
