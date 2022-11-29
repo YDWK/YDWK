@@ -211,10 +211,6 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
                 logger.debug("Received $opCode - RESUMED")
                 logger.info("Successfully resumed voice connection")
             }
-            VoiceOpcode.CLIENT_DISCONNECT -> {
-                logger.debug("Received $opCode - Client disconnected")
-                stopSpeaking()
-            }
             VoiceOpcode.HEARTBEAT_ACK -> {
                 logger.debug("Received $opCode - HEARTBEAT_ACK")
                 heartBeat?.receivedHeartbeatAck()
@@ -291,6 +287,7 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
     fun close() {
         sendCloseCode(VoiceCloseCode.DISCONNECTED)
         // in one minute stop heartbeat
+        stopSendingEncodedData()
         ScheduledThreadPoolExecutor(1)
             .schedule({ heartBeat?.heartbeatThread?.cancel(false) }, 1, TimeUnit.MINUTES)
     }
@@ -336,15 +333,14 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
         }
     }
 
-    private fun stopSpeaking() {
-        val speakingPayload = ydwk.objectNode
-        speakingPayload.put("op", VoiceOpcode.SPEAKING.code)
-        val speakingData = ydwk.objectNode
-        speakingData.put("speaking", 0)
-        speakingData.put("delay", 0)
-        speakingData.put("ssrc", ssrc)
-        speakingPayload.set<JsonNode>("d", speakingData)
-        webSocket?.sendText(speakingPayload.toString())
+    private fun stopSendingEncodedData() {
+        try {
+            if (voiceConnection.udpsocket != null) {
+                voiceConnection.udpsocket!!.close()
+            }
+        } catch (e: Exception) {
+            logger.error("Error while stopping sending encoded data", e)
+        }
     }
 }
 
