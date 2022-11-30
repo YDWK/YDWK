@@ -27,7 +27,7 @@ enum class YDWKInfo(val url: String) {
     FULL_DISCORD_REST_URL(DISCORD_REST_URL.url + DISCORD_REST_VERSION.url),
     VOICE_GATEWAY_VERSION("/?v=4"),
     GITHUB_URL("https://github.com/RealYusufIsmail/YDWK"),
-    YDWK_VERSION("0.0.5");
+    YDWK_VERSION("0.0.7");
 
     override fun toString(): String {
         return url
