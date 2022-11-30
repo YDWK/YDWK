@@ -40,6 +40,15 @@ interface Cache {
     operator fun get(key: String, cacheType: CacheIds): Any?
 
     /**
+     * Gets an item from the cache but adds it if it doesn't exist
+     *
+     * @param key The key of the item
+     * @param value The value of the item
+     * @return The value of the item
+     */
+    fun getOrPut(key: String, value: Any, cacheType: CacheIds): Any
+
+    /**
      * Removes an item from the cache
      *
      * @param key The key of the item
@@ -67,16 +76,11 @@ interface Cache {
     /** Clears the cache */
     fun clear()
 
-    /** Gets a list of objects in the cache */
-    fun values(cacheType: CacheIds): List<Any>
-
     /**
-     * Used to check the cache for any changes in the specified object. If the object is not in the
-     * cache, it will be added. If the object is in the cache, it will be updated.
+     * Gets a list of objects in the cache
      *
-     * @param key The key of the item
      * @param cacheType The type of the item
-     * @param value The value of the item
+     * @return A list of objects in the cache
      */
-    fun update(key: String, cacheType: CacheIds, value: Any)
+    fun values(cacheType: CacheIds): List<Any>
 }

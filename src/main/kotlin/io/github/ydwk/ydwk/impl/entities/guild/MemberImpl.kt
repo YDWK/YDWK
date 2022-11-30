@@ -19,12 +19,13 @@
 package io.github.ydwk.ydwk.impl.entities.guild
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.User
+import io.github.ydwk.ydwk.entities.VoiceState
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.entities.guild.enums.GuildPermission
+import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.UserImpl
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import io.github.ydwk.ydwk.util.GetterSnowFlake
@@ -32,10 +33,10 @@ import io.github.ydwk.ydwk.util.formatZonedDateTime
 import java.util.*
 
 class MemberImpl(
-    override val ydwk: YDWK,
+    override val ydwk: YDWKImpl,
     override val json: JsonNode,
     override val guild: Guild,
-    backupUser: User? = null,
+    backupUser: User? = null
 ) : Member {
 
     override var user: User =
@@ -73,6 +74,8 @@ class MemberImpl(
 
     override val isOwner: Boolean
         get() = guild.ownerId.asString == user.id
+
+    override var voiceState: VoiceState? = null
 
     override val permissions: EnumSet<GuildPermission>
         get() = GuildPermission.fromValues(getPermissions(this))
@@ -114,7 +117,7 @@ class MemberImpl(
 
     override var name: String = if (nick != null) nick!! else user.name
     override val idAsLong: Long
-        get() = user.idAsLong + guild.idAsLong
+        get() = guild.idAsLong + user.idAsLong
 
     override fun toString(): String {
         return EntityToStringBuilder(ydwk, this).name(this.name).toString()

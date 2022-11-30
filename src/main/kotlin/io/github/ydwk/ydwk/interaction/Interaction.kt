@@ -18,13 +18,13 @@
  */ 
 package io.github.ydwk.ydwk.interaction
 
+import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.entities.User
-import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.util.GenericEntity
-import io.github.ydwk.ydwk.interaction.application.SlashCommand
+import io.github.ydwk.ydwk.interaction.application.type.SlashCommand
 import io.github.ydwk.ydwk.interaction.message.MessageComponentData
 import io.github.ydwk.ydwk.interaction.sub.GenericCommandData
 import io.github.ydwk.ydwk.interaction.sub.InteractionType
@@ -81,7 +81,7 @@ interface Interaction : SnowFlake, GenericEntity {
      *
      * @return The channel that this interaction is for.
      */
-    val channel: GenericGuildTextChannel?
+    val channel: Channel?
 
     /**
      * Gets the member who invoked this interaction.

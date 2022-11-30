@@ -16,19 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.util
+package io.github.ydwk.ydwk.rest.result
 
-import io.github.ydwk.ydwk.util.Checks
-
-interface AssignableEntity<E> {
-
-    fun <T : E> cast(type: Class<T>): T? {
-        Checks.checkNotNull(type, "type cannot be null")
-        return if (type.isAssignableFrom(javaClass)) type.cast(this) else null
-    }
-
-    fun <T : E> isCastable(type: Class<T>): Boolean {
-        Checks.checkNotNull(type, "type cannot be null")
-        return type.isAssignableFrom(javaClass)
-    }
-}
+data class NoResult(val time: String)

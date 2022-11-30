@@ -31,4 +31,3 @@ jobs:
           body: |
             Version ${{ steps.read-version.outputs.version }}
           draft: true
-          prerelease: false

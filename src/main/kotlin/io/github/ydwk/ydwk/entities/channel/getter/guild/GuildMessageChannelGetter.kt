@@ -16,33 +16,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.channel.guild
+package io.github.ydwk.ydwk.entities.channel.getter.guild
 
-import io.github.ydwk.ydwk.entities.channel.GuildChannel
-import io.github.ydwk.ydwk.entities.channel.TextChannel
-import io.github.ydwk.ydwk.entities.channel.guild.forum.GuildForumChannel
 import io.github.ydwk.ydwk.entities.channel.guild.message.news.GuildNewsChannel
 import io.github.ydwk.ydwk.entities.channel.guild.message.text.GuildTextChannel
 
-interface GenericGuildTextChannel : TextChannel, GuildChannel {
+interface GuildMessageChannelGetter {
+
     /**
-     * Gets the channel as Guild Text Channel.
+     * Gets the message channel as a guild text channel.
      *
-     * @return the channel as Guild Text Channel.
+     * @return the message channel as a guild text channel.
      */
     fun asGuildTextChannel(): GuildTextChannel?
 
     /**
-     * Gets the channel as Guild News Channel.
+     * Gets the message channel as a guild news channel.
      *
-     * @return the channel as Guild News Channel.
+     * @return the message channel as a guild news channel.
      */
     fun asGuildNewsChannel(): GuildNewsChannel?
-
-    /**
-     * Gets the channel as Guild Forum Channel.
-     *
-     * @return the channel as Guild Forum Channel.
-     */
-    fun asGuildForumChannel(): GuildForumChannel?
 }

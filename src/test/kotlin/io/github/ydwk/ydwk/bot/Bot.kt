@@ -36,7 +36,7 @@ fun main() {
             .build()
 
     ydwk.waitForReady.slashBuilder
-        .addSlashCommand(Slash("embed", "This is a test command"))
+        .addSlashCommand(Slash("join_vc", "Joins a vc"))
         .addSlashCommand(Slash("forum_json", "Gets the json for forum"))
         .addSlashCommand(Slash("create_dm", "Creates a dm channel"))
         .addSlashCommand(
@@ -44,25 +44,102 @@ fun main() {
                 .addOption(
                     SlashOption(
                         "member", "The member to test the option with", SlashOptionType.USER)))
+        .addSlashCommand(Slash("leave_vc", "Leaves a vc"))
         .build()
 
     ydwk.on<SlashCommandEvent> {
         when (it.slash.name) {
-            "json" -> {
+            "join_vc" -> {
                 withContext(Dispatchers.IO) {
                     val member = it.slash.member
+                    val slash = it.slash
                     if (member != null) {
-                        it.slash.reply(member.json.toPrettyString()).reply()
+                        if (member.voiceState != null) {
+                            val voiceState = member.voiceState
+                            if (voiceState != null) {
+                                if (voiceState.channel != null) {
+                                    voiceState.channel?.joinCompletableFuture()?.thenAccept {
+                                        voiceConnection ->
+                                        voiceConnection.setDeafened(true)
+                                        voiceConnection.setMuted(true)
+                                        slash.reply("Joined vc!").reply()
+                                    }
+                                        ?: slash.reply("Failed to join vc!").reply()
+                                } else {
+                                    it.slash
+                                        .reply("Voice channel is null!")
+                                        .isEphemeral(true)
+                                        .reply()
+                                }
+                            } else {
+                                it.slash.reply("Voice state is null!").isEphemeral(true).reply()
+                            }
+                        } else {
+                            it.slash.reply("Member voice state is null!").isEphemeral(true).reply()
+                        }
+                    } else {
+                        it.slash.reply("Member is null!").isEphemeral(true).reply()
+                    }
+                }
+            }
+            "leave_vc" -> {
+                withContext(Dispatchers.IO) {
+                    val member = it.slash.member
+                    val slash = it.slash
+                    if (member != null) {
+                        if (member.voiceState != null) {
+                            val voiceState = member.voiceState
+                            if (voiceState != null) {
+                                if (voiceState.channel != null) {
+                                    voiceState.channel?.leave()?.thenAccept {
+                                        slash.reply("Left vc!").reply()
+                                    }
+                                        ?: run {
+                                            slash
+                                                .reply("Channel is null!")
+                                                .isEphemeral(true)
+                                                .reply()
+                                        }
+                                } else {
+                                    it.slash
+                                        .reply("Voice channel is null!")
+                                        .isEphemeral(true)
+                                        .reply()
+                                }
+                            } else {
+                                it.slash.reply("Voice state is null!").isEphemeral(true).reply()
+                            }
+                        } else {
+                            it.slash.reply("Member voice state is null!").isEphemeral(true).reply()
+                        }
+                    } else {
+                        it.slash.reply("Member is null!").isEphemeral(true).reply()
                     }
                 }
             }
             "forum_json" -> {
                 withContext(Dispatchers.IO) {
-                    val forum = it.slash.ydwk.getGuildTextChannelById("1031971612238561390")
-                    if (forum != null) {
-                        it.slash.reply(forum.json.toPrettyString()).reply()
+                    if (it.slash.ydwk
+                        .getGuildChannelById("1031971612238561390")
+                        ?.guildChannelGetter != null) {
+                        val forum =
+                            it.slash.ydwk
+                                .getGuildChannelById("1031971612238561390")
+                                ?.guildChannelGetter
+                                ?.asGuildForumChannel()
+
+                        if (forum != null) {
+                            it.slash.reply(forum.json.toPrettyString()).isEphemeral(true).reply()
+                        } else {
+                            it.slash.reply("Forum is null!").isEphemeral(true).reply()
+                        }
+                    } else {
+                        it.slash.reply("Forum is null!").isEphemeral(true).reply()
                     }
                 }
+            }
+            "ping" -> {
+                it.slash.reply("Pong!").reply()
             }
             "create_dm" -> {
                 withContext(Dispatchers.IO) {

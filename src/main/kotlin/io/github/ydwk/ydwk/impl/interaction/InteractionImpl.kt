@@ -20,16 +20,16 @@ package io.github.ydwk.ydwk.impl.interaction
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.entities.User
-import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.MessageImpl
 import io.github.ydwk.ydwk.impl.entities.UserImpl
 import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
-import io.github.ydwk.ydwk.impl.interaction.application.SlashCommandImpl
+import io.github.ydwk.ydwk.impl.interaction.application.type.SlashCommandImpl
 import io.github.ydwk.ydwk.impl.interaction.message.MessageComponentDataImpl
 import io.github.ydwk.ydwk.interaction.Interaction
 import io.github.ydwk.ydwk.interaction.sub.GenericCommandData
@@ -51,12 +51,20 @@ class InteractionImpl(
     override val guild: Guild? =
         if (json.has("guild_id")) ydwk.getGuildById(json["guild_id"].asLong()) else null
 
-    override val channel: GenericGuildTextChannel? =
-        if (json.has("channel_id")) ydwk.getGenericGuildTextChannelById(json["channel_id"].asLong())
-        else null
+    override val channel: Channel? =
+        if (json.has("channel_id")) ydwk.getChannelById(json["channel_id"].asLong()) else null
 
-    override val member: Member? =
-        if (json.has("member")) guild?.let { MemberImpl(ydwk, json["member"], it) } else null
+    override val member: Member?
+        get() {
+            if (json.has("member")) {
+                if (json.has("member")) {
+                    // TODO : Not updating when the bot joins a new guild
+                    val member = MemberImpl(ydwk as YDWKImpl, json["member"], guild!!)
+                    return ydwk.memberCache.getOrPut(member)
+                }
+            }
+            return null
+        }
 
     override val user: User? =
         if (json.has("user")) UserImpl(json["user"], json["user"]["id"].asLong(), ydwk) else null

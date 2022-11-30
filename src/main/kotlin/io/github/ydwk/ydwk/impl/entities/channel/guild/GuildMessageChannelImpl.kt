@@ -20,18 +20,15 @@ package io.github.ydwk.ydwk.impl.entities.channel.guild
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
-import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
+import io.github.ydwk.ydwk.entities.channel.getter.guild.GuildMessageChannelGetter
 import io.github.ydwk.ydwk.entities.channel.guild.message.GuildMessageChannel
 import io.github.ydwk.ydwk.entities.channel.guild.message.text.PermissionOverwrite
+import io.github.ydwk.ydwk.impl.entities.channel.getter.guild.GuildMessageChannelGetterImpl
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
-open class GuildMessageChannelImpl(
-    override val ydwk: YDWK,
-    override val json: JsonNode,
-    override val idAsLong: Long
-) : GuildMessageChannel {
+open class GuildMessageChannelImpl(ydwk: YDWK, json: JsonNode, idAsLong: Long) :
+    GuildMessageChannel, GuildChannelImpl(ydwk, json, idAsLong) {
 
     override var topic: String = json["topic"].asText()
 
@@ -45,20 +42,12 @@ open class GuildMessageChannelImpl(
 
     override var permissionOverwrites: List<PermissionOverwrite> =
         json["permission_overwrites"].map { PermissionOverwriteImpl(ydwk, it, it["id"].asLong()) }
+
+    override val guildMessageChannelGetter: GuildMessageChannelGetter
+        get() = GuildMessageChannelGetterImpl(ydwk, json, idAsLong)
+
     override val type: ChannelType
         get() = if (json["type"].asInt() == 0) ChannelType.TEXT else ChannelType.NEWS
-
-    override var position: Int = json["position"].asInt()
-
-    override var parent: GuildCategory? = ydwk.getCategoryById(json["parent_id"].asText())
-
-    override val guild: Guild
-        get() =
-            if (ydwk.getGuildById(json["guild_id"].asText()) != null)
-                ydwk.getGuildById(json["guild_id"].asText())!!
-            else throw IllegalStateException("Guild is null")
-
-    override var name: String = json["name"].asText()
 
     override fun toString(): String {
         return EntityToStringBuilder(ydwk, this).name(this.name).toString()

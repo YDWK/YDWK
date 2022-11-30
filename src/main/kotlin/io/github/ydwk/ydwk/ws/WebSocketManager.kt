@@ -24,7 +24,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import com.neovisionaries.ws.client.*
 import io.github.ydwk.ydwk.*
 import io.github.ydwk.ydwk.cache.CacheIds
-import io.github.ydwk.ydwk.evm.event.events.gateway.ReadyEvent
+import io.github.ydwk.ydwk.entities.Guild
+import io.github.ydwk.ydwk.entities.Message
+import io.github.ydwk.ydwk.entities.channel.GuildChannel
+import io.github.ydwk.ydwk.evm.event.events.gateway.DisconnectEvent
 import io.github.ydwk.ydwk.evm.event.events.gateway.ReconnectEvent
 import io.github.ydwk.ydwk.evm.event.events.gateway.ResumeEvent
 import io.github.ydwk.ydwk.evm.handler.handlers.ban.GuildBanAddHandler
@@ -58,26 +61,21 @@ import io.github.ydwk.ydwk.evm.handler.handlers.user.UserUpdateHandler
 import io.github.ydwk.ydwk.evm.handler.handlers.voice.VoiceServerUpdateHandler
 import io.github.ydwk.ydwk.evm.handler.handlers.voice.VoiceStateUpdateHandler
 import io.github.ydwk.ydwk.evm.handler.handlers.webhook.WebhooksUpdateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.ws.ReadyHandler
 import io.github.ydwk.ydwk.impl.YDWKImpl
-import io.github.ydwk.ydwk.impl.entities.BotImpl
-import io.github.ydwk.ydwk.impl.entities.MessageImpl
-import io.github.ydwk.ydwk.impl.entities.application.PartialApplicationImpl
-import io.github.ydwk.ydwk.util.convertInstantToChronoZonedDateTime
-import io.github.ydwk.ydwk.util.reverseFormatZonedDateTime
+import io.github.ydwk.ydwk.ws.logging.WebsocketLogging
 import io.github.ydwk.ydwk.ws.util.CloseCode
 import io.github.ydwk.ydwk.ws.util.EventNames
+import io.github.ydwk.ydwk.ws.util.HeartBeat
 import io.github.ydwk.ydwk.ws.util.OpCode
 import io.github.ydwk.ydwk.ws.util.OpCode.*
 import io.github.ydwk.ydwk.ws.util.impl.LoggedInImpl
 import java.io.IOException
-import java.net.Socket
-import java.net.SocketException
 import java.net.SocketTimeoutException
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.*
 import java.util.concurrent.Executors
-import java.util.concurrent.Future
 import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
@@ -98,11 +96,8 @@ open class WebSocketManager(
     private var resumeUrl: String? = null
     private var sessionId: String? = null
     private var seq: Int? = null
-    private var heartbeatsMissed: Int = 0
-    private var heartbeatStartTime: Long = 0
     var upTime: Instant? = null
-    @Volatile protected var heartbeatThread: Future<*>? = null
-    private val scheduler: ScheduledExecutorService = Executors.newScheduledThreadPool(1)
+    val scheduler: ScheduledExecutorService = Executors.newScheduledThreadPool(1)
     @get:Synchronized @set:Synchronized var connected = false
     @get:Synchronized @set:Synchronized var ready = false
     private var alreadySentConnectMessageOnce: Boolean = false
@@ -110,6 +105,7 @@ open class WebSocketManager(
     private var identifyTime = 0L
     private var attemptedToResume = false
     private var timesTriedToConnect = 0
+    private var heartBeat: HeartBeat? = null
 
     @Synchronized
     fun connect(): WebSocketManager {
@@ -130,6 +126,7 @@ open class WebSocketManager(
                     .createSocket(url)
                     .addHeader("Accept-Encoding", "gzip")
                     .addListener(this)
+                    .addListener(WebsocketLogging(logger))
                     .connect()
         } catch (e: IOException) {
             resumeUrl = null
@@ -176,18 +173,19 @@ open class WebSocketManager(
 
         connected = true
         attemptedToResume = false
-        if (sessionId == null) {
-            identify()
-            upTime = Instant.now()
-        } else {
-            resume()
-            upTime = Instant.now()
-        }
+        upTime =
+            if (sessionId == null) {
+                identify()
+                Instant.now()
+            } else {
+                resume()
+                Instant.now()
+            }
     }
 
     private fun sendCloseCode(code: CloseCode) {
         checkNotNull(webSocket) { "WebSocket is null" }
-        webSocket!!.sendClose(code.code(), code.getReason())
+        webSocket!!.sendClose(code.code, code.reason)
     }
 
     @Throws(Exception::class)
@@ -231,15 +229,13 @@ open class WebSocketManager(
         logger.info(
             "Disconnected from websocket with close code $closeCodeAsString and reason $closeCodeReason")
 
-        ydwk.emitEvent(
-            io.github.ydwk.ydwk.evm.event.events.gateway.DisconnectEvent(
-                ydwk, closeCodeAsString, closeCodeReason, Instant.now()))
+        ydwk.emitEvent(DisconnectEvent(ydwk, closeCodeAsString, closeCodeReason, Instant.now()))
 
-        heartbeatThread?.cancel(false)
+        heartBeat?.heartbeatThread?.cancel(false)
 
         val closeCode = CloseCode.from(closeFrame?.closeCode ?: 1000)
 
-        if (closeCode.isReconnect()) {
+        if (closeCode.reconnect) {
             logger.info("Reconnecting to websocket")
             connect()
         } else {
@@ -336,16 +332,12 @@ open class WebSocketManager(
                 val event: String = rawJson.get("t").asText()
                 onEventType(event, d)
             }
-            HEARTBEAT -> {
-                logger.debug("Received $opCode")
-                sendHeartbeat()
-            }
             RECONNECT -> {
-                logger.debug("Received $opCode")
+                logger.debug("Received $opCode - RECONNECT")
                 sendCloseCode(CloseCode.RECONNECT)
             }
             INVALID_SESSION -> {
-                logger.debug("Received $opCode")
+                logger.debug("Received $opCode - INVALID_SESSION")
                 identifyRateLimit =
                     identifyRateLimit && System.currentTimeMillis() - identifyTime < 5000
 
@@ -376,81 +368,77 @@ open class WebSocketManager(
                 sendCloseCode(CloseCode.INVALID_SESSION)
             }
             HELLO -> {
-                logger.debug("Received $opCode")
+                logger.debug("Received $opCode - HELLO")
                 val heartbeatInterval: Long = d.get("heartbeat_interval").asLong()
-                sendHeartbeat(heartbeatInterval)
+                heartBeat = HeartBeat(ydwk, webSocket!!)
+                heartBeat?.startGateWayHeartbeat(heartbeatInterval, connected, seq)
             }
             HEARTBEAT_ACK -> {
-                logger.debug("Heartbeat acknowledged")
-                heartbeatsMissed = 0
+                logger.debug("Received $opCode - HEARTBEAT_ACK")
+                heartBeat?.receivedHeartbeatAck()
             }
             else -> {
-                logger.error("Unknown opcode: $opCode")
+                // do nothing
             }
         }
     }
 
     @Synchronized
-    private fun deleteMessageCachePast14Days() {
+    fun deleteMessageCachePast14Days() {
+        // timer
+        val timer = Timer()
+        timer.scheduleAtFixedRate(
+            object : TimerTask() {
+                override fun run() {
+                    val now = Instant.now()
+                    val fourteenDaysAgo = now.minus(14, ChronoUnit.DAYS)
+                    val fourteenDaysAgoEpoch = fourteenDaysAgo.epochSecond
+                    val fourteenDaysAgoEpochMilli = fourteenDaysAgoEpoch * 1000
 
-        val now = Instant.now()
-        val fourteenDaysAgo: Instant = now.minus(14, ChronoUnit.DAYS)
-        ydwk.cache.values(CacheIds.MESSAGE).forEach {
-            if (it is MessageImpl &&
-                reverseFormatZonedDateTime(it.time)
-                    .isBefore(convertInstantToChronoZonedDateTime(fourteenDaysAgo))) {
-                ydwk.cache.remove(it.id, CacheIds.MESSAGE)
-            }
-        }
-    }
-
-    private fun sendHeartbeat(heartbeatInterval: Long) {
-        try {
-            if (webSocket != null) {
-                val rawSocket: Socket = webSocket!!.socket
-                rawSocket.soTimeout =
-                    (heartbeatInterval + 10000).toInt() // setup a timeout when we miss
-            } else {
-                logger.error("WebSocket is null")
-            }
-            // heartbeats
-        } catch (ex: SocketException) {
-            logger.warn("Failed to setup timeout for socket", ex)
-        }
-
-        heartbeatThread =
-            scheduler.scheduleAtFixedRate(
-                {
-                    if (connected) {
-                        sendHeartbeat()
-                    } else {
-                        logger.info("Not sending heartbeat because not connected")
+                    val iterator = ydwk.cache.values(CacheIds.MESSAGE).iterator()
+                    while (iterator.hasNext()) {
+                        val entry = iterator.next()
+                        val message = entry as Message
+                        if (message.asTimestamp < fourteenDaysAgoEpochMilli) {
+                            ydwk.cache.remove(message.id, CacheIds.MESSAGE)
+                        }
                     }
-                },
-                0,
-                heartbeatInterval,
-                TimeUnit.MILLISECONDS)
+                }
+            },
+            0,
+            1000 * 60 * 60 * 24)
     }
 
-    fun sendHeartbeat() {
-        if (webSocket == null) {
-            throw IllegalStateException("WebSocket is not connected")
-        }
+    fun sendVoiceStateUpdate(
+        guild: Guild?,
+        channel: GuildChannel?,
+        selfMute: Boolean?,
+        selfDeaf: Boolean?
+    ) {
 
-        val s: Int? = if (seq != null) seq else null
+        val mainVoiceUpdateJson: ObjectNode = ydwk.objectNode.put("op", OpCode.VOICE_STATE.code)
 
-        val heartbeat: JsonNode =
-            ydwk.objectMapper.createObjectNode().put("op", HEARTBEAT.code).put("d", s)
+        val guildId: String? =
+            when {
+                channel != null -> {
+                    channel.guild.id
+                }
+                guild != null -> {
+                    guild.id
+                }
+                else -> {
+                    throw IllegalArgumentException("Guild and channel cannot both be null")
+                }
+            }
 
-        if (heartbeatsMissed >= 2) {
-            heartbeatsMissed = 0
-            logger.warn("Heartbeat missed, will attempt to reconnect")
-            sendCloseCode(CloseCode.MISSED_HEARTBEAT)
-        } else {
-            heartbeatsMissed += 1
-            webSocket!!.sendText(heartbeat.toString())
-            heartbeatStartTime = System.currentTimeMillis()
-        }
+        val dataVoiceUpdateJson = ydwk.objectNode
+        dataVoiceUpdateJson.put("guild_id", guildId)
+        dataVoiceUpdateJson.put("channel_id", channel?.id)
+        dataVoiceUpdateJson.put("self_mute", selfMute ?: guild?.botAsMember?.mute)
+        dataVoiceUpdateJson.put("self_deaf", selfDeaf ?: guild?.botAsMember?.deaf)
+
+        mainVoiceUpdateJson.set<JsonNode>("d", dataVoiceUpdateJson)
+        webSocket?.sendText(mainVoiceUpdateJson.toString())
     }
 
     private fun onEventType(eventType: String, d: JsonNode) {
@@ -473,32 +461,7 @@ open class WebSocketManager(
                 identifyRateLimit = false
                 attemptedToResume = false
                 ready = true
-
-                val bot = BotImpl(d.get("user"), d.get("user").get("id").asLong(), ydwk)
-                ydwk.bot = bot
-                ydwk.cache[d.get("user").get("id").asText(), bot] = CacheIds.USER
-
-                val partialApplication =
-                    PartialApplicationImpl(
-                        d.get("application"), d.get("application").get("id").asLong(), ydwk)
-                ydwk.applicationId = partialApplication.id
-                ydwk.partialApplication = partialApplication
-                ydwk.cache[d.get("application").get("id").asText(), partialApplication] =
-                    CacheIds.APPLICATION
-
-                val guilds: ArrayNode = d.get("guilds") as ArrayNode
-
-                var availableGuildsAmount: Int = 0
-                var unAvailableGuildsAmount: Int = 0
-
-                for (guild in guilds) {
-                    if (!guild.get("unavailable").asBoolean()) {
-                        availableGuildsAmount += 1
-                    } else {
-                        unAvailableGuildsAmount += 1
-                    }
-                }
-                ydwk.emitEvent(ReadyEvent(ydwk, availableGuildsAmount, unAvailableGuildsAmount))
+                ReadyHandler(ydwk, d).start()
             }
             EventNames.RESUMED -> {
                 attemptedToResume = false
@@ -575,7 +538,7 @@ open class WebSocketManager(
         sessionId = null
         resumeUrl = null
         ydwk.cache.clear()
-        heartbeatThread?.cancel(false)
+        heartBeat?.heartbeatThread?.cancel(false)
         ydwk.setLoggedIn(LoggedInImpl(false).setDisconnectedTime())
         scheduler.shutdownNow()
         upTime = null

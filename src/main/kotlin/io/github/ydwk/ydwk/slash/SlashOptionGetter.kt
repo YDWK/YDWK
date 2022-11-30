@@ -18,8 +18,8 @@
  */ 
 package io.github.ydwk.ydwk.slash
 
+import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.entities.User
-import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.entities.message.Attachment
@@ -87,7 +87,7 @@ interface SlashOptionGetter : NameAbleEntity {
      * @return The option as a channel.
      * @throws IllegalArgumentException if the option is not a channel.
      */
-    val asChannel: GenericGuildTextChannel
+    val asChannel: Channel
 
     /**
      * Gets the option as a role.

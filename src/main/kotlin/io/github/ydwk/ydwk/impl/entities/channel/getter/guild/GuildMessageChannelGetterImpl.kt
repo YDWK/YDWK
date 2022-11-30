@@ -16,23 +16,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.impl.entities.channel.guild
+package io.github.ydwk.ydwk.impl.entities.channel.getter.guild
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
-import io.github.ydwk.ydwk.entities.channel.guild.forum.GuildForumChannel
+import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
+import io.github.ydwk.ydwk.entities.channel.getter.guild.GuildMessageChannelGetter
 import io.github.ydwk.ydwk.entities.channel.guild.message.news.GuildNewsChannel
 import io.github.ydwk.ydwk.entities.channel.guild.message.text.GuildTextChannel
+import io.github.ydwk.ydwk.impl.entities.channel.guild.GuildMessageChannelImpl
+import io.github.ydwk.ydwk.impl.entities.channel.guild.GuildNewsChannelImpl
+import io.github.ydwk.ydwk.impl.entities.channel.guild.GuildTextChannelImpl
 
-open class GenericGuildTextChannelImpl(
-    override val ydwk: YDWK,
-    override val json: JsonNode,
-    override val idAsLong: Long
-) : GenericGuildTextChannel, GenericGuildChannelImpl(ydwk, json, idAsLong, true, false, false) {
-
+class GuildMessageChannelGetterImpl(ydwk: YDWK, json: JsonNode, idAsLong: Long) :
+    GuildMessageChannelImpl(ydwk, json, idAsLong), GuildMessageChannelGetter {
     override fun asGuildTextChannel(): GuildTextChannel? {
-        return if (isCastable(GuildTextChannel::class.java)) {
+        return if (type == ChannelType.TEXT) {
             GuildTextChannelImpl(ydwk, json, idAsLong)
         } else {
             null
@@ -40,16 +39,8 @@ open class GenericGuildTextChannelImpl(
     }
 
     override fun asGuildNewsChannel(): GuildNewsChannel? {
-        return if (isCastable(GuildNewsChannel::class.java)) {
+        return if (type == ChannelType.NEWS) {
             GuildNewsChannelImpl(ydwk, json, idAsLong)
-        } else {
-            null
-        }
-    }
-
-    override fun asGuildForumChannel(): GuildForumChannel? {
-        return if (isCastable(GuildForumChannel::class.java)) {
-            GuildForumChannelImpl(ydwk, json, idAsLong)
         } else {
             null
         }

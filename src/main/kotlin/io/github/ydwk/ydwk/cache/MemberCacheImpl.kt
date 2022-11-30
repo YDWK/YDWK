@@ -18,7 +18,9 @@
  */ 
 package io.github.ydwk.ydwk.cache
 
+import io.github.ydwk.ydwk.entities.VoiceState
 import io.github.ydwk.ydwk.entities.guild.Member
+import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
 
 /** Discord's Member do not have a unique ID, so we need to use a combination of the user id */
 class MemberCacheImpl(allowedCache: Set<CacheIds>) : MemberCache, PerpetualCache(allowedCache) {
@@ -30,7 +32,28 @@ class MemberCacheImpl(allowedCache: Set<CacheIds>) : MemberCache, PerpetualCache
         return super.get(guildId + userId, CacheIds.MEMBER) as Member?
     }
 
+    override fun getOrPut(value: Member): Member {
+        return super.getOrPut(value.id, value, CacheIds.MEMBER) as Member
+    }
+
+    override fun updateVoiceState(member: Member, voiceState: VoiceState, add: Boolean) {
+        val memberImpl = member as MemberImpl
+        if (add) {
+            memberImpl.voiceState = voiceState
+        } else {
+            memberImpl.voiceState = null
+        }
+    }
+
     override fun remove(guildId: String, userId: String) {
         super.remove(guildId + userId, CacheIds.MEMBER)
+    }
+
+    override fun contains(guildId: String, userId: String): Boolean {
+        return super.contains(guildId + userId, CacheIds.MEMBER)
+    }
+
+    override fun values(): List<Member> {
+        return super.values(CacheIds.MEMBER) as List<Member>
     }
 }

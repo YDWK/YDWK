@@ -18,7 +18,11 @@
  */ 
 package io.github.ydwk.ydwk.ws.util
 
-enum class OpCode(val code: Int, val send: Boolean = true, val receive: Boolean = false) {
+enum class OpCode(
+    val code: Int,
+    private val send: Boolean = true,
+    private val receive: Boolean = false
+) {
     /** An event was dispatched. */
     DISPATCH(0, false),
 
@@ -54,14 +58,6 @@ enum class OpCode(val code: Int, val send: Boolean = true, val receive: Boolean 
 
     /** For future use or unknown opcodes. */
     UNKNOWN(-1, false, false);
-
-    fun isSend(): Boolean {
-        return send
-    }
-
-    fun isReceive(): Boolean {
-        return receive
-    }
 
     companion object {
         fun fromCode(code: Int): OpCode {

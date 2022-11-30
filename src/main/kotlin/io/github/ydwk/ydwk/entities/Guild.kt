@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode
 import io.github.ydwk.ydwk.entities.audit.AuditLogType
 import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.channel.GuildChannel
-import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildChannel
+import io.github.ydwk.ydwk.entities.channel.getter.guild.GuildChannelGetter
 import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
 import io.github.ydwk.ydwk.entities.channel.guild.message.text.GuildTextChannel
 import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
@@ -32,13 +32,16 @@ import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.entities.guild.WelcomeScreen
 import io.github.ydwk.ydwk.entities.guild.enums.*
 import io.github.ydwk.ydwk.entities.util.GenericEntity
+import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.AuditLogImpl
 import io.github.ydwk.ydwk.impl.entities.channel.DmChannelImpl
 import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
 import io.github.ydwk.ydwk.rest.EndPoint
+import io.github.ydwk.ydwk.rest.result.NoResult
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 import io.github.ydwk.ydwk.util.NameAbleEntity
 import io.github.ydwk.ydwk.util.SnowFlake
+import io.github.ydwk.ydwk.voice.VoiceConnection
 import java.util.concurrent.CompletableFuture
 import kotlin.time.Duration
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -374,7 +377,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
         userId: Long,
         deleteMessageDuration: Duration = Duration.ZERO,
         reason: String? = null
-    ): CompletableFuture<Void> {
+    ): CompletableFuture<NoResult> {
         return ydwk.restApiManager
             .put(
                 ydwk.objectMapper
@@ -419,7 +422,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
         userId: String,
         deleteMessageDuration: Duration = Duration.ZERO,
         reason: String? = null
-    ): CompletableFuture<Void> = banUser(userId.toLong(), deleteMessageDuration, reason)
+    ): CompletableFuture<NoResult> = banUser(userId.toLong(), deleteMessageDuration, reason)
 
     /**
      * Bans a user from the guild.
@@ -432,7 +435,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
         user: User,
         deleteMessageDuration: Duration = Duration.ZERO,
         reason: String? = null
-    ): CompletableFuture<Void> = banUser(user.id, deleteMessageDuration, reason)
+    ): CompletableFuture<NoResult> = banUser(user.id, deleteMessageDuration, reason)
 
     /**
      * Bans a member from the guild.
@@ -446,7 +449,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
         member: Member,
         deleteMessageDuration: Duration = Duration.ZERO,
         reason: String? = null
-    ): CompletableFuture<Void> = banUser(member.user, deleteMessageDuration, reason)
+    ): CompletableFuture<NoResult> = banUser(member.user, deleteMessageDuration, reason)
 
     /**
      * Unbans a user from the guild.
@@ -455,7 +458,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @param reason The reason for the unban.
      * @return A [CompletableFuture] that completes when the unban is created.
      */
-    fun unbanUser(userId: Long, reason: String? = null): CompletableFuture<Void> {
+    fun unbanUser(userId: Long, reason: String? = null): CompletableFuture<NoResult> {
         return ydwk.restApiManager
             .delete(EndPoint.GuildEndpoint.BAN, id, userId.toString())
             .addReason(reason)
@@ -469,7 +472,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @param reason The reason for the unban.
      * @return A [CompletableFuture] that completes when the unban is created.
      */
-    fun unbanUser(userId: String, reason: String? = null): CompletableFuture<Void> =
+    fun unbanUser(userId: String, reason: String? = null): CompletableFuture<NoResult> =
         unbanUser(userId.toLong(), reason)
 
     /**
@@ -479,7 +482,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @param reason The reason for the unban.
      * @return A [CompletableFuture] that completes when the unban is created.
      */
-    fun unbanUser(user: User, reason: String? = null): CompletableFuture<Void> =
+    fun unbanUser(user: User, reason: String? = null): CompletableFuture<NoResult> =
         unbanUser(user.id, reason)
 
     /**
@@ -489,7 +492,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @param reason The reason for the kick.
      * @return A [CompletableFuture] that completes when the kick is created.
      */
-    fun kickMember(userId: Long, reason: String? = null): CompletableFuture<Void> {
+    fun kickMember(userId: Long, reason: String? = null): CompletableFuture<NoResult> {
         return ydwk.restApiManager
             .delete(EndPoint.GuildEndpoint.KICK, id, userId.toString())
             .addReason(reason)
@@ -503,7 +506,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @param reason The reason for the kick.
      * @return A [CompletableFuture] that completes when the kick is created.
      */
-    fun kickMember(userId: String, reason: String? = null): CompletableFuture<Void> =
+    fun kickMember(userId: String, reason: String? = null): CompletableFuture<NoResult> =
         kickMember(userId.toLong(), reason)
 
     /**
@@ -513,7 +516,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @param reason The reason for the kick.
      * @return A [CompletableFuture] that completes when the kick is created.
      */
-    fun kickMember(member: Member, reason: String? = null): CompletableFuture<Void> =
+    fun kickMember(member: Member, reason: String? = null): CompletableFuture<NoResult> =
         kickMember(member.user.id, reason)
 
     /**
@@ -676,7 +679,8 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      *
      * @return The channels.
      */
-    val getChannels: List<GenericGuildChannel>
+    val getChannels: List<GuildChannel>
+        get() = getUnorderedChannels.sortedBy { it.position }
 
     /**
      * Gets all the categories as sorted list.
@@ -684,6 +688,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @return The categories.
      */
     val getCategories: List<GuildCategory>
+        get() = getChannels.filterIsInstance<GuildCategory>()
 
     /**
      * Gets all the text channels as sorted list.
@@ -691,6 +696,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @return The text channels.
      */
     val getTextChannels: List<GuildTextChannel>
+        get() = getChannels.filterIsInstance<GuildTextChannel>()
 
     /**
      * Gets all the voice channels as sorted list.
@@ -698,6 +704,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @return The voice channels.
      */
     val getVoiceChannels: List<GuildVoiceChannel>
+        get() = getChannels.filterIsInstance<GuildVoiceChannel>()
 
     /**
      * Gets the channel by its id.
@@ -716,6 +723,24 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     fun getChannelById(channelId: String): GuildChannel? = getChannelById(channelId.toLong())
 
     /**
+     * Gets the channel getter by its id.
+     *
+     * @param channelId The id of the channel.
+     * @return The channel getter.
+     */
+    fun getChannelGetterById(channelId: Long): GuildChannelGetter? =
+        getChannelById(channelId)?.guildChannelGetter
+
+    /**
+     * Gets the channel getter by its id.
+     *
+     * @param channelId The id of the channel.
+     * @return The channel getter.
+     */
+    fun getChannelGetterById(channelId: String): GuildChannelGetter? =
+        getChannelGetterById(channelId.toLong())
+
+    /**
      * Used to get all the members of the guild.
      *
      * @return The members.
@@ -725,12 +750,12 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
             return ydwk.restApiManager
                 .addQueryParameter("limit", "")
                 .get(EndPoint.GuildEndpoint.GET_MEMBERS, id)
-                .execute { it ->
+                .execute {
                     val jsonBody = it.jsonBody
                     val members: ArrayNode = jsonBody as ArrayNode
                     val memberList = mutableListOf<Member>()
                     for (member in members) {
-                        memberList.add(MemberImpl(ydwk, member, this))
+                        memberList.add(MemberImpl(ydwk as YDWKImpl, member, this))
                     }
                     memberList
                 }
@@ -746,12 +771,12 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
         return ydwk.restApiManager
             .addQueryParameter("limit", limit.toString())
             .get(EndPoint.GuildEndpoint.GET_MEMBERS, id)
-            .execute { it ->
+            .execute {
                 val jsonBody = it.jsonBody
                 val members: ArrayNode = jsonBody as ArrayNode
                 val memberList = mutableListOf<Member>()
                 for (member in members) {
-                    memberList.add(MemberImpl(ydwk, member, this))
+                    memberList.add(MemberImpl(ydwk as YDWKImpl, member, this))
                 }
                 memberList
             }
@@ -776,6 +801,75 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     fun getMemberById(userId: String): Member? = getMemberById(userId.toLong())
 
     /**
+     * Joins a vc.
+     *
+     * @param guildVoiceChannelId the guild vc id to join.
+     * @param muted if the bot should be muted.
+     * @param deafened if the bot should be deafened.
+     * @return A [CompletableFuture] that completes when the bot joins the vc.
+     */
+    fun joinVoiceChannel(
+        guildVoiceChannelId: Long,
+        muted: Boolean,
+        deafened: Boolean
+    ): CompletableFuture<VoiceConnection>
+
+    /**
+     * Joins a vc.
+     *
+     * @param guildVoiceChannelId the guild vc id to join.
+     * @param muted if the bot should be muted.
+     * @param deafened if the bot should be deafened.
+     * @return A [CompletableFuture] that completes when the bot joins the vc.
+     */
+    fun joinVoiceChannel(
+        guildVoiceChannelId: String,
+        muted: Boolean,
+        deafened: Boolean
+    ): CompletableFuture<VoiceConnection> =
+        joinVoiceChannel(guildVoiceChannelId.toLong(), muted, deafened)
+
+    /**
+     * Joins a vc.
+     *
+     * @param guildVoiceChannel the guild vc to join.
+     * @param muted if the bot should be muted.
+     * @param deafened if the bot should be deafened.
+     * @return A [CompletableFuture] that completes when the bot joins the vc.
+     */
+    fun joinVoiceChannel(
+        guildVoiceChannel: GuildVoiceChannel,
+        muted: Boolean,
+        deafened: Boolean
+    ): CompletableFuture<VoiceConnection> = joinVoiceChannel(guildVoiceChannel.id, muted, deafened)
+
+    /**
+     * Leaves a vc.
+     *
+     * @param guildVoiceChannelId the guild vc id to leave.
+     * @return A [CompletableFuture] that completes when the bot leaves the vc.
+     */
+    fun leaveVoiceChannel(guildVoiceChannelId: Long): CompletableFuture<Void>
+
+    /**
+     * Leaves a vc.
+     *
+     * @param guildVoiceChannelId the guild vc id to leave.
+     * @return A [CompletableFuture] that completes when the bot leaves the vc.
+     */
+    fun leaveVoiceChannel(guildVoiceChannelId: String): CompletableFuture<Void> =
+        leaveVoiceChannel(guildVoiceChannelId.toLong())
+
+    /**
+     * Leaves a vc.
+     *
+     * @param guildVoiceChannel the guild vc to leave.
+     * @return A [CompletableFuture] that completes when the bot leaves the vc.
+     */
+    fun leaveVoiceChannel(guildVoiceChannel: GuildVoiceChannel): CompletableFuture<Void> =
+        leaveVoiceChannel(guildVoiceChannel.id)
+
+    /**
      * Gets the @everyone role. This role is always present.
      *
      * @return The @everyone role.
@@ -784,4 +878,25 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
         get() =
             getRoleById(idAsLong)
                 ?: throw IllegalStateException("The @everyone role is not present.")
+
+    /**
+     * Gets a voice connection if it exists.
+     *
+     * @return The [VoiceConnection] instance, or null if it doesn't exist.
+     */
+    val voiceConnection: VoiceConnection?
+
+    /**
+     * Sets the voice connection.
+     *
+     * @param voiceConnection The voice connection.
+     */
+    fun setVoiceConnection(voiceConnection: VoiceConnection)
+
+    /**
+     * Removes the voice connection.
+     *
+     * @param voiceConnection The voice connection.
+     */
+    fun removeVoiceConnection(voiceConnection: VoiceConnection)
 }

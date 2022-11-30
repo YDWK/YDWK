@@ -22,18 +22,23 @@ import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.rest.cf.CompletableFutureManager
 import io.github.ydwk.ydwk.rest.error.HttpResponseCode
 import io.github.ydwk.ydwk.rest.error.JsonErrorCode
+import io.github.ydwk.ydwk.rest.result.NoResult
 import io.github.ydwk.ydwk.rest.type.SimilarRestApi
+import io.github.ydwk.ydwk.ws.util.formatInstant
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
+import java.time.Instant
 import java.util.concurrent.CompletableFuture
 import java.util.function.Function
 import okhttp3.*
+import org.slf4j.LoggerFactory
 
 open class SimilarRestApiImpl(
     private val ydwk: YDWKImpl,
     private val builder: Request.Builder,
     private val client: OkHttpClient,
 ) : SimilarRestApi {
+    private val logger = LoggerFactory.getLogger(SimilarRestApi::class.java)
 
     override fun header(name: String, value: String): SimilarRestApi {
         builder.header(name, value)
@@ -98,6 +103,7 @@ open class SimilarRestApiImpl(
                             val manager = CompletableFutureManager(response, ydwk)
                             val result = function.apply(manager)
                             queue.complete(result)
+                            logger.debug(HttpResponseCode.OK.getMessage())
                         }
                     })
         } catch (e: Exception) {
@@ -106,8 +112,8 @@ open class SimilarRestApiImpl(
         return queue
     }
 
-    override fun executeWithNoResult(): CompletableFuture<Void> {
-        val queue = CompletableFuture<Void>()
+    override fun executeWithNoResult(): CompletableFuture<NoResult> {
+        val queue = CompletableFuture<NoResult>()
         try {
             client
                 .newCall(builder.build())
@@ -122,7 +128,8 @@ open class SimilarRestApiImpl(
                                 val code = response.code
                                 error(response.body, code, queue, null)
                             }
-                            queue.complete(null)
+                            queue.complete(NoResult(formatInstant(Instant.now())))
+                            logger.debug(HttpResponseCode.OK.getMessage())
                         }
                     })
         } catch (e: Exception) {
@@ -134,7 +141,7 @@ open class SimilarRestApiImpl(
     fun error(
         body: ResponseBody,
         code: Int,
-        queueWithNoResult: CompletableFuture<Void>?,
+        queueWithNoResult: CompletableFuture<NoResult>?,
         queueWithResult: CompletableFuture<*>?
     ) {
         if (HttpResponseCode.fromCode(code) == HttpResponseCode.TOO_MANY_REQUESTS) {
@@ -144,41 +151,44 @@ open class SimilarRestApiImpl(
         } else if (JsonErrorCode.fromCode(code) != JsonErrorCode.UNKNOWN) {
             handleJsonError(body, code)
         } else {
-            ydwk.logger.error("Unknown error occurred while executing request")
+            logger.error("Unknown error occurred while executing request")
         }
     }
 
     private fun handleRateLimit(
         body: ResponseBody,
-        queueWithNoResult: CompletableFuture<Void>?,
+        queueWithNoResult: CompletableFuture<NoResult>?,
         queueWithResult: CompletableFuture<*>?
     ) {
         val jsonNode = ydwk.objectMapper.readTree(body.string())
         val retryAfter = jsonNode.get("retry_after").asLong()
         val global = jsonNode.get("global").asBoolean()
         val message = jsonNode.get("message").asText()
-        ydwk.logger.error("Error while executing request: $message")
+        logger.error("Error while executing request: $message")
         if (global) {
-            ydwk.logger.error("Global rate limit reached, retrying in $retryAfter ms")
+            logger.error("Global rate limit reached, retrying in $retryAfter ms")
             Thread.sleep(retryAfter)
             completeReTry(queueWithNoResult, queueWithResult)
         } else {
-            ydwk.logger.error("Rate limit reached, retrying in $retryAfter ms")
+            logger.error("Rate limit reached, retrying in $retryAfter ms")
             Thread.sleep(retryAfter)
             completeReTry(queueWithNoResult, queueWithResult)
         }
     }
 
     private fun completeReTry(
-        queueWithNoResult: CompletableFuture<Void>?,
+        queueWithNoResult: CompletableFuture<NoResult>?,
         queueWithResult: CompletableFuture<*>?
     ) {
         if (queueWithNoResult != null) {
             executeWithNoResult().thenAccept { queueWithNoResult.complete(null) }
+            logger.debug(HttpResponseCode.OK.getMessage())
         } else if (queueWithResult != null) {
             execute { queueWithResult.complete(null) }
+            logger.debug(HttpResponseCode.OK.getMessage())
         } else {
             execute()
+            logger.debug(HttpResponseCode.OK.getMessage())
         }
     }
 

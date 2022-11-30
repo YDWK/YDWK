@@ -23,6 +23,7 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.message.MessageInteraction
+import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.UserImpl
 import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
 import io.github.ydwk.ydwk.interaction.sub.InteractionType
@@ -47,7 +48,7 @@ class MessageInteractionImpl(
         get() =
             if (json.has("member"))
                 MemberImpl(
-                    ydwk,
+                    ydwk as YDWKImpl,
                     json.get("member"),
                     ydwk.getGuildById(json.get("guild_id").asLong())
                         ?: throw IllegalStateException("Bot is not in guild"))

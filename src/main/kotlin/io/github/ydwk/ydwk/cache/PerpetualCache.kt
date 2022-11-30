@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.cache
 
 import io.github.ydwk.ydwk.cache.exception.CacheException
 import io.github.ydwk.ydwk.entities.*
+import org.slf4j.LoggerFactory
 
 /**
  * This is the implementation of the [Cache] interface that uses a [Map] to store and retrieve data.
@@ -28,13 +29,23 @@ open class PerpetualCache(
     private val allowedCache: Set<CacheIds>,
 ) : Cache {
     private val cache = HashMap<String, Any>()
+    private val logger = LoggerFactory.getLogger(PerpetualCache::class.java)
 
     override val size: Int
         get() = cache.size
 
     override fun set(key: String, value: Any, cacheType: CacheIds) {
         if (cacheType in allowedCache) {
-            cache[key + cacheType.toString()] = value
+            // logger.debug("Adding to cache: $key")
+
+            if (cache.containsKey(key) && (value !is Guild || value !is UnavailableGuild)) {
+                logger.debug("Cache already contains key: $key")
+            } else if (value !is Guild || value !is UnavailableGuild) {
+                cache[key + cacheType.toString()] = value
+            } else {
+                cache.remove(key + cacheType.toString())
+                cache[key + cacheType.toString()] = value
+            }
         }
     }
 
@@ -46,10 +57,19 @@ open class PerpetualCache(
         }
     }
 
+    override fun getOrPut(key: String, value: Any, cacheType: CacheIds): Any {
+        return if (cacheType !in allowedCache) {
+            value
+        } else {
+            cache.getOrPut(key + cacheType.toString()) { value }
+        }
+    }
+
     override fun remove(key: String, cacheType: CacheIds): Any? {
         if (cacheType !in allowedCache) {
             throw CacheException("The caching of type $cacheType has been disabled")
         } else {
+            logger.debug("Removing from cache: $key")
             return cache.remove(key + cacheType.toString())
         }
     }
@@ -68,22 +88,5 @@ open class PerpetualCache(
 
     override fun values(cacheType: CacheIds): List<Any> {
         return cache.filter { it.key.endsWith(cacheType.toString()) }.values.toList()
-    }
-
-    override fun update(key: String, cacheType: CacheIds, value: Any) {
-        if (cacheType !in allowedCache) {
-            // do nothing
-        } else {
-            // check if the cache exists
-            if (contains(key, cacheType)) {
-                // delete the old cache
-                remove(key, cacheType)
-                // add the new cache
-                set(key, value, cacheType)
-            } else {
-                // add the cache
-                set(key, value, cacheType)
-            }
-        }
     }
 }

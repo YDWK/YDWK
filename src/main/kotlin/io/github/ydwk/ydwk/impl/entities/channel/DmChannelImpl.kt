@@ -23,6 +23,7 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
+import io.github.ydwk.ydwk.impl.entities.ChannelImpl
 import io.github.ydwk.ydwk.impl.entities.UserImpl
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import io.github.ydwk.ydwk.util.GetterSnowFlake
@@ -31,7 +32,7 @@ class DmChannelImpl(
     override val ydwk: YDWK,
     override val json: JsonNode,
     override val idAsLong: Long
-) : DmChannel {
+) : ChannelImpl(ydwk, json, idAsLong, false, true), DmChannel {
 
     override var lastMessageId: GetterSnowFlake? =
         if (json.has("last_message_id")) GetterSnowFlake.of(json["last_message_id"].asLong())

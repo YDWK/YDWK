@@ -21,29 +21,23 @@ package io.github.ydwk.ydwk
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.ydwk.ydwk.cache.CacheIds
-import io.github.ydwk.ydwk.entities.Application
-import io.github.ydwk.ydwk.entities.Bot
-import io.github.ydwk.ydwk.entities.Guild
-import io.github.ydwk.ydwk.entities.User
+import io.github.ydwk.ydwk.entities.*
 import io.github.ydwk.ydwk.entities.application.PartialApplication
 import io.github.ydwk.ydwk.entities.channel.DmChannel
-import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildChannel
-import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildTextChannel
-import io.github.ydwk.ydwk.entities.channel.guild.GenericGuildVoiceChannel
-import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
-import io.github.ydwk.ydwk.entities.channel.guild.message.news.GuildNewsChannel
-import io.github.ydwk.ydwk.entities.channel.guild.message.text.GuildTextChannel
-import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildStageChannel
-import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
+import io.github.ydwk.ydwk.entities.channel.GuildChannel
+import io.github.ydwk.ydwk.entities.channel.getter.guild.GuildChannelGetter
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
 import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
 import io.github.ydwk.ydwk.rest.RestApiManager
 import io.github.ydwk.ydwk.slash.SlashBuilder
+import io.github.ydwk.ydwk.util.ThreadFactory
+import io.github.ydwk.ydwk.voice.VoiceConnection
 import io.github.ydwk.ydwk.ws.WebSocketManager
 import io.github.ydwk.ydwk.ws.util.LoggedIn
 import java.time.Instant
 import java.util.concurrent.CompletableFuture
+import java.util.concurrent.ScheduledExecutorService
 
 interface YDWK {
 
@@ -211,161 +205,11 @@ interface YDWK {
         setDisallowedCache(*cacheTypes.toTypedArray())
 
     /**
-     * Gets all the guild channels the bot is in.
-     *
-     * @return A list of [GenericGuildChannel] objects.
-     */
-    val guildChannels: List<GenericGuildChannel>
-
-    /**
-     * Gets a guild text channel by its id.
-     *
-     * @param id The id of the text channel.
-     * @return The [GenericGuildTextChannel] object.
-     */
-    fun getGenericGuildTextChannelById(id: Long): GenericGuildTextChannel?
-
-    /**
-     * Gets a guild text channel by its id.
-     *
-     * @param id The id of the text channel.
-     * @return The [GenericGuildTextChannel] object.
-     */
-    fun getGenericGuildTextChannelById(id: String): GenericGuildTextChannel? =
-        getGenericGuildTextChannelById(id.toLong())
-
-    /**
-     * Gets all the guild text channels the bot is in.
-     *
-     * @return A list of [GenericGuildTextChannel] objects.
-     */
-    val guildTextChannels: List<GenericGuildTextChannel>
-
-    /**
-     * Gets a guild text channel by its id.
-     *
-     * @param id The id of the text channel.
-     */
-    fun getGuildTextChannelById(id: Long): GuildTextChannel? =
-        getGenericGuildTextChannelById(id) as GuildTextChannel?
-
-    /**
-     * Gets a guild text channel by its id.
-     *
-     * @param id The id of the text channel.
-     */
-    fun getGuildTextChannelById(id: String): GuildTextChannel? =
-        getGenericGuildTextChannelById(id)?.asGuildTextChannel()
-
-    /**
-     * Gets a guild news channel by its id.
-     *
-     * @param id The id of the news channel.
-     */
-    fun getGuildNewsChannelById(id: Long): GuildNewsChannel? =
-        getGenericGuildTextChannelById(id)?.asGuildNewsChannel()
-
-    /**
-     * Gets a guild news channel by its id.
-     *
-     * @param id The id of the news channel.
-     */
-    fun getGuildNewsChannelById(id: String): GuildNewsChannel? =
-        getGenericGuildTextChannelById(id)?.asGuildNewsChannel()
-
-    /**
-     * Gets a voice guild channel by its id.
-     *
-     * @param id The id of the voice channel.
-     * @return The [GenericGuildVoiceChannel] object.
-     */
-    fun getGenericGuildVoiceChannelById(id: Long): GenericGuildVoiceChannel?
-
-    /**
-     * Gets a voice guild channel by its id.
-     *
-     * @param id The id of the voice channel.
-     * @return The [GenericGuildVoiceChannel] object.
-     */
-    fun getGenericGuildVoiceChannelById(id: String): GenericGuildVoiceChannel? =
-        getGenericGuildVoiceChannelById(id.toLong())
-
-    /**
-     * Gets all the guild voice channels the bot is in.
-     *
-     * @return A list of [GenericGuildVoiceChannel] objects.
-     */
-    val guildVoiceChannels: List<GenericGuildVoiceChannel>
-
-    /**
      * Creates an embed.
      *
      * @return The [EmbedBuilder] object.
      */
     val embedBuilder: EmbedBuilder
-
-    /**
-     * Gets a category by its id.
-     *
-     * @param id The id of the category.
-     * @return The [GuildCategory] object.
-     */
-    fun getCategoryById(id: Long): GuildCategory?
-
-    /**
-     * Gets a category by its id.
-     *
-     * @param id The id of the category.
-     * @return The [GuildCategory] object.
-     */
-    fun getCategoryById(id: String): GuildCategory? = getCategoryById(id.toLong())
-
-    /**
-     * Gets all the categories the bot is in.
-     *
-     * @return A list of [GuildCategory] objects.
-     */
-    fun getCategories(): List<GuildCategory>
-
-    /**
-     * Gets a guild stage channel by its id.
-     *
-     * @param id The id of the stage channel.
-     */
-    fun getGuildStageChannelById(id: Long): GuildStageChannel? =
-        getGenericGuildVoiceChannelById(id)?.asStageChannel()
-
-    /**
-     * Gets a guild stage channel by its id.
-     *
-     * @param id The id of the stage channel.
-     */
-    fun getGuildStageChannelById(id: String): GuildStageChannel? =
-        getGenericGuildVoiceChannelById(id)?.asStageChannel()
-
-    /**
-     * Gets a guild voice channel by its id.
-     *
-     * @param id The id of the voice channel.
-     */
-    fun getGuildVoiceChannelById(id: Long): GuildVoiceChannel? =
-        getGenericGuildVoiceChannelById(id)?.asGuildVoiceChannel()
-
-    /**
-     * Gets a guild voice channel by its id.
-     *
-     * @param id The id of the voice channel.
-     */
-    fun getGuildVoiceChannelById(id: String): GuildVoiceChannel? =
-        getGenericGuildVoiceChannelById(id)?.asGuildVoiceChannel()
-
-    /**
-     * Gets all the channels in the provided category.
-     *
-     * @param category The category to get the channels from.
-     * @return A list of [GenericGuildChannel] objects.
-     */
-    fun getChannelsByCategory(category: GuildCategory): List<GenericGuildChannel>
 
     /**
      * Creates a dm channel.
@@ -456,6 +300,213 @@ interface YDWK {
      * @return The [CompletableFuture] object.
      */
     fun requestUser(id: String): CompletableFuture<User> = requestUser(id.toLong())
+
+    /**
+     * Requests a guild using its id.
+     *
+     * @param id The id of the guild.
+     * @return The [CompletableFuture] object.
+     */
+    fun requestGuild(guildId: Long): CompletableFuture<Guild>
+
+    /**
+     * Requests a guild using its id.
+     *
+     * @param id The id of the guild.
+     * @return The [CompletableFuture] object.
+     */
+    fun requestGuild(guildId: String): CompletableFuture<Guild> = requestGuild(guildId.toLong())
+
+    /**
+     * Sets the voice connection.
+     *
+     * @param guildId The id of the guild.
+     * @param voiceConnection The voice connection.
+     */
+    fun setVoiceConnection(guildId: Long, voiceConnection: VoiceConnection)
+
+    /**
+     * Sets the voice connection.
+     *
+     * @param guildId The id of the guild.
+     * @param voiceConnection The voice connection.
+     */
+    fun setVoiceConnection(guildId: String, voiceConnection: VoiceConnection) =
+        setVoiceConnection(guildId.toLong(), voiceConnection)
+
+    /**
+     * Gets the voice connection.
+     *
+     * @param guildId The id of the guild.
+     * @return The [VoiceConnection] object.
+     */
+    fun getVoiceConnectionById(guildId: Long): VoiceConnection?
+
+    /**
+     * Removes the voice connection.
+     *
+     * @param guildId The id of the guild.
+     */
+    fun removeVoiceConnectionById(guildId: Long)
+
+    /**
+     * Sets the pending voice connection.
+     *
+     * @param guildId The id of the guild.
+     * @param voiceConnection The voice connection.
+     * @return The [VoiceConnection] object.
+     */
+    fun setPendingVoiceConnection(
+        guildId: Long,
+        voiceConnection: VoiceConnection,
+    )
+
+    /**
+     * Gets the pending voice connection.
+     *
+     * @param guildId The id of the guild.
+     * @return The [VoiceConnection] object.
+     */
+    fun getPendingVoiceConnectionById(guildId: Long): VoiceConnection?
+
+    /**
+     * Removes the pending voice connection.
+     *
+     * @param guildId The id of the guild.
+     */
+    fun removePendingVoiceConnectionById(guildId: Long)
+
+    /**
+     * Gets the default ScheduledExecutorService.
+     *
+     * @return The [ScheduledExecutorService] object.
+     */
+    val defaultScheduledExecutorService: ScheduledExecutorService
+
+    /**
+     * Gets the thread factory.
+     *
+     * @return The [ThreadFactory] object.
+     */
+    val threadFactory: ThreadFactory
+
+    /**
+     * Gets a channel by its id.
+     *
+     * @param id The id of the channel.
+     * @return The [Channel] object.
+     */
+    fun getChannelById(id: Long): Channel?
+
+    /**
+     * Gets a channel by its id.
+     *
+     * @param id The id of the channel.
+     * @return The [Channel] object.
+     */
+    fun getChannelById(id: String): Channel? = getChannelById(id.toLong())
+
+    /**
+     * Gets all the channels the bot can see.
+     *
+     * @return A list of [Channel] objects.
+     */
+    fun getChannels(): List<Channel>
+
+    /**
+     * Gets a guild channel by its id.
+     *
+     * @param id The id of the guild channel.
+     * @return The [GuildChannel] object.
+     */
+    fun getGuildChannelById(id: Long): GuildChannel? =
+        getChannelById(id)?.channelGetter?.asGuildChannel()
+
+    /**
+     * Gets a guild channel by its id.
+     *
+     * @param id The id of the guild channel.
+     * @return The [GuildChannel] object.
+     */
+    fun getGuildChannelById(id: String): GuildChannel? = getGuildChannelById(id.toLong())
+
+    /**
+     * Gets all the guild channels the bot can see.
+     *
+     * @return A list of [GuildChannel] objects.
+     */
+    fun getGuildChannels(): List<GuildChannel> =
+        getChannels().mapNotNull { it.channelGetter.asGuildChannel() }
+
+    /**
+     * Used to get guild channels by their ids.
+     *
+     * @param id The id of the guild channel.
+     * @return The [GuildChannelGetter] object.
+     */
+    fun getGuildChannelGetterById(id: Long): GuildChannelGetter? =
+        getGuildChannelById(id)?.guildChannelGetter
+
+    /**
+     * Used to get guild channels by their ids.
+     *
+     * @param id The id of the guild channel.
+     * @return The [GuildChannelGetter] object.
+     */
+    fun getGuildChannelGetterById(id: String): GuildChannelGetter? =
+        getGuildChannelGetterById(id.toLong())
+
+    /**
+     * Requests a channel using its id.
+     *
+     * @param id The id of the channel.
+     * @return The [CompletableFuture] object.
+     */
+    fun requestChannelById(id: Long): CompletableFuture<Channel>
+
+    /**
+     * Requests a channel using its id.
+     *
+     * @param id The id of the channel.
+     * @return The [CompletableFuture] object.
+     */
+    fun requestChannelById(id: String): CompletableFuture<Channel> = requestChannelById(id.toLong())
+
+    /**
+     * Requests a guild channel using its id.
+     *
+     * @param id The id of the channel.
+     * @param guildId The id of the guild.
+     * @return The [CompletableFuture] object.
+     */
+    fun requestGuildChannelById(id: Long, guildId: Long): CompletableFuture<GuildChannel>
+
+    /**
+     * Requests a guild channel using its id.
+     *
+     * @param id The id of the channel.
+     * @param guildId The id of the guild.
+     * @return The [CompletableFuture] object.
+     */
+    fun requestGuildChannelById(id: String, guildId: String): CompletableFuture<GuildChannel> =
+        requestGuildChannelById(id.toLong(), guildId.toLong())
+
+    /**
+     * Requests a list of guild channels by the guild id.
+     *
+     * @param guildId The id of the guild.
+     * @return The [CompletableFuture] object.
+     */
+    fun requestGuildChannels(guildId: Long): CompletableFuture<List<GuildChannel>>
+
+    /**
+     * Requests a list of guild channels by the guild id.
+     *
+     * @param guildId The id of the guild.
+     * @return The [CompletableFuture] object.
+     */
+    fun requestGuildChannels(guildId: String): CompletableFuture<List<GuildChannel>> =
+        requestGuildChannels(guildId.toLong())
 
     /**
      * Overrides the custom to string method.

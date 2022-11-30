@@ -19,8 +19,8 @@
 package io.github.ydwk.ydwk.evm.event.events.channel
 
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.channel.GuildChannel
+import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.evm.event.Event
 
 /** Fired when a channel is created */
-data class ChannelDeleteEvent(override val ydwk: YDWK, val channel: GuildChannel) : Event(ydwk)
+data class ChannelDeleteEvent(override val ydwk: YDWK, val channel: Channel) : Event(ydwk)

@@ -17,33 +17,43 @@
   ~  */
   -->
 <configuration>
-<conversionRule conversionWord="highlight" converterClass="io.github.ydwk.ydwk.logger.LoggerColorScheme"/>
-<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-    <encoder>
-        <pattern>%cyan(%d{yyyy/mm/dd HH:mm:ss}) %green({%thread}) [%highlight(%level)] %magenta(%replace(%logger){'.*\.ydwk\.', ''}): %highlight(%msg) %n</pattern>
-        <charset>UTF-8</charset>
-    </encoder>
-</appender>
-<appender name="LOGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>files/logs/all.log</file>
-    <encoder>
-        <pattern>%d{yyyy/mm/dd HH:mm:ss} {%thread} [%level] %logger: %msg%n</pattern>
-        <charset>UTF-8</charset>
-    </encoder>
-    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-        <fileNamePattern>files/logs/archive/%d{yyyy-MM-dd}.log.gz</fileNamePattern>
-        <!-- Keep logs for 30 days -->
-        <maxHistory>30</maxHistory>
-    </rollingPolicy>
-</appender>
-<logger name="io.github.ydwk.ydwk" level="${LOG_LEVEL:-INFO}" additivity="false">
-    <appender-ref ref="STDOUT"/>
-    <appender-ref ref="LOGFILE"/>
-</logger>
-<root level="${ROOT_LOG_LEVEL:-WARN}">
-    <appender-ref ref="STDOUT"/>
-    <appender-ref ref="LOGFILE"/>
-</root>
+    <conversionRule conversionWord="highlight" converterClass="io.github.ydwk.ydwk.logger.LoggerColorScheme"/>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%cyan(%d{yyyy/mm/dd HH:mm:ss}) %green({%thread}) [%highlight(%level)]
+                %magenta(%replace(%logger){'.*\.ydwk\.', ''}): %highlight(%msg) %n
+            </pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <appender name="LOGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>files/logs/all.log</file>
+        <encoder>
+            <pattern>%d{yyyy/mm/dd HH:mm:ss} {%thread} [%level] %logger: %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>files/logs/archive/%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <!-- Keep logs for 30 days -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+    <logger name="io.github.ydwk.ydwk" level="${LOG_LEVEL:-INFO}" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="LOGFILE"/>
+    </logger>
+    <logger name="io.github.ydwk.ydwk" level="${LOG_LEVEL:-DEBUG}" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="LOGFILE"/>
+    </logger>
+    <root level="${ROOT_LOG_LEVEL:-WARN}">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="LOGFILE"/>
+    </root>
+    <root level="${ROOT_LOG_LEVEL:-DEBUG}">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="LOGFILE"/>
+    </root>
 </configuration>
 
 

@@ -16,25 +16,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.channel.guild
+package io.github.ydwk.ydwk.entities.channel.getter
 
+import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.channel.GuildChannel
-import io.github.ydwk.ydwk.entities.channel.VoiceChannel
-import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildStageChannel
-import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
 
-interface GenericGuildVoiceChannel : VoiceChannel, GuildChannel {
+interface ChannelGetter {
     /**
-     * Gets the channel as Guild Voice Channel.
+     * Gets the channel as a [GuildChannel] if it is a guild channel.
      *
-     * @return the channel as Guild Voice Channel.
+     * @return the channel as a [GuildChannel] if it is a guild channel.
      */
-    fun asGuildVoiceChannel(): GuildVoiceChannel?
+    fun asGuildChannel(): GuildChannel?
 
     /**
-     * Gets the channel as a guild stage channel.
+     * Gets the channel as a [DmChannel] if it is a dm channel.
      *
-     * @return the channel as a stage channel.
+     * @return the channel as a [DmChannel] if it is a dm channel.
      */
-    fun asStageChannel(): GuildStageChannel?
+    fun asDmChannel(): DmChannel?
 }

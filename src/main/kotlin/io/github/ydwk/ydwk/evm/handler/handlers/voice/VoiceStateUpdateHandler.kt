@@ -19,11 +19,50 @@
 package io.github.ydwk.ydwk.evm.handler.handlers.voice
 
 import com.fasterxml.jackson.databind.JsonNode
+import io.github.ydwk.ydwk.cache.CacheIds
+import io.github.ydwk.ydwk.entities.Bot
+import io.github.ydwk.ydwk.evm.event.events.voice.VoiceStateEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.impl.entities.ChannelImpl
+import io.github.ydwk.ydwk.impl.entities.VoiceStateImpl
+import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
 
 class VoiceStateUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override fun start() {
-        TODO("Not yet implemented")
+        val userId = json.get("user_id").asText()
+        val voiceState = VoiceStateImpl(ydwk, json)
+        val newMember = ydwk.memberCache.getOrPut(voiceState.member!!)
+        ydwk.memberCache.updateVoiceState(newMember, voiceState, true)
+
+        val bot: Bot = ydwk.bot ?: return
+        if (bot.id == userId) {
+            handleBotVoiceStateUpdate(voiceState)
+        }
+
+        ydwk.emitEvent(VoiceStateEvent(ydwk, voiceState, newMember))
+    }
+
+    private fun handleBotVoiceStateUpdate(voiceState: VoiceStateImpl) {
+        val sessionId = json.get("session_id").asText()
+        val channelId = json.get("channel_id").asText()
+        val guildChannel =
+            (ydwk.cache[channelId, CacheIds.CHANNEL] as ChannelImpl).channelGetter.asGuildChannel()
+        val vc = guildChannel?.guildChannelGetter?.asGuildVoiceChannel()
+        if (vc != null) {
+            val voiceConnection: VoiceConnectionImpl? =
+                (ydwk.getPendingVoiceConnectionById(vc.guild.idAsLong) as VoiceConnectionImpl?)
+            if (voiceConnection != null) {
+                voiceConnection.sessionId = sessionId
+                voiceConnection.attemptConnect()
+            }
+
+            if (vc.guild.voiceConnection != null) {
+                (vc.guild.voiceConnection!! as VoiceConnectionImpl).sessionId = sessionId
+                (vc.guild.voiceConnection!! as VoiceConnectionImpl).attemptConnect()
+            }
+        } else {
+            ydwk.logger.warn("VoiceStateUpdateHandler: Bot is not in a voice channel")
+        }
     }
 }
