@@ -88,6 +88,7 @@ open class WebSocketManager(
     private var intents: List<GateWayIntent>,
     private var userStatus: UserStatus? = null,
     private var activity: ActivityPayload? = null,
+    private val etfInsteadOfJson: Boolean,
 ) : WebSocketAdapter(), WebSocketListener {
     private val logger: Logger = LoggerFactory.getLogger(javaClass) as Logger
 
@@ -125,6 +126,7 @@ open class WebSocketManager(
                 webSocketFactory
                     .createSocket(url)
                     .addHeader("Accept-Encoding", "gzip")
+                    .setDirectTextMessage(etfInsteadOfJson)
                     .addListener(this)
                     .addListener(WebsocketLogging(logger))
                     .connect()
@@ -195,6 +197,18 @@ open class WebSocketManager(
 
     override fun onTextMessage(websocket: WebSocket, text: String) {
         handleMessage(text)
+    }
+
+    override fun onTextMessage(websocket: WebSocket, data: ByteArray) {
+        val dataAsString: String
+        try {
+            dataAsString = String(data, Charsets.UTF_8)
+        } catch (e: Exception) {
+            logger.error("Failed to convert data to string", e)
+            return
+        }
+
+        handleMessage(dataAsString)
     }
 
     private fun handleMessage(message: String) {

@@ -437,15 +437,19 @@ class YDWKImpl(
      *
      * @param token The token of the bot which is used to authenticate the bot.
      * @param intents The gateway intent which will decide what events are sent by discord.
+     * @param userStatus The status of the bot.
+     * @param activity The activity of the bot.
+     * @param etfInsteadOfJson Whether to use ETF instead of JSON.
      */
     fun setWebSocketManager(
         token: String,
         intents: List<GateWayIntent>,
         userStatus: UserStatus? = null,
-        activity: ActivityPayload? = null
+        activity: ActivityPayload? = null,
+        etfInsteadOfJson: Boolean
     ) {
         val ws: WebSocketManager?
-        ws = WebSocketManager(this, token, intents, userStatus, activity)
+        ws = WebSocketManager(this, token, intents, userStatus, activity, etfInsteadOfJson)
         this.webSocketManager = ws.connect()
         // this.webSocketManager!!.deleteMessageCachePast14Days()
         this.token = token
