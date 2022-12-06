@@ -33,6 +33,7 @@ object BotBuilder {
     private var guildIds = mutableListOf<String>()
     private var userStatus: UserStatus? = null
     private var activity: ActivityPayload? = null
+    private var etfInsteadOfJson: Boolean = false
 
     /**
      * Creates a new bot builder with the default settings
@@ -211,6 +212,17 @@ object BotBuilder {
     }
 
     /**
+     * Uses ETF instead of JSON for the websocket
+     *
+     * @param etfInsteadOfJson Whether to use ETF instead of JSON
+     * @return The bot builder
+     */
+    fun setETFInsteadOfJson(etfInsteadOfJson: Boolean): BotBuilder {
+        this.etfInsteadOfJson = etfInsteadOfJson
+        return this
+    }
+
+    /**
      * Builds the bot
      *
      * @return The bot
@@ -222,7 +234,7 @@ object BotBuilder {
             throw LoginException("Token cannot be null or empty")
         }
 
-        ydwk.setWebSocketManager(token!!, intents, userStatus, activity)
+        ydwk.setWebSocketManager(token!!, intents, userStatus, activity, etfInsteadOfJson)
         ydwk.setAllowedCache(allowedCache)
         ydwk.setDisallowedCache(disallowedCache)
         return ydwk

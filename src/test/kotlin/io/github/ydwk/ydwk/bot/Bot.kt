@@ -33,6 +33,7 @@ fun main() {
     val ydwk =
         createDefaultBot(JConfigUtils.getString("token") ?: throw Exception("Token not found!"))
             .setActivity(Activity.playing("YDWK"))
+            .setETFInsteadOfJson(true)
             .build()
 
     ydwk.waitForReady.slashBuilder

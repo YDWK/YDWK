@@ -54,8 +54,8 @@ dependencies {
     // json
     api("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.0")
     // logger
-    api("ch.qos.logback:logback-classic:1.4.4")
-    api("ch.qos.logback:logback-core:1.4.4")
+    api("ch.qos.logback:logback-classic:1.4.5")
+    api("ch.qos.logback:logback-core:1.4.5")
     api("uk.org.lidalia:sysout-over-slf4j:1.0.2")
     // config.json
     api("io.github.realyusufismail:jconfig:1.0.7")
@@ -64,7 +64,7 @@ dependencies {
     api("com.neovisionaries:nv-websocket-client:2.14")
     api("io.github.realyusufismail:xsalsa20poly1305-fork:0.11.2-SNAPSHOT")
     // kotlin
-    testImplementation("org.jetbrains.kotlin:kotlin-test:1.7.21")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:1.7.22")
     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation("com.google.code.findbugs:jsr305:3.0.2")
 }
