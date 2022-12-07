@@ -24,6 +24,7 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.message.Embed
 import io.github.ydwk.ydwk.entities.message.MessageFlag
 import io.github.ydwk.ydwk.interaction.application.sub.Reply
+import io.github.ydwk.ydwk.interaction.message.ActionRow
 import io.github.ydwk.ydwk.interaction.sub.InteractionCallbackType
 import io.github.ydwk.ydwk.rest.EndPoint
 import io.github.ydwk.ydwk.rest.result.NoResult
@@ -39,6 +40,7 @@ class ReplyImpl(
 ) : Reply {
     private var isEphemeral: Boolean = false
     private var isTTS: Boolean = false
+    private var actionRows: MutableList<ActionRow> = mutableListOf()
 
     override fun isEphemeral(isEphemeral: Boolean): Reply {
         this.isEphemeral = isEphemeral
@@ -47,6 +49,11 @@ class ReplyImpl(
 
     override fun isTTS(isTTS: Boolean): Reply {
         this.isTTS = isTTS
+        return this
+    }
+
+    override fun addActionRow(actionRow: ActionRow): Reply {
+        actionRows.add(actionRow)
         return this
     }
 

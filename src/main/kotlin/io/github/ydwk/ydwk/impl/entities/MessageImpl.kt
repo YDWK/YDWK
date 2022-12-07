@@ -184,7 +184,7 @@ class MessageImpl(
                 }
             } else null
 
-    override val components: List<MessageComponent>
+    override val components: List<Component>
         get() = TODO("Not yet implemented")
 
     override val stickerItems: List<StickerItem>

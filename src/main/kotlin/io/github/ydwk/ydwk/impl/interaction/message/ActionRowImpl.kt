@@ -19,20 +19,25 @@
 package io.github.ydwk.ydwk.impl.interaction.message
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.interaction.message.MessageComponentData
-import io.github.ydwk.ydwk.interaction.message.MessageComponentType
-import io.github.ydwk.ydwk.util.EntityToStringBuilder
+import com.fasterxml.jackson.databind.ObjectMapper
+import io.github.ydwk.ydwk.impl.interaction.message.button.Button
+import io.github.ydwk.ydwk.impl.interaction.message.selectmenu.SelectMenu
+import io.github.ydwk.ydwk.interaction.message.ActionRow
+import io.github.ydwk.ydwk.interaction.message.Component
 
-class MessageComponentDataImpl(override val ydwk: YDWK, override val json: JsonNode) :
-    MessageComponentData {
+class ActionRowImpl(components: MutableList<Component>) : ActionRow {
 
-    override val customId: String = json["custom_id"].asText()
+    override val components: List<Component> = components
 
-    override val componentType: MessageComponentType =
-        MessageComponentType.fromInt(json["component_type"].asInt())
+    override fun toJson(): JsonNode {
+        val json = ObjectMapper().createObjectNode()
+        components.forEach {
+            when (it) {
+                is Button -> {}
+                is SelectMenu -> {}
+            }
+        }
 
-    override fun toString(): String {
-        return EntityToStringBuilder(ydwk, this).toString()
+        return json
     }
 }

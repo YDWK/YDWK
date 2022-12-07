@@ -16,10 +16,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.evm.event.events.interaction
+package io.github.ydwk.ydwk.interaction.message
 
-import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.evm.event.Event
+import com.fasterxml.jackson.databind.JsonNode
 
-data class MessageComponentEvent(override val ydwk: YDWK, val interaction: ComponentData) :
-    Event(ydwk)
+interface ActionRow {
+
+    /**
+     * Gets all the components in this action row.
+     *
+     * @return All the components in this action row.
+     */
+    val components: List<Component>
+
+    /**
+     * Gets the json representation of this action row.
+     *
+     * @return The json representation of this action row.
+     */
+    fun toJson(): JsonNode
+}

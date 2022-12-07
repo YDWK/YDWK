@@ -200,7 +200,7 @@ interface Message : SnowFlake, GenericEntity {
      *
      * @return The components of this message.
      */
-    val components: List<MessageComponent>
+    val components: List<Component>
 
     /**
      * Gets the sticker items of this message.

@@ -18,20 +18,28 @@
  */ 
 package io.github.ydwk.ydwk.interaction.message
 
-import io.github.ydwk.ydwk.interaction.sub.GenericCommandData
+import io.github.ydwk.ydwk.entities.util.GenericEntity
 
-interface MessageComponentData : GenericCommandData {
-    /**
-     * Gets the custom id of this component.
-     *
-     * @return The custom id of this component.
-     */
-    val customId: String
+interface Component : GenericEntity {
 
     /**
-     * Gets the component type of this component.
+     * Gets the type of this component.
      *
-     * @return The component type of this component.
+     * @return The type of this component.
      */
-    val componentType: MessageComponentType
+    val type: ComponentType
+
+    /**
+     * Weather this component is compatible with a message.
+     *
+     * @return Weather this component is compatible with a message.
+     */
+    val messageCompatible: Boolean
+
+    /**
+     * Weather this component is compatible with a modal.
+     *
+     * @return Weather this component is compatible with a modal.
+     */
+    val modalCompatible: Boolean
 }
