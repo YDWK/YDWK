@@ -39,7 +39,7 @@ interface ActionRow {
 
     companion object {
         /**
-         * Creates a new action row with the given components.
+         * Creates a new action row with the given components. (max 5)
          *
          * @param components The components to add to the action row.
          * @return The new action row.
@@ -49,7 +49,7 @@ interface ActionRow {
         }
 
         /**
-         * Creates a new action row with the given components.
+         * Creates a new action row with the given components. (max 5)
          *
          * @param components The components to add to the action row.
          * @return The new action row.

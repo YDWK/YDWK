@@ -22,12 +22,15 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import io.github.ydwk.ydwk.interaction.message.ActionRow
 import io.github.ydwk.ydwk.interaction.message.Component
+import io.github.ydwk.ydwk.util.Checks
 
 class ActionRowImpl(components: MutableList<Component>) : ActionRow {
 
     override val components: List<Component> = components
 
     override fun toJson(): JsonNode {
+        Checks.customCheck(components.size <= 5, "Action row cannot have more than 5 components")
+
         val mainComponent = JsonNodeFactory.instance.arrayNode()
 
         mainComponent.add(

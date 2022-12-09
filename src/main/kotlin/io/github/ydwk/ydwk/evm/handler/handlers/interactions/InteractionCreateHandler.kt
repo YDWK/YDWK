@@ -19,6 +19,9 @@
 package io.github.ydwk.ydwk.evm.handler.handlers.interactions
 
 import com.fasterxml.jackson.databind.JsonNode
+import io.github.ydwk.ydwk.evm.event.events.interaction.AutoCompleteSlashCommandEvent
+import io.github.ydwk.ydwk.evm.event.events.interaction.MessageComponentEvent
+import io.github.ydwk.ydwk.evm.event.events.interaction.ModelEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.interaction.InteractionImpl
@@ -35,18 +38,13 @@ class InteractionCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, j
                         ydwk, interaction.slashCommand!!))
             }
             InteractionType.MESSAGE_COMPONENT -> {
-                ydwk.emitEvent(
-                    io.github.ydwk.ydwk.evm.event.events.interaction.MessageComponentEvent(
-                        ydwk, interaction))
+                ydwk.emitEvent(MessageComponentEvent(ydwk, interaction))
             }
             InteractionType.APPLICATION_COMMAND_AUTOCOMPLETE -> {
-                ydwk.emitEvent(
-                    io.github.ydwk.ydwk.evm.event.events.interaction.AutoCompleteSlashCommandEvent(
-                        ydwk, interaction))
+                ydwk.emitEvent(AutoCompleteSlashCommandEvent(ydwk, interaction))
             }
             InteractionType.MODAL_SUBMIT -> {
-                ydwk.emitEvent(
-                    io.github.ydwk.ydwk.evm.event.events.interaction.ModelEvent(ydwk, interaction))
+                ydwk.emitEvent(ModelEvent(ydwk, interaction))
             }
             InteractionType.PING -> {
                 ydwk.emitEvent(
