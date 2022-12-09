@@ -65,6 +65,7 @@ open class ComponentImpl(override val ydwk: YDWK, override val json: JsonNode) :
             json.put("type", ComponentType.BUTTON.getType())
             json.put("style", style.getType())
             json.put("label", label)
+            json.put("custom_id", customId)
         }
     }
 }
