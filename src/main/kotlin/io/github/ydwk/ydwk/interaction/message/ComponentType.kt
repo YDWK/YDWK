@@ -59,11 +59,11 @@ enum class ComponentType(
     }
 
     /**
-     * Get the value of the [ComponentType]
+     * Get the type of the component.
      *
-     * @return The value of the [ComponentType]
+     * @return The type of the component.
      */
-    fun toInt(): Int {
+    fun getType(): Int {
         return type
     }
 

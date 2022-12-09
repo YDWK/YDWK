@@ -19,9 +19,7 @@
 package io.github.ydwk.ydwk.impl.interaction.message
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.ObjectMapper
-import io.github.ydwk.ydwk.impl.interaction.message.button.Button
-import io.github.ydwk.ydwk.impl.interaction.message.selectmenu.SelectMenu
+import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import io.github.ydwk.ydwk.interaction.message.ActionRow
 import io.github.ydwk.ydwk.interaction.message.Component
 
@@ -30,14 +28,18 @@ class ActionRowImpl(components: MutableList<Component>) : ActionRow {
     override val components: List<Component> = components
 
     override fun toJson(): JsonNode {
-        val json = ObjectMapper().createObjectNode()
-        components.forEach {
-            when (it) {
-                is Button -> {}
-                is SelectMenu -> {}
-            }
-        }
+        val mainComponent = JsonNodeFactory.instance.arrayNode()
 
-        return json
+        mainComponent.add(
+            JsonNodeFactory.instance
+                .objectNode()
+                .put("type", 1)
+                .set(
+                    "components",
+                    JsonNodeFactory.instance.arrayNode().apply {
+                        components.forEach { add(it.json) }
+                    }) as JsonNode)
+
+        return mainComponent
     }
 }

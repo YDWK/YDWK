@@ -40,7 +40,7 @@ class ReplyImpl(
 ) : Reply {
     private var isEphemeral: Boolean = false
     private var isTTS: Boolean = false
-    private var actionRows: MutableList<ActionRow> = mutableListOf()
+    private var actionRow: ActionRow? = null
 
     override fun isEphemeral(isEphemeral: Boolean): Reply {
         this.isEphemeral = isEphemeral
@@ -53,7 +53,7 @@ class ReplyImpl(
     }
 
     override fun addActionRow(actionRow: ActionRow): Reply {
-        actionRows.add(actionRow)
+        this.actionRow = actionRow
         return this
     }
 
@@ -75,7 +75,11 @@ class ReplyImpl(
 
         if (isEphemeral) secondBody.put("flags", MessageFlag.EPHEMERAL.getValue())
 
+        secondBody.set<ArrayNode>("components", actionRow?.toJson())
+
         mainBody.set<JsonNode>("data", secondBody)
+
+        println(mainBody.toPrettyString())
 
         return ydwk.restApiManager
             .post(

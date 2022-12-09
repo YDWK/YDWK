@@ -56,4 +56,10 @@ object Checks {
             throw IllegalArgumentException("Invalid url")
         }
     }
+
+    fun customCheck(b: Boolean, s: String) {
+        if (!b) {
+            throw IllegalArgumentException(s)
+        }
+    }
 }

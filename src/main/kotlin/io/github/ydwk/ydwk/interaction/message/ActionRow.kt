@@ -19,6 +19,7 @@
 package io.github.ydwk.ydwk.interaction.message
 
 import com.fasterxml.jackson.databind.JsonNode
+import io.github.ydwk.ydwk.impl.interaction.message.ActionRowImpl
 
 interface ActionRow {
 
@@ -35,4 +36,26 @@ interface ActionRow {
      * @return The json representation of this action row.
      */
     fun toJson(): JsonNode
+
+    companion object {
+        /**
+         * Creates a new action row with the given components.
+         *
+         * @param components The components to add to the action row.
+         * @return The new action row.
+         */
+        fun of(vararg components: Component): ActionRow {
+            return ActionRowImpl(components.toMutableList())
+        }
+
+        /**
+         * Creates a new action row with the given components.
+         *
+         * @param components The components to add to the action row.
+         * @return The new action row.
+         */
+        fun of(components: List<Component>): ActionRow {
+            return ActionRowImpl(components.toMutableList())
+        }
+    }
 }

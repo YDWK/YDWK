@@ -37,7 +37,7 @@ class InteractionCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, j
             InteractionType.MESSAGE_COMPONENT -> {
                 ydwk.emitEvent(
                     io.github.ydwk.ydwk.evm.event.events.interaction.MessageComponentEvent(
-                        ydwk, interaction.messageData!!))
+                        ydwk, interaction))
             }
             InteractionType.APPLICATION_COMMAND_AUTOCOMPLETE -> {
                 ydwk.emitEvent(

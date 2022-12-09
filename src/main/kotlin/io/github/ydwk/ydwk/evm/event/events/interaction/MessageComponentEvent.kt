@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.evm.event.events.interaction
 
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.evm.event.Event
+import io.github.ydwk.ydwk.interaction.Interaction
 
-data class MessageComponentEvent(override val ydwk: YDWK, val interaction: ComponentData) :
+data class MessageComponentEvent(override val ydwk: YDWK, val interaction: Interaction) :
     Event(ydwk)

@@ -23,6 +23,9 @@ import io.github.ydwk.ydwk.Activity
 import io.github.ydwk.ydwk.BotBuilder.createDefaultBot
 import io.github.ydwk.ydwk.evm.backend.event.on
 import io.github.ydwk.ydwk.evm.event.events.interaction.SlashCommandEvent
+import io.github.ydwk.ydwk.interaction.message.ActionRow
+import io.github.ydwk.ydwk.interaction.message.button.Button
+import io.github.ydwk.ydwk.interaction.message.button.ButtonStyle
 import io.github.ydwk.ydwk.slash.Slash
 import io.github.ydwk.ydwk.slash.SlashOption
 import io.github.ydwk.ydwk.slash.SlashOptionType
@@ -46,6 +49,7 @@ fun main() {
                     SlashOption(
                         "member", "The member to test the option with", SlashOptionType.USER)))
         .addSlashCommand(Slash("leave_vc", "Leaves a vc"))
+        .addSlashCommand("button", "A button test")
         .build()
 
     ydwk.on<SlashCommandEvent> {
@@ -55,29 +59,8 @@ fun main() {
                     val member = it.slash.member
                     val slash = it.slash
                     if (member != null) {
-                        if (member.voiceState != null) {
-                            val voiceState = member.voiceState
-                            if (voiceState != null) {
-                                if (voiceState.channel != null) {
-                                    voiceState.channel?.joinCompletableFuture()?.thenAccept {
-                                        voiceConnection ->
-                                        voiceConnection.setDeafened(true)
-                                        voiceConnection.setMuted(true)
-                                        slash.reply("Joined vc!").reply()
-                                    }
-                                        ?: slash.reply("Failed to join vc!").reply()
-                                } else {
-                                    it.slash
-                                        .reply("Voice channel is null!")
-                                        .isEphemeral(true)
-                                        .reply()
-                                }
-                            } else {
-                                it.slash.reply("Voice state is null!").isEphemeral(true).reply()
-                            }
-                        } else {
-                            it.slash.reply("Member voice state is null!").isEphemeral(true).reply()
-                        }
+                        val voiceState = member.voiceState
+                        voiceState?.channel?.joinCompletableFuture()?.get()
                     } else {
                         it.slash.reply("Member is null!").isEphemeral(true).reply()
                     }
@@ -88,31 +71,8 @@ fun main() {
                     val member = it.slash.member
                     val slash = it.slash
                     if (member != null) {
-                        if (member.voiceState != null) {
-                            val voiceState = member.voiceState
-                            if (voiceState != null) {
-                                if (voiceState.channel != null) {
-                                    voiceState.channel?.leave()?.thenAccept {
-                                        slash.reply("Left vc!").reply()
-                                    }
-                                        ?: run {
-                                            slash
-                                                .reply("Channel is null!")
-                                                .isEphemeral(true)
-                                                .reply()
-                                        }
-                                } else {
-                                    it.slash
-                                        .reply("Voice channel is null!")
-                                        .isEphemeral(true)
-                                        .reply()
-                                }
-                            } else {
-                                it.slash.reply("Voice state is null!").isEphemeral(true).reply()
-                            }
-                        } else {
-                            it.slash.reply("Member voice state is null!").isEphemeral(true).reply()
-                        }
+                        val voiceState = member.voiceState
+                        voiceState?.channel?.leave()?.get()
                     } else {
                         it.slash.reply("Member is null!").isEphemeral(true).reply()
                     }
@@ -151,6 +111,15 @@ fun main() {
             "option" -> {
                 withContext(Dispatchers.IO) {
                     it.slash.reply(it.slash.getOption("member")!!.asUser.name).reply()
+                }
+            }
+            "button" -> {
+                withContext(Dispatchers.IO) {
+                    it.slash
+                        .reply("This is a button test!")
+                        .addActionRow(
+                            ActionRow.of(Button.of(ydwk, ButtonStyle.PRIMARY, "1", "Primary")))
+                        .reply()
                 }
             }
         }
