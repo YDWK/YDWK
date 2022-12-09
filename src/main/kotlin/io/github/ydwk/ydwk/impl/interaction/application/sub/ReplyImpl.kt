@@ -78,9 +78,7 @@ class ReplyImpl(
         secondBody.set<ArrayNode>("components", actionRow?.toJson())
 
         mainBody.set<JsonNode>("data", secondBody)
-
-        println(mainBody.toPrettyString())
-
+        
         return ydwk.restApiManager
             .post(
                 mainBody.toString().toRequestBody(),
