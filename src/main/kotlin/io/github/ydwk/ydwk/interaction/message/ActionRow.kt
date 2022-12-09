@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.interaction.message
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.impl.interaction.message.ActionRowImpl
+import io.github.ydwk.ydwk.util.Checks
 
 interface ActionRow {
 
@@ -39,22 +40,25 @@ interface ActionRow {
 
     companion object {
         /**
-         * Creates a new action row with the given components. (max 5)
+         * Creates a new action row with the given components.
+         * max 5 components per action row.
          *
          * @param components The components to add to the action row.
          * @return The new action row.
          */
         fun of(vararg components: Component): ActionRow {
-            return ActionRowImpl(components.toMutableList())
+            return of(components.toList())
         }
 
         /**
-         * Creates a new action row with the given components. (max 5)
+         * Creates a new action row with the given components.
+         * max 5 components per action row.
          *
          * @param components The components to add to the action row.
          * @return The new action row.
          */
         fun of(components: List<Component>): ActionRow {
+            Checks.customCheck(components.size <= 5, "Action row can only have 5 components.")
             return ActionRowImpl(components.toMutableList())
         }
     }

@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.evm.event.events.interaction.AutoCompleteSlashCommandEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.MessageComponentEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.ModelEvent
+import io.github.ydwk.ydwk.evm.event.events.interaction.PingEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.interaction.InteractionImpl
@@ -38,7 +39,6 @@ class InteractionCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, j
                         ydwk, interaction.slashCommand!!))
             }
             InteractionType.MESSAGE_COMPONENT -> {
-                ydwk.emitEvent(MessageComponentEvent(ydwk, interaction))
             }
             InteractionType.APPLICATION_COMMAND_AUTOCOMPLETE -> {
                 ydwk.emitEvent(AutoCompleteSlashCommandEvent(ydwk, interaction))
@@ -48,10 +48,11 @@ class InteractionCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, j
             }
             InteractionType.PING -> {
                 ydwk.emitEvent(
-                    io.github.ydwk.ydwk.evm.event.events.interaction.PingEvent(ydwk, interaction))
+                    PingEvent(ydwk, interaction)
+                )
             }
             InteractionType.UNKNOWN -> {
-                ydwk.logger.warn("Unknown interaction type: ${interaction.type}")
+                ydwk.logger.warn("Unknown interaction type: ${json["type"].asInt()}")
             }
         }
     }

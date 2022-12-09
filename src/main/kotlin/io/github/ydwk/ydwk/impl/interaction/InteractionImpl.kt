@@ -88,6 +88,7 @@ class InteractionImpl(
         when (type) {
             InteractionType.APPLICATION_COMMAND ->
                 SlashCommandImpl(ydwk, json["data"], idAsLong, this)
+            InteractionType.MESSAGE_COMPONENT -> TODO("Not yet implemented")
             else -> {
                 (ydwk as YDWKImpl).logger.warn("Unknown interaction type: $type")
                 null
