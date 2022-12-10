@@ -110,7 +110,7 @@ class SlashCommandImpl(ydwk: YDWK, json: JsonNode, idAsLong: Long, interaction: 
         }
 
     // ignore
-    val applicationOptions: List<ApplicationCommandOption>? =
+    private val applicationOptions: List<ApplicationCommandOption>? =
         if (json.has("options")) json["options"].map { ApplicationCommandOptionImpl(ydwk, it) }
         else null
 

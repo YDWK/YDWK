@@ -22,6 +22,7 @@ import io.github.realyusufismail.jconfig.util.JConfigUtils
 import io.github.ydwk.ydwk.Activity
 import io.github.ydwk.ydwk.BotBuilder.createDefaultBot
 import io.github.ydwk.ydwk.evm.backend.event.on
+import io.github.ydwk.ydwk.evm.event.events.interaction.button.ButtonClickEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.slash.SlashCommandEvent
 import io.github.ydwk.ydwk.interaction.message.ActionRow
 import io.github.ydwk.ydwk.interaction.message.button.Button
@@ -117,8 +118,33 @@ fun main() {
                 withContext(Dispatchers.IO) {
                     it.slash
                         .reply("This is a button test!")
-                        .addActionRow(ActionRow.of(Button.of(ButtonStyle.PRIMARY, "1", "Primary")))
+                        .addActionRow(
+                            ActionRow.of(
+                                Button.of(ButtonStyle.PRIMARY, "1", "Primary"),
+                                Button.of(ButtonStyle.SECONDARY, "2", "Secondary"),
+                                Button.of(ButtonStyle.SUCCESS, "3", "Success"),
+                                Button.of(ButtonStyle.DANGER, "4", "Danger"),
+                                Button.of("Link", "https://google.com")))
                         .reply()
+                }
+            }
+        }
+    }
+
+    ydwk.on<ButtonClickEvent> {
+        withContext(Dispatchers.IO) {
+            when (it.button.customId) {
+                "1" -> {
+                    it.button.reply("Primary button clicked!").reply()
+                }
+                "2" -> {
+                    it.button.reply("Secondary button clicked!").reply()
+                }
+                "3" -> {
+                    it.button.reply("Success button clicked!").reply()
+                }
+                "4" -> {
+                    it.button.message.delete().get()
                 }
             }
         }

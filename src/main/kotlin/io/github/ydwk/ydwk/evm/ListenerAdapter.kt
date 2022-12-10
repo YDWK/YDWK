@@ -106,6 +106,13 @@ abstract class ListenerAdapter : IEventListener {
     open fun onAutoCompleteSlashCommand(event: AutoCompleteSlashCommandEvent) {}
 
     /**
+     * Listens to ButtonClickEvent
+     *
+     * @param event The ButtonClickEvent
+     */
+    open fun onButtonClick(event: ButtonClickEvent) {}
+
+    /**
      * Listens to Model Event
      *
      * @param event The Model Event
@@ -118,13 +125,6 @@ abstract class ListenerAdapter : IEventListener {
      * @param event The Ping Event
      */
     open fun onPing(event: PingEvent) {}
-
-    /**
-     * Listens to Button click event
-     *
-     * @param event The Button click event
-     */
-    open fun onButtonClick(event: ButtonClickEvent) {}
 
     // Channel
     /**

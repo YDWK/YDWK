@@ -24,8 +24,10 @@ import io.github.ydwk.ydwk.entities.message.*
 import io.github.ydwk.ydwk.entities.sticker.StickerItem
 import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.interaction.message.Component
+import io.github.ydwk.ydwk.rest.result.NoResult
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 import io.github.ydwk.ydwk.util.SnowFlake
+import java.util.concurrent.CompletableFuture
 
 interface Message : SnowFlake, GenericEntity {
     /**
@@ -218,4 +220,11 @@ interface Message : SnowFlake, GenericEntity {
      * position of the message in a thread in company with total_message_sent on parent thread.
      */
     val position: Long?
+
+    /**
+     * Deletes this message.
+     *
+     * @return A future which returns nothing.
+     */
+    fun delete(): CompletableFuture<NoResult>
 }

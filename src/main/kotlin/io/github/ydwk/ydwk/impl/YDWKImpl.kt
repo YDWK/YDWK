@@ -230,7 +230,7 @@ class YDWKImpl(
     }
 
     override fun getMembers(): List<Member> {
-        return memberCache.values().map { it as Member }
+        return memberCache.values().map { it }
     }
 
     override fun getUserById(id: Long): User? {
@@ -272,7 +272,6 @@ class YDWKImpl(
     }
 
     override fun getVoiceConnectionById(guildId: Long): VoiceConnection? {
-        logger.debug("Getting voice connection for guild $guildId")
         return this.voiceConnection[guildId]
     }
 

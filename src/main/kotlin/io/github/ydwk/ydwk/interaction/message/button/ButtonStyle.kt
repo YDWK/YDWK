@@ -37,7 +37,7 @@ enum class ButtonStyle(private val type: Int) {
          * @param type The type of the button.
          * @return The [ButtonStyle] with the specified [type].
          */
-        fun of(type: Int): ButtonStyle {
+        fun fromInt(type: Int): ButtonStyle {
             return values().first { it.type == type }
         }
     }

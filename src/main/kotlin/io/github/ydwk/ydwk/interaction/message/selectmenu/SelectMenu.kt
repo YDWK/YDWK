@@ -18,6 +18,6 @@
  */ 
 package io.github.ydwk.ydwk.interaction.message.selectmenu
 
-import io.github.ydwk.ydwk.interaction.message.Component
+import io.github.ydwk.ydwk.interaction.ComponentInteraction
 
-interface SelectMenu : Component {}
+interface SelectMenu : ComponentInteraction {}

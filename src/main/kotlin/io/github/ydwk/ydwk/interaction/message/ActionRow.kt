@@ -18,6 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.interaction.message
 
+import io.github.ydwk.ydwk.impl.interaction.ComponentInteractionImpl
 import io.github.ydwk.ydwk.impl.interaction.message.ComponentImpl
 import io.github.ydwk.ydwk.util.Checks
 
@@ -48,7 +49,7 @@ interface ActionRow : Component {
          * ```
          *
          * @param components The components to add to the action row.
-         * @return an empty [ComponentImpl.ComponentCreator].
+         * @return an empty [ComponentInteractionImpl.ComponentCreator].
          */
         fun of(vararg components: ComponentImpl.ComponentCreator): ComponentImpl.ComponentCreator {
             return of(components.toList())
@@ -71,7 +72,7 @@ interface ActionRow : Component {
          * ```
          *
          * @param components The components to add to the action row.
-         * @return an empty [ComponentImpl.ComponentCreator].
+         * @return an empty [ComponentInteractionImpl.ComponentCreator].
          */
         fun of(components: List<ComponentImpl.ComponentCreator>): ComponentImpl.ComponentCreator {
             Checks.customCheck(components.size <= 5, "Action row can only have 5 components.")

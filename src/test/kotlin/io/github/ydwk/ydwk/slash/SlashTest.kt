@@ -16,12 +16,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.realyusufismail.ws.io.github.realyusufismail.slash
+package io.github.ydwk.ydwk.slash
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ArrayNode
 import io.github.ydwk.ydwk.interaction.application.ApplicationCommandType
-import io.github.ydwk.ydwk.slash.SlashOptionType
 import kotlin.test.assertEquals
 import org.junit.jupiter.api.Test
 

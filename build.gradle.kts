@@ -24,8 +24,6 @@ plugins {
 extra.apply {
     set("name", "YDWK")
     set("description", "YDWK (Yusuf's Discord Wrapper Kotlin) My own Discord Wrapper in Kotlin")
-    set("group", "io.github.realyusufismail")
-    set("version", "0.0.4")
     set("dev_id", "yusuf")
     set("dev_name", "Yusuf Ismail")
     set("dev_email", "yusufgamer222@gmail.com")
@@ -149,6 +147,20 @@ application { mainClass.set("MainKt") }
 java {
     withJavadocJar()
     withSourcesJar()
+    manifest {
+        attributes(
+            "Implementation-Title" to project.name,
+            "Implementation-Version" to project.version,
+            "Implementation-Vendor" to project.extra["dev_organization"],
+            "Implementation-Vendor-Id" to project.extra["dev_id"],
+            "Implementation-Vendor-Name" to project.extra["dev_name"],
+            "Implementation-Vendor-Email" to project.extra["dev_email"],
+            "Implementation-Vendor-Organization" to project.extra["dev_organization"],
+            "Implementation-Vendor-Organization-Url" to project.extra["dev_organization_url"],
+            "Implementation-License" to project.extra["gpl_name"],
+            "Implementation-License-Url" to project.extra["gpl_url"],
+        )
+    }
 
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11

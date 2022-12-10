@@ -19,19 +19,22 @@
 package io.github.ydwk.ydwk.interaction.message.button
 
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.Emoji
+import io.github.ydwk.ydwk.impl.interaction.ComponentInteractionImpl
 import io.github.ydwk.ydwk.impl.interaction.message.ComponentImpl
-import io.github.ydwk.ydwk.interaction.message.Component
+import io.github.ydwk.ydwk.interaction.ComponentInteraction
+import io.github.ydwk.ydwk.interaction.reply.Repliable
 import io.github.ydwk.ydwk.util.Checks
 import java.net.URL
 
-interface Button : Component {
+interface Button : ComponentInteraction, Repliable {
 
     /**
-     * Gets the url of this button if it is a link button.
+     * Gets the button style of this button.
      *
-     * @return The url of this button if it is a link button.
+     * @return The button style of this button.
      */
-    val url: URL?
+    val style: ButtonStyle
 
     /**
      * Gets the label of this button.
@@ -41,11 +44,32 @@ interface Button : Component {
     val label: String?
 
     /**
-     * Gets the button style of this button.
+     * Gets the custom id of this button.
      *
-     * @return The button style of this button.
+     * @return The custom id of this button.
      */
-    val style: ButtonStyle
+    val customId: String?
+
+    /**
+     * Gets the emoji of this button.
+     *
+     * @return The emoji of this button.
+     */
+    val emoji: Emoji?
+
+    /**
+     * Gets the url of this button if it is a link button.
+     *
+     * @return The url of this button if it is a link button.
+     */
+    val url: URL?
+
+    /**
+     * Gets the disabled state of this button.
+     *
+     * @return The disabled state of this button.
+     */
+    val disabled: Boolean
 
     companion object {
         /**
@@ -55,7 +79,7 @@ interface Button : Component {
          * @param style The style of the button.
          * @param customId The custom id of the button.
          * @param label The label of the button. (Max 80 characters)
-         * @return an empty [ComponentImpl.ComponentCreator].
+         * @return an empty [ComponentInteractionImpl.ComponentCreator].
          */
         fun of(
             style: ButtonStyle,
@@ -69,17 +93,18 @@ interface Button : Component {
         }
 
         /**
-         * Creates a new [Button] with the specified, [label] and [link] (for [ButtonStyle.LINK]).
+         * Creates a new [Button] with the specified, [label] and [url] (for [ButtonStyle.LINK]).
          *
          * @param label The label of the button. (Max 80 characters)
-         * @param link The link of the button.
-         * @return an empty [ComponentImpl.ComponentCreator].
+         * @param url The url of the button.
+         * @return an empty [ComponentInteractionImpl.ComponentCreator].
          */
-        fun of(ydwk: YDWK, label: String?, link: String): ComponentImpl.ComponentCreator {
+        fun of(label: String?, url: String): ComponentImpl.ComponentCreator {
             Checks.customCheck(
                 label != null && label.length <= 80,
                 "Label must be between 1 and 80 characters long.")
-            return ComponentImpl.ButtonCreator(ButtonStyle.LINK, label, link)
+            Checks.customCheck(URL(url).protocol == "https", "Url must be a valid https url.")
+            return ComponentImpl.ButtonCreator(ButtonStyle.LINK, null, label, url)
         }
     }
 }

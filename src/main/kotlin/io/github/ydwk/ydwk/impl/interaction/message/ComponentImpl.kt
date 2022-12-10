@@ -23,68 +23,30 @@ import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.Guild
-import io.github.ydwk.ydwk.entities.Message
-import io.github.ydwk.ydwk.entities.User
-import io.github.ydwk.ydwk.entities.channel.TextChannel
-import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.interaction.message.Component
 import io.github.ydwk.ydwk.interaction.message.ComponentType
 import io.github.ydwk.ydwk.interaction.message.button.ButtonStyle
-import io.github.ydwk.ydwk.interaction.sub.InteractionType
 import io.github.ydwk.ydwk.util.Checks
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
-import io.github.ydwk.ydwk.util.GetterSnowFlake
 
-open class ComponentImpl(
-    override val ydwk: YDWK,
-    override val json: JsonNode,
-) : Component {
-    override val interactionType: InteractionType
-        get() = TODO("Not yet implemented")
+open class ComponentImpl(override val ydwk: YDWK, override val json: JsonNode) : Component {
 
     override val type: ComponentType
-        get() = ComponentType.fromInt(json.get("type").asInt())
+        get() = ComponentType.fromInt(json["type"].asInt())
 
+    override val disabled: Boolean
+        get() = json["disabled"].asBoolean()
     override val messageCompatible: Boolean
         get() = type.isMessageCompatible()
-
     override val modalCompatible: Boolean
         get() = type.isModalCompatible()
-
     override val customId: String?
-        get() = TODO("Not yet implemented")
-
-    override val message: Message
-        get() = TODO("Not yet implemented")
-
-    override val member: Member?
-        get() = TODO("Not yet implemented")
-
-    override val user: User?
-        get() = TODO("Not yet implemented")
-
-    override val guild: Guild?
-        get() = TODO("Not yet implemented")
-
-    override val channel: TextChannel?
-        get() = TODO("Not yet implemented")
-
-    override val applicationId: GetterSnowFlake?
-        get() = TODO("Not yet implemented")
-
+        get() = if (json.has("custom_id")) json["custom_id"].asText() else null
     override val children: List<Component>
-        get() = TODO("Not yet implemented")
-
-    override val idAsLong: Long
-        get() = json.get("id").asLong()
+        get() = json["components"].map { ComponentImpl(ydwk, it) }
 
     override fun toString(): String {
-        return EntityToStringBuilder(ydwk, this)
-            .add("type", type)
-            .add("messageCompatible", messageCompatible)
-            .add("modalCompatible", modalCompatible)
-            .toString()
+        return EntityToStringBuilder(ydwk, this).toString()
     }
 
     data class ActionRowCreator(
@@ -111,20 +73,23 @@ open class ComponentImpl(
         val style: ButtonStyle,
         val customId: String? = null,
         val label: String?,
-        val link: String? = null,
+        val url: String? = null,
         override val json: ObjectNode = JsonNodeFactory.instance.objectNode()
     ) : ComponentCreator {
 
         init {
-            if (style == ButtonStyle.LINK && link == null) {
-                throw IllegalArgumentException("Link button must have a link")
-            } else if (style != ButtonStyle.LINK && link != null) {
-                throw IllegalArgumentException("Non-link button must not have a link")
+            if (style == ButtonStyle.LINK && url == null) {
+                throw IllegalArgumentException("Url button must have a url")
+            } else if (style != ButtonStyle.LINK && url != null) {
+                throw IllegalArgumentException("Non-url button must not have a url")
             }
 
             json.put("type", ComponentType.BUTTON.getType())
             json.put("style", style.getType())
             json.put("label", label)
+            if (url != null) {
+                json.put("url", url)
+            }
             json.put("custom_id", customId)
         }
     }
