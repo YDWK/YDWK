@@ -18,14 +18,13 @@
  */ 
 package io.github.ydwk.ydwk.interaction.application.type
 
-import io.github.ydwk.ydwk.entities.message.Embed
 import io.github.ydwk.ydwk.interaction.application.ApplicationCommand
 import io.github.ydwk.ydwk.interaction.application.ApplicationCommandType
-import io.github.ydwk.ydwk.interaction.application.sub.Reply
+import io.github.ydwk.ydwk.interaction.reply.Repliable
 import io.github.ydwk.ydwk.slash.SlashOptionGetter
 import io.github.ydwk.ydwk.slash.SlashOptionType
 
-interface SlashCommand : ApplicationCommand {
+interface SlashCommand : ApplicationCommand, Repliable {
     /**
      * Gets the type of the command.
      *
@@ -40,24 +39,6 @@ interface SlashCommand : ApplicationCommand {
      * @return the selected language of the invoking user
      */
     val locale: String?
-
-    /**
-     * Replies to an interaction.
-     *
-     * @param content The content of the reply.
-     * @return The reply.
-     */
-    fun reply(content: String): Reply
-
-    /**
-     * Replies to an interaction.
-     *
-     * @param embed The embed of the reply.
-     * @return The reply.
-     */
-    fun reply(
-        embed: Embed,
-    ): Reply
 
     /**
      * Gets all the options of the command.

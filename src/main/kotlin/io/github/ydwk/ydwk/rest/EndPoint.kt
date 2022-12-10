@@ -120,4 +120,12 @@ open class EndPoint {
             return endPoint
         }
     }
+
+    enum class MessageEndpoint(private val endPoint: String) : IEnumEndpoint {
+        DELETE_MESSAGE("/channels/%s/messages/%s");
+
+        override fun getEndpoint(): String {
+            return endPoint
+        }
+    }
 }

@@ -22,7 +22,11 @@ import io.github.realyusufismail.jconfig.util.JConfigUtils
 import io.github.ydwk.ydwk.Activity
 import io.github.ydwk.ydwk.BotBuilder.createDefaultBot
 import io.github.ydwk.ydwk.evm.backend.event.on
-import io.github.ydwk.ydwk.evm.event.events.interaction.SlashCommandEvent
+import io.github.ydwk.ydwk.evm.event.events.interaction.button.ButtonClickEvent
+import io.github.ydwk.ydwk.evm.event.events.interaction.slash.SlashCommandEvent
+import io.github.ydwk.ydwk.interaction.message.ActionRow
+import io.github.ydwk.ydwk.interaction.message.button.Button
+import io.github.ydwk.ydwk.interaction.message.button.ButtonStyle
 import io.github.ydwk.ydwk.slash.Slash
 import io.github.ydwk.ydwk.slash.SlashOption
 import io.github.ydwk.ydwk.slash.SlashOptionType
@@ -46,6 +50,7 @@ fun main() {
                     SlashOption(
                         "member", "The member to test the option with", SlashOptionType.USER)))
         .addSlashCommand(Slash("leave_vc", "Leaves a vc"))
+        .addSlashCommand("button", "A button test")
         .build()
 
     ydwk.on<SlashCommandEvent> {
@@ -55,29 +60,8 @@ fun main() {
                     val member = it.slash.member
                     val slash = it.slash
                     if (member != null) {
-                        if (member.voiceState != null) {
-                            val voiceState = member.voiceState
-                            if (voiceState != null) {
-                                if (voiceState.channel != null) {
-                                    voiceState.channel?.joinCompletableFuture()?.thenAccept {
-                                        voiceConnection ->
-                                        voiceConnection.setDeafened(true)
-                                        voiceConnection.setMuted(true)
-                                        slash.reply("Joined vc!").reply()
-                                    }
-                                        ?: slash.reply("Failed to join vc!").reply()
-                                } else {
-                                    it.slash
-                                        .reply("Voice channel is null!")
-                                        .isEphemeral(true)
-                                        .reply()
-                                }
-                            } else {
-                                it.slash.reply("Voice state is null!").isEphemeral(true).reply()
-                            }
-                        } else {
-                            it.slash.reply("Member voice state is null!").isEphemeral(true).reply()
-                        }
+                        val voiceState = member.voiceState
+                        voiceState?.channel?.joinCompletableFuture()?.get()
                     } else {
                         it.slash.reply("Member is null!").isEphemeral(true).reply()
                     }
@@ -88,31 +72,8 @@ fun main() {
                     val member = it.slash.member
                     val slash = it.slash
                     if (member != null) {
-                        if (member.voiceState != null) {
-                            val voiceState = member.voiceState
-                            if (voiceState != null) {
-                                if (voiceState.channel != null) {
-                                    voiceState.channel?.leave()?.thenAccept {
-                                        slash.reply("Left vc!").reply()
-                                    }
-                                        ?: run {
-                                            slash
-                                                .reply("Channel is null!")
-                                                .isEphemeral(true)
-                                                .reply()
-                                        }
-                                } else {
-                                    it.slash
-                                        .reply("Voice channel is null!")
-                                        .isEphemeral(true)
-                                        .reply()
-                                }
-                            } else {
-                                it.slash.reply("Voice state is null!").isEphemeral(true).reply()
-                            }
-                        } else {
-                            it.slash.reply("Member voice state is null!").isEphemeral(true).reply()
-                        }
+                        val voiceState = member.voiceState
+                        voiceState?.channel?.leave()?.get()
                     } else {
                         it.slash.reply("Member is null!").isEphemeral(true).reply()
                     }
@@ -151,6 +112,39 @@ fun main() {
             "option" -> {
                 withContext(Dispatchers.IO) {
                     it.slash.reply(it.slash.getOption("member")!!.asUser.name).reply()
+                }
+            }
+            "button" -> {
+                withContext(Dispatchers.IO) {
+                    it.slash
+                        .reply("This is a button test!")
+                        .addActionRow(
+                            ActionRow.of(
+                                Button.of(ButtonStyle.PRIMARY, "1", "Primary"),
+                                Button.of(ButtonStyle.SECONDARY, "2", "Secondary"),
+                                Button.of(ButtonStyle.SUCCESS, "3", "Success"),
+                                Button.of(ButtonStyle.DANGER, "4", "Danger"),
+                                Button.of("Link", "https://google.com")))
+                        .reply()
+                }
+            }
+        }
+    }
+
+    ydwk.on<ButtonClickEvent> {
+        withContext(Dispatchers.IO) {
+            when (it.button.customId) {
+                "1" -> {
+                    it.button.reply("Primary button clicked!").reply()
+                }
+                "2" -> {
+                    it.button.reply("Secondary button clicked!").reply()
+                }
+                "3" -> {
+                    it.button.reply("Success button clicked!").reply()
+                }
+                "4" -> {
+                    it.button.message.delete().get()
                 }
             }
         }

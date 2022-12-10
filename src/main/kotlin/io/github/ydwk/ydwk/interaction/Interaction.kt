@@ -25,7 +25,6 @@ import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.interaction.application.type.SlashCommand
-import io.github.ydwk.ydwk.interaction.message.MessageComponentData
 import io.github.ydwk.ydwk.interaction.sub.GenericCommandData
 import io.github.ydwk.ydwk.interaction.sub.InteractionType
 import io.github.ydwk.ydwk.util.GetterSnowFlake
@@ -52,14 +51,6 @@ interface Interaction : SnowFlake, GenericEntity {
      * @return The data of this interaction.
      */
     val data: GenericCommandData?
-
-    /**
-     * Gets the message command data of this interaction.
-     *
-     * @return The message command data of this interaction.
-     */
-    val messageData
-        get() = data as? MessageComponentData
 
     /**
      * Gets the application command data of this interaction

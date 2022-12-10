@@ -16,22 +16,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.interaction.message
+package io.github.ydwk.ydwk.interaction.message.selectmenu
 
-import io.github.ydwk.ydwk.interaction.sub.GenericCommandData
+import io.github.ydwk.ydwk.interaction.ComponentInteraction
 
-interface MessageComponentData : GenericCommandData {
-    /**
-     * Gets the custom id of this component.
-     *
-     * @return The custom id of this component.
-     */
-    val customId: String
-
-    /**
-     * Gets the component type of this component.
-     *
-     * @return The component type of this component.
-     */
-    val componentType: MessageComponentType
-}
+interface SelectMenu : ComponentInteraction {}

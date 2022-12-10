@@ -23,7 +23,9 @@ import com.fasterxml.jackson.databind.node.ArrayNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.message.Embed
 import io.github.ydwk.ydwk.entities.message.MessageFlag
+import io.github.ydwk.ydwk.impl.interaction.message.ComponentImpl
 import io.github.ydwk.ydwk.interaction.application.sub.Reply
+import io.github.ydwk.ydwk.interaction.message.ActionRow
 import io.github.ydwk.ydwk.interaction.sub.InteractionCallbackType
 import io.github.ydwk.ydwk.rest.EndPoint
 import io.github.ydwk.ydwk.rest.result.NoResult
@@ -39,6 +41,8 @@ class ReplyImpl(
 ) : Reply {
     private var isEphemeral: Boolean = false
     private var isTTS: Boolean = false
+    private var actionRow: ActionRow? = null
+    private var actionRows = mutableListOf<ComponentImpl.ComponentCreator>()
 
     override fun isEphemeral(isEphemeral: Boolean): Reply {
         this.isEphemeral = isEphemeral
@@ -47,6 +51,11 @@ class ReplyImpl(
 
     override fun isTTS(isTTS: Boolean): Reply {
         this.isTTS = isTTS
+        return this
+    }
+
+    override fun addActionRow(actionRow: ComponentImpl.ComponentCreator): Reply {
+        actionRows.add(actionRow)
         return this
     }
 
@@ -67,6 +76,12 @@ class ReplyImpl(
         if (isTTS) secondBody.put("tts", true)
 
         if (isEphemeral) secondBody.put("flags", MessageFlag.EPHEMERAL.getValue())
+
+        // secondBody.set<ArrayNode>("components", actionRow?.toJson())
+
+        for (actionRow in actionRows) {
+            secondBody.set<ArrayNode>("components", actionRow.json)
+        }
 
         mainBody.set<JsonNode>("data", secondBody)
 

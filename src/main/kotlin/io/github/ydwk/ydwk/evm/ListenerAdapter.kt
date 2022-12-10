@@ -42,6 +42,8 @@ import io.github.ydwk.ydwk.evm.event.events.guild.GuildCreateEvent
 import io.github.ydwk.ydwk.evm.event.events.guild.GuildDeleteEvent
 import io.github.ydwk.ydwk.evm.event.events.guild.update.*
 import io.github.ydwk.ydwk.evm.event.events.interaction.*
+import io.github.ydwk.ydwk.evm.event.events.interaction.button.ButtonClickEvent
+import io.github.ydwk.ydwk.evm.event.events.interaction.slash.SlashCommandEvent
 import io.github.ydwk.ydwk.evm.event.events.user.*
 import io.github.ydwk.ydwk.evm.event.events.voice.VoiceConnectionEvent
 import java.lang.invoke.MethodHandle
@@ -104,6 +106,13 @@ abstract class ListenerAdapter : IEventListener {
     open fun onAutoCompleteSlashCommand(event: AutoCompleteSlashCommandEvent) {}
 
     /**
+     * Listens to ButtonClickEvent
+     *
+     * @param event The ButtonClickEvent
+     */
+    open fun onButtonClick(event: ButtonClickEvent) {}
+
+    /**
      * Listens to Model Event
      *
      * @param event The Model Event
@@ -116,13 +125,6 @@ abstract class ListenerAdapter : IEventListener {
      * @param event The Ping Event
      */
     open fun onPing(event: PingEvent) {}
-
-    /**
-     * Listens to Message Component Event
-     *
-     * @param event The Message Component Event
-     */
-    open fun onMessageComponent(event: MessageComponentEvent) {}
 
     // Channel
     /**

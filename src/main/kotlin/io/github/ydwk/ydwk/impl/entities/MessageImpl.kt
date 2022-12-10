@@ -34,9 +34,14 @@ import io.github.ydwk.ydwk.impl.entities.channel.guild.GuildChannelImpl
 import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
 import io.github.ydwk.ydwk.impl.entities.message.*
 import io.github.ydwk.ydwk.impl.entities.sticker.StickerItemImpl
+import io.github.ydwk.ydwk.impl.interaction.message.ComponentImpl
+import io.github.ydwk.ydwk.interaction.message.Component
+import io.github.ydwk.ydwk.rest.EndPoint
+import io.github.ydwk.ydwk.rest.result.NoResult
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 import io.github.ydwk.ydwk.util.formatZonedDateTime
+import java.util.concurrent.CompletableFuture
 
 class MessageImpl(
     override val ydwk: YDWK,
@@ -184,8 +189,8 @@ class MessageImpl(
                 }
             } else null
 
-    override val components: List<MessageComponent>
-        get() = TODO("Not yet implemented")
+    override val components: List<Component>
+        get() = json.get("components").map { ComponentImpl(ydwk, it) }
 
     override val stickerItems: List<StickerItem>
         get() {
@@ -198,6 +203,12 @@ class MessageImpl(
 
     override val position: Long?
         get() = if (json.has("position")) json.get("position").asLong() else null
+
+    override fun delete(): CompletableFuture<NoResult> {
+        return ydwk.restApiManager
+            .delete(EndPoint.MessageEndpoint.DELETE_MESSAGE, channel.id, id)
+            .executeWithNoResult()
+    }
 
     override fun toString(): String {
         return EntityToStringBuilder(ydwk, this).toString()

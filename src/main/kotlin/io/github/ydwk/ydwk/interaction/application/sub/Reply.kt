@@ -18,6 +18,8 @@
  */ 
 package io.github.ydwk.ydwk.interaction.application.sub
 
+import io.github.ydwk.ydwk.impl.interaction.message.ComponentImpl
+import io.github.ydwk.ydwk.interaction.message.ActionRow
 import io.github.ydwk.ydwk.rest.result.NoResult
 import java.util.concurrent.CompletableFuture
 
@@ -38,6 +40,14 @@ interface Reply {
      * @return The [Reply] instance.
      */
     fun isTTS(isTTS: Boolean): Reply
+
+    /**
+     * Adds an [ActionRow] to the reply.
+     *
+     * @param actionRow The [ActionRow] to add.
+     * @return The [Reply] instance.
+     */
+    fun addActionRow(actionRow: ComponentImpl.ComponentCreator): Reply
 
     /**
      * Triggers the reply.

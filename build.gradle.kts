@@ -24,8 +24,6 @@ plugins {
 extra.apply {
     set("name", "YDWK")
     set("description", "YDWK (Yusuf's Discord Wrapper Kotlin) My own Discord Wrapper in Kotlin")
-    set("group", "io.github.realyusufismail")
-    set("version", "0.0.4")
     set("dev_id", "yusuf")
     set("dev_name", "Yusuf Ismail")
     set("dev_email", "yusufgamer222@gmail.com")
@@ -58,7 +56,7 @@ dependencies {
     api("ch.qos.logback:logback-core:1.4.5")
     api("uk.org.lidalia:sysout-over-slf4j:1.0.2")
     // config.json
-    api("io.github.realyusufismail:jconfig:1.0.7")
+    api("io.github.realyusufismail:jconfig:1.0.8")
     // ws and https
     api("com.squareup.okhttp3:okhttp:5.0.0-alpha.10")
     api("com.neovisionaries:nv-websocket-client:2.14")
@@ -74,7 +72,7 @@ tasks.test {
     finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
 }
 
-tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "17" }
+tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "11" }
 
 tasks.build {
     // dependsOn on custom tasks
@@ -149,9 +147,23 @@ application { mainClass.set("MainKt") }
 java {
     withJavadocJar()
     withSourcesJar()
+    manifest {
+        attributes(
+            "Implementation-Title" to project.name,
+            "Implementation-Version" to project.version,
+            "Implementation-Vendor" to project.extra["dev_organization"],
+            "Implementation-Vendor-Id" to project.extra["dev_id"],
+            "Implementation-Vendor-Name" to project.extra["dev_name"],
+            "Implementation-Vendor-Email" to project.extra["dev_email"],
+            "Implementation-Vendor-Organization" to project.extra["dev_organization"],
+            "Implementation-Vendor-Organization-Url" to project.extra["dev_organization_url"],
+            "Implementation-License" to project.extra["gpl_name"],
+            "Implementation-License-Url" to project.extra["gpl_url"],
+        )
+    }
 
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
 tasks.javadoc {
