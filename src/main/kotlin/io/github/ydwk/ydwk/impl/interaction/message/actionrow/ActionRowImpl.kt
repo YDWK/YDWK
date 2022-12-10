@@ -25,7 +25,8 @@ import io.github.ydwk.ydwk.interaction.message.ActionRow
 import io.github.ydwk.ydwk.interaction.message.Component
 
 open class ActionRowImpl(ydwk: YDWK, json: JsonNode, idAsLong: Long) :
-    ActionRow, ComponentImpl(ydwk, json, idAsLong) {
+    ActionRow, ComponentImpl(ydwk, json) {
+
     override val components: List<Component>
-        get() = json.get("components").map { ComponentImpl(ydwk, it, idAsLong) }
+        get() = json.get("components").map { ComponentImpl(ydwk, it) }
 }

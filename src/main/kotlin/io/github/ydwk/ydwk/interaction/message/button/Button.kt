@@ -19,21 +19,12 @@
 package io.github.ydwk.ydwk.interaction.message.button
 
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.Message
-import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.impl.interaction.message.ComponentImpl
 import io.github.ydwk.ydwk.interaction.message.Component
 import io.github.ydwk.ydwk.util.Checks
 import java.net.URL
 
 interface Button : Component {
-
-    /**
-     * Gets the corresponding message of this button.
-     *
-     * @return The corresponding message of this button.
-     */
-    val message: Message
 
     /**
      * Gets the url of this button if it is a link button.
@@ -43,11 +34,18 @@ interface Button : Component {
     val url: URL?
 
     /**
-     * Gets the Member who clicked this button.
+     * Gets the label of this button.
      *
-     * @return The Member who clicked this button.
+     * @return The label of this button.
      */
-    val member: Member
+    val label: String?
+
+    /**
+     * Gets the button style of this button.
+     *
+     * @return The button style of this button.
+     */
+    val style: ButtonStyle
 
     companion object {
         /**

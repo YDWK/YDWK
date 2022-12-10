@@ -23,17 +23,25 @@ import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.Guild
+import io.github.ydwk.ydwk.entities.Message
+import io.github.ydwk.ydwk.entities.User
+import io.github.ydwk.ydwk.entities.channel.TextChannel
+import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.interaction.message.Component
 import io.github.ydwk.ydwk.interaction.message.ComponentType
 import io.github.ydwk.ydwk.interaction.message.button.ButtonStyle
+import io.github.ydwk.ydwk.interaction.sub.InteractionType
 import io.github.ydwk.ydwk.util.Checks
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
+import io.github.ydwk.ydwk.util.GetterSnowFlake
 
 open class ComponentImpl(
     override val ydwk: YDWK,
     override val json: JsonNode,
-    override val idAsLong: Long,
 ) : Component {
+    override val interactionType: InteractionType
+        get() = TODO("Not yet implemented")
 
     override val type: ComponentType
         get() = ComponentType.fromInt(json.get("type").asInt())
@@ -43,10 +51,33 @@ open class ComponentImpl(
 
     override val modalCompatible: Boolean
         get() = type.isModalCompatible()
+
     override val customId: String?
         get() = TODO("Not yet implemented")
+
+    override val message: Message
+        get() = TODO("Not yet implemented")
+
+    override val member: Member?
+        get() = TODO("Not yet implemented")
+
+    override val user: User?
+        get() = TODO("Not yet implemented")
+
+    override val guild: Guild?
+        get() = TODO("Not yet implemented")
+
+    override val channel: TextChannel?
+        get() = TODO("Not yet implemented")
+
+    override val applicationId: GetterSnowFlake?
+        get() = TODO("Not yet implemented")
+
     override val children: List<Component>
         get() = TODO("Not yet implemented")
+
+    override val idAsLong: Long
+        get() = json.get("id").asLong()
 
     override fun toString(): String {
         return EntityToStringBuilder(ydwk, this)

@@ -187,7 +187,7 @@ class MessageImpl(
             } else null
 
     override val components: List<Component>
-        get() = json.get("components").map { ComponentImpl(ydwk, it, it.get("id").asLong()) }
+        get() = json.get("components").map { ComponentImpl(ydwk, it) }
 
     override val stickerItems: List<StickerItem>
         get() {

@@ -89,7 +89,7 @@ class InteractionImpl(
         when (type) {
             InteractionType.APPLICATION_COMMAND ->
                 SlashCommandImpl(ydwk, json["data"], idAsLong, this)
-            InteractionType.MESSAGE_COMPONENT -> ComponentImpl(ydwk, json["data"], idAsLong)
+            InteractionType.MESSAGE_COMPONENT -> ComponentImpl(ydwk, json)
             else -> null
         }
 

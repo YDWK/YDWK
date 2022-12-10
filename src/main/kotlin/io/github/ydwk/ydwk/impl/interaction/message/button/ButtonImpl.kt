@@ -20,24 +20,20 @@ package io.github.ydwk.ydwk.impl.interaction.message.button
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.Message
-import io.github.ydwk.ydwk.entities.guild.Member
-import io.github.ydwk.ydwk.impl.entities.MessageImpl
 import io.github.ydwk.ydwk.impl.interaction.message.ComponentImpl
 import io.github.ydwk.ydwk.interaction.message.button.Button
+import io.github.ydwk.ydwk.interaction.message.button.ButtonStyle
 import java.net.URL
 
 open class ButtonImpl(ydwk: YDWK, json: JsonNode, idAsLong: Long) :
-    Button, ComponentImpl(ydwk, json, idAsLong) {
-    override val message: Message
-        get() = MessageImpl(ydwk, json["message"], json["message"]["id"].asLong())
-
-    override val customId: String?
-        get() = if (json.has("data")) json["data"]["custom_id"].asText() else null
+    Button, ComponentImpl(ydwk, json) {
 
     override val url: URL?
         get() = if (json.has("data")) URL(json["data"]["url"].asText()) else null
 
-    override val member: Member
+    override val label: String?
+        get() = TODO("Not yet implemented")
+
+    override val style: ButtonStyle
         get() = TODO("Not yet implemented")
 }
