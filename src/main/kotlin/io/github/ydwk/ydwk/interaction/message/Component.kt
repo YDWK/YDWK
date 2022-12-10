@@ -18,9 +18,10 @@
  */ 
 package io.github.ydwk.ydwk.interaction.message
 
-import io.github.ydwk.ydwk.entities.util.GenericEntity
+import io.github.ydwk.ydwk.interaction.sub.GenericCommandData
+import io.github.ydwk.ydwk.util.SnowFlake
 
-interface Component : GenericEntity {
+interface Component : SnowFlake, GenericCommandData {
 
     /**
      * Gets the type of this component.
@@ -42,4 +43,18 @@ interface Component : GenericEntity {
      * @return Weather this component is compatible with a modal.
      */
     val modalCompatible: Boolean
+
+    /**
+     * Gets the custom id of this button if it is not a link button.
+     *
+     * @return The custom id of this button if it is not a link button.
+     */
+    val customId: String?
+
+    /**
+     * Gets a list of [Component]s that are children of this component.
+     *
+     * @return A list of [Component]s that are children of this component.
+     */
+    val children: List<Component>
 }

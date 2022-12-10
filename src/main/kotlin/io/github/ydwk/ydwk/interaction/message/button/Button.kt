@@ -19,11 +19,35 @@
 package io.github.ydwk.ydwk.interaction.message.button
 
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.Message
+import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.impl.interaction.message.ComponentImpl
 import io.github.ydwk.ydwk.interaction.message.Component
 import io.github.ydwk.ydwk.util.Checks
+import java.net.URL
 
 interface Button : Component {
+
+    /**
+     * Gets the corresponding message of this button.
+     *
+     * @return The corresponding message of this button.
+     */
+    val message: Message
+
+    /**
+     * Gets the url of this button if it is a link button.
+     *
+     * @return The url of this button if it is a link button.
+     */
+    val url: URL?
+
+    /**
+     * Gets the Member who clicked this button.
+     *
+     * @return The Member who clicked this button.
+     */
+    val member: Member
 
     companion object {
         /**
@@ -33,30 +57,31 @@ interface Button : Component {
          * @param style The style of the button.
          * @param customId The custom id of the button.
          * @param label The label of the button. (Max 80 characters)
-         * @return a new [Button] with the specified [style] and [label].
+         * @return an empty [ComponentImpl.ComponentCreator].
          */
-        fun of(ydwk: YDWK, style: ButtonStyle, customId: String, label: String?): Button {
+        fun of(
+            style: ButtonStyle,
+            customId: String,
+            label: String?
+        ): ComponentImpl.ComponentCreator {
             Checks.customCheck(
                 label != null && label.length <= 80,
                 "Label must be between 1 and 80 characters long.")
-            return ComponentImpl.ButtonImpl(ydwk, style, customId, label)
+            return ComponentImpl.ButtonCreator(style, customId, label)
         }
 
         /**
-         * Creates a new [Button] with the specified, [label], [customId] and [link] (for
-         * [ButtonStyle.LINK]).
+         * Creates a new [Button] with the specified, [label] and [link] (for [ButtonStyle.LINK]).
          *
-         * @param ydwk The [YDWK] instance.
          * @param label The label of the button. (Max 80 characters)
-         * @param customId The custom id of the button.
          * @param link The link of the button.
-         * @return a new [Button] with the specified, [label], and [link].
+         * @return an empty [ComponentImpl.ComponentCreator].
          */
-        fun of(ydwk: YDWK, customId: String, label: String?, link: String): Button {
+        fun of(ydwk: YDWK, label: String?, link: String): ComponentImpl.ComponentCreator {
             Checks.customCheck(
                 label != null && label.length <= 80,
                 "Label must be between 1 and 80 characters long.")
-            return ComponentImpl.ButtonImpl(ydwk, ButtonStyle.LINK, customId, label, link)
+            return ComponentImpl.ButtonCreator(ButtonStyle.LINK, label, link)
         }
     }
 }

@@ -22,7 +22,7 @@ import io.github.realyusufismail.jconfig.util.JConfigUtils
 import io.github.ydwk.ydwk.Activity
 import io.github.ydwk.ydwk.BotBuilder.createDefaultBot
 import io.github.ydwk.ydwk.evm.backend.event.on
-import io.github.ydwk.ydwk.evm.event.events.interaction.SlashCommandEvent
+import io.github.ydwk.ydwk.evm.event.events.interaction.slash.SlashCommandEvent
 import io.github.ydwk.ydwk.interaction.message.ActionRow
 import io.github.ydwk.ydwk.interaction.message.button.Button
 import io.github.ydwk.ydwk.interaction.message.button.ButtonStyle
@@ -117,8 +117,7 @@ fun main() {
                 withContext(Dispatchers.IO) {
                     it.slash
                         .reply("This is a button test!")
-                        .addActionRow(
-                            ActionRow.of(Button.of(ydwk, ButtonStyle.PRIMARY, "1", "Primary")))
+                        .addActionRow(ActionRow.of(Button.of(ButtonStyle.PRIMARY, "1", "Primary")))
                         .reply()
                 }
             }

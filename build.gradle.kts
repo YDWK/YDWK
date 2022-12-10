@@ -58,7 +58,7 @@ dependencies {
     api("ch.qos.logback:logback-core:1.4.5")
     api("uk.org.lidalia:sysout-over-slf4j:1.0.2")
     // config.json
-    api("io.github.realyusufismail:jconfig:1.0.7")
+    api("io.github.realyusufismail:jconfig:1.0.8")
     // ws and https
     api("com.squareup.okhttp3:okhttp:5.0.0-alpha.10")
     api("com.neovisionaries:nv-websocket-client:2.14")
@@ -74,7 +74,7 @@ tasks.test {
     finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
 }
 
-tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "17" }
+tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "11" }
 
 tasks.build {
     // dependsOn on custom tasks
@@ -150,8 +150,8 @@ java {
     withJavadocJar()
     withSourcesJar()
 
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
 tasks.javadoc {

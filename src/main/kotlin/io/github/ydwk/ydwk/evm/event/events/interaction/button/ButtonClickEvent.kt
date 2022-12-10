@@ -16,10 +16,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.evm.event.events.interaction
+package io.github.ydwk.ydwk.evm.event.events.interaction.button
 
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.evm.event.Event
-import io.github.ydwk.ydwk.interaction.application.type.SlashCommand
+import io.github.ydwk.ydwk.interaction.message.button.Button
 
-data class SlashCommandEvent(override val ydwk: YDWK, val slash: SlashCommand) : Event(ydwk)
+data class ButtonClickEvent(override val ydwk: YDWK, val button: Button) : Event(ydwk)

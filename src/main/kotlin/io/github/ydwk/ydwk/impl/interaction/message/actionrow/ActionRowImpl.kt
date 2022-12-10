@@ -16,11 +16,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.evm.event.events.interaction
+package io.github.ydwk.ydwk.impl.interaction.message.actionrow
 
+import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.evm.event.Event
-import io.github.ydwk.ydwk.interaction.Interaction
+import io.github.ydwk.ydwk.impl.interaction.message.ComponentImpl
+import io.github.ydwk.ydwk.interaction.message.ActionRow
+import io.github.ydwk.ydwk.interaction.message.Component
 
-data class MessageComponentEvent(override val ydwk: YDWK, val interaction: Interaction) :
-    Event(ydwk)
+open class ActionRowImpl(ydwk: YDWK, json: JsonNode, idAsLong: Long) :
+    ActionRow, ComponentImpl(ydwk, json, idAsLong) {
+    override val components: List<Component>
+        get() = json.get("components").map { ComponentImpl(ydwk, it, idAsLong) }
+}

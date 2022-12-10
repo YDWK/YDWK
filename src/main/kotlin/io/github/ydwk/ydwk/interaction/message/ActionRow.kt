@@ -18,11 +18,10 @@
  */ 
 package io.github.ydwk.ydwk.interaction.message
 
-import com.fasterxml.jackson.databind.JsonNode
-import io.github.ydwk.ydwk.impl.interaction.message.ActionRowImpl
+import io.github.ydwk.ydwk.impl.interaction.message.ComponentImpl
 import io.github.ydwk.ydwk.util.Checks
 
-interface ActionRow {
+interface ActionRow : Component {
 
     /**
      * Gets all the components in this action row.
@@ -31,35 +30,52 @@ interface ActionRow {
      */
     val components: List<Component>
 
-    /**
-     * Gets the json representation of this action row.
-     *
-     * @return The json representation of this action row.
-     */
-    fun toJson(): JsonNode
-
     companion object {
         /**
-         * Creates a new action row with the given components.
-         * max 5 components per action row.
+         * Creates a new action row with the given components. max 5 components per action row.
+         *
+         * Example:
+         * ```
+         * ```
+         * kotlin
+         * ```
+         * val actionRow = ActionRow.of(Button.of(ydwk, ButtonStyle.PRIMARY, "1", "Primary"))
+         *
+         * it.slash
+         *        .reply("This is a button test!")
+         *        .addActionRow(actionRow)
+         *        .reply()
+         * ```
          *
          * @param components The components to add to the action row.
-         * @return The new action row.
+         * @return an empty [ComponentImpl.ComponentCreator].
          */
-        fun of(vararg components: Component): ActionRow {
+        fun of(vararg components: ComponentImpl.ComponentCreator): ComponentImpl.ComponentCreator {
             return of(components.toList())
         }
 
         /**
-         * Creates a new action row with the given components.
-         * max 5 components per action row.
+         * Creates a new action row with the given components. max 5 components per action row.
+         *
+         * Example:
+         * ```
+         * ```
+         * kotlin
+         * ```
+         * val actionRow = ActionRow.of(Button.of(ydwk, ButtonStyle.PRIMARY, "1", "Primary"))
+         *
+         * it.slash
+         *        .reply("This is a button test!")
+         *        .addActionRow(actionRow)
+         *        .reply()
+         * ```
          *
          * @param components The components to add to the action row.
-         * @return The new action row.
+         * @return an empty [ComponentImpl.ComponentCreator].
          */
-        fun of(components: List<Component>): ActionRow {
+        fun of(components: List<ComponentImpl.ComponentCreator>): ComponentImpl.ComponentCreator {
             Checks.customCheck(components.size <= 5, "Action row can only have 5 components.")
-            return ActionRowImpl(components.toMutableList())
+            return ComponentImpl.ActionRowCreator(components.toMutableList())
         }
     }
 }

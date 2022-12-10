@@ -20,9 +20,9 @@ package io.github.ydwk.ydwk.evm.handler.handlers.interactions
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.evm.event.events.interaction.AutoCompleteSlashCommandEvent
-import io.github.ydwk.ydwk.evm.event.events.interaction.MessageComponentEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.ModelEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.PingEvent
+import io.github.ydwk.ydwk.evm.event.events.interaction.slash.SlashCommandEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.interaction.InteractionImpl
@@ -34,12 +34,9 @@ class InteractionCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, j
         val interaction: Interaction = InteractionImpl(ydwk, json, json["id"].asLong())
         when (interaction.type) {
             InteractionType.APPLICATION_COMMAND -> {
-                ydwk.emitEvent(
-                    io.github.ydwk.ydwk.evm.event.events.interaction.SlashCommandEvent(
-                        ydwk, interaction.slashCommand!!))
+                ydwk.emitEvent(SlashCommandEvent(ydwk, interaction.slashCommand!!))
             }
-            InteractionType.MESSAGE_COMPONENT -> {
-            }
+            InteractionType.MESSAGE_COMPONENT -> {}
             InteractionType.APPLICATION_COMMAND_AUTOCOMPLETE -> {
                 ydwk.emitEvent(AutoCompleteSlashCommandEvent(ydwk, interaction))
             }
@@ -47,9 +44,7 @@ class InteractionCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, j
                 ydwk.emitEvent(ModelEvent(ydwk, interaction))
             }
             InteractionType.PING -> {
-                ydwk.emitEvent(
-                    PingEvent(ydwk, interaction)
-                )
+                ydwk.emitEvent(PingEvent(ydwk, interaction))
             }
             InteractionType.UNKNOWN -> {
                 ydwk.logger.warn("Unknown interaction type: ${json["type"].asInt()}")

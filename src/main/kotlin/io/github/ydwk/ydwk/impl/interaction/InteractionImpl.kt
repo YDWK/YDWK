@@ -30,6 +30,7 @@ import io.github.ydwk.ydwk.impl.entities.MessageImpl
 import io.github.ydwk.ydwk.impl.entities.UserImpl
 import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
 import io.github.ydwk.ydwk.impl.interaction.application.type.SlashCommandImpl
+import io.github.ydwk.ydwk.impl.interaction.message.ComponentImpl
 import io.github.ydwk.ydwk.interaction.Interaction
 import io.github.ydwk.ydwk.interaction.sub.GenericCommandData
 import io.github.ydwk.ydwk.interaction.sub.InteractionType
@@ -88,11 +89,8 @@ class InteractionImpl(
         when (type) {
             InteractionType.APPLICATION_COMMAND ->
                 SlashCommandImpl(ydwk, json["data"], idAsLong, this)
-            InteractionType.MESSAGE_COMPONENT -> TODO("Not yet implemented")
-            else -> {
-                (ydwk as YDWKImpl).logger.warn("Unknown interaction type: $type")
-                null
-            }
+            InteractionType.MESSAGE_COMPONENT -> ComponentImpl(ydwk, json["data"], idAsLong)
+            else -> null
         }
 
     override fun toString(): String {

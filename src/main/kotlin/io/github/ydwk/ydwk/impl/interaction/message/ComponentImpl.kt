@@ -19,15 +19,21 @@
 package io.github.ydwk.ydwk.impl.interaction.message
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.node.ArrayNode
+import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.interaction.message.Component
 import io.github.ydwk.ydwk.interaction.message.ComponentType
-import io.github.ydwk.ydwk.interaction.message.button.Button
 import io.github.ydwk.ydwk.interaction.message.button.ButtonStyle
+import io.github.ydwk.ydwk.util.Checks
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
-open class ComponentImpl(override val ydwk: YDWK, override val json: JsonNode) : Component {
+open class ComponentImpl(
+    override val ydwk: YDWK,
+    override val json: JsonNode,
+    override val idAsLong: Long,
+) : Component {
 
     override val type: ComponentType
         get() = ComponentType.fromInt(json.get("type").asInt())
@@ -37,6 +43,10 @@ open class ComponentImpl(override val ydwk: YDWK, override val json: JsonNode) :
 
     override val modalCompatible: Boolean
         get() = type.isModalCompatible()
+    override val customId: String?
+        get() = TODO("Not yet implemented")
+    override val children: List<Component>
+        get() = TODO("Not yet implemented")
 
     override fun toString(): String {
         return EntityToStringBuilder(ydwk, this)
@@ -46,14 +56,33 @@ open class ComponentImpl(override val ydwk: YDWK, override val json: JsonNode) :
             .toString()
     }
 
-    class ButtonImpl(
-        ydwk: YDWK,
-        style: ButtonStyle,
-        customId: String,
-        label: String?,
-        link: String? = null,
-        override val json: ObjectNode = ydwk.objectMapper.createObjectNode()
-    ) : Button, ComponentImpl(ydwk, json) {
+    data class ActionRowCreator(
+        val components: MutableList<ComponentCreator>,
+        override val json: ArrayNode = JsonNodeFactory.instance.arrayNode()
+    ) : ComponentCreator {
+        init {
+            Checks.customCheck(
+                components.size <= 5, "Action row cannot have more than 5 components")
+
+            json.add(
+                JsonNodeFactory.instance
+                    .objectNode()
+                    .put("type", 1)
+                    .set(
+                        "components",
+                        JsonNodeFactory.instance.arrayNode().apply {
+                            components.forEach { add(it.json) }
+                        }) as JsonNode)
+        }
+    }
+
+    data class ButtonCreator(
+        val style: ButtonStyle,
+        val customId: String? = null,
+        val label: String?,
+        val link: String? = null,
+        override val json: ObjectNode = JsonNodeFactory.instance.objectNode()
+    ) : ComponentCreator {
 
         init {
             if (style == ButtonStyle.LINK && link == null) {
@@ -67,5 +96,9 @@ open class ComponentImpl(override val ydwk: YDWK, override val json: JsonNode) :
             json.put("label", label)
             json.put("custom_id", customId)
         }
+    }
+
+    interface ComponentCreator {
+        val json: JsonNode
     }
 }
