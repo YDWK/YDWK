@@ -16,7 +16,9 @@ jobs:
         id: read-version
         run: |
           version=`cat gradle.properties | sed -n "s/^.*version\s*=\s*\(\S*\).*$/\1/p"`
-          echo "::set-output name=version::$version"
+          echo "version<<EOF" >>$GITHUB_OUTPUT
+          echo "$version" >>$GITHUB_OUTPUT
+          echo "EOF" >>$GITHUB_OUTPUT
       - name: Run maven snapshot
         if: ${{ endsWith(steps.read-version.outputs.version, 'SNAPSHOT') }}
         run: |
