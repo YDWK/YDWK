@@ -18,7 +18,7 @@ jobs:
         id: read-version
         run: |
           version=`cat gradle.properties | sed -n "s/^.*version\s*=\s*\(\S*\).*$/\1/p"`
-          echo "::set-output name=version::$version"
+          echo "version::$version" >>$GITHUB_OUTPUT
       - name: Create Release
         if: ${{ !endsWith(steps.read-version.outputs.version, 'SNAPSHOT') }}
         id: create_release
