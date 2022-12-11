@@ -83,10 +83,6 @@ enum class GateWayIntent(private var value: Int, private var privileged: Boolean
         }
     }
 
-    override fun toString(): String {
-        return value.toString()
-    }
-
     /**
      * Get the value of the [GateWayIntent].
      *

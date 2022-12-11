@@ -112,9 +112,9 @@ open class WebSocketManager(
     fun connect(): WebSocketManager {
         val url: String =
             (resumeUrl
-                ?: YDWKInfo.DISCORD_GATEWAY_URL.toString()) +
-                YDWKInfo.DISCORD_GATEWAY_VERSION.toString() +
-                YDWKInfo.JSON_ENCODING.toString()
+                ?: YDWKInfo.DISCORD_GATEWAY_URL.getUrl()) +
+                YDWKInfo.DISCORD_GATEWAY_VERSION.getUrl() +
+                YDWKInfo.JSON_ENCODING.getUrl()
 
         try {
             val webSocketFactory = WebSocketFactory()
@@ -305,7 +305,7 @@ open class WebSocketManager(
         }
 
         if (userStatus != null) {
-            presence.put("status", userStatus!!.toString())
+            presence.put("status", userStatus!!.getStatus())
         }
 
         d.set<ObjectNode>("presence", presence)
@@ -462,7 +462,7 @@ open class WebSocketManager(
             }
             EventNames.READY -> {
                 // get rid of ?v=
-                val libraryVersion = YDWKInfo.DISCORD_GATEWAY_VERSION.toString().substring(3)
+                val libraryVersion = YDWKInfo.DISCORD_GATEWAY_VERSION.getUrl().substring(3)
                 if (libraryVersion != d.get("v").asText()) {
                     logger.warn(
                         "Using library version {} but discord is using {}",
