@@ -44,7 +44,7 @@ import java.util.*
 
 class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override fun start() {
-        when (ChannelType.fromId(json["type"].asInt())) {
+        when (ChannelType.fromInt(json["type"].asInt())) {
             ChannelType.TEXT -> updateTextChannel()
             ChannelType.DM -> ydwk.logger.warn("Dm is not supported")
             ChannelType.VOICE -> updateVoiceChannel()

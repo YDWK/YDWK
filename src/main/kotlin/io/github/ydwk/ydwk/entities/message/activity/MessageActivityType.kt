@@ -31,7 +31,7 @@ enum class MessageActivityType(private val value: Int) {
          * @param value The value of the [MessageActivityType].
          * @return The [MessageActivityType] corresponding to the provided [value].
          */
-        fun fromValue(value: Int): MessageActivityType {
+        fun fromInt(value: Int): MessageActivityType {
             return values().first { it.value == value }
         }
     }

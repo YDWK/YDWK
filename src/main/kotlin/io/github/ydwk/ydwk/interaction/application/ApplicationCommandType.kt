@@ -32,7 +32,12 @@ enum class ApplicationCommandType(private val value: Int) {
     UNKNOWN(-1);
 
     companion object {
-        /** Get the [ApplicationCommandType] from the value */
+        /**
+         * Get the [ApplicationCommandType] from the value
+         *
+         * @param value The value to get the [ApplicationCommandType] from.
+         * @return The [ApplicationCommandType] from the given [value].
+         */
         fun fromInt(value: Int): ApplicationCommandType {
             return values().firstOrNull { it.value == value } ?: UNKNOWN
         }

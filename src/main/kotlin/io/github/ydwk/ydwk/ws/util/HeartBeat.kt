@@ -56,8 +56,8 @@ class HeartBeat(
                 heartbeatInterval,
                 connected,
                 heartbeat,
-                CloseCode.MISSED_HEARTBEAT.code,
-                CloseCode.MISSED_HEARTBEAT.reason,
+                CloseCode.MISSED_HEARTBEAT.getCode(),
+                CloseCode.MISSED_HEARTBEAT.getReason(),
                 null,
                 null,
                 null)

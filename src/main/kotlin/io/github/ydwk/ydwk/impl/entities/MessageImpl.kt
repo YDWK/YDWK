@@ -95,7 +95,7 @@ class MessageImpl(
         get() {
             val list = mutableListOf<Channel>()
             json.get("mention_channels").forEach {
-                val channelType = ChannelType.fromId(it["type"].asInt())
+                val channelType = ChannelType.fromInt(it["type"].asInt())
                 if (ChannelType.isGuildChannel(channelType)) {
                     list.add(GuildChannelImpl(ydwk, it, it["id"].asLong()))
                 } else {
@@ -140,7 +140,7 @@ class MessageImpl(
             else null
 
     override val type: MessageType
-        get() = MessageType.fromType(json.get("type").asInt())
+        get() = MessageType.fromInt(json.get("type").asInt())
 
     override val activity: MessageActivity?
         get() = if (json.has("activity")) MessageActivityImpl(ydwk, json.get("activity")) else null
@@ -159,7 +159,7 @@ class MessageImpl(
             else null
 
     override val flags: MessageFlag?
-        get() = if (json.has("flags")) MessageFlag.fromValue(json.get("flags").asLong()) else null
+        get() = if (json.has("flags")) MessageFlag.fromLong(json.get("flags").asLong()) else null
 
     override val referencedMessage: Message?
         get() =
@@ -181,7 +181,7 @@ class MessageImpl(
         get() =
             if (json.has("thread")) {
                 val newJson = json.get("thread")
-                val channelType = ChannelType.fromId(newJson["type"].asInt())
+                val channelType = ChannelType.fromInt(newJson["type"].asInt())
                 if (ChannelType.isGuildChannel(channelType)) {
                     GuildChannelImpl(ydwk, newJson, newJson["id"].asLong())
                 } else {

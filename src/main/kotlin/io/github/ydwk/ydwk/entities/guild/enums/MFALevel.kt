@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.entities.guild.enums
 
-enum class MFALevel(val value: Int) {
+enum class MFALevel(private val value: Int) {
     /** Guild has no MFA/2FA requirement for moderation actions */
     NONE(0),
 
@@ -29,9 +29,23 @@ enum class MFALevel(val value: Int) {
     UNKNOWN(-1);
 
     companion object {
-        /** Gets the [MFALevel] for the given [value]. */
-        fun fromValue(value: Int): MFALevel {
+        /**
+         * Gets the [MFALevel] for the given [value].
+         *
+         * @param value The value to get the [MFALevel] for.
+         * @return The [MFALevel] for the given [value].
+         */
+        fun fromInt(value: Int): MFALevel {
             return values().firstOrNull { it.value == value } ?: UNKNOWN
         }
+    }
+
+    /**
+     * Gets the value of the [MFALevel]
+     *
+     * @return The value of the [MFALevel].
+     */
+    fun getValue(): Int {
+        return value
     }
 }

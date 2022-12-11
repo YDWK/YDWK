@@ -63,7 +63,7 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
             "wss://" +
                 (voiceConnection.voiceEndpoint?.replace(":80", "")
                     ?: throw IllegalStateException("Voice endpoint is null!")) +
-                YDWKInfo.VOICE_GATEWAY_VERSION.url
+                YDWKInfo.VOICE_GATEWAY_VERSION.getUrl()
 
         try {
             val webSocketFactory = WebSocketFactory()

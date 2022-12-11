@@ -54,15 +54,25 @@ enum class MessageType(private val type: Int, private val isDeletable: Boolean) 
          * @param type The type to get the [MessageType] of.
          * @return The [MessageType] of the provided [type].
          */
-        fun fromType(type: Int): MessageType {
+        fun fromInt(type: Int): MessageType {
             return values().firstOrNull { it.type == type } ?: UNKNOWN
         }
     }
 
+    /**
+     * Weather or not the message type is deletable.
+     *
+     * @return Weather or not the message type is deletable.
+     */
     fun isDeletable(): Boolean {
         return isDeletable
     }
 
+    /**
+     * Gets the type of the message.
+     *
+     * @return The type of the message.
+     */
     fun getType(): Int {
         return type
     }

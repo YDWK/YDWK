@@ -267,15 +267,32 @@ enum class JsonErrorCode(private val code: Int, private val meaning: String) {
     UNKNOWN(0, "Unknown");
 
     companion object {
-        /** Gets the [JsonErrorCode] from the given [code]. */
-        fun fromCode(code: Int): JsonErrorCode {
+        /**
+         * Gets the [JsonErrorCode] from the given [code].
+         *
+         * @param code The code to get the [JsonErrorCode] from.
+         * @return The [JsonErrorCode] from the given [code].
+         */
+        fun fromInt(code: Int): JsonErrorCode {
             return values().firstOrNull { it.code == code } ?: UNKNOWN
         }
     }
 
-    /** The code of the error. */
-    val getCode: Int = code
+    /**
+     * Gets the error code.
+     *
+     * @return The error code.
+     */
+    fun getCode(): Int {
+        return code
+    }
 
-    /** The message of the error. */
-    val getMessage: String = meaning
+    /**
+     * Gets the meaning of the error code.
+     *
+     * @return The meaning of the error code.
+     */
+    fun getMeaning(): String {
+        return meaning
+    }
 }

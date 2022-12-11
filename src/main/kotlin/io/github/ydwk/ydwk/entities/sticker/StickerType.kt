@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.entities.sticker
 
-enum class StickerType(val value: Int) {
+enum class StickerType(private val value: Int) {
     /** An official sticker in a pack, part of Nitro or in a removed purchasable pack */
     STANDARD(1),
 
@@ -29,9 +29,23 @@ enum class StickerType(val value: Int) {
     UNKNOWN(-1);
 
     companion object {
-        /** Gets the [StickerType] from the provided [value]. */
-        fun fromValue(value: Int): StickerType {
+        /**
+         * Gets the [StickerType] from the provided [value].
+         *
+         * @param value The value to get the [StickerType] from.
+         * @return The [StickerType] from the provided [value].
+         */
+        fun fromInt(value: Int): StickerType {
             return values().firstOrNull { it.value == value } ?: UNKNOWN
         }
+    }
+
+    /**
+     * Gets the value of the [StickerType].
+     *
+     * @return The value of the [StickerType].
+     */
+    fun getValue(): Int {
+        return value
     }
 }

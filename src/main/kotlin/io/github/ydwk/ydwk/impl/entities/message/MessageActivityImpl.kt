@@ -26,7 +26,7 @@ import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class MessageActivityImpl(override val ydwk: YDWK, override val json: JsonNode) : MessageActivity {
     override val type: MessageActivityType
-        get() = MessageActivityType.fromValue(json.get("type").asInt())
+        get() = MessageActivityType.fromInt(json.get("type").asInt())
 
     override val partyId: String?
         get() = if (json.has("party_id")) json.get("party_id").asText() else null

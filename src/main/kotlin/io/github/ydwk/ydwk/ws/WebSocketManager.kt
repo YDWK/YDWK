@@ -187,7 +187,7 @@ open class WebSocketManager(
 
     private fun sendCloseCode(code: CloseCode) {
         checkNotNull(webSocket) { "WebSocket is null" }
-        webSocket!!.sendClose(code.code, code.reason)
+        webSocket!!.sendClose(code.getCode(), code.getReason())
     }
 
     @Throws(Exception::class)
@@ -237,7 +237,7 @@ open class WebSocketManager(
 
         val closeCodeAsString: String =
             if (closeFrame != null)
-                CloseCode.from(closeFrame.closeCode).name + " (" + closeFrame.closeCode + ")"
+                CloseCode.fromInt(closeFrame.closeCode).name + " (" + closeFrame.closeCode + ")"
             else "Unknown code"
 
         logger.info(
@@ -247,9 +247,9 @@ open class WebSocketManager(
 
         heartBeat?.heartbeatThread?.cancel(false)
 
-        val closeCode = CloseCode.from(closeFrame?.closeCode ?: 1000)
+        val closeCode = CloseCode.fromInt(closeFrame?.closeCode ?: 1000)
 
-        if (closeCode.reconnect) {
+        if (closeCode.shouldReconnect()) {
             logger.info("Reconnecting to websocket")
             connect()
         } else {
@@ -341,7 +341,7 @@ open class WebSocketManager(
     }
 
     private fun onOpCode(opCode: Int, d: JsonNode, rawJson: JsonNode) {
-        when (OpCode.fromCode(opCode)) {
+        when (OpCode.fromInt(opCode)) {
             DISPATCH -> {
                 val event: String = rawJson.get("t").asText()
                 onEventType(event, d)

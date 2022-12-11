@@ -33,13 +33,22 @@ enum class SlashOptionType(private val value: Int) {
     UNKNOWN(-1);
 
     companion object {
-        /** Get the [SlashOptionType] from the value */
+        /**
+         * Get the [SlashOptionType] from the value
+         *
+         * @param value The value to get the [SlashOptionType] from.
+         * @return The [SlashOptionType] from the given [value].
+         */
         fun fromInt(value: Int): SlashOptionType {
             return values().firstOrNull { it.value == value } ?: UNKNOWN
         }
     }
 
-    /** Get the value of the [SlashOptionType] */
+    /**
+     * Get the value of the [SlashOptionType].
+     *
+     * @return The value of the [SlashOptionType].
+     */
     fun toInt(): Int {
         return value
     }

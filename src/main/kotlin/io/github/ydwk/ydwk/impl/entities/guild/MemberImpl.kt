@@ -78,7 +78,7 @@ class MemberImpl(
     override var voiceState: VoiceState? = null
 
     override val permissions: EnumSet<GuildPermission>
-        get() = GuildPermission.fromValues(getPermissions(this))
+        get() = GuildPermission.fromLongs(getPermissions(this))
 
     private fun getPermissions(member: Member): Long {
         if (member.isOwner) return GuildPermission.ALL_PERMS

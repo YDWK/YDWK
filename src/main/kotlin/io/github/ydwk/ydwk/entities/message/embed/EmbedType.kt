@@ -41,7 +41,7 @@ enum class EmbedType(private val type: String) {
          * @param type The type to get the [EmbedType] from.
          * @return The [EmbedType] from the given [type].
          */
-        fun from(type: String): EmbedType {
+        fun fromString(type: String): EmbedType {
             return values().firstOrNull { it.type == type } ?: UNKNOWN
         }
     }

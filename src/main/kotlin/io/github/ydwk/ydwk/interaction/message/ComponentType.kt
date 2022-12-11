@@ -52,7 +52,12 @@ enum class ComponentType(
     UNKNOWN(-1, 0, false, false);
 
     companion object {
-        /** Get the [ComponentType] from the value */
+        /**
+         * Get the [ComponentType] from the value
+         *
+         * @param value The value to get the [ComponentType] from.
+         * @return The [ComponentType] from the given [value].
+         */
         fun fromInt(value: Int): ComponentType {
             return values().firstOrNull { it.type == value } ?: UNKNOWN
         }

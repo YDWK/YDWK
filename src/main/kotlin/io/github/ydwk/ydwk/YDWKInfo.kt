@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk
 
-enum class YDWKInfo(val url: String) {
+enum class YDWKInfo(private val url: String) {
     DISCORD_GATEWAY_URL("wss://gateway.discord.gg/"),
     DISCORD_GATEWAY_VERSION("?v=10"),
     JSON_ENCODING("&encoding=json"),
@@ -29,13 +29,24 @@ enum class YDWKInfo(val url: String) {
     GITHUB_URL("https://github.com/RealYusufIsmail/YDWK"),
     YDWK_VERSION("0.0.7");
 
-    override fun toString(): String {
-        return url
-    }
-
     companion object {
-        fun get(info: YDWKInfo): String {
+        /**
+         * Get the full discord gateway url.
+         *
+         * @param info The [YDWKInfo] to get the full url from.
+         * @return The full discord gateway url.
+         */
+        fun fromString(info: YDWKInfo): String {
             return info.toString()
         }
+    }
+
+    /**
+     * Gets the url of the [YDWKInfo].
+     *
+     * @return The url of the [YDWKInfo].
+     */
+    fun getUrl(): String {
+        return url
     }
 }

@@ -41,7 +41,7 @@ class AuditLogEntryImpl(
         get() = if (json.has("user_id")) ydwk.getUserById(json["user_id"].asLong()) else null
 
     override val type: AuditLogType
-        get() = AuditLogType.fromType(json["action_type"].asInt())
+        get() = AuditLogType.fromInt(json["action_type"].asInt())
 
     override val reason: String?
         get() = if (json.has("reason")) json["reason"].asText() else null

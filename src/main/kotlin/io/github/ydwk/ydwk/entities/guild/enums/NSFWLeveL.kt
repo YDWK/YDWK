@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.entities.guild.enums
 
-enum class NSFWLeveL(val level: Int) {
+enum class NSFWLeveL(private val level: Int) {
     /** No NSFW content is allowed. */
     DEFAULT(0),
 
@@ -35,8 +35,13 @@ enum class NSFWLeveL(val level: Int) {
     UNKNOWN(-1);
 
     companion object {
-        /** Gets the [NSFWLeveL] for the provided [level]. */
-        fun fromValue(level: Int): NSFWLeveL {
+        /**
+         * Gets the [NSFWLeveL] for the provided [level].
+         *
+         * @param level The level to get the [NSFWLeveL] for.
+         * @return The [NSFWLeveL] for the provided [level].
+         */
+        fun fromInt(level: Int): NSFWLeveL {
             return when (level) {
                 0 -> DEFAULT
                 1 -> EXPLICIT
@@ -45,5 +50,14 @@ enum class NSFWLeveL(val level: Int) {
                 else -> UNKNOWN
             }
         }
+    }
+
+    /**
+     * Gets the level of the [NSFWLeveL].
+     *
+     * @return The level of the [NSFWLeveL].
+     */
+    fun getLevel(): Int {
+        return level
     }
 }

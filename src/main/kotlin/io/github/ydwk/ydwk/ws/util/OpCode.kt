@@ -60,7 +60,13 @@ enum class OpCode(
     UNKNOWN(-1, false, false);
 
     companion object {
-        fun fromCode(code: Int): OpCode {
+        /**
+         * Get the [OpCode] from the given [code].
+         *
+         * @param code The code to get the [OpCode] from.
+         * @return The [OpCode] from the given [code].
+         */
+        fun fromInt(code: Int): OpCode {
             for (opCode in values()) {
                 if (opCode.code == code) {
                     return opCode

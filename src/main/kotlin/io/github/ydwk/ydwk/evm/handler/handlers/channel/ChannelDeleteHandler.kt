@@ -29,7 +29,7 @@ import io.github.ydwk.ydwk.impl.entities.channel.guild.GuildChannelImpl
 
 class ChannelDeleteHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override fun start() {
-        val channelType = ChannelType.fromId(json.get("type").asInt())
+        val channelType = ChannelType.fromInt(json.get("type").asInt())
         when {
             channelType.isGuildChannel -> {
                 val channel = GuildChannelImpl(ydwk, json, json.get("id").asLong())

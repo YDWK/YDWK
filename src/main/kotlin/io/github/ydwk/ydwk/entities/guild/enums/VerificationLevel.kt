@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.entities.guild.enums
 
-enum class VerificationLevel(val level: Int) {
+enum class VerificationLevel(private val level: Int) {
     /** Unrestricted */
     NONE(0),
 
@@ -38,9 +38,23 @@ enum class VerificationLevel(val level: Int) {
     UNKNOWN(-1);
 
     companion object {
-        /** Gets the [VerificationLevel] by the provided [level]. */
-        fun fromLevel(level: Int): VerificationLevel {
+        /**
+         * Gets the [VerificationLevel] by the provided [level].
+         *
+         * @param level The level to get the [VerificationLevel] by.
+         * @return The [VerificationLevel] by the provided [level].
+         */
+        fun fromInt(level: Int): VerificationLevel {
             return values().firstOrNull { it.level == level } ?: UNKNOWN
         }
+    }
+
+    /**
+     * Gets the level of the [VerificationLevel].
+     *
+     * @return The level of the [VerificationLevel].
+     */
+    fun getLevel(): Int {
+        return level
     }
 }

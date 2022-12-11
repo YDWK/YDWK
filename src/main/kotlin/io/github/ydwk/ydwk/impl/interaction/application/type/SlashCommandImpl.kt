@@ -96,7 +96,7 @@ class SlashCommandImpl(ydwk: YDWK, json: JsonNode, idAsLong: Long, interaction: 
 
                 resolved["channels"]?.let {
                     it.fields().forEach { (id, node) ->
-                        val channelType = ChannelType.fromId(node["type"].asInt())
+                        val channelType = ChannelType.fromInt(node["type"].asInt())
                         if (ChannelType.isGuildChannel(channelType)) {
                             map[id.toLong()] = GuildChannelImpl(ydwk, node, node["id"].asLong())
                         } else {

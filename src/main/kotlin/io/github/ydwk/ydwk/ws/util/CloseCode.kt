@@ -19,9 +19,9 @@
 package io.github.ydwk.ydwk.ws.util
 
 enum class CloseCode(
-    val code: Int,
-    val reason: String,
-    val reconnect: Boolean = true,
+    private val code: Int,
+    private val reason: String,
+    private val reconnect: Boolean = true,
 ) {
     TERMINATION(
         1008,
@@ -59,12 +59,41 @@ enum class CloseCode(
     UNKNOWN(4999, "Unknown error", false);
 
     companion object {
-        fun from(code: Int): CloseCode {
+        /**
+         * Get the [CloseCode] from the given [code].
+         *
+         * @param code The code to get the [CloseCode] from.
+         * @return The [CloseCode] with the given [code].
+         */
+        fun fromInt(code: Int): CloseCode {
             return values().firstOrNull { it.code == code } ?: UNKNOWN
         }
     }
 
-    override fun toString(): String {
-        return "CloseCode(code=$code, reason='$reason', reconnect=$reconnect)"
+    /**
+     * Get the code of the [CloseCode].
+     *
+     * @return The code of the [CloseCode].
+     */
+    fun getCode(): Int {
+        return code
+    }
+
+    /**
+     * Get the reason of the [CloseCode].
+     *
+     * @return The reason of the [CloseCode].
+     */
+    fun getReason(): String {
+        return reason
+    }
+
+    /**
+     * Get whether the [CloseCode] should reconnect.
+     *
+     * @return Whether the [CloseCode] should reconnect.
+     */
+    fun shouldReconnect(): Boolean {
+        return reconnect
     }
 }

@@ -147,7 +147,7 @@ enum class AuditLogType(
          * @param type The type to get the [AuditLogType] of.
          * @return The [AuditLogType] of the provided [type].
          */
-        fun fromType(type: Int): AuditLogType {
+        fun fromInt(type: Int): AuditLogType {
             return values().firstOrNull { it.type == type } ?: UNKNOWN
         }
     }
