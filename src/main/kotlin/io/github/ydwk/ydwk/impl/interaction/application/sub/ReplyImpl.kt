@@ -61,7 +61,8 @@ class ReplyImpl(
 
     override fun replyWithFuture(): CompletableFuture<NoResult> {
         val mainBody =
-            ydwk.objectNode.put("type", InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE.toInt())
+            ydwk.objectNode.put(
+                "type", InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE.getType())
 
         val secondBody = ydwk.objectNode
 

@@ -38,14 +38,23 @@ enum class InteractionType(private val value: Int) {
     UNKNOWN(-1);
 
     companion object {
-        /** Get the [InteractionType] from the value */
+        /**
+         * Get the [InteractionType] from the value
+         *
+         * @param value The value to get the [InteractionType] from.
+         * @return The [InteractionType] from the given [value].
+         */
         fun fromInt(value: Int): InteractionType {
             return values().firstOrNull { it.value == value } ?: UNKNOWN
         }
     }
 
-    /** Get the value of the [InteractionType] */
-    fun toInt(): Int {
+    /**
+     * Get the value of the [InteractionType].
+     *
+     * @return The value of the [InteractionType].
+     */
+    fun getValue(): Int {
         return value
     }
 }

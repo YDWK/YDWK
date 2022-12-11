@@ -56,7 +56,7 @@ enum class ChannelType(private val id: Int) {
          * @param id the id
          * @return the channel type
          */
-        fun fromId(id: Int): ChannelType {
+        fun fromInt(id: Int): ChannelType {
             return values().firstOrNull { it.id == id } ?: UNKNOWN
         }
 

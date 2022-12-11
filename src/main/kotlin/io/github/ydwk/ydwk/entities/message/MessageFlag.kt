@@ -41,12 +41,22 @@ enum class MessageFlag(private val value: Long) {
     UNKNOWN(-1);
 
     companion object {
-        /** Gets the [MessageFlag] from the given value. */
-        fun fromValue(value: Long): MessageFlag {
+        /**
+         * Gets the [MessageFlag] from the given value.
+         *
+         * @param value The value of the flag.
+         * @return The [MessageFlag] with the given value.
+         */
+        fun fromLong(value: Long): MessageFlag {
             return values().firstOrNull { it.value == value } ?: UNKNOWN
         }
     }
 
+    /**
+     * Gets the value of the flag.
+     *
+     * @return The value of the flag.
+     */
     fun getValue(): Long {
         return value
     }

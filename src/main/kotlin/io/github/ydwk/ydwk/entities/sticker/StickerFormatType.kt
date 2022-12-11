@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.entities.sticker
 
-enum class StickerFormatType(val value: Int) {
+enum class StickerFormatType(private val value: Int) {
     /** The file is a PNG image. */
     PNG(1),
 
@@ -32,7 +32,21 @@ enum class StickerFormatType(val value: Int) {
     UNKNOWN(-1);
 
     companion object {
-        /** Get the [StickerFormatType] from the given [value] */
-        fun fromValue(value: Int) = values().firstOrNull { it.value == value } ?: UNKNOWN
+        /**
+         * Get the [StickerFormatType] from the given [value]
+         *
+         * @param value The value to get the [StickerFormatType] from.
+         * @return The [StickerFormatType] from the given [value].
+         */
+        fun fromInt(value: Int) = values().firstOrNull { it.value == value } ?: UNKNOWN
+    }
+
+    /**
+     * Get the value of the [StickerFormatType].
+     *
+     * @return The value of the [StickerFormatType].
+     */
+    fun getValue(): Int {
+        return value
     }
 }

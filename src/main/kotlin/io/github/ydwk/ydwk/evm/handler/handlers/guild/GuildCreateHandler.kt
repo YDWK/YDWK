@@ -80,7 +80,7 @@ class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
         val channelJson = json["channels"]
         val channelType: EnumSet<ChannelType> =
             channelJson
-                .map { ChannelType.fromId(it["type"].asInt()) }
+                .map { ChannelType.fromInt(it["type"].asInt()) }
                 .toCollection(EnumSet.noneOf(ChannelType::class.java))
 
         val guildChannels = ArrayList<GuildChannel>()

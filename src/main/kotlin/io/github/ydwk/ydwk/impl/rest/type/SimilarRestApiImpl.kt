@@ -144,11 +144,11 @@ open class SimilarRestApiImpl(
         queueWithNoResult: CompletableFuture<NoResult>?,
         queueWithResult: CompletableFuture<*>?
     ) {
-        if (HttpResponseCode.fromCode(code) == HttpResponseCode.TOO_MANY_REQUESTS) {
+        if (HttpResponseCode.fromInt(code) == HttpResponseCode.TOO_MANY_REQUESTS) {
             handleRateLimit(body, queueWithNoResult, queueWithResult)
-        } else if (HttpResponseCode.fromCode(code) != HttpResponseCode.UNKNOWN) {
+        } else if (HttpResponseCode.fromInt(code) != HttpResponseCode.UNKNOWN) {
             handleHttpResponse(body, code)
-        } else if (JsonErrorCode.fromCode(code) != JsonErrorCode.UNKNOWN) {
+        } else if (JsonErrorCode.fromInt(code) != JsonErrorCode.UNKNOWN) {
             handleJsonError(body, code)
         } else {
             logger.error("Unknown error occurred while executing request")
@@ -193,7 +193,7 @@ open class SimilarRestApiImpl(
     }
 
     private fun handleHttpResponse(body: ResponseBody, code: Int) {
-        val error = HttpResponseCode.fromCode(code)
+        val error = HttpResponseCode.fromInt(code)
         val codeAndName = error.getCode().toString() + " " + error.name
         var reason = error.getMessage()
         if (body.toString().isNotEmpty())
@@ -204,8 +204,8 @@ open class SimilarRestApiImpl(
     }
 
     private fun handleJsonError(body: ResponseBody, code: Int) {
-        val jsonCode = JsonErrorCode.fromCode(code).getCode
-        var jsonMessage = JsonErrorCode.fromCode(code).getMessage
+        val jsonCode = JsonErrorCode.fromInt(code).getCode()
+        var jsonMessage = JsonErrorCode.fromInt(code).getMeaning()
         if (body.toString().isNotEmpty())
             jsonMessage +=
                 " This body contains more detail : " +

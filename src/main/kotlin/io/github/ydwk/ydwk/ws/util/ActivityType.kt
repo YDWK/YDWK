@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.ws.util
 
-enum class ActivityType(val activity: Int) {
+enum class ActivityType(private val activity: Int) {
     /** Playing {name} e.g. Playing Minecraft */
     PLAYING(0),
 
@@ -48,7 +48,7 @@ enum class ActivityType(val activity: Int) {
          * @param id The id of the activity.
          * @return The activity.
          */
-        fun fromId(id: Int): ActivityType {
+        fun fromInt(id: Int): ActivityType {
             for (activity in values()) {
                 if (activity.activity == id) {
                     return activity
@@ -56,5 +56,14 @@ enum class ActivityType(val activity: Int) {
             }
             return UNKNOWN
         }
+    }
+
+    /**
+     * Gets the id of the activity.
+     *
+     * @return The id of the activity.
+     */
+    fun getActivity(): Int {
+        return activity
     }
 }

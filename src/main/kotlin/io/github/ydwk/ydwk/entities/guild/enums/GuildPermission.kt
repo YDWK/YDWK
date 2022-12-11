@@ -124,11 +124,11 @@ enum class GuildPermission(
          * @param value The value of the [GuildPermission] to find.
          * @return The [GuildPermission] with the given [value].
          */
-        fun fromValue(value: Long): GuildPermission {
+        fun fromLong(value: Long): GuildPermission {
             return values().firstOrNull { it.value == value } ?: UNKNOWN
         }
 
-        fun fromValues(permissions: Long): EnumSet<GuildPermission> {
+        fun fromLongs(permissions: Long): EnumSet<GuildPermission> {
             return values()
                 .filter { it.value != -1L && permissions and it.value == it.value }
                 .toCollection(EnumSet.noneOf(GuildPermission::class.java))

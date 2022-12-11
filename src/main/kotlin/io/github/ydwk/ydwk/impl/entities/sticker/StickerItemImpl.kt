@@ -34,7 +34,7 @@ class StickerItemImpl(
         get() = json.get("name").asText()
 
     override val type: StickerType
-        get() = StickerType.fromValue(json.get("type").asInt())
+        get() = StickerType.fromInt(json.get("type").asInt())
 
     override fun toString(): String {
         return EntityToStringBuilder(ydwk, this).name(this.name).toString()

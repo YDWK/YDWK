@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.entities.guild.enums
 
-enum class SystemChannelFlag(val value: Int) {
+enum class SystemChannelFlag(private val value: Int) {
     /** Suppress member join notifications. */
     SUPPRESS_JOIN_NOTIFICATIONS(1 shl 0),
 
@@ -35,9 +35,23 @@ enum class SystemChannelFlag(val value: Int) {
     UNKNOWN(-1);
 
     companion object {
-        /** Gets the [SystemChannelFlag] by its [value]. */
-        fun fromValue(value: Int): SystemChannelFlag {
+        /**
+         * Gets the [SystemChannelFlag] by its [value].
+         *
+         * @param value The value to get the [SystemChannelFlag] by.
+         * @return The [SystemChannelFlag] by the given [value].
+         */
+        fun fromInt(value: Int): SystemChannelFlag {
             return values().firstOrNull { it.value == value } ?: UNKNOWN
         }
+    }
+
+    /**
+     * Gets the value of the [SystemChannelFlag].
+     *
+     * @return The value of the [SystemChannelFlag].
+     */
+    fun getValue(): Int {
+        return value
     }
 }

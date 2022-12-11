@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.entities.guild.enums
 
-enum class ExplicitContentFilterLevel(val value: Int) {
+enum class ExplicitContentFilterLevel(private val value: Int) {
     /** Media content will not be scanned */
     DISABLED(0),
 
@@ -32,9 +32,23 @@ enum class ExplicitContentFilterLevel(val value: Int) {
     UNKNOWN(-1);
 
     companion object {
-        /** Gets the [ExplicitContentFilterLevel] for the given [value]. */
-        fun fromValue(value: Int): ExplicitContentFilterLevel {
+        /**
+         * Gets the [ExplicitContentFilterLevel] for the given [value].
+         *
+         * @param value The value to get the [ExplicitContentFilterLevel] for.
+         * @return The [ExplicitContentFilterLevel] for the given [value].
+         */
+        fun fromInt(value: Int): ExplicitContentFilterLevel {
             return values().firstOrNull { it.value == value } ?: UNKNOWN
         }
+    }
+
+    /**
+     * Gets the value of the [ExplicitContentFilterLevel]
+     *
+     * @return The value of the [ExplicitContentFilterLevel].
+     */
+    fun getValue(): Int {
+        return value
     }
 }

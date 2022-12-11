@@ -99,7 +99,7 @@ class YDWKImpl(
                 if (jsonBody == null) {
                     throw IllegalStateException("json body is null")
                 } else {
-                    val channelType = ChannelType.fromId(jsonBody["type"].asInt())
+                    val channelType = ChannelType.fromInt(jsonBody["type"].asInt())
                     if (ChannelType.isGuildChannel(channelType)) {
                         GuildChannelImpl(this, jsonBody, jsonBody["id"].asLong())
                     } else {

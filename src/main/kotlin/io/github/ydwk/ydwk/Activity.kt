@@ -30,23 +30,23 @@ object Activity {
     fun watching(name: String, url: String): ActivityPayload {
         Checks.checkLength(name, 128, "name")
         Checks.checkUrl(url, allowedStreamingUrls)
-        return ActivityPayload(name, ActivityType.WATCHING.activity, url)
+        return ActivityPayload(name, ActivityType.WATCHING.getActivity(), url)
     }
 
     fun playing(name: String): ActivityPayload {
         Checks.checkLength(name, 128, "name")
-        return ActivityPayload(name, ActivityType.PLAYING.activity)
+        return ActivityPayload(name, ActivityType.PLAYING.getActivity())
     }
 
     fun listening(name: String): ActivityPayload {
         Checks.checkLength(name, 128, "name")
-        return ActivityPayload(name, ActivityType.LISTENING.activity)
+        return ActivityPayload(name, ActivityType.LISTENING.getActivity())
     }
 
     fun streaming(name: String, url: String): ActivityPayload {
         Checks.checkLength(name, 128, "name")
         Checks.checkUrl(url, allowedStreamingUrls)
-        return ActivityPayload(name, ActivityType.STREAMING.activity, url)
+        return ActivityPayload(name, ActivityType.STREAMING.getActivity(), url)
     }
 }
 

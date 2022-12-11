@@ -34,7 +34,7 @@ fun replyJsonBody(
     allowedMentions: List<String> = emptyList(),
 ): ObjectNode {
     val mainBody =
-        ydwk.objectNode.put("type", InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE.toInt())
+        ydwk.objectNode.put("type", InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE.getType())
     val secondBody = ydwk.objectNode
 
     if (content != null) secondBody.put("content", content)

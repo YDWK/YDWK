@@ -30,4 +30,4 @@ data class GuildExplicitContentFilterLevelUpdateEvent(
     val newExplicitContentFilterLevel: ExplicitContentFilterLevel
 ) :
     GenericGuildUpdateEvent<Int>(
-        ydwk, entity, oldExplicitContentFilterLevel, newExplicitContentFilterLevel.value)
+        ydwk, entity, oldExplicitContentFilterLevel, newExplicitContentFilterLevel.getValue())

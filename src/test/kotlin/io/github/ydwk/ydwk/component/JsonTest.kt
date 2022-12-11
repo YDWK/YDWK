@@ -78,7 +78,7 @@ class JsonTest {
         val mainBody =
             JsonNodeFactory.instance
                 .objectNode()
-                .put("type", InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE.toInt())
+                .put("type", InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE.getType())
         val secondBody = JsonNodeFactory.instance.objectNode()
         val mainComponent = JsonNodeFactory.instance.arrayNode()
 

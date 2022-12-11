@@ -28,4 +28,6 @@ data class GuildSystemChannelFlagsUpdateEvent(
     override val entity: Guild,
     val oldSystemChannelFlags: Int,
     val newSystemChannelFlags: SystemChannelFlag
-) : GenericGuildUpdateEvent<Int>(ydwk, entity, oldSystemChannelFlags, newSystemChannelFlags.value)
+) :
+    GenericGuildUpdateEvent<Int>(
+        ydwk, entity, oldSystemChannelFlags, newSystemChannelFlags.getValue())

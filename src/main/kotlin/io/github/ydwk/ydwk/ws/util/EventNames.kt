@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.ws.util
 
-enum class EventNames(val eventName: String) {
+enum class EventNames(private val eventName: String) {
     HELLO("HELLO"),
     READY("READY"),
     RESUMED("RESUMED"),
@@ -74,8 +74,23 @@ enum class EventNames(val eventName: String) {
     UNKNOWN("UNKNOWN");
 
     companion object {
+        /**
+         * Get the [EventNames] from the event name.
+         *
+         * @param eventName The event name.
+         * @return The [EventNames] with the event name.
+         */
         fun fromString(eventName: String): EventNames {
             return values().firstOrNull { it.eventName == eventName } ?: UNKNOWN
         }
+    }
+
+    /**
+     * Get the event name.
+     *
+     * @return The event name.
+     */
+    fun getEventName(): String {
+        return eventName
     }
 }

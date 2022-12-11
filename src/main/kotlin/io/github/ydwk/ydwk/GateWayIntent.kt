@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk
 
-enum class GateWayIntent(var value: Int, var privileged: Boolean? = false) {
+enum class GateWayIntent(private var value: Int, private var privileged: Boolean? = false) {
     GUILD_MEMBERS(1),
     GUILD_BANS(2),
     GUILD_WEBHOOKS(5),
@@ -37,7 +37,13 @@ enum class GateWayIntent(var value: Int, var privileged: Boolean? = false) {
     UNKNOWN(-1);
 
     companion object {
-        fun from(value: Int): GateWayIntent {
+        /**
+         * Get the [GateWayIntent] from the given [value].
+         *
+         * @param value The value to get the [GateWayIntent] from.
+         * @return The [GateWayIntent] from the given [value].
+         */
+        fun fromInt(value: Int): GateWayIntent {
             return values().firstOrNull { it.value == value } ?: UNKNOWN
         }
 
@@ -45,6 +51,7 @@ enum class GateWayIntent(var value: Int, var privileged: Boolean? = false) {
          * Calculates the intent value
          *
          * @param intents The intents to calculate
+         * @return The intent value
          */
         fun calculateBitmask(intents: List<GateWayIntent>): Int {
             var bitmask = 0
@@ -54,7 +61,11 @@ enum class GateWayIntent(var value: Int, var privileged: Boolean? = false) {
             return bitmask
         }
 
-        /** Gets the default intents for the gateway. */
+        /**
+         * Gets the default intents for the gateway.
+         *
+         * @return The default intents for the gateway.
+         */
         fun getDefaultIntents(): List<GateWayIntent> {
             return listOf(
                 GUILD_MEMBERS,
@@ -74,5 +85,23 @@ enum class GateWayIntent(var value: Int, var privileged: Boolean? = false) {
 
     override fun toString(): String {
         return value.toString()
+    }
+
+    /**
+     * Get the value of the [GateWayIntent].
+     *
+     * @return The value of the [GateWayIntent].
+     */
+    fun getValue(): Int {
+        return value
+    }
+
+    /**
+     * Whether the intent is privileged.
+     *
+     * @return Whether the intent is privileged.
+     */
+    fun privileged(): Boolean? {
+        return privileged
     }
 }

@@ -35,7 +35,7 @@ open class ChannelImpl(
 ) : Channel {
 
     override val type: ChannelType
-        get() = ChannelType.fromId(json["type"].asInt())
+        get() = ChannelType.fromInt(json["type"].asInt())
 
     override val channelGetter: ChannelGetter
         get() = ChannelGetterImpl(ydwk, json, idAsLong, isGuildChannel, isDmChannel)

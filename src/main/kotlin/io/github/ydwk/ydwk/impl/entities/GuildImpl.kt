@@ -76,13 +76,13 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
         else null
 
     override var verificationLevel: VerificationLevel =
-        VerificationLevel.fromLevel(json["verification_level"].asInt())
+        VerificationLevel.fromInt(json["verification_level"].asInt())
 
     override var defaultMessageNotificationsLevel: MessageNotificationLevel =
-        MessageNotificationLevel.fromValue(json["default_message_notifications"].asInt())
+        MessageNotificationLevel.fromInt(json["default_message_notifications"].asInt())
 
     override var explicitContentFilterLevel: ExplicitContentFilterLevel =
-        ExplicitContentFilterLevel.fromValue(json["explicit_content_filter"].asInt())
+        ExplicitContentFilterLevel.fromInt(json["explicit_content_filter"].asInt())
 
     override var roles: List<Role> = json["roles"].map { RoleImpl(ydwk, it, it["id"].asLong()) }
 
@@ -91,7 +91,7 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
     override var features: Set<GuildFeature> =
         json["features"].map { GuildFeature.fromString(it.asText()) }.toSet()
 
-    override var mfaLevel: MFALevel = MFALevel.fromValue(json["mfa_level"].asInt())
+    override var mfaLevel: MFALevel = MFALevel.fromInt(json["mfa_level"].asInt())
 
     override var applicationId: GetterSnowFlake? =
         if (json.hasNonNull("application_id")) GetterSnowFlake.of(json["application_id"].asLong())
@@ -103,7 +103,7 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
         else null
 
     override var systemChannelFlags: SystemChannelFlag =
-        SystemChannelFlag.fromValue(json["system_channel_flags"].asInt())
+        SystemChannelFlag.fromInt(json["system_channel_flags"].asInt())
 
     override var rulesChannelId: GetterSnowFlake? =
         if (json.hasNonNull("rules_channel_id"))
@@ -123,7 +123,7 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
 
     override var banner: String? = if (json.hasNonNull("banner")) json["banner"].asText() else null
 
-    override var premiumTier: PremiumTier = PremiumTier.fromValue(json["premium_tier"].asInt())
+    override var premiumTier: PremiumTier = PremiumTier.fromInt(json["premium_tier"].asInt())
 
     override var premiumSubscriptionCount: Int = json["premium_subscription_count"].asInt()
 
@@ -151,7 +151,7 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
         if (json.hasNonNull("welcome_screen")) WelcomeScreenImpl(ydwk, json["welcome_screen"])
         else null
 
-    override var nsfwLevel: NSFWLeveL = NSFWLeveL.fromValue(json["nsfw_level"].asInt())
+    override var nsfwLevel: NSFWLeveL = NSFWLeveL.fromInt(json["nsfw_level"].asInt())
 
     override var stickers: List<Sticker> =
         json["stickers"].map { StickerImpl(ydwk, it, it["id"].asLong()) }

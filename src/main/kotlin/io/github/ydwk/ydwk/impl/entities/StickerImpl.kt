@@ -42,10 +42,10 @@ class StickerImpl(
     override var tags: List<String> =
         if (json.has("tags")) json.get("tags").map { it.asText() } else emptyList()
 
-    override var type: StickerType = StickerType.fromValue(json.get("type").asInt())
+    override var type: StickerType = StickerType.fromInt(json.get("type").asInt())
 
     override var formatType: StickerFormatType =
-        StickerFormatType.fromValue(json.get("format_type").asInt())
+        StickerFormatType.fromInt(json.get("format_type").asInt())
 
     override var available: Boolean = json.get("available").asBoolean()
 

@@ -44,7 +44,7 @@ enum class InteractionCallbackType(private val type: Int) {
          * Get the [InteractionCallbackType] from the [type] integer
          *
          * @param type The type integer
-         * @return The [InteractionCallbackType]
+         * @return The [InteractionCallbackType] from the given [type]
          */
         fun fromInt(type: Int): InteractionCallbackType {
             return values().firstOrNull { it.type == type } ?: UNKNOWN
@@ -52,11 +52,11 @@ enum class InteractionCallbackType(private val type: Int) {
     }
 
     /**
-     * Get the type integer
+     * Get the integer type of the [InteractionCallbackType]
      *
-     * @return The type integer
+     * @return The integer type of the [InteractionCallbackType]
      */
-    fun toInt(): Int {
+    fun getType(): Int {
         return type
     }
 }

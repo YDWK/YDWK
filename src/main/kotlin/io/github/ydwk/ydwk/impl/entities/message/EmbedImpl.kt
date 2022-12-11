@@ -33,7 +33,7 @@ class EmbedImpl(override val ydwk: YDWK, override val json: JsonNode) : Embed {
         get() = if (json.hasNonNull("title")) json["title"].asText() else null
 
     override val type: EmbedType?
-        get() = if (json.hasNonNull("type")) EmbedType.from(json["type"].asText()) else null
+        get() = if (json.hasNonNull("type")) EmbedType.fromString(json["type"].asText()) else null
 
     override val description: String?
         get() = if (json.hasNonNull("description")) json["description"].asText() else null

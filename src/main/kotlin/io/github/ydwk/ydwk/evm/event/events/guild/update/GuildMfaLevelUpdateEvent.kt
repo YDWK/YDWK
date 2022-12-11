@@ -28,4 +28,4 @@ data class GuildMfaLevelUpdateEvent(
     override val entity: Guild,
     val oldMfaLevel: Int,
     val newMfaLevel: MFALevel
-) : GenericGuildUpdateEvent<Int>(ydwk, entity, oldMfaLevel, newMfaLevel.value)
+) : GenericGuildUpdateEvent<Int>(ydwk, entity, oldMfaLevel, newMfaLevel.getValue())

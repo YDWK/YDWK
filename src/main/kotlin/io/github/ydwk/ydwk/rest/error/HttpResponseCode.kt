@@ -35,16 +35,31 @@ enum class HttpResponseCode(private val code: Int, private val message: String) 
     UNKNOWN(-1, "Unknown error code.");
 
     companion object {
-        /** Gets the [HttpResponseCode] from the code */
-        fun fromCode(code: Int): HttpResponseCode {
+        /**
+         * Gets the [HttpResponseCode] from the code
+         *
+         * @param code The code to get the [HttpResponseCode] from.
+         * @return The [HttpResponseCode] from the given [code].
+         */
+        fun fromInt(code: Int): HttpResponseCode {
             return values().firstOrNull { it.code == code } ?: UNKNOWN
         }
     }
 
+    /**
+     * Gets the code of the [HttpResponseCode].
+     *
+     * @return The code of the [HttpResponseCode].
+     */
     fun getCode(): Int {
         return code
     }
 
+    /**
+     * Gets the message of the [HttpResponseCode].
+     *
+     * @return The message of the [HttpResponseCode].
+     */
     fun getMessage(): String {
         return message
     }

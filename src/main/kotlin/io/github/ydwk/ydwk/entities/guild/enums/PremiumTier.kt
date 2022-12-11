@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.entities.guild.enums
 
-enum class PremiumTier(val value: Int) {
+enum class PremiumTier(private val value: Int) {
     /** Guild has not unlocked any Server Boost perks. */
     NONE(0),
 
@@ -35,9 +35,23 @@ enum class PremiumTier(val value: Int) {
     UNKNOWN(-1);
 
     companion object {
-        /** Gets the [PremiumTier] by its [value]. */
-        fun fromValue(value: Int): PremiumTier {
+        /**
+         * Gets the [PremiumTier] by its [value].
+         *
+         * @param value The value to get the [PremiumTier] by.
+         * @return The [PremiumTier] by the given [value].
+         */
+        fun fromInt(value: Int): PremiumTier {
             return values().firstOrNull { it.value == value } ?: UNKNOWN
         }
+    }
+
+    /**
+     * Gets the value of the [PremiumTier].
+     *
+     * @return The value of the [PremiumTier].
+     */
+    fun getValue(): Int {
+        return value
     }
 }

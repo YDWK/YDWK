@@ -47,12 +47,12 @@ open class GuildUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, js
         val oldWidgetEnabled = guild.isWidgetEnabled
         val oldWidgetChannelId = guild.widgetChannelId
         val oldVerificationLevel = guild.verificationLevel
-        val oldDefaultMessageNotifications = guild.defaultMessageNotificationsLevel.value
-        val oldExplicitContentFilter = guild.explicitContentFilterLevel.value
-        val oldMfaLevel = guild.mfaLevel.value
+        val oldDefaultMessageNotifications = guild.defaultMessageNotificationsLevel.getValue()
+        val oldExplicitContentFilter = guild.explicitContentFilterLevel.getValue()
+        val oldMfaLevel = guild.mfaLevel.getValue()
         val oldApplicationId = guild.applicationId
         val oldSystemChannelId = guild.systemChannelId
-        val oldSystemChannelFlags = guild.systemChannelFlags.value
+        val oldSystemChannelFlags = guild.systemChannelFlags.getValue()
         val oldRulesChannelId = guild.rulesChannelId
         val oldMaxPresences = guild.maxPresences
         val oldMaxMembers = guild.maxMembers
@@ -67,7 +67,7 @@ open class GuildUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, js
         val oldApproximateMemberCount = guild.approximateMemberCount
         val oldApproximatePresenceCount = guild.approximatePresenceCount
         val oldWelcomeScreen = guild.welcomeScreen
-        val oldNSFWLevel = guild.nsfwLevel.level
+        val oldNSFWLevel = guild.nsfwLevel.getLevel()
         val oldStickers = guild.stickers
         val wasBoostProgressBarEnabled = guild.isBoostProgressBarEnabled
         val oldEmoji = guild.emojis
@@ -133,7 +133,7 @@ open class GuildUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, js
                 newWidgetEnabled,
                 oldWidgetChannelId?.asLong,
                 newWidgetChannelId,
-                oldVerificationLevel.level,
+                oldVerificationLevel.getLevel(),
                 newVerificationLevel,
                 oldDefaultMessageNotifications,
                 newDefaultMessageNotifications,
@@ -159,7 +159,7 @@ open class GuildUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, js
                 newDescription,
                 oldBanner,
                 newBanner,
-                oldPremiumTier.value,
+                oldPremiumTier.getValue(),
                 newPremiumTier,
                 oldPremiumSubscriptionCount,
                 newPremiumSubscriptionCount,

@@ -58,7 +58,7 @@ class RoleImpl(override val ydwk: YDWK, override val json: JsonNode, override va
 
     override var rawPermissions: Long = json["permissions"].asLong()
 
-    override var permissions: EnumSet<GuildPermission> = GuildPermission.fromValues(rawPermissions)
+    override var permissions: EnumSet<GuildPermission> = GuildPermission.fromLongs(rawPermissions)
 
     override var name: String = json["name"].asText()
 

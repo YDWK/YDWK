@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.entities.guild.enums
 
-enum class GuildFeature(val feature: String) {
+enum class GuildFeature(private val feature: String) {
     /** Guild has access to set an animated guild banner image */
     ANIMATED_BANNER("ANIMATED_BANNER"),
 
@@ -92,9 +92,23 @@ enum class GuildFeature(val feature: String) {
     UNKNOWN("UNKNOWN");
 
     companion object {
-        /** Gets the [GuildFeature] for the provided [feature]. */
+        /**
+         * Gets the [GuildFeature] for the provided [feature].
+         *
+         * @param feature The feature to get the [GuildFeature] for.
+         * @return The [GuildFeature] for the provided [feature].
+         */
         fun fromString(feature: String): GuildFeature {
             return values().firstOrNull { it.feature == feature } ?: UNKNOWN
         }
+    }
+
+    /**
+     * Gets the feature of the [GuildFeature].
+     *
+     * @return The feature of the [GuildFeature].
+     */
+    override fun toString(): String {
+        return feature
     }
 }

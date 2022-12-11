@@ -28,4 +28,4 @@ data class GuildNSFWLevelUpdateEvent(
     override val entity: Guild,
     val oldNSFWLevel: Int,
     val newNSFWLevel: NSFWLeveL
-) : GenericGuildUpdateEvent<Int>(ydwk, entity, oldNSFWLevel, newNSFWLevel.level)
+) : GenericGuildUpdateEvent<Int>(ydwk, entity, oldNSFWLevel, newNSFWLevel.getLevel())

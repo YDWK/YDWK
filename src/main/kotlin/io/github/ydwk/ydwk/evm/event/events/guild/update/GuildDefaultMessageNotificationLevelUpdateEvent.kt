@@ -30,4 +30,7 @@ data class GuildDefaultMessageNotificationLevelUpdateEvent(
     val newDefaultMessageNotificationLevel: MessageNotificationLevel
 ) :
     GenericGuildUpdateEvent<Int>(
-        ydwk, entity, oldDefaultMessageNotificationLevel, newDefaultMessageNotificationLevel.value)
+        ydwk,
+        entity,
+        oldDefaultMessageNotificationLevel,
+        newDefaultMessageNotificationLevel.getValue())

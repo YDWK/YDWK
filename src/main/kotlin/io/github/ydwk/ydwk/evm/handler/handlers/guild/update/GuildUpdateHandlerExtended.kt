@@ -350,13 +350,10 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
         oldVerificationLevel: Int,
         newVerificationLevel: Int
     ) {
-        guild.verificationLevel = VerificationLevel.fromLevel(newVerificationLevel)
+        guild.verificationLevel = VerificationLevel.fromInt(newVerificationLevel)
         ydwk.emitEvent(
             GuildVerificationLevelUpdateEvent(
-                ydwk,
-                guild,
-                oldVerificationLevel,
-                VerificationLevel.fromLevel(newVerificationLevel)))
+                ydwk, guild, oldVerificationLevel, VerificationLevel.fromInt(newVerificationLevel)))
         logger.debug(
             "Guild verification level changed from $oldVerificationLevel to $newVerificationLevel")
     }
@@ -367,13 +364,13 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
         newDefaultMessageNotifications: Int
     ) {
         guild.defaultMessageNotificationsLevel =
-            MessageNotificationLevel.fromValue(newDefaultMessageNotifications)
+            MessageNotificationLevel.fromInt(newDefaultMessageNotifications)
         ydwk.emitEvent(
             GuildDefaultMessageNotificationLevelUpdateEvent(
                 ydwk,
                 guild,
                 oldDefaultMessageNotifications,
-                MessageNotificationLevel.fromValue(newDefaultMessageNotifications)))
+                MessageNotificationLevel.fromInt(newDefaultMessageNotifications)))
         logger.debug(
             "Guild default message notifications changed from $oldDefaultMessageNotifications to $newDefaultMessageNotifications")
     }
@@ -384,21 +381,21 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
         newExplicitContentFilter: Int
     ) {
         guild.explicitContentFilterLevel =
-            ExplicitContentFilterLevel.fromValue(newExplicitContentFilter)
+            ExplicitContentFilterLevel.fromInt(newExplicitContentFilter)
         ydwk.emitEvent(
             GuildExplicitContentFilterLevelUpdateEvent(
                 ydwk,
                 guild,
                 oldExplicitContentFilter,
-                ExplicitContentFilterLevel.fromValue(newExplicitContentFilter)))
+                ExplicitContentFilterLevel.fromInt(newExplicitContentFilter)))
         logger.debug(
             "Guild explicit content filter changed from $oldExplicitContentFilter to $newExplicitContentFilter")
     }
 
     private fun onMfaLevelChange(guild: GuildImpl, oldMfaLevel: Int, newMfaLevel: Int) {
-        guild.mfaLevel = MFALevel.fromValue(newMfaLevel)
+        guild.mfaLevel = MFALevel.fromInt(newMfaLevel)
         ydwk.emitEvent(
-            GuildMfaLevelUpdateEvent(ydwk, guild, oldMfaLevel, MFALevel.fromValue(newMfaLevel)))
+            GuildMfaLevelUpdateEvent(ydwk, guild, oldMfaLevel, MFALevel.fromInt(newMfaLevel)))
         logger.debug("Guild mfa level changed from $oldMfaLevel to $newMfaLevel")
     }
 
@@ -429,13 +426,13 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
         oldSystemChannelFlags: Int,
         newSystemChannelFlags: Int
     ) {
-        guild.systemChannelFlags = SystemChannelFlag.fromValue(newSystemChannelFlags)
+        guild.systemChannelFlags = SystemChannelFlag.fromInt(newSystemChannelFlags)
         ydwk.emitEvent(
             GuildSystemChannelFlagsUpdateEvent(
                 ydwk,
                 guild,
                 oldSystemChannelFlags,
-                SystemChannelFlag.fromValue(newSystemChannelFlags)))
+                SystemChannelFlag.fromInt(newSystemChannelFlags)))
         logger.debug(
             "Guild system channel flags changed from $oldSystemChannelFlags to $newSystemChannelFlags")
     }
@@ -494,7 +491,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     }
 
     private fun onPremiumTierChange(guild: GuildImpl, oldPremiumTier: Int, newPremiumTier: Int) {
-        guild.premiumTier = PremiumTier.fromValue(newPremiumTier)
+        guild.premiumTier = PremiumTier.fromInt(newPremiumTier)
         ydwk.emitEvent(GuildPremiumTierUpdateEvent(ydwk, guild, oldPremiumTier, newPremiumTier))
         logger.debug("Guild premium tier changed from $oldPremiumTier to $newPremiumTier")
     }
@@ -592,9 +589,9 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     }
 
     private fun onNSFWLevelChange(guild: GuildImpl, oldNSFWLevel: Int, newNSFWLevel: Int) {
-        guild.nsfwLevel = NSFWLeveL.fromValue(newNSFWLevel)
+        guild.nsfwLevel = NSFWLeveL.fromInt(newNSFWLevel)
         ydwk.emitEvent(
-            GuildNSFWLevelUpdateEvent(ydwk, guild, oldNSFWLevel, NSFWLeveL.fromValue(newNSFWLevel)))
+            GuildNSFWLevelUpdateEvent(ydwk, guild, oldNSFWLevel, NSFWLeveL.fromInt(newNSFWLevel)))
         logger.debug("Guild NSFW level changed from $oldNSFWLevel to $newNSFWLevel")
     }
 
