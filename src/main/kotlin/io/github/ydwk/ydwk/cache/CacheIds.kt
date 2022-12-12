@@ -46,10 +46,20 @@ enum class CacheIds(private val value: String, private val cacheType: CacheType)
         }
     }
 
-    override fun toString(): String {
+    /**
+     * Gets the value of the [CacheIds].
+     *
+     * @return The value of the [CacheIds].
+     */
+    fun getValue(): String {
         return value
     }
 
+    /**
+     * Gets the [CacheType] of the [CacheIds].
+     *
+     * @return The [CacheType] of the [CacheIds].
+     */
     fun getCacheType(): CacheType {
         return cacheType
     }

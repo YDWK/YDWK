@@ -47,7 +47,12 @@ enum class UserStatus(private val status: String) {
         }
     }
 
-    override fun toString(): String {
+    /**
+     * Gets the status string.
+     *
+     * @return The status string.
+     */
+    fun getStatus(): String {
         return status
     }
 }

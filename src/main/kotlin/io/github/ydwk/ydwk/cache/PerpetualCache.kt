@@ -41,10 +41,10 @@ open class PerpetualCache(
             if (cache.containsKey(key) && (value !is Guild || value !is UnavailableGuild)) {
                 logger.debug("Cache already contains key: $key")
             } else if (value !is Guild || value !is UnavailableGuild) {
-                cache[key + cacheType.toString()] = value
+                cache[key + cacheType.getValue()] = value
             } else {
-                cache.remove(key + cacheType.toString())
-                cache[key + cacheType.toString()] = value
+                cache.remove(key + cacheType.getValue())
+                cache[key + cacheType.getValue()] = value
             }
         }
     }
@@ -53,7 +53,7 @@ open class PerpetualCache(
         return if (cacheType !in allowedCache) {
             null
         } else {
-            cache[key + cacheType.toString()]
+            cache[key + cacheType.getValue()]
         }
     }
 
@@ -61,7 +61,7 @@ open class PerpetualCache(
         return if (cacheType !in allowedCache) {
             value
         } else {
-            cache.getOrPut(key + cacheType.toString()) { value }
+            cache.getOrPut(key + cacheType.getValue()) { value }
         }
     }
 
@@ -70,7 +70,7 @@ open class PerpetualCache(
             throw CacheException("The caching of type $cacheType has been disabled")
         } else {
             logger.debug("Removing from cache: $key")
-            return cache.remove(key + cacheType.toString())
+            return cache.remove(key + cacheType.getValue())
         }
     }
 
@@ -79,7 +79,7 @@ open class PerpetualCache(
     }
 
     override fun contains(key: String, cacheType: CacheIds): Boolean {
-        return cache.containsKey(key + cacheType.toString())
+        return cache.containsKey(key + cacheType.getValue())
     }
 
     override fun clear() {
@@ -87,6 +87,6 @@ open class PerpetualCache(
     }
 
     override fun values(cacheType: CacheIds): List<Any> {
-        return cache.filter { it.key.endsWith(cacheType.toString()) }.values.toList()
+        return cache.filter { it.key.endsWith(cacheType.getValue()) }.values.toList()
     }
 }

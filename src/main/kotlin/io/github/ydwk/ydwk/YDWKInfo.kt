@@ -37,7 +37,7 @@ enum class YDWKInfo(private val url: String) {
          * @return The full discord gateway url.
          */
         fun fromString(info: YDWKInfo): String {
-            return info.toString()
+            return info.url
         }
     }
 
