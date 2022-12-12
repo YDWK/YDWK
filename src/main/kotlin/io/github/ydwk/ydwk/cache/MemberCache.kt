@@ -55,7 +55,7 @@ interface MemberCache {
      * @param member The member which voice state is to be updated
      * @param voiceState The new voice state
      * @param add If true, the voice state will be added to the member's voice states, otherwise it
-     * will be removed
+     *   will be removed
      */
     fun updateVoiceState(member: Member, voiceState: VoiceState, add: Boolean)
 

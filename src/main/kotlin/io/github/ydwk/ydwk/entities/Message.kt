@@ -216,8 +216,8 @@ interface Message : SnowFlake, GenericEntity {
      * Gets the position of this message.
      *
      * @return A generally increasing integer (there may be gaps or duplicates) that represents the
-     * approximate position of the message in a thread, it can be used to estimate the relative
-     * position of the message in a thread in company with total_message_sent on parent thread.
+     *   approximate position of the message in a thread, it can be used to estimate the relative
+     *   position of the message in a thread in company with total_message_sent on parent thread.
      */
     val position: Long?
 

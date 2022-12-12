@@ -59,7 +59,8 @@ object EvenTester {
             {
               "title" : "Event Test"
             }
-        """.trimIndent(),
+        """
+                    .trimIndent(),
                 embedJson)
         }
     }
@@ -74,6 +75,7 @@ object EvenTester {
             {
               "title" : "Event Test"
             }
-        """.trimIndent()
+        """
+                .trimIndent()
     }
 }

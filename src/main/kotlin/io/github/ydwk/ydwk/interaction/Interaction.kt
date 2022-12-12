@@ -114,7 +114,7 @@ interface Interaction : SnowFlake, GenericEntity {
      * sent from
      *
      * @return bitwise set of permissions the app or bot has within the channel the interaction was
-     * sent from
+     *   sent from
      */
     val permissions: Long?
 

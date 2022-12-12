@@ -38,7 +38,9 @@ interface ActionRow : Component {
          * Example:
          * ```
          * ```
+         *
          * kotlin
+         *
          * ```
          * val actionRow = ActionRow.of(Button.of(ydwk, ButtonStyle.PRIMARY, "1", "Primary"))
          *
@@ -61,7 +63,9 @@ interface ActionRow : Component {
          * Example:
          * ```
          * ```
+         *
          * kotlin
+         *
          * ```
          * val actionRow = ActionRow.of(Button.of(ydwk, ButtonStyle.PRIMARY, "1", "Primary"))
          *

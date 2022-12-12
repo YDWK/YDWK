@@ -100,7 +100,8 @@ class SlashTest {
                 } ]
               } ]
             }
-        """.trimIndent()
+        """
+                .trimIndent()
 
         assertEquals(json.toPrettyString(), actualJson)
     }
