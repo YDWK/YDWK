@@ -164,7 +164,8 @@ open class WebSocketManager(
                  | |       / _ \  | '_ \  | '_ \   / _ \  / __| | __|  / _ \  / _` |   | __|  / _ \      \   /   | |  | |   \ \/  \/ /   |  <  
                  | |____  | (_) | | | | | | | | | |  __/ | (__  | |_  |  __/ | (_| |   | |_  | (_) |      | |    | |__| |    \  /\  /    | . \ 
                   \_____|  \___/  |_| |_| |_| |_|  \___|  \___|  \__|  \___|  \__,_|    \__|  \___/       |_|    |_____/      \/  \/     |_|\_\
-            """.trimIndent())
+            """
+                        .trimIndent())
                 alreadySentConnectMessageOnce = true
             } else {
                 logger.info("Reconnected to gateway")

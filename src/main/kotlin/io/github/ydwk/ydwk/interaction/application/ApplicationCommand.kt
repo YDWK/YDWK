@@ -118,7 +118,7 @@ interface ApplicationCommand : SnowFlake, GenericCommandData {
      * sent from
      *
      * @return bitwise set of permissions the app or bot has within the channel the interaction was
-     * sent from
+     *   sent from
      */
     val permissions: Long?
 }

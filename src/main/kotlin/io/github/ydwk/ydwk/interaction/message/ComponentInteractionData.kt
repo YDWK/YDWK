@@ -41,7 +41,7 @@ interface ComponentInteractionData : GenericCommandData {
      * [ComponentType.SELECT_MENU].
      *
      * @return An array of select option values, if the component is a select menu of type
-     * [ComponentType.SELECT_MENU].
+     *   [ComponentType.SELECT_MENU].
      */
     val values: List<SelectOptionValue>?
 

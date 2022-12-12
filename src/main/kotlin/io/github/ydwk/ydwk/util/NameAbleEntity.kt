@@ -38,6 +38,7 @@ interface NameAbleEntity : Formattable {
      * Formats the object using the provided {@link Formatter formatter}.
      *
      * @param formatter
+     *
      * ```
      *         The {@link Formatter formatter}.  Implementing classes may call
      *         {@link Formatter#out() formatter.out()} or {@link

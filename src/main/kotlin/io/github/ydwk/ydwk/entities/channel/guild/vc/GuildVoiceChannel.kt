@@ -41,7 +41,7 @@ interface GuildVoiceChannel : GuildChannel {
      * @param isMuted Whether the bot should be muted.
      * @param isDeafened Whether the bot should be deafened.
      * @return A [CompletableFuture] that completes with the [VoiceConnection] when the bot has
-     * joined the voice channel.
+     *   joined the voice channel.
      */
     fun joinCompletableFuture(
         isMuted: Boolean = false,
