@@ -109,7 +109,7 @@ spotless {
     kotlin {
         // Excludes build folder since it contains generated java classes.
         targetExclude("build/**")
-        ktfmt("0.39").dropboxStyle()
+        ktfmt("0.42").dropboxStyle()
 
         licenseHeader(
             """/*
