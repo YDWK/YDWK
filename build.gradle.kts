@@ -134,7 +134,7 @@ spotless {
 
     kotlinGradle {
         target("**/*.gradle.kts")
-        ktfmt("0.39").dropboxStyle()
+        ktfmt("0.42").dropboxStyle()
         trimTrailingWhitespace()
         indentWithSpaces()
         endWithNewline()
@@ -146,6 +146,12 @@ application { mainClass.set("MainKt") }
 java {
     withJavadocJar()
     withSourcesJar()
+
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+tasks.jar {
     manifest {
         attributes(
             "Implementation-Title" to project.name,
@@ -160,9 +166,6 @@ java {
             "Implementation-License-Url" to project.extra["gpl_url"],
         )
     }
-
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
 }
 
 tasks.javadoc {
@@ -276,7 +279,7 @@ signing {
 tasks.getByName("dokkaHtml", DokkaTask::class) {
     dokkaSourceSets.configureEach {
         includes.from("Package.md")
-        jdkVersion.set(17)
+        jdkVersion.set(11)
         sourceLink {
             localDirectory.set(file("src/main/kotlin"))
             remoteUrl.set(

@@ -103,7 +103,6 @@ open class SimilarRestApiImpl(
                             val manager = CompletableFutureManager(response, ydwk)
                             val result = function.apply(manager)
                             queue.complete(result)
-                            logger.debug(HttpResponseCode.OK.getMessage())
                         }
                     })
         } catch (e: Exception) {
@@ -129,7 +128,6 @@ open class SimilarRestApiImpl(
                                 error(response.body, code, queue, null)
                             }
                             queue.complete(NoResult(formatInstant(Instant.now())))
-                            logger.debug(HttpResponseCode.OK.getMessage())
                         }
                     })
         } catch (e: Exception) {
@@ -163,15 +161,21 @@ open class SimilarRestApiImpl(
         val jsonNode = ydwk.objectMapper.readTree(body.string())
         val retryAfter = jsonNode.get("retry_after").asLong()
         val global = jsonNode.get("global").asBoolean()
-        val message = jsonNode.get("message").asText()
-        logger.error("Error while executing request: $message")
         if (global) {
-            logger.error("Global rate limit reached, retrying in $retryAfter ms")
-            Thread.sleep(retryAfter)
+            logger.debug("Global rate limit reached, retrying in $retryAfter ms")
+            try {
+                Thread.sleep(retryAfter)
+            } catch (e: InterruptedException) {
+                logger.error("Error while sleeping", e)
+            }
             completeReTry(queueWithNoResult, queueWithResult)
         } else {
-            logger.error("Rate limit reached, retrying in $retryAfter ms")
-            Thread.sleep(retryAfter)
+            logger.debug("Rate limit reached, retrying in $retryAfter ms")
+            try {
+                Thread.sleep(retryAfter)
+            } catch (e: InterruptedException) {
+                logger.error("Error while sleeping", e)
+            }
             completeReTry(queueWithNoResult, queueWithResult)
         }
     }
