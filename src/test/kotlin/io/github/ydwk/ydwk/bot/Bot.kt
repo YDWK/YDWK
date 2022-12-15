@@ -51,6 +51,7 @@ fun main() {
                         "member", "The member to test the option with", SlashOptionType.USER)))
         .addSlashCommand(Slash("leave_vc", "Leaves a vc"))
         .addSlashCommand("button", "A button test")
+        .addSlashCommand("bot_info", "Gets the bot info")
         .build()
 
     ydwk.on<SlashCommandEvent> {
@@ -126,6 +127,11 @@ fun main() {
                                 Button.of(ButtonStyle.DANGER, "4", "Danger"),
                                 Button.of("Link", "https://google.com")))
                         .reply()
+                }
+            }
+            "bot_info" -> {
+                withContext(Dispatchers.IO) {
+                    it.slash.reply("Bot info: ${it.slash.guild?.botAsMember?.joinedAt}").reply()
                 }
             }
         }
