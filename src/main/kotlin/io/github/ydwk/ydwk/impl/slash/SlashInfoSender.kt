@@ -27,7 +27,7 @@ class SlashInfoSender(
     val ydwk: YDWKImpl,
     private val guildIds: MutableList<String>,
     val applicationId: String,
-    slashCommands: MutableList<Slash>
+    slashCommands: List<Slash>
 ) {
     init {
         ydwk.logger.info("Sending slash commands to Discord")
@@ -59,10 +59,8 @@ class SlashInfoSender(
         if (currentGlobalSlashCommandsNameAndId.isNotEmpty()) {
             currentGlobalSlashCommandsNameAndId.forEach { (id, name) ->
                 if (globalSlashCommands.containsKey(name)) {
-                    ydwk.logger.info("Slash command $name already exists, skipping")
                     globalSlashCommandsToAdd.add(globalSlashCommands[name]!!)
                 } else if (!globalSlashCommands.containsKey(name)) {
-                    ydwk.logger.info("Slash command $name does not exist, deleting")
                     globalSlashCommandsIdsToDelete.add(id)
                 } else {
                     globalSlashCommandsToAdd.add(globalSlashCommands[name]!!)
@@ -89,32 +87,71 @@ class SlashInfoSender(
         }
 
         // being rate limited, do 5 at a time
-        val globalSlashCommandsToAddChunks = globalSlashCommandsToAdd.chunked(4)
-        val guildSlashCommandsToAddChunks = guildSlashCommandsToAdd.chunked(4)
+        val globalSlashCommandsToAddChunks = globalSlashCommandsToAdd.chunked(1)
+        val guildSlashCommandsToAddChunks = guildSlashCommandsToAdd.chunked(1)
 
         if (globalSlashCommandsToAddChunks.isNotEmpty()) {
-            globalSlashCommandsToAddChunks.forEach { chunk -> createGlobalSlashCommands(chunk) }
+            var amountAdded = 0
+            globalSlashCommandsToAddChunks.forEach {
+                if (amountAdded >= 4) {
+                    ydwk.logger.debug("Sleeping for 25 seconds to avoid rate limit")
+                    Thread.sleep(25000)
+                    amountAdded = 0
+                    createGlobalSlashCommands(it)
+                } else {
+                    amountAdded++
+                    createGlobalSlashCommands(it)
+                }
+            }
         }
 
         if (guildSlashCommandsToAddChunks.isNotEmpty()) {
+            var amountAdded = 0
             guildSlashCommandsToAddChunks.forEach { chunk ->
-                guildIds.forEach { guildId -> createGuildSlashCommands(guildId, chunk) }
+                guildIds.forEach { guildId ->
+                    if (amountAdded >= 4) {
+                        ydwk.logger.debug("Sleeping for 25 seconds to avoid rate limit")
+                        Thread.sleep(25000)
+                        createGuildSlashCommands(guildId, chunk)
+                    } else {
+                        amountAdded++
+                        createGuildSlashCommands(guildId, chunk)
+                    }
+                }
             }
         }
 
-        val globalSlashCommandsIdsToDeleteChunks = globalSlashCommandsIdsToDelete.chunked(4)
-        val guildSlashCommandsIdsToDeleteChunks = guildSlashCommandsIdsToDelete.chunked(4)
+        val globalSlashCommandsIdsToDeleteChunks = globalSlashCommandsIdsToDelete.chunked(1)
+        val guildSlashCommandsIdsToDeleteChunks = guildSlashCommandsIdsToDelete.chunked(1)
 
-        if (globalSlashCommandsIdsToDelete.isNotEmpty()) {
+        if (globalSlashCommandsIdsToDeleteChunks.isNotEmpty()) {
+            var amountDeleted = 0
             globalSlashCommandsIdsToDeleteChunks.forEach { chunk ->
-                deleteGlobalSlashCommands(chunk)
+                if (amountDeleted >= 4) {
+                    ydwk.logger.debug("Sleeping for 25 seconds to avoid rate limit")
+                    Thread.sleep(25000)
+                    amountDeleted = 0
+                    deleteGlobalSlashCommands(chunk)
+                } else {
+                    amountDeleted++
+                    deleteGlobalSlashCommands(chunk)
+                }
             }
         }
 
-        if (guildSlashCommandsIdsToDelete.isNotEmpty()) {
-            guildIds.forEach { guildId ->
+        if (guildSlashCommandsIdsToDeleteChunks.isNotEmpty()) {
+            guildIds.forEach { _ ->
+                var amountDeleted = 0
                 guildSlashCommandsIdsToDeleteChunks.forEach { chunk ->
-                    deleteGuildSlashCommands(chunk)
+                    if (amountDeleted >= 4) {
+                        ydwk.logger.debug("Sleeping for 25 seconds to avoid rate limit")
+                        Thread.sleep(25000)
+                        amountDeleted = 0
+                        deleteGuildSlashCommands(chunk)
+                    } else {
+                        amountDeleted++
+                        deleteGuildSlashCommands(chunk)
+                    }
                 }
             }
         }
@@ -156,7 +193,7 @@ class SlashInfoSender(
 
     private fun deleteGlobalSlashCommands(ids: List<Long>) {
         ids.forEach { id ->
-            ydwk.logger.info("Deleting global slash command with id $id")
+            ydwk.logger.debug("Deleting global slash command with id $id")
             ydwk.restApiManager
                 .delete(
                     EndPoint.ApplicationCommandsEndpoint.DELETE_GLOBAL_COMMAND,
@@ -169,7 +206,7 @@ class SlashInfoSender(
     private fun deleteGuildSlashCommands(ids: List<Long>) {
         ids.forEach { id ->
             guildIds.forEach { guildId ->
-                ydwk.logger.info("Deleting guild slash command $id")
+                ydwk.logger.debug("Deleting guild slash command $id")
                 ydwk.restApiManager
                     .delete(
                         EndPoint.ApplicationCommandsEndpoint.DELETE_GUILD_COMMAND,
@@ -183,7 +220,7 @@ class SlashInfoSender(
 
     private fun createGlobalSlashCommands(slashCommands: List<Slash>) {
         slashCommands.forEach { slash ->
-            ydwk.logger.info("Sending global slash command ${slash.name} to Discord")
+            ydwk.logger.debug("Sending global slash command ${slash.name} to Discord")
             ydwk.restApiManager
                 .post(
                     slash.toJson().toString().toRequestBody(),
@@ -195,7 +232,7 @@ class SlashInfoSender(
 
     private fun createGuildSlashCommands(guildId: String, slashCommands: List<Slash>) {
         slashCommands.forEach { slash ->
-            ydwk.logger.info("Sending slash command ${slash.name} to guild $guildId")
+            ydwk.logger.debug("Sending slash command ${slash.name} to guild $guildId")
             ydwk.restApiManager
                 .post(
                     slash.toJson().toString().toRequestBody(),

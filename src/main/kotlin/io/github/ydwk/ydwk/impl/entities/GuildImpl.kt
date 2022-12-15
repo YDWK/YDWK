@@ -32,6 +32,7 @@ import io.github.ydwk.ydwk.entities.guild.WelcomeScreen
 import io.github.ydwk.ydwk.entities.guild.enums.*
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.guild.BanImpl
+import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
 import io.github.ydwk.ydwk.impl.entities.guild.RoleImpl
 import io.github.ydwk.ydwk.impl.entities.guild.WelcomeScreenImpl
 import io.github.ydwk.ydwk.rest.EndPoint
@@ -169,12 +170,24 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
         }
 
     override val botAsMember: Member
-        get() =
-            if (ydwk.bot?.let { ydwk.getMemberById(this.id, it.id) } == null) {
-                throw IllegalStateException("Bot is not a member of this guild")
-            } else {
-                ydwk.getMemberById(this.id, ydwk.bot!!.id)!!
-            }
+        get() {
+            return ydwk.getMemberById(
+                id, ydwk.bot?.id ?: throw IllegalStateException("Bot id is null"))
+                ?: ydwk.restApiManager
+                    .get(EndPoint.GuildEndpoint.GET_MEMBER, id, ydwk.bot?.id!!)
+                    .execute { it ->
+                        val jsonBody = it.jsonBody
+                        jsonBody?.let {
+                            val member = MemberImpl(ydwk as YDWKImpl, it, this)
+                            (ydwk as YDWKImpl)
+                                .memberCache
+                                .set(id, it["user"]["id"].asText(), member)
+                            member
+                        }
+                            ?: throw IllegalStateException("Response body is null")
+                    }
+                    .get()
+        }
 
     override fun getRoleById(roleId: Long): Role? {
         return if (roles.any { it.idAsLong == roleId }) {

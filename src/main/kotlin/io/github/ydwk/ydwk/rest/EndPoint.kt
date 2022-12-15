@@ -74,7 +74,8 @@ open class EndPoint {
         GET_AUDIT_LOGS("/guilds/%s/audit-logs"),
         GET_MEMBERS("/guilds/%s/members"),
         GET_GUILD("/guilds/%s"),
-        GET_GUILD_CHANNELS("/guilds/%s/channels");
+        GET_GUILD_CHANNELS("/guilds/%s/channels"),
+        GET_MEMBER("/guilds/%s/members/%s");
 
         override fun getEndpoint(): String {
             return endPoint
