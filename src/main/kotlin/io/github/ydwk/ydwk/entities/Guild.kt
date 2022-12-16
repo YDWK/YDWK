@@ -330,7 +330,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
                     .toString()
                     .toRequestBody(),
                 EndPoint.UserEndpoint.CREATE_DM)
-            .execute { it ->
+            .execute {
                 val jsonBody = it.jsonBody
                 if (jsonBody == null) {
                     throw IllegalStateException("json body is null")

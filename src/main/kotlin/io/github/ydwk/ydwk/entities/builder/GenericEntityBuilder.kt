@@ -16,32 +16,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.builder.guild
+package io.github.ydwk.ydwk.entities.builder
 
-import io.github.ydwk.ydwk.entities.Guild
 import java.util.concurrent.CompletableFuture
 
-/** Used to create a guild. */
-interface GuildBuilder {
-
+interface GenericEntityBuilder<T> {
     /**
-     * Sets the name of the guild.
+     * Used to create the new entity.
      *
-     * @param name the name of the guild
+     * @return A completable future that completes with the created entity.
      */
-    fun setName(name: String): GuildBuilder
-
-    /**
-     * Sets the description of the guild.
-     *
-     * @param description the description of the guild
-     */
-    fun setDescription(description: String): GuildBuilder
-
-    /**
-     * Builds the guild.
-     *
-     * @return a future which will contain the guild
-     */
-    fun build(): CompletableFuture<Guild>
+    fun create(): CompletableFuture<T>
 }

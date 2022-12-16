@@ -16,26 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.builder
+package io.github.ydwk.ydwk.entities.builder.guild
 
-import io.github.ydwk.ydwk.entities.builder.guild.GuildEntitiesBuilder
-
-/** Used to create entities which are not guild specific. */
-interface EntityBuilder {
-
-    /**
-     * Used to create a new guild.
-     *
-     * @param name the name of the guild
-     * @return a guild entity builder
-     */
-    fun createGuild(name: String): GuildBuilder
-
-    /**
-     * Used to get a guild entity builder.
-     *
-     * @param id the id of the guild
-     * @return a guild entity builder
-     */
-    fun getGuild(id: String): GuildEntitiesBuilder
-}
+interface RoleBuilder {}

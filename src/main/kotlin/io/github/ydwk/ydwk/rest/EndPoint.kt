@@ -75,7 +75,8 @@ open class EndPoint {
         GET_MEMBERS("/guilds/%s/members"),
         GET_GUILD("/guilds/%s"),
         GET_GUILD_CHANNELS("/guilds/%s/channels"),
-        GET_MEMBER("/guilds/%s/members/%s");
+        GET_MEMBER("/guilds/%s/members/%s"),
+        CREATE_GUILD("/guilds");
 
         override fun getEndpoint(): String {
             return endPoint

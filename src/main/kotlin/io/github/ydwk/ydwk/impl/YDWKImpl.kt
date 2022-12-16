@@ -28,6 +28,7 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.cache.*
 import io.github.ydwk.ydwk.entities.*
 import io.github.ydwk.ydwk.entities.application.PartialApplication
+import io.github.ydwk.ydwk.entities.builder.EntityBuilder
 import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.channel.GuildChannel
 import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
@@ -40,6 +41,7 @@ import io.github.ydwk.ydwk.evm.backend.managers.CoroutineEventManager
 import io.github.ydwk.ydwk.evm.backend.managers.SampleEventManager
 import io.github.ydwk.ydwk.impl.entities.GuildImpl
 import io.github.ydwk.ydwk.impl.entities.UserImpl
+import io.github.ydwk.ydwk.impl.entities.builder.EntityBuilderImpl
 import io.github.ydwk.ydwk.impl.entities.channel.DmChannelImpl
 import io.github.ydwk.ydwk.impl.entities.channel.guild.GuildChannelImpl
 import io.github.ydwk.ydwk.impl.entities.message.embed.builder.EmbedBuilderImpl
@@ -131,6 +133,9 @@ class YDWKImpl(
                     ?: throw IllegalStateException("json body is null")
             }
     }
+
+    override val entityBuilder: EntityBuilder
+        get() = EntityBuilderImpl(this)
 
     override val objectNode: ObjectNode
         get() = JsonNodeFactory.instance.objectNode()
