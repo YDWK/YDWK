@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.ydwk.ydwk.cache.CacheIds
 import io.github.ydwk.ydwk.entities.*
 import io.github.ydwk.ydwk.entities.application.PartialApplication
+import io.github.ydwk.ydwk.entities.builder.EntityBuilder
 import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.channel.GuildChannel
 import io.github.ydwk.ydwk.entities.channel.getter.guild.GuildChannelGetter
@@ -507,6 +508,13 @@ interface YDWK {
      */
     fun requestGuildChannels(guildId: String): CompletableFuture<List<GuildChannel>> =
         requestGuildChannels(guildId.toLong())
+
+    /**
+     * Gets the entity builder.
+     *
+     * @return The [EntityBuilder] object.
+     */
+    val entityBuilder: EntityBuilder
 
     /**
      * Overrides the custom to string method.

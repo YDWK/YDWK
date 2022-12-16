@@ -88,20 +88,20 @@ class MemberImpl(
             if (role != null) {
                 perms = perms or role.rawPermissions
 
-                if (perms and GuildPermission.ADMINISTRATOR.value() ==
-                    GuildPermission.ADMINISTRATOR.value()) {
+                if (perms and GuildPermission.ADMINISTRATOR.getValue() ==
+                    GuildPermission.ADMINISTRATOR.getValue()) {
                     return GuildPermission.ALL_PERMS
                 }
             } else {
-                perms = perms or GuildPermission.NONE.value()
+                perms = perms or GuildPermission.NONE.getValue()
             }
         }
 
         if (member.isTimedOut) {
             perms =
                 perms and
-                    (GuildPermission.VIEW_CHANNEL.value() or
-                        GuildPermission.READ_MESSAGE_HISTORY.value())
+                    (GuildPermission.VIEW_CHANNEL.getValue() or
+                        GuildPermission.READ_MESSAGE_HISTORY.getValue())
         }
 
         return perms
@@ -116,6 +116,7 @@ class MemberImpl(
     }
 
     override var name: String = if (nick != null) nick!! else user.name
+
     override val idAsLong: Long
         get() = guild.idAsLong + user.idAsLong
 
