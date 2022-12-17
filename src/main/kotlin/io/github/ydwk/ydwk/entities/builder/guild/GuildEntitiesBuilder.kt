@@ -19,4 +19,23 @@
 package io.github.ydwk.ydwk.entities.builder.guild
 
 /** Used to create entities which are guild specific. */
-interface GuildEntitiesBuilder {}
+interface GuildEntitiesBuilder {
+
+    /**
+     * Used to create a new role.
+     *
+     * @param name the name of the role
+     * @return a new role builder
+     * @see RoleBuilder
+     */
+    fun createRole(name: String): RoleBuilder
+
+    /**
+     * Used to create a new role for a specific guild.
+     *
+     * @param name the name of the role
+     * @param guildId the id of the guild
+     * @return a new role builder
+     */
+    fun createRole(name: String, guildId: String): RoleBuilder
+}

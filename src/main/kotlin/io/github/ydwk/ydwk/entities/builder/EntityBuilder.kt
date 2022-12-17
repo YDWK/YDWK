@@ -18,6 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.entities.builder
 
+import io.github.ydwk.ydwk.entities.builder.guild.GuildBuilder
 import io.github.ydwk.ydwk.entities.builder.guild.GuildEntitiesBuilder
 
 /** Used to create entities which are not guild specific. */
@@ -32,10 +33,9 @@ interface EntityBuilder {
     fun createGuild(name: String): GuildBuilder
 
     /**
-     * Used to get a guild entity builder.
+     * Used to create entities which are guild specific.
      *
-     * @param id the id of the guild
      * @return a guild entity builder
      */
-    fun getGuild(id: String): GuildEntitiesBuilder
+    fun getGuildEntitiesBuilder(): GuildEntitiesBuilder
 }

@@ -16,11 +16,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.builder
+package io.github.ydwk.ydwk.entities.builder.guild
 
 import io.github.ydwk.ydwk.entities.Guild
-import io.github.ydwk.ydwk.entities.builder.guild.ChannelBuilder
-import io.github.ydwk.ydwk.entities.builder.guild.RoleBuilder
+import io.github.ydwk.ydwk.entities.builder.GenericEntityBuilder
 import io.github.ydwk.ydwk.entities.guild.enums.ExplicitContentFilterLevel
 import io.github.ydwk.ydwk.entities.guild.enums.MessageNotificationLevel
 import io.github.ydwk.ydwk.entities.guild.enums.SystemChannelFlag

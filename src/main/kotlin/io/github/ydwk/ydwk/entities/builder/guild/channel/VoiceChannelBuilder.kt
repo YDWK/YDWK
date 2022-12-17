@@ -16,24 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.builder
+package io.github.ydwk.ydwk.entities.builder.guild.channel
 
-import com.fasterxml.jackson.databind.JsonNode
-import java.util.concurrent.CompletableFuture
-
-interface GenericEntityBuilder<T> {
-
-    /**
-     * Gets the json that will be sent to the discord api.
-     *
-     * @return The json that will be sent to the discord api.
-     */
-    val json: JsonNode
-
-    /**
-     * Used to create the new entity.
-     *
-     * @return A completable future that completes with the created entity.
-     */
-    fun create(): CompletableFuture<T>
-}
+interface VoiceChannelBuilder {}

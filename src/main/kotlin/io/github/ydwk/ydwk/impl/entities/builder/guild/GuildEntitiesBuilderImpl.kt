@@ -16,24 +16,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.builder
+package io.github.ydwk.ydwk.impl.entities.builder.guild
 
-import com.fasterxml.jackson.databind.JsonNode
-import java.util.concurrent.CompletableFuture
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.builder.guild.GuildEntitiesBuilder
+import io.github.ydwk.ydwk.entities.builder.guild.RoleBuilder
 
-interface GenericEntityBuilder<T> {
+class GuildEntitiesBuilderImpl(val ydwk: YDWK) : GuildEntitiesBuilder {
+    override fun createRole(name: String): RoleBuilder {
+        return RoleBuilderImpl(ydwk, name)
+    }
 
-    /**
-     * Gets the json that will be sent to the discord api.
-     *
-     * @return The json that will be sent to the discord api.
-     */
-    val json: JsonNode
-
-    /**
-     * Used to create the new entity.
-     *
-     * @return A completable future that completes with the created entity.
-     */
-    fun create(): CompletableFuture<T>
+    override fun createRole(name: String, guildId: String): RoleBuilder {
+        return RoleBuilderImpl(ydwk, name).setGuildId(guildId)
+    }
 }

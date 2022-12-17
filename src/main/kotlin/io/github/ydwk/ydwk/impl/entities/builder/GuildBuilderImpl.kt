@@ -18,10 +18,11 @@
  */ 
 package io.github.ydwk.ydwk.impl.entities.builder
 
+import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Guild
-import io.github.ydwk.ydwk.entities.builder.GuildBuilder
 import io.github.ydwk.ydwk.entities.builder.guild.ChannelBuilder
+import io.github.ydwk.ydwk.entities.builder.guild.GuildBuilder
 import io.github.ydwk.ydwk.entities.builder.guild.RoleBuilder
 import io.github.ydwk.ydwk.entities.guild.enums.ExplicitContentFilterLevel
 import io.github.ydwk.ydwk.entities.guild.enums.MessageNotificationLevel
@@ -98,48 +99,54 @@ class GuildBuilderImpl(val ydwk: YDWK, val name: String) : GuildBuilder {
         return this
     }
 
+    override val json: JsonNode
+        get() {
+            val jsonBuilder = ydwk.objectMapper.createObjectNode()
+            jsonBuilder.put("name", name)
+            if (icon != null) {
+                jsonBuilder.put("icon", icon)
+            }
+            if (verificationLevel != null) {
+                jsonBuilder.put("verification_level", verificationLevel!!.getLevel())
+            }
+            if (defaultMessageNotifications != null) {
+                jsonBuilder.put(
+                    "default_message_notifications", defaultMessageNotifications!!.getValue())
+            }
+            if (explicitContentFilter != null) {
+                jsonBuilder.put("explicit_content_filter", explicitContentFilter!!.getValue())
+            }
+            if (roles != null) {
+                val rolesArray = jsonBuilder.putArray("roles")
+                for (role in roles!!) {
+                    rolesArray.add(role.json)
+                }
+            }
+            if (channels != null) {
+                val channelsArray = jsonBuilder.putArray("channels")
+                for (channel in channels!!) {
+                    channelsArray.add(channel.json)
+                }
+            }
+            if (afkChannelId != null) {
+                jsonBuilder.put("afk_channel_id", afkChannelId)
+            }
+            if (afkTimeout != null) {
+                jsonBuilder.put("afk_timeout", afkTimeout)
+            }
+            if (systemChannelId != null) {
+                jsonBuilder.put("system_channel_id", systemChannelId)
+            }
+            if (systemChannelFlags != null) {
+                jsonBuilder.put("system_channel_flags", systemChannelFlags!!.getValue())
+            }
+
+            return jsonBuilder
+        }
+
     override fun create(): CompletableFuture<Guild> {
-        val jsonBuilder = ydwk.objectMapper.createObjectNode()
-        jsonBuilder.put("name", name)
-        if (icon != null) {
-            jsonBuilder.put("icon", icon)
-        }
-        if (verificationLevel != null) {
-            jsonBuilder.put("verification_level", verificationLevel!!.getLevel())
-        }
-        if (defaultMessageNotifications != null) {
-            jsonBuilder.put(
-                "default_message_notifications", defaultMessageNotifications!!.getValue())
-        }
-        if (explicitContentFilter != null) {
-            jsonBuilder.put("explicit_content_filter", explicitContentFilter!!.getValue())
-        }
-        if (roles != null) {
-            val rolesArray = jsonBuilder.putArray("roles")
-            for (role in roles!!) {
-                // rolesArray.add(role.build())
-            }
-        }
-        if (channels != null) {
-            val channelsArray = jsonBuilder.putArray("channels")
-            for (channel in channels!!) {
-                // channelsArray.add(channel.build())
-            }
-        }
-        if (afkChannelId != null) {
-            jsonBuilder.put("afk_channel_id", afkChannelId)
-        }
-        if (afkTimeout != null) {
-            jsonBuilder.put("afk_timeout", afkTimeout)
-        }
-        if (systemChannelId != null) {
-            jsonBuilder.put("system_channel_id", systemChannelId)
-        }
-        if (systemChannelFlags != null) {
-            jsonBuilder.put("system_channel_flags", systemChannelFlags!!.getValue())
-        }
         return ydwk.restApiManager
-            .post(jsonBuilder.toString().toRequestBody(), EndPoint.GuildEndpoint.CREATE_GUILD)
+            .post(json.toString().toRequestBody(), EndPoint.GuildEndpoint.CREATE_GUILD)
             .execute {
                 val jsonBody = it.jsonBody
                 if (jsonBody == null) {

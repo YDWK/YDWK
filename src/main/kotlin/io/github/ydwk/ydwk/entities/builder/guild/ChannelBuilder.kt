@@ -18,4 +18,24 @@
  */ 
 package io.github.ydwk.ydwk.entities.builder.guild
 
-interface ChannelBuilder {}
+import io.github.ydwk.ydwk.entities.builder.guild.channel.MessageChannelBuilder
+import io.github.ydwk.ydwk.entities.builder.guild.channel.VoiceChannelBuilder
+
+interface ChannelBuilder {
+
+    /**
+     * Used to create a new message channel (text channel or announcement channel).
+     *
+     * @param name the name of the channel
+     * @return a new channel builder
+     */
+    fun createMessageChannel(name: String): MessageChannelBuilder
+
+    /**
+     * Used to create a new voice channel.
+     *
+     * @param name the name of the channel
+     * @return a new channel builder
+     */
+    fun createVoiceChannel(name: String): VoiceChannelBuilder
+}

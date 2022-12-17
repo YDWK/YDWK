@@ -140,14 +140,14 @@ enum class GuildPermission(
      *
      * @return The value of this [GuildPermission].
      */
-    fun value(): Long = value
+    fun getValue(): Long = value
 
     /**
      * The description of this [GuildPermission].
      *
      * @return The description of this [GuildPermission].
      */
-    fun description(): String = description
+    fun getDescription(): String = description
 
     /**
      * Whether this [GuildPermission] is a textChannel permission.
