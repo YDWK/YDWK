@@ -25,11 +25,11 @@ import io.github.ydwk.ydwk.entities.builder.guild.RoleBuilder
 
 class GuildEntitiesBuilderImpl(val ydwk: YDWK) : GuildEntitiesBuilder {
     override fun createRole(name: String): RoleBuilder {
-        return RoleBuilderImpl(ydwk, name)
+        return RoleBuilderImpl(ydwk, null, name)
     }
 
     override fun createRole(name: String, guildId: String): RoleBuilder {
-        return RoleBuilderImpl(ydwk, name).setGuildId(guildId)
+        return RoleBuilderImpl(ydwk, guildId, name)
     }
 
     override fun createChannel(name: String): ChannelBuilder {

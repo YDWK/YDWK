@@ -21,9 +21,10 @@ package io.github.ydwk.ydwk.impl.entities.builder
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Guild
-import io.github.ydwk.ydwk.entities.builder.guild.ChannelBuilder
 import io.github.ydwk.ydwk.entities.builder.guild.GuildBuilder
 import io.github.ydwk.ydwk.entities.builder.guild.RoleBuilder
+import io.github.ydwk.ydwk.entities.builder.guild.channel.MessageChannelBuilder
+import io.github.ydwk.ydwk.entities.builder.guild.channel.VoiceChannelBuilder
 import io.github.ydwk.ydwk.entities.guild.enums.ExplicitContentFilterLevel
 import io.github.ydwk.ydwk.entities.guild.enums.MessageNotificationLevel
 import io.github.ydwk.ydwk.entities.guild.enums.SystemChannelFlag
@@ -38,8 +39,9 @@ class GuildBuilderImpl(val ydwk: YDWK, val name: String) : GuildBuilder {
     private var verificationLevel: VerificationLevel? = null
     private var defaultMessageNotifications: MessageNotificationLevel? = null
     private var explicitContentFilter: ExplicitContentFilterLevel? = null
-    private var roles: List<RoleBuilder>? = null
-    private var channels: List<ChannelBuilder>? = null
+    private var roles: MutableList<RoleBuilder> = mutableListOf()
+    private var messageChannels: MutableList<MessageChannelBuilder> = mutableListOf()
+    private var voiceChannels: MutableList<VoiceChannelBuilder> = mutableListOf()
     private var afkChannelId: String? = null
     private var afkTimeout: Int? = null
     private var systemChannelId: String? = null
@@ -70,12 +72,17 @@ class GuildBuilderImpl(val ydwk: YDWK, val name: String) : GuildBuilder {
     }
 
     override fun setRoles(roles: List<RoleBuilder>): GuildBuilder {
-        this.roles = roles
+        this.roles.addAll(roles)
         return this
     }
 
-    override fun setChannels(channels: List<ChannelBuilder>): GuildBuilder {
-        this.channels = channels
+    override fun setMessageChannels(channels: List<MessageChannelBuilder>): GuildBuilder {
+        this.messageChannels.addAll(channels)
+        return this
+    }
+
+    override fun setVoiceChannels(channels: List<VoiceChannelBuilder>): GuildBuilder {
+        this.voiceChannels.addAll(channels)
         return this
     }
 
@@ -102,41 +109,59 @@ class GuildBuilderImpl(val ydwk: YDWK, val name: String) : GuildBuilder {
     override val json: JsonNode
         get() {
             val jsonBuilder = ydwk.objectMapper.createObjectNode()
+
             jsonBuilder.put("name", name)
+
             if (icon != null) {
                 jsonBuilder.put("icon", icon)
             }
+
             if (verificationLevel != null) {
                 jsonBuilder.put("verification_level", verificationLevel!!.getLevel())
             }
+
             if (defaultMessageNotifications != null) {
                 jsonBuilder.put(
                     "default_message_notifications", defaultMessageNotifications!!.getValue())
             }
+
             if (explicitContentFilter != null) {
                 jsonBuilder.put("explicit_content_filter", explicitContentFilter!!.getValue())
             }
-            if (roles != null) {
+
+            if (roles.isNotEmpty()) {
                 val rolesArray = jsonBuilder.putArray("roles")
-                for (role in roles!!) {
+                for (role in roles) {
                     rolesArray.add(role.json)
                 }
             }
-            if (channels != null) {
+
+            if (messageChannels.isNotEmpty()) {
                 val channelsArray = jsonBuilder.putArray("channels")
-                for (channel in channels!!) {
+                for (channel in messageChannels) {
                     channelsArray.add(channel.json)
                 }
             }
+
+            if (voiceChannels.isNotEmpty()) {
+                val channelsArray = jsonBuilder.putArray("channels")
+                for (channel in voiceChannels) {
+                    channelsArray.add(channel.json)
+                }
+            }
+
             if (afkChannelId != null) {
                 jsonBuilder.put("afk_channel_id", afkChannelId)
             }
+
             if (afkTimeout != null) {
                 jsonBuilder.put("afk_timeout", afkTimeout)
             }
+
             if (systemChannelId != null) {
                 jsonBuilder.put("system_channel_id", systemChannelId)
             }
+
             if (systemChannelFlags != null) {
                 jsonBuilder.put("system_channel_flags", systemChannelFlags!!.getValue())
             }

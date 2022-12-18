@@ -20,6 +20,8 @@ package io.github.ydwk.ydwk.entities.builder.guild
 
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.builder.GenericEntityBuilder
+import io.github.ydwk.ydwk.entities.builder.guild.channel.MessageChannelBuilder
+import io.github.ydwk.ydwk.entities.builder.guild.channel.VoiceChannelBuilder
 import io.github.ydwk.ydwk.entities.guild.enums.ExplicitContentFilterLevel
 import io.github.ydwk.ydwk.entities.guild.enums.MessageNotificationLevel
 import io.github.ydwk.ydwk.entities.guild.enums.SystemChannelFlag
@@ -87,12 +89,20 @@ interface GuildBuilder : GenericEntityBuilder<Guild> {
     fun setRoles(roles: List<RoleBuilder>): GuildBuilder
 
     /**
-     * Sets the channels of the guild.
+     * Sets the message channels of the guild.
      *
-     * @param channels the channels of the guild
+     * @param channels the message channels of the guild
      * @return this builder
      */
-    fun setChannels(channels: List<ChannelBuilder>): GuildBuilder
+    fun setMessageChannels(channels: List<MessageChannelBuilder>): GuildBuilder
+
+    /**
+     * Sets the voice channels of the guild.
+     *
+     * @param channels the voice channels of the guild
+     * @return this builder
+     */
+    fun setVoiceChannels(channels: List<VoiceChannelBuilder>): GuildBuilder
 
     /**
      * Sets the afk channel id of the guild.

@@ -24,7 +24,10 @@ import io.github.ydwk.ydwk.entities.builder.guild.channel.MessageChannelBuilder
 import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
 import io.github.ydwk.ydwk.entities.channel.guild.message.GuildMessageChannel
 import io.github.ydwk.ydwk.entities.channel.guild.message.text.PermissionOverwrite
+import io.github.ydwk.ydwk.impl.entities.channel.guild.GuildMessageChannelImpl
+import io.github.ydwk.ydwk.rest.EndPoint
 import java.util.concurrent.CompletableFuture
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class MessageChannelBuilderImpl(val ydwk: YDWK, val guildId: String?, val name: String) :
     MessageChannelBuilder {
@@ -93,6 +96,19 @@ class MessageChannelBuilderImpl(val ydwk: YDWK, val guildId: String?, val name: 
         }
 
     override fun create(): CompletableFuture<GuildMessageChannel> {
-        TODO("Not yet implemented")
+        if (guildId == null) {
+            throw IllegalStateException("Guild id is not set")
+        }
+
+        return ydwk.restApiManager
+            .post(json.toString().toRequestBody(), EndPoint.GuildEndpoint.CREATE_GUILD, guildId)
+            .execute {
+                val jsonBody = it.jsonBody
+                if (jsonBody == null) {
+                    throw IllegalStateException("json body is null")
+                } else {
+                    GuildMessageChannelImpl(ydwk, jsonBody, jsonBody["id"].asLong())
+                }
+            }
     }
 }

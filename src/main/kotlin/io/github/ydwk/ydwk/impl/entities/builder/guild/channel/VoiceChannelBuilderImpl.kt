@@ -24,7 +24,10 @@ import io.github.ydwk.ydwk.entities.builder.guild.channel.VoiceChannelBuilder
 import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
 import io.github.ydwk.ydwk.entities.channel.guild.message.text.PermissionOverwrite
 import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
+import io.github.ydwk.ydwk.impl.entities.channel.guild.GuildVoiceChannelImpl
+import io.github.ydwk.ydwk.rest.EndPoint
 import java.util.concurrent.CompletableFuture
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class VoiceChannelBuilderImpl(val ydwk: YDWK, val guildId: String?, val name: String) :
     VoiceChannelBuilder {
@@ -86,6 +89,19 @@ class VoiceChannelBuilderImpl(val ydwk: YDWK, val guildId: String?, val name: St
         }
 
     override fun create(): CompletableFuture<GuildVoiceChannel> {
-        TODO("Not yet implemented")
+        if (guildId == null) {
+            throw IllegalStateException("Guild id is not set")
+        }
+
+        return ydwk.restApiManager
+            .post(json.toString().toRequestBody(), EndPoint.GuildEndpoint.CREATE_GUILD, guildId)
+            .execute {
+                val jsonBody = it.jsonBody
+                if (jsonBody == null) {
+                    throw IllegalStateException("json body is null")
+                } else {
+                    GuildVoiceChannelImpl(ydwk, jsonBody, jsonBody["id"].asLong())
+                }
+            }
     }
 }

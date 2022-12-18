@@ -31,15 +31,14 @@ import java.util.*
 import java.util.concurrent.CompletableFuture
 import okhttp3.RequestBody.Companion.toRequestBody
 
-class RoleBuilderImpl(val ydwk: YDWK, val name: String) : RoleBuilder {
+class RoleBuilderImpl(val ydwk: YDWK, val guildId: String?, val name: String) : RoleBuilder {
     private var color: Color? = null
     private var pinned: Boolean? = null
     private var iconHash: String? = null
     private var position: Int? = null
-    private var permissions: EnumSet<GuildPermission>? = null
+    private var permissions: MutableSet<GuildPermission> = mutableSetOf()
     private var managed: Boolean? = null
     private var mentionable: Boolean? = null
-    private var guildId: String? = null
 
     override fun setColor(color: Color): RoleBuilder {
         this.color = color
@@ -62,7 +61,7 @@ class RoleBuilderImpl(val ydwk: YDWK, val name: String) : RoleBuilder {
     }
 
     override fun setPermissions(permissions: EnumSet<GuildPermission>): RoleBuilder {
-        this.permissions = permissions
+        this.permissions.addAll(permissions)
         return this
     }
 
@@ -73,11 +72,6 @@ class RoleBuilderImpl(val ydwk: YDWK, val name: String) : RoleBuilder {
 
     override fun setMentionable(mentionable: Boolean): RoleBuilder {
         this.mentionable = mentionable
-        return this
-    }
-
-    fun setGuildId(guildId: String): RoleBuilder {
-        this.guildId = guildId
         return this
     }
 
@@ -98,8 +92,8 @@ class RoleBuilderImpl(val ydwk: YDWK, val name: String) : RoleBuilder {
             if (position != null) {
                 json.put("position", position)
             }
-            if (permissions != null) {
-                json.put("permissions", permissions!!.sumOf { it.getValue() })
+            if (permissions.isNotEmpty()) {
+                json.put("permissions", permissions.sumOf { it.getValue() })
             }
             if (managed != null) {
                 json.put("managed", managed!!)
@@ -116,7 +110,7 @@ class RoleBuilderImpl(val ydwk: YDWK, val name: String) : RoleBuilder {
         }
 
         return ydwk.restApiManager
-            .post(json.toString().toRequestBody(), EndPoint.GuildEndpoint.CREATE_ROLE, guildId!!)
+            .post(json.toString().toRequestBody(), EndPoint.GuildEndpoint.CREATE_ROLE, guildId)
             .execute {
                 val jsonBody = it.jsonBody
                 if (jsonBody == null) {
