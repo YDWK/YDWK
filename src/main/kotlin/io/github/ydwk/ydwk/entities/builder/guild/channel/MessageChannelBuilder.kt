@@ -18,4 +18,67 @@
  */ 
 package io.github.ydwk.ydwk.entities.builder.guild.channel
 
-interface MessageChannelBuilder {}
+import io.github.ydwk.ydwk.entities.builder.GenericEntityBuilder
+import io.github.ydwk.ydwk.entities.channel.guild.message.GuildMessageChannel
+import io.github.ydwk.ydwk.entities.channel.guild.message.text.PermissionOverwrite
+
+interface MessageChannelBuilder : GenericEntityBuilder<GuildMessageChannel> {
+
+    /**
+     * Weather this channel is a text or news channel.
+     *
+     * @return true if this channel is a news channel, false if this channel is a text channel
+     * @see MessageChannelBuilder
+     */
+    fun isNewsChannel(): MessageChannelBuilder
+
+    /**
+     * Used to set the topic of the channel.
+     *
+     * @param topic the topic of the channel
+     * @return this builder
+     */
+    fun setTopic(topic: String): MessageChannelBuilder
+
+    /**
+     * Used to set the rate limit per user of the channel.
+     *
+     * @param rateLimitPerUser the rate limit per user of the channel
+     * @return this builder
+     */
+    fun setRateLimitPerUser(rateLimitPerUser: Int): MessageChannelBuilder
+
+    /**
+     * Used to set the position of the channel.
+     *
+     * @param position the position of the channel
+     * @return this builder
+     */
+    fun setPosition(position: Int): MessageChannelBuilder
+
+    /**
+     * Used to set the permission overwrites of the channel.
+     *
+     * @param permissionOverwrites the permission overwrites of the channel
+     * @return this builder
+     */
+    fun setPermissionOverwrites(
+        permissionOverwrites: List<PermissionOverwrite>
+    ): MessageChannelBuilder
+
+    /**
+     * Used to set the parent id of the channel.
+     *
+     * @param parentId the parent id of the channel
+     * @return this builder
+     */
+    fun setParentId(parentId: String): MessageChannelBuilder
+
+    /**
+     * Used to set the nsfw flag of the channel.
+     *
+     * @param nsfw the nsfw flag of the channel
+     * @return this builder
+     */
+    fun setNsfw(nsfw: Boolean): MessageChannelBuilder
+}

@@ -18,4 +18,57 @@
  */ 
 package io.github.ydwk.ydwk.entities.builder.guild.channel
 
-interface VoiceChannelBuilder {}
+import io.github.ydwk.ydwk.entities.builder.GenericEntityBuilder
+import io.github.ydwk.ydwk.entities.channel.guild.message.text.PermissionOverwrite
+import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
+
+interface VoiceChannelBuilder : GenericEntityBuilder<GuildVoiceChannel> {
+    /**
+     * Weather this channel is a voice channel or stage channel.
+     *
+     * @return true if this channel is a stage channel, false if this channel is a voice channel
+     */
+    fun isStageChannel(): VoiceChannelBuilder
+
+    /**
+     * Used to set the bitrate of the channel.
+     *
+     * @param bitrate the bitrate of the channel
+     * @return this builder
+     */
+    fun setBitrate(bitrate: Int): VoiceChannelBuilder
+
+    /**
+     * Used to set the user limit of the channel.
+     *
+     * @param userLimit the user limit of the channel
+     * @return this builder
+     */
+    fun setUserLimit(userLimit: Int): VoiceChannelBuilder
+
+    /**
+     * Used to set the position of the channel.
+     *
+     * @param position the position of the channel
+     * @return this builder
+     */
+    fun setPosition(position: Int): VoiceChannelBuilder
+
+    /**
+     * Used to set the permission overwrites of the channel.
+     *
+     * @param permissionOverwrites the permission overwrites of the channel
+     * @return this builder
+     */
+    fun setPermissionOverwrites(
+        permissionOverwrites: List<PermissionOverwrite>
+    ): VoiceChannelBuilder
+
+    /**
+     * Used to set the parent id of the channel.
+     *
+     * @param parentId the parent id of the channel
+     * @return this builder
+     */
+    fun setParentId(parentId: String): VoiceChannelBuilder
+}

@@ -20,23 +20,17 @@ package io.github.ydwk.ydwk.impl.entities.builder.guild
 
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.builder.guild.ChannelBuilder
-import io.github.ydwk.ydwk.entities.builder.guild.GuildEntitiesBuilder
-import io.github.ydwk.ydwk.entities.builder.guild.RoleBuilder
+import io.github.ydwk.ydwk.entities.builder.guild.channel.MessageChannelBuilder
+import io.github.ydwk.ydwk.entities.builder.guild.channel.VoiceChannelBuilder
+import io.github.ydwk.ydwk.impl.entities.builder.guild.channel.MessageChannelBuilderImpl
+import io.github.ydwk.ydwk.impl.entities.builder.guild.channel.VoiceChannelBuilderImpl
 
-class GuildEntitiesBuilderImpl(val ydwk: YDWK) : GuildEntitiesBuilder {
-    override fun createRole(name: String): RoleBuilder {
-        return RoleBuilderImpl(ydwk, name)
+class ChannelBuilderImpl(val ydwk: YDWK, val guildId: String?, val name: String) : ChannelBuilder {
+    override fun createMessageChannel(name: String): MessageChannelBuilder {
+        return MessageChannelBuilderImpl(ydwk, guildId, name)
     }
 
-    override fun createRole(name: String, guildId: String): RoleBuilder {
-        return RoleBuilderImpl(ydwk, name).setGuildId(guildId)
-    }
-
-    override fun createChannel(name: String): ChannelBuilder {
-        return ChannelBuilderImpl(ydwk, null, name)
-    }
-
-    override fun createChannel(name: String, guildId: String): ChannelBuilder {
-        return ChannelBuilderImpl(ydwk, guildId, name)
+    override fun createVoiceChannel(name: String): VoiceChannelBuilder {
+        return VoiceChannelBuilderImpl(ydwk, guildId, name)
     }
 }
