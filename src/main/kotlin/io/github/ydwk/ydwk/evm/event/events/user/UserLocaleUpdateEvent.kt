@@ -21,6 +21,14 @@ package io.github.ydwk.ydwk.evm.event.events.user
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.User
 
+/**
+ * This event is triggered when a user's locale is updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The user whose avatar was updated.
+ * @param oldLocale The user's old locale.
+ * @param newLocale The user's new locale.
+ */
 data class UserLocaleUpdateEvent(
     override val ydwk: YDWK,
     override val entity: User,
