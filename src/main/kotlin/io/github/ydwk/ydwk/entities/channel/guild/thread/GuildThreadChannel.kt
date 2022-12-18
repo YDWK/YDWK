@@ -21,4 +21,5 @@ package io.github.ydwk.ydwk.entities.channel.guild.thread
 import io.github.ydwk.ydwk.entities.channel.GuildChannel
 
 // TODO : Add functionality to this class
+/** A thread channel in a guild. */
 interface GuildThreadChannel : GuildChannel {}

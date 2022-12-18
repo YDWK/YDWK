@@ -31,7 +31,7 @@ interface GenericEntityBuilder<T> {
     val json: JsonNode
 
     /**
-     * Used to create the new entity.
+     * Creates the new entity.
      *
      * @return A completable future that completes with the created entity.
      */

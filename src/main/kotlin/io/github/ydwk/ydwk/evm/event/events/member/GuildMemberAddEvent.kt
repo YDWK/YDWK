@@ -22,4 +22,5 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.evm.event.Event
 
+/** This event is triggered when a member joins a guild. */
 data class GuildMemberAddEvent(override val ydwk: YDWK, val member: Member) : Event(ydwk)

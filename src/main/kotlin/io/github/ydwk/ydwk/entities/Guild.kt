@@ -741,7 +741,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
         getChannelGetterById(channelId.toLong())
 
     /**
-     * Used to get all the members of the guild.
+     * Gets all the members of the guild.
      *
      * @return The members.
      */
@@ -762,7 +762,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
         }
 
     /**
-     * Used to get all the members of the guild.
+     * Gets all the members of the guild.
      *
      * @param limit The limit of members to retrieve.
      * @return The members.

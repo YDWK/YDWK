@@ -16,16 +16,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.evm.event.events.channel
+package io.github.ydwk.ydwk.entities.guild
 
-import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.Channel
-import io.github.ydwk.ydwk.evm.event.Event
+import io.github.ydwk.ydwk.entities.util.GenericEntity
 
-/**
- * This event is triggered when a channel is created.
- *
- * @param ydwk The [YDWK] instance.
- * @param channel The channel that was created.
- */
-data class ChannelDeleteEvent(override val ydwk: YDWK, val channel: Channel) : Event(ydwk)
+// TODO: Add more properties
+interface Invite : GenericEntity {}

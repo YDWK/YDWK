@@ -22,4 +22,10 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.evm.event.Event
 
+/**
+ * This event is dispatched when a role is deleted.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param role The role that was deleted.
+ */
 data class GuildRoleDeleteEvent(override val ydwk: YDWK, val role: Role) : Event(ydwk)

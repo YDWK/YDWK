@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.evm.backend.event
 
-/** Used to listen to events */
+/** Listens to events */
 @FunctionalInterface
 interface CoroutineEventListener {
     /**

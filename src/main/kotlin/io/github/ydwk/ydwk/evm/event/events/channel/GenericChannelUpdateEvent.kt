@@ -22,7 +22,14 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.channel.GuildChannel
 import io.github.ydwk.ydwk.evm.backend.update.IEventUpdate
 
-/** Fired when a channel is updated */
+/**
+ * This event is triggered when a channel is updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The channel that was updated.
+ * @param oldValue The channel before the update.
+ * @param newValue The channel after the update.
+ */
 open class GenericChannelUpdateEvent<T>(
     override val ydwk: YDWK,
     override val entity: GuildChannel,

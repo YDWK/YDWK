@@ -22,4 +22,10 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.evm.event.Event
 
+/**
+ * This event is triggered when a role is created.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param role The role that was created.
+ */
 data class GuildRoleCreateEvent(override val ydwk: YDWK, val role: Role) : Event(ydwk)

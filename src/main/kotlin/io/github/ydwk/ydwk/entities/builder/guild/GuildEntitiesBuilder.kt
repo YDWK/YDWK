@@ -18,12 +18,12 @@
  */ 
 package io.github.ydwk.ydwk.entities.builder.guild
 
-/** Used to create entities which are guild specific. */
+/** Creates entities which are guild specific. */
 interface GuildEntitiesBuilder {
 
     /**
-     * Used to create a new role. This is used when creating a new guild as you don't need to
-     * specify a guild id.
+     * Creates a new role. This is used when creating a new guild as you don't need to specify a
+     * guild id.
      *
      * @param name the name of the role
      * @return a new role builder
@@ -32,7 +32,7 @@ interface GuildEntitiesBuilder {
     fun createRole(name: String): RoleBuilder
 
     /**
-     * Used to create a new role for a specific guild.
+     * Creates a new role for a specific guild.
      *
      * @param name the name of the role
      * @param guildId the id of the guild
@@ -41,8 +41,8 @@ interface GuildEntitiesBuilder {
     fun createRole(name: String, guildId: String): RoleBuilder
 
     /**
-     * Used to create a new channel. This is used when creating a new guild as you don't need to
-     * specify a guild id.
+     * Creates a new channel. This is used when creating a new guild as you don't need to specify a
+     * guild id.
      *
      * @param name the name of the channel
      * @return a new channel builder
@@ -51,7 +51,7 @@ interface GuildEntitiesBuilder {
     fun createChannel(name: String): ChannelBuilder
 
     /**
-     * Used to create a new channel for a specific guild.
+     * Creates a new channel for a specific guild.
      *
      * @param name the name of the channel
      * @param guildId the id of the guild

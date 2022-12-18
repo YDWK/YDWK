@@ -22,4 +22,10 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.evm.event.Event
 
+/**
+ * This event is triggered when a message is created.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param message The message that was created.
+ */
 data class MessageCreateEvent(override val ydwk: YDWK, val message: Message) : Event(ydwk)

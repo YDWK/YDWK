@@ -33,7 +33,7 @@ interface MessageChannelBuilder : GenericEntityBuilder<GuildMessageChannel> {
     fun isNewsChannel(): MessageChannelBuilder
 
     /**
-     * Used to set the topic of the channel.
+     * Sets the topic of the channel.
      *
      * @param topic the topic of the channel
      * @return this builder
@@ -41,7 +41,7 @@ interface MessageChannelBuilder : GenericEntityBuilder<GuildMessageChannel> {
     fun setTopic(topic: String): MessageChannelBuilder
 
     /**
-     * Used to set the rate limit per user of the channel.
+     * Sets the rate limit per user of the channel.
      *
      * @param rateLimitPerUser the rate limit per user of the channel
      * @return this builder
@@ -49,7 +49,7 @@ interface MessageChannelBuilder : GenericEntityBuilder<GuildMessageChannel> {
     fun setRateLimitPerUser(rateLimitPerUser: Int): MessageChannelBuilder
 
     /**
-     * Used to set the position of the channel.
+     * Sets the position of the channel.
      *
      * @param position the position of the channel
      * @return this builder
@@ -57,7 +57,7 @@ interface MessageChannelBuilder : GenericEntityBuilder<GuildMessageChannel> {
     fun setPosition(position: Int): MessageChannelBuilder
 
     /**
-     * Used to set the permission overwrites of the channel.
+     * Sets the permission overwrites of the channel.
      *
      * @param permissionOverwrites the permission overwrites of the channel
      * @return this builder
@@ -67,7 +67,7 @@ interface MessageChannelBuilder : GenericEntityBuilder<GuildMessageChannel> {
     ): MessageChannelBuilder
 
     /**
-     * Used to set the parent id of the channel.
+     * Sets the parent id of the channel.
      *
      * @param parentId the parent id of the channel
      * @return this builder
@@ -75,7 +75,7 @@ interface MessageChannelBuilder : GenericEntityBuilder<GuildMessageChannel> {
     fun setParentId(parentId: String): MessageChannelBuilder
 
     /**
-     * Used to set the nsfw flag of the channel.
+     * Sets the nsfw flag of the channel.
      *
      * @param nsfw the nsfw flag of the channel
      * @return this builder

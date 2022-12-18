@@ -28,8 +28,6 @@ import io.github.ydwk.ydwk.interaction.message.ActionRow
 import io.github.ydwk.ydwk.interaction.message.button.Button
 import io.github.ydwk.ydwk.interaction.message.button.ButtonStyle
 import io.github.ydwk.ydwk.slash.Slash
-import io.github.ydwk.ydwk.slash.SlashOption
-import io.github.ydwk.ydwk.slash.SlashOptionType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -42,14 +40,8 @@ fun main() {
 
     ydwk.waitForReady.slashBuilder
         .addSlashCommand(Slash("join_vc", "Joins a vc"))
-        .addSlashCommand(Slash("forum_json", "Gets the json for forum"))
         .addSlashCommand(Slash("create_dm", "Creates a dm channel"))
-        .addSlashCommand(
-            Slash("option", "An option test")
-                .addOption(
-                    SlashOption(
-                        "member", "The member to test the option with", SlashOptionType.USER)))
-        .addSlashCommand(Slash("leave_vc", "Leaves a vc"))
+        .addSlashCommand("guild", "Creates a guild")
         .addSlashCommand("button", "A button test")
         .addSlashCommand("bot_info", "Gets the bot info")
         .build()
@@ -68,39 +60,6 @@ fun main() {
                     }
                 }
             }
-            "leave_vc" -> {
-                withContext(Dispatchers.IO) {
-                    val member = it.slash.member
-                    val slash = it.slash
-                    if (member != null) {
-                        val voiceState = member.voiceState
-                        voiceState?.channel?.leave()?.get()
-                    } else {
-                        it.slash.reply("Member is null!").isEphemeral(true).reply()
-                    }
-                }
-            }
-            "forum_json" -> {
-                withContext(Dispatchers.IO) {
-                    if (it.slash.ydwk
-                        .getGuildChannelById("1031971612238561390")
-                        ?.guildChannelGetter != null) {
-                        val forum =
-                            it.slash.ydwk
-                                .getGuildChannelById("1031971612238561390")
-                                ?.guildChannelGetter
-                                ?.asGuildForumChannel()
-
-                        if (forum != null) {
-                            it.slash.reply(forum.json.toPrettyString()).isEphemeral(true).reply()
-                        } else {
-                            it.slash.reply("Forum is null!").isEphemeral(true).reply()
-                        }
-                    } else {
-                        it.slash.reply("Forum is null!").isEphemeral(true).reply()
-                    }
-                }
-            }
             "ping" -> {
                 it.slash.reply("Pong!").reply()
             }
@@ -108,11 +67,6 @@ fun main() {
                 withContext(Dispatchers.IO) {
                     val member = it.slash.member
                     member?.createDmChannel?.get()?.sendMessage("Hello!")?.get()
-                }
-            }
-            "option" -> {
-                withContext(Dispatchers.IO) {
-                    it.slash.reply(it.slash.getOption("member")!!.asUser.name).reply()
                 }
             }
             "button" -> {
@@ -132,6 +86,12 @@ fun main() {
             "bot_info" -> {
                 withContext(Dispatchers.IO) {
                     it.slash.reply("Bot info: ${it.slash.guild?.botAsMember?.joinedAt}").reply()
+                }
+            }
+            "guild" -> {
+                withContext(Dispatchers.IO) {
+                    it.slash.ydwk.entityBuilder.createGuild("Test Guild").create().join()
+                    it.slash.reply("Guild created! ${it.slash.guild?.name}").reply()
                 }
             }
         }

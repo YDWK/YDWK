@@ -24,7 +24,7 @@ import io.github.ydwk.ydwk.entities.builder.guild.channel.VoiceChannelBuilder
 interface ChannelBuilder {
 
     /**
-     * Used to create a new message channel (text channel or announcement channel).
+     * Creates a new message channel (text channel or announcement channel).
      *
      * @param name the name of the channel
      * @return a new channel builder
@@ -32,7 +32,7 @@ interface ChannelBuilder {
     fun createMessageChannel(name: String): MessageChannelBuilder
 
     /**
-     * Used to create a new voice channel.
+     * Creates a new voice channel.
      *
      * @param name the name of the channel
      * @return a new channel builder

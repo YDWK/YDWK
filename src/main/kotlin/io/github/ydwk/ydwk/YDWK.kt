@@ -40,6 +40,10 @@ import java.time.Instant
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.ScheduledExecutorService
 
+/**
+ * The main class of the YDWK library. This class is used to interact with the Discord API. Also
+ * contains many things such as the embed builder for example.
+ */
 interface YDWK {
 
     /**
@@ -162,7 +166,7 @@ interface YDWK {
      */
     val uptime: Instant
 
-    /** Used to add or remove slash commands */
+    /** Adds or removes slash commands */
     val slashBuilder: SlashBuilder
 
     /** Sets the guild ids for guild commands */
@@ -440,7 +444,7 @@ interface YDWK {
         getChannels().mapNotNull { it.channelGetter.asGuildChannel() }
 
     /**
-     * Used to get guild channels by their ids.
+     * Gets guild channels by their ids.
      *
      * @param id The id of the guild channel.
      * @return The [GuildChannelGetter] object.
@@ -449,7 +453,7 @@ interface YDWK {
         getGuildChannelById(id)?.guildChannelGetter
 
     /**
-     * Used to get guild channels by their ids.
+     * Gets guild channels by their ids.
      *
      * @param id The id of the guild channel.
      * @return The [GuildChannelGetter] object.

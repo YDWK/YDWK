@@ -31,7 +31,7 @@ interface VoiceChannelBuilder : GenericEntityBuilder<GuildVoiceChannel> {
     fun isStageChannel(): VoiceChannelBuilder
 
     /**
-     * Used to set the bitrate of the channel.
+     * Sets the bitrate of the channel.
      *
      * @param bitrate the bitrate of the channel
      * @return this builder
@@ -39,7 +39,7 @@ interface VoiceChannelBuilder : GenericEntityBuilder<GuildVoiceChannel> {
     fun setBitrate(bitrate: Int): VoiceChannelBuilder
 
     /**
-     * Used to set the user limit of the channel.
+     * Sets the user limit of the channel.
      *
      * @param userLimit the user limit of the channel
      * @return this builder
@@ -47,7 +47,7 @@ interface VoiceChannelBuilder : GenericEntityBuilder<GuildVoiceChannel> {
     fun setUserLimit(userLimit: Int): VoiceChannelBuilder
 
     /**
-     * Used to set the position of the channel.
+     * Sets the position of the channel.
      *
      * @param position the position of the channel
      * @return this builder
@@ -55,7 +55,7 @@ interface VoiceChannelBuilder : GenericEntityBuilder<GuildVoiceChannel> {
     fun setPosition(position: Int): VoiceChannelBuilder
 
     /**
-     * Used to set the permission overwrites of the channel.
+     * Sets the permission overwrites of the channel.
      *
      * @param permissionOverwrites the permission overwrites of the channel
      * @return this builder
@@ -65,7 +65,7 @@ interface VoiceChannelBuilder : GenericEntityBuilder<GuildVoiceChannel> {
     ): VoiceChannelBuilder
 
     /**
-     * Used to set the parent id of the channel.
+     * Sets the parent id of the channel.
      *
      * @param parentId the parent id of the channel
      * @return this builder

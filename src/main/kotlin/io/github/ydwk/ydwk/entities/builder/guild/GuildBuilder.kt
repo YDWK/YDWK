@@ -28,7 +28,7 @@ import io.github.ydwk.ydwk.entities.guild.enums.SystemChannelFlag
 import io.github.ydwk.ydwk.entities.guild.enums.VerificationLevel
 
 /**
- * Used to create a guild.
+ * Creates a guild.
  *
  * Note :
  * - When using the roles parameter, the first member of the array is used to change properties of
