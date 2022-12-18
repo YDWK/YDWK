@@ -22,6 +22,14 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.User
 import java.awt.Color
 
+/**
+ * This event is triggered when a user's accent color is updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The user whose avatar was updated.
+ * @param oldAccentColor The user's old accent color.
+ * @param newAccentColor The user's new accent color.
+ */
 data class UserAccentColorUpdateEvent(
     override val ydwk: YDWK,
     override val entity: User,

@@ -22,6 +22,14 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.evm.backend.update.IEventUpdate
 
+/**
+ * This event is triggered when a user is updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The user whose avatar was updated.
+ * @param oldValue The user's old value.
+ * @param newValue The user's new value.
+ */
 open class GenericUserUpdateEvent<T>(
     override val ydwk: YDWK,
     override val entity: User,

@@ -21,7 +21,14 @@ package io.github.ydwk.ydwk.evm.event.events.user
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.User
 
-/** This event is triggered when a user's verified status is updated. */
+/**
+ * This event is triggered when a user's verified status is updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The user whose flags were updated.
+ * @param oldVerified The user's old verified status.
+ * @param newVerified The user's new verified status.
+ */
 data class UserVerifiedUpdateEvent(
     override val ydwk: YDWK,
     override val entity: User,

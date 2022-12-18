@@ -21,6 +21,14 @@ package io.github.ydwk.ydwk.evm.event.events.user
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.User
 
+/**
+ * This event is triggered when a user's banner is updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The user whose avatar was updated.
+ * @param oldBanner The user's old banner.
+ * @param newBanner The user's new banner.
+ */
 data class UserBannerUpdateEvent(
     override val ydwk: YDWK,
     override val entity: User,
