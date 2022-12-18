@@ -22,5 +22,11 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.evm.event.Event
 import io.github.ydwk.ydwk.interaction.Interaction
 
+/**
+ * This event is triggered when a slash command is auto-completed.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param interaction The [Interaction] that was auto-completed.
+ */
 data class AutoCompleteSlashCommandEvent(override val ydwk: YDWK, val interaction: Interaction) :
     Event(ydwk)

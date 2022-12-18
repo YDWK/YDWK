@@ -22,9 +22,17 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.evm.event.Event
 import java.time.Instant
 
+/**
+ * This event is triggered when the websocket triggers a disconnect event.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param closeCode The [CloseCode] of the disconnect.
+ * @param closeCodeReason The reason of the disconnect.
+ * @param instant The [Instant] of the disconnect.
+ */
 data class DisconnectEvent(
     override val ydwk: YDWK,
     val closeCode: String,
     val closeCodeReason: String,
-    val now: Instant
+    val instant: Instant
 ) : Event(ydwk)

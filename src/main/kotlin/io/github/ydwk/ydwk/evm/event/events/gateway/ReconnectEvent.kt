@@ -21,4 +21,9 @@ package io.github.ydwk.ydwk.evm.event.events.gateway
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.evm.event.Event
 
+/**
+ * This event is triggered when the websocket triggers a reconnect event.
+ *
+ * @param ydwk The [YDWK] instance.
+ */
 data class ReconnectEvent(override val ydwk: YDWK) : Event(ydwk)
