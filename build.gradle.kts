@@ -36,8 +36,6 @@ extra.apply {
 
 group = "io.github.realyusufismail" // used for publishing. DON'T CHANGE
 
-version = properties["ydwkVersion"] as String // used for publishing. DON'T CHANGE
-
 val releaseVersion by extra(!version.toString().endsWith("-SNAPSHOT"))
 
 apply(from = "gradle/tasks/checkEntities.gradle.kts")

@@ -4,7 +4,6 @@
  */
 tasks.register("incrementVersion") {
     doLast {
-        val version = properties["ydwkVersion"] as String
         if (version.toString().endsWith("-SNAPSHOT")) {
             return@doLast
         }

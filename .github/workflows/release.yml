@@ -17,9 +17,9 @@ jobs:
       - name: Read Version
         id: read-version
         run: |
-          version=`cat gradle.properties | sed -n "s/^.*ydwkVersion\s*=\s*\(\S*\).*$/\1/p"`
-          echo "ydwkVersion<<EOF" >>$GITHUB_OUTPUT
-          echo "ydwkVersion" >>$GITHUB_OUTPUT
+          version=`cat gradle.properties | sed -n "s/^.*version\s*=\s*\(\S*\).*$/\1/p"`
+          echo "version<<EOF" >>$GITHUB_OUTPUT
+          echo "$version" >>$GITHUB_OUTPUT
           echo "EOF" >>$GITHUB_OUTPUT
       - name: Create Release
         if: ${{ !endsWith(steps.read-version.outputs.version, 'SNAPSHOT') }}
