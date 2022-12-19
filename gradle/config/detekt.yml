@@ -81,8 +81,8 @@ comments:
     searchInInnerInterface: true
     searchInProtectedClass: false
   UndocumentedPublicFunction:
-    active: false
-    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
+    active: true
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**', 'src/main/kotlin/io/github/ydwk/ydwk/impl']
     searchProtectedFunction: false
   UndocumentedPublicProperty:
     active: false

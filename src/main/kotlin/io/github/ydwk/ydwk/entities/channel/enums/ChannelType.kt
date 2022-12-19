@@ -60,6 +60,12 @@ enum class ChannelType(private val id: Int) {
             return values().firstOrNull { it.id == id } ?: UNKNOWN
         }
 
+        /**
+         * Whether the channel type is a guild channel.
+         *
+         * @param channelType the channel type
+         * @return whether the channel type is a guild channel
+         */
         fun isGuildChannel(type: ChannelType): Boolean {
             return type == TEXT ||
                 type == VOICE ||
@@ -70,6 +76,12 @@ enum class ChannelType(private val id: Int) {
                 type == STAGE_VOICE
         }
 
+        /**
+         * Whether the channel type is a direct message channel.
+         *
+         * @param type the channel type
+         * @return whether the channel type is a direct message channel
+         */
         fun isDmChannel(type: ChannelType): Boolean {
             return type == DM || type == GROUP_DM
         }
