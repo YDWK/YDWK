@@ -41,7 +41,7 @@ fun main() {
     ydwk.waitForReady.slashBuilder
         .addSlashCommand(Slash("join_vc", "Joins a vc"))
         .addSlashCommand(Slash("create_dm", "Creates a dm channel"))
-        .addSlashCommand("guild", "Creates a guild")
+        .addSlashCommand("channel", "Creates a Channel")
         .addSlashCommand("button", "A button test")
         .addSlashCommand("bot_info", "Gets the bot info")
         .build()
@@ -88,10 +88,14 @@ fun main() {
                     it.slash.reply("Bot info: ${it.slash.guild?.botAsMember?.joinedAt}").reply()
                 }
             }
-            "guild" -> {
+            "channel" -> {
                 withContext(Dispatchers.IO) {
-                    it.slash.ydwk.entityBuilder.createGuild("Test Guild").create().join()
-                    it.slash.reply("Guild created! ${it.slash.guild?.name}").reply()
+                    it.slash.ydwk.entityBuilder
+                        .getGuildEntitiesBuilder()
+                        .createChannel("Test Channel", it.slash.guild!!.id)
+                        .createMessageChannel("Test Message Channel")
+                        .create()
+                    it.slash.reply("Channel created!").reply()
                 }
             }
         }

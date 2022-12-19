@@ -101,7 +101,7 @@ class MessageChannelBuilderImpl(val ydwk: YDWK, val guildId: String?, val name: 
         }
 
         return ydwk.restApiManager
-            .post(json.toString().toRequestBody(), EndPoint.GuildEndpoint.CREATE_GUILD, guildId)
+            .post(json.toString().toRequestBody(), EndPoint.GuildEndpoint.CREATE_CHANNEL, guildId)
             .execute {
                 val jsonBody = it.jsonBody
                 if (jsonBody == null) {
