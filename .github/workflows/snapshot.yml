@@ -20,7 +20,7 @@ jobs:
           echo "ydwkVersion" >>$GITHUB_OUTPUT
           echo "EOF" >>$GITHUB_OUTPUT
       - name: Run maven snapshot
-        if: ${{ endsWith(steps.read-version.outputs.ydwkVersion, 'SNAPSHOT') }}
+        if: ${{ endsWith(steps.read-version.outputs.version, 'SNAPSHOT') }}
         run: |
           ./gradlew publishYdwkPublicationToMavenCentralRepository
         env:

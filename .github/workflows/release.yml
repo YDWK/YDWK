@@ -22,7 +22,7 @@ jobs:
           echo "ydwkVersion" >>$GITHUB_OUTPUT
           echo "EOF" >>$GITHUB_OUTPUT
       - name: Create Release
-        if: ${{ !endsWith(steps.read-version.outputs.ydwkVersion, 'SNAPSHOT') }}
+        if: ${{ !endsWith(steps.read-version.outputs.version, 'SNAPSHOT') }}
         id: create_release
         uses: actions/create-release@v1
         env:
