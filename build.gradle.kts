@@ -53,8 +53,6 @@ repositories {
     // maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
 }
 
-val gradleProperties = file("gradle.properties")
-
 dependencies {
     // json
     api(
@@ -162,8 +160,6 @@ spotless {
 }
 
 detekt {
-    version = properties["detektVersion"] as String
-
     // only check javadoc in io/github/ydwk/ydwk/entities and io/github/ydwk/ydwk/evm/event/events
     source =
         files(
