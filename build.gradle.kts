@@ -11,10 +11,11 @@ buildscript {
 }
 
 plugins {
-    kotlin("jvm") version "1.7.22"
-    kotlin("plugin.allopen") version "1.7.22"
-    id("com.diffplug.spotless") version "6.12.0"
-    id("org.jetbrains.dokka") version "1.7.20"
+    kotlin("jvm")
+    kotlin("plugin.allopen")
+    id("com.diffplug.spotless")
+    id("org.jetbrains.dokka")
+    id("io.gitlab.arturbosch.detekt")
     application
     `maven-publish`
     signing
@@ -43,29 +44,43 @@ apply(from = "gradle/tasks/incrementVersion.gradle.kts")
 
 apply(from = "gradle/tasks/checkEvents.gradle.kts")
 
-apply(from = "gradle/tasks/javadocChecker.gradle.kts")
+apply(from = "gradle/tasks/eventClassJavaDocChecker.gradle")
 
 repositories {
     mavenCentral()
     // maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
 }
 
+val gradleProperties = file("gradle.properties")
+
 dependencies {
     // json
-    api("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.1")
+    api(
+        "com.fasterxml.jackson.module:jackson-module-kotlin:" +
+            properties["jacksonModuleKotlinVersion"])
+
     // logger
-    api("ch.qos.logback:logback-classic:1.4.5")
-    api("ch.qos.logback:logback-core:1.4.5")
-    api("uk.org.lidalia:sysout-over-slf4j:1.0.2")
+    api("ch.qos.logback:logback-classic:" + properties["logBackClassicVersion"])
+    api("ch.qos.logback:logback-core:" + properties["logBackCoreVersion"])
+    api("uk.org.lidalia:sysout-over-slf4j:" + properties["sysoutOverSlf4jVersion"])
+
     // config.json
-    api("io.github.realyusufismail:jconfig:1.0.8")
+    api("io.github.realyusufismail:jconfig:" + properties["jconfigVersion"])
+
     // ws and https
-    api("com.squareup.okhttp3:okhttp:5.0.0-alpha.10")
-    api("com.neovisionaries:nv-websocket-client:2.14")
+    api("com.squareup.okhttp3:okhttp:" + properties["okhttp3Version"])
+    api("com.neovisionaries:nv-websocket-client:" + properties["nvWebsocketClientVersion"])
+
     // kotlin
-    testImplementation("org.jetbrains.kotlin:kotlin-test:1.7.22")
-    api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-    implementation("com.google.code.findbugs:jsr305:3.0.2")
+    api(
+        "org.jetbrains.kotlinx:kotlinx-coroutines-core:" +
+            properties["kotlinxCoroutinesCoreVersion"])
+
+    // annotations
+    implementation("com.google.code.findbugs:jsr305:" + properties["jsr305Version"])
+
+    // test
+    testImplementation("org.jetbrains.kotlin:kotlin-test:" + properties["kotlinTestVersion"])
 }
 
 tasks.test {
@@ -79,7 +94,7 @@ tasks.build {
     // dependsOn on custom tasks
     dependsOn(tasks.getByName("checkEvents")) // check if events are valid
     dependsOn(tasks.getByName("checkEntities")) // check if entities are valid
-    dependsOn(tasks.getByName("javadocChecker")) // check if javadoc is valid
+    dependsOn(tasks.getByName("eventClassJavaDocChecker")) // check if event classes have javadoc
     dependsOn(tasks.test) // run tests before building
 
     // check if version is not snapshot
@@ -144,6 +159,26 @@ spotless {
     }
 }
 
+detekt {
+    version = properties["detektVersion"] as String
+
+    // only check javadoc in io/github/ydwk/ydwk/entities and io/github/ydwk/ydwk/evm/event/events
+    source =
+        files(
+            "src/main/kotlin/io/github/ydwk/ydwk/entities",
+            "src/main/kotlin/io/github/ydwk/ydwk/evm/event/events")
+    config = files("gradle/config/detekt.yml")
+    baseline = file("gradle/config/detekt-baseline.xml")
+    allRules = false
+}
+
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
+}
+
 application { mainClass.set("MainKt") }
 
 java {
@@ -152,6 +187,12 @@ java {
 
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
+}
+
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach { jvmTarget = "11" }
+
+tasks.withType<io.gitlab.arturbosch.detekt.DetektCreateBaselineTask>().configureEach {
+    jvmTarget = "11"
 }
 
 tasks.jar {

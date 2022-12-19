@@ -16,10 +16,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.channel.guild.thread
+package io.github.ydwk.ydwk.entities.guild.invite
 
-import io.github.ydwk.ydwk.entities.channel.GuildChannel
+enum class TargetType(private val value: Int) {
+    STREAM(1),
+    EMBEDDED_APPLICATION(2);
 
-// TODO : Add functionality to this class
-/** A thread channel in a guild. */
-interface GuildThreadChannel : GuildChannel
+    companion object {
+        /**
+         * Gets the [TargetType] by its value
+         *
+         * @param value the value
+         * @return the [TargetType]
+         */
+        fun fromValue(value: Int): TargetType {
+            return values().first { it.value == value }
+        }
+    }
+
+    /**
+     * Gets the value of the [TargetType]
+     *
+     * @return the value
+     */
+    fun getValue(): Int {
+        return value
+    }
+}

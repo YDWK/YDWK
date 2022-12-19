@@ -31,6 +31,7 @@ import io.github.ydwk.ydwk.entities.guild.enums.SystemChannelFlag
 import io.github.ydwk.ydwk.entities.guild.enums.VerificationLevel
 import io.github.ydwk.ydwk.impl.entities.GuildImpl
 import io.github.ydwk.ydwk.rest.EndPoint
+import io.github.ydwk.ydwk.util.Checks
 import java.util.concurrent.CompletableFuture
 import okhttp3.RequestBody.Companion.toRequestBody
 
@@ -48,6 +49,8 @@ class GuildBuilderImpl(val ydwk: YDWK, val name: String) : GuildBuilder {
     private var systemChannelFlags: SystemChannelFlag? = null
 
     override fun setIcon(icon: String): GuildBuilder {
+        // needs to be base64
+        Checks.customCheck(icon.length > 2, "Icon must be base64")
         this.icon = icon
         return this
     }

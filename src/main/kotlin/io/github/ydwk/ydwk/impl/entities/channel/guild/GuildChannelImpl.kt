@@ -24,11 +24,10 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.channel.GuildChannel
 import io.github.ydwk.ydwk.entities.channel.getter.guild.GuildChannelGetter
 import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
-import io.github.ydwk.ydwk.entities.guild.Invite
+import io.github.ydwk.ydwk.entities.guild.invite.InviteCreator
 import io.github.ydwk.ydwk.impl.entities.ChannelImpl
 import io.github.ydwk.ydwk.impl.entities.channel.getter.guild.GuildChannelGetterImpl
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
-import java.util.concurrent.CompletableFuture
 
 open class GuildChannelImpl(
     ydwk: YDWK,
@@ -54,9 +53,8 @@ open class GuildChannelImpl(
     override val guildChannelGetter: GuildChannelGetter
         get() = GuildChannelGetterImpl(ydwk, json, idAsLong)
 
-    override fun requestInvite(): CompletableFuture<Invite> {
-        TODO("Not yet implemented")
-    }
+    override val inviteCreator: InviteCreator
+        get() = InviteCreator(ydwk, this.id)
 
     override var name: String = json["name"].asText()
 

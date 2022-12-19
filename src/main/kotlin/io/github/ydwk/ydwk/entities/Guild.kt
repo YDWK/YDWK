@@ -551,7 +551,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
         return rest
             .addQueryParameter("limit", limit.toString())
             .get(EndPoint.GuildEndpoint.GET_AUDIT_LOGS, id)
-            .execute { it ->
+            .execute {
                 val jsonBody = it.jsonBody
                 if (jsonBody == null) {
                     throw IllegalStateException("json body is null")

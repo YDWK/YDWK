@@ -59,7 +59,7 @@ class ReplyImpl(
         return this
     }
 
-    override fun replyWithFuture(): CompletableFuture<NoResult> {
+    override fun triggerWithFuture(): CompletableFuture<NoResult> {
         val mainBody =
             ydwk.objectNode.put(
                 "type", InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE.getType())

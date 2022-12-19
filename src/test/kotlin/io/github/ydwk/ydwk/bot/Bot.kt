@@ -56,12 +56,12 @@ fun main() {
                         val voiceState = member.voiceState
                         voiceState?.channel?.joinCompletableFuture()?.get()
                     } else {
-                        it.slash.reply("Member is null!").isEphemeral(true).reply()
+                        it.slash.reply("Member is null!").isEphemeral(true).trigger()
                     }
                 }
             }
             "ping" -> {
-                it.slash.reply("Pong!").reply()
+                it.slash.reply("Pong!").trigger()
             }
             "create_dm" -> {
                 withContext(Dispatchers.IO) {
@@ -80,12 +80,12 @@ fun main() {
                                 Button.of(ButtonStyle.SUCCESS, "3", "Success"),
                                 Button.of(ButtonStyle.DANGER, "4", "Danger"),
                                 Button.of("Link", "https://google.com")))
-                        .reply()
+                        .trigger()
                 }
             }
             "bot_info" -> {
                 withContext(Dispatchers.IO) {
-                    it.slash.reply("Bot info: ${it.slash.guild?.botAsMember?.joinedAt}").reply()
+                    it.slash.reply("Bot info: ${it.slash.guild?.botAsMember?.joinedAt}").trigger()
                 }
             }
             "channel" -> {
@@ -93,9 +93,9 @@ fun main() {
                     it.slash.ydwk.entityBuilder
                         .getGuildEntitiesBuilder()
                         .createChannel("Test Channel", it.slash.guild!!.id)
-                        .createMessageChannel("Test Message Channel")
+                        .createMessageChannel()
                         .create()
-                    it.slash.reply("Channel created!").reply()
+                    it.slash.reply("Channel created!").trigger()
                 }
             }
         }
@@ -105,13 +105,13 @@ fun main() {
         withContext(Dispatchers.IO) {
             when (it.button.customId) {
                 "1" -> {
-                    it.button.reply("Primary button clicked!").reply()
+                    it.button.reply("Primary button clicked!").trigger()
                 }
                 "2" -> {
-                    it.button.reply("Secondary button clicked!").reply()
+                    it.button.reply("Secondary button clicked!").trigger()
                 }
                 "3" -> {
-                    it.button.reply("Success button clicked!").reply()
+                    it.button.reply("Success button clicked!").trigger()
                 }
                 "4" -> {
                     it.button.message.delete().get()

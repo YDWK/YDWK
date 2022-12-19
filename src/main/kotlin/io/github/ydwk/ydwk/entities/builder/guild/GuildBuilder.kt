@@ -47,7 +47,7 @@ import io.github.ydwk.ydwk.entities.guild.enums.VerificationLevel
  */
 interface GuildBuilder : GenericEntityBuilder<Guild> {
     /**
-     * Sets the icon of the guild. data:image/jpeg;base64,BASE64_ENCODED_JPEG_IMAGE_DATA
+     * Sets the icon of the guild.
      *
      * @param icon the icon of the guild
      * @return this builder
