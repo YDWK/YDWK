@@ -22,7 +22,14 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.channel.guild.message.GuildMessageChannel
 import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
-/** Fired when the default auto archive duration of a guild news/text channel is updated */
+/**
+ * This event is triggered when a guild news/text channel's name is updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The [GuildMessageChannel] that was updated.
+ * @param oldName The old name.
+ * @param newName The new name.
+ */
 data class MessageChannelNameUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildMessageChannel,

@@ -22,7 +22,14 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
 import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
-/** Fired when the name of a guild category is updated */
+/**
+ * This event is triggered when a guild category's name is updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The [GuildCategory] that was updated.
+ * @param oldName The old name.
+ * @param newName The new name.
+ */
 data class CategoryNameUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildCategory,

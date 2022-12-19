@@ -22,6 +22,14 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
+/**
+ * This event is triggered when a guild's public updates channel is updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The [Guild] that was updated.
+ * @param oldPublicUpdatesChannel The old public updates channel.
+ * @param newPublicUpdatesChannel The new public updates channel.
+ */
 data class GuildPublicUpdatesChannelUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,

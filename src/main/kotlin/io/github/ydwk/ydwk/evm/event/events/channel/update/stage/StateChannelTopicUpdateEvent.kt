@@ -22,7 +22,14 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
-/** Fired when a stage channel's user rate limit is updated. */
+/**
+ * This event is triggered when a stage channel's topic is updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The [GuildVoiceChannel] that was updated.
+ * @param oldTopic The old topic.
+ * @param newTopic The new topic.
+ */
 data class StateChannelTopicUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildVoiceChannel,

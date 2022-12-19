@@ -22,6 +22,14 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
+/**
+ * This event is triggered when a guild's premium subscription count is updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The [Guild] that was updated.
+ * @param oldPremiumSubscriptionCount The old premium subscription count.
+ * @param newPremiumSubscriptionCount The new premium subscription count.
+ */
 data class GuildPremiumSubscriptionCountUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,

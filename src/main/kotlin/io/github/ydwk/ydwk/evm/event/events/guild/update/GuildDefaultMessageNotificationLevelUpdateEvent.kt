@@ -23,14 +23,22 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.guild.enums.MessageNotificationLevel
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
+/**
+ * This event is triggered when a guild's default message notification level is updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The [Guild] that was updated.
+ * @param oldMessageNotificationLevel The old message notification level.
+ * @param newMessageNotificationLevel The new message notification level.
+ */
 data class GuildDefaultMessageNotificationLevelUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,
-    val oldDefaultMessageNotificationLevel: Int,
-    val newDefaultMessageNotificationLevel: MessageNotificationLevel
+    val oldMessageNotificationLevel: MessageNotificationLevel,
+    val newMessageNotificationLevel: MessageNotificationLevel
 ) :
     GenericGuildUpdateEvent<Int>(
         ydwk,
         entity,
-        oldDefaultMessageNotificationLevel,
-        newDefaultMessageNotificationLevel.getValue())
+        oldMessageNotificationLevel.getValue(),
+        newMessageNotificationLevel.getValue())

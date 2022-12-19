@@ -22,6 +22,14 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
+/**
+ * This event is triggered when a guild's approximate member count is updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The [Guild] that was updated.
+ * @param oldApproximateMemberCount The old approximate member count.
+ * @param newApproximateMemberCount The new approximate member count.
+ */
 data class GuildApproximateMemberCountUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,

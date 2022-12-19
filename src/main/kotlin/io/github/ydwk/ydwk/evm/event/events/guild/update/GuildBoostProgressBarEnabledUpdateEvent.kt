@@ -22,6 +22,14 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
+/**
+ * This event is triggered when a guild's boost progress bar is enabled or disabled.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The [Guild] that was updated.
+ * @param oldBoostProgressBarEnabled The old boost progress bar enabled value.
+ * @param newBoostProgressBarEnabled The new boost progress bar enabled value.
+ */
 data class GuildBoostProgressBarEnabledUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,

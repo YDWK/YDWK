@@ -23,6 +23,14 @@ import io.github.ydwk.ydwk.entities.Emoji
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
+/**
+ * This event is triggered when a guild's emojis are updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The [Guild] that was updated.
+ * @param oldEmojis The old emojis.
+ * @param newEmojis The new emojis.
+ */
 data class GuildEmojisUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,

@@ -23,7 +23,14 @@ import io.github.ydwk.ydwk.entities.channel.guild.message.GuildMessageChannel
 import io.github.ydwk.ydwk.entities.channel.guild.message.text.PermissionOverwrite
 import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
-/** Fired when the permission overwrites of a guild news/text channel is updated */
+/**
+ * This event is triggered when a guild news/text channel's permission overwrites are updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The [GuildMessageChannel] that was updated.
+ * @param oldPermissionOverwrites The old permission overwrites.
+ * @param newPermissionOverwrites The new permission overwrites.
+ */
 data class MessageChannelPermissionOverwritesUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildMessageChannel,

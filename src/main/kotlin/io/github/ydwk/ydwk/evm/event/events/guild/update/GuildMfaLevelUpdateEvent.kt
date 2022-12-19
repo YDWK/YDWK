@@ -23,9 +23,17 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.guild.enums.MFALevel
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
+/**
+ * This event is triggered when a guild's MFA level is updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The [Guild] that was updated.
+ * @param oldMfaLevel The old MFA level.
+ * @param newMfaLevel The new MFA level.
+ */
 data class GuildMfaLevelUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,
-    val oldMfaLevel: Int,
+    val oldMfaLevel: MFALevel,
     val newMfaLevel: MFALevel
-) : GenericGuildUpdateEvent<Int>(ydwk, entity, oldMfaLevel, newMfaLevel.getValue())
+) : GenericGuildUpdateEvent<Int>(ydwk, entity, oldMfaLevel.getValue(), newMfaLevel.getValue())

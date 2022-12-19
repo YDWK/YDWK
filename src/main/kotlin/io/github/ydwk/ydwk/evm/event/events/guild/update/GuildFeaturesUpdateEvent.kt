@@ -23,6 +23,14 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.guild.enums.GuildFeature
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
+/**
+ * This event is triggered when a guild's features are updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The [Guild] that was updated.
+ * @param oldFeatures The old features.
+ * @param newFeatures The new features.
+ */
 data class GuildFeaturesUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,

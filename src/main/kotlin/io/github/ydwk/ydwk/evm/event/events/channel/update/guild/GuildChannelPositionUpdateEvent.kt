@@ -23,7 +23,14 @@ import io.github.ydwk.ydwk.entities.channel.GuildChannel
 import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
 import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
-/** Fired when the position of a guild channel is updated */
+/**
+ * This event is triggered when a guild channel's position is updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The [GuildChannel] that was updated.
+ * @param oldPosition The old position.
+ * @param newPosition The new position.
+ */
 data class GuildChannelPositionUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildChannel,

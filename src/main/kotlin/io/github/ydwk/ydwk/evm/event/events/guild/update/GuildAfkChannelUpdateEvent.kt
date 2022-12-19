@@ -22,9 +22,17 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
+/**
+ * This event is triggered when a guild's afk channel is updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The [Guild] that was updated.
+ * @param oldAfkChannelId The old afk channel id.
+ * @param newAfkChannelId The new afk channel id.
+ */
 data class GuildAfkChannelUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,
-    val oldAfkChannel: Long?,
-    val newAfkChannel: Long?
-) : GenericGuildUpdateEvent<Long?>(ydwk, entity, oldAfkChannel, newAfkChannel)
+    val oldAfkChannelId: Long?,
+    val newAfkChannelId: Long?
+) : GenericGuildUpdateEvent<Long?>(ydwk, entity, oldAfkChannelId, newAfkChannelId)

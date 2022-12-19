@@ -23,6 +23,14 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.guild.enums.NSFWLeveL
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
+/**
+ * This event is triggered when a guild's NSFW level is updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The [Guild] that was updated.
+ * @param oldNSFWLevel The old NSFW level.
+ * @param newNSFWLevel The new NSFW level.
+ */
 data class GuildNSFWLevelUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,

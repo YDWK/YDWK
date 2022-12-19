@@ -22,7 +22,15 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.channel.guild.message.GuildMessageChannel
 import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
-/** Fired when the default auto archive duration of a guild news/text channel is updated */
+/**
+ * This event is triggered when a guild news/text channel's default auto archive duration is
+ * updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The [GuildMessageChannel] that was updated.
+ * @param oldDefaultAutoArchiveDuration The old default auto archive duration.
+ * @param newDefaultAutoArchiveDuration The new default auto archive duration.
+ */
 data class MessageChannelDefaultAutoArchiveDurationUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildMessageChannel,
