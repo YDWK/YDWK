@@ -38,82 +38,78 @@ tasks.register("javadocChecker") {
 
             val eventInterfaces = lines.any { line -> line.contains("interface") }
             if (eventInterfaces) {
-                // look for fun and val/var and check if above it has javadoc if not throw error. If
-                // the
-                // javadoc starts with "Used" or "used" throw error.
-
+                // we are not checking if the entity name has javadoc above.
+                // e.g interface Bot : User, GenericEntity
+                // we are not checking if the interface has javadoc above.
+                // but we are checking if var email: String has javadoc above.
                 val lines = file.readLines()
 
-                val isFunMethod = lines.any { line -> line.contains("fun") }
-
-                if (isFunMethod) {
-                    val isFunMethodJavadoc = lines.any { line -> line.contains("/**") }
-                    if (!isFunMethodJavadoc) {
-                        throw GradleException("Event interface ${file.name} does not have javadoc")
+                for (i in lines.indices) {
+                    val line = lines[i]
+                    // keep going until you pas the interface line
+                    val fileNameFromInterfaceToBracket =
+                        line.substringAfter("interface").substringBefore("{")
+                    if (line.contains(fileNameFromInterfaceToBracket)) {
+                        // ignore and continue
+                        continue
                     }
 
-                    val isFunMethodJavadocUsed = lines.any { line -> line.contains("* Used") }
+                    // this is an example interface
+                    // interface WelcomeChannel : GenericEntity {
+                    //    /**
+                    //     * The channel's id
+                    //     *
+                    //     * @return The channel's id
+                    //     */
+                    //    val channelId: GetterSnowFlake
 
-                    if (isFunMethodJavadocUsed) {
-                        throw GradleException(
-                            "Event interface ${file.name} javadoc starts with Used")
-                    }
+                    // we ignore interface WelcomeChannel : GenericEntity
+                    // and we start checking from the next line
+                    // if we hit a line that starts with "fun" or "val" we check if the line above
+                    // and see if it has */ meaining it has javadoc
+                    // we also need to check if the javadoc starts with "Used" or "used" which is
+                    // done through by keeping going up
+                    // until we hit /** and then move to the next line and check if it starts with
+                    // "Used" or "used"
+                    // if it does throw error
 
-                    val isFunMethodJavadocUsedLowerCase =
-                        lines.any { line -> line.contains("* used") }
+                    println("line: $line")
 
-                    if (isFunMethodJavadocUsedLowerCase) {
-                        throw GradleException(
-                            "Event interface ${file.name} javadoc starts with used")
-                    }
-                }
+                    if (line.startsWith("fun") ||
+                        line.startsWith("val") ||
+                        line.startsWith("var")) {
+                        val lineAbove = lines[i - 1]
+                        if (!lineAbove.contains("*/")) {
+                            // check if it is variable or function and throw error accordingly
+                            if (line.startsWith("fun")) {
+                                throw GradleException(
+                                    "Function ${line} does not have javadoc in ${file.name}")
+                            } else {
+                                throw GradleException(
+                                    "Variable ${line} does not have javadoc in ${file.name}")
+                            }
+                        }
 
-                val isVarMethod = lines.any { line -> line.contains("var") }
+                        val lineAboveJavadoc = // we dont know how many lines the javadoc is so we
+                        // keep going up until we hit /**
+                        lines
+                                .subList(0, i - 1)
+                                .reversed()
+                                .takeWhile { line -> !line.contains("/**") }
+                                .reversed()
 
-                if (isVarMethod) {
-                    val isValMethodJavadoc = lines.any { line -> line.contains("/**") }
-                    if (!isValMethodJavadoc) {
-                        // try to get line number of the var
-                        throw GradleException("Event interface ${file.name} does not have javadoc")
-                    }
+                        val isJavadocUsed = lineAboveJavadoc.any { line -> line.contains("* Used") }
+                        if (isJavadocUsed) {
+                            throw GradleException(
+                                "Javadoc for ${line} in ${file.name} starts with Used")
+                        }
 
-                    val isValMethodJavadocUsed = lines.any { line -> line.contains("* Used") }
-
-                    if (isValMethodJavadocUsed) {
-                        throw GradleException(
-                            "Event interface ${file.name} javadoc starts with Used")
-                    }
-
-                    val isValMethodJavadocUsedLowerCase =
-                        lines.any { line -> line.contains("* used") }
-
-                    if (isValMethodJavadocUsedLowerCase) {
-                        throw GradleException(
-                            "Event interface ${file.name} javadoc starts with used")
-                    }
-                }
-
-                val isValMethod = lines.any { line -> line.contains("val") }
-
-                if (isValMethod) {
-                    val isValMethodJavadoc = lines.any { line -> line.contains("/**") }
-                    if (!isValMethodJavadoc) {
-                        throw GradleException("Event interface ${file.name} does not have javadoc")
-                    }
-
-                    val isValMethodJavadocUsed = lines.any { line -> line.contains("* Used") }
-
-                    if (isValMethodJavadocUsed) {
-                        throw GradleException(
-                            "Event interface ${file.name} javadoc starts with Used")
-                    }
-
-                    val isValMethodJavadocUsedLowerCase =
-                        lines.any { line -> line.contains("* used") }
-
-                    if (isValMethodJavadocUsedLowerCase) {
-                        throw GradleException(
-                            "Event interface ${file.name} javadoc starts with used")
+                        val isJavadocUsedLowerCase =
+                            lineAboveJavadoc.any { line -> line.contains("* used") }
+                        if (isJavadocUsedLowerCase) {
+                            throw GradleException(
+                                "Javadoc for ${line} in ${file.name} starts with used")
+                        }
                     }
                 }
             }

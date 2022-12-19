@@ -23,7 +23,14 @@ import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
 import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
-/** Fired when a voice/stage channel's name is updated. */
+/**
+ * This event is triggered when a voice channel's name is updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The [GuildVoiceChannel] that was updated.
+ * @param oldName The old name.
+ * @param newName The new name.
+ */
 data class VoiceChannelNameUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildVoiceChannel,
