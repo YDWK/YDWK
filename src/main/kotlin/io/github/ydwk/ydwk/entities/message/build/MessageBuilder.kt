@@ -35,21 +35,45 @@ class MessageBuilder {
     private var embed: Embed? = null
     private var tts: Boolean? = null
 
+    /**
+     * Sets the content of the message.
+     *
+     * @param message The content of the message.
+     * @return The [MessageBuilder] instance.
+     */
     fun setContent(message: String): MessageBuilder {
         content = message
         return this
     }
 
+    /**
+     * Whether the message should be sent with text-to-speech.
+     *
+     * @param tts Whether the message should be sent with text-to-speech.
+     * @return The [MessageBuilder] instance.
+     */
     fun setTts(tts: Boolean): MessageBuilder {
         this.tts = tts
         return this
     }
 
+    /**
+     * Sets the embed of the message.
+     *
+     * @param embed The embed of the message.
+     * @return The [MessageBuilder] instance.
+     */
     fun setEmbed(embed: Embed): MessageBuilder {
         this.embed = embed
         return this
     }
 
+    /**
+     * Sends the message to the specified channel.
+     *
+     * @param channel The channel to send the message to.
+     * @return The [Message] that was sent.
+     */
     fun send(sendeadble: Sendeadble): CompletableFuture<Message> {
         return when (sendeadble) {
             is TextChannel -> {
@@ -67,6 +91,12 @@ class MessageBuilder {
         }
     }
 
+    /**
+     * Sends the message to the specified channel.
+     *
+     * @param channel The channel to send the message to.
+     * @return The [Message] that was sent.
+     */
     private fun sendToTextChannel(channel: TextChannel): CompletableFuture<Message> {
         val body = sendMessageToChannelBody(channel.ydwk, content, tts, embed)
         return channel.ydwk.restApiManager
@@ -84,10 +114,22 @@ class MessageBuilder {
             }
     }
 
+    /**
+     * Sends the message to the specified member.
+     *
+     * @param member The member to send the message to.
+     * @return The [Message] that was sent.
+     */
     private fun sendToMember(member: Member): CompletableFuture<Message> {
         return send(member.user as Sendeadble)
     }
 
+    /**
+     * Sends the message to the specified user.
+     *
+     * @param user The user to send the message to.
+     * @return The [Message] that was sent.
+     */
     private fun sendToUser(user: User): CompletableFuture<Message> {
         return user.createDmChannel.thenCompose { channel -> send(channel) }
     }

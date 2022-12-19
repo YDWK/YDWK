@@ -128,6 +128,12 @@ enum class GuildPermission(
             return values().firstOrNull { it.value == value } ?: UNKNOWN
         }
 
+        /**
+         * Returns an enum set of [GuildPermission]s with the given [value].
+         *
+         * @param permissions The value of the [GuildPermission]s to find.
+         * @return An enum set of [GuildPermission]s with the given [value].
+         */
         fun fromLongs(permissions: Long): EnumSet<GuildPermission> {
             return values()
                 .filter { it.value != -1L && permissions and it.value == it.value }
