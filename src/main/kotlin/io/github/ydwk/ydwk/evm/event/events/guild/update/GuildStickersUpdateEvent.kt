@@ -23,6 +23,14 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.Sticker
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
+/**
+ * This event is triggered when a guild's stickers are updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The [Guild] that was updated.
+ * @param oldStickers The old stickers.
+ * @param newStickers The new stickers.
+ */
 data class GuildStickersUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,

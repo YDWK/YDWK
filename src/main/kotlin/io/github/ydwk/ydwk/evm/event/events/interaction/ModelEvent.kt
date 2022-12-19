@@ -18,8 +18,14 @@
  */ 
 package io.github.ydwk.ydwk.evm.event.events.interaction
 
+import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.evm.event.Event
-import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.interaction.Interaction
 
-data class ModelEvent(override val ydwk: YDWKImpl, val interaction: Interaction) : Event(ydwk)
+/**
+ * This event is triggered when a model event is triggered.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param interaction The Model [Interaction].
+ */
+data class ModelEvent(override val ydwk: YDWK, val interaction: Interaction) : Event(ydwk)

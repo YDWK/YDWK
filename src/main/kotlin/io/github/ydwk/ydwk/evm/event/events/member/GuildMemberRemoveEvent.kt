@@ -22,4 +22,10 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.evm.event.Event
 
+/**
+ * This event is triggered when a member leaves a guild.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param member The [Member] that left the guild.
+ */
 data class GuildMemberRemoveEvent(override val ydwk: YDWK, val member: Member) : Event(ydwk)

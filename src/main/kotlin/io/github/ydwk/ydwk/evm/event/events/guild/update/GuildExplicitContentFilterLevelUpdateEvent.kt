@@ -23,11 +23,22 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.guild.enums.ExplicitContentFilterLevel
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
+/**
+ * This event is triggered when a guild's explicit content filter level is updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The [Guild] that was updated.
+ * @param oldExplicitContentFilterLevel The old explicit content filter level.
+ * @param newExplicitContentFilterLevel The new explicit content filter level.
+ */
 data class GuildExplicitContentFilterLevelUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,
-    val oldExplicitContentFilterLevel: Int,
+    val oldExplicitContentFilterLevel: ExplicitContentFilterLevel,
     val newExplicitContentFilterLevel: ExplicitContentFilterLevel
 ) :
     GenericGuildUpdateEvent<Int>(
-        ydwk, entity, oldExplicitContentFilterLevel, newExplicitContentFilterLevel.getValue())
+        ydwk,
+        entity,
+        oldExplicitContentFilterLevel.getValue(),
+        newExplicitContentFilterLevel.getValue())

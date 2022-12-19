@@ -23,6 +23,14 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.guild.WelcomeScreen
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
+/**
+ * This event is triggered when a guild's welcome screen is updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The [Guild] that was updated.
+ * @param oldWelcomeScreen The old welcome screen.
+ * @param newWelcomeScreen The new welcome screen.
+ */
 data class GuildWelcomeScreenUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,

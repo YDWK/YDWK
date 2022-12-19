@@ -21,6 +21,14 @@ package io.github.ydwk.ydwk.evm.event.events.user
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.User
 
+/**
+ * This event is triggered when a user's name is updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The user whose avatar was updated.
+ * @param oldName The user's old name.
+ * @param newName The user's new name.
+ */
 data class UserNameUpdateEvent(
     override val ydwk: YDWK,
     override val entity: User,

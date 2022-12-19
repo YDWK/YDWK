@@ -21,9 +21,17 @@ package io.github.ydwk.ydwk.evm.event.events.gateway
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.evm.event.Event
 
+/**
+ * This event is triggered when the websocket triggers a resume event.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param amountOfAvailableGuilds The amount of guilds that are available.
+ * @param amountOfUnavailableGuilds The amount of guilds that are unavailable.
+ * @param totalGuildsAmount The total amount of guilds.
+ */
 data class ReadyEvent(
     override val ydwk: YDWK,
     val amountOfAvailableGuilds: Int,
-    val unAvailableGuildsAmount: Int,
-    val totalGuildsAmount: Int = amountOfAvailableGuilds + unAvailableGuildsAmount
+    val amountOfUnavailableGuilds: Int,
+    val totalGuildsAmount: Int = amountOfAvailableGuilds + amountOfUnavailableGuilds
 ) : Event(ydwk)

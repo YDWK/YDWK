@@ -39,14 +39,14 @@ interface SlashBuilder {
     @CheckReturnValue fun addSlashCommand(slash: Slash): SlashBuilder
 
     /**
-     * Used a list of Slash Commands to the builder
+     * Lists of Slash Commands to the builder
      *
      * @param slashes The list of Slash Commands to add
      */
     @CheckReturnValue fun addSlashCommands(slashes: List<Slash>): SlashBuilder
 
     /**
-     * Used a list of Slash Commands to the builder
+     * Lists of Slash Commands to the builder
      *
      * @param slashes The list of Slash Commands to add
      */

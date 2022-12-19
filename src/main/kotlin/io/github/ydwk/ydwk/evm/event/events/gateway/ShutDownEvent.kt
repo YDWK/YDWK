@@ -23,5 +23,12 @@ import io.github.ydwk.ydwk.evm.event.Event
 import io.github.ydwk.ydwk.ws.util.CloseCode
 import java.time.Instant
 
-data class ShutDownEvent(override val ydwk: YDWK, val closeCode: CloseCode, val now: Instant) :
+/**
+ * This event is triggered when the websocket triggers a shutdown event.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param closeCode The [CloseCode] of the shutdown.
+ * @param instant The [Instant] of the shutdown.
+ */
+data class ShutDownEvent(override val ydwk: YDWK, val closeCode: CloseCode, val instant: Instant) :
     Event(ydwk)

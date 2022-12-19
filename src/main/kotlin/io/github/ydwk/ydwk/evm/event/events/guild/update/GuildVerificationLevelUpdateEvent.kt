@@ -23,6 +23,14 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.guild.enums.VerificationLevel
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
+/**
+ * This event is triggered when a guild's verification level is updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The [Guild] that was updated.
+ * @param oldVerificationLevel The old verification level.
+ * @param newVerificationLevel The new verification level.
+ */
 data class GuildVerificationLevelUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,

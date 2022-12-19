@@ -22,6 +22,14 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
+/**
+ * This event is triggered when a guild's preferred locale is updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The [Guild] that was updated.
+ * @param oldPreferredLocale The old preferred locale.
+ * @param newPreferredLocale The new preferred locale.
+ */
 data class GuildPreferredLocaleUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,

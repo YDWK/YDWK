@@ -34,7 +34,12 @@ open class GuildMessageChannelImpl(ydwk: YDWK, json: JsonNode, idAsLong: Long) :
 
     override var nsfw: Boolean = json["nsfw"].asBoolean()
 
-    override var defaultAutoArchiveDuration: Int = json["default_auto_archive_duration"].asInt()
+    override var defaultAutoArchiveDuration: Int =
+        if (json["default_auto_archive_duration"].isInt) {
+            json["default_auto_archive_duration"].asInt()
+        } else {
+            0
+        }
 
     override var lastMessageId: String = json["last_message_id"].asText()
 

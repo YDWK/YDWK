@@ -22,6 +22,14 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
+/**
+ * This event is triggered when a guild's widget is enabled or disabled.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The [Guild] that was updated.
+ * @param oldWidgetEnabled The old widget enabled.
+ * @param newWidgetEnabled The new widget enabled.
+ */
 data class GuildWidgetEnabledUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,

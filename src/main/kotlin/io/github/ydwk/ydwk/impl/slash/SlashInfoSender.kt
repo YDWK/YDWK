@@ -66,6 +66,12 @@ class SlashInfoSender(
                     globalSlashCommandsToAdd.add(globalSlashCommands[name]!!)
                 }
             }
+
+            globalSlashCommands.forEach { (name, slash) ->
+                if (!currentGlobalSlashCommandsNameAndId.containsValue(name)) {
+                    globalSlashCommandsToAdd.add(slash)
+                }
+            }
         } else {
             globalSlashCommandsToAdd.addAll(globalSlashCommands.values)
         }
@@ -79,6 +85,14 @@ class SlashInfoSender(
                         guildSlashCommandsIdsToDelete.add(id)
                     } else {
                         guildSlashCommandsToAdd.add(guildSlashCommands[name]!!)
+                    }
+                }
+            }
+
+            guildSlashCommands.forEach { (name, slash) ->
+                currentGuildSlashCommandsNameAndId.forEach { (_, nameAndId) ->
+                    if (!nameAndId.containsValue(name)) {
+                        guildSlashCommandsToAdd.add(slash)
                     }
                 }
             }

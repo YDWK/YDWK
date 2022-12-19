@@ -22,4 +22,10 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.evm.event.Event
 
+/**
+ * This event is triggered when a message is deleted.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param message The message that was deleted.
+ */
 data class MessageDeleteEvent(override val ydwk: YDWK, val message: Message) : Event(ydwk)

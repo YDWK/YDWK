@@ -369,7 +369,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
             GuildDefaultMessageNotificationLevelUpdateEvent(
                 ydwk,
                 guild,
-                oldDefaultMessageNotifications,
+                MessageNotificationLevel.fromInt(oldDefaultMessageNotifications),
                 MessageNotificationLevel.fromInt(newDefaultMessageNotifications)))
         logger.debug(
             "Guild default message notifications changed from $oldDefaultMessageNotifications to $newDefaultMessageNotifications")
@@ -386,7 +386,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
             GuildExplicitContentFilterLevelUpdateEvent(
                 ydwk,
                 guild,
-                oldExplicitContentFilter,
+                ExplicitContentFilterLevel.fromInt(oldExplicitContentFilter),
                 ExplicitContentFilterLevel.fromInt(newExplicitContentFilter)))
         logger.debug(
             "Guild explicit content filter changed from $oldExplicitContentFilter to $newExplicitContentFilter")
@@ -395,7 +395,8 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     private fun onMfaLevelChange(guild: GuildImpl, oldMfaLevel: Int, newMfaLevel: Int) {
         guild.mfaLevel = MFALevel.fromInt(newMfaLevel)
         ydwk.emitEvent(
-            GuildMfaLevelUpdateEvent(ydwk, guild, oldMfaLevel, MFALevel.fromInt(newMfaLevel)))
+            GuildMfaLevelUpdateEvent(
+                ydwk, guild, MFALevel.fromInt(oldMfaLevel), MFALevel.fromInt(newMfaLevel)))
         logger.debug("Guild mfa level changed from $oldMfaLevel to $newMfaLevel")
     }
 
@@ -431,7 +432,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
             GuildSystemChannelFlagsUpdateEvent(
                 ydwk,
                 guild,
-                oldSystemChannelFlags,
+                SystemChannelFlag.fromInt(oldSystemChannelFlags),
                 SystemChannelFlag.fromInt(newSystemChannelFlags)))
         logger.debug(
             "Guild system channel flags changed from $oldSystemChannelFlags to $newSystemChannelFlags")

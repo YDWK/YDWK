@@ -22,4 +22,10 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.VoiceState
 import io.github.ydwk.ydwk.evm.event.Event
 
+/**
+ * This event is triggered when a user joins a voice channel.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param voiceState The new voice state of the member.
+ */
 data class VoiceConnectionEvent(override val ydwk: YDWK, val voiceState: VoiceState) : Event(ydwk)

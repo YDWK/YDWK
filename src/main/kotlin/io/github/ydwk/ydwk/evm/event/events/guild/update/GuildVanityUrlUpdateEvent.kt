@@ -22,6 +22,14 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
+/**
+ * This event is triggered when a guild's vanity url is updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The [Guild] that was updated.
+ * @param oldVanityUrl The old vanity url.
+ * @param newVanityUrl The new vanity url.
+ */
 data class GuildVanityUrlUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,

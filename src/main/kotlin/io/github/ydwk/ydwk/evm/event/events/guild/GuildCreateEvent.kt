@@ -22,4 +22,10 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.evm.event.Event
 
+/**
+ * This event is triggered when a guild is created.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param guild The [Guild] that was created.
+ */
 data class GuildCreateEvent(override val ydwk: YDWK, val guild: Guild) : Event(ydwk)

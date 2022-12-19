@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk
 
-/** Used to set the user status. */
+/** Sets the user status. */
 enum class UserStatus(private val status: String) {
     ONLINE("online"),
     /** Do not disturb. */

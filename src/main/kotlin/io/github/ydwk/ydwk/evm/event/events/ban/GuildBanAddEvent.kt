@@ -23,5 +23,12 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.evm.event.Event
 
+/**
+ * This event is triggered when a member is banned from a guild.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param guild The guild the member was banned from.
+ * @param member The member that was banned.
+ */
 data class GuildBanAddEvent(override val ydwk: YDWK, val guild: Guild, val member: Member?) :
     Event(ydwk)

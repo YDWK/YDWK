@@ -23,11 +23,19 @@ import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.guild.enums.SystemChannelFlag
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
+/**
+ * This event is triggered when a guild's system channel flags are updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The [Guild] that was updated.
+ * @param oldSystemChannelFlags The old flags.
+ * @param newSystemChannelFlags The new flags.
+ */
 data class GuildSystemChannelFlagsUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,
-    val oldSystemChannelFlags: Int,
+    val oldSystemChannelFlags: SystemChannelFlag,
     val newSystemChannelFlags: SystemChannelFlag
 ) :
     GenericGuildUpdateEvent<Int>(
-        ydwk, entity, oldSystemChannelFlags, newSystemChannelFlags.getValue())
+        ydwk, entity, oldSystemChannelFlags.getValue(), newSystemChannelFlags.getValue())

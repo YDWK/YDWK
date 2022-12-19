@@ -43,6 +43,8 @@ apply(from = "gradle/tasks/incrementVersion.gradle.kts")
 
 apply(from = "gradle/tasks/checkEvents.gradle.kts")
 
+apply(from = "gradle/tasks/javadocChecker.gradle.kts")
+
 repositories {
     mavenCentral()
     // maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
@@ -77,6 +79,7 @@ tasks.build {
     // dependsOn on custom tasks
     dependsOn(tasks.getByName("checkEvents")) // check if events are valid
     dependsOn(tasks.getByName("checkEntities")) // check if entities are valid
+    dependsOn(tasks.getByName("javadocChecker")) // check if javadoc is valid
     dependsOn(tasks.test) // run tests before building
 
     // check if version is not snapshot

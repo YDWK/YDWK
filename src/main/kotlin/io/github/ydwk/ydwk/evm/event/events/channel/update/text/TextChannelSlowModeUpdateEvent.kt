@@ -23,7 +23,14 @@ import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
 import io.github.ydwk.ydwk.entities.channel.guild.message.GuildMessageChannel
 import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
-/** Fired when a text channel's slow mode is updated */
+/**
+ * This event is triggered when a guild text channel's slow mode is updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The [GuildMessageChannel] that was updated.
+ * @param oldSlowMode The old slow mode.
+ * @param newSlowMode The new slow mode.
+ */
 data class TextChannelSlowModeUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildMessageChannel,

@@ -22,6 +22,14 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
+/**
+ * This event is triggered when a guild's widget channel is updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The [Guild] that was updated.
+ * @param oldWidgetChannel The old widget channel.
+ * @param newWidgetChannel The new widget channel.
+ */
 data class GuildWidgetChannelUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,

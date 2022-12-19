@@ -22,5 +22,10 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.evm.event.Event
 
-/** Fired when a channel is created */
+/**
+ * This event is triggered when a channel is created.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param channel The channel that was created.
+ */
 data class ChannelDeleteEvent(override val ydwk: YDWK, val channel: Channel) : Event(ydwk)

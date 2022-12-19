@@ -35,7 +35,7 @@ enum class OpCode(
     /** Update the client's presence. */
     PRESENCE(3),
 
-    /** Used to join/leave or move between voice channels. */
+    /** Joins/leaves or moves between voice channels. */
     VOICE_STATE(4),
 
     /** Resume a previous session that was disconnected. */

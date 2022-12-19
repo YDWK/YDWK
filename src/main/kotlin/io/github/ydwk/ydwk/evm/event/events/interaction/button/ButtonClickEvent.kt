@@ -22,4 +22,10 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.evm.event.Event
 import io.github.ydwk.ydwk.interaction.message.button.Button
 
+/**
+ * This event is triggered when a button is clicked.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param button The [Button] that was clicked.
+ */
 data class ButtonClickEvent(override val ydwk: YDWK, val button: Button) : Event(ydwk)

@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.ydwk.ydwk.cache.CacheIds
 import io.github.ydwk.ydwk.entities.*
 import io.github.ydwk.ydwk.entities.application.PartialApplication
+import io.github.ydwk.ydwk.entities.builder.EntityBuilder
 import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.channel.GuildChannel
 import io.github.ydwk.ydwk.entities.channel.getter.guild.GuildChannelGetter
@@ -39,6 +40,10 @@ import java.time.Instant
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.ScheduledExecutorService
 
+/**
+ * The main class of the YDWK library. This class is used to interact with the Discord API. Also
+ * contains many things such as the embed builder for example.
+ */
 interface YDWK {
 
     /**
@@ -161,7 +166,7 @@ interface YDWK {
      */
     val uptime: Instant
 
-    /** Used to add or remove slash commands */
+    /** Adds or removes slash commands */
     val slashBuilder: SlashBuilder
 
     /** Sets the guild ids for guild commands */
@@ -439,7 +444,7 @@ interface YDWK {
         getChannels().mapNotNull { it.channelGetter.asGuildChannel() }
 
     /**
-     * Used to get guild channels by their ids.
+     * Gets guild channels by their ids.
      *
      * @param id The id of the guild channel.
      * @return The [GuildChannelGetter] object.
@@ -448,7 +453,7 @@ interface YDWK {
         getGuildChannelById(id)?.guildChannelGetter
 
     /**
-     * Used to get guild channels by their ids.
+     * Gets guild channels by their ids.
      *
      * @param id The id of the guild channel.
      * @return The [GuildChannelGetter] object.
@@ -507,6 +512,13 @@ interface YDWK {
      */
     fun requestGuildChannels(guildId: String): CompletableFuture<List<GuildChannel>> =
         requestGuildChannels(guildId.toLong())
+
+    /**
+     * Gets the entity builder.
+     *
+     * @return The [EntityBuilder] object.
+     */
+    val entityBuilder: EntityBuilder
 
     /**
      * Overrides the custom to string method.

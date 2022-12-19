@@ -22,7 +22,14 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.channel.guild.message.GuildMessageChannel
 import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
-/** Fired when the default auto archive duration of a guild news/text channel is updated */
+/**
+ * This event is triggered when a guild news/text channel's nsfw status is updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The [GuildMessageChannel] that was updated.
+ * @param oldNsfw The old nsfw status.
+ * @param newNsfw The new nsfw status.
+ */
 data class MessageChannelNsfwUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildMessageChannel,

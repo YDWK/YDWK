@@ -21,6 +21,14 @@ package io.github.ydwk.ydwk.evm.event.events.user
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.User
 
+/**
+ * This event is triggered when a user's system is updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The user whose avatar was updated.
+ * @param oldSystem The user's old system.
+ * @param newSystem The user's new system.
+ */
 data class UserSystemUpdateEvent(
     override val ydwk: YDWK,
     override val entity: User,

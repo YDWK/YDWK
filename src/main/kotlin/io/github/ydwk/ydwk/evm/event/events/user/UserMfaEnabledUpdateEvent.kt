@@ -21,6 +21,14 @@ package io.github.ydwk.ydwk.evm.event.events.user
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.User
 
+/**
+ * This event is triggered when a user's MFA enabled MFA is updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The user whose avatar was updated.
+ * @param oldMfaEnabled The user's old MFA enabled status.
+ * @param newMfaEnabled The user's new MFA enabled status.
+ */
 data class UserMfaEnabledUpdateEvent(
     override val ydwk: YDWK,
     override val entity: User,

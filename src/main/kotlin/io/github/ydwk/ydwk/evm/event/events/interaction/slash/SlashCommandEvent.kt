@@ -22,4 +22,10 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.evm.event.Event
 import io.github.ydwk.ydwk.interaction.application.type.SlashCommand
 
+/**
+ * This event is triggered when a slash command is triggered.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param slash The [SlashCommand] that was triggered.
+ */
 data class SlashCommandEvent(override val ydwk: YDWK, val slash: SlashCommand) : Event(ydwk)

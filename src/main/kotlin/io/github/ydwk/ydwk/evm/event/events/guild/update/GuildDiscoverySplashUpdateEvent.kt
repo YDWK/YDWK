@@ -22,6 +22,14 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
+/**
+ * This event is triggered when a guild's discovery splash is updated.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param entity The [Guild] that was updated.
+ * @param oldDiscoverySplash The old discovery splash.
+ * @param newDiscoverySplash The new discovery splash.
+ */
 data class GuildDiscoverySplashUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,

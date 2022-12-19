@@ -46,7 +46,7 @@ class DmChannelImpl(
     override val type: ChannelType
         get() = ChannelType.DM
 
-    override var name: String = json["name"].asText()
+    override var name: String = if (json.has("name")) json["name"].asText() else ""
 
     override fun toString(): String {
         return EntityToStringBuilder(ydwk, this).name(this.name).toString()
