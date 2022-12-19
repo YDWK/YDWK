@@ -20,4 +20,5 @@ package io.github.ydwk.ydwk.entities.channel.guild.forum
 
 import io.github.ydwk.ydwk.entities.channel.GuildChannel
 
-interface GuildForumChannel : GuildChannel {}
+// TODO : Add functionality to this class
+interface GuildForumChannel : GuildChannel

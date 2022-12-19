@@ -110,7 +110,8 @@ open class EndPoint {
 
     enum class ChannelEndpoint(private val endPoint: String) : IEnumEndpoint {
         CREATE_MESSAGE("/channels/%s/messages"),
-        GET_CHANNEL("/channels/%s");
+        GET_CHANNEL("/channels/%s"),
+        CREATE_INVITE("/channels/%s/invites");
 
         override fun getEndpoint(): String {
             return endPoint

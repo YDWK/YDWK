@@ -46,7 +46,7 @@ interface DmChannel : TextChannel {
      */
     val retrieveRecipient: CompletableFuture<User>
         get() {
-            return ydwk.restApiManager.get(EndPoint.UserEndpoint.GET_USER, id).execute { it ->
+            return ydwk.restApiManager.get(EndPoint.UserEndpoint.GET_USER, id).execute {
                 val jsonBody = it.jsonBody
                 if (jsonBody == null) {
                     throw IllegalStateException("json body is null")

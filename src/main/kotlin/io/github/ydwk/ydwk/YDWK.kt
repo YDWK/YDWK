@@ -32,6 +32,7 @@ import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
 import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
 import io.github.ydwk.ydwk.rest.RestApiManager
 import io.github.ydwk.ydwk.slash.SlashBuilder
+import io.github.ydwk.ydwk.util.Incubating
 import io.github.ydwk.ydwk.util.ThreadFactory
 import io.github.ydwk.ydwk.voice.VoiceConnection
 import io.github.ydwk.ydwk.ws.WebSocketManager
@@ -127,7 +128,7 @@ interface YDWK {
     fun emitEvent(event: GenericEvent)
 
     /** Shuts down the websocket manager */
-    fun shutdownAPI()
+    @Incubating fun shutdownAPI()
 
     /**
      * Gets a guild by its id.
@@ -518,7 +519,7 @@ interface YDWK {
      *
      * @return The [EntityBuilder] object.
      */
-    val entityBuilder: EntityBuilder
+    @get:Incubating val entityBuilder: EntityBuilder
 
     /**
      * Overrides the custom to string method.

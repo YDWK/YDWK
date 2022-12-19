@@ -1,0 +1,27 @@
+/**
+ * If an event data class in the folder src/main/kotlin/io/github/ydwk/ydwk/evm/event does not have javadoc, an error will be thrown.
+ */
+tasks.register('eventClassJavaDocChecker') {
+    doLast {
+        def eventClassDir = file("src/main/kotlin/io/github/ydwk/ydwk/evm/event/events")
+        // in eventClassDir there is more folder. We need to go through each and check each data class and see if it has javadoc
+        eventClassDir.eachDir { dir ->
+            checkEventClassJavaDoc(dir)
+        }
+    }
+}
+
+def checkEventClassJavaDoc(file) {
+    if (file.isDirectory()) {
+        file.eachFile { f ->
+            checkEventClassJavaDoc(f)
+        }
+    } else {
+        if (file.name.endsWith(".kt")) {
+            def fileContent = file.text
+            if (!fileContent.contains("/**")) {
+                throw new GradleException("Event class ${file.name} does not have javadoc")
+            }
+        }
+    }
+}

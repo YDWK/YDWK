@@ -16,10 +16,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.channel.guild.thread
+package io.github.ydwk.ydwk.util
 
-import io.github.ydwk.ydwk.entities.channel.GuildChannel
-
-// TODO : Add functionality to this class
-/** A thread channel in a guild. */
-interface GuildThreadChannel : GuildChannel
+/** Annotation to indicate experimental and still to be refined API, which may change at any time */
+@MustBeDocumented
+@Retention(AnnotationRetention.RUNTIME)
+@Target(
+    AnnotationTarget.CLASS,
+    AnnotationTarget.FIELD,
+    AnnotationTarget.FUNCTION,
+    AnnotationTarget.PROPERTY_GETTER,
+    AnnotationTarget.PROPERTY_SETTER,
+    AnnotationTarget.VALUE_PARAMETER,
+    AnnotationTarget.CONSTRUCTOR,
+    AnnotationTarget.ANNOTATION_CLASS,
+    AnnotationTarget.FILE)
+annotation class Incubating

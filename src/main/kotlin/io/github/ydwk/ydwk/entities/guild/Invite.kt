@@ -18,7 +18,90 @@
  */ 
 package io.github.ydwk.ydwk.entities.guild
 
+import io.github.ydwk.ydwk.entities.Application
+import io.github.ydwk.ydwk.entities.Guild
+import io.github.ydwk.ydwk.entities.User
+import io.github.ydwk.ydwk.entities.channel.GuildChannel
+import io.github.ydwk.ydwk.entities.guild.invite.TargetType
 import io.github.ydwk.ydwk.entities.util.GenericEntity
+import java.time.ZonedDateTime
 
-// TODO: Add more properties
-interface Invite : GenericEntity {}
+interface Invite : GenericEntity {
+
+    /**
+     * The invite code (unique ID)
+     *
+     * @return the invite code
+     */
+    val code: String
+
+    /**
+     * The guild this invite is for
+     *
+     * @return the guild
+     */
+    val guild: Guild
+
+    /**
+     * The channel this invite is for
+     *
+     * @return the channel
+     */
+    val channel: GuildChannel
+
+    /**
+     * The inviter of the invite
+     *
+     * @return the inviter
+     */
+    val inviter: User?
+
+    /**
+     * The target type of the invite
+     *
+     * @return the target type
+     */
+    val targetType: TargetType
+
+    /**
+     * The target user of the invite
+     *
+     * @return the target user
+     */
+    val targetUser: User?
+
+    /**
+     * The target application of the invite
+     *
+     * @return the target application
+     */
+    val targetApplication: Application?
+
+    /**
+     * The approximate presence count of the invite
+     *
+     * @return the approximate presence count
+     */
+    val approximatePresenceCount: Int
+
+    /**
+     * The approximate number of members in the guild
+     *
+     * @return the approximate number of members
+     */
+    val approximateMemberCount: Int
+
+    /**
+     * The expiration date of the invite
+     *
+     * @return the expiration date
+     */
+    val expirationDate: ZonedDateTime
+
+    /**
+     * The guild scheduled event this invite is for
+     *
+     * @return the guild scheduled event
+     */
+    val guildScheduledEvent: GuildScheduledEvent
+}

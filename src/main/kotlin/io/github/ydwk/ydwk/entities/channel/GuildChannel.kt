@@ -22,9 +22,8 @@ import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.channel.getter.guild.GuildChannelGetter
 import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
-import io.github.ydwk.ydwk.entities.guild.Invite
+import io.github.ydwk.ydwk.entities.guild.invite.InviteCreator
 import io.github.ydwk.ydwk.util.NameAbleEntity
-import java.util.concurrent.CompletableFuture
 
 interface GuildChannel : Channel, NameAbleEntity {
     /**
@@ -56,9 +55,9 @@ interface GuildChannel : Channel, NameAbleEntity {
     val guildChannelGetter: GuildChannelGetter
 
     /**
-     * Requests a channel invite.
+     * Creates an invitation for this channel.
      *
-     * @return the invite of this channel.
+     * @return the invite creator which can be used to create the invite.
      */
-    fun requestInvite(): CompletableFuture<Invite>
+    val inviteCreator: InviteCreator
 }

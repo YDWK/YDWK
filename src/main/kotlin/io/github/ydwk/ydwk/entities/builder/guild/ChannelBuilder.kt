@@ -26,16 +26,14 @@ interface ChannelBuilder {
     /**
      * Creates a new message channel (text channel or announcement channel).
      *
-     * @param name the name of the channel
      * @return a new channel builder
      */
-    fun createMessageChannel(name: String): MessageChannelBuilder
+    fun createMessageChannel(): MessageChannelBuilder
 
     /**
      * Creates a new voice channel.
      *
-     * @param name the name of the channel
      * @return a new channel builder
      */
-    fun createVoiceChannel(name: String): VoiceChannelBuilder
+    fun createVoiceChannel(): VoiceChannelBuilder
 }

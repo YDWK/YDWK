@@ -54,8 +54,8 @@ interface Reply {
      *
      * @return The [Void] instance.
      */
-    fun reply(): NoResult {
-        return replyWithFuture().get()
+    fun trigger(): NoResult {
+        return triggerWithFuture().get()
     }
 
     /**
@@ -63,5 +63,5 @@ interface Reply {
      *
      * @return The [CompletableFuture] instance.
      */
-    fun replyWithFuture(): CompletableFuture<NoResult>
+    fun triggerWithFuture(): CompletableFuture<NoResult>
 }
