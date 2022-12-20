@@ -3,7 +3,7 @@
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Kotlin](https://img.shields.io/badge/kotlin-1.7.20-blue.svg?logo=kotlin)](http://kotlinlang.org)
 [![codecov](https://codecov.io/gh/YDWK/YDWK/branch/master/graph/badge.svg?token=LKIA8T6N6J)](https://codecov.io/gh/YDWK/YDWK)
-[![ydwkv](https://img.shields.io/badge/YDWK-v0.1.2-blue.svg)](https://www.ydwk.org)
+[![ydwkv](https://img.shields.io/badge/YDWK-0.1.2-blue.svg)](https://www.ydwk.org)
 
 # Very important note
 Don't update to 1.22.0 it was a mistake release caused by a bug in the code, use the latest version found above.
