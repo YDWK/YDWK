@@ -36,7 +36,7 @@ enum class SystemChannelFlag(private val value: Int) {
 
     companion object {
         /**
-         * Gets the [SystemChannelFlag] by its [value].
+         * The [SystemChannelFlag] by its [value].
          *
          * @param value The value to get the [SystemChannelFlag] by.
          * @return The [SystemChannelFlag] by the given [value].
@@ -47,7 +47,7 @@ enum class SystemChannelFlag(private val value: Int) {
     }
 
     /**
-     * Gets the value of the [SystemChannelFlag].
+     * The value of the [SystemChannelFlag].
      *
      * @return The value of the [SystemChannelFlag].
      */

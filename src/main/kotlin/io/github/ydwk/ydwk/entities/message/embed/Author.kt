@@ -23,28 +23,28 @@ import java.net.URL
 
 interface Author : GenericEntity {
     /**
-     * Gets the name of this author.
+     * The name of this author.
      *
      * @return The name of this author.
      */
     val name: String
 
     /**
-     * Gets the url of this author.
+     * The url of this author.
      *
      * @return The url of this author.
      */
     val url: URL?
 
     /**
-     * Gets the icon url of this author.
+     * The icon url of this author.
      *
      * @return The icon url of this author.
      */
     val iconUrl: String?
 
     /**
-     * Gets the proxy icon url of this author.
+     * The proxy icon url of this author.
      *
      * @return The proxy icon url of this author.
      */

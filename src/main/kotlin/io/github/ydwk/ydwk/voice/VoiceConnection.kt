@@ -86,7 +86,7 @@ interface VoiceConnection {
     fun setSpeaking(speaking: Boolean): VoiceConnection
 
     /**
-     * Gets the speaking flags.
+     * The speaking flags.
      *
      * @return The speaking flags.
      */
@@ -100,7 +100,7 @@ interface VoiceConnection {
     fun disconnect(): CompletableFuture<Void>
 
     /**
-     * Gets the voice channel the bot is connected to.
+     * The voice channel the bot is connected to.
      *
      * @return The voice channel the bot is connected to.
      */

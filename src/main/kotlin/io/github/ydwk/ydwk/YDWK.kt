@@ -20,6 +20,9 @@ package io.github.ydwk.ydwk
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
+import io.github.ydwk.ydwk.builders.message.IMessageCommandBuilder
+import io.github.ydwk.ydwk.builders.slash.SlashBuilder
+import io.github.ydwk.ydwk.builders.user.IUserCommandBuilder
 import io.github.ydwk.ydwk.cache.CacheIds
 import io.github.ydwk.ydwk.entities.*
 import io.github.ydwk.ydwk.entities.application.PartialApplication
@@ -31,7 +34,6 @@ import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
 import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
 import io.github.ydwk.ydwk.rest.RestApiManager
-import io.github.ydwk.ydwk.slash.SlashBuilder
 import io.github.ydwk.ydwk.util.Incubating
 import io.github.ydwk.ydwk.util.ThreadFactory
 import io.github.ydwk.ydwk.voice.VoiceConnection
@@ -65,7 +67,7 @@ interface YDWK {
     val webSocketManager: WebSocketManager?
 
     /**
-     * Gets the properties of the bot.
+     * The properties of the bot.
      *
      * @return the [Bot] object
      */
@@ -79,7 +81,7 @@ interface YDWK {
     var partialApplication: PartialApplication?
 
     /**
-     * Gets the properties of the application.
+     * The properties of the application.
      *
      * @return the [Application] object
      */
@@ -154,14 +156,14 @@ interface YDWK {
     val guilds: List<Guild>
 
     /**
-     * Gets the rest api manager.
+     * The rest api manager.
      *
      * @return The rest api manager.
      */
     val restApiManager: RestApiManager
 
     /**
-     * Gets the bot's uptime.
+     * The bot's uptime.
      *
      * @return The bot's uptime.
      */
@@ -169,6 +171,12 @@ interface YDWK {
 
     /** Adds or removes slash commands */
     val slashBuilder: SlashBuilder
+
+    /** Adds or removes user commands. */
+    val userCommandBuilder: IUserCommandBuilder
+
+    /** Adds or removes message commands. */
+    val messageCommandBuilder: IMessageCommandBuilder
 
     /** Sets the guild ids for guild commands */
     fun setGuildIds(vararg guildIds: String)
@@ -341,7 +349,7 @@ interface YDWK {
         setVoiceConnection(guildId.toLong(), voiceConnection)
 
     /**
-     * Gets the voice connection.
+     * The voice connection.
      *
      * @param guildId The id of the guild.
      * @return The [VoiceConnection] object.
@@ -368,7 +376,7 @@ interface YDWK {
     )
 
     /**
-     * Gets the pending voice connection.
+     * The pending voice connection.
      *
      * @param guildId The id of the guild.
      * @return The [VoiceConnection] object.
@@ -383,14 +391,14 @@ interface YDWK {
     fun removePendingVoiceConnectionById(guildId: Long)
 
     /**
-     * Gets the default ScheduledExecutorService.
+     * The default ScheduledExecutorService.
      *
      * @return The [ScheduledExecutorService] object.
      */
     val defaultScheduledExecutorService: ScheduledExecutorService
 
     /**
-     * Gets the thread factory.
+     * The thread factory.
      *
      * @return The [ThreadFactory] object.
      */
@@ -515,7 +523,7 @@ interface YDWK {
         requestGuildChannels(guildId.toLong())
 
     /**
-     * Gets the entity builder.
+     * The entity builder.
      *
      * @return The [EntityBuilder] object.
      */

@@ -24,7 +24,6 @@ import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.util.GenericEntity
-import io.github.ydwk.ydwk.interaction.application.type.SlashCommand
 import io.github.ydwk.ydwk.interaction.sub.GenericCommandData
 import io.github.ydwk.ydwk.interaction.sub.InteractionType
 import io.github.ydwk.ydwk.util.GetterSnowFlake
@@ -32,78 +31,70 @@ import io.github.ydwk.ydwk.util.SnowFlake
 
 interface Interaction : SnowFlake, GenericEntity {
     /**
-     * Gets the Id of the application that this interaction is for.
+     * The Id of the application that this interaction is for.
      *
      * @return The Id of the application that this interaction is for.
      */
     val applicationId: GetterSnowFlake
 
     /**
-     * Gets the type of this interaction.
+     * The type of this interaction.
      *
      * @return The type of this interaction.
      */
     val type: InteractionType
 
     /**
-     * Gets the data of this interaction.
+     * The data of this interaction.
      *
      * @return The data of this interaction.
      */
     val data: GenericCommandData?
 
     /**
-     * Gets the application command data of this interaction
-     *
-     * @return The application command data of this interaction
-     */
-    val slashCommand
-        get() = data as? SlashCommand
-
-    /**
-     * Gets the guild that this interaction is for.
+     * The guild that this interaction is for.
      *
      * @return The guild that this interaction is for.
      */
     val guild: Guild?
 
     /**
-     * Gets the channel that this interaction is for.
+     * The channel that this interaction is for.
      *
      * @return The channel that this interaction is for.
      */
     val channel: Channel?
 
     /**
-     * Gets the member who invoked this interaction.
+     * The member who invoked this interaction.
      *
      * @return The member who invoked this interaction.
      */
     val member: Member?
 
     /**
-     * Gets the user who invoked this interaction.
+     * The user who invoked this interaction.
      *
      * @return The user who invoked this interaction.
      */
     val user: User?
 
     /**
-     * Gets the token of this interaction.
+     * The token of this interaction.
      *
      * @return The token of this interaction.
      */
     val token: String
 
     /**
-     * Gets the version of this interaction.
+     * The version of this interaction.
      *
      * @return The version of this interaction.
      */
     val version: Int
 
     /**
-     * Gets the message of this interaction.
+     * The message of this interaction.
      *
      * @return The message of this interaction.
      */
@@ -119,12 +110,12 @@ interface Interaction : SnowFlake, GenericEntity {
     val permissions: Long?
 
     /**
-     * Gets the selected language of the invoking user
+     * The selected language of the invoking user
      *
      * @return the selected language of the invoking user
      */
     val locale: String?
 
-    /** Gets the Guild's preferred locale, if invoked in a guild */
+    /** The Guild's preferred locale, if invoked in a guild */
     val guildLocale: String?
 }

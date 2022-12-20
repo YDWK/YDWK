@@ -24,7 +24,7 @@ import java.util.*
 
 interface PermissionEntity : GenericEntity {
     /**
-     * Gets the permissions of this member.
+     * The permissions of this member.
      *
      * @return The permissions of this member.
      */

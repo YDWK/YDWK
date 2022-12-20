@@ -20,8 +20,8 @@ package io.github.ydwk.ydwk.impl.interaction.application
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.builders.slash.SlashOptionType
 import io.github.ydwk.ydwk.interaction.application.ApplicationCommandOption
-import io.github.ydwk.ydwk.slash.SlashOptionType
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class ApplicationCommandOptionImpl(override val ydwk: YDWK, override val json: JsonNode) :

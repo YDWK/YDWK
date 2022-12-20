@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.slash
+package io.github.ydwk.ydwk.builders.slash
 
 import javax.annotation.CheckReturnValue
 
@@ -52,7 +52,11 @@ interface SlashBuilder {
      */
     @CheckReturnValue fun addSlashCommands(vararg slashes: Slash): SlashBuilder
 
-    /** Gets all the Slash Commands in the builder */
+    /**
+     * All the Slash Commands in the builder
+     *
+     * @return The list of Slash Commands in the builder
+     */
     @CheckReturnValue fun getSlashCommands(): List<Slash>
 
     /**
@@ -63,14 +67,14 @@ interface SlashBuilder {
     @CheckReturnValue fun removeSlashCommand(slash: Slash): SlashBuilder
 
     /**
-     * Replies a List of Slash Commands from the builder
+     * Removes a List of Slash Commands from the builder
      *
      * @param slashes The List of Slash Commands to remove
      */
     @CheckReturnValue fun removeSlashCommands(slashes: List<Slash>): SlashBuilder
 
     /**
-     * Replies a List of Slash Commands from the builder
+     * Removes a List of Slash Commands from the builder
      *
      * @param slashes The List of Slash Commands to remove
      */

@@ -28,35 +28,35 @@ import io.github.ydwk.ydwk.util.SnowFlake
 /** This class is used to represent a discord sticker object. */
 interface Sticker : GenericEntity, SnowFlake, NameAbleEntity {
     /**
-     * Gets the ID of the pack this sticker is from.
+     * The ID of the pack this sticker is from.
      *
      * @return The ID of the pack this sticker is from.
      */
     val packId: GetterSnowFlake?
 
     /**
-     * Gets the description of this sticker.
+     * The description of this sticker.
      *
      * @return The description of this sticker.
      */
     var description: String?
 
     /**
-     * Gets the autocomplete/suggestion tags for the sticker (max 200 characters)
+     * The autocomplete/suggestion tags for the sticker (max 200 characters)
      *
      * @return The autocomplete/suggestion tags for the sticker (max 200 characters)
      */
     var tags: List<String>
 
     /**
-     * Gets the type of sticker.
+     * The type of sticker.
      *
      * @return The type of sticker.
      */
     var type: StickerType
 
     /**
-     * Gets the format type of sticker.
+     * The format type of sticker.
      *
      * @return The format type of sticker.
      */
@@ -70,21 +70,21 @@ interface Sticker : GenericEntity, SnowFlake, NameAbleEntity {
     var available: Boolean
 
     /**
-     * Gets the guild that owns this sticker.
+     * The guild that owns this sticker.
      *
      * @return The guild that owns this sticker.
      */
     val guild: Guild?
 
     /**
-     * Gets the user that uploaded the sticker.
+     * The user that uploaded the sticker.
      *
      * @return The user that uploaded the sticker.
      */
     var user: User?
 
     /**
-     * Gets the standard sticker's sort order within its pack
+     * The standard sticker's sort order within its pack
      *
      * @return The standard sticker's sort order within its pack
      */

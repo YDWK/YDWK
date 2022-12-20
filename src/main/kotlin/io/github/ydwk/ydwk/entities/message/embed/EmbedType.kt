@@ -36,7 +36,7 @@ enum class EmbedType(private val type: String) {
 
     companion object {
         /**
-         * Gets the [EmbedType] from the given [type].
+         * The [EmbedType] from the given [type].
          *
          * @param type The type to get the [EmbedType] from.
          * @return The [EmbedType] from the given [type].

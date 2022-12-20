@@ -23,7 +23,7 @@ import io.github.ydwk.ydwk.entities.util.GenericEntity
 
 interface Reaction : GenericEntity {
     /**
-     * Gets the amount of times this reaction was used.
+     * The amount of times this reaction was used.
      *
      * @return The count of this reaction.
      */
@@ -37,7 +37,7 @@ interface Reaction : GenericEntity {
     val me: Boolean
 
     /**
-     * Gets the emoji of this reaction.
+     * The emoji of this reaction.
      *
      * @return The emoji of this reaction.
      */

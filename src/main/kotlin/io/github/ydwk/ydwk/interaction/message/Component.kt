@@ -22,7 +22,7 @@ import io.github.ydwk.ydwk.entities.util.GenericEntity
 
 interface Component : GenericEntity {
     /**
-     * Gets the type of this component.
+     * The type of this component.
      *
      * @return The type of this component.
      */
@@ -50,7 +50,7 @@ interface Component : GenericEntity {
     val modalCompatible: Boolean
 
     /**
-     * Gets the custom id of this button if it is not a link button.
+     * The custom id of this button if it is not a link button.
      *
      * @return The custom id of this button if it is not a link button.
      */

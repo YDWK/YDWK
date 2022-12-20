@@ -36,7 +36,7 @@ enum class HttpResponseCode(private val code: Int, private val message: String) 
 
     companion object {
         /**
-         * Gets the [HttpResponseCode] from the code
+         * The [HttpResponseCode] from the code
          *
          * @param code The code to get the [HttpResponseCode] from.
          * @return The [HttpResponseCode] from the given [code].
@@ -47,7 +47,7 @@ enum class HttpResponseCode(private val code: Int, private val message: String) 
     }
 
     /**
-     * Gets the code of the [HttpResponseCode].
+     * The code of the [HttpResponseCode].
      *
      * @return The code of the [HttpResponseCode].
      */
@@ -56,7 +56,7 @@ enum class HttpResponseCode(private val code: Int, private val message: String) 
     }
 
     /**
-     * Gets the message of the [HttpResponseCode].
+     * The message of the [HttpResponseCode].
      *
      * @return The message of the [HttpResponseCode].
      */

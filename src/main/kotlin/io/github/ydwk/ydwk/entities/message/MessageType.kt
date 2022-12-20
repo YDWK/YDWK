@@ -49,7 +49,7 @@ enum class MessageType(private val type: Int, private val isDeletable: Boolean) 
 
     companion object {
         /**
-         * Gets the [MessageType] of the provided [type].
+         * The [MessageType] of the provided [type].
          *
          * @param type The type to get the [MessageType] of.
          * @return The [MessageType] of the provided [type].
@@ -69,7 +69,7 @@ enum class MessageType(private val type: Int, private val isDeletable: Boolean) 
     }
 
     /**
-     * Gets the type of the message.
+     * The type of the message.
      *
      * @return The type of the message.
      */

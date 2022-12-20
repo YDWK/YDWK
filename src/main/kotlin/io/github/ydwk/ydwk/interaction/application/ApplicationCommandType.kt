@@ -19,7 +19,7 @@
 package io.github.ydwk.ydwk.interaction.application
 
 enum class ApplicationCommandType(private val value: Int) {
-    /** A slash command; a text-based command that shows up when a user types / */
+    /** A slash command; a text-based command that shows up when a user types */
     CHAT_INPUT(1),
 
     /** A UI-based command that shows up when you right-click or tap on a user */

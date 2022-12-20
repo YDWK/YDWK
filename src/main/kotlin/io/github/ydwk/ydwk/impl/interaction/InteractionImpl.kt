@@ -29,8 +29,11 @@ import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.MessageImpl
 import io.github.ydwk.ydwk.impl.entities.UserImpl
 import io.github.ydwk.ydwk.impl.entities.guild.MemberImpl
+import io.github.ydwk.ydwk.impl.interaction.application.type.MessageCommandImpl
 import io.github.ydwk.ydwk.impl.interaction.application.type.SlashCommandImpl
+import io.github.ydwk.ydwk.impl.interaction.application.type.UserCommandImpl
 import io.github.ydwk.ydwk.interaction.Interaction
+import io.github.ydwk.ydwk.interaction.application.ApplicationCommandType
 import io.github.ydwk.ydwk.interaction.sub.GenericCommandData
 import io.github.ydwk.ydwk.interaction.sub.InteractionType
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
@@ -86,8 +89,20 @@ class InteractionImpl(
 
     override val data: GenericCommandData? =
         when (type) {
-            InteractionType.APPLICATION_COMMAND ->
-                SlashCommandImpl(ydwk, json["data"], idAsLong, this)
+            InteractionType.APPLICATION_COMMAND -> {
+                // get type
+                when (ApplicationCommandType.fromInt(json["data"]["type"].asInt())) {
+                    ApplicationCommandType.CHAT_INPUT ->
+                        SlashCommandImpl(ydwk, json["data"], idAsLong, this)
+                    ApplicationCommandType.USER ->
+                        UserCommandImpl(ydwk, json["data"], idAsLong, this)
+                    ApplicationCommandType.MESSAGE ->
+                        MessageCommandImpl(ydwk, json["data"], idAsLong, this)
+                    else ->
+                        throw IllegalStateException(
+                            "Unknown ApplicationCommandType ${json["data"]["type"].asInt()}")
+                }
+            }
             else -> null
         }
 

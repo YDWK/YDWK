@@ -31,35 +31,35 @@ import java.util.concurrent.CompletableFuture
 
 interface Message : SnowFlake, GenericEntity {
     /**
-     * Gets the channel where this message was sent.
+     * The channel where this message was sent.
      *
      * @return The channel where this message was sent.
      */
     val channel: Channel
 
     /**
-     * Gets the author of this message.
+     * The author of this message.
      *
      * @return The author of this message.
      */
     val author: User
 
     /**
-     * Gets the content of this message.
+     * The content of this message.
      *
      * @return The content of this message.
      */
     val content: String
 
     /**
-     * Gets the time when this message was sent.
+     * The time when this message was sent.
      *
      * @return The time when this message was sent.
      */
     val time: String
 
     /**
-     * Gets the time when this message was edited.
+     * The time when this message was edited.
      *
      * @return The time when this message was edited.
      */
@@ -80,49 +80,49 @@ interface Message : SnowFlake, GenericEntity {
     val mentionEveryone: Boolean
 
     /**
-     * Gets the mentioned users.
+     * The mentioned users.
      *
      * @return The mentioned users.
      */
     val mentionedUsers: List<User>
 
     /**
-     * Gets the mentioned roles.
+     * The mentioned roles.
      *
      * @return The mentioned roles.
      */
     val mentionedRoles: List<Role>
 
     /**
-     * Gets the mentioned channels.
+     * The mentioned channels.
      *
      * @return The mentioned channels.
      */
     val mentionedChannels: List<Channel>
 
     /**
-     * Gets the attachments.
+     * The attachments.
      *
      * @return The attachments.
      */
     val attachments: List<Attachment>
 
     /**
-     * Gets the embedded contents.
+     * The embedded contents.
      *
      * @return The embedded contents.
      */
     val embeds: List<Embed>
 
     /**
-     * Gets the reactions.
+     * The reactions.
      *
      * @return The reactions.
      */
     val reactions: List<Reaction>
 
     /**
-     * Gets the nonce.
+     * The nonce.
      *
      * @return The nonce.
      */
@@ -136,84 +136,84 @@ interface Message : SnowFlake, GenericEntity {
     val pinned: Boolean
 
     /**
-     * Gets the webhook id of this message.
+     * The webhook id of this message.
      *
      * @return The webhook id of this message.
      */
     val webhookId: GetterSnowFlake?
 
     /**
-     * Gets the type of this message.
+     * The type of this message.
      *
      * @return The type of this message.
      */
     val type: MessageType
 
     /**
-     * Gets the activity of this message.
+     * The activity of this message.
      *
      * @return The activity of this message.
      */
     val activity: MessageActivity?
 
     /**
-     * Gets the application of this message.
+     * The application of this message.
      *
      * @return The application of this message.
      */
     val application: PartialApplication?
 
     /**
-     * Gets the message reference of this message.
+     * The message reference of this message.
      *
      * @return The message reference of this message.
      */
     val messageReference: MessageReference?
 
     /**
-     * Gets the flags of this message.
+     * The flags of this message.
      *
      * @return The flags of this message.
      */
     val flags: MessageFlag?
 
     /**
-     * Gets the referenced message of this message.
+     * The referenced message of this message.
      *
      * @return The referenced message of this message.
      */
     val referencedMessage: Message?
 
     /**
-     * Gets the interaction of this message.
+     * The interaction of this message.
      *
      * @return The interaction of this message.
      */
     val interaction: MessageInteraction?
 
     /**
-     * Gets the thread of this message.
+     * The thread of this message.
      *
      * @return The thread of this message.
      */
     val thread: Channel?
 
     /**
-     * Gets the components of this message.
+     * The components of this message.
      *
      * @return The components of this message.
      */
     val components: List<Component>
 
     /**
-     * Gets the sticker items of this message.
+     * The sticker items of this message.
      *
      * @return The sticker items of this message.
      */
     val stickerItems: List<StickerItem>
 
     /**
-     * Gets the position of this message.
+     * The position of this message.
      *
      * @return A generally increasing integer (there may be gaps or duplicates) that represents the
      *   approximate position of the message in a thread, it can be used to estimate the relative

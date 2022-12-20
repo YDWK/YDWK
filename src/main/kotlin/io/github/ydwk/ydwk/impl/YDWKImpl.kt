@@ -25,6 +25,9 @@ import io.github.ydwk.ydwk.ActivityPayload
 import io.github.ydwk.ydwk.GateWayIntent
 import io.github.ydwk.ydwk.UserStatus
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.builders.message.IMessageCommandBuilder
+import io.github.ydwk.ydwk.builders.slash.SlashBuilder
+import io.github.ydwk.ydwk.builders.user.IUserCommandBuilder
 import io.github.ydwk.ydwk.cache.*
 import io.github.ydwk.ydwk.entities.*
 import io.github.ydwk.ydwk.entities.application.PartialApplication
@@ -39,6 +42,9 @@ import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
 import io.github.ydwk.ydwk.evm.backend.event.IEventListener
 import io.github.ydwk.ydwk.evm.backend.managers.CoroutineEventManager
 import io.github.ydwk.ydwk.evm.backend.managers.SampleEventManager
+import io.github.ydwk.ydwk.impl.builders.message.IMessageCommandBuilderImpl
+import io.github.ydwk.ydwk.impl.builders.slash.SlashBuilderImpl
+import io.github.ydwk.ydwk.impl.builders.user.IUserCommandBuilderImpl
 import io.github.ydwk.ydwk.impl.entities.GuildImpl
 import io.github.ydwk.ydwk.impl.entities.UserImpl
 import io.github.ydwk.ydwk.impl.entities.builder.EntityBuilderImpl
@@ -46,10 +52,8 @@ import io.github.ydwk.ydwk.impl.entities.channel.DmChannelImpl
 import io.github.ydwk.ydwk.impl.entities.channel.guild.GuildChannelImpl
 import io.github.ydwk.ydwk.impl.entities.message.embed.builder.EmbedBuilderImpl
 import io.github.ydwk.ydwk.impl.rest.RestApiManagerImpl
-import io.github.ydwk.ydwk.impl.slash.SlashBuilderImpl
 import io.github.ydwk.ydwk.rest.EndPoint
 import io.github.ydwk.ydwk.rest.RestApiManager
-import io.github.ydwk.ydwk.slash.SlashBuilder
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import io.github.ydwk.ydwk.util.ThreadFactory
 import io.github.ydwk.ydwk.voice.VoiceConnection
@@ -192,6 +196,19 @@ class YDWKImpl(
     override val slashBuilder: SlashBuilder
         get() =
             SlashBuilderImpl(
+                this,
+                guildIdList,
+                applicationId ?: throw IllegalStateException("Application ID is not set"))
+    override val userCommandBuilder: IUserCommandBuilder
+        get() =
+            IUserCommandBuilderImpl(
+                this,
+                guildIdList,
+                applicationId ?: throw IllegalStateException("Application ID is not set"))
+
+    override val messageCommandBuilder: IMessageCommandBuilder
+        get() =
+            IMessageCommandBuilderImpl(
                 this,
                 guildIdList,
                 applicationId ?: throw IllegalStateException("Application ID is not set"))

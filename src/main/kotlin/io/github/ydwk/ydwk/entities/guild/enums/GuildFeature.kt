@@ -93,7 +93,7 @@ enum class GuildFeature(private val feature: String) {
 
     companion object {
         /**
-         * Gets the [GuildFeature] for the provided [feature].
+         * The [GuildFeature] for the provided [feature].
          *
          * @param feature The feature to get the [GuildFeature] for.
          * @return The [GuildFeature] for the provided [feature].
@@ -104,7 +104,7 @@ enum class GuildFeature(private val feature: String) {
     }
 
     /**
-     * Gets the feature of the [GuildFeature].
+     * The feature of the [GuildFeature].
      *
      * @return The feature of the [GuildFeature].
      */

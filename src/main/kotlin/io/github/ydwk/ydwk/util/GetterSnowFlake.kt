@@ -26,14 +26,14 @@ package io.github.ydwk.ydwk.util
 interface GetterSnowFlake {
 
     /**
-     * Gets the id of this snowflake as a Long.
+     * The id of this snowflake as a Long.
      *
      * @return the id of this snowflake as a [Long]
      */
     val asLong: Long
 
     /**
-     * Gets the id of this snowflake as a String.
+     * The id of this snowflake as a String.
      *
      * @return the id of this snowflake as a [String]
      */
@@ -41,8 +41,8 @@ interface GetterSnowFlake {
         get() = asLong.toString()
 
     /**
-     * Gets the timestamp of this snowflake. (Milliseconds since Discord Epoch, the first second of
-     * 2015 or 1420070400000.)
+     * The timestamp of this snowflake. (Milliseconds since Discord Epoch, the first second of 2015
+     * or 1420070400000.)
      *
      * @return the timestamp of this snowflake.
      */
@@ -50,7 +50,7 @@ interface GetterSnowFlake {
         get() = (asLong shr 22) + 1420070400000
 
     /**
-     * Gets the worker id of this snowflake.
+     * The worker id of this snowflake.
      *
      * @return the worker id of this snowflake.
      */
@@ -58,7 +58,7 @@ interface GetterSnowFlake {
         get() = (asLong and 0x3E0000) shr 17
 
     /**
-     * Gets the process id of this snowflake.
+     * The process id of this snowflake.
      *
      * @return the process id of this snowflake.
      */
@@ -66,7 +66,7 @@ interface GetterSnowFlake {
         get() = (asLong and 0x1F000) shr 12
 
     /**
-     * Gets the increment of this snowflake.
+     * The increment of this snowflake.
      *
      * @return the increment of this snowflake.
      */

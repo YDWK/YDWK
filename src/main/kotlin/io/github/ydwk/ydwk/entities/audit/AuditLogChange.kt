@@ -22,21 +22,21 @@ import io.github.ydwk.ydwk.entities.util.GenericEntity
 
 interface AuditLogChange : GenericEntity {
     /**
-     * Gets the new value of the change.
+     * The new value of the change.
      *
      * @return The new value of the change.
      */
     val newValue: Any?
 
     /**
-     * Gets the old value of the change.
+     * The old value of the change.
      *
      * @return The old value of the change.
      */
     val oldValue: Any?
 
     /**
-     * Gets the key of the change.
+     * The key of the change.
      *
      * @return The key of the change.
      */

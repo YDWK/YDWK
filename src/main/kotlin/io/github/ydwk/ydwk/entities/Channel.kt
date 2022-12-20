@@ -46,7 +46,7 @@ interface Channel : SnowFlake, GenericEntity {
     val isDmChannel: Boolean
 
     /**
-     * Gets the channel getter which gives access to the channels.
+     * The channel getter which gives access to the channels.
      *
      * @return the channel getter which gives access to the channels.
      */

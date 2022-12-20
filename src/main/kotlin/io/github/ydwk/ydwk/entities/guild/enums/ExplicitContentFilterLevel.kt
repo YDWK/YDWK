@@ -33,7 +33,7 @@ enum class ExplicitContentFilterLevel(private val value: Int) {
 
     companion object {
         /**
-         * Gets the [ExplicitContentFilterLevel] for the given [value].
+         * The [ExplicitContentFilterLevel] for the given [value].
          *
          * @param value The value to get the [ExplicitContentFilterLevel] for.
          * @return The [ExplicitContentFilterLevel] for the given [value].
@@ -44,7 +44,7 @@ enum class ExplicitContentFilterLevel(private val value: Int) {
     }
 
     /**
-     * Gets the value of the [ExplicitContentFilterLevel]
+     * The value of the [ExplicitContentFilterLevel]
      *
      * @return The value of the [ExplicitContentFilterLevel].
      */

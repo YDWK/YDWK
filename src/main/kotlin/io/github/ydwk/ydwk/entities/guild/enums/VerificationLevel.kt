@@ -39,7 +39,7 @@ enum class VerificationLevel(private val level: Int) {
 
     companion object {
         /**
-         * Gets the [VerificationLevel] by the provided [level].
+         * The [VerificationLevel] by the provided [level].
          *
          * @param level The level to get the [VerificationLevel] by.
          * @return The [VerificationLevel] by the provided [level].
@@ -50,7 +50,7 @@ enum class VerificationLevel(private val level: Int) {
     }
 
     /**
-     * Gets the level of the [VerificationLevel].
+     * The level of the [VerificationLevel].
      *
      * @return The level of the [VerificationLevel].
      */

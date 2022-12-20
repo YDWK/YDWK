@@ -25,14 +25,14 @@ import io.github.ydwk.ydwk.entities.channel.guild.message.text.PermissionOverwri
 
 interface GuildMessageChannel : TextChannel, GuildChannel {
     /**
-     * Gets the topic of this channel.
+     * The topic of this channel.
      *
      * @return the topic of this channel.
      */
     var topic: String
 
     /**
-     * Gets the nsfw flag of this channel.
+     * The nsfw flag of this channel.
      *
      * @return the nsfw flag of this channel.
      */
@@ -46,28 +46,28 @@ interface GuildMessageChannel : TextChannel, GuildChannel {
     var defaultAutoArchiveDuration: Int
 
     /**
-     * Gets the last message id of this channel.
+     * The last message id of this channel.
      *
      * @return the last message id of this channel.
      */
     var lastMessageId: String
 
     /**
-     * Gets the last pinned message id of this channel.
+     * The last pinned message id of this channel.
      *
      * @return the last pinned message id of this channel.
      */
     var lastPinTimestamp: String
 
     /**
-     * Gets the permission overwrites of this channel.
+     * The permission overwrites of this channel.
      *
      * @return the permission overwrites of this channel.
      */
     var permissionOverwrites: List<PermissionOverwrite>
 
     /**
-     * Gets the guild message channel getter.
+     * The guild message channel getter.
      *
      * @return the guild message channel getter.
      */

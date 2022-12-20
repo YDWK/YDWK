@@ -32,7 +32,7 @@ enum class ButtonStyle(private val type: Int) {
 
     companion object {
         /**
-         * Gets the [ButtonStyle] with the specified [type].
+         * The [ButtonStyle] with the specified [type].
          *
          * @param type The type of the button.
          * @return The [ButtonStyle] with the specified [type].
@@ -43,7 +43,7 @@ enum class ButtonStyle(private val type: Int) {
     }
 
     /**
-     * Gets the type of the button.
+     * The type of the button.
      *
      * @return The type of the button.
      */

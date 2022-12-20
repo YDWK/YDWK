@@ -20,6 +20,8 @@ package io.github.ydwk.ydwk.impl.interaction.application.type
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.builders.slash.SlashOptionGetter
+import io.github.ydwk.ydwk.builders.slash.SlashOptionGetterImpl
 import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
 import io.github.ydwk.ydwk.entities.message.Embed
 import io.github.ydwk.ydwk.entities.util.GenericEntity
@@ -37,8 +39,6 @@ import io.github.ydwk.ydwk.interaction.Interaction
 import io.github.ydwk.ydwk.interaction.application.ApplicationCommandOption
 import io.github.ydwk.ydwk.interaction.application.sub.Reply
 import io.github.ydwk.ydwk.interaction.application.type.SlashCommand
-import io.github.ydwk.ydwk.slash.SlashOptionGetter
-import io.github.ydwk.ydwk.slash.SlashOptionGetterImpl
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 
 class SlashCommandImpl(ydwk: YDWK, json: JsonNode, idAsLong: Long, interaction: Interaction) :
@@ -56,57 +56,62 @@ class SlashCommandImpl(ydwk: YDWK, json: JsonNode, idAsLong: Long, interaction: 
 
     override val options: List<SlashOptionGetter>
         get() {
-            // TODO : replace with getOrPut
             val map: MutableMap<Long, GenericEntity> = mutableMapOf()
-            val resolved = json["resolved"]
-            resolved["users"]?.let {
-                it.fields().forEach { (id, node) ->
-                    map[id.toLong()] = UserImpl(node, node["id"].asLong(), ydwk)
-                }
-            }
-            resolved["attachments"]?.let {
-                it.fields().forEach { (id, node) ->
-                    map[id.toLong()] = AttachmentImpl(ydwk, node, node["id"].asLong())
-                }
-            }
+            val resolved: JsonNode? = json["resolved"]
 
-            if (guild != null) {
-                resolved["members"]?.let {
+            if (resolved == null) {
+                return emptyList()
+            } else {
+
+                resolved["users"]?.let {
                     it.fields().forEach { (id, node) ->
-                        resolved["users"]?.let { users ->
-                            val user = users[id]
-                            val member =
-                                MemberImpl(
-                                    ydwk as YDWKImpl,
-                                    node,
-                                    guild,
-                                    UserImpl(user, user["id"].asLong(), ydwk))
+                        map[id.toLong()] = UserImpl(node, node["id"].asLong(), ydwk)
+                    }
+                }
+                resolved["attachments"]?.let {
+                    it.fields().forEach { (id, node) ->
+                        map[id.toLong()] = AttachmentImpl(ydwk, node, node["id"].asLong())
+                    }
+                }
 
-                            val newMember = ydwk.memberCache.getOrPut(member)
-                            map[id.toLong()] = newMember
+                if (guild != null) {
+                    resolved["members"]?.let {
+                        it.fields().forEach { (id, node) ->
+                            resolved["users"]?.let { users ->
+                                val user = users[id]
+                                val member =
+                                    MemberImpl(
+                                        ydwk as YDWKImpl,
+                                        node,
+                                        guild,
+                                        UserImpl(user, user["id"].asLong(), ydwk))
+
+                                val newMember = ydwk.memberCache.getOrPut(member)
+                                map[id.toLong()] = newMember
+                            }
+                        }
+                    }
+
+                    resolved["roles"]?.let {
+                        it.fields().forEach { (id, node) ->
+                            map[id.toLong()] = RoleImpl(ydwk, node, node["id"].asLong())
+                        }
+                    }
+
+                    resolved["channels"]?.let {
+                        it.fields().forEach { (id, node) ->
+                            val channelType = ChannelType.fromInt(node["type"].asInt())
+                            if (ChannelType.isGuildChannel(channelType)) {
+                                map[id.toLong()] = GuildChannelImpl(ydwk, node, node["id"].asLong())
+                            } else {
+                                map[id.toLong()] = DmChannelImpl(ydwk, node, node["id"].asLong())
+                            }
                         }
                     }
                 }
 
-                resolved["roles"]?.let {
-                    it.fields().forEach { (id, node) ->
-                        map[id.toLong()] = RoleImpl(ydwk, node, node["id"].asLong())
-                    }
-                }
-
-                resolved["channels"]?.let {
-                    it.fields().forEach { (id, node) ->
-                        val channelType = ChannelType.fromInt(node["type"].asInt())
-                        if (ChannelType.isGuildChannel(channelType)) {
-                            map[id.toLong()] = GuildChannelImpl(ydwk, node, node["id"].asLong())
-                        } else {
-                            map[id.toLong()] = DmChannelImpl(ydwk, node, node["id"].asLong())
-                        }
-                    }
-                }
+                return applicationOptions?.map { SlashOptionGetterImpl(it, map) } ?: emptyList()
             }
-
-            return applicationOptions?.map { SlashOptionGetterImpl(it, map) } ?: emptyList()
         }
 
     // ignore

@@ -22,14 +22,14 @@ import io.github.ydwk.ydwk.entities.util.GenericEntity
 
 interface Provider : GenericEntity {
     /**
-     * Gets the name of this provider.
+     * The name of this provider.
      *
      * @return The name of this provider.
      */
     val name: String?
 
     /**
-     * Gets the url of this provider.
+     * The url of this provider.
      *
      * @return The url of this provider.
      */

@@ -33,7 +33,7 @@ enum class ScheduledEventStatus(private val value: Int) {
 
     companion object {
         /**
-         * Gets the status from the value
+         * The status from the value
          *
          * @param value the value
          * @return the status
@@ -44,7 +44,7 @@ enum class ScheduledEventStatus(private val value: Int) {
     }
 
     /**
-     * Gets the value of the status
+     * The value of the status
      *
      * @return the value of the status
      */

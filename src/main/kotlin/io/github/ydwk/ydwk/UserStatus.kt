@@ -31,7 +31,7 @@ enum class UserStatus(private val status: String) {
 
     companion object {
         /**
-         * Gets the UserStatus from the status string.
+         * The UserStatus from the status string.
          *
          * @param status The status string.
          * @return The UserStatus.
@@ -48,7 +48,7 @@ enum class UserStatus(private val status: String) {
     }
 
     /**
-     * Gets the status string.
+     * The status string.
      *
      * @return The status string.
      */

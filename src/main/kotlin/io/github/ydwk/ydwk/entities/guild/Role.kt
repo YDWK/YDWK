@@ -28,7 +28,7 @@ import java.awt.Color
 /** This class is used to represent a discord guild role entity. */
 interface Role : SnowFlake, GenericEntity, NameAbleEntity, PermissionEntity {
     /**
-     * Gets the color of this role.
+     * The color of this role.
      *
      * @return The color of this role.
      */
@@ -42,28 +42,28 @@ interface Role : SnowFlake, GenericEntity, NameAbleEntity, PermissionEntity {
     var isHoisted: Boolean
 
     /**
-     * Gets the icon hash of this role.
+     * The icon hash of this role.
      *
      * @return The icon hash of this role.
      */
     var icon: String?
 
     /**
-     * Gets the unicode emoji of this role.
+     * The unicode emoji of this role.
      *
      * @return The unicode emoji of this role.
      */
     var unicodeEmoji: String?
 
     /**
-     * Gets the position of this role.
+     * The position of this role.
      *
      * @return The position of this role.
      */
     var position: Int
 
     /**
-     * Gets the managed status of this role.
+     * The managed status of this role.
      *
      * @return The managed status of this role.
      */
@@ -77,14 +77,14 @@ interface Role : SnowFlake, GenericEntity, NameAbleEntity, PermissionEntity {
     var isMentionable: Boolean
 
     /**
-     * Gets the tags of this role.
+     * The tags of this role.
      *
      * @return The tags of this role.
      */
     var tags: RoleTag?
 
     /**
-     * Gets the raw permissions of this role.
+     * The raw permissions of this role.
      *
      * @return The raw permissions of this role.
      */

@@ -22,21 +22,21 @@ import io.github.ydwk.ydwk.entities.util.GenericEntity
 
 interface Footer : GenericEntity {
     /**
-     * Gets the text of this footer.
+     * The text of this footer.
      *
      * @return The text of this footer.
      */
     val text: String
 
     /**
-     * Gets the icon url of this footer.
+     * The icon url of this footer.
      *
      * @return The icon url of this footer.
      */
     val iconUrl: String?
 
     /**
-     * Gets the proxy icon url of this footer.
+     * The proxy icon url of this footer.
      *
      * @return The proxy icon url of this footer.
      */
