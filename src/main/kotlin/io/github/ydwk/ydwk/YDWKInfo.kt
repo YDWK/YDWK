@@ -42,7 +42,7 @@ enum class YDWKInfo(private val url: String) {
     }
 
     /**
-     * Gets the url of the [YDWKInfo].
+     * The url of the [YDWKInfo].
      *
      * @return The url of the [YDWKInfo].
      */

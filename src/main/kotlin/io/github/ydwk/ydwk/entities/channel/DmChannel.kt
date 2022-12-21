@@ -26,14 +26,14 @@ import java.util.concurrent.CompletableFuture
 
 interface DmChannel : TextChannel {
     /**
-     * Gets the channel's last message id
+     * The channel's last message id
      *
      * @return the channel's last message id
      */
     var lastMessageId: GetterSnowFlake?
 
     /**
-     * Gets the recipient of the dm
+     * The recipient of the dm
      *
      * @return the recipient of the dm
      */

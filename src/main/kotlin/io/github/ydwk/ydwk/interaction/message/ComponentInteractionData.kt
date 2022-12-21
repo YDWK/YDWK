@@ -23,14 +23,14 @@ import io.github.ydwk.ydwk.interaction.sub.GenericCommandData
 
 interface ComponentInteractionData : GenericCommandData {
     /**
-     * Gets the custom id of this component.
+     * The custom id of this component.
      *
      * @return The custom id of this component.
      */
     val customId: String
 
     /**
-     * Gets the component type of this component.
+     * The component type of this component.
      *
      * @return The component type of this component.
      */
@@ -47,35 +47,35 @@ interface ComponentInteractionData : GenericCommandData {
 
     interface SelectOptionValue : GenericCommandData {
         /**
-         * Gets the label of this select option value.
+         * The label of this select option value.
          *
          * @return The label of this select option value.
          */
         val label: String
 
         /**
-         * Gets the value of this select option value.
+         * The value of this select option value.
          *
          * @return The value of this select option value.
          */
         val value: String
 
         /**
-         * Gets the description of this select option value.
+         * The description of this select option value.
          *
          * @return The description of this select option value.
          */
         val description: String?
 
         /**
-         * Gets the emoji of this select option value.
+         * The emoji of this select option value.
          *
          * @return The emoji of this select option value.
          */
         val emoji: Emoji?
 
         /**
-         * Gets the default value of this select option value.
+         * The default value of this select option value.
          *
          * @return The default value of this select option value.
          */

@@ -21,13 +21,13 @@ package io.github.ydwk.ydwk.bot
 import io.github.realyusufismail.jconfig.util.JConfigUtils
 import io.github.ydwk.ydwk.Activity
 import io.github.ydwk.ydwk.BotBuilder.createDefaultBot
+import io.github.ydwk.ydwk.builders.slash.Slash
 import io.github.ydwk.ydwk.evm.backend.event.on
 import io.github.ydwk.ydwk.evm.event.events.interaction.button.ButtonClickEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.slash.SlashCommandEvent
 import io.github.ydwk.ydwk.interaction.message.ActionRow
 import io.github.ydwk.ydwk.interaction.message.button.Button
 import io.github.ydwk.ydwk.interaction.message.button.ButtonStyle
-import io.github.ydwk.ydwk.slash.Slash
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -43,7 +43,7 @@ fun main() {
         .addSlashCommand(Slash("create_dm", "Creates a dm channel"))
         .addSlashCommand("channel", "Creates a Channel")
         .addSlashCommand("button", "A button test")
-        .addSlashCommand("bot_info", "Gets the bot info")
+        .addSlashCommand("bot_info", "The bot info")
         .build()
 
     ydwk.on<SlashCommandEvent> {
@@ -51,7 +51,6 @@ fun main() {
             "join_vc" -> {
                 withContext(Dispatchers.IO) {
                     val member = it.slash.member
-                    val slash = it.slash
                     if (member != null) {
                         val voiceState = member.voiceState
                         voiceState?.channel?.joinCompletableFuture()?.get()

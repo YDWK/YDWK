@@ -49,21 +49,21 @@ import okhttp3.RequestBody.Companion.toRequestBody
 /** This class is used to represent a discord guild object. */
 interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     /**
-     * Gets the guild's icon hash
+     * The guild's icon hash
      *
      * @return the guild's icon hash
      */
     var icon: String?
 
     /**
-     * Gets the guild's splash hash
+     * The guild's splash hash
      *
      * @return the guild's splash hash
      */
     var splash: String?
 
     /**
-     * Gets the guild's discovery splash hash
+     * The guild's discovery splash hash
      *
      * @return the guild's discovery splash hash
      */
@@ -77,28 +77,28 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     var isOwner: Boolean?
 
     /**
-     * Gets the guild's owner id
+     * The guild's owner id
      *
      * @return the guild's owner id
      */
     var ownerId: GetterSnowFlake
 
     /**
-     * Gets the guild's permissions
+     * The guild's permissions
      *
      * @return the guild's permissions
      */
     var permissions: String?
 
     /**
-     * Gets the guild's afk channel id
+     * The guild's afk channel id
      *
      * @return the guild's afk channel id
      */
     var afkChannelId: GetterSnowFlake?
 
     /**
-     * Gets the guild's afk timeout
+     * The guild's afk timeout
      *
      * @return the guild's afk timeout
      */
@@ -112,91 +112,91 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     var isWidgetEnabled: Boolean?
 
     /**
-     * Gets the guild's widget channel id
+     * The guild's widget channel id
      *
      * @return the guild's widget channel id
      */
     var widgetChannelId: GetterSnowFlake?
 
     /**
-     * Gets the guild's verification level
+     * The guild's verification level
      *
      * @return the guild's verification level
      */
     var verificationLevel: VerificationLevel
 
     /**
-     * Gets the guild's default message notification level
+     * The guild's default message notification level
      *
      * @return the guild's default message notification level
      */
     var defaultMessageNotificationsLevel: MessageNotificationLevel
 
     /**
-     * Gets the guild's explicit content filter level
+     * The guild's explicit content filter level
      *
      * @return the guild's explicit content filter level
      */
     var explicitContentFilterLevel: ExplicitContentFilterLevel
 
     /**
-     * Gets the guild's roles
+     * The guild's roles
      *
      * @return the guild's roles
      */
     var roles: List<Role>
 
     /**
-     * Gets the guild's emojis
+     * The guild's emojis
      *
      * @return the guild's emojis
      */
     var emojis: List<Emoji>
 
     /**
-     * Gets the guild's features
+     * The guild's features
      *
      * @return the guild's features
      */
     var features: Set<GuildFeature>
 
     /**
-     * Gets the guild's mfa level
+     * The guild's mfa level
      *
      * @return the guild's mfa level
      */
     var mfaLevel: MFALevel
 
     /**
-     * Gets the guild's application id
+     * The guild's application id
      *
      * @return the guild's application id
      */
     var applicationId: GetterSnowFlake?
 
     /**
-     * Gets the guild's system channel id
+     * The guild's system channel id
      *
      * @return the guild's system channel id
      */
     var systemChannelId: GetterSnowFlake?
 
     /**
-     * Gets the guild's system channel flags
+     * The guild's system channel flags
      *
      * @return the guild's system channel flags
      */
     var systemChannelFlags: SystemChannelFlag
 
     /**
-     * Gets the guild's rules channel id
+     * The guild's rules channel id
      *
      * @return the guild's rules channel id
      */
     var rulesChannelId: GetterSnowFlake?
 
     /**
-     * Gets the maximum number of presences for the guild (null is always returned, apart from the
+     * The maximum number of presences for the guild (null is always returned, apart from the
      * largest of guilds)
      *
      * @return the maximum number of presences for the guild
@@ -204,98 +204,98 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     var maxPresences: Int?
 
     /**
-     * Gets the maximum number of members for the guild
+     * The maximum number of members for the guild
      *
      * @return the maximum number of members for the guild
      */
     var maxMembers: Int
 
     /**
-     * Gets the vanity url code for the guild
+     * The vanity url code for the guild
      *
      * @return the vanity url code for the guild
      */
     var vanityUrlCode: String?
 
     /**
-     * Gets the description for the guild
+     * The description for the guild
      *
      * @return the description for the guild
      */
     var description: String?
 
     /**
-     * Gets the banner hash for the guild
+     * The banner hash for the guild
      *
      * @return the banner hash for the guild
      */
     var banner: String?
 
     /**
-     * Gets the premium tier for the guild
+     * The premium tier for the guild
      *
      * @return the premium tier for the guild
      */
     var premiumTier: PremiumTier
 
     /**
-     * Gets the premium subscription count for the guild
+     * The premium subscription count for the guild
      *
      * @return the premium subscription count for the guild
      */
     var premiumSubscriptionCount: Int
 
     /**
-     * Gets the preferred locale for the guild
+     * The preferred locale for the guild
      *
      * @return the preferred locale for the guild
      */
     var preferredLocale: String
 
     /**
-     * Gets the public updates channel id for the guild
+     * The public updates channel id for the guild
      *
      * @return the public updates channel id for the guild
      */
     var publicUpdatesChannelId: GetterSnowFlake?
 
     /**
-     * Gets the maximum amount of users in a video channel
+     * The maximum amount of users in a video channel
      *
      * @return the maximum amount of users in a video channel
      */
     var maxVideoChannelUsers: Int?
 
     /**
-     * Gets the approximate member count for the guild
+     * The approximate member count for the guild
      *
      * @return the approximate member count for the guild
      */
     var approximateMemberCount: Int?
 
     /**
-     * Gets the approximate presence count for the guild
+     * The approximate presence count for the guild
      *
      * @return the approximate presence count for the guild
      */
     var approximatePresenceCount: Int?
 
     /**
-     * Gets the welcome screen of the guild
+     * The welcome screen of the guild
      *
      * @return the welcome screen of the guild
      */
     var welcomeScreen: WelcomeScreen?
 
     /**
-     * Gets the guild's nsfw level
+     * The guild's nsfw level
      *
      * @return the guild's nsfw level
      */
     var nsfwLevel: NSFWLeveL
 
     /**
-     * Gets the guild's custom stickers
+     * The guild's custom stickers
      *
      * @return the guild's custom stickers
      */
@@ -358,7 +358,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     fun createDmChannel(user: User): CompletableFuture<DmChannel> = createDmChannel(user.id)
 
     /**
-     * Gets the bot as a member of the guild.
+     * The bot as a member of the guild.
      *
      * @return The [Member] object.
      * @throws IllegalStateException If the bot is not in the guild.
@@ -707,7 +707,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
         get() = getChannels.filterIsInstance<GuildVoiceChannel>()
 
     /**
-     * Gets the channel by its id.
+     * The channel by its id.
      *
      * @param channelId The id of the channel.
      * @return The channel, or null if it doesn't exist.
@@ -715,7 +715,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     fun getChannelById(channelId: Long): GuildChannel?
 
     /**
-     * Gets the channel by its id.
+     * The channel by its id.
      *
      * @param channelId The id of the channel.
      * @return The channel, or null if it doesn't exist.
@@ -723,7 +723,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     fun getChannelById(channelId: String): GuildChannel? = getChannelById(channelId.toLong())
 
     /**
-     * Gets the channel getter by its id.
+     * The channel getter by its id.
      *
      * @param channelId The id of the channel.
      * @return The channel getter.
@@ -732,7 +732,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
         getChannelById(channelId)?.guildChannelGetter
 
     /**
-     * Gets the channel getter by its id.
+     * The channel getter by its id.
      *
      * @param channelId The id of the channel.
      * @return The channel getter.
@@ -783,7 +783,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     }
 
     /**
-     * Gets the member by its user id.
+     * The member by its user id.
      *
      * @param userId The id of the user.
      * @return The member, or null if it doesn't exist.
@@ -793,7 +793,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     }
 
     /**
-     * Gets the member by its user id.
+     * The member by its user id.
      *
      * @param userId The id of the user.
      * @return The member, or null if it doesn't exist.
@@ -870,7 +870,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
         leaveVoiceChannel(guildVoiceChannel.id)
 
     /**
-     * Gets the @everyone role. This role is always present.
+     * The @everyone role. This role is always present.
      *
      * @return The @everyone role.
      */

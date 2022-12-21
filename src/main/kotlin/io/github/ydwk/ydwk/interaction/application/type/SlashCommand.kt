@@ -18,15 +18,15 @@
  */ 
 package io.github.ydwk.ydwk.interaction.application.type
 
+import io.github.ydwk.ydwk.builders.slash.SlashOptionGetter
+import io.github.ydwk.ydwk.builders.slash.SlashOptionType
 import io.github.ydwk.ydwk.interaction.application.ApplicationCommand
 import io.github.ydwk.ydwk.interaction.application.ApplicationCommandType
 import io.github.ydwk.ydwk.interaction.reply.Repliable
-import io.github.ydwk.ydwk.slash.SlashOptionGetter
-import io.github.ydwk.ydwk.slash.SlashOptionType
 
 interface SlashCommand : ApplicationCommand, Repliable {
     /**
-     * Gets the type of the command.
+     * The type of the command.
      *
      * @return The type of the command.
      */
@@ -34,7 +34,7 @@ interface SlashCommand : ApplicationCommand, Repliable {
         get() = ApplicationCommandType.CHAT_INPUT
 
     /**
-     * Gets the selected language of the invoking user
+     * The selected language of the invoking user
      *
      * @return the selected language of the invoking user
      */
@@ -58,7 +58,7 @@ interface SlashCommand : ApplicationCommand, Repliable {
     }
 
     /**
-     * Gets the first option with the specified type.
+     * The first option with the specified type.
      *
      * @param type The type of the option.
      * @return The first option with the specified type.
@@ -68,7 +68,7 @@ interface SlashCommand : ApplicationCommand, Repliable {
     }
 
     /**
-     * Gets the first option with the specified name.
+     * The first option with the specified name.
      *
      * @param name The name of the option.
      * @return The first option with the specified name.
@@ -79,7 +79,7 @@ interface SlashCommand : ApplicationCommand, Repliable {
     }
 
     /**
-     * Gets the option with the specified name.
+     * The option with the specified name.
      *
      * @param name The name of the option.
      * @param resolver The resolver to use.

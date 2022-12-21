@@ -23,14 +23,14 @@ import io.github.ydwk.ydwk.entities.channel.GuildChannel
 
 interface ChannelGetter {
     /**
-     * Gets the channel as a [GuildChannel] if it is a guild channel.
+     * The channel as a [GuildChannel] if it is a guild channel.
      *
      * @return the channel as a [GuildChannel] if it is a guild channel.
      */
     fun asGuildChannel(): GuildChannel?
 
     /**
-     * Gets the channel as a [DmChannel] if it is a dm channel.
+     * The channel as a [DmChannel] if it is a dm channel.
      *
      * @return the channel as a [DmChannel] if it is a dm channel.
      */

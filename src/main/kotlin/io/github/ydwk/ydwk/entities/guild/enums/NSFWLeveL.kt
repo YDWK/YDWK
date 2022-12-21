@@ -36,7 +36,7 @@ enum class NSFWLeveL(private val level: Int) {
 
     companion object {
         /**
-         * Gets the [NSFWLeveL] for the provided [level].
+         * The [NSFWLeveL] for the provided [level].
          *
          * @param level The level to get the [NSFWLeveL] for.
          * @return The [NSFWLeveL] for the provided [level].
@@ -53,7 +53,7 @@ enum class NSFWLeveL(private val level: Int) {
     }
 
     /**
-     * Gets the level of the [NSFWLeveL].
+     * The level of the [NSFWLeveL].
      *
      * @return The level of the [NSFWLeveL].
      */

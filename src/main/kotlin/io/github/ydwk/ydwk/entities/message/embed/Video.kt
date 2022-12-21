@@ -23,28 +23,28 @@ import java.net.URL
 
 interface Video : GenericEntity {
     /**
-     * Gets the url of this video.
+     * The url of this video.
      *
      * @return The url of this video.
      */
     val url: URL?
 
     /**
-     * Gets the proxy url of this video.
+     * The proxy url of this video.
      *
      * @return The proxy url of this video.
      */
     val proxyUrl: String?
 
     /**
-     * Gets the height of this video.
+     * The height of this video.
      *
      * @return The height of this video.
      */
     val height: Int?
 
     /**
-     * Gets the width of this video.
+     * The width of this video.
      *
      * @return The width of this video.
      */

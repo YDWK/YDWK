@@ -30,7 +30,7 @@ enum class MessageNotificationLevel(private val value: Int) {
 
     companion object {
         /**
-         * Gets the [MessageNotificationLevel] by its [value]
+         * The [MessageNotificationLevel] by its [value]
          *
          * @param value The value to get the [MessageNotificationLevel] by.
          * @return The [MessageNotificationLevel] by the given [value].
@@ -41,7 +41,7 @@ enum class MessageNotificationLevel(private val value: Int) {
     }
 
     /**
-     * Gets the value of the [MessageNotificationLevel]
+     * The value of the [MessageNotificationLevel]
      *
      * @return The value of the [MessageNotificationLevel].
      */

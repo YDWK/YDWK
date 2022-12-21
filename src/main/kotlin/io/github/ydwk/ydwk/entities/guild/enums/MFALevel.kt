@@ -30,7 +30,7 @@ enum class MFALevel(private val value: Int) {
 
     companion object {
         /**
-         * Gets the [MFALevel] for the given [value].
+         * The [MFALevel] for the given [value].
          *
          * @param value The value to get the [MFALevel] for.
          * @return The [MFALevel] for the given [value].
@@ -41,7 +41,7 @@ enum class MFALevel(private val value: Int) {
     }
 
     /**
-     * Gets the value of the [MFALevel]
+     * The value of the [MFALevel]
      *
      * @return The value of the [MFALevel].
      */

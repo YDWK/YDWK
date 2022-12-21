@@ -16,20 +16,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.slash
+package io.github.ydwk.ydwk.builders.message
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
+import io.github.ydwk.ydwk.interaction.application.ApplicationCommandType
 
-class SlashOptionChoice(val name: String, val value: String) {
-    constructor(name: String, value: Int) : this(name, value.toString())
-    constructor(name: String, value: Long) : this(name, value.toString())
-    constructor(name: String, value: Double) : this(name, value.toString())
-
+class MessageCommandBuilder(val name: String, val specificGuildOnly: Boolean = false) {
     fun toJson(): JsonNode {
         val json = ObjectMapper().createObjectNode()
         json.put("name", name)
-        json.put("value", value)
+        json.put("type", ApplicationCommandType.MESSAGE.toInt())
         return json
     }
 }

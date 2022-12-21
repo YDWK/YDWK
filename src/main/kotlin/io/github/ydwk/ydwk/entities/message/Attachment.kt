@@ -25,49 +25,49 @@ import java.net.URL
 
 interface Attachment : SnowFlake, NameAbleEntity, GenericEntity {
     /**
-     * Gets the description of this attachment.
+     * The description of this attachment.
      *
      * @return The description of this attachment.
      */
     val description: String?
 
     /**
-     * Gets the media type of this attachment.
+     * The media type of this attachment.
      *
      * @return The media type of this attachment.
      */
     val mediaType: String?
 
     /**
-     * Gets the url of this attachment.
+     * The url of this attachment.
      *
      * @return The url of this attachment.
      */
     val url: URL
 
     /**
-     * Gets the proxy url of this attachment.
+     * The proxy url of this attachment.
      *
      * @return The proxy url of this attachment.
      */
     val proxyUrl: URL
 
     /**
-     * Gets the size of this attachment.
+     * The size of this attachment.
      *
      * @return The size of this attachment.
      */
     val size: Int
 
     /**
-     * Gets the height of this attachment.
+     * The height of this attachment.
      *
      * @return The height of this attachment.
      */
     val height: Int?
 
     /**
-     * Gets the width of this attachment.
+     * The width of this attachment.
      *
      * @return The width of this attachment.
      */

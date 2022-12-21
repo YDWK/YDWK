@@ -24,7 +24,7 @@ enum class TargetType(private val value: Int) {
 
     companion object {
         /**
-         * Gets the [TargetType] by its value
+         * The [TargetType] by its value
          *
          * @param value the value
          * @return the [TargetType]
@@ -35,7 +35,7 @@ enum class TargetType(private val value: Int) {
     }
 
     /**
-     * Gets the value of the [TargetType]
+     * The value of the [TargetType]
      *
      * @return the value
      */

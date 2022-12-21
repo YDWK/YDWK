@@ -32,63 +32,63 @@ import io.github.ydwk.ydwk.util.GetterSnowFlake
 interface ComponentInteraction : GenericEntity {
 
     /**
-     * Gets the interaction token.
+     * The interaction token.
      *
      * @return The interaction token.
      */
     val interactionToken: String
 
     /**
-     * Gets the interaction id.
+     * The interaction id.
      *
      * @return the interaction id
      */
     val interactionId: GetterSnowFlake
 
     /**
-     * Gets the interaction type of this component.
+     * The interaction type of this component.
      *
      * @return the interaction type of this component
      */
     val type: InteractionType
 
     /**
-     * Gets the message corresponding to this component.
+     * The message corresponding to this component.
      *
      * @return The message corresponding to this component.
      */
     val message: Message
 
     /**
-     * Gets the member who triggered this component.
+     * The member who triggered this component.
      *
      * @return The member who triggered this component.
      */
     val member: Member?
 
     /**
-     * Gets the user who triggered this component.
+     * The user who triggered this component.
      *
      * @return The user who triggered this component.
      */
     val user: User?
 
     /**
-     * Gets the guild of this component.
+     * The guild of this component.
      *
      * @return The guild of this component.
      */
     val guild: Guild?
 
     /**
-     * Gets the channel were this component was triggered.
+     * The channel were this component was triggered.
      *
      * @return The channel were this component was triggered.
      */
     val channel: TextChannel?
 
     /**
-     * Gets the application id of this component.
+     * The application id of this component.
      *
      * @return The application id of this component.
      */

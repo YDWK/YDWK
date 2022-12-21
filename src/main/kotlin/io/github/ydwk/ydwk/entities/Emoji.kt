@@ -24,14 +24,14 @@ import io.github.ydwk.ydwk.util.NameAbleEntity
 
 interface Emoji : NameAbleEntity, GenericEntity {
     /**
-     * Gets the id of the emoji.
+     * The id of the emoji.
      *
      * @return The id of the emoji.
      */
     val idLong: Long?
 
     /**
-     * Gets the id of the emoji as String.
+     * The id of the emoji as String.
      *
      * @return The id of the emoji as String.
      */
@@ -39,14 +39,14 @@ interface Emoji : NameAbleEntity, GenericEntity {
         get() = if (idLong == 0L) null else idLong.toString()
 
     /**
-     * Gets the roles that are allowed to use this emoji.
+     * The roles that are allowed to use this emoji.
      *
      * @return The roles that are allowed to use this emoji.
      */
     var roles: List<Role>
 
     /**
-     * Gets the user that created this emoji.
+     * The user that created this emoji.
      *
      * @return The user that created this emoji.
      */

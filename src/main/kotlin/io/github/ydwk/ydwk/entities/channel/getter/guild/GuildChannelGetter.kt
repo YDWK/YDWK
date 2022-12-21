@@ -27,35 +27,35 @@ import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
 interface GuildChannelGetter {
 
     /**
-     * Gets the channel as a text channel.
+     * The channel as a text channel.
      *
      * @return the channel as a text channel.
      */
     fun asGuildMessageChannel(): GuildMessageChannel?
 
     /**
-     * Gets the channel as a guild voice channel.
+     * The channel as a guild voice channel.
      *
      * @return the channel as a guild voice channel.
      */
     fun asGuildVoiceChannel(): GuildVoiceChannel?
 
     /**
-     * Gets the channel as a guild stage channel.
+     * The channel as a guild stage channel.
      *
      * @return the channel as a guild stage channel.
      */
     fun asGuildStageChannel(): GuildStageChannel?
 
     /**
-     * Gets the channel as a guild category.
+     * The channel as a guild category.
      *
      * @return the channel as a guild category.
      */
     fun asGuildCategory(): GuildCategory?
 
     /**
-     * Gets the channel as a guild forum channel.
+     * The channel as a guild forum channel.
      *
      * @return the channel as a guild forum channel.
      */

@@ -42,7 +42,7 @@ enum class MessageFlag(private val value: Long) {
 
     companion object {
         /**
-         * Gets the [MessageFlag] from the given value.
+         * The [MessageFlag] from the given value.
          *
          * @param value The value of the flag.
          * @return The [MessageFlag] with the given value.
@@ -53,7 +53,7 @@ enum class MessageFlag(private val value: Long) {
     }
 
     /**
-     * Gets the value of the flag.
+     * The value of the flag.
      *
      * @return The value of the flag.
      */

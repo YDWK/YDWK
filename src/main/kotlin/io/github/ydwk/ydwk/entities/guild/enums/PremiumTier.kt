@@ -36,7 +36,7 @@ enum class PremiumTier(private val value: Int) {
 
     companion object {
         /**
-         * Gets the [PremiumTier] by its [value].
+         * The [PremiumTier] by its [value].
          *
          * @param value The value to get the [PremiumTier] by.
          * @return The [PremiumTier] by the given [value].
@@ -47,7 +47,7 @@ enum class PremiumTier(private val value: Int) {
     }
 
     /**
-     * Gets the value of the [PremiumTier].
+     * The value of the [PremiumTier].
      *
      * @return The value of the [PremiumTier].
      */

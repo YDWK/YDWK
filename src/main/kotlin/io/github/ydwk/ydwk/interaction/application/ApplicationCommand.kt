@@ -30,84 +30,113 @@ import io.github.ydwk.ydwk.util.SnowFlake
 
 interface ApplicationCommand : SnowFlake, GenericCommandData {
     /**
-     * Gets the name of the command.
-     *
-     * @return The name of the command.
-     */
-    val name: String
-
-    /**
-     * Gets the type of the command.
+     * The type of the command.
      *
      * @return The type of the command.
      */
     val type: ApplicationCommandType
 
     /**
-     * Gets the guild where the interaction occurred.
-     *
-     * @return The guild where the interaction occurred.
-     */
-    val guild: Guild?
-
-    /**
-     * Gets the id of the user or message targeted by a user or message command
-     *
-     * @return The id of the user or message targeted by a user or message command
-     */
-    val targetId: GetterSnowFlake?
-
-    /**
-     * Gets the user who invoked the command.
-     *
-     * @return The user who invoked the command.
-     */
-    val user: User?
-
-    /**
-     * Gets the member who invoked the command.
-     *
-     * @return The member who invoked the command.
-     */
-    val member: Member?
-
-    /**
-     * Gets the Id of the application that this interaction is for.
+     * The Id of the application that this interaction is for.
      *
      * @return The Id of the application that this interaction is for.
      */
     val applicationId: GetterSnowFlake
 
     /**
-     * Gets the type of this interaction.
+     * The guild where the interaction occurred.
+     *
+     * @return The guild where the interaction occurred.
+     */
+    val guild: Guild?
+
+    /**
+     * The name of the command.
+     *
+     * @return The name of the command.
+     */
+    val name: String
+
+    /**
+     * The description for CHAT_INPUT commands, 1-100 characters. Empty string for USER and MESSAGE
+     * commands.
+     *
+     * @return The description for CHAT_INPUT commands, 1-100 characters. Empty string for USER and
+     *   MESSAGE commands.
+     */
+    val description: String
+
+    /**
+     * Whether the command is available in DMs with the app, only for globally-scoped commands. By
+     * default, commands are visible.
+     *
+     * @return Indicates whether the command is available in DMs with the app, only for
+     *   globally-scoped commands. By default, commands are visible.
+     */
+    val isDmPermissions: Boolean?
+
+    /**
+     * Whether the command is 'Not Safe For Work' (NSFW), only for globally-scoped commands. By
+     * default, commands are not NSFW.
+     *
+     * @return Indicates whether the command is 'Not Safe For Work' (NSFW), only for globally-scoped
+     *   commands. By default, commands are not NSFW.
+     */
+    val isNsfw: Boolean?
+
+    /**
+     * The version of this interaction.
+     *
+     * @return The version of this interaction.
+     */
+    val version: Int
+
+    // Interaction related
+
+    /**
+     * The id of the user or message targeted by a user or message command
+     *
+     * @return The id of the user or message targeted by a user or message command
+     */
+    val targetId: GetterSnowFlake?
+
+    /**
+     * The user who invoked the command.
+     *
+     * @return The user who invoked the command.
+     */
+    val user: User?
+
+    /**
+     * The member who invoked the command.
+     *
+     * @return The member who invoked the command.
+     */
+    val member: Member?
+
+    /**
+     * The type of this interaction.
      *
      * @return The type of this interaction.
      */
     val interactionType: InteractionType
 
     /**
-     * Gets the channel that this interaction is for.
+     * The channel that this interaction is for.
      *
      * @return The channel that this interaction is for.
      */
     val channel: Channel?
 
     /**
-     * Gets the token of this interaction.
+     * The token of this interaction.
      *
      * @return The token of this interaction.
      */
     val token: String
 
     /**
-     * Gets the version of this interaction.
-     *
-     * @return The version of this interaction.
-     */
-    val version: Int
-
-    /**
-     * Gets the message of this interaction.
+     * The message of this interaction.
      *
      * @return The message of this interaction.
      */

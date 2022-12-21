@@ -47,7 +47,7 @@ enum class CacheIds(private val value: String, private val cacheType: CacheType)
     }
 
     /**
-     * Gets the value of the [CacheIds].
+     * The value of the [CacheIds].
      *
      * @return The value of the [CacheIds].
      */
@@ -56,7 +56,7 @@ enum class CacheIds(private val value: String, private val cacheType: CacheType)
     }
 
     /**
-     * Gets the [CacheType] of the [CacheIds].
+     * The [CacheType] of the [CacheIds].
      *
      * @return The [CacheType] of the [CacheIds].
      */

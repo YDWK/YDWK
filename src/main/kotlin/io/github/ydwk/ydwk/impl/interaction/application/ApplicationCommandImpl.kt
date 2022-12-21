@@ -41,6 +41,15 @@ abstract class ApplicationCommandImpl(
     override val name: String
         get() = json["name"].asText()
 
+    override val description: String
+        get() = json["description"].asText()
+
+    override val isDmPermissions: Boolean?
+        get() = if (json.has("dm_permission")) json["dm_permission"].asBoolean() else null
+
+    override val isNsfw: Boolean?
+        get() = if (json.has("nsfw")) json["nsfw"].asBoolean() else null
+
     override val guild: Guild? = interaction.guild
 
     override val targetId: GetterSnowFlake?

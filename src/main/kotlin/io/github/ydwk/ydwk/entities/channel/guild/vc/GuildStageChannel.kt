@@ -20,7 +20,7 @@ package io.github.ydwk.ydwk.entities.channel.guild.vc
 
 interface GuildStageChannel : GuildVoiceChannel {
     /**
-     * Gets the topic of the stage channel.
+     * The topic of the stage channel.
      *
      * @return The topic of the stage channel.
      */

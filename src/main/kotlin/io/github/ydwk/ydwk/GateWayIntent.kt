@@ -62,7 +62,7 @@ enum class GateWayIntent(private var value: Int, private var privileged: Boolean
         }
 
         /**
-         * Gets the default intents for the gateway.
+         * The default intents for the gateway.
          *
          * @return The default intents for the gateway.
          */

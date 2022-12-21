@@ -16,166 +16,166 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.impl.slash
+package io.github.ydwk.ydwk.impl.builders.message
 
+import io.github.ydwk.ydwk.builders.message.MessageCommandBuilder
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.rest.EndPoint
-import io.github.ydwk.ydwk.slash.Slash
 import okhttp3.RequestBody.Companion.toRequestBody
 
-class SlashInfoSender(
+class MessageCommandSender(
     val ydwk: YDWKImpl,
     private val guildIds: MutableList<String>,
     val applicationId: String,
-    slashCommands: List<Slash>
+    private val messageCommands: MutableList<MessageCommandBuilder>
 ) {
-    init {
-        ydwk.logger.info("Sending slash commands to Discord")
 
-        val currentGlobalSlashCommandsNameAndId = getCurrentGlobalSlashCommandsNameAndIds()
-        val currentGuildSlashCommandsNameAndId: Map<String, Map<Long, String>> =
+    init {
+        ydwk.logger.info("Sending Message Commands to Discord")
+
+        val currentGlobalMessageCommandsNameAndId = getCurrentGlobalMessageCommandsNameAndIds()
+        val currentGuildMessageCommandsNameAndId: Map<String, Map<Long, String>> =
             if (guildIds.isNotEmpty()) {
-                getCurrentGuildSlashCommandsNameAndIds()
+                getCurrentGuildMessageCommandsNameAndIds()
             } else {
                 emptyMap()
             }
 
-        val globalSlashCommands: MutableMap<String, Slash> = HashMap()
-        val guildSlashCommands: MutableMap<String, Slash> = HashMap()
+        val globalMessageCommands: MutableMap<String, MessageCommandBuilder> = HashMap()
+        val guildMessageCommands: MutableMap<String, MessageCommandBuilder> = HashMap()
 
-        slashCommands.forEach { slash ->
-            if (!slash.specificGuildOnly) {
-                globalSlashCommands[slash.name] = slash
+        messageCommands.forEach { message ->
+            if (!message.specificGuildOnly) {
+                globalMessageCommands[message.name] = message
             } else {
-                guildSlashCommands[slash.name] = slash
+                guildMessageCommands[message.name] = message
             }
         }
 
-        val globalSlashCommandsIdsToDelete: MutableList<Long> = mutableListOf()
-        val guildSlashCommandsIdsToDelete: MutableList<Long> = mutableListOf()
-        val globalSlashCommandsToAdd: MutableList<Slash> = mutableListOf()
-        val guildSlashCommandsToAdd = mutableListOf<Slash>()
+        val globalMessageCommandsIdsToDelete: MutableList<Long> = mutableListOf()
+        val guildMessageCommandsIdsToDelete: MutableList<Long> = mutableListOf()
+        val globalMessageCommandsToAdd: MutableList<MessageCommandBuilder> = mutableListOf()
+        val guildMessageCommandsToAdd = mutableListOf<MessageCommandBuilder>()
 
-        if (currentGlobalSlashCommandsNameAndId.isNotEmpty()) {
-            currentGlobalSlashCommandsNameAndId.forEach { (id, name) ->
-                if (globalSlashCommands.containsKey(name)) {
-                    globalSlashCommandsToAdd.add(globalSlashCommands[name]!!)
-                } else if (!globalSlashCommands.containsKey(name)) {
-                    globalSlashCommandsIdsToDelete.add(id)
+        if (currentGlobalMessageCommandsNameAndId.isNotEmpty()) {
+            currentGlobalMessageCommandsNameAndId.forEach { (id, name) ->
+                if (globalMessageCommands.containsKey(name)) {
+                    globalMessageCommandsToAdd.add(globalMessageCommands[name]!!)
+                } else if (!globalMessageCommands.containsKey(name)) {
+                    globalMessageCommandsIdsToDelete.add(id)
                 } else {
-                    globalSlashCommandsToAdd.add(globalSlashCommands[name]!!)
+                    globalMessageCommandsToAdd.add(globalMessageCommands[name]!!)
                 }
             }
 
-            globalSlashCommands.forEach { (name, slash) ->
-                if (!currentGlobalSlashCommandsNameAndId.containsValue(name)) {
-                    globalSlashCommandsToAdd.add(slash)
+            globalMessageCommands.forEach { (name, message) ->
+                if (!currentGlobalMessageCommandsNameAndId.containsValue(name)) {
+                    globalMessageCommandsToAdd.add(message)
                 }
             }
         } else {
-            globalSlashCommandsToAdd.addAll(globalSlashCommands.values)
+            globalMessageCommandsToAdd.addAll(globalMessageCommands.values)
         }
 
-        if (currentGuildSlashCommandsNameAndId.isNotEmpty()) {
-            currentGuildSlashCommandsNameAndId.forEach { (_, nameAndId) ->
+        if (currentGuildMessageCommandsNameAndId.isNotEmpty()) {
+            currentGuildMessageCommandsNameAndId.forEach { (_, nameAndId) ->
                 nameAndId.forEach { (id, name) ->
-                    if (guildSlashCommands.containsKey(name)) {
-                        guildSlashCommandsToAdd.add(guildSlashCommands[name]!!)
-                    } else if (!guildSlashCommands.containsKey(name)) {
-                        guildSlashCommandsIdsToDelete.add(id)
+                    if (guildMessageCommands.containsKey(name)) {
+                        guildMessageCommandsToAdd.add(guildMessageCommands[name]!!)
+                    } else if (!guildMessageCommands.containsKey(name)) {
+                        guildMessageCommandsIdsToDelete.add(id)
                     } else {
-                        guildSlashCommandsToAdd.add(guildSlashCommands[name]!!)
+                        guildMessageCommandsToAdd.add(guildMessageCommands[name]!!)
                     }
                 }
             }
 
-            guildSlashCommands.forEach { (name, slash) ->
-                currentGuildSlashCommandsNameAndId.forEach { (_, nameAndId) ->
+            guildMessageCommands.forEach { (name, message) ->
+                currentGuildMessageCommandsNameAndId.forEach { (_, nameAndId) ->
                     if (!nameAndId.containsValue(name)) {
-                        guildSlashCommandsToAdd.add(slash)
+                        guildMessageCommandsToAdd.add(message)
                     }
                 }
             }
         } else {
-            guildSlashCommandsToAdd.addAll(guildSlashCommands.values)
+            guildMessageCommandsToAdd.addAll(guildMessageCommands.values)
         }
 
         // being rate limited, do 5 at a time
-        val globalSlashCommandsToAddChunks = globalSlashCommandsToAdd.chunked(1)
-        val guildSlashCommandsToAddChunks = guildSlashCommandsToAdd.chunked(1)
+        val globalMessageCommandsToAddChunks = globalMessageCommandsToAdd.chunked(1)
+        val guildMessageCommandsToAddChunks = guildMessageCommandsToAdd.chunked(1)
 
-        if (globalSlashCommandsToAddChunks.isNotEmpty()) {
+        if (globalMessageCommandsToAddChunks.isNotEmpty()) {
             var amountAdded = 0
-            globalSlashCommandsToAddChunks.forEach {
+            globalMessageCommandsToAddChunks.forEach {
                 if (amountAdded >= 4) {
                     ydwk.logger.debug("Sleeping for 25 seconds to avoid rate limit")
                     Thread.sleep(25000)
                     amountAdded = 0
-                    createGlobalSlashCommands(it)
+                    createGlobalMessageCommands(it)
                 } else {
                     amountAdded++
-                    createGlobalSlashCommands(it)
+                    createGlobalMessageCommands(it)
                 }
             }
         }
 
-        if (guildSlashCommandsToAddChunks.isNotEmpty()) {
+        if (guildMessageCommandsToAddChunks.isNotEmpty()) {
             var amountAdded = 0
-            guildSlashCommandsToAddChunks.forEach { chunk ->
+            guildMessageCommandsToAddChunks.forEach { chunk ->
                 guildIds.forEach { guildId ->
                     if (amountAdded >= 4) {
                         ydwk.logger.debug("Sleeping for 25 seconds to avoid rate limit")
                         Thread.sleep(25000)
-                        createGuildSlashCommands(guildId, chunk)
+                        createGuildMessageCommands(guildId, chunk)
                     } else {
                         amountAdded++
-                        createGuildSlashCommands(guildId, chunk)
+                        createGuildMessageCommands(guildId, chunk)
                     }
                 }
             }
         }
 
-        val globalSlashCommandsIdsToDeleteChunks = globalSlashCommandsIdsToDelete.chunked(1)
-        val guildSlashCommandsIdsToDeleteChunks = guildSlashCommandsIdsToDelete.chunked(1)
+        val globalMessageCommandsIdsToDeleteChunks = globalMessageCommandsIdsToDelete.chunked(1)
+        val guildMessageCommandsIdsToDeleteChunks = guildMessageCommandsIdsToDelete.chunked(1)
 
-        if (globalSlashCommandsIdsToDeleteChunks.isNotEmpty()) {
+        if (globalMessageCommandsIdsToDeleteChunks.isNotEmpty()) {
             var amountDeleted = 0
-            globalSlashCommandsIdsToDeleteChunks.forEach { chunk ->
+            globalMessageCommandsIdsToDeleteChunks.forEach { chunk ->
                 if (amountDeleted >= 4) {
                     ydwk.logger.debug("Sleeping for 25 seconds to avoid rate limit")
                     Thread.sleep(25000)
                     amountDeleted = 0
-                    deleteGlobalSlashCommands(chunk)
+                    deleteGlobalMessageCommands(chunk)
                 } else {
                     amountDeleted++
-                    deleteGlobalSlashCommands(chunk)
+                    deleteGlobalMessageCommands(chunk)
                 }
             }
         }
 
-        if (guildSlashCommandsIdsToDeleteChunks.isNotEmpty()) {
+        if (guildMessageCommandsIdsToDeleteChunks.isNotEmpty()) {
             guildIds.forEach { _ ->
                 var amountDeleted = 0
-                guildSlashCommandsIdsToDeleteChunks.forEach { chunk ->
+                guildMessageCommandsIdsToDeleteChunks.forEach { chunk ->
                     if (amountDeleted >= 4) {
                         ydwk.logger.debug("Sleeping for 25 seconds to avoid rate limit")
                         Thread.sleep(25000)
                         amountDeleted = 0
-                        deleteGuildSlashCommands(chunk)
+                        deleteGuildMessageCommands(chunk)
                     } else {
                         amountDeleted++
-                        deleteGuildSlashCommands(chunk)
+                        deleteGuildMessageCommands(chunk)
                     }
                 }
             }
         }
     }
 
-    private fun getCurrentGlobalSlashCommandsNameAndIds(): Map<Long, String> {
+    private fun getCurrentGlobalMessageCommandsNameAndIds(): Map<Long, String> {
         return ydwk.restApiManager
             .get(EndPoint.ApplicationCommandsEndpoint.GET_GLOBAL_COMMANDS, applicationId)
             .execute { it ->
-                ydwk.logger.debug("Getting current global slash commands")
                 val jsonBody = it.jsonBody
                 if (jsonBody == null) {
                     return@execute emptyMap()
@@ -186,7 +186,7 @@ class SlashInfoSender(
             .get()
     }
 
-    private fun getCurrentGuildSlashCommandsNameAndIds(): Map<String, Map<Long, String>> {
+    private fun getCurrentGuildMessageCommandsNameAndIds(): Map<String, Map<Long, String>> {
         return guildIds.associateWith { guildId ->
             ydwk.restApiManager
                 .get(
@@ -205,9 +205,9 @@ class SlashInfoSender(
         }
     }
 
-    private fun deleteGlobalSlashCommands(ids: List<Long>) {
+    private fun deleteGlobalMessageCommands(ids: List<Long>) {
         ids.forEach { id ->
-            ydwk.logger.debug("Deleting global slash command with id $id")
+            ydwk.logger.debug("Deleting global Message command with id $id")
             ydwk.restApiManager
                 .delete(
                     EndPoint.ApplicationCommandsEndpoint.DELETE_GLOBAL_COMMAND,
@@ -217,10 +217,10 @@ class SlashInfoSender(
         }
     }
 
-    private fun deleteGuildSlashCommands(ids: List<Long>) {
+    private fun deleteGuildMessageCommands(ids: List<Long>) {
         ids.forEach { id ->
             guildIds.forEach { guildId ->
-                ydwk.logger.debug("Deleting guild slash command $id")
+                ydwk.logger.debug("Deleting guild Message command $id")
                 ydwk.restApiManager
                     .delete(
                         EndPoint.ApplicationCommandsEndpoint.DELETE_GUILD_COMMAND,
@@ -232,24 +232,27 @@ class SlashInfoSender(
         }
     }
 
-    private fun createGlobalSlashCommands(slashCommands: List<Slash>) {
-        slashCommands.forEach { slash ->
-            ydwk.logger.debug("Sending global slash command ${slash.name} to Discord")
+    private fun createGlobalMessageCommands(messageCommands: List<MessageCommandBuilder>) {
+        messageCommands.forEach { message ->
+            ydwk.logger.debug("Sending global Message command ${message.name} to Discord")
             ydwk.restApiManager
                 .post(
-                    slash.toJson().toString().toRequestBody(),
+                    message.toJson().toString().toRequestBody(),
                     EndPoint.ApplicationCommandsEndpoint.CREATE_GLOBAL_COMMAND,
                     applicationId)
                 .executeWithNoResult()
         }
     }
 
-    private fun createGuildSlashCommands(guildId: String, slashCommands: List<Slash>) {
-        slashCommands.forEach { slash ->
-            ydwk.logger.debug("Sending slash command ${slash.name} to guild $guildId")
+    private fun createGuildMessageCommands(
+        guildId: String,
+        messageCommands: List<MessageCommandBuilder>
+    ) {
+        messageCommands.forEach { message ->
+            ydwk.logger.debug("Sending Message command ${message.name} to guild $guildId")
             ydwk.restApiManager
                 .post(
-                    slash.toJson().toString().toRequestBody(),
+                    message.toJson().toString().toRequestBody(),
                     EndPoint.ApplicationCommandsEndpoint.CREATE_GUILD_COMMAND,
                     applicationId,
                     guildId)

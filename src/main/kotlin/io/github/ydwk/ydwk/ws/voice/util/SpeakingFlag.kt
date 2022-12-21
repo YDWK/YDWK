@@ -32,7 +32,7 @@ enum class SpeakingFlag(private val value: Long) {
 
     companion object {
         /**
-         * Gets the speaking flag from the given value.
+         * The speaking flag from the given value.
          *
          * @param value The value to get the speaking flag from.
          * @return The speaking flag.

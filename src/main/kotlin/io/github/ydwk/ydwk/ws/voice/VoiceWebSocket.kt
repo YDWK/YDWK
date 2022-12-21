@@ -317,13 +317,13 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
             val receiveDatagramPacket = DatagramPacket(ByteArray(80), 80)
             // waits for the response
             voiceConnection.udpsocket!!.soTimeout = 1000
-            // gets the response
+            // The response
             voiceConnection.udpsocket!!.receive(receiveDatagramPacket)
 
             val receiveBuffer = ByteBuffer.wrap(receiveDatagramPacket.data)
             var ip = String(receiveBuffer.array(), 4, receiveBuffer.array().size - 6)
             ip = ip.trim()
-            // Gets the port and makes sure it's unsigned
+            // The port and makes sure it's unsigned
             val port = receiveBuffer.short.toInt() and 0xFFFF
             this.address = address
             return InetSocketAddress(ip, port)

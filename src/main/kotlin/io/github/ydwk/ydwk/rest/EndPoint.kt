@@ -23,14 +23,14 @@ import io.github.ydwk.ydwk.YDWKInfo
 open class EndPoint {
     interface IEnumEndpoint {
         /**
-         * Gets the endpoint.
+         * The endpoint.
          *
          * @return the endpoint
          */
         fun getEndpoint(): String
 
         /**
-         * Gets the endpoint with the rest api url.
+         * The endpoint with the rest api url.
          *
          * @return the endpoint with the rest api url
          */
@@ -39,7 +39,7 @@ open class EndPoint {
         }
 
         /**
-         * Gets the rest api url.
+         * The rest api url.
          *
          * @return the rest api url
          */
@@ -52,7 +52,7 @@ open class EndPoint {
         }
 
         /**
-         * Gets the full endpoint with the rest api url, including the parameters.
+         * The full endpoint with the rest api url, including the parameters.
          *
          * @param params the parameters
          * @return the full endpoint with the rest api url, including the parameters

@@ -43,7 +43,7 @@ enum class ActivityType(private val activity: Int) {
     companion object {
 
         /**
-         * Gets the activity from the provided id.
+         * The activity from the provided id.
          *
          * @param id The id of the activity.
          * @return The activity.
@@ -59,7 +59,7 @@ enum class ActivityType(private val activity: Int) {
     }
 
     /**
-     * Gets the id of the activity.
+     * The id of the activity.
      *
      * @return The id of the activity.
      */

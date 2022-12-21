@@ -20,7 +20,7 @@ package io.github.ydwk.ydwk.cache
 
 /** This is used to store and retrieve data from cache */
 interface Cache {
-    /** Gets the size of the cache */
+    /** The size of the cache */
     val size: Int
 
     /**

@@ -24,14 +24,14 @@ import io.github.ydwk.ydwk.entities.channel.guild.message.text.GuildTextChannel
 interface GuildMessageChannelGetter {
 
     /**
-     * Gets the message channel as a guild text channel.
+     * The message channel as a guild text channel.
      *
      * @return the message channel as a guild text channel.
      */
     fun asGuildTextChannel(): GuildTextChannel?
 
     /**
-     * Gets the message channel as a guild news channel.
+     * The message channel as a guild news channel.
      *
      * @return the message channel as a guild news channel.
      */

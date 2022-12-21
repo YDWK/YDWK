@@ -30,42 +30,42 @@ import java.net.URL
 interface Button : ComponentInteraction, Repliable {
 
     /**
-     * Gets the button style of this button.
+     * The button style of this button.
      *
      * @return The button style of this button.
      */
     val style: ButtonStyle
 
     /**
-     * Gets the label of this button.
+     * The label of this button.
      *
      * @return The label of this button.
      */
     val label: String?
 
     /**
-     * Gets the custom id of this button.
+     * The custom id of this button.
      *
      * @return The custom id of this button.
      */
     val customId: String?
 
     /**
-     * Gets the emoji of this button.
+     * The emoji of this button.
      *
      * @return The emoji of this button.
      */
     val emoji: Emoji?
 
     /**
-     * Gets the url of this button if it is a link button.
+     * The url of this button if it is a link button.
      *
      * @return The url of this button if it is a link button.
      */
     val url: URL?
 
     /**
-     * Gets the disabled state of this button.
+     * The disabled state of this button.
      *
      * @return The disabled state of this button.
      */

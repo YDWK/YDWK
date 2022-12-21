@@ -30,7 +30,7 @@ enum class StickerType(private val value: Int) {
 
     companion object {
         /**
-         * Gets the [StickerType] from the provided [value].
+         * The [StickerType] from the provided [value].
          *
          * @param value The value to get the [StickerType] from.
          * @return The [StickerType] from the provided [value].
@@ -41,7 +41,7 @@ enum class StickerType(private val value: Int) {
     }
 
     /**
-     * Gets the value of the [StickerType].
+     * The value of the [StickerType].
      *
      * @return The value of the [StickerType].
      */

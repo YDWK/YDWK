@@ -23,28 +23,28 @@ import java.net.URL
 
 interface Thumbnail : GenericEntity {
     /**
-     * Gets the url of this thumbnail.
+     * The url of this thumbnail.
      *
      * @return The url of this thumbnail.
      */
     val url: URL
 
     /**
-     * Gets the proxy url of this thumbnail.
+     * The proxy url of this thumbnail.
      *
      * @return The proxy url of this thumbnail.
      */
     val proxyUrl: String?
 
     /**
-     * Gets the height of this thumbnail.
+     * The height of this thumbnail.
      *
      * @return The height of this thumbnail.
      */
     val height: Int?
 
     /**
-     * Gets the width of this thumbnail.
+     * The width of this thumbnail.
      *
      * @return The width of this thumbnail.
      */

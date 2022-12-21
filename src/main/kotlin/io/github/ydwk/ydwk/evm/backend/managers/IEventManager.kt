@@ -45,6 +45,6 @@ interface IEventManager {
     /** Removes all the events from the event handler */
     fun removeAllEvents()
 
-    /** Gets the registered event listeners */
+    /** The registered event listeners */
     val events: MutableList<Any>
 }

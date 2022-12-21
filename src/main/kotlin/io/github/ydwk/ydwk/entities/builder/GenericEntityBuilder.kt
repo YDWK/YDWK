@@ -24,7 +24,7 @@ import java.util.concurrent.CompletableFuture
 interface GenericEntityBuilder<T> {
 
     /**
-     * Gets the json that will be sent to the discord api.
+     * The json that will be sent to the discord api.
      *
      * @return The json that will be sent to the discord api.
      */

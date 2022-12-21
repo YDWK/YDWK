@@ -16,11 +16,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.impl.slash
+package io.github.ydwk.ydwk.impl.builders.slash
 
+import io.github.ydwk.ydwk.builders.slash.Slash
+import io.github.ydwk.ydwk.builders.slash.SlashBuilder
 import io.github.ydwk.ydwk.impl.YDWKImpl
-import io.github.ydwk.ydwk.slash.Slash
-import io.github.ydwk.ydwk.slash.SlashBuilder
 
 class SlashBuilderImpl(
     private val ydwk: YDWKImpl,

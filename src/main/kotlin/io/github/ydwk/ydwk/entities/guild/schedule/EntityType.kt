@@ -30,7 +30,7 @@ enum class EntityType(private val value: Int) {
 
     companion object {
         /**
-         * Gets the entity type from the value
+         * The entity type from the value
          *
          * @param value the value
          * @return the entity type
@@ -41,7 +41,7 @@ enum class EntityType(private val value: Int) {
     }
 
     /**
-     * Gets the value of the entity type
+     * The value of the entity type
      *
      * @return the value of the entity type
      */

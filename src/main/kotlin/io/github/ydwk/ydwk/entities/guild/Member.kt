@@ -42,7 +42,7 @@ interface Member : NameAbleEntity, GenericEntity, Sendeadble, SnowFlake, Permiss
     val guild: Guild
 
     /**
-     * Gets the user this guild member represents.
+     * The user this guild member represents.
      *
      * @return The user this guild member represents.
      */
@@ -56,35 +56,35 @@ interface Member : NameAbleEntity, GenericEntity, Sendeadble, SnowFlake, Permiss
     var nick: String?
 
     /**
-     * Gets the member's avatar hash.
+     * The member's avatar hash.
      *
      * @return The member's avatar hash.
      */
     var avatar: String?
 
     /**
-     * Gets the ids of the roles this member is assigned.
+     * The ids of the roles this member is assigned.
      *
      * @return The ids of the roles this member is assigned.
      */
     val roleIds: List<GetterSnowFlake>
 
     /**
-     * Gets the roles of this member.
+     * The roles of this member.
      *
      * @return The roles of this member.
      */
     val roles: List<Role?>
 
     /**
-     * Gets the time this member joined the guild.
+     * The time this member joined the guild.
      *
      * @return The time this member joined the guild.
      */
     var joinedAt: String?
 
     /**
-     * Gets the date the member started boosting the guild.
+     * The date the member started boosting the guild.
      *
      * @return The date the member started boosting the guild.
      */

@@ -268,7 +268,7 @@ enum class JsonErrorCode(private val code: Int, private val meaning: String) {
 
     companion object {
         /**
-         * Gets the [JsonErrorCode] from the given [code].
+         * The [JsonErrorCode] from the given [code].
          *
          * @param code The code to get the [JsonErrorCode] from.
          * @return The [JsonErrorCode] from the given [code].
@@ -279,7 +279,7 @@ enum class JsonErrorCode(private val code: Int, private val meaning: String) {
     }
 
     /**
-     * Gets the error code.
+     * The error code.
      *
      * @return The error code.
      */
@@ -288,7 +288,7 @@ enum class JsonErrorCode(private val code: Int, private val meaning: String) {
     }
 
     /**
-     * Gets the meaning of the error code.
+     * The meaning of the error code.
      *
      * @return The meaning of the error code.
      */

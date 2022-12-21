@@ -24,7 +24,7 @@ enum class PrivacyLevel(private val value: Int) {
 
     companion object {
         /**
-         * Gets the privacy level from the value
+         * The privacy level from the value
          *
          * @param value the value
          * @return the privacy level
@@ -35,7 +35,7 @@ enum class PrivacyLevel(private val value: Int) {
     }
 
     /**
-     * Gets the value of the privacy level
+     * The value of the privacy level
      *
      * @return the value of the privacy level
      */

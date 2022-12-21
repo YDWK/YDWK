@@ -22,14 +22,14 @@ import io.github.ydwk.ydwk.entities.util.GenericEntity
 
 interface Field : GenericEntity {
     /**
-     * Gets the name of this field.
+     * The name of this field.
      *
      * @return The name of this field.
      */
     val name: String
 
     /**
-     * Gets the value of this field.
+     * The value of this field.
      *
      * @return The value of this field.
      */

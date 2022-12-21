@@ -26,7 +26,7 @@ enum class MessageActivityType(private val value: Int) {
 
     companion object {
         /**
-         * Gets the [MessageActivityType] from the provided [value].
+         * The [MessageActivityType] from the provided [value].
          *
          * @param value The value of the [MessageActivityType].
          * @return The [MessageActivityType] corresponding to the provided [value].
@@ -37,7 +37,7 @@ enum class MessageActivityType(private val value: Int) {
     }
 
     /**
-     * Gets the value of the [MessageActivityType].
+     * The value of the [MessageActivityType].
      *
      * @return The value of the [MessageActivityType].
      */

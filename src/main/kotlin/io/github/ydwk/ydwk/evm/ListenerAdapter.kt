@@ -43,7 +43,9 @@ import io.github.ydwk.ydwk.evm.event.events.guild.GuildDeleteEvent
 import io.github.ydwk.ydwk.evm.event.events.guild.update.*
 import io.github.ydwk.ydwk.evm.event.events.interaction.*
 import io.github.ydwk.ydwk.evm.event.events.interaction.button.ButtonClickEvent
+import io.github.ydwk.ydwk.evm.event.events.interaction.slash.MessageCommandEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.slash.SlashCommandEvent
+import io.github.ydwk.ydwk.evm.event.events.interaction.slash.UserCommandEvent
 import io.github.ydwk.ydwk.evm.event.events.user.*
 import io.github.ydwk.ydwk.evm.event.events.voice.VoiceConnectionEvent
 import java.lang.invoke.MethodHandle
@@ -97,6 +99,20 @@ abstract class ListenerAdapter : IEventListener {
      * @param event The SlashCommandEvent
      */
     open fun onSlashCommand(event: SlashCommandEvent) {}
+
+    /**
+     * Listens to UserCommandEvent
+     *
+     * @param event The UserCommandEvent
+     */
+    open fun onUserCommand(event: UserCommandEvent) {}
+
+    /**
+     * Listens to MessageCommandEvent
+     *
+     * @param event The MessageCommandEvent
+     */
+    open fun onMessageCommand(event: MessageCommandEvent) {}
 
     /**
      * Listens to AutoCompleteSlashCommandEvent

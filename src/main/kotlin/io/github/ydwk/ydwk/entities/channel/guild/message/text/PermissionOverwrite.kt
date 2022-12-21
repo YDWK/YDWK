@@ -23,7 +23,7 @@ import io.github.ydwk.ydwk.util.SnowFlake
 
 interface PermissionOverwrite : GenericEntity, SnowFlake {
     /**
-     * Gets the type of this permission overwrite.
+     * The type of this permission overwrite.
      *
      * @return the type of this permission overwrite.
      */
@@ -37,7 +37,7 @@ interface PermissionOverwrite : GenericEntity, SnowFlake {
     val allow: String
 
     /**
-     * Gets the deny of this permission overwrite.
+     * The deny of this permission overwrite.
      *
      * @return the deny of this permission overwrite.
      */

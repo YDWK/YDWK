@@ -61,21 +61,21 @@ interface GuildVoiceChannel : GuildChannel {
     }
 
     /**
-     * Gets the bitrate (in bits) of the voice channel
+     * The bitrate (in bits) of the voice channel
      *
      * @return the bitrate
      */
     var bitrate: Int
 
     /**
-     * Gets the user limit of the voice channel
+     * The user limit of the voice channel
      *
      * @return the user limit
      */
     var userLimit: Int
 
     /**
-     * Gets the rate limit per user of the voice channel
+     * The rate limit per user of the voice channel
      *
      * @return the rate limit per user
      */

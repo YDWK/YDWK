@@ -142,7 +142,7 @@ enum class AuditLogType(
 
     companion object {
         /**
-         * Gets the [AuditLogType] of the provided [type].
+         * The [AuditLogType] of the provided [type].
          *
          * @param type The type to get the [AuditLogType] of.
          * @return The [AuditLogType] of the provided [type].
@@ -153,7 +153,7 @@ enum class AuditLogType(
     }
 
     /**
-     * Gets the type of this [AuditLogType].
+     * The type of this [AuditLogType].
      *
      * @return The type of this [AuditLogType].
      */
@@ -162,7 +162,7 @@ enum class AuditLogType(
     }
 
     /**
-     * Gets the object changed by this [AuditLogType].
+     * The object changed by this [AuditLogType].
      *
      * @return The object changed by this [AuditLogType].
      */
