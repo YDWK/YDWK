@@ -68,13 +68,13 @@ comments:
     active: false
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
   OutdatedDocumentation:
-    active: false
+    active: true
     matchTypeParameters: true
     matchDeclarationsOrder: true
     allowParamOnConstructorProperties: false
   UndocumentedPublicClass:
-    active: false
-    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
+    active: true
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**', 'src/main/kotlin/io/github/ydwk/ydwk/impl']
     searchInNestedClass: true
     searchInInnerClass: true
     searchInInnerObject: true
@@ -120,7 +120,7 @@ complexity:
       - 'use'
       - 'with'
   LabeledExpression:
-    active: false
+    active: true
     ignoredLabels: []
   LargeClass:
     active: true

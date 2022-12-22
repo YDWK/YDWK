@@ -73,12 +73,12 @@ fun main() {
                     it.slash
                         .reply("This is a button test!")
                         .addActionRow(
-                            ActionRow.of(
-                                Button.of(ButtonStyle.PRIMARY, "1", "Primary"),
-                                Button.of(ButtonStyle.SECONDARY, "2", "Secondary"),
-                                Button.of(ButtonStyle.SUCCESS, "3", "Success"),
-                                Button.of(ButtonStyle.DANGER, "4", "Danger"),
-                                Button.of("Link", "https://google.com")))
+                            ActionRow.invoke(
+                                Button.invoke(ButtonStyle.PRIMARY, "1", "Primary"),
+                                Button.invoke(ButtonStyle.SECONDARY, "2", "Secondary"),
+                                Button.invoke(ButtonStyle.SUCCESS, "3", "Success"),
+                                Button.invoke(ButtonStyle.DANGER, "4", "Danger"),
+                                Button.invoke("Link", "https://google.com")))
                         .trigger()
                 }
             }

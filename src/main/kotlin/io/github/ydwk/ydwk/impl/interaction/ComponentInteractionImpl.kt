@@ -33,7 +33,7 @@ import io.github.ydwk.ydwk.impl.interaction.message.ComponentInteractionDataImpl
 import io.github.ydwk.ydwk.interaction.ComponentInteraction
 import io.github.ydwk.ydwk.interaction.message.Component
 import io.github.ydwk.ydwk.interaction.message.ComponentInteractionData
-import io.github.ydwk.ydwk.interaction.sub.InteractionType
+import io.github.ydwk.ydwk.interaction.message.ComponentType
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 
@@ -42,12 +42,11 @@ open class ComponentInteractionImpl(
     override val json: JsonNode,
     override val interactionId: GetterSnowFlake
 ) : ComponentInteraction {
+    override val type: ComponentType
+        get() = ComponentType.fromInt(json["component_type"].asInt())
 
     override val interactionToken: String
         get() = json["token"].asText()
-
-    override val type: InteractionType
-        get() = InteractionType.fromInt(json["type"].asInt())
 
     override val message: Message
         get() = MessageImpl(ydwk, json["message"], json["message"]["id"].asLong())

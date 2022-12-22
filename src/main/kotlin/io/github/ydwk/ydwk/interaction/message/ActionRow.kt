@@ -18,7 +18,6 @@
  */ 
 package io.github.ydwk.ydwk.interaction.message
 
-import io.github.ydwk.ydwk.impl.interaction.ComponentInteractionImpl
 import io.github.ydwk.ydwk.impl.interaction.message.ComponentImpl
 import io.github.ydwk.ydwk.util.Checks
 
@@ -37,12 +36,8 @@ interface ActionRow : Component {
          *
          * Example:
          * ```
-         * ```
          *
-         * kotlin
-         *
-         * ```
-         * val actionRow = ActionRow.of(Button.of(ydwk, ButtonStyle.PRIMARY, "1", "Primary"))
+         * val actionRow = ActionRow.invoke(Button.invoke(ButtonStyle.PRIMARY, "1", "Primary"))
          *
          * it.slash
          *        .reply("This is a button test!")
@@ -51,10 +46,13 @@ interface ActionRow : Component {
          * ```
          *
          * @param components The components to add to the action row.
-         * @return an empty [ComponentInteractionImpl.ComponentCreator].
+         * @return [ComponentImpl.ComponentCreator] which contains the json representation of the
+         *   action row.
          */
-        fun of(vararg components: ComponentImpl.ComponentCreator): ComponentImpl.ComponentCreator {
-            return of(components.toList())
+        operator fun invoke(
+            vararg components: ComponentImpl.ComponentCreator
+        ): ComponentImpl.ComponentCreator {
+            return invoke(components.toList())
         }
 
         /**
@@ -62,12 +60,8 @@ interface ActionRow : Component {
          *
          * Example:
          * ```
-         * ```
          *
-         * kotlin
-         *
-         * ```
-         * val actionRow = ActionRow.of(Button.of(ydwk, ButtonStyle.PRIMARY, "1", "Primary"))
+         * val actionRow = ActionRow.invoke(Button.invoke(ButtonStyle.PRIMARY, "1", "Primary"))
          *
          * it.slash
          *        .reply("This is a button test!")
@@ -76,9 +70,12 @@ interface ActionRow : Component {
          * ```
          *
          * @param components The components to add to the action row.
-         * @return an empty [ComponentInteractionImpl.ComponentCreator].
+         * @return [ComponentImpl.ComponentCreator] which contains the json representation of the
+         *   action row.
          */
-        fun of(components: List<ComponentImpl.ComponentCreator>): ComponentImpl.ComponentCreator {
+        operator fun invoke(
+            components: List<ComponentImpl.ComponentCreator>
+        ): ComponentImpl.ComponentCreator {
             Checks.customCheck(components.size <= 5, "Action row can only have 5 components.")
             return ComponentImpl.ActionRowCreator(components.toMutableList())
         }

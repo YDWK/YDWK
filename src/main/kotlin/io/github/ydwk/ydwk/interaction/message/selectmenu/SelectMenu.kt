@@ -19,5 +19,56 @@
 package io.github.ydwk.ydwk.interaction.message.selectmenu
 
 import io.github.ydwk.ydwk.interaction.ComponentInteraction
+import io.github.ydwk.ydwk.interaction.message.ComponentType
+import java.util.EnumSet
 
-interface SelectMenu : ComponentInteraction {}
+interface SelectMenu : ComponentInteraction {
+    /**
+     * The select menu types.
+     *
+     * @return the select menu types
+     */
+    val selectMenuTypes: EnumSet<ComponentType>
+        get() =
+            EnumSet.of(
+                ComponentType.STRING_SELECT_MENU,
+                ComponentType.USER_SELECT_MENU,
+                ComponentType.ROLE_SELECT_MENU,
+                ComponentType.MENTIONABLE_SELECT_MENU,
+                ComponentType.CHANNEL_SELECT_MENU)
+
+    /**
+     * The custom id of the select menu.
+     *
+     * @return the custom id of the select menu
+     */
+    val customId: String
+
+    /**
+     * The placeholder text if nothing is selected; max 150 characters.
+     *
+     * @return the placeholder text if nothing is selected; max 150 characters
+     */
+    val placeholder: String?
+
+    /**
+     * The minimum number of items that must be chosen; default 1, min 0, max 25.
+     *
+     * @return the minimum number of items that must be chosen; default 1, min 0, max 25
+     */
+    val minValues: Int
+
+    /**
+     * The maximum number of items that can be chosen; default 1, max 25.
+     *
+     * @return the maximum number of items that can be chosen; default 1, max 25
+     */
+    val maxValues: Int
+
+    /**
+     * Whether select menu is disabled (defaults to false)
+     *
+     * @return whether select menu is disabled (defaults to false)
+     */
+    val isDisabled: Boolean
+}

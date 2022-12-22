@@ -26,10 +26,18 @@ import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.interaction.message.Component
 import io.github.ydwk.ydwk.interaction.message.ComponentInteractionData
+import io.github.ydwk.ydwk.interaction.message.ComponentType
 import io.github.ydwk.ydwk.interaction.sub.InteractionType
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 
 interface ComponentInteraction : GenericEntity {
+
+    /**
+     * The type of component interaction.
+     *
+     * @return The type of component interaction.
+     */
+    val type: ComponentType
 
     /**
      * The interaction token.
@@ -50,7 +58,8 @@ interface ComponentInteraction : GenericEntity {
      *
      * @return the interaction type of this component
      */
-    val type: InteractionType
+    val interactionType: InteractionType
+        get() = InteractionType.MESSAGE_COMPONENT
 
     /**
      * The message corresponding to this component.

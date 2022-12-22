@@ -36,12 +36,16 @@ open class ComponentImpl(override val ydwk: YDWK, override val json: JsonNode) :
 
     override val disabled: Boolean
         get() = json["disabled"].asBoolean()
+
     override val messageCompatible: Boolean
         get() = type.isMessageCompatible()
+
     override val modalCompatible: Boolean
         get() = type.isModalCompatible()
+
     override val customId: String?
         get() = if (json.has("custom_id")) json["custom_id"].asText() else null
+
     override val children: List<Component>
         get() = json["components"].map { ComponentImpl(ydwk, it) }
 

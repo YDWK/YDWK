@@ -27,6 +27,7 @@ import io.github.ydwk.ydwk.impl.interaction.ComponentInteractionImpl
 import io.github.ydwk.ydwk.impl.interaction.application.sub.ReplyImpl
 import io.github.ydwk.ydwk.interaction.application.sub.Reply
 import io.github.ydwk.ydwk.interaction.message.Component
+import io.github.ydwk.ydwk.interaction.message.ComponentType
 import io.github.ydwk.ydwk.interaction.message.button.Button
 import io.github.ydwk.ydwk.interaction.message.button.ButtonStyle
 import io.github.ydwk.ydwk.util.GetterSnowFlake
@@ -36,7 +37,8 @@ open class ButtonImpl(
     ydwk: YDWK,
     json: JsonNode,
     interactionId: GetterSnowFlake,
-    val component: Component
+    val component: Component,
+    private val componentJson: JsonNode
 ) : Button, ComponentInteractionImpl(ydwk, json, interactionId) {
 
     constructor(
@@ -46,12 +48,14 @@ open class ButtonImpl(
         componentInteractionImpl.ydwk,
         componentInteractionImpl.json,
         componentInteractionImpl.interactionId,
-        component)
+        component,
+        component.json)
 
     override val url: URL?
-        get() = if (json.has("data")) URL(json["data"]["url"].asText()) else null
+        get() = if (componentJson.has("url")) URL(componentJson["url"].asText()) else null
+
     override val disabled: Boolean
-        get() = TODO("Not yet implemented")
+        get() = componentJson["disabled"].asBoolean()
 
     override fun reply(content: String): Reply {
         return ReplyImpl(ydwk, content, null, interactionId.asString, interactionToken)
@@ -62,14 +66,16 @@ open class ButtonImpl(
     }
 
     override val label: String?
-        get() = if (component.json.has("label")) component.json["label"].asText() else null
+        get() = if (componentJson.has("label")) componentJson["label"].asText() else null
 
     override val customId: String?
-        get() = if (component.json.has("custom_id")) component.json["custom_id"].asText() else null
+        get() = if (componentJson.has("custom_id")) componentJson["custom_id"].asText() else null
 
     override val emoji: Emoji?
-        get() = if (component.json.has("emoji")) EmojiImpl(ydwk, component.json["emoji"]) else null
+        get() = if (componentJson.has("emoji")) EmojiImpl(ydwk, componentJson["emoji"]) else null
 
     override val style: ButtonStyle
-        get() = ButtonStyle.fromInt(component.json["style"].asInt())
+        get() = ButtonStyle.fromInt(componentJson["style"].asInt())
+    override val type: ComponentType
+        get() = ComponentType.BUTTON
 }
