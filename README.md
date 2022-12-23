@@ -3,23 +3,16 @@
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Kotlin](https://img.shields.io/badge/kotlin-1.7.20-blue.svg?logo=kotlin)](http://kotlinlang.org)
 [![codecov](https://codecov.io/gh/YDWK/YDWK/branch/master/graph/badge.svg?token=LKIA8T6N6J)](https://codecov.io/gh/YDWK/YDWK)
-[![ydwkv](https://img.shields.io/badge/YDWK-0.1.2-blue.svg)](https://www.ydwk.org)
+[![ydwk](https://img.shields.io/badge/YDWK-0.1.2-blue.svg)](https://github.com/YDWK/YDWK/releases/tag/v0.1.2)
+[![ydwk-docs](https://img.shields.io/badge/YDWK-Docs-blue.svg)](https://www.ydwk.org)
+
 
 # Very important note
 Don't update to 1.22.0 it was a mistake release caused by a bug in the code, use the latest version found above.
 
 # YDWK
 
-A discord wrapper made in kotlin(Not related to YDW)
-
-## Problems this wrapper solves
-
-You might ask why should I use this wrapper when there is already a kotlin wrapper out there. Well, this wrapper is made
-to solve the following problems:
-
-- This wrapper aims to be as simple and as fast as possible while still being easy to use and understand
-- This is built to be similar to discord.js
-- I will stick to the same naming as in the discord api for consistency
+YDWK is a discord wrapper made in kotlin that aims to be as simple and as fast as possible while still being easy to use and understand. It is built to be similar to discord.js but with some differences. It tries to adhere to the [discord api](https://discord.com/developers/docs/intro) as much as possible.
 
 ## In progress and to be done
 
@@ -47,7 +40,7 @@ to solve the following problems:
 
 ## Getting started
 
-Add the following to your `build.gradle`:
+Add the following to your `build.gradle.kts`:
 
 ```gradle
 dependencies {
@@ -72,6 +65,4 @@ api, it will be named `requestEntity`.
 
 ## For more information
 
-Check out the [wiki](https://www.ydwk.org/) for more information.
-
-Check out the [kotlindoc](https://ydwk.github.io/YDWK/) for more information.
+Check out the [docs](https://www.ydwk.org/) for more information.
