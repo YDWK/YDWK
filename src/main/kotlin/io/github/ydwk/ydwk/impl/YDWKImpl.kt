@@ -65,6 +65,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
+import kotlinx.coroutines.delay
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.slf4j.Logger
@@ -369,50 +370,14 @@ class YDWKImpl(
     override var loggedInStatus: LoggedIn? = null
         private set
 
-    @get:Synchronized
-    override val waitForConnection: YDWK
-        get() {
-            val ws = webSocketManager
-            if (ws == null) {
-                throw IllegalStateException("WebSocketManager is not initialized")
-            } else {
-                while (!ws.connected) {
-                    try {
-                        Thread.sleep(100)
-                    } catch (e: InterruptedException) {
-                        logger.error("Error while waiting for connection", e)
-                    } finally {
-                        if (ws.connected) {
-                            logger.info("WebSocketManager connected")
-                        } else {
-                            logger.info("WebSocketManager not connected, retrying")
-                            waitForConnection // retry
-                        }
-                    }
-                }
-            }
-            return this
-        }
-    override val waitForReady: YDWK
-        get() {
-            val ws = webSocketManager
-            if (ws == null) {
-                throw IllegalStateException("WebSocketManager is not initialized")
-            } else {
-                while (!ws.ready) {
-                    try {
-                        Thread.sleep(100)
-                    } catch (e: InterruptedException) {
-                        logger.error("Error while waiting for ready", e)
-                    } finally {
-                        if (!ws.ready) {
-                            waitForReady // retry
-                        }
-                    }
-                }
-            }
-            return this
-        }
+    override suspend fun awaitReady(): YDWK {
+        val ws = webSocketManager ?: throw IllegalStateException("Bot is not logged in")
+        while (!ws.ready) {
+            delay(1000)
+            logger.debug("Waiting for bot to be ready")
+        } // wait for bot to be ready
+        return this
+    }
 
     override fun addEvent(vararg eventListeners: Any) {
         for (eventListener in eventListeners) {

@@ -95,18 +95,11 @@ interface YDWK {
     val loggedInStatus: LoggedIn?
 
     /**
-     * Indicates that bot has connected to the websocket.
+     * A suspend function that waits for the READY gateway event to be received.
      *
      * @return The [YDWK] instance.
      */
-    val waitForConnection: YDWK
-
-    /**
-     * Waits for the READY gateway event to be received.
-     *
-     * @return The [YDWK] instance.
-     */
-    val waitForReady: YDWK
+    suspend fun awaitReady(): YDWK
 
     /**
      * Adds an event listener.
