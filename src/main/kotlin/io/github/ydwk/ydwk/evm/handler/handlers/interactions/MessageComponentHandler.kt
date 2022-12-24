@@ -19,9 +19,11 @@
 package io.github.ydwk.ydwk.evm.handler.handlers.interactions
 
 import io.github.ydwk.ydwk.evm.event.events.interaction.button.ButtonClickEvent
+import io.github.ydwk.ydwk.evm.event.events.interaction.selectmenu.StringSelectMenuEvent
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.interaction.ComponentInteractionImpl
 import io.github.ydwk.ydwk.impl.interaction.message.button.ButtonImpl
+import io.github.ydwk.ydwk.impl.interaction.message.selectmenu.types.StringSelectMenuImpl
 import io.github.ydwk.ydwk.interaction.message.ComponentType
 
 class MessageComponentHandler(
@@ -43,7 +45,13 @@ class MessageComponentHandler(
                                         ydwk, ButtonImpl(interactionComponent, children)))
                             }
                         }
-                        ComponentType.SELECT_MENU -> TODO("Do something similar to buttons")
+                        ComponentType.STRING_SELECT_MENU -> {
+                            if (customId == children.customId) {
+                                ydwk.emitEvent(
+                                    StringSelectMenuEvent(
+                                        ydwk, StringSelectMenuImpl(interactionComponent, children)))
+                            }
+                        }
                         ComponentType.TEXT_INPUT -> TODO("Do something similar to buttons")
                         ComponentType.USER_SELECT_MENU -> TODO("Do something similar to buttons")
                         ComponentType.ROLE_SELECT_MENU -> TODO("Do something similar to buttons")

@@ -19,10 +19,17 @@
 package io.github.ydwk.ydwk.impl.interaction.message.selectmenu.types
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.node.JsonNodeFactory
+import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entities.Emoji
+import io.github.ydwk.ydwk.entities.message.Embed
 import io.github.ydwk.ydwk.impl.interaction.ComponentInteractionImpl
+import io.github.ydwk.ydwk.impl.interaction.application.sub.ReplyImpl
+import io.github.ydwk.ydwk.impl.interaction.message.ComponentImpl
 import io.github.ydwk.ydwk.impl.interaction.message.selectmenu.SelectMenuImpl
 import io.github.ydwk.ydwk.impl.interaction.message.selectmenu.types.string.StringSelectMenuOptionImpl
+import io.github.ydwk.ydwk.interaction.application.sub.Reply
 import io.github.ydwk.ydwk.interaction.message.Component
 import io.github.ydwk.ydwk.interaction.message.selectmenu.types.StringSelectMenu
 import io.github.ydwk.ydwk.interaction.message.selectmenu.types.string.StringSelectMenuOption
@@ -48,4 +55,31 @@ class StringSelectMenuImpl(
 
     override val options: List<StringSelectMenuOption>
         get() = componentJson["options"].map { StringSelectMenuOptionImpl(ydwk, it) }
+
+    override fun reply(content: String): Reply {
+        return ReplyImpl(ydwk, content, null, interactionId.asString, interactionToken)
+    }
+
+    override fun reply(embed: Embed): Reply {
+        return ReplyImpl(ydwk, null, embed, interactionId.asString, interactionToken)
+    }
+
+    data class StringSelectMenuOptionCreator(
+        val label: String,
+        val value: String,
+        val description: String? = null,
+        val emoji: Emoji? = null,
+        val default: Boolean = false,
+        override val json: ObjectNode = JsonNodeFactory.instance.objectNode()
+    ) : StringSelectMenuCreator {
+        init {
+            json.put("label", label)
+            json.put("value", value)
+            if (description != null) json.put("description", description)
+            if (emoji != null) json.set<JsonNode>("emoji", emoji.json)
+            json.put("default", default)
+        }
+    }
+
+    sealed interface StringSelectMenuCreator : ComponentImpl.ComponentCreator
 }

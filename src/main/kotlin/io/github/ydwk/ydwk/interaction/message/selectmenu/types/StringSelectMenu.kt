@@ -19,11 +19,13 @@
 package io.github.ydwk.ydwk.interaction.message.selectmenu.types
 
 import io.github.ydwk.ydwk.impl.interaction.message.selectmenu.SelectMenuImpl
+import io.github.ydwk.ydwk.impl.interaction.message.selectmenu.types.StringSelectMenuImpl
 import io.github.ydwk.ydwk.interaction.message.selectmenu.SelectMenu
 import io.github.ydwk.ydwk.interaction.message.selectmenu.types.string.StringSelectMenuOption
+import io.github.ydwk.ydwk.interaction.reply.Repliable
 import io.github.ydwk.ydwk.util.Checks
 
-interface StringSelectMenu : SelectMenu {
+interface StringSelectMenu : SelectMenu, Repliable {
     /**
      * The options of the select menu.
      *
@@ -39,7 +41,7 @@ interface StringSelectMenu : SelectMenu {
         private const val MAX_OPTIONS = 25
 
         /**
-         * Used to create a new [StringSelectMenu].
+         * Create a new [StringSelectMenu].
          *
          * @param customId the custom id of the select menu
          * @param options the options of the select menu
@@ -52,7 +54,7 @@ interface StringSelectMenu : SelectMenu {
          */
         operator fun invoke(
             customId: String,
-            options: List<StringSelectMenuOption>,
+            options: List<StringSelectMenuImpl.StringSelectMenuOptionCreator>,
             placeholder: String? = null,
             minValues: Int? = null,
             maxValues: Int? = null,
@@ -66,7 +68,7 @@ interface StringSelectMenu : SelectMenu {
         }
 
         /**
-         * Used to create a new [StringSelectMenu].
+         * Create a new [StringSelectMenu].
          *
          * @param customId the custom id of the select menu
          * @param options the options of the select menu
@@ -75,12 +77,12 @@ interface StringSelectMenu : SelectMenu {
          */
         operator fun invoke(
             customId: String,
-            options: List<StringSelectMenuOption>
+            options: List<StringSelectMenuImpl.StringSelectMenuOptionCreator>
         ): SelectMenuImpl.SelectMenuCreator =
             SelectMenuImpl.StringSelectMenuCreator(customId, options)
 
         /**
-         * Used to create a new [StringSelectMenu].
+         * Creates a new [StringSelectMenu].
          *
          * @param customId the custom id of the select menu
          * @param options the options of the select menu
@@ -90,13 +92,13 @@ interface StringSelectMenu : SelectMenu {
          */
         operator fun invoke(
             customId: String,
-            options: List<StringSelectMenuOption>,
+            options: List<StringSelectMenuImpl.StringSelectMenuOptionCreator>,
             placeholder: String
         ): SelectMenuImpl.SelectMenuCreator =
             SelectMenuImpl.StringSelectMenuCreator(customId, options, placeholder)
 
         /**
-         * Used to create a new [StringSelectMenu].
+         * Creates a new [StringSelectMenu].
          *
          * @param customId the custom id of the select menu
          * @param options the options of the select menu
@@ -107,14 +109,14 @@ interface StringSelectMenu : SelectMenu {
          */
         operator fun invoke(
             customId: String,
-            options: List<StringSelectMenuOption>,
+            options: List<StringSelectMenuImpl.StringSelectMenuOptionCreator>,
             placeholder: String,
             minValues: Int
         ): SelectMenuImpl.SelectMenuCreator =
             SelectMenuImpl.StringSelectMenuCreator(customId, options, placeholder, minValues)
 
         /**
-         * Used to create a new [StringSelectMenu].
+         * Creates a new [StringSelectMenu].
          *
          * @param customId the custom id of the select menu
          * @param options the options of the select menu
@@ -126,7 +128,7 @@ interface StringSelectMenu : SelectMenu {
          */
         operator fun invoke(
             customId: String,
-            options: List<StringSelectMenuOption>,
+            options: List<StringSelectMenuImpl.StringSelectMenuOptionCreator>,
             placeholder: String,
             minValues: Int,
             maxValues: Int

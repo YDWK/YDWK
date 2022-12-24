@@ -24,10 +24,13 @@ import io.github.ydwk.ydwk.BotBuilder.createDefaultBot
 import io.github.ydwk.ydwk.builders.slash.Slash
 import io.github.ydwk.ydwk.evm.backend.event.on
 import io.github.ydwk.ydwk.evm.event.events.interaction.button.ButtonClickEvent
+import io.github.ydwk.ydwk.evm.event.events.interaction.selectmenu.StringSelectMenuEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.slash.SlashCommandEvent
 import io.github.ydwk.ydwk.interaction.message.ActionRow
 import io.github.ydwk.ydwk.interaction.message.button.Button
 import io.github.ydwk.ydwk.interaction.message.button.ButtonStyle
+import io.github.ydwk.ydwk.interaction.message.selectmenu.types.StringSelectMenu
+import io.github.ydwk.ydwk.interaction.message.selectmenu.types.string.StringSelectMenuOption
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -86,7 +89,13 @@ suspend fun main() {
             }
             "bot_info" -> {
                 withContext(Dispatchers.IO) {
-                    it.slash.reply("Bot info: ${it.slash.guild?.botAsMember?.joinedAt}").trigger()
+                    it.slash
+                        .reply("Bot info: ${it.slash.guild?.botAsMember?.joinedAt}")
+                        .addActionRow(
+                            ActionRow.invoke(
+                                StringSelectMenu.invoke(
+                                    "test", listOf(StringSelectMenuOption.invoke("1", "1")))))
+                        .trigger()
                 }
             }
             "channel" -> {
@@ -119,5 +128,9 @@ suspend fun main() {
                 }
             }
         }
+    }
+
+    ydwk.on<StringSelectMenuEvent> {
+        withContext(Dispatchers.IO) { it.selectMenu.reply("Selected: 1").trigger() }
     }
 }

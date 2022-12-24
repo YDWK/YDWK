@@ -24,10 +24,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.impl.interaction.ComponentInteractionImpl
 import io.github.ydwk.ydwk.impl.interaction.message.ComponentImpl
+import io.github.ydwk.ydwk.impl.interaction.message.selectmenu.types.StringSelectMenuImpl
 import io.github.ydwk.ydwk.interaction.message.Component
 import io.github.ydwk.ydwk.interaction.message.ComponentType
 import io.github.ydwk.ydwk.interaction.message.selectmenu.SelectMenu
-import io.github.ydwk.ydwk.interaction.message.selectmenu.types.string.StringSelectMenuOption
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 
 open class SelectMenuImpl(
@@ -66,7 +66,7 @@ open class SelectMenuImpl(
 
     data class StringSelectMenuCreator(
         val customId: String,
-        val options: List<StringSelectMenuOption>,
+        val options: List<StringSelectMenuImpl.StringSelectMenuOptionCreator>,
         val placeholder: String? = null,
         val minValues: Int? = null,
         val maxValues: Int? = null,

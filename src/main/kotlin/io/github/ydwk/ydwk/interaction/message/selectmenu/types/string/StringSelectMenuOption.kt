@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.interaction.message.selectmenu.types.string
 
 import io.github.ydwk.ydwk.entities.Emoji
 import io.github.ydwk.ydwk.entities.util.GenericEntity
+import io.github.ydwk.ydwk.impl.interaction.message.selectmenu.types.StringSelectMenuImpl
 
 interface StringSelectMenuOption : GenericEntity {
     /**
@@ -56,4 +57,27 @@ interface StringSelectMenuOption : GenericEntity {
      * @return whether the option is default
      */
     val default: Boolean
+
+    companion object {
+        /**
+         * Creates a new [StringSelectMenuOption] with the given [label] and [value].
+         *
+         * @param label the label of the option
+         * @param value the value of the option
+         * @param description the description of the option
+         * @param emoji the emoji of the option
+         * @param default whether the option is default
+         * @return the created [StringSelectMenuOption]
+         */
+        fun invoke(
+            label: String,
+            value: String,
+            description: String? = null,
+            emoji: Emoji? = null,
+            default: Boolean = false
+        ): StringSelectMenuImpl.StringSelectMenuOptionCreator {
+            return StringSelectMenuImpl.StringSelectMenuOptionCreator(
+                label, value, description, emoji, default)
+        }
+    }
 }
