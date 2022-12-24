@@ -117,9 +117,9 @@ interface GuildScheduledEvent : SnowFlake, GenericEntity, NameAbleEntity {
     val user: User?
 
     /**
-     * The number of users subscribed to the scheduled event
+     * The number of users subscribed to the scheduled event.
      *
-     * @return the number of users subscribed to the scheduled event
+     * @return the number of users subscribed to the scheduled event.
      */
     val subscriberCount: Int
 

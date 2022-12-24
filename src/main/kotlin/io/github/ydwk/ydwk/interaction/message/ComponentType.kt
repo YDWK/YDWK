@@ -31,7 +31,7 @@ enum class ComponentType(
     BUTTON(2, 5, true, false),
 
     /** A select menu for picking from choices */
-    SELECT_MENU(3, 1, true, false),
+    STRING_SELECT_MENU(3, 1, true, false),
 
     /** A text input object */
     TEXT_INPUT(4, 1, false, true),

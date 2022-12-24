@@ -25,48 +25,109 @@ import io.github.ydwk.ydwk.util.SnowFlake
 import java.net.URL
 
 interface Application : SnowFlake, NameAbleEntity, GenericEntity {
-    /** The icon hash of the application. */
+
+    /**
+     * The icon hash of the application.
+     *
+     * @return the icon hash of the application.
+     */
     var icon: String?
 
-    /** The description of the application. */
+    /**
+     * The description of the application.
+     *
+     * @return the description of the application.
+     */
     var description: String
 
-    /** An array of rpc origin urls, if rpc is enabled. */
+    /**
+     * An array of rpc origin urls, if rpc is enabled.
+     *
+     * @return an array of rpc origin urls, if rpc is enabled.
+     */
     var rpcOrigins: Array<String>?
 
-    /** If the bot can only be added by the bot owner. */
+    /**
+     * If the bot can only be added by the bot owner.
+     *
+     * @return true if the bot can only be added by the bot owner.
+     */
     var botPublic: Boolean
 
-    /** If the bot will only join upon completion of the full oauth2 code grant flow */
+    /**
+     * If the bot will only join upon completion of the full oauth2 code grant flow.
+     *
+     * @return true if the bot will only join upon completion of the full oauth2 code grant flow.
+     */
     var botRequireCodeGrant: Boolean
 
-    /** The bots terms of service. */
+    /**
+     * The bots terms of service.
+     *
+     * @return the bots terms of service.
+     */
     var botTermsOfService: URL?
 
-    /** The bots privacy policy. */
+    /**
+     * The bots privacy policy.
+     *
+     * @return the bots privacy policy.
+     */
     var botPrivacyPolicy: URL?
 
-    /** The owner of the bot. */
+    /**
+     * The owner of the bot.
+     *
+     * @return the owner of the bot.
+     */
     var botOwner: User?
 
-    /** The hex encoded key for verification in interactions and the GameSDK's GetTicket */
+    /**
+     * The hex encoded key for verification in interactions and the GameSDK's GetTicket.
+     *
+     * @return the hex encoded key for verification in interactions and the GameSDK's GetTicket.
+     */
     var verifyKey: String?
 
-    /** Getsd the guild this application is for. */
+    /**
+     * Gets the guild this application is for.
+     *
+     * @return the guild this application is for.
+     */
     var guild: Guild?
 
-    /** The game sdk id of the application. */
+    /**
+     * The game sdk id of the application.
+     *
+     * @return the game sdk id of the application.
+     */
     var gameSdkId: GetterSnowFlake?
 
-    /** The url of the slug for the application. */
+    /**
+     * The url of the slug for the application.
+     *
+     * @return the url of the slug for the application.
+     */
     var slug: String?
 
-    /** The cover image hash. */
+    /**
+     * The cover image hash of the application.
+     *
+     * @return the cover image hash of the application.
+     */
     var coverImage: String?
 
-    /** The application's public flags. */
+    /**
+     * The application's public flags.
+     *
+     * @return the application's public flags.
+     */
     var flags: Int?
 
-    /** The application's tags. */
+    /**
+     * The application's tags.
+     *
+     * @return the application's tags.
+     */
     var tags: Array<String>?
 }

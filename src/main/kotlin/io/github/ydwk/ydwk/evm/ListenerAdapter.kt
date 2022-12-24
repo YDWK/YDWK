@@ -43,6 +43,7 @@ import io.github.ydwk.ydwk.evm.event.events.guild.GuildDeleteEvent
 import io.github.ydwk.ydwk.evm.event.events.guild.update.*
 import io.github.ydwk.ydwk.evm.event.events.interaction.*
 import io.github.ydwk.ydwk.evm.event.events.interaction.button.ButtonClickEvent
+import io.github.ydwk.ydwk.evm.event.events.interaction.selectmenu.StringSelectMenuEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.slash.MessageCommandEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.slash.SlashCommandEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.slash.UserCommandEvent
@@ -127,6 +128,13 @@ abstract class ListenerAdapter : IEventListener {
      * @param event The ButtonClickEvent
      */
     open fun onButtonClick(event: ButtonClickEvent) {}
+
+    /**
+     * Listens to StringSelectMenuEvent
+     *
+     * @param event The StringSelectMenuEvent
+     */
+    open fun onStringSelectMenu(event: StringSelectMenuEvent) {}
 
     /**
      * Listens to Model Event

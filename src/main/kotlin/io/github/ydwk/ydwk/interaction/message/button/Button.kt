@@ -18,9 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.interaction.message.button
 
-import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Emoji
-import io.github.ydwk.ydwk.impl.interaction.ComponentInteractionImpl
 import io.github.ydwk.ydwk.impl.interaction.message.ComponentImpl
 import io.github.ydwk.ydwk.interaction.ComponentInteraction
 import io.github.ydwk.ydwk.interaction.reply.Repliable
@@ -75,13 +73,13 @@ interface Button : ComponentInteraction, Repliable {
         /**
          * Creates a new [Button] with the specified [style], [customId] and [label].
          *
-         * @param ydwk The [YDWK] instance.
          * @param style The style of the button.
          * @param customId The custom id of the button.
          * @param label The label of the button. (Max 80 characters)
-         * @return an empty [ComponentInteractionImpl.ComponentCreator].
+         * @return [ComponentImpl.ComponentCreator] which contains the json representation of the
+         *   button.
          */
-        fun of(
+        operator fun invoke(
             style: ButtonStyle,
             customId: String,
             label: String?
@@ -97,9 +95,10 @@ interface Button : ComponentInteraction, Repliable {
          *
          * @param label The label of the button. (Max 80 characters)
          * @param url The url of the button.
-         * @return an empty [ComponentInteractionImpl.ComponentCreator].
+         * @return [ComponentImpl.ComponentCreator] which contains the json representation of the
+         *   button.
          */
-        fun of(label: String?, url: String): ComponentImpl.ComponentCreator {
+        operator fun invoke(label: String?, url: String): ComponentImpl.ComponentCreator {
             Checks.customCheck(
                 label != null && label.length <= 80,
                 "Label must be between 1 and 80 characters long.")

@@ -16,20 +16,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities
+package io.github.ydwk.ydwk.evm.event.events.interaction.selectmenu
 
-import io.github.ydwk.ydwk.entities.util.GenericEntity
-import io.github.ydwk.ydwk.util.SnowFlake
+import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.event.Event
+import io.github.ydwk.ydwk.interaction.message.selectmenu.types.StringSelectMenu
 
 /**
- * Unavailable means that the guild data is currently not accessible. Discord knows it exists, but
- * the services can't access the data at the moment.
+ * The event that is triggered when a user selects a string select menu.
+ *
+ * @param ydwk the [YDWK] instance
+ * @param selectMenu the [StringSelectMenu] that is selected
  */
-interface UnavailableGuild : SnowFlake, GenericEntity {
-    /**
-     * Weather the guild is unavailable or not.
-     *
-     * @return true if the guild is unavailable.
-     */
-    var unavailable: Boolean
-}
+data class StringSelectMenuEvent(override val ydwk: YDWK, val selectMenu: StringSelectMenu) :
+    Event(ydwk)

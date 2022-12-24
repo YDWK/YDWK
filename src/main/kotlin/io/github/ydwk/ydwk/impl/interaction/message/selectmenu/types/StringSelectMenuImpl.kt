@@ -16,30 +16,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.impl.interaction.message.button
+package io.github.ydwk.ydwk.impl.interaction.message.selectmenu.types
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.node.JsonNodeFactory
+import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Emoji
 import io.github.ydwk.ydwk.entities.message.Embed
-import io.github.ydwk.ydwk.impl.entities.EmojiImpl
 import io.github.ydwk.ydwk.impl.interaction.ComponentInteractionImpl
 import io.github.ydwk.ydwk.impl.interaction.application.sub.ReplyImpl
+import io.github.ydwk.ydwk.impl.interaction.message.ComponentImpl
+import io.github.ydwk.ydwk.impl.interaction.message.selectmenu.SelectMenuImpl
+import io.github.ydwk.ydwk.impl.interaction.message.selectmenu.types.string.StringSelectMenuOptionImpl
 import io.github.ydwk.ydwk.interaction.application.sub.Reply
 import io.github.ydwk.ydwk.interaction.message.Component
-import io.github.ydwk.ydwk.interaction.message.ComponentType
-import io.github.ydwk.ydwk.interaction.message.button.Button
-import io.github.ydwk.ydwk.interaction.message.button.ButtonStyle
+import io.github.ydwk.ydwk.interaction.message.selectmenu.types.StringSelectMenu
+import io.github.ydwk.ydwk.interaction.message.selectmenu.types.string.StringSelectMenuOption
 import io.github.ydwk.ydwk.util.GetterSnowFlake
-import java.net.URL
 
-open class ButtonImpl(
+class StringSelectMenuImpl(
     ydwk: YDWK,
     json: JsonNode,
     interactionId: GetterSnowFlake,
-    val component: Component,
+    override val component: Component,
     private val componentJson: JsonNode
-) : Button, ComponentInteractionImpl(ydwk, json, interactionId) {
+) : StringSelectMenu, SelectMenuImpl(ydwk, json, interactionId, component, componentJson) {
 
     constructor(
         componentInteractionImpl: ComponentInteractionImpl,
@@ -51,11 +53,8 @@ open class ButtonImpl(
         component,
         component.json)
 
-    override val url: URL?
-        get() = if (componentJson.has("url")) URL(componentJson["url"].asText()) else null
-
-    override val disabled: Boolean
-        get() = componentJson["disabled"].asBoolean()
+    override val options: List<StringSelectMenuOption>
+        get() = componentJson["options"].map { StringSelectMenuOptionImpl(ydwk, it) }
 
     override fun reply(content: String): Reply {
         return ReplyImpl(ydwk, content, null, interactionId.asString, interactionToken)
@@ -65,17 +64,22 @@ open class ButtonImpl(
         return ReplyImpl(ydwk, null, embed, interactionId.asString, interactionToken)
     }
 
-    override val label: String?
-        get() = if (componentJson.has("label")) componentJson["label"].asText() else null
+    data class StringSelectMenuOptionCreator(
+        val label: String,
+        val value: String,
+        val description: String? = null,
+        val emoji: Emoji? = null,
+        val default: Boolean = false,
+        override val json: ObjectNode = JsonNodeFactory.instance.objectNode()
+    ) : StringSelectMenuCreator {
+        init {
+            json.put("label", label)
+            json.put("value", value)
+            if (description != null) json.put("description", description)
+            if (emoji != null) json.set<JsonNode>("emoji", emoji.json)
+            json.put("default", default)
+        }
+    }
 
-    override val customId: String?
-        get() = if (componentJson.has("custom_id")) componentJson["custom_id"].asText() else null
-
-    override val emoji: Emoji?
-        get() = if (componentJson.has("emoji")) EmojiImpl(ydwk, componentJson["emoji"]) else null
-
-    override val style: ButtonStyle
-        get() = ButtonStyle.fromInt(componentJson["style"].asInt())
-    override val type: ComponentType
-        get() = ComponentType.BUTTON
+    sealed interface StringSelectMenuCreator : ComponentImpl.ComponentCreator
 }
