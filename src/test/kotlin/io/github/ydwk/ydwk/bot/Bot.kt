@@ -31,14 +31,16 @@ import io.github.ydwk.ydwk.interaction.message.button.ButtonStyle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-fun main() {
+suspend fun main() {
     val ydwk =
         createDefaultBot(JConfigUtils.getString("token") ?: throw Exception("Token not found!"))
             .setActivity(Activity.playing("YDWK"))
             .setETFInsteadOfJson(true)
             .build()
 
-    ydwk.waitForReady.slashBuilder
+    ydwk
+        .awaitReady()
+        .slashBuilder
         .addSlashCommand(Slash("join_vc", "Joins a vc"))
         .addSlashCommand(Slash("create_dm", "Creates a dm channel"))
         .addSlashCommand("channel", "Creates a Channel")
