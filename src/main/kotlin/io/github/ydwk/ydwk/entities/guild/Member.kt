@@ -35,9 +35,9 @@ import java.util.concurrent.CompletableFuture
 interface Member : NameAbleEntity, GenericEntity, Sendeadble, SnowFlake, PermissionEntity {
 
     /**
-     * Gets thw member's Guild
+     * Gets thw member's Guild.
      *
-     * @return The member's Guild
+     * @return The member's Guild.
      */
     val guild: Guild
 

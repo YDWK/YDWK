@@ -70,9 +70,9 @@ interface Role : SnowFlake, GenericEntity, NameAbleEntity, PermissionEntity {
     var isManaged: Boolean
 
     /**
-     * Gets whether this role is mentionable
+     * Gets whether this role is mentionable.
      *
-     * @return Whether this role is mentionable
+     * @return Whether this role is mentionable.
      */
     var isMentionable: Boolean
 

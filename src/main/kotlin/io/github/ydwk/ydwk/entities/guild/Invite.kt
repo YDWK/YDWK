@@ -29,79 +29,79 @@ import java.time.ZonedDateTime
 interface Invite : GenericEntity {
 
     /**
-     * The invite code (unique ID)
+     * The invite code (unique ID).
      *
-     * @return the invite code
+     * @return the invite code.
      */
     val code: String
 
     /**
-     * The guild this invite is for
+     * The guild this invite is for.
      *
-     * @return the guild
+     * @return the guild.
      */
     val guild: Guild
 
     /**
-     * The channel this invite is for
+     * The channel this invite is for.
      *
-     * @return the channel
+     * @return the channel.
      */
     val channel: GuildChannel
 
     /**
-     * The inviter of the invite
+     * The inviter of the invite.
      *
-     * @return the inviter
+     * @return the inviter.
      */
     val inviter: User?
 
     /**
-     * The target type of the invite
+     * The target type of the invite.
      *
-     * @return the target type
+     * @return the target type.
      */
     val targetType: TargetType
 
     /**
-     * The target user of the invite
+     * The target user of the invite.
      *
-     * @return the target user
+     * @return the target user.
      */
     val targetUser: User?
 
     /**
-     * The target application of the invite
+     * The target application of the invite.
      *
-     * @return the target application
+     * @return the target application.
      */
     val targetApplication: Application?
 
     /**
-     * The approximate presence count of the invite
+     * The approximate presence count of the invite.
      *
-     * @return the approximate presence count
+     * @return the approximate presence count.
      */
     val approximatePresenceCount: Int
 
     /**
-     * The approximate number of members in the guild
+     * The approximate number of members in the guild.
      *
-     * @return the approximate number of members
+     * @return the approximate number of members.
      */
     val approximateMemberCount: Int
 
     /**
-     * The expiration date of the invite
+     * The expiration date of the invite.
      *
-     * @return the expiration date
+     * @return the expiration date.
      */
     val expirationDate: ZonedDateTime
 
     /**
-     * The guild scheduled event this invite is for
+     * The guild scheduled event this invite is for.
      *
-     * @return the guild scheduled event
+     * @return the guild scheduled event.
      */
     val guildScheduledEvent: GuildScheduledEvent
 }

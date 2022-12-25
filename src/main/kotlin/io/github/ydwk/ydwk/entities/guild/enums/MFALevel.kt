@@ -19,13 +19,13 @@
 package io.github.ydwk.ydwk.entities.guild.enums
 
 enum class MFALevel(private val value: Int) {
-    /** Guild has no MFA/2FA requirement for moderation actions */
+    /** Guild has no MFA/2FA requirement for moderation actions. */
     NONE(0),
 
-    /** Guild has a 2FA requirement for moderation actions */
+    /** Guild has a 2FA requirement for moderation actions. */
     ELEVATED(1),
 
-    /** An unknown MFA level was returned */
+    /** An unknown MFA level was returned. */
     UNKNOWN(-1);
 
     companion object {
@@ -41,7 +41,7 @@ enum class MFALevel(private val value: Int) {
     }
 
     /**
-     * The value of the [MFALevel]
+     * The value of the [MFALevel].
      *
      * @return The value of the [MFALevel].
      */

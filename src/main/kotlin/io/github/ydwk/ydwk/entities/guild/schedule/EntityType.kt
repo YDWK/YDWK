@@ -19,21 +19,21 @@
 package io.github.ydwk.ydwk.entities.guild.schedule
 
 enum class EntityType(private val value: Int) {
-    /** The scheduled event is a stage instance */
+    /** The scheduled event is a stage instance. */
     STAGE_INSTANCE(1),
 
-    /** The scheduled event is a voice channel */
+    /** The scheduled event is a voice channel. */
     VOICE(2),
 
-    /** The scheduled event is a stage instance */
+    /** The scheduled event is a stage instance. */
     EXTERNAL(3);
 
     companion object {
         /**
-         * The entity type from the value
+         * The entity type from the value.
          *
-         * @param value the value
-         * @return the entity type
+         * @param value the value.
+         * @return the entity type.
          */
         fun getValue(value: Int): EntityType {
             return values().first { it.value == value }
@@ -41,9 +41,9 @@ enum class EntityType(private val value: Int) {
     }
 
     /**
-     * The value of the entity type
+     * The value of the entity type.
      *
-     * @return the value of the entity type
+     * @return the value of the entity type.
      */
     fun getValue(): Int {
         return value

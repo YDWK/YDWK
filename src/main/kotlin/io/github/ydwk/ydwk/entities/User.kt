@@ -30,40 +30,90 @@ import java.util.concurrent.CompletableFuture
 import okhttp3.RequestBody.Companion.toRequestBody
 
 interface User : SnowFlake, GenericEntity, NameAbleEntity, Sendeadble {
-    /** The user's 4-digit discord-tag */
+    /**
+     * The user's 4-digit discord-tag.
+     *
+     * @return the user's 4-digit discord-tag.
+     */
     var discriminator: String
 
-    /** The user's avatar hash */
+    /**
+     * The user's avatar hash.
+     *
+     * @return the user's avatar hash.
+     */
     var avatar: String
 
-    /** Whether the user belongs to an OAuth2 application */
+    /**
+     * Whether the user belongs to an OAuth2 application.
+     *
+     * @return whether the user belongs to an OAuth2 application
+     */
     val bot: Boolean?
 
-    /** Whether the user is an Official Discord System user (part of the urgent message system) */
+    /**
+     * Whether the user is an Official Discord System user (part of the urgent message system).
+     *
+     * @return whether the user is an Official Discord System user (part of the urgent message
+     *   system).
+     */
     var system: Boolean?
 
-    /** Whether the user has two factor enabled on their account */
+    /**
+     * Whether the user has two factor enabled on their account.
+     *
+     * @return whether the user has two factor enabled on their account.
+     */
     var mfaEnabled: Boolean?
 
-    /** The user's banner hash */
+    /**
+     * The user's banner hash.
+     *
+     * @return the user's banner hash.
+     */
     var banner: String?
 
-    /** The user's banner color encoded as an integer representation of hexadecimal color code */
+    /**
+     * The user's banner color encoded as an integer representation of hexadecimal color code.
+     *
+     * @return the user's banner color encoded as an integer representation of hexadecimal color
+     *   code.
+     */
     var accentColor: Color?
 
-    /** The user's chosen language option */
+    /**
+     * The user's chosen language option.
+     *
+     * @return the user's chosen language option.
+     */
     var locale: String?
 
-    /** Whether the email on this account has been verified */
+    /**
+     * Whether the email on this account has been verified.
+     *
+     * @return whether the email on this account has been verified.
+     */
     var verified: Boolean?
 
-    /** The flags on a user's account */
+    /**
+     * The flags on a user's account.
+     *
+     * @return the flags on a user's account.
+     */
     var flags: Int?
 
-    /** The public flags on a user's account */
+    /**
+     * The public flags on a user's account.
+     *
+     * @return the public flags on a user's account.
+     */
     var publicFlags: Int?
 
-    /** Creates a dm channel with this user. */
+    /**
+     * Creates a dm channel with this user.
+     *
+     * @return a dm channel with this user.
+     */
     val createDmChannel: CompletableFuture<DmChannel>
         get() {
             return ydwk.restApiManager

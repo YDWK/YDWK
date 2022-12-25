@@ -19,13 +19,13 @@
 package io.github.ydwk.ydwk.entities.sticker
 
 enum class StickerType(private val value: Int) {
-    /** An official sticker in a pack, part of Nitro or in a removed purchasable pack */
+    /** An official sticker in a pack, part of Nitro or in a removed purchasable pack. */
     STANDARD(1),
 
-    /** A sticker uploaded to a guild for the guild's members */
+    /** A sticker uploaded to a guild for the guild's members. */
     GUILD(2),
 
-    /** An unknown sticker type */
+    /** An unknown sticker type. */
     UNKNOWN(-1);
 
     companion object {

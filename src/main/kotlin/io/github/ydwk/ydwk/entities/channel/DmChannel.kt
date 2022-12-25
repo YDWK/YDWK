@@ -26,23 +26,23 @@ import java.util.concurrent.CompletableFuture
 
 interface DmChannel : TextChannel {
     /**
-     * The channel's last message id
+     * The channel's last message id.
      *
-     * @return the channel's last message id
+     * @return the channel's last message id.
      */
     var lastMessageId: GetterSnowFlake?
 
     /**
-     * The recipient of the dm
+     * The recipient of the dm.
      *
-     * @return the recipient of the dm
+     * @return the recipient of the dm.
      */
     var recipient: User?
 
     /**
-     * Retrieves the recipient of the dm
+     * Retrieves the recipient of the dm.
      *
-     * @return the recipient of the dm
+     * @return the recipient of the dm.
      */
     val retrieveRecipient: CompletableFuture<User>
         get() {

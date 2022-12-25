@@ -25,9 +25,9 @@ import io.github.ydwk.ydwk.util.SnowFlake
 
 interface Channel : SnowFlake, GenericEntity {
     /**
-     * Get the channel type
+     * Get the channel type.
      *
-     * @return the channel type
+     * @return the channel type.
      */
     val type: ChannelType
 

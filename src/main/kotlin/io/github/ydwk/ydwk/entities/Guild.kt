@@ -49,274 +49,274 @@ import okhttp3.RequestBody.Companion.toRequestBody
 /** This class is used to represent a discord guild object. */
 interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     /**
-     * The guild's icon hash
+     * The guild's icon hash.
      *
-     * @return the guild's icon hash
+     * @return the guild's icon hash.
      */
     var icon: String?
 
     /**
-     * The guild's splash hash
+     * The guild's splash hash.
      *
-     * @return the guild's splash hash
+     * @return the guild's splash hash.
      */
     var splash: String?
 
     /**
-     * The guild's discovery splash hash
+     * The guild's discovery splash hash.
      *
-     * @return the guild's discovery splash hash
+     * @return the guild's discovery splash hash.
      */
     var discoverySplash: String?
 
     /**
-     * Checks if this is user is owner of the guild
+     * Checks if this is user is owner of the guild.
      *
-     * @return true if the user is owner of the guild
+     * @return true if the user is owner of the guild.
      */
     var isOwner: Boolean?
 
     /**
-     * The guild's owner id
+     * The guild's owner id.
      *
-     * @return the guild's owner id
+     * @return the guild's owner id.
      */
     var ownerId: GetterSnowFlake
 
     /**
-     * The guild's permissions
+     * The guild's permissions.
      *
-     * @return the guild's permissions
+     * @return the guild's permissions.
      */
     var permissions: String?
 
     /**
-     * The guild's afk channel id
+     * The guild's afk channel id.
      *
-     * @return the guild's afk channel id
+     * @return the guild's afk channel id.
      */
     var afkChannelId: GetterSnowFlake?
 
     /**
-     * The guild's afk timeout
+     * The guild's afk timeout.
      *
-     * @return the guild's afk timeout
+     * @return the guild's afk timeout.
      */
     var afkTimeout: Int
 
     /**
-     * Checks if the guild's widget is enabled
+     * Checks if the guild's widget is enabled.
      *
      * @return true if the guild's widget is enabled
      */
     var isWidgetEnabled: Boolean?
 
     /**
-     * The guild's widget channel id
+     * The guild's widget channel id.
      *
-     * @return the guild's widget channel id
+     * @return the guild's widget channel id.
      */
     var widgetChannelId: GetterSnowFlake?
 
     /**
-     * The guild's verification level
+     * The guild's verification level.
      *
-     * @return the guild's verification level
+     * @return the guild's verification level.
      */
     var verificationLevel: VerificationLevel
 
     /**
-     * The guild's default message notification level
+     * The guild's default message notification level.
      *
-     * @return the guild's default message notification level
+     * @return the guild's default message notification level.
      */
     var defaultMessageNotificationsLevel: MessageNotificationLevel
 
     /**
-     * The guild's explicit content filter level
+     * The guild's explicit content filter level.
      *
-     * @return the guild's explicit content filter level
+     * @return the guild's explicit content filter level.
      */
     var explicitContentFilterLevel: ExplicitContentFilterLevel
 
     /**
-     * The guild's roles
+     * The guild's roles.
      *
-     * @return the guild's roles
+     * @return the guild's roles.
      */
     var roles: List<Role>
 
     /**
-     * The guild's emojis
+     * The guild's emojis.
      *
-     * @return the guild's emojis
+     * @return the guild's emojis.
      */
     var emojis: List<Emoji>
 
     /**
-     * The guild's features
+     * The guild's features.
      *
-     * @return the guild's features
+     * @return the guild's features.
      */
     var features: Set<GuildFeature>
 
     /**
-     * The guild's mfa level
+     * The guild's mfa level.
      *
-     * @return the guild's mfa level
+     * @return the guild's mfa level.
      */
     var mfaLevel: MFALevel
 
     /**
-     * The guild's application id
+     * The guild's application id.
      *
-     * @return the guild's application id
+     * @return the guild's application id.
      */
     var applicationId: GetterSnowFlake?
 
     /**
-     * The guild's system channel id
+     * The guild's system channel id.
      *
-     * @return the guild's system channel id
+     * @return the guild's system channel id.
      */
     var systemChannelId: GetterSnowFlake?
 
     /**
-     * The guild's system channel flags
+     * The guild's system channel flags.
      *
-     * @return the guild's system channel flags
+     * @return the guild's system channel flags.
      */
     var systemChannelFlags: SystemChannelFlag
 
     /**
-     * The guild's rules channel id
+     * The guild's rules channel id.
      *
-     * @return the guild's rules channel id
+     * @return the guild's rules channel id.
      */
     var rulesChannelId: GetterSnowFlake?
 
     /**
      * The maximum number of presences for the guild (null is always returned, apart from the
-     * largest of guilds)
+     * largest of guilds).
      *
-     * @return the maximum number of presences for the guild
+     * @return the maximum number of presences for the guild.
      */
     var maxPresences: Int?
 
     /**
-     * The maximum number of members for the guild
+     * The maximum number of members for the guild.
      *
-     * @return the maximum number of members for the guild
+     * @return the maximum number of members for the guild.
      */
     var maxMembers: Int
 
     /**
-     * The vanity url code for the guild
+     * The vanity url code for the guild.
      *
-     * @return the vanity url code for the guild
+     * @return the vanity url code for the guild.
      */
     var vanityUrlCode: String?
 
     /**
-     * The description for the guild
+     * The description for the guild.
      *
-     * @return the description for the guild
+     * @return the description for the guild.
      */
     var description: String?
 
     /**
-     * The banner hash for the guild
+     * The banner hash for the guild.
      *
-     * @return the banner hash for the guild
+     * @return the banner hash for the guild.
      */
     var banner: String?
 
     /**
-     * The premium tier for the guild
+     * The premium tier for the guild.
      *
-     * @return the premium tier for the guild
+     * @return the premium tier for the guild.
      */
     var premiumTier: PremiumTier
 
     /**
-     * The premium subscription count for the guild
+     * The premium subscription count for the guild.
      *
-     * @return the premium subscription count for the guild
+     * @return the premium subscription count for the guild.
      */
     var premiumSubscriptionCount: Int
 
     /**
-     * The preferred locale for the guild
+     * The preferred locale for the guild.
      *
-     * @return the preferred locale for the guild
+     * @return the preferred locale for the guild.
      */
     var preferredLocale: String
 
     /**
-     * The public updates channel id for the guild
+     * The public updates channel id for the guild.
      *
-     * @return the public updates channel id for the guild
+     * @return the public updates channel id for the guild.
      */
     var publicUpdatesChannelId: GetterSnowFlake?
 
     /**
-     * The maximum amount of users in a video channel
+     * The maximum amount of users in a video channel.
      *
-     * @return the maximum amount of users in a video channel
+     * @return the maximum amount of users in a video channel.
      */
     var maxVideoChannelUsers: Int?
 
     /**
-     * The approximate member count for the guild
+     * The approximate member count for the guild.
      *
-     * @return the approximate member count for the guild
+     * @return the approximate member count for the guild.
      */
     var approximateMemberCount: Int?
 
     /**
-     * The approximate presence count for the guild
+     * The approximate presence count for the guild.
      *
-     * @return the approximate presence count for the guild
+     * @return the approximate presence count for the guild.
      */
     var approximatePresenceCount: Int?
 
     /**
-     * The welcome screen of the guild
+     * The welcome screen of the guild.
      *
-     * @return the welcome screen of the guild
+     * @return the welcome screen of the guild.
      */
     var welcomeScreen: WelcomeScreen?
 
     /**
-     * The guild's nsfw level
+     * The guild's nsfw level.
      *
-     * @return the guild's nsfw level
+     * @return the guild's nsfw level.
      */
     var nsfwLevel: NSFWLeveL
 
     /**
-     * The guild's custom stickers
+     * The guild's custom stickers.
      *
-     * @return the guild's custom stickers
+     * @return the guild's custom stickers.
      */
     var stickers: List<Sticker>
 
     /**
-     * Gets weather the guild has the boost progress bar enabled
+     * Gets weather the guild has the boost progress bar enabled.
      *
-     * @return weather the guild has the boost progress bar enabled
+     * @return weather the guild has the boost progress bar enabled.
      */
     var isBoostProgressBarEnabled: Boolean
 
     /**
-     * Requests a list of ban's for the guild
+     * Requests a list of ban's for the guild.
      *
-     * @return a list of ban's for the guild
+     * @return a list of ban's for the guild.
      */
     val requestBans: CompletableFuture<List<Ban>>
 
     /**
-     * Creates a dm channel.
+     * Creates a dm channel..
      *
      * @param userId The id of the user.
      * @return The [DmChannel] object.

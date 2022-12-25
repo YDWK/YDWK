@@ -33,7 +33,7 @@ enum class StickerFormatType(private val value: Int) {
 
     companion object {
         /**
-         * Get the [StickerFormatType] from the given [value]
+         * Get the [StickerFormatType] from the given [value].
          *
          * @param value The value to get the [StickerFormatType] from.
          * @return The [StickerFormatType] from the given [value].

@@ -19,15 +19,15 @@
 package io.github.ydwk.ydwk.entities.guild.schedule
 
 enum class PrivacyLevel(private val value: Int) {
-    /** The scheduled event is private and not available in discovery */
+    /** The scheduled event is private and not available in discovery. */
     GUILD_ONLY(2);
 
     companion object {
         /**
-         * The privacy level from the value
+         * The privacy level from the value.
          *
-         * @param value the value
-         * @return the privacy level
+         * @param value the value.
+         * @return the privacy level.
          */
         fun getValue(value: Int): PrivacyLevel {
             return values().first { it.value == value }
@@ -35,9 +35,9 @@ enum class PrivacyLevel(private val value: Int) {
     }
 
     /**
-     * The value of the privacy level
+     * The value of the privacy level.
      *
-     * @return the value of the privacy level
+     * @return the value of the privacy level.
      */
     fun getValue(): Int {
         return value

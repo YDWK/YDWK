@@ -33,86 +33,86 @@ import java.time.ZonedDateTime
 
 interface GuildScheduledEvent : SnowFlake, GenericEntity, NameAbleEntity {
     /**
-     * The guild which the scheduled event belongs to
+     * The guild which the scheduled event belongs to.
      *
-     * @return the guild which the scheduled event belongs to
+     * @return the guild which the scheduled event belongs to.
      */
     val guild: Guild
 
     /**
-     * The channel which the scheduled event belongs to
+     * The channel which the scheduled event belongs to.
      *
-     * @return the channel which the scheduled event belongs to
+     * @return the channel which the scheduled event belongs to.
      */
     val channel: GuildChannel?
 
     /**
-     * The user which created the scheduled event
+     * The user which created the scheduled event.
      *
-     * @return the user which created the scheduled event
+     * @return the user which created the scheduled event.
      */
     val creator: User?
 
     /**
-     * The description of the scheduled event
+     * The description of the scheduled event.
      *
-     * @return the description of the scheduled event
+     * @return the description of the scheduled event.
      */
     val description: String?
 
     /**
-     * The Scheduled start time of the scheduled event
+     * The Scheduled start time of the scheduled event.
      *
-     * @return the Scheduled start time of the scheduled event
+     * @return the Scheduled start time of the scheduled event.
      */
     val scheduledStart: ZonedDateTime
 
     /**
-     * The Scheduled end time of the scheduled event
+     * The Scheduled end time of the scheduled event.
      *
-     * @return the Scheduled end time of the scheduled event
+     * @return the Scheduled end time of the scheduled event.
      */
     val scheduledEnd: ZonedDateTime?
 
     /**
-     * The privacy level of the scheduled event
+     * The privacy level of the scheduled event.
      *
-     * @return the privacy level of the scheduled event
+     * @return the privacy level of the scheduled event.
      */
     val privacyLevel: PrivacyLevel
 
     /**
-     * The status of the scheduled event
+     * The status of the scheduled event.
      *
-     * @return the status of the scheduled event
+     * @return the status of the scheduled event.
      */
     val status: ScheduledEventStatus
 
     /**
-     * The entity type of the scheduled event
+     * The entity type of the scheduled event.
      *
-     * @return the entity type of the scheduled event
+     * @return the entity type of the scheduled event.
      */
     val entityType: EntityType
 
     /**
-     * The entity id of the scheduled event
+     * The entity id of the scheduled event.
      *
-     * @return the entity id of the scheduled event
+     * @return the entity id of the scheduled event.
      */
     val entityId: GetterSnowFlake?
 
     /**
-     * The entity metadata of the scheduled event
+     * The entity metadata of the scheduled event.
      *
-     * @return the entity metadata of the scheduled event
+     * @return the entity metadata of the scheduled event.
      */
     val entityMetadata: EntityMetadata?
 
     /**
-     * The user that created the scheduled event
+     * The user that created the scheduled event.
      *
-     * @return the user that created the scheduled event
+     * @return the user that created the scheduled event.
      */
     val user: User?
 
@@ -124,9 +124,9 @@ interface GuildScheduledEvent : SnowFlake, GenericEntity, NameAbleEntity {
     val subscriberCount: Int
 
     /**
-     * The cover image hash of the scheduled event
+     * The cover image hash of the scheduled event.
      *
-     * @return the cover image hash of the scheduled event
+     * @return the cover image hash of the scheduled event.
      */
     val coverImage: String?
 }
