@@ -22,10 +22,9 @@ import io.github.ydwk.ydwk.impl.interaction.message.selectmenu.SelectMenuImpl
 import io.github.ydwk.ydwk.impl.interaction.message.selectmenu.types.StringSelectMenuImpl
 import io.github.ydwk.ydwk.interaction.message.selectmenu.SelectMenu
 import io.github.ydwk.ydwk.interaction.message.selectmenu.types.string.StringSelectMenuOption
-import io.github.ydwk.ydwk.interaction.reply.Repliable
 import io.github.ydwk.ydwk.util.Checks
 
-interface StringSelectMenu : SelectMenu, Repliable {
+interface StringSelectMenu : SelectMenu {
     /**
      * The options of the select menu.
      *

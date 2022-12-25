@@ -23,6 +23,7 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Emoji
 import io.github.ydwk.ydwk.entities.message.Embed
 import io.github.ydwk.ydwk.impl.entities.EmojiImpl
+import io.github.ydwk.ydwk.impl.entities.MessageImpl
 import io.github.ydwk.ydwk.impl.interaction.ComponentInteractionImpl
 import io.github.ydwk.ydwk.impl.interaction.application.sub.ReplyImpl
 import io.github.ydwk.ydwk.interaction.application.sub.Reply
@@ -37,9 +38,9 @@ open class ButtonImpl(
     ydwk: YDWK,
     json: JsonNode,
     interactionId: GetterSnowFlake,
-    val component: Component,
-    private val componentJson: JsonNode
 ) : Button, ComponentInteractionImpl(ydwk, json, interactionId) {
+    private val componentJson: JsonNode =
+        MessageImpl(ydwk, json["message"], json["message"]["id"].asLong()).json
 
     constructor(
         componentInteractionImpl: ComponentInteractionImpl,
@@ -47,9 +48,7 @@ open class ButtonImpl(
     ) : this(
         componentInteractionImpl.ydwk,
         componentInteractionImpl.json,
-        componentInteractionImpl.interactionId,
-        component,
-        component.json)
+        componentInteractionImpl.interactionId)
 
     override val url: URL?
         get() = if (componentJson.has("url")) URL(componentJson["url"].asText()) else null
@@ -76,6 +75,7 @@ open class ButtonImpl(
 
     override val style: ButtonStyle
         get() = ButtonStyle.fromInt(componentJson["style"].asInt())
+
     override val type: ComponentType
         get() = ComponentType.BUTTON
 }

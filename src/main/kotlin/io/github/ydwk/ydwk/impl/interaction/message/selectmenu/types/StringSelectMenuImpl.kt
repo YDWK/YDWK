@@ -23,13 +23,10 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Emoji
-import io.github.ydwk.ydwk.entities.message.Embed
 import io.github.ydwk.ydwk.impl.interaction.ComponentInteractionImpl
-import io.github.ydwk.ydwk.impl.interaction.application.sub.ReplyImpl
 import io.github.ydwk.ydwk.impl.interaction.message.ComponentImpl
 import io.github.ydwk.ydwk.impl.interaction.message.selectmenu.SelectMenuImpl
 import io.github.ydwk.ydwk.impl.interaction.message.selectmenu.types.string.StringSelectMenuOptionImpl
-import io.github.ydwk.ydwk.interaction.application.sub.Reply
 import io.github.ydwk.ydwk.interaction.message.Component
 import io.github.ydwk.ydwk.interaction.message.selectmenu.types.StringSelectMenu
 import io.github.ydwk.ydwk.interaction.message.selectmenu.types.string.StringSelectMenuOption
@@ -39,30 +36,17 @@ class StringSelectMenuImpl(
     ydwk: YDWK,
     json: JsonNode,
     interactionId: GetterSnowFlake,
-    override val component: Component,
-    private val componentJson: JsonNode
-) : StringSelectMenu, SelectMenuImpl(ydwk, json, interactionId, component, componentJson) {
-
+) : StringSelectMenu, SelectMenuImpl(ydwk, json, interactionId) {
     constructor(
         componentInteractionImpl: ComponentInteractionImpl,
         component: Component
     ) : this(
         componentInteractionImpl.ydwk,
         componentInteractionImpl.json,
-        componentInteractionImpl.interactionId,
-        component,
-        component.json)
+        componentInteractionImpl.interactionId)
 
     override val options: List<StringSelectMenuOption>
         get() = componentJson["options"].map { StringSelectMenuOptionImpl(ydwk, it) }
-
-    override fun reply(content: String): Reply {
-        return ReplyImpl(ydwk, content, null, interactionId.asString, interactionToken)
-    }
-
-    override fun reply(embed: Embed): Reply {
-        return ReplyImpl(ydwk, null, embed, interactionId.asString, interactionToken)
-    }
 
     data class StringSelectMenuOptionCreator(
         val label: String,
