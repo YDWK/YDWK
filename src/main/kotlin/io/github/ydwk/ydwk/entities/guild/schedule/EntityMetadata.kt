@@ -25,23 +25,24 @@ import io.github.ydwk.ydwk.util.GetterSnowFlake
 
 interface EntityMetadata : GenericEntity {
     /**
-     * The scheduled event id which the user subscribed to
+     * The scheduled event id which the user subscribed to.
      *
-     * @return the scheduled event id which the user subscribed to
+     * @return the scheduled event id which the user subscribed to.
      */
     val scheduledEventId: GetterSnowFlake
 
     /**
-     * The user which subscribed to an event
+     * The user which subscribed to an event.
      *
-     * @return the user which subscribed to an event
+     * @return the user which subscribed to an event.
      */
     val user: User
 
     /**
-     * The guild member data for this user for the guild which this event belongs to, if any
+     * The guild member data for this user for the guild which this event belongs to, if any.
      *
-     * @return the guild member data for this user for the guild which this event belongs to, if any
+     * @return the guild member data for this user for the guild which this event belongs to, if
+     *   any.
      */
     val member: Member?
 }

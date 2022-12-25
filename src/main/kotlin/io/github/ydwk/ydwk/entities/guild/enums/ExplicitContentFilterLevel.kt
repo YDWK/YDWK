@@ -19,16 +19,16 @@
 package io.github.ydwk.ydwk.entities.guild.enums
 
 enum class ExplicitContentFilterLevel(private val value: Int) {
-    /** Media content will not be scanned */
+    /** Media content will not be scanned. */
     DISABLED(0),
 
-    /** Media content sent by members without roles will be scanned */
+    /** Media content sent by members without roles will be scanned. */
     MEMBERS_WITHOUT_ROLES(1),
 
-    /** Media content sent by all members will be scanned */
+    /** Media content sent by all members will be scanned. */
     ALL_MEMBERS(2),
 
-    /** An unknown explicit content filter level */
+    /** An unknown explicit content filter level. */
     UNKNOWN(-1);
 
     companion object {
@@ -44,7 +44,7 @@ enum class ExplicitContentFilterLevel(private val value: Int) {
     }
 
     /**
-     * The value of the [ExplicitContentFilterLevel]
+     * The value of the [ExplicitContentFilterLevel].
      *
      * @return The value of the [ExplicitContentFilterLevel].
      */

@@ -16,23 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.entities.guild
+package io.github.ydwk.ydwk.exceptions
 
-import io.github.ydwk.ydwk.entities.User
-import io.github.ydwk.ydwk.entities.util.GenericEntity
-
-interface Ban : GenericEntity {
-    /**
-     * The reason for the ban.
-     *
-     * @return The reason for the ban.
-     */
-    val reason: String?
-
-    /**
-     * The user who was banned.
-     *
-     * @return The user who was banned.
-     */
-    val user: User
-}
+class ApplicationIdNotSetException :
+    RuntimeException("Application Id is null, please re run the application")

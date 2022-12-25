@@ -42,6 +42,7 @@ import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
 import io.github.ydwk.ydwk.evm.backend.event.IEventListener
 import io.github.ydwk.ydwk.evm.backend.managers.CoroutineEventManager
 import io.github.ydwk.ydwk.evm.backend.managers.SampleEventManager
+import io.github.ydwk.ydwk.exceptions.ApplicationIdNotSetException
 import io.github.ydwk.ydwk.impl.builders.message.IMessageCommandBuilderImpl
 import io.github.ydwk.ydwk.impl.builders.slash.SlashBuilderImpl
 import io.github.ydwk.ydwk.impl.builders.user.IUserCommandBuilderImpl
@@ -197,22 +198,16 @@ class YDWKImpl(
     override val slashBuilder: SlashBuilder
         get() =
             SlashBuilderImpl(
-                this,
-                guildIdList,
-                applicationId ?: throw IllegalStateException("Application ID is not set"))
+                this, guildIdList, applicationId ?: throw ApplicationIdNotSetException())
     override val userCommandBuilder: IUserCommandBuilder
         get() =
             IUserCommandBuilderImpl(
-                this,
-                guildIdList,
-                applicationId ?: throw IllegalStateException("Application ID is not set"))
+                this, guildIdList, applicationId ?: throw ApplicationIdNotSetException())
 
     override val messageCommandBuilder: IMessageCommandBuilder
         get() =
             IMessageCommandBuilderImpl(
-                this,
-                guildIdList,
-                applicationId ?: throw IllegalStateException("Application ID is not set"))
+                this, guildIdList, applicationId ?: throw ApplicationIdNotSetException())
 
     override fun setGuildIds(vararg guildIds: String) {
         guildIds.forEach { this.guildIdList.add(it) }

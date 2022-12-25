@@ -42,9 +42,9 @@ interface Sticker : GenericEntity, SnowFlake, NameAbleEntity {
     var description: String?
 
     /**
-     * The autocomplete/suggestion tags for the sticker (max 200 characters)
+     * The autocomplete/suggestion tags for the sticker (max 200 characters).
      *
-     * @return The autocomplete/suggestion tags for the sticker (max 200 characters)
+     * @return The autocomplete/suggestion tags for the sticker (max 200 characters).
      */
     var tags: List<String>
 
@@ -84,7 +84,7 @@ interface Sticker : GenericEntity, SnowFlake, NameAbleEntity {
     var user: User?
 
     /**
-     * The standard sticker's sort order within its pack
+     * The standard sticker's sort order within its pack.
      *
      * @return The standard sticker's sort order within its pack
      */

@@ -24,16 +24,16 @@ import io.github.ydwk.ydwk.entities.util.GenericEntity
 /** This class is used to represent a guild welcome screen object. */
 interface WelcomeScreen : GenericEntity {
     /**
-     * The description of the Welcome Screen, if the guild has it enabled
+     * The description of the Welcome Screen, if the guild has it enabled.
      *
-     * @return The description of the Welcome Screen, if the guild has it enabled
+     * @return The description of the Welcome Screen, if the guild has it enabled.
      */
     var description: String?
 
     /**
-     * The channels shown in the Welcome Screen, if the guild has it enabled
+     * The channels shown in the Welcome Screen, if the guild has it enabled.
      *
-     * @return The channels shown in the Welcome Screen, if the guild has it enabled
+     * @return The channels shown in the Welcome Screen, if the guild has it enabled.
      */
     var welcomeChannels: List<WelcomeChannel>
 }

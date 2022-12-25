@@ -24,10 +24,10 @@ enum class TargetType(private val value: Int) {
 
     companion object {
         /**
-         * The [TargetType] by its value
+         * The [TargetType] by its value.
          *
-         * @param value the value
-         * @return the [TargetType]
+         * @param value the value.
+         * @return the [TargetType].
          */
         fun fromValue(value: Int): TargetType {
             return values().first { it.value == value }
@@ -35,9 +35,9 @@ enum class TargetType(private val value: Int) {
     }
 
     /**
-     * The value of the [TargetType]
+     * The value of the [TargetType].
      *
-     * @return the value
+     * @return the value.
      */
     fun getValue(): Int {
         return value
