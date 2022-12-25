@@ -19,11 +19,11 @@
 package io.github.ydwk.ydwk.evm.handler.handlers.interactions
 
 import io.github.ydwk.ydwk.evm.event.events.interaction.button.ButtonClickEvent
-import io.github.ydwk.ydwk.evm.event.events.interaction.selectmenu.StringSelectMenuEvent
+import io.github.ydwk.ydwk.evm.event.events.interaction.selectmenu.*
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.interaction.ComponentInteractionImpl
 import io.github.ydwk.ydwk.impl.interaction.message.button.ButtonImpl
-import io.github.ydwk.ydwk.impl.interaction.message.selectmenu.types.StringSelectMenuImpl
+import io.github.ydwk.ydwk.impl.interaction.message.selectmenu.types.*
 import io.github.ydwk.ydwk.interaction.message.ComponentType
 
 class MessageComponentHandler(
@@ -52,12 +52,35 @@ class MessageComponentHandler(
                                         ydwk, StringSelectMenuImpl(interactionComponent, children)))
                             }
                         }
-                        ComponentType.TEXT_INPUT -> TODO("Do something similar to buttons")
-                        ComponentType.USER_SELECT_MENU -> TODO("Do something similar to buttons")
-                        ComponentType.ROLE_SELECT_MENU -> TODO("Do something similar to buttons")
+                        ComponentType.USER_SELECT_MENU -> {
+                            if (customId == children.customId) {
+                                ydwk.emitEvent(
+                                    UserSelectMenuEvent(
+                                        ydwk, UserSelectMenuImpl(interactionComponent, children)))
+                            }
+                        }
+                        ComponentType.ROLE_SELECT_MENU -> {
+                            if (customId == children.customId) {
+                                ydwk.emitEvent(
+                                    RoleSelectMenuEvent(
+                                        ydwk, RoleSelectMenuImpl(interactionComponent, children)))
+                            }
+                        }
                         ComponentType.MENTIONABLE_SELECT_MENU ->
-                            TODO("Do something similar to buttons")
-                        ComponentType.CHANNEL_SELECT_MENU -> TODO("Do something similar to buttons")
+                            if (customId == children.customId) {
+                                ydwk.emitEvent(
+                                    MemberSelectMenuEvent(
+                                        ydwk, MemberSelectMenuImpl(interactionComponent, children)))
+                            }
+                        ComponentType.CHANNEL_SELECT_MENU -> {
+                            if (customId == children.customId) {
+                                ydwk.emitEvent(
+                                    ChannelSelectMenuEvent(
+                                        ydwk,
+                                        ChannelSelectMenuImpl(interactionComponent, children)))
+                            }
+                        }
+                        ComponentType.TEXT_INPUT -> TODO("Do something similar to buttons")
                         ComponentType.UNKNOWN -> TODO("Do something similar to buttons")
                         else -> {
                             // if action row, do nothing else warn

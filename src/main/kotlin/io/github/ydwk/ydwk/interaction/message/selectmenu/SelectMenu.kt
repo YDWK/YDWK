@@ -20,9 +20,10 @@ package io.github.ydwk.ydwk.interaction.message.selectmenu
 
 import io.github.ydwk.ydwk.interaction.ComponentInteraction
 import io.github.ydwk.ydwk.interaction.message.ComponentType
+import io.github.ydwk.ydwk.interaction.reply.Repliable
 import java.util.EnumSet
 
-interface SelectMenu : ComponentInteraction {
+interface SelectMenu : ComponentInteraction, Repliable {
     /**
      * The select menu types.
      *
@@ -64,6 +65,13 @@ interface SelectMenu : ComponentInteraction {
      * @return the maximum number of items that can be chosen; default 1, max 25
      */
     val maxValues: Int
+
+    /**
+     * The list of values of the select menu.
+     *
+     * @return the list of values of the select menu
+     */
+    val values: List<String>
 
     /**
      * Whether select menu is disabled (defaults to false)

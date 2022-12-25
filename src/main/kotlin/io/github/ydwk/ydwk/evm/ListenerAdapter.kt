@@ -43,7 +43,7 @@ import io.github.ydwk.ydwk.evm.event.events.guild.GuildDeleteEvent
 import io.github.ydwk.ydwk.evm.event.events.guild.update.*
 import io.github.ydwk.ydwk.evm.event.events.interaction.*
 import io.github.ydwk.ydwk.evm.event.events.interaction.button.ButtonClickEvent
-import io.github.ydwk.ydwk.evm.event.events.interaction.selectmenu.StringSelectMenuEvent
+import io.github.ydwk.ydwk.evm.event.events.interaction.selectmenu.*
 import io.github.ydwk.ydwk.evm.event.events.interaction.slash.MessageCommandEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.slash.SlashCommandEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.slash.UserCommandEvent
@@ -135,6 +135,34 @@ abstract class ListenerAdapter : IEventListener {
      * @param event The StringSelectMenuEvent
      */
     open fun onStringSelectMenu(event: StringSelectMenuEvent) {}
+
+    /**
+     * Listens to UserSelectMenuEvent
+     *
+     * @param event The UserSelectMenuEvent
+     */
+    open fun onUserSelectMenu(event: UserSelectMenuEvent) {}
+
+    /**
+     * Listens to RoleSelectMenuEvent
+     *
+     * @param event The RoleSelectMenuEvent
+     */
+    open fun onRoleSelectMenu(event: RoleSelectMenuEvent) {}
+
+    /**
+     * Listens to ChannelSelectMenuEvent
+     *
+     * @param event The ChannelSelectMenuEvent
+     */
+    open fun onChannelSelectMenu(event: ChannelSelectMenuEvent) {}
+
+    /**
+     * Listens to MemberSelectMenuEvent
+     *
+     * @param event The MemberSelectMenuEvent
+     */
+    open fun onMemberSelectMenu(event: MemberSelectMenuEvent) {}
 
     /**
      * Listens to Model Event

@@ -24,13 +24,12 @@ import io.github.ydwk.ydwk.BotBuilder.createDefaultBot
 import io.github.ydwk.ydwk.builders.slash.Slash
 import io.github.ydwk.ydwk.evm.backend.event.on
 import io.github.ydwk.ydwk.evm.event.events.interaction.button.ButtonClickEvent
-import io.github.ydwk.ydwk.evm.event.events.interaction.selectmenu.StringSelectMenuEvent
+import io.github.ydwk.ydwk.evm.event.events.interaction.selectmenu.RoleSelectMenuEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.slash.SlashCommandEvent
 import io.github.ydwk.ydwk.interaction.message.ActionRow
 import io.github.ydwk.ydwk.interaction.message.button.Button
 import io.github.ydwk.ydwk.interaction.message.button.ButtonStyle
-import io.github.ydwk.ydwk.interaction.message.selectmenu.types.StringSelectMenu
-import io.github.ydwk.ydwk.interaction.message.selectmenu.types.string.StringSelectMenuOption
+import io.github.ydwk.ydwk.interaction.message.selectmenu.types.RoleSelectMenu
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -46,9 +45,9 @@ suspend fun main() {
         .slashBuilder
         .addSlashCommand(Slash("join_vc", "Joins a vc"))
         .addSlashCommand(Slash("create_dm", "Creates a dm channel"))
-        .addSlashCommand("channel", "Creates a Channel")
         .addSlashCommand("button", "A button test")
         .addSlashCommand("bot_info", "The bot info")
+        .addSlashCommand("add_roles", "Add roles")
         .build()
 
     ydwk.on<SlashCommandEvent> {
@@ -89,23 +88,15 @@ suspend fun main() {
             }
             "bot_info" -> {
                 withContext(Dispatchers.IO) {
-                    it.slash
-                        .reply("Bot info: ${it.slash.guild?.botAsMember?.joinedAt}")
-                        .addActionRow(
-                            ActionRow.invoke(
-                                StringSelectMenu.invoke(
-                                    "test", listOf(StringSelectMenuOption.invoke("1", "1")))))
-                        .trigger()
+                    it.slash.reply("Bot info: ${it.slash.guild?.botAsMember?.joinedAt}").trigger()
                 }
             }
-            "channel" -> {
+            "add_roles" -> {
                 withContext(Dispatchers.IO) {
-                    it.slash.ydwk.entityBuilder
-                        .getGuildEntitiesBuilder()
-                        .createChannel("Test Channel", it.slash.guild!!.id)
-                        .createMessageChannel()
-                        .create()
-                    it.slash.reply("Channel created!").trigger()
+                    it.slash
+                        .reply("Add your role by choose the roles through the select menu")
+                        .addActionRow(ActionRow(RoleSelectMenu("role_select", "Select your role")))
+                        .trigger()
                 }
             }
         }
@@ -130,7 +121,10 @@ suspend fun main() {
         }
     }
 
-    ydwk.on<StringSelectMenuEvent> {
-        withContext(Dispatchers.IO) { it.selectMenu.reply("Selected: 1").trigger() }
+    ydwk.on<RoleSelectMenuEvent> {
+        withContext(Dispatchers.IO) {
+            it.selectMenu.reply("Role added!").trigger()
+            // it.selectMenu.member?.addRole(it.selectMenu.selectedOptions[0].value)
+        }
     }
 }
