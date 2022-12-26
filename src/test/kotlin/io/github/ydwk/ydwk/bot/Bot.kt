@@ -124,7 +124,9 @@ suspend fun main() {
     ydwk.on<RoleSelectMenuEvent> {
         withContext(Dispatchers.IO) {
             it.selectMenu.reply("Role added!").trigger()
-            // it.selectMenu.member?.addRole(it.selectMenu.selectedOptions[0].value)
+            for (role in it.selectMenu.selectedRoles) {
+                it.selectMenu.member?.addRole(role)?.get()
+            }
         }
     }
 }
