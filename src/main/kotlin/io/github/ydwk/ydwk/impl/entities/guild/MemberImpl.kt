@@ -27,10 +27,13 @@ import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.entities.guild.enums.GuildPermission
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.UserImpl
+import io.github.ydwk.ydwk.rest.EndPoint
+import io.github.ydwk.ydwk.rest.result.NoResult
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 import io.github.ydwk.ydwk.util.formatZonedDateTime
 import java.util.*
+import java.util.concurrent.CompletableFuture
 
 class MemberImpl(
     override val ydwk: YDWKImpl,
@@ -76,6 +79,34 @@ class MemberImpl(
         get() = guild.ownerId.asString == user.id
 
     override var voiceState: VoiceState? = null
+
+    override fun addRole(role: Role): CompletableFuture<NoResult> {
+        return ydwk.restApiManager
+            .put(null, EndPoint.GuildEndpoint.ADD_ROLE, guild.id, user.id, role.id)
+            .executeWithNoResult()
+    }
+
+    override fun addRoles(roles: List<Role>): List<CompletableFuture<NoResult>> {
+        for (role in roles) {
+            addRole(role)
+        }
+
+        return roles.map { addRole(it) }
+    }
+
+    override fun removeRole(role: Role): CompletableFuture<NoResult> {
+        return ydwk.restApiManager
+            .delete(null, EndPoint.GuildEndpoint.REMOVE_ROLE, guild.id, user.id, role.id)
+            .executeWithNoResult()
+    }
+
+    override fun removeRoles(roles: List<Role>): List<CompletableFuture<NoResult>> {
+        for (role in roles) {
+            removeRole(role)
+        }
+
+        return roles.map { removeRole(it) }
+    }
 
     override val permissions: EnumSet<GuildPermission>
         get() = GuildPermission.fromLongs(getPermissions(this))

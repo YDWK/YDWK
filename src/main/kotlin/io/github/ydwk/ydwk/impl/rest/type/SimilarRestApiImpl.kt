@@ -75,10 +75,14 @@ open class SimilarRestApiImpl(
                 if (!response.isSuccessful) {
                     val code = response.code
                     error(response.body, code, null, null)
+                } else {
+                    responseBody = response.body
                 }
             }
         } catch (e: Exception) {
             throw RuntimeException("Error while executing request", e)
+        } finally {
+            responseBody?.close()
         }
     }
 
@@ -100,6 +104,7 @@ open class SimilarRestApiImpl(
                                 val code = response.code
                                 error(response.body, code, null, queue)
                             }
+                            responseBody = response.body
                             val manager = CompletableFutureManager(response, ydwk)
                             val result = function.apply(manager)
                             queue.complete(result)
@@ -107,6 +112,8 @@ open class SimilarRestApiImpl(
                     })
         } catch (e: Exception) {
             throw RuntimeException("Error while executing request", e)
+        } finally {
+            responseBody?.close()
         }
         return queue
     }
@@ -127,11 +134,14 @@ open class SimilarRestApiImpl(
                                 val code = response.code
                                 error(response.body, code, queue, null)
                             }
+                            responseBody = response.body
                             queue.complete(NoResult(formatInstant(Instant.now())))
                         }
                     })
         } catch (e: Exception) {
             throw RuntimeException("Error while executing request", e)
+        } finally {
+            responseBody?.close()
         }
         return queue
     }

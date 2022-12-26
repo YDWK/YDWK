@@ -25,6 +25,7 @@ import io.github.ydwk.ydwk.entities.VoiceState
 import io.github.ydwk.ydwk.entities.channel.DmChannel
 import io.github.ydwk.ydwk.entities.message.Sendeadble
 import io.github.ydwk.ydwk.entities.util.GenericEntity
+import io.github.ydwk.ydwk.rest.result.NoResult
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 import io.github.ydwk.ydwk.util.NameAbleEntity
 import io.github.ydwk.ydwk.util.SnowFlake
@@ -147,4 +148,53 @@ interface Member : NameAbleEntity, GenericEntity, Sendeadble, SnowFlake, Permiss
      * @return The voice state of the member.
      */
     var voiceState: VoiceState?
+
+    /**
+     * Adds a role to this member.
+     *
+     * @param role The role to add.
+     * @return A future that completes with an empty result.
+     */
+    fun addRole(role: Role): CompletableFuture<NoResult>
+
+    /**
+     * Adds a list of roles to this member.
+     *
+     * @param roles The roles to add.
+     * @return A future that completes with an empty result.
+     */
+    fun addRoles(roles: List<Role>): List<CompletableFuture<NoResult>>
+
+    /**
+     * Adds a list of roles to this member.
+     *
+     * @param roles The roles to add.
+     * @return A future that completes with an empty result.
+     */
+    fun addRoles(vararg roles: Role): List<CompletableFuture<NoResult>> = addRoles(roles.toList())
+
+    /**
+     * Removes a role from this member.
+     *
+     * @param role The role to remove.
+     * @return A future that completes with an empty result.
+     */
+    fun removeRole(role: Role): CompletableFuture<NoResult>
+
+    /**
+     * Removes a list of roles from this member.
+     *
+     * @param roles The roles to remove.
+     * @return A future that completes an empty result.
+     */
+    fun removeRoles(roles: List<Role>): List<CompletableFuture<NoResult>>
+
+    /**
+     * Removes a list of roles from this member.
+     *
+     * @param roles The roles to remove.
+     * @return A future that completes with an empty result.
+     */
+    fun removeRoles(vararg roles: Role): List<CompletableFuture<NoResult>> =
+        removeRoles(roles.toList())
 }
