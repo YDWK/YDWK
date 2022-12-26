@@ -27,7 +27,6 @@ import io.github.ydwk.ydwk.impl.interaction.ComponentInteractionImpl
 import io.github.ydwk.ydwk.impl.interaction.message.ComponentImpl
 import io.github.ydwk.ydwk.impl.interaction.message.selectmenu.SelectMenuImpl
 import io.github.ydwk.ydwk.impl.interaction.message.selectmenu.types.string.StringSelectMenuOptionImpl
-import io.github.ydwk.ydwk.interaction.message.Component
 import io.github.ydwk.ydwk.interaction.message.selectmenu.types.StringSelectMenu
 import io.github.ydwk.ydwk.interaction.message.selectmenu.types.string.StringSelectMenuOption
 import io.github.ydwk.ydwk.util.GetterSnowFlake
@@ -38,8 +37,7 @@ class StringSelectMenuImpl(
     interactionId: GetterSnowFlake,
 ) : StringSelectMenu, SelectMenuImpl(ydwk, json, interactionId) {
     constructor(
-        componentInteractionImpl: ComponentInteractionImpl,
-        component: Component
+        componentInteractionImpl: ComponentInteractionImpl
     ) : this(
         componentInteractionImpl.ydwk,
         componentInteractionImpl.json,

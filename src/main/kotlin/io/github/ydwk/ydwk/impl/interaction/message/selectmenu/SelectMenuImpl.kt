@@ -30,9 +30,10 @@ import io.github.ydwk.ydwk.impl.interaction.application.sub.ReplyImpl
 import io.github.ydwk.ydwk.impl.interaction.message.ComponentImpl
 import io.github.ydwk.ydwk.impl.interaction.message.selectmenu.types.StringSelectMenuImpl
 import io.github.ydwk.ydwk.interaction.application.sub.Reply
-import io.github.ydwk.ydwk.interaction.message.Component
 import io.github.ydwk.ydwk.interaction.message.ComponentType
 import io.github.ydwk.ydwk.interaction.message.selectmenu.SelectMenu
+import io.github.ydwk.ydwk.interaction.message.selectmenu.creator.SelectMenuCreator
+import io.github.ydwk.ydwk.interaction.message.selectmenu.creator.types.*
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 
 open class SelectMenuImpl(
@@ -44,8 +45,7 @@ open class SelectMenuImpl(
         MessageImpl(ydwk, json["message"], json["message"]["id"].asLong()).json
 
     constructor(
-        componentInteractionImpl: ComponentInteractionImpl,
-        component: Component
+        componentInteractionImpl: ComponentInteractionImpl
     ) : this(
         componentInteractionImpl.ydwk,
         componentInteractionImpl.json,
@@ -77,106 +77,81 @@ open class SelectMenuImpl(
         return ReplyImpl(ydwk, null, embed, interactionId.asString, interactionToken)
     }
 
-    data class StringSelectMenuCreator(
-        val customId: String,
-        val options: List<StringSelectMenuImpl.StringSelectMenuOptionCreator>,
-        val placeholder: String? = null,
-        val minValues: Int? = null,
-        val maxValues: Int? = null,
-        val disabled: Boolean = false,
+    open class SelectMenuCreatorImpl(
+        open val customId: String,
+        val componentType: ComponentType,
         override val json: ObjectNode = JsonNodeFactory.instance.objectNode()
-    ) : SelectMenuCreator {
+    ) : ISelectMenuCreator, SelectMenuCreator {
+        private var placeholder: String? = null
+        private var minValues: Int? = null
+        private var maxValues: Int? = null
+        private var disabled: Boolean = false
 
-        init {
-            json.put("type", ComponentType.STRING_SELECT_MENU.getType())
+        override fun setPlaceholder(placeholder: String): SelectMenuCreator {
+            this.placeholder = placeholder
+            return this
+        }
+
+        override fun setMinValues(minValues: Int): SelectMenuCreator {
+            this.minValues = minValues
+            return this
+        }
+
+        override fun setMaxValues(maxValues: Int): SelectMenuCreator {
+            this.maxValues = maxValues
+            return this
+        }
+
+        override fun setDisabled(disabled: Boolean): SelectMenuCreator {
+            this.disabled = disabled
+            return this
+        }
+
+        override fun create(): ISelectMenuCreator {
+            json.put("type", componentType.getType())
             json.put("custom_id", customId)
+            if (placeholder != null) json.put("placeholder", placeholder)
+            if (minValues != null) json.put("min_values", minValues)
+            if (maxValues != null) json.put("max_values", maxValues)
+            json.put("disabled", disabled)
+            return this
+        }
+    }
+
+    data class StringSelectMenuCreatorImpl(
+        override val customId: String,
+        val options: List<StringSelectMenuImpl.StringSelectMenuOptionCreator>
+    ) : StringSelectMenuCreator, SelectMenuCreatorImpl(customId, ComponentType.STRING_SELECT_MENU) {
+        init {
             json.putArray("options").addAll(options.map { it.json })
-            if (placeholder != null) json.put("placeholder", placeholder)
-            if (minValues != null) json.put("min_values", minValues)
-            if (maxValues != null) json.put("max_values", maxValues)
-            if (disabled) json.put("disabled", true)
         }
     }
 
-    data class RoleSelectMenuCreator(
-        val customId: String,
-        val placeholder: String? = null,
-        val minValues: Int? = null,
-        val maxValues: Int? = null,
-        val disabled: Boolean = false,
-        override val json: ObjectNode = JsonNodeFactory.instance.objectNode()
-    ) : SelectMenuCreator {
+    data class RoleSelectMenuCreatorImpl(override val customId: String) :
+        RoleSelectMenuCreator, SelectMenuCreatorImpl(customId, ComponentType.ROLE_SELECT_MENU)
 
+    data class UserSelectMenuCreatorImpl(
+        override val customId: String,
+    ) : UserSelectMenuCreator, SelectMenuCreatorImpl(customId, ComponentType.USER_SELECT_MENU)
+
+    data class ChannelSelectMenuCreatorImpl(
+        override val customId: String,
+        val channelTypes: List<ChannelType>
+    ) :
+        ChannelSelectMenuCreator,
+        SelectMenuCreatorImpl(customId, ComponentType.CHANNEL_SELECT_MENU) {
         init {
-            json.put("type", ComponentType.ROLE_SELECT_MENU.getType())
-            json.put("custom_id", customId)
-            if (placeholder != null) json.put("placeholder", placeholder)
-            if (minValues != null) json.put("min_values", minValues)
-            if (maxValues != null) json.put("max_values", maxValues)
-            if (disabled) json.put("disabled", true)
-        }
-    }
-
-    data class UserSelectMenuCreator(
-        val customId: String,
-        val placeholder: String? = null,
-        val minValues: Int? = null,
-        val maxValues: Int? = null,
-        val disabled: Boolean = false,
-        override val json: ObjectNode = JsonNodeFactory.instance.objectNode()
-    ) : SelectMenuCreator {
-
-        init {
-            json.put("type", ComponentType.USER_SELECT_MENU.getType())
-            json.put("custom_id", customId)
-            if (placeholder != null) json.put("placeholder", placeholder)
-            if (minValues != null) json.put("min_values", minValues)
-            if (maxValues != null) json.put("max_values", maxValues)
-            if (disabled) json.put("disabled", true)
-        }
-    }
-
-    data class ChannelSelectMenuCreator(
-        val customId: String,
-        val channelTypes: List<ChannelType>,
-        val placeholder: String? = null,
-        val minValues: Int? = null,
-        val maxValues: Int? = null,
-        val disabled: Boolean = false,
-        override val json: ObjectNode = JsonNodeFactory.instance.objectNode()
-    ) : SelectMenuCreator {
-
-        init {
-            json.put("type", ComponentType.CHANNEL_SELECT_MENU.getType())
             for (channelType in channelTypes) {
                 json.putArray("channel_types").add(channelType.getId())
             }
-            json.put("custom_id", customId)
-            if (placeholder != null) json.put("placeholder", placeholder)
-            if (minValues != null) json.put("min_values", minValues)
-            if (maxValues != null) json.put("max_values", maxValues)
-            if (disabled) json.put("disabled", true)
         }
     }
 
-    data class MemberSelectMenuCreator(
-        val customId: String,
-        val placeholder: String? = null,
-        val minValues: Int? = null,
-        val maxValues: Int? = null,
-        val disabled: Boolean = false,
-        override val json: ObjectNode = JsonNodeFactory.instance.objectNode()
-    ) : SelectMenuCreator {
+    data class MemberSelectMenuCreatorImpl(
+        override val customId: String,
+    ) :
+        MemberSelectMenuCreator,
+        SelectMenuCreatorImpl(customId, ComponentType.MENTIONABLE_SELECT_MENU)
 
-        init {
-            json.put("type", ComponentType.MENTIONABLE_SELECT_MENU.getType())
-            json.put("custom_id", customId)
-            if (placeholder != null) json.put("placeholder", placeholder)
-            if (minValues != null) json.put("min_values", minValues)
-            if (maxValues != null) json.put("max_values", maxValues)
-            if (disabled) json.put("disabled", true)
-        }
-    }
-
-    sealed interface SelectMenuCreator : ComponentImpl.ComponentCreator
+    sealed interface ISelectMenuCreator : ComponentImpl.ComponentCreator
 }

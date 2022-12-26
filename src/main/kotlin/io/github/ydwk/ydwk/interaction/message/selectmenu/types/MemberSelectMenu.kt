@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.interaction.message.selectmenu.types
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.impl.interaction.message.selectmenu.SelectMenuImpl
 import io.github.ydwk.ydwk.interaction.message.selectmenu.SelectMenu
+import io.github.ydwk.ydwk.interaction.message.selectmenu.creator.types.MemberSelectMenuCreator
 
 interface MemberSelectMenu : SelectMenu {
 
@@ -36,42 +37,12 @@ interface MemberSelectMenu : SelectMenu {
          * Create a new [MemberSelectMenu].
          *
          * @param customId the custom id of the select menu
-         * @param placeholder the placeholder of the select menu
-         * @param minValues the minimum number of values
-         * @param maxValues the maximum number of values
-         * @param disabled whether the select menu is disabled
-         * @return [SelectMenuImpl.SelectMenuCreator] which contains the json representation of the
-         *   Member select menu
+         * @return [MemberSelectMenuCreator] to construct the select menu
          */
         operator fun invoke(
             customId: String,
-            placeholder: String? = null,
-            minValues: Int? = null,
-            maxValues: Int? = null,
-            disabled: Boolean = false
-        ): SelectMenuImpl.SelectMenuCreator {
-            return SelectMenuImpl.MemberSelectMenuCreator(
-                customId, placeholder, minValues, maxValues, disabled)
-        }
-
-        /**
-         * Create a new [MemberSelectMenu].
-         *
-         * @param customId the custom id of the select menu
-         * @param placeholder the placeholder of the select menu
-         * @param minValues the minimum number of values
-         * @param maxValues the maximum number of values
-         * @return [SelectMenuImpl.SelectMenuCreator] which contains the json representation of the
-         *   Member select menu
-         */
-        operator fun invoke(
-            customId: String,
-            placeholder: String? = null,
-            minValues: Int? = null,
-            maxValues: Int? = null,
-        ): SelectMenuImpl.SelectMenuCreator {
-            return SelectMenuImpl.MemberSelectMenuCreator(
-                customId, placeholder, minValues, maxValues)
+        ): MemberSelectMenuCreator {
+            return SelectMenuImpl.MemberSelectMenuCreatorImpl(customId)
         }
     }
 }

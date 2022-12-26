@@ -49,35 +49,34 @@ class MessageComponentHandler(
                             if (customId == children.customId) {
                                 ydwk.emitEvent(
                                     StringSelectMenuEvent(
-                                        ydwk, StringSelectMenuImpl(interactionComponent, children)))
+                                        ydwk, StringSelectMenuImpl(interactionComponent)))
                             }
                         }
                         ComponentType.USER_SELECT_MENU -> {
                             if (customId == children.customId) {
                                 ydwk.emitEvent(
                                     UserSelectMenuEvent(
-                                        ydwk, UserSelectMenuImpl(interactionComponent, children)))
+                                        ydwk, UserSelectMenuImpl(interactionComponent)))
                             }
                         }
                         ComponentType.ROLE_SELECT_MENU -> {
                             if (customId == children.customId) {
                                 ydwk.emitEvent(
                                     RoleSelectMenuEvent(
-                                        ydwk, RoleSelectMenuImpl(interactionComponent, children)))
+                                        ydwk, RoleSelectMenuImpl(interactionComponent)))
                             }
                         }
                         ComponentType.MENTIONABLE_SELECT_MENU ->
                             if (customId == children.customId) {
                                 ydwk.emitEvent(
                                     MemberSelectMenuEvent(
-                                        ydwk, MemberSelectMenuImpl(interactionComponent, children)))
+                                        ydwk, MemberSelectMenuImpl(interactionComponent)))
                             }
                         ComponentType.CHANNEL_SELECT_MENU -> {
                             if (customId == children.customId) {
                                 ydwk.emitEvent(
                                     ChannelSelectMenuEvent(
-                                        ydwk,
-                                        ChannelSelectMenuImpl(interactionComponent, children)))
+                                        ydwk, ChannelSelectMenuImpl(interactionComponent)))
                             }
                         }
                         ComponentType.TEXT_INPUT -> TODO("Do something similar to buttons")

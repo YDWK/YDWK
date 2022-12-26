@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.interaction.message.selectmenu.types
 import io.github.ydwk.ydwk.impl.interaction.message.selectmenu.SelectMenuImpl
 import io.github.ydwk.ydwk.impl.interaction.message.selectmenu.types.StringSelectMenuImpl
 import io.github.ydwk.ydwk.interaction.message.selectmenu.SelectMenu
+import io.github.ydwk.ydwk.interaction.message.selectmenu.creator.types.StringSelectMenuCreator
 import io.github.ydwk.ydwk.interaction.message.selectmenu.types.string.StringSelectMenuOption
 import io.github.ydwk.ydwk.util.Checks
 
@@ -44,95 +45,16 @@ interface StringSelectMenu : SelectMenu {
          *
          * @param customId the custom id of the select menu
          * @param options the options of the select menu
-         * @param placeholder the placeholder of the select menu
-         * @param minValues the minimum number of values
-         * @param maxValues the maximum number of values
-         * @param disabled whether the select menu is disabled
-         * @return [SelectMenuImpl.SelectMenuCreator] which contains the json representation of the
-         *   String select menu
+         * @return [StringSelectMenuCreator] to construct the select menu
          */
         operator fun invoke(
             customId: String,
             options: List<StringSelectMenuImpl.StringSelectMenuOptionCreator>,
-            placeholder: String? = null,
-            minValues: Int? = null,
-            maxValues: Int? = null,
-            disabled: Boolean = false
-        ): SelectMenuImpl.SelectMenuCreator {
+        ): StringSelectMenuCreator {
             Checks.customCheck(
                 options.size in MIN_OPTIONS..MAX_OPTIONS,
                 "The number of options must be between $MIN_OPTIONS and $MAX_OPTIONS")
-            return SelectMenuImpl.StringSelectMenuCreator(
-                customId, options, placeholder, minValues, maxValues, disabled)
+            return SelectMenuImpl.StringSelectMenuCreatorImpl(customId, options)
         }
-
-        /**
-         * Create a new [StringSelectMenu].
-         *
-         * @param customId the custom id of the select menu
-         * @param options the options of the select menu
-         * @return [SelectMenuImpl.SelectMenuCreator] which contains the json representation of the
-         *   String select menu
-         */
-        operator fun invoke(
-            customId: String,
-            options: List<StringSelectMenuImpl.StringSelectMenuOptionCreator>
-        ): SelectMenuImpl.SelectMenuCreator =
-            SelectMenuImpl.StringSelectMenuCreator(customId, options)
-
-        /**
-         * Creates a new [StringSelectMenu].
-         *
-         * @param customId the custom id of the select menu
-         * @param options the options of the select menu
-         * @param placeholder the placeholder of the select menu
-         * @return [SelectMenuImpl.SelectMenuCreator] which contains the json representation of the
-         *   String select menu
-         */
-        operator fun invoke(
-            customId: String,
-            options: List<StringSelectMenuImpl.StringSelectMenuOptionCreator>,
-            placeholder: String
-        ): SelectMenuImpl.SelectMenuCreator =
-            SelectMenuImpl.StringSelectMenuCreator(customId, options, placeholder)
-
-        /**
-         * Creates a new [StringSelectMenu].
-         *
-         * @param customId the custom id of the select menu
-         * @param options the options of the select menu
-         * @param placeholder the placeholder of the select menu
-         * @param minValues the minimum number of values
-         * @return [SelectMenuImpl.SelectMenuCreator] which contains the json representation of the
-         *   String select menu
-         */
-        operator fun invoke(
-            customId: String,
-            options: List<StringSelectMenuImpl.StringSelectMenuOptionCreator>,
-            placeholder: String,
-            minValues: Int
-        ): SelectMenuImpl.SelectMenuCreator =
-            SelectMenuImpl.StringSelectMenuCreator(customId, options, placeholder, minValues)
-
-        /**
-         * Creates a new [StringSelectMenu].
-         *
-         * @param customId the custom id of the select menu
-         * @param options the options of the select menu
-         * @param placeholder the placeholder of the select menu
-         * @param minValues the minimum number of values
-         * @param maxValues the maximum number of values
-         * @return [SelectMenuImpl.SelectMenuCreator] which contains the json representation of the
-         *   String select menu
-         */
-        operator fun invoke(
-            customId: String,
-            options: List<StringSelectMenuImpl.StringSelectMenuOptionCreator>,
-            placeholder: String,
-            minValues: Int,
-            maxValues: Int
-        ): SelectMenuImpl.SelectMenuCreator =
-            SelectMenuImpl.StringSelectMenuCreator(
-                customId, options, placeholder, minValues, maxValues)
     }
 }
