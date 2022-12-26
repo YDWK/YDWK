@@ -20,10 +20,12 @@ package io.github.ydwk.ydwk.evm.handler.handlers.interactions
 
 import io.github.ydwk.ydwk.evm.event.events.interaction.button.ButtonClickEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.selectmenu.*
+import io.github.ydwk.ydwk.evm.event.events.interaction.textinput.TextInputEvent
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.interaction.ComponentInteractionImpl
 import io.github.ydwk.ydwk.impl.interaction.message.button.ButtonImpl
 import io.github.ydwk.ydwk.impl.interaction.message.selectmenu.types.*
+import io.github.ydwk.ydwk.impl.interaction.message.textinput.TextInputImpl
 import io.github.ydwk.ydwk.interaction.message.ComponentType
 
 class MessageComponentHandler(
@@ -79,8 +81,13 @@ class MessageComponentHandler(
                                         ydwk, ChannelSelectMenuImpl(interactionComponent)))
                             }
                         }
-                        ComponentType.TEXT_INPUT -> TODO("Do something similar to buttons")
-                        ComponentType.UNKNOWN -> TODO("Do something similar to buttons")
+                        ComponentType.TEXT_INPUT -> {
+                            if (customId == children.customId) {
+                                ydwk.emitEvent(
+                                    TextInputEvent(ydwk, TextInputImpl(interactionComponent)))
+                            }
+                        }
+                        ComponentType.UNKNOWN -> ydwk.logger.warn("New component type found: $type")
                         else -> {
                             // if action row, do nothing else warn
                             if (children.type != ComponentType.ACTION_ROW) {
