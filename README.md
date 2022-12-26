@@ -3,7 +3,7 @@
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Kotlin](https://img.shields.io/badge/kotlin-1.7.20-blue.svg?logo=kotlin)](http://kotlinlang.org)
 [![codecov](https://codecov.io/gh/YDWK/YDWK/branch/master/graph/badge.svg?token=LKIA8T6N6J)](https://codecov.io/gh/YDWK/YDWK)
-[![ydwk](https://img.shields.io/badge/YDWK-0.1.2-blue.svg)](https://github.com/YDWK/YDWK/releases/tag/v0.1.2)
+[![ydwk](https://img.shields.io/badge/YDWK--Version-v0.9.0-blue)](https://github.com/YDWK/YDWK/releases/tag/v0.1.2)
 [![ydwk-docs](https://img.shields.io/badge/YDWK-Docs-blue.svg)](https://www.ydwk.org)
 
 
