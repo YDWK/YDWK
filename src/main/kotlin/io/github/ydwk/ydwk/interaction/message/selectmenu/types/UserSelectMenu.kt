@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.interaction.message.selectmenu.types
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.impl.interaction.message.selectmenu.SelectMenuImpl
 import io.github.ydwk.ydwk.interaction.message.selectmenu.SelectMenu
+import io.github.ydwk.ydwk.interaction.message.selectmenu.creator.types.UserSelectMenuCreator
 
 interface UserSelectMenu : SelectMenu {
 
@@ -37,22 +38,10 @@ interface UserSelectMenu : SelectMenu {
          * Create a new [UserSelectMenu].
          *
          * @param customId the custom id of the select menu
-         * @param placeholder the placeholder of the select menu
-         * @param minValues the minimum number of values
-         * @param maxValues the maximum number of values
-         * @param disabled whether the select menu is disabled
-         * @return [SelectMenuImpl.SelectMenuCreator] which contains the json representation of the
-         *   User select menu
+         * @return [UserSelectMenuCreator] to construct the select menu
          */
-        operator fun invoke(
-            customId: String,
-            placeholder: String? = null,
-            minValues: Int? = null,
-            maxValues: Int? = null,
-            disabled: Boolean = false
-        ): SelectMenuImpl.SelectMenuCreator {
-            return SelectMenuImpl.UserSelectMenuCreator(
-                customId, placeholder, minValues, maxValues, disabled)
+        operator fun invoke(customId: String): UserSelectMenuCreator {
+            return SelectMenuImpl.UserSelectMenuCreatorImpl(customId)
         }
     }
 }

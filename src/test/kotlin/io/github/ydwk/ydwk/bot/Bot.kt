@@ -95,7 +95,11 @@ suspend fun main() {
                 withContext(Dispatchers.IO) {
                     it.slash
                         .reply("Add your role by choose the roles through the select menu")
-                        .addActionRow(ActionRow(RoleSelectMenu("role_select", "Select your role")))
+                        .addActionRow(
+                            ActionRow(
+                                RoleSelectMenu("role_select")
+                                    .setPlaceholder("Select your role")
+                                    .create()))
                         .trigger()
                 }
             }

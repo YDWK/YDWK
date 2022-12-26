@@ -23,7 +23,6 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.impl.interaction.ComponentInteractionImpl
 import io.github.ydwk.ydwk.impl.interaction.message.selectmenu.SelectMenuImpl
-import io.github.ydwk.ydwk.interaction.message.Component
 import io.github.ydwk.ydwk.interaction.message.selectmenu.types.RoleSelectMenu
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 
@@ -33,8 +32,7 @@ class RoleSelectMenuImpl(
     interactionId: GetterSnowFlake,
 ) : RoleSelectMenu, SelectMenuImpl(ydwk, json, interactionId) {
     constructor(
-        componentInteractionImpl: ComponentInteractionImpl,
-        component: Component
+        componentInteractionImpl: ComponentInteractionImpl
     ) : this(
         componentInteractionImpl.ydwk,
         componentInteractionImpl.json,

@@ -22,6 +22,7 @@ import io.github.ydwk.ydwk.entities.channel.GuildChannel
 import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
 import io.github.ydwk.ydwk.impl.interaction.message.selectmenu.SelectMenuImpl
 import io.github.ydwk.ydwk.interaction.message.selectmenu.SelectMenu
+import io.github.ydwk.ydwk.interaction.message.selectmenu.creator.types.ChannelSelectMenuCreator
 
 interface ChannelSelectMenu : SelectMenu {
 
@@ -38,79 +39,13 @@ interface ChannelSelectMenu : SelectMenu {
          *
          * @param customId the custom id of the select menu
          * @param channelTypes the type of the channels that can be selected
-         * @param placeholder the placeholder of the select menu
-         * @param minValues the minimum number of values
-         * @param maxValues the maximum number of values
-         * @param disabled whether the select menu is disabled
-         * @return [SelectMenuImpl.SelectMenuCreator] which contains the json representation of the
-         *   Channel select menu
+         * @return [ChannelSelectMenuCreator] to construct the select menu
          */
         operator fun invoke(
             customId: String,
-            channelTypes: List<ChannelType>,
-            placeholder: String? = null,
-            minValues: Int? = null,
-            maxValues: Int? = null,
-            disabled: Boolean = false
-        ): SelectMenuImpl.SelectMenuCreator {
-            return SelectMenuImpl.ChannelSelectMenuCreator(
-                customId, channelTypes, placeholder, minValues, maxValues, disabled)
-        }
-
-        /**
-         * Create a new [ChannelSelectMenu].
-         *
-         * @param customId the custom id of the select menu
-         * @param channelTypes the type of the channels that can be selected
-         * @param placeholder the placeholder of the select menu
-         * @param minValues the minimum number of values
-         * @param maxValues the maximum number of values
-         * @return [SelectMenuImpl.SelectMenuCreator] which contains the json representation of the
-         *   Channel select menu
-         */
-        operator fun invoke(
-            customId: String,
-            channelTypes: List<ChannelType>,
-            placeholder: String? = null,
-            minValues: Int? = null,
-            maxValues: Int? = null,
-        ): SelectMenuImpl.SelectMenuCreator {
-            return SelectMenuImpl.ChannelSelectMenuCreator(
-                customId, channelTypes, placeholder, minValues, maxValues, false)
-        }
-
-        /**
-         * Create a new [ChannelSelectMenu].
-         *
-         * @param customId the custom id of the select menu
-         * @param channelTypes the type of the channels that can be selected
-         * @param placeholder the placeholder of the select menu
-         * @return [SelectMenuImpl.SelectMenuCreator] which contains the json representation of the
-         *   Channel select menu
-         */
-        operator fun invoke(
-            customId: String,
-            channelTypes: List<ChannelType>,
-            placeholder: String? = null,
-        ): SelectMenuImpl.SelectMenuCreator {
-            return SelectMenuImpl.ChannelSelectMenuCreator(
-                customId, channelTypes, placeholder, null, null, false)
-        }
-
-        /**
-         * Create a new [ChannelSelectMenu].
-         *
-         * @param customId the custom id of the select menu
-         * @param channelTypes the type of the channels that can be selected
-         * @return [SelectMenuImpl.SelectMenuCreator] which contains the json representation of the
-         *   Channel select menu
-         */
-        operator fun invoke(
-            customId: String,
-            channelTypes: List<ChannelType>,
-        ): SelectMenuImpl.SelectMenuCreator {
-            return SelectMenuImpl.ChannelSelectMenuCreator(
-                customId, channelTypes, null, null, null, false)
+            channelTypes: List<ChannelType>
+        ): ChannelSelectMenuCreator {
+            return SelectMenuImpl.ChannelSelectMenuCreatorImpl(customId, channelTypes)
         }
     }
 }
