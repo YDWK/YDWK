@@ -41,7 +41,6 @@ import io.github.ydwk.ydwk.rest.result.NoResult
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 import io.github.ydwk.ydwk.util.NameAbleEntity
 import io.github.ydwk.ydwk.util.SnowFlake
-import io.github.ydwk.ydwk.voice.VoiceConnection
 import java.util.concurrent.CompletableFuture
 import kotlin.time.Duration
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -314,6 +313,13 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @return a list of ban's for the guild.
      */
     val requestBans: CompletableFuture<List<Ban>>
+
+    /**
+     * All the current voice states for the guild.
+     *
+     * @return all the current voice states for the guild.
+     */
+    val voiceStates: List<VoiceState>
 
     /**
      * Creates a dm channel..
@@ -801,75 +807,6 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     fun getMemberById(userId: String): Member? = getMemberById(userId.toLong())
 
     /**
-     * Joins a vc.
-     *
-     * @param guildVoiceChannelId the guild vc id to join.
-     * @param muted if the bot should be muted.
-     * @param deafened if the bot should be deafened.
-     * @return A [CompletableFuture] that completes when the bot joins the vc.
-     */
-    fun joinVoiceChannel(
-        guildVoiceChannelId: Long,
-        muted: Boolean,
-        deafened: Boolean
-    ): CompletableFuture<VoiceConnection>
-
-    /**
-     * Joins a vc.
-     *
-     * @param guildVoiceChannelId the guild vc id to join.
-     * @param muted if the bot should be muted.
-     * @param deafened if the bot should be deafened.
-     * @return A [CompletableFuture] that completes when the bot joins the vc.
-     */
-    fun joinVoiceChannel(
-        guildVoiceChannelId: String,
-        muted: Boolean,
-        deafened: Boolean
-    ): CompletableFuture<VoiceConnection> =
-        joinVoiceChannel(guildVoiceChannelId.toLong(), muted, deafened)
-
-    /**
-     * Joins a vc.
-     *
-     * @param guildVoiceChannel the guild vc to join.
-     * @param muted if the bot should be muted.
-     * @param deafened if the bot should be deafened.
-     * @return A [CompletableFuture] that completes when the bot joins the vc.
-     */
-    fun joinVoiceChannel(
-        guildVoiceChannel: GuildVoiceChannel,
-        muted: Boolean,
-        deafened: Boolean
-    ): CompletableFuture<VoiceConnection> = joinVoiceChannel(guildVoiceChannel.id, muted, deafened)
-
-    /**
-     * Leaves a vc.
-     *
-     * @param guildVoiceChannelId the guild vc id to leave.
-     * @return A [CompletableFuture] that completes when the bot leaves the vc.
-     */
-    fun leaveVoiceChannel(guildVoiceChannelId: Long): CompletableFuture<Void>
-
-    /**
-     * Leaves a vc.
-     *
-     * @param guildVoiceChannelId the guild vc id to leave.
-     * @return A [CompletableFuture] that completes when the bot leaves the vc.
-     */
-    fun leaveVoiceChannel(guildVoiceChannelId: String): CompletableFuture<Void> =
-        leaveVoiceChannel(guildVoiceChannelId.toLong())
-
-    /**
-     * Leaves a vc.
-     *
-     * @param guildVoiceChannel the guild vc to leave.
-     * @return A [CompletableFuture] that completes when the bot leaves the vc.
-     */
-    fun leaveVoiceChannel(guildVoiceChannel: GuildVoiceChannel): CompletableFuture<Void> =
-        leaveVoiceChannel(guildVoiceChannel.id)
-
-    /**
      * The @everyone role. This role is always present.
      *
      * @return The @everyone role.
@@ -878,25 +815,4 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
         get() =
             getRoleById(idAsLong)
                 ?: throw IllegalStateException("The @everyone role is not present.")
-
-    /**
-     * Gets a voice connection if it exists.
-     *
-     * @return The [VoiceConnection] instance, or null if it doesn't exist.
-     */
-    val voiceConnection: VoiceConnection?
-
-    /**
-     * Sets the voice connection.
-     *
-     * @param voiceConnection The voice connection.
-     */
-    fun setVoiceConnection(voiceConnection: VoiceConnection)
-
-    /**
-     * Removes the voice connection.
-     *
-     * @param voiceConnection The voice connection.
-     */
-    fun removeVoiceConnection(voiceConnection: VoiceConnection)
 }

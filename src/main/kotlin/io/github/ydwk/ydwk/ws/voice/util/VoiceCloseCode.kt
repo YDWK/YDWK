@@ -39,7 +39,8 @@ enum class VoiceCloseCode(val code: Int, val reason: String, val isReconnect: Bo
         4015, "The server crashed. Our bad! Will try to automatically reconnect.", true),
     MISSED_HEARTBEAT(4997, "You missed too many heartbeats, reconnecting.", true),
     UNKNOWN_ENCRYPTION_MODE(4016, "You sent an invalid encoding for the voice gateway."),
-    RESUMED(4999, "A request to resume the session was sent.", true);
+    RESUMED(4999, "A request to resume the session was sent.", true),
+    NO_ROUTE_TO_HOST(5000, "No route to host.", true);
 
     companion object {
         fun fromCode(code: Int): VoiceCloseCode {

@@ -36,7 +36,6 @@ import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
 import io.github.ydwk.ydwk.rest.RestApiManager
 import io.github.ydwk.ydwk.util.Incubating
 import io.github.ydwk.ydwk.util.ThreadFactory
-import io.github.ydwk.ydwk.voice.VoiceConnection
 import io.github.ydwk.ydwk.ws.WebSocketManager
 import io.github.ydwk.ydwk.ws.util.LoggedIn
 import java.time.Instant
@@ -323,65 +322,6 @@ interface YDWK {
      * @return The [CompletableFuture] object.
      */
     fun requestGuild(guildId: String): CompletableFuture<Guild> = requestGuild(guildId.toLong())
-
-    /**
-     * Sets the voice connection.
-     *
-     * @param guildId The id of the guild.
-     * @param voiceConnection The voice connection.
-     */
-    fun setVoiceConnection(guildId: Long, voiceConnection: VoiceConnection)
-
-    /**
-     * Sets the voice connection.
-     *
-     * @param guildId The id of the guild.
-     * @param voiceConnection The voice connection.
-     */
-    fun setVoiceConnection(guildId: String, voiceConnection: VoiceConnection) =
-        setVoiceConnection(guildId.toLong(), voiceConnection)
-
-    /**
-     * The voice connection.
-     *
-     * @param guildId The id of the guild.
-     * @return The [VoiceConnection] object.
-     */
-    fun getVoiceConnectionById(guildId: Long): VoiceConnection?
-
-    /**
-     * Removes the voice connection.
-     *
-     * @param guildId The id of the guild.
-     */
-    fun removeVoiceConnectionById(guildId: Long)
-
-    /**
-     * Sets the pending voice connection.
-     *
-     * @param guildId The id of the guild.
-     * @param voiceConnection The voice connection.
-     * @return The [VoiceConnection] object.
-     */
-    fun setPendingVoiceConnection(
-        guildId: Long,
-        voiceConnection: VoiceConnection,
-    )
-
-    /**
-     * The pending voice connection.
-     *
-     * @param guildId The id of the guild.
-     * @return The [VoiceConnection] object.
-     */
-    fun getPendingVoiceConnectionById(guildId: Long): VoiceConnection?
-
-    /**
-     * Removes the pending voice connection.
-     *
-     * @param guildId The id of the guild.
-     */
-    fun removePendingVoiceConnectionById(guildId: Long)
 
     /**
      * The default ScheduledExecutorService.

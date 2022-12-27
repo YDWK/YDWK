@@ -19,30 +19,36 @@
 package io.github.ydwk.ydwk.evm.handler.handlers.voice
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.ydwk.ydwk.entities.VoiceState
-import io.github.ydwk.ydwk.evm.event.events.voice.VoiceConnectionEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
-import io.github.ydwk.ydwk.impl.entities.VoiceStateImpl
+import io.github.ydwk.ydwk.impl.entities.GuildImpl
 import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
 
 class VoiceServerUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
 
     override fun start() {
-        val voiceState: VoiceState = VoiceStateImpl(ydwk, json)
-        val token = json.get("token").asText()
-        val endPoint = json.get("endpoint").asText()
         val guildId = json.get("guild_id").asLong()
+        val guild = ydwk.getGuildById(guildId) ?: throw IllegalStateException("Guild not found")
 
-        val voiceConnection: VoiceConnectionImpl? =
-            (ydwk.getPendingVoiceConnectionById(guildId) as VoiceConnectionImpl?)
+        val token: String = json.get("token").asText()
+        val endPoint: String = json.get("endpoint").asText()
+        val sessionId: String =
+            guild.botAsMember.voiceState?.sessionId
+                ?: throw IllegalStateException(
+                    "SessionId not found, looks like VoiceStateUpdateHandler didn't run")
+        val userId: Long =
+            guild.botAsMember.voiceState?.user?.idAsLong
+                ?: throw IllegalStateException(
+                    "UserId not found, looks like VoiceStateUpdateHandler didn't run")
+        val voiceConnection: VoiceConnectionImpl =
+            (guild as GuildImpl).getVoiceConnection()
+                ?: throw IllegalStateException(
+                    "VoiceConnection not found, looks like it was not saved")
 
-        if (voiceConnection != null) {
-            voiceConnection.token = token
-            voiceConnection.voiceEndpoint = endPoint
-            voiceConnection.attemptConnect()
+        try {
+            voiceConnection.safeConnect(endPoint, token, sessionId, userId)
+        } catch (e: IllegalStateException) {
+            throw IllegalStateException("Failed to connect to voice server", e)
         }
-
-        ydwk.emitEvent(VoiceConnectionEvent(ydwk, voiceState))
     }
 }
