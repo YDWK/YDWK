@@ -20,30 +20,35 @@ package io.github.ydwk.ydwk.voice.impl
 
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
+import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.impl.entities.GuildImpl
 import io.github.ydwk.ydwk.voice.VoiceConnection
 import io.github.ydwk.ydwk.ws.voice.VoiceWebSocket
 import io.github.ydwk.ydwk.ws.voice.util.SpeakingFlag
 import java.net.DatagramSocket
+import java.net.InetSocketAddress
 import java.util.*
 import java.util.concurrent.CompletableFuture
 
 data class VoiceConnectionImpl(
     override var channel: GuildVoiceChannel,
     val ydwk: YDWK,
-    val future: CompletableFuture<VoiceConnection>,
-    override var isMuted: Boolean,
-    override var isDeafened: Boolean,
+    val future: CompletableFuture<VoiceConnection>? = null,
+    override var isMuted: Boolean = false,
+    override var isDeafened: Boolean = false
 ) : VoiceConnection {
-    var token: String? = null
-    var sessionId: String? = null
-    var voiceEndpoint: String? = null
-    var userId: Long? = null
     override val speakingFlags: EnumSet<SpeakingFlag> = EnumSet.noneOf(SpeakingFlag::class.java)
     private var disconnectFuture: CompletableFuture<Void> = CompletableFuture()
     private var changedChannelFuture: CompletableFuture<Void>? = CompletableFuture()
     private var voiceWebSocket: VoiceWebSocket? = null
     var udpsocket: DatagramSocket? = null
     private var attemptingToConnectOrConnected = false
+
+    var voiceEndpoint: String? = null
+    var token: String? = null
+    var sessionId: String? = null
+    var userId: String? = null
+    var address: InetSocketAddress? = null
 
     init {
         ydwk.webSocketManager?.sendVoiceStateUpdate(channel.guild, channel, isMuted, isDeafened)
@@ -92,32 +97,47 @@ data class VoiceConnectionImpl(
     }
 
     override fun disconnect(): CompletableFuture<Void> {
-        disconnectFuture = CompletableFuture()
-        voiceWebSocket?.close()
-        ydwk.webSocketManager?.sendVoiceStateUpdate(channel.guild, null, isDeafened, isMuted)
-        channel.guild.removeVoiceConnection(this)
-        return disconnectFuture
+        return if (attemptingToConnectOrConnected) {
+            disconnectFuture = CompletableFuture()
+            voiceWebSocket?.close()
+            ydwk.webSocketManager?.sendVoiceStateUpdate(channel.guild, null, isDeafened, isMuted)
+            (channel.guild as GuildImpl).removeVoiceConnection()
+            attemptingToConnectOrConnected = false
+            disconnectFuture
+        } else {
+            (ydwk as YDWKImpl)
+                .logger
+                .warn("Attempted to disconnect from a voice channel that was not connected to.")
+            CompletableFuture.completedFuture(null)
+        }
     }
 
-    @Synchronized
-    fun attemptConnect(): Boolean {
+    fun safeConnect(endPoint: String, token: String, sessionId: String, userId: Long) {
         if (changedChannelFuture != null && !changedChannelFuture!!.isDone) {
             changedChannelFuture!!.complete(null)
         }
 
-        if (attemptingToConnectOrConnected ||
-            sessionId == null ||
-            token == null ||
-            voiceEndpoint == null ||
-            userId == null) {
-            return false
+        if (attemptingToConnectOrConnected) {
+            (ydwk as YDWKImpl)
+                .logger
+                .warn("Attempted to connect to a voice channel that was already connected to.")
+            return // We are already connecting or we don't have enough information to connect
         }
 
+        this.voiceEndpoint = endPoint
+        this.token = token
+        this.sessionId = sessionId
+        this.userId = userId.toString()
+
         attemptingToConnectOrConnected = true
+        connect()
+    }
+
+    private fun connect() {
         voiceWebSocket = VoiceWebSocket(this)
         channel =
             ydwk.getGuildChannelById(channel.id)?.guildChannelGetter?.asGuildVoiceChannel()
-                ?: channel
-        return true
+                ?: channel // Update the channel in case it was updated
+        future?.complete(this)
     }
 }

@@ -32,10 +32,17 @@ import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import io.github.ydwk.ydwk.util.formatZonedDateTime
 import java.util.concurrent.CompletableFuture
 
-class VoiceStateImpl(override val ydwk: YDWK, override val json: JsonNode) : VoiceState {
+class VoiceStateImpl(
+    override val ydwk: YDWK,
+    override val json: JsonNode,
+    private val backupGuild: Guild? = null
+) : VoiceState {
 
     override val guild: Guild?
-        get() = ydwk.getGuildById(json["guild_id"].asLong())
+        get() =
+            if (ydwk.getGuildById(json["guild_id"].asLong()) != null)
+                ydwk.getGuildById(json["guild_id"].asLong())
+            else backupGuild
 
     override val channel: GuildVoiceChannel?
         get() =

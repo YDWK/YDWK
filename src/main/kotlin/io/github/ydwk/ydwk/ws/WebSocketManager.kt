@@ -430,7 +430,7 @@ open class WebSocketManager(
         selfMute: Boolean?,
         selfDeaf: Boolean?
     ) {
-
+        logger.debug("Sending voice state update")
         val mainVoiceUpdateJson: ObjectNode = ydwk.objectNode.put("op", OpCode.VOICE_STATE.code)
 
         val guildId: String? =

@@ -57,7 +57,6 @@ import io.github.ydwk.ydwk.rest.EndPoint
 import io.github.ydwk.ydwk.rest.RestApiManager
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import io.github.ydwk.ydwk.util.ThreadFactory
-import io.github.ydwk.ydwk.voice.VoiceConnection
 import io.github.ydwk.ydwk.ws.WebSocketManager
 import io.github.ydwk.ydwk.ws.util.LoggedIn
 import java.time.Instant
@@ -83,8 +82,6 @@ class YDWKImpl(
     private var token: String? = null,
     private var guildIdList: MutableList<String> = mutableListOf(),
     var applicationId: String? = null,
-    private var voiceConnection: MutableMap<Long, VoiceConnection> = mutableMapOf(),
-    private val pendingVoiceConnections: MutableMap<Long, VoiceConnection> = mutableMapOf(),
 ) : YDWK {
     override val defaultScheduledExecutorService: ScheduledExecutorService =
         Executors.newScheduledThreadPool(1)
@@ -282,32 +279,6 @@ class YDWKImpl(
                     GuildImpl(this, jsonBody, jsonBody["id"].asLong())
                 }
             }
-    }
-
-    override fun setVoiceConnection(guildId: Long, voiceConnection: VoiceConnection) {
-        logger.debug("Setting voice connection for guild $guildId")
-        this.voiceConnection[guildId] = voiceConnection
-    }
-
-    override fun getVoiceConnectionById(guildId: Long): VoiceConnection? {
-        return this.voiceConnection[guildId]
-    }
-
-    override fun removeVoiceConnectionById(guildId: Long) {
-        logger.debug("Removing voice connection for guild $guildId")
-        this.voiceConnection.remove(guildId)
-    }
-
-    override fun setPendingVoiceConnection(guildId: Long, voiceConnection: VoiceConnection) {
-        pendingVoiceConnections[guildId] = voiceConnection
-    }
-
-    override fun getPendingVoiceConnectionById(guildId: Long): VoiceConnection? {
-        return pendingVoiceConnections[guildId]
-    }
-
-    override fun removePendingVoiceConnectionById(guildId: Long) {
-        pendingVoiceConnections.remove(guildId)
     }
 
     override fun toString(): String {

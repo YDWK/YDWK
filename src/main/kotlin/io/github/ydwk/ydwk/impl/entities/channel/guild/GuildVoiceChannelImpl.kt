@@ -21,8 +21,9 @@ package io.github.ydwk.ydwk.impl.entities.channel.guild
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
+import io.github.ydwk.ydwk.impl.entities.GuildImpl
 import io.github.ydwk.ydwk.voice.VoiceConnection
-import java.util.*
+import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
 import java.util.concurrent.CompletableFuture
 import org.slf4j.LoggerFactory
 
@@ -34,11 +35,31 @@ open class GuildVoiceChannelImpl(ydwk: YDWK, json: JsonNode, idAsLong: Long) :
         isMuted: Boolean,
         isDeafened: Boolean
     ): CompletableFuture<VoiceConnection> {
-        return guild.joinVoiceChannel(this, isMuted, isDeafened)
+        val future = CompletableFuture<VoiceConnection>()
+        future
+            .completeAsync { VoiceConnectionImpl(this, ydwk, future, isMuted, isDeafened) }
+            .thenApply {
+                logger.info("Voice connection created for channel $name")
+                (guild as GuildImpl).setVoiceConnection(it as VoiceConnectionImpl)
+                it
+            }
+            .exceptionally {
+                logger.error("Error creating voice connection for channel $name", it)
+                null
+            }
+        return future
     }
 
     override fun leave(): CompletableFuture<Void> {
-        return guild.leaveVoiceChannel(this)
+        val future = CompletableFuture<Void>()
+        (guild as GuildImpl).getVoiceConnection()?.disconnect()
+        future
+            .completeAsync { null }
+            .exceptionally {
+                logger.error("Error destroying voice connection for channel $name", it)
+                null
+            }
+        return future
     }
 
     override var bitrate: Int = json["bitrate"].asInt()

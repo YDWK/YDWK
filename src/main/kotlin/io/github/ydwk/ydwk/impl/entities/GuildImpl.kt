@@ -23,8 +23,8 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Emoji
 import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.entities.Sticker
+import io.github.ydwk.ydwk.entities.VoiceState
 import io.github.ydwk.ydwk.entities.channel.GuildChannel
-import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.ydwk.entities.guild.Ban
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.guild.Role
@@ -38,13 +38,14 @@ import io.github.ydwk.ydwk.impl.entities.guild.WelcomeScreenImpl
 import io.github.ydwk.ydwk.rest.EndPoint
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
 import io.github.ydwk.ydwk.util.GetterSnowFlake
-import io.github.ydwk.ydwk.voice.VoiceConnection
 import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.locks.ReentrantLock
 
 class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override val idAsLong: Long) :
     Guild {
+    private var voiceConnection: VoiceConnectionImpl? = null
+
     private val audioConnectionLock = ReentrantLock()
 
     override var icon: String? = if (json.hasNonNull("icon")) json["icon"].asText() else null
@@ -169,6 +170,25 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
             }
         }
 
+    override val voiceStates: List<VoiceState>
+        get() {
+            val voiceStates =
+                if (json.hasNonNull("voice_states"))
+                    json["voice_states"].map { VoiceStateImpl(ydwk, it, this) }
+                else emptyList()
+
+            if (voiceStates.isNotEmpty()) {
+                for (vc in voiceStates) {
+                    val member = vc.member
+                    if (member != null) {
+                        member.voiceState = vc
+                    }
+                }
+            }
+
+            return voiceStates
+        }
+
     override val botAsMember: Member
         get() {
             return ydwk.getMemberById(
@@ -204,89 +224,19 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
         return getUnorderedChannels.firstOrNull { it.idAsLong == channelId }
     }
 
-    override val voiceConnection: VoiceConnection? = ydwk.getVoiceConnectionById(idAsLong)
-
-    override fun joinVoiceChannel(
-        guildVoiceChannelId: Long,
-        muted: Boolean,
-        deafened: Boolean
-    ): CompletableFuture<VoiceConnection> {
-        val vc =
-            voiceConnection
-                .let { voiceConnection?.disconnect() ?: CompletableFuture.completedFuture(null) }
-                .thenCompose {
-                    val completableFutureVoiceConnection = CompletableFuture<VoiceConnection>()
-                    val voiceChannel: GuildVoiceChannel =
-                        ydwk
-                            .getGuildChannelById(guildVoiceChannelId)
-                            ?.guildChannelGetter
-                            ?.asGuildVoiceChannel()
-                            ?: throw IllegalStateException("Channel is not a voice channel")
-                    val voiceConnection =
-                        VoiceConnectionImpl(
-                            voiceChannel, ydwk, completableFutureVoiceConnection, muted, deafened)
-                    setPendingVoiceConnection(voiceConnection)
-                    completableFutureVoiceConnection
-                }
-        // .thenApply {
-        // Does not work
-        //    (ydwk as YDWKImpl).logger.debug("Voice connection created")
-        //    setVoiceConnection(it)
-        //    it
-        //   }
-
-        // another way to setVoiceConnection when vc is completed
-        vc.whenComplete { c, _ ->
-            (ydwk as YDWKImpl).logger.debug("Voice connection created")
-            setVoiceConnection(c)
-        }
-
-        return vc
+    fun setVoiceConnection(voiceConnection: VoiceConnectionImpl) {
+        this.voiceConnection = voiceConnection
     }
 
-    override fun leaveVoiceChannel(guildVoiceChannelId: Long): CompletableFuture<Void> {
-        // TODO : null for some reason
-        return if (voiceConnection == null ||
-            voiceConnection.channel.idAsLong != guildVoiceChannelId) {
-            CompletableFuture.completedFuture(null)
-        } else {
-            voiceConnection.disconnect()
-        }
+    fun getVoiceConnection(): VoiceConnectionImpl? {
+        return voiceConnection
+    }
+
+    fun removeVoiceConnection() {
+        voiceConnection = null
     }
 
     override var name: String = json["name"].asText()
-
-    private fun setPendingVoiceConnection(
-        voiceConnection: VoiceConnection,
-    ) {
-        audioConnectionLock.lock()
-        try {
-            (ydwk as YDWKImpl).logger.debug("Setting pending voice connection for guild $id")
-            ydwk.setPendingVoiceConnection(this.idAsLong, voiceConnection)
-        } finally {
-            audioConnectionLock.unlock()
-        }
-    }
-
-    override fun setVoiceConnection(voiceConnection: VoiceConnection) {
-        audioConnectionLock.lock()
-        try {
-            (ydwk as YDWKImpl).logger.debug("Setting voice connection for guild $id")
-            ydwk.setVoiceConnection(this.idAsLong, voiceConnection)
-        } finally {
-            audioConnectionLock.unlock()
-        }
-    }
-
-    override fun removeVoiceConnection(voiceConnection: VoiceConnection) {
-        audioConnectionLock.lock()
-        try {
-            (ydwk as YDWKImpl).logger.debug("Removing voice connection for guild $id")
-            ydwk.removeVoiceConnectionById(this.idAsLong)
-        } finally {
-            audioConnectionLock.unlock()
-        }
-    }
 
     override fun toString(): String {
         return EntityToStringBuilder(ydwk, this).name(this.name).toString()

@@ -44,6 +44,7 @@ suspend fun main() {
         .awaitReady()
         .slashBuilder
         .addSlashCommand(Slash("join_vc", "Joins a vc"))
+        .addSlashCommand("leave_vc", "Leaves a vc")
         .addSlashCommand(Slash("create_dm", "Creates a dm channel"))
         .addSlashCommand("button", "A button test")
         .addSlashCommand("bot_info", "The bot info")
@@ -57,7 +58,20 @@ suspend fun main() {
                     val member = it.slash.member
                     if (member != null) {
                         val voiceState = member.voiceState
-                        voiceState?.channel?.joinCompletableFuture()?.get()
+                        it.slash.reply("Joined vc!").trigger()
+                        voiceState?.channel?.join()
+                    } else {
+                        it.slash.reply("Member is null!").isEphemeral(true).trigger()
+                    }
+                }
+            }
+            "leave_vc" -> {
+                withContext(Dispatchers.IO) {
+                    val member = it.slash.member
+                    if (member != null) {
+                        val voiceState = member.voiceState
+                        it.slash.reply("Left vc!").trigger()
+                        voiceState?.channel?.leaveNow()
                     } else {
                         it.slash.reply("Member is null!").isEphemeral(true).trigger()
                     }
