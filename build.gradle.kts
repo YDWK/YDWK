@@ -68,6 +68,7 @@ dependencies {
     // ws and https
     api("com.squareup.okhttp3:okhttp:" + properties["okhttp3Version"])
     api("com.neovisionaries:nv-websocket-client:" + properties["nvWebsocketClientVersion"])
+    api("com.codahale:xsalsa20poly1305:" + properties["xsalsa20poly1305Version"])
 
     // kotlin
     api(
