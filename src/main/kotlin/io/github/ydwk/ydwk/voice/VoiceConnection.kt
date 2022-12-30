@@ -19,6 +19,7 @@
 package io.github.ydwk.ydwk.voice
 
 import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
+import io.github.ydwk.ydwk.voice.sub.VoiceSource
 import io.github.ydwk.ydwk.ws.voice.util.SpeakingFlag
 import java.util.*
 import java.util.concurrent.CompletableFuture
@@ -40,20 +41,6 @@ interface VoiceConnection {
      * @return The [VoiceConnection] object.
      */
     fun setMuted(muted: Boolean): VoiceConnection
-
-    /**
-     * Whether the bot is deafened.
-     *
-     * @return Whether the bot is deafened.
-     */
-    val isDeafened: Boolean
-
-    /**
-     * Whether the bot is muted.
-     *
-     * @return Whether the bot is muted.
-     */
-    val isMuted: Boolean
 
     /**
      * Whether the bot is priority speaker.
@@ -86,11 +73,12 @@ interface VoiceConnection {
     fun setSpeaking(speaking: Boolean): VoiceConnection
 
     /**
-     * The speaking flags.
+     * Sets the VoiceSource for the bot to use.
      *
-     * @return The speaking flags.
+     * @param source The [VoiceSource] to use.
+     * @return The [VoiceConnection] object.
      */
-    val speakingFlags: EnumSet<SpeakingFlag>
+    fun setSource(source: VoiceSource): VoiceConnection
 
     /**
      * Disconnects the bot from the voice channel.
@@ -105,4 +93,25 @@ interface VoiceConnection {
      * @return The voice channel the bot is connected to.
      */
     val channel: GuildVoiceChannel
+
+    /**
+     * The speaking flags.
+     *
+     * @return The speaking flags.
+     */
+    val speakingFlags: EnumSet<SpeakingFlag>
+
+    /**
+     * Whether the bot is deafened.
+     *
+     * @return Whether the bot is deafened.
+     */
+    val isDeafened: Boolean
+
+    /**
+     * Whether the bot is muted.
+     *
+     * @return Whether the bot is muted.
+     */
+    val isMuted: Boolean
 }

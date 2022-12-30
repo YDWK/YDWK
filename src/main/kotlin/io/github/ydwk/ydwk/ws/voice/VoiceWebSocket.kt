@@ -48,11 +48,12 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
     private var timesTriedToConnect = 0
     @get:Synchronized @set:Synchronized var connected = false
     private var heartBeat: HeartBeat? = null
-    private var secretKey: ByteArray? = null
-    private var ssrc: Int? = null
+    var secretKey: ByteArray? = null
+    var ssrc: Int? = null
     private var encryptionMode: VoiceEncryption? = null
     private var wssUrl: String? = null
     private var reconnecting = false
+    private var ready = false
 
     init {
         val url =
@@ -229,6 +230,7 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
             VoiceOpcode.SESSION_DESCRIPTION -> {
                 logger.debug("Received $opCode - Session Description")
                 sendSpeaking()
+
                 val keyArray: ArrayNode
                 if (data.get("secret_key").isArray) {
                     keyArray = data.get("secret_key") as ArrayNode
@@ -239,10 +241,14 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
                 val secretKey = ByteArray(32)
                 this.secretKey = secretKey
                 for (i in 0 until keyArray.size()) secretKey[i] = keyArray.get(i).asInt().toByte()
+                ready = true
+
+                voiceConnection.sendSendingAudio()
             }
             VoiceOpcode.RESUMED -> {
                 logger.debug("Received $opCode - RESUMED")
                 logger.info("Successfully resumed voice connection")
+                ready = true
             }
             VoiceOpcode.HEARTBEAT_ACK -> {
                 logger.debug("Received $opCode - HEARTBEAT_ACK")
@@ -320,6 +326,7 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
     fun close() {
         logger.info("Closing voice connection")
         sendCloseCode(VoiceCloseCode.DISCONNECTED)
+        voiceConnection.stopSendingAudio()
         // in one minute stop heartbeat
         stopSendingEncodedData()
         ScheduledThreadPoolExecutor(1)
