@@ -41,9 +41,6 @@ open class SelectMenuImpl(
     json: JsonNode,
     interactionId: GetterSnowFlake,
 ) : SelectMenu, ComponentInteractionImpl(ydwk, json, interactionId) {
-    protected val componentJson: JsonNode =
-        MessageImpl(ydwk, json["message"], json["message"]["id"].asLong()).json
-
     constructor(
         componentInteractionImpl: ComponentInteractionImpl
     ) : this(
@@ -52,7 +49,20 @@ open class SelectMenuImpl(
         componentInteractionImpl.interactionId)
 
     override val customId: String
-        get() = componentJson["custom_id"].asText()
+        get() = json["data"]["custom_id"].asText()
+
+    protected val componentJson: JsonNode = run {
+        val message = MessageImpl(ydwk, json["message"], json["message"]["id"].asLong()).json
+        val mainComponents = message["components"]
+        for (mainComponent in mainComponents) {
+            val components = mainComponent["components"]
+            val component = components.find { it["custom_id"].asText() == customId }
+            if (component != null) {
+                return@run component
+            }
+        }
+        throw IllegalStateException("Component not found")
+    }
 
     override val placeholder: String?
         get() =
@@ -79,7 +89,7 @@ open class SelectMenuImpl(
 
     open class SelectMenuCreatorImpl(
         open val customId: String,
-        val componentType: ComponentType,
+        private val componentType: ComponentType,
         override val json: ObjectNode = JsonNodeFactory.instance.objectNode()
     ) : ISelectMenuCreator, SelectMenuCreator {
         private var placeholder: String? = null

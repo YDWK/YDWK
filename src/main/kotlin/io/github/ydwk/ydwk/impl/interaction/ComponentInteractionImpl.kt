@@ -71,7 +71,9 @@ open class ComponentInteractionImpl(
             else null
 
     override val applicationId: GetterSnowFlake?
-        get() = TODO("Not yet implemented")
+        get() =
+            if (json.has("application_id")) GetterSnowFlake.of(json["application_id"].asLong())
+            else null
 
     override val components: List<Component>
         get() = message.components

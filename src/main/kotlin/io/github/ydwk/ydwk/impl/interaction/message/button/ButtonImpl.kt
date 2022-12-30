@@ -39,8 +39,6 @@ open class ButtonImpl(
     json: JsonNode,
     interactionId: GetterSnowFlake,
 ) : Button, ComponentInteractionImpl(ydwk, json, interactionId) {
-    private val componentJson: JsonNode =
-        MessageImpl(ydwk, json["message"], json["message"]["id"].asLong()).json
 
     constructor(
         componentInteractionImpl: ComponentInteractionImpl,
@@ -49,6 +47,22 @@ open class ButtonImpl(
         componentInteractionImpl.ydwk,
         componentInteractionImpl.json,
         componentInteractionImpl.interactionId)
+
+    override val customId: String?
+        get() = json["data"]["custom_id"]?.asText()
+
+    private val componentJson: JsonNode = run {
+        val message = MessageImpl(ydwk, json["message"], json["message"]["id"].asLong()).json
+        val mainComponents = message["components"]
+        for (mainComponent in mainComponents) {
+            val components = mainComponent["components"]
+            val component = components.find { it["custom_id"].asText() == customId }
+            if (component != null) {
+                return@run component
+            }
+        }
+        throw IllegalStateException("Component not found")
+    }
 
     override val url: URL?
         get() = if (componentJson.has("url")) URL(componentJson["url"].asText()) else null
@@ -66,9 +80,6 @@ open class ButtonImpl(
 
     override val label: String?
         get() = if (componentJson.has("label")) componentJson["label"].asText() else null
-
-    override val customId: String?
-        get() = if (componentJson.has("custom_id")) componentJson["custom_id"].asText() else null
 
     override val emoji: Emoji?
         get() = if (componentJson.has("emoji")) EmojiImpl(ydwk, componentJson["emoji"]) else null
