@@ -23,12 +23,16 @@ import io.github.ydwk.ydwk.cache.CacheIds
 import io.github.ydwk.ydwk.entities.channel.GuildChannel
 import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
 import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
+import io.github.ydwk.ydwk.entities.channel.guild.forum.ChannelFlag
+import io.github.ydwk.ydwk.entities.channel.guild.forum.ForumLayoutType
+import io.github.ydwk.ydwk.entities.channel.guild.forum.GuildForumChannel
 import io.github.ydwk.ydwk.entities.channel.guild.message.GuildMessageChannel
 import io.github.ydwk.ydwk.entities.channel.guild.message.news.GuildNewsChannel
 import io.github.ydwk.ydwk.entities.channel.guild.message.text.GuildTextChannel
 import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildStageChannel
 import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.ydwk.evm.event.events.channel.update.category.CategoryNameUpdateEvent
+import io.github.ydwk.ydwk.evm.event.events.channel.update.forum.*
 import io.github.ydwk.ydwk.evm.event.events.channel.update.guild.GuildChannelParentUpdateEvent
 import io.github.ydwk.ydwk.evm.event.events.channel.update.guild.GuildChannelPositionUpdateEvent
 import io.github.ydwk.ydwk.evm.event.events.channel.update.message.*
@@ -40,6 +44,9 @@ import io.github.ydwk.ydwk.evm.event.events.channel.update.voice.VoiceChannelUse
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.entities.channel.guild.*
+import io.github.ydwk.ydwk.impl.entities.channel.guild.forum.DefaultReactionEmojiImpl
+import io.github.ydwk.ydwk.impl.entities.channel.guild.forum.ForumTagImpl
+import io.github.ydwk.ydwk.util.GetterSnowFlake
 import java.util.*
 
 class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
@@ -51,12 +58,14 @@ class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json)
             ChannelType.GROUP_DM -> ydwk.logger.warn("Group DMs are not supported.")
             ChannelType.CATEGORY -> updateCategory()
             ChannelType.NEWS -> updateNewsChannel()
+            // TODO: Add support for thread channels
             ChannelType.NEWS_THREAD -> ydwk.logger.warn("News threads are not supported yet.")
             ChannelType.PUBLIC_THREAD -> ydwk.logger.warn("Public threads are not supported yet.")
             ChannelType.PRIVATE_THREAD -> ydwk.logger.warn("Private threads are not supported yet.")
             ChannelType.STAGE_VOICE -> updateStageChannel()
+            // TODO: Add support for DIRECTORY
             ChannelType.DIRECTORY -> ydwk.logger.warn("Directories are not supported.")
-            ChannelType.FORUM -> ydwk.logger.warn("Forums are not supported yet.")
+            ChannelType.FORUM -> updateForumChannel()
             ChannelType.UNKNOWN -> ydwk.logger.warn("Unknown channel type ${json["type"].asInt()}")
         }
     }
@@ -289,6 +298,146 @@ class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json)
             ydwk.emitEvent(
                 VoiceChannelRateLimitPerUserUpdateEvent(
                     ydwk, channel, oldRateLimitPerUser, newRateLimitPerUser))
+        }
+
+        updateGuildChannel(channel)
+    }
+
+    private fun updateForumChannel() {
+        val channel: GuildForumChannel? =
+            ydwk.getGuildChannelById(json["id"].asText())?.guildChannelGetter?.asGuildForumChannel()
+
+        if (channel == null) {
+            ydwk.logger.info("Channel ${json["id"].asText()} is not cached, creating new one.")
+            ydwk.cache[
+                    json["id"].asText(), GuildForumChannelImpl(ydwk, json, json["id"].asLong())] =
+                CacheIds.CHANNEL
+            return
+        }
+
+        ydwk.logger.debug("Updating channel ${channel.id}")
+
+        val oldName = channel.name
+        val newName = json["name"].asText()
+        if (!Objects.deepEquals(oldName, newName)) {
+            channel.name = newName
+            ydwk.emitEvent(ForumChannelNameUpdateEvent(ydwk, channel, oldName, newName))
+        }
+
+        val oldTopic = channel.topic
+        val newTopic = if (json.hasNonNull("topic")) json["topic"].asText() else null
+        if (!Objects.deepEquals(oldTopic, newTopic)) {
+            channel.topic = newTopic
+            ydwk.emitEvent(ForumChannelTopicUpdateEvent(ydwk, channel, oldTopic, newTopic))
+        }
+
+        val oldTemplate = channel.template
+        val newTemplate = if (json.hasNonNull("template")) json["template"].asText() else null
+        if (!Objects.deepEquals(oldTemplate, newTemplate)) {
+            channel.template = newTemplate
+            ydwk.emitEvent(ForumChannelTemplateUpdateEvent(ydwk, channel, oldTemplate, newTemplate))
+        }
+
+        val oldRateLimitPerUser = channel.rateLimitPerUser
+        val newRateLimitPerUser = json["rate_limit_per_user"].asInt()
+        if (oldRateLimitPerUser != newRateLimitPerUser) {
+            channel.rateLimitPerUser = newRateLimitPerUser
+            ydwk.emitEvent(
+                ForumChannelRateLimitPerUserUpdateEvent(
+                    ydwk, channel, oldRateLimitPerUser, newRateLimitPerUser))
+        }
+
+        val oldPermissionOverwrites = channel.permissionOverwrites
+        val newPermissionOverwrites =
+            json["permission_overwrites"].map {
+                PermissionOverwriteImpl(ydwk, it, it["id"].asLong())
+            }
+        if (!Objects.deepEquals(oldPermissionOverwrites, newPermissionOverwrites)) {
+            channel.permissionOverwrites = newPermissionOverwrites
+            ydwk.emitEvent(
+                ForumChannelPermissionOverwritesUpdateEvent(
+                    ydwk, channel, oldPermissionOverwrites, newPermissionOverwrites))
+        }
+
+        val wasNsfw = channel.nsfw
+        val isNsfw = json["nsfw"].asBoolean()
+        if (wasNsfw != isNsfw) {
+            channel.nsfw = isNsfw
+            ydwk.emitEvent(ForumChannelNsfwUpdateEvent(ydwk, channel, wasNsfw, isNsfw))
+        }
+
+        val oldLastMessageId = channel.lastMessageId
+        val newLastMessageId =
+            if (json.hasNonNull("last_message_id")) json["last_message_id"].asText() else null
+        if (!Objects.deepEquals(oldLastMessageId, newLastMessageId)) {
+            channel.lastMessageId = newLastMessageId?.let { GetterSnowFlake.of(it) }
+            ydwk.emitEvent(
+                ForumChannelLastMessageIdUpdateEvent(
+                    ydwk, channel, oldLastMessageId!!.asString, newLastMessageId))
+        }
+
+        val oldChannelFlags = channel.channelFlags.getValue()
+        val newChannelFlags = json["channel_flags"].asLong()
+        if (oldChannelFlags != newChannelFlags) {
+            channel.channelFlags = ChannelFlag.fromValue(newChannelFlags)
+            ydwk.emitEvent(
+                ForumChannelChannelFlagsUpdateEvent(
+                    ydwk,
+                    channel,
+                    ChannelFlag.fromValue(oldChannelFlags),
+                    ChannelFlag.fromValue(newChannelFlags)))
+        }
+
+        val oldDefaultSortOrder = channel.defaultSortOrder
+        val newDefaultSortOrder =
+            if (json.hasNonNull("default_sort_order")) json["default_sort_order"].asInt() else null
+        if (oldDefaultSortOrder != newDefaultSortOrder) {
+            channel.defaultSortOrder = newDefaultSortOrder
+            ydwk.emitEvent(
+                ForumChannelDefaultSortOrderUpdateEvent(
+                    ydwk, channel, oldDefaultSortOrder, newDefaultSortOrder))
+        }
+
+        val oldDefaultReactionEmoji = channel.defaultReactionEmoji
+        val newDefaultReactionEmoji =
+            if (json.hasNonNull("default_reaction_emoji"))
+                DefaultReactionEmojiImpl(ydwk, json["default_reaction_emoji"])
+            else null
+        if (!Objects.deepEquals(oldDefaultReactionEmoji, newDefaultReactionEmoji)) {
+            channel.defaultReactionEmoji = newDefaultReactionEmoji
+            ydwk.emitEvent(
+                ForumChannelDefaultReactionEmojiUpdateEvent(
+                    ydwk, channel, oldDefaultReactionEmoji, newDefaultReactionEmoji))
+        }
+
+        val oldAvailableForumTags = channel.availableForumTags
+        val newAvailableForumTags =
+            json["available_tags"].map { ForumTagImpl(ydwk, it, it["id"].asLong()) }
+        if (!Objects.deepEquals(oldAvailableForumTags, newAvailableForumTags)) {
+            channel.availableForumTags = newAvailableForumTags
+            ydwk.emitEvent(
+                ForumChannelAvailableForumTagsUpdateEvent(
+                    ydwk, channel, oldAvailableForumTags, newAvailableForumTags))
+        }
+
+        val oldAvailableForumTagsIds = channel.availableForumTagsIds
+        val newAvailableForumTagsIds =
+            json["available_forum_tags"].map { GetterSnowFlake.of(it["id"].asLong()) }
+        if (!Objects.deepEquals(oldAvailableForumTagsIds, newAvailableForumTagsIds)) {
+            channel.availableForumTagsIds = newAvailableForumTagsIds
+            ydwk.emitEvent(
+                ForumChannelAvailableForumTagsIdsUpdateEvent(
+                    ydwk, channel, oldAvailableForumTagsIds, newAvailableForumTagsIds))
+        }
+
+        val oldDefaultForumLayoutView = channel.defaultForumLayoutView
+        val newDefaultForumLayoutView =
+            ForumLayoutType.fromValue(json["default_forum_layout"].asInt())
+        if (oldDefaultForumLayoutView.getValue() != newDefaultForumLayoutView.getValue()) {
+            channel.defaultForumLayoutView = newDefaultForumLayoutView
+            ydwk.emitEvent(
+                ForumChannelDefaultForumLayoutViewUpdateEvent(
+                    ydwk, channel, oldDefaultForumLayoutView, newDefaultForumLayoutView))
         }
 
         updateGuildChannel(channel)

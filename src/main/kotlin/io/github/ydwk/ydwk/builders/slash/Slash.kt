@@ -38,6 +38,7 @@ class Slash(
     private val guildOnly: Boolean = false,
     val specificGuildOnly: Boolean = false
 ) {
+    // TODO: Add support for subcommands
     private var options: MutableList<SlashOption> = mutableListOf()
 
     fun addOption(option: SlashOption): Slash {

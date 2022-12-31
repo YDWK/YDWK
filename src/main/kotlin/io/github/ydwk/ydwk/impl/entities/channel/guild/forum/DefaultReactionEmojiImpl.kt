@@ -16,14 +16,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.impl.entities.channel.guild
+package io.github.ydwk.ydwk.impl.entities.channel.guild.forum
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildStageChannel
+import io.github.ydwk.ydwk.entities.channel.guild.forum.DefaultReactionEmoji
+import io.github.ydwk.ydwk.util.EntityToStringBuilder
+import io.github.ydwk.ydwk.util.GetterSnowFlake
 
-class GuildStageChannelImpl(ydwk: YDWK, override val json: JsonNode, idAsLong: Long) :
-    GuildStageChannel, GuildVoiceChannelImpl(ydwk, json, idAsLong) {
+class DefaultReactionEmojiImpl(override val ydwk: YDWK, override val json: JsonNode) :
+    DefaultReactionEmoji {
+    override val emojiId: GetterSnowFlake?
+        get() = if (json.has("id")) GetterSnowFlake.of(json["id"].asText()) else null
 
-    override var topic: String? = if (json.has("topic")) json["topic"].asText() else null
+    override var name: String = json["name"].asText()
+
+    override fun toString(): String {
+        return EntityToStringBuilder(ydwk, this).toString()
+    }
 }

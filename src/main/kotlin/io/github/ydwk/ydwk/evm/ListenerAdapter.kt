@@ -27,6 +27,9 @@ import io.github.ydwk.ydwk.evm.event.events.ban.GuildBanAddEvent
 import io.github.ydwk.ydwk.evm.event.events.channel.ChannelCreateEvent
 import io.github.ydwk.ydwk.evm.event.events.channel.ChannelDeleteEvent
 import io.github.ydwk.ydwk.evm.event.events.channel.update.category.CategoryNameUpdateEvent
+import io.github.ydwk.ydwk.evm.event.events.channel.update.forum.*
+import io.github.ydwk.ydwk.evm.event.events.channel.update.guild.GuildChannelParentUpdateEvent
+import io.github.ydwk.ydwk.evm.event.events.channel.update.guild.GuildChannelPositionUpdateEvent
 import io.github.ydwk.ydwk.evm.event.events.channel.update.message.*
 import io.github.ydwk.ydwk.evm.event.events.channel.update.stage.StateChannelTopicUpdateEvent
 import io.github.ydwk.ydwk.evm.event.events.channel.update.text.TextChannelSlowModeUpdateEvent
@@ -193,6 +196,20 @@ abstract class ListenerAdapter : IEventListener {
      */
     open fun onChannelDelete(event: ChannelDeleteEvent) {}
 
+    /**
+     * Listens to GuildChannelParentUpdateEvent.
+     *
+     * @param event The GuildChannelParentUpdateEvent
+     */
+    open fun onGuildChannelParentUpdate(event: GuildChannelParentUpdateEvent) {}
+
+    /**
+     * Listens to GuildChannelPositionUpdateEvent
+     *
+     * @param event The GuildChannelPositionUpdateEvent
+     */
+    open fun onGuildChannelPositionUpdate(event: GuildChannelPositionUpdateEvent) {}
+
     // text/news channel
 
     /**
@@ -300,6 +317,102 @@ abstract class ListenerAdapter : IEventListener {
      * @param event The VoiceChannelNameUpdateEvent
      */
     open fun onVoiceChannelNameUpdate(event: VoiceChannelNameUpdateEvent) {}
+
+    // forum channel
+
+    /**
+     * Listens to ForumChannelNameUpdateEvent
+     *
+     * @param event The ForumChannelNameUpdateEvent
+     */
+    open fun onForumChannelNameUpdate(event: ForumChannelNameUpdateEvent) {}
+
+    /**
+     * Listens to ForumChannelTemplateUpdateEvent
+     *
+     * @param event The ForumChannelTemplateUpdateEvent
+     */
+    open fun onForumChannelTemplateUpdate(event: ForumChannelTemplateUpdateEvent) {}
+
+    /**
+     * Listens to ForumChannelRateLimitPerUserUpdateEvent
+     *
+     * @param event The ForumChannelRateLimitPerUserUpdateEvent
+     */
+    open fun onForumChannelRateLimitPerUserUpdate(event: ForumChannelRateLimitPerUserUpdateEvent) {}
+
+    /**
+     * Listens to ForumChannelPermissionOverwritesUpdateEvent
+     *
+     * @param event The ForumChannelPermissionOverwritesUpdateEvent
+     */
+    open fun onForumChannelPermissionOverwritesUpdate(
+        event: ForumChannelPermissionOverwritesUpdateEvent
+    ) {}
+
+    /**
+     * Listens to ForumChannelNsfwUpdateEvent.
+     *
+     * @param event The ForumChannelNsfwUpdateEvent
+     */
+    open fun onForumChannelNsfwUpdate(event: ForumChannelNsfwUpdateEvent) {}
+
+    /**
+     * Listens to ForumChannelLastMessageIdUpdateEvent
+     *
+     * @param event The ForumChannelLastMessageIdUpdateEvent
+     */
+    open fun onForumChannelLastMessageIdUpdate(event: ForumChannelLastMessageIdUpdateEvent) {}
+
+    /**
+     * Listens to ForumChannelChannelFlagsUpdateEvent
+     *
+     * @param event The ForumChannelChannelFlagsUpdateEvent
+     */
+    open fun onForumChannelChannelFlagsUpdate(event: ForumChannelChannelFlagsUpdateEvent) {}
+
+    /**
+     * Listens to ForumChannelDefaultSortOrderUpdateEvent
+     *
+     * @param event The ForumChannelDefaultSortOrderUpdateEvent
+     */
+    open fun onForumChannelDefaultSortOrderUpdate(event: ForumChannelDefaultSortOrderUpdateEvent) {}
+
+    /**
+     * Listens to ForumChannelDefaultReactionEmojiUpdateEvent
+     *
+     * @param event The ForumChannelDefaultReactionEmojiUpdateEvent
+     */
+    open fun onForumChannelDefaultReactionEmojiUpdate(
+        event: ForumChannelDefaultReactionEmojiUpdateEvent
+    ) {}
+
+    /**
+     * Listens to ForumChannelAvailableForumTagsUpdateEvent
+     *
+     * @param event The ForumChannelAvailableForumTagsUpdateEvent
+     */
+    open fun onForumChannelAvailableForumTagsUpdate(
+        event: ForumChannelAvailableForumTagsUpdateEvent
+    ) {}
+
+    /**
+     * Listens to ForumChannelAvailableForumTagsIdsUpdateEvent
+     *
+     * @param event The ForumChannelAvailableForumTagsIdsUpdateEvent
+     */
+    open fun onForumChannelAvailableForumTagsIdsUpdate(
+        event: ForumChannelAvailableForumTagsIdsUpdateEvent
+    ) {}
+
+    /**
+     * Listens to ForumChannelDefaultForumLayoutViewUpdateEvent.
+     *
+     * @param event The ForumChannelDefaultForumLayoutViewUpdateEvent
+     */
+    open fun onForumChannelDefaultForumLayoutViewUpdate(
+        event: ForumChannelDefaultForumLayoutViewUpdateEvent
+    ) {}
 
     // guild
     /**

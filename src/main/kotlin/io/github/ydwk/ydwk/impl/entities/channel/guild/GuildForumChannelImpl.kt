@@ -20,10 +20,60 @@ package io.github.ydwk.ydwk.impl.entities.channel.guild
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.channel.guild.forum.GuildForumChannel
+import io.github.ydwk.ydwk.entities.channel.guild.forum.*
+import io.github.ydwk.ydwk.entities.channel.guild.message.text.PermissionOverwrite
+import io.github.ydwk.ydwk.impl.entities.channel.guild.forum.DefaultReactionEmojiImpl
+import io.github.ydwk.ydwk.impl.entities.channel.guild.forum.ForumTagImpl
+import io.github.ydwk.ydwk.util.GetterSnowFlake
 
 class GuildForumChannelImpl(
     override val ydwk: YDWK,
     override val json: JsonNode,
     override val idAsLong: Long
-) : GuildForumChannel, GuildChannelImpl(ydwk, json, idAsLong)
+) : GuildForumChannel, GuildChannelImpl(ydwk, json, idAsLong) {
+
+    override var topic: String? = if (json.has("topic")) json["topic"].asText() else null
+
+    override var template: String? = if (json.has("template")) json["template"].asText() else null
+
+    override var rateLimitPerUser: Int =
+        if (json.has("rate_limit_per_user")) json["rate_limit_per_user"].asInt() else 0
+
+    override var permissionOverwrites: List<PermissionOverwrite> =
+        if (json.has("permission_overwrites"))
+            json["permission_overwrites"].map {
+                PermissionOverwriteImpl(ydwk, it, it["id"].asLong())
+            }
+        else emptyList()
+
+    override var nsfw: Boolean = json["nsfw"].asBoolean()
+
+    override var lastMessageId: GetterSnowFlake? =
+        if (json.has("last_message_id")) GetterSnowFlake.of(json["last_message_id"].asLong())
+        else null
+
+    override var channelFlags: ChannelFlag = ChannelFlag.fromValue(json["channel_flags"].asLong())
+
+    override var defaultRateLimitPerUser: Int = json["default_rate_limit_per_user"].asInt()
+
+    override var defaultSortOrder: Int? =
+        if (json.has("default_sort_order")) json["default_sort_order"].asInt() else null
+
+    override var defaultReactionEmoji: DefaultReactionEmoji? =
+        if (json.has("default_reaction_emoji"))
+            DefaultReactionEmojiImpl(ydwk, json["default_reaction_emoji"])
+        else null
+
+    override var availableForumTags: List<ForumTag> =
+        if (json.has("available_forum_tags"))
+            json["available_forum_tags"].map { ForumTagImpl(ydwk, it, it["id"].asLong()) }
+        else emptyList()
+
+    override var availableForumTagsIds: List<GetterSnowFlake> =
+        if (json.has("available_forum_tags"))
+            json["available_forum_tags"].map { GetterSnowFlake.of(it["id"].asLong()) }
+        else emptyList()
+
+    override var defaultForumLayoutView: ForumLayoutType =
+        ForumLayoutType.fromValue(json["default_forum_layout_view"].asInt())
+}
