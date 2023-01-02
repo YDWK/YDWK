@@ -22,6 +22,7 @@ import io.github.realyusufismail.jconfig.util.JConfigUtils
 import io.github.ydwk.ydwk.Activity
 import io.github.ydwk.ydwk.BotBuilder.createDefaultBot
 import io.github.ydwk.ydwk.builders.slash.Slash
+import io.github.ydwk.ydwk.builders.slash.SlashSubCommand
 import io.github.ydwk.ydwk.evm.backend.event.on
 import io.github.ydwk.ydwk.evm.event.events.interaction.button.ButtonClickEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.selectmenu.RoleSelectMenuEvent
@@ -49,6 +50,10 @@ suspend fun main() {
         .addSlashCommand("button", "A button test")
         .addSlashCommand("bot_info", "The bot info")
         .addSlashCommand("add_roles", "Add roles")
+        .addSlashCommand(
+            Slash("subcommand", "A subcommand test")
+                .addSubCommand(SlashSubCommand("subcommand", "A subcommand test"))
+                .addSubCommand(SlashSubCommand("subcommandtwo", "A subcommand test")))
         .build()
 
     ydwk.on<SlashCommandEvent> {
@@ -61,7 +66,7 @@ suspend fun main() {
                         it.slash.reply("Joined vc!").trigger()
                         voiceState?.channel?.join()
                     } else {
-                        it.slash.reply("Member is null!").isEphemeral(true).trigger()
+                        it.slash.reply("Member is null!").setEphemeral(true).trigger()
                     }
                 }
             }
@@ -73,7 +78,7 @@ suspend fun main() {
                         it.slash.reply("Left vc!").trigger()
                         voiceState?.channel?.leaveNow()
                     } else {
-                        it.slash.reply("Member is null!").isEphemeral(true).trigger()
+                        it.slash.reply("Member is null!").setEphemeral(true).trigger()
                     }
                 }
             }
