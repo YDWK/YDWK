@@ -16,68 +16,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.interaction.application.type
+package io.github.ydwk.ydwk.interaction.application.type.sub
 
 import io.github.ydwk.ydwk.builders.slash.SlashOptionGetter
 import io.github.ydwk.ydwk.builders.slash.SlashOptionType
-import io.github.ydwk.ydwk.interaction.application.ApplicationCommand
-import io.github.ydwk.ydwk.interaction.application.ApplicationCommandType
-import io.github.ydwk.ydwk.interaction.application.type.sub.SubCommand
-import io.github.ydwk.ydwk.interaction.reply.Repliable
+import io.github.ydwk.ydwk.entities.util.GenericEntity
+import io.github.ydwk.ydwk.util.NameAbleEntity
 
-interface SlashCommand : ApplicationCommand, Repliable {
-    /**
-     * The type of the command.
-     *
-     * @return The type of the command.
-     */
-    override val type: ApplicationCommandType
-        get() = ApplicationCommandType.CHAT_INPUT
-
-    /**
-     * The selected language of the invoking user
-     *
-     * @return the selected language of the invoking user
-     */
-    val locale: String?
-
+interface SubCommand : NameAbleEntity, GenericEntity {
     /**
      * Gets all the options of the command.
      *
      * @return All the options of the command.
      */
     val options: List<SlashOptionGetter>
-
-    /**
-     * Gets all the subcommands of the command. (They are a type of option)
-     *
-     * @return All the subcommands of the command.
-     */
-    val subcommands: List<SubCommand>
-        get() {
-            val subcommands = mutableListOf<SubCommand>()
-            for (option in options) {
-                if (option.type == SlashOptionType.SUB_COMMAND) {
-                    subcommands.add(option.asSubCommand)
-                }
-            }
-            return subcommands
-        }
-
-    /**
-     * Gets the triggered subcommand name.
-     *
-     * @return The triggered subcommand name.
-     */
-    val triggeredSubcommandName: String?
-        get() {
-            for (option in options) {
-                if (option.type == SlashOptionType.SUB_COMMAND) {
-                    return option.name
-                }
-            }
-            return null
-        }
 
     /**
      * Gets all the options with the specified name.

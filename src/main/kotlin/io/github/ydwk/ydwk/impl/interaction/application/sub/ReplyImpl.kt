@@ -44,12 +44,12 @@ class ReplyImpl(
     private var actionRow: ActionRow? = null
     private var actionRows = mutableListOf<ComponentImpl.ComponentCreator>()
 
-    override fun isEphemeral(isEphemeral: Boolean): Reply {
+    override fun setEphemeral(isEphemeral: Boolean): Reply {
         this.isEphemeral = isEphemeral
         return this
     }
 
-    override fun isTTS(isTTS: Boolean): Reply {
+    override fun setTTS(isTTS: Boolean): Reply {
         this.isTTS = isTTS
         return this
     }

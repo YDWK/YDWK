@@ -23,6 +23,7 @@ import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.entities.message.Attachment
+import io.github.ydwk.ydwk.interaction.application.type.sub.SubCommand
 import io.github.ydwk.ydwk.util.NameAbleEntity
 
 interface SlashOptionGetter : NameAbleEntity {
@@ -104,4 +105,12 @@ interface SlashOptionGetter : NameAbleEntity {
      * @throws IllegalArgumentException if the option is not an attachment.
      */
     val asAttachment: Attachment
+
+    /**
+     * The option as a subcommand.
+     *
+     * @return The option as a subcommand.
+     * @throws IllegalArgumentException if the option is not a subcommand.
+     */
+    val asSubCommand: SubCommand
 }

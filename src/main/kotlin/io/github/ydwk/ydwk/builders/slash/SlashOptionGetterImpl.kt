@@ -25,6 +25,7 @@ import io.github.ydwk.ydwk.entities.guild.Role
 import io.github.ydwk.ydwk.entities.message.Attachment
 import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.interaction.application.ApplicationCommandOption
+import io.github.ydwk.ydwk.interaction.application.type.sub.SubCommand
 
 class SlashOptionGetterImpl(
     private val applicationCommandOption: ApplicationCommandOption,
@@ -85,6 +86,12 @@ class SlashOptionGetterImpl(
             if (type == SlashOptionType.ATTACHMENT)
                 optionObjects[applicationCommandOption.value.asLong()] as Attachment
             else throw IllegalArgumentException("The option type ${type.name} is not an attachment")
+
+    override val asSubCommand: SubCommand
+        get() =
+            if (type == SlashOptionType.SUB_COMMAND)
+                optionObjects[applicationCommandOption.value.asLong()] as SubCommand
+            else throw IllegalArgumentException("The option type ${type.name} is not a sub command")
 
     override var name: String
         get() = applicationCommandOption.name

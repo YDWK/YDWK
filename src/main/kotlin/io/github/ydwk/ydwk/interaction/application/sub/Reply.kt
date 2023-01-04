@@ -31,7 +31,7 @@ interface Reply {
      * @param ephemeral Whether the reply is ephemeral.
      * @return The [Reply] instance.
      */
-    fun isEphemeral(isEphemeral: Boolean): Reply
+    fun setEphemeral(isEphemeral: Boolean): Reply
 
     /**
      * Sets the reply as a 'text to speech' message.
@@ -39,7 +39,7 @@ interface Reply {
      * @param isTTS Whether the message should be 'text to speech'.
      * @return The [Reply] instance.
      */
-    fun isTTS(isTTS: Boolean): Reply
+    fun setTTS(isTTS: Boolean): Reply
 
     /**
      * Adds an [ActionRow] to the reply.
