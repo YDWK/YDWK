@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.impl.builders.slash
 
-import io.github.ydwk.ydwk.builders.slash.Slash
+import io.github.ydwk.ydwk.builders.slash.SlashCommandBuilder
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.rest.EndPoint
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -27,7 +27,7 @@ class SlashInfoSender(
     val ydwk: YDWKImpl,
     private val guildIds: MutableList<String>,
     val applicationId: String,
-    slashCommands: List<Slash>
+    slashCommands: List<SlashCommandBuilder>
 ) {
     init {
         ydwk.logger.info("Sending slash commands to Discord")
@@ -40,8 +40,8 @@ class SlashInfoSender(
                 emptyMap()
             }
 
-        val globalSlashCommands: MutableMap<String, Slash> = HashMap()
-        val guildSlashCommands: MutableMap<String, Slash> = HashMap()
+        val globalSlashCommands: MutableMap<String, SlashCommandBuilder> = HashMap()
+        val guildSlashCommands: MutableMap<String, SlashCommandBuilder> = HashMap()
 
         slashCommands.forEach { slash ->
             if (!slash.specificGuildOnly) {
@@ -53,8 +53,8 @@ class SlashInfoSender(
 
         val globalSlashCommandsIdsToDelete: MutableList<Long> = mutableListOf()
         val guildSlashCommandsIdsToDelete: MutableList<Long> = mutableListOf()
-        val globalSlashCommandsToAdd: MutableList<Slash> = mutableListOf()
-        val guildSlashCommandsToAdd = mutableListOf<Slash>()
+        val globalSlashCommandsToAdd: MutableList<SlashCommandBuilder> = mutableListOf()
+        val guildSlashCommandsToAdd = mutableListOf<SlashCommandBuilder>()
 
         if (currentGlobalSlashCommandsNameAndId.isNotEmpty()) {
             currentGlobalSlashCommandsNameAndId.forEach { (id, name) ->
@@ -232,7 +232,7 @@ class SlashInfoSender(
         }
     }
 
-    private fun createGlobalSlashCommands(slashCommands: List<Slash>) {
+    private fun createGlobalSlashCommands(slashCommands: List<SlashCommandBuilder>) {
         slashCommands.forEach { slash ->
             ydwk.logger.debug("Sending global slash command ${slash.name} to Discord")
             ydwk.restApiManager
@@ -244,7 +244,10 @@ class SlashInfoSender(
         }
     }
 
-    private fun createGuildSlashCommands(guildId: String, slashCommands: List<Slash>) {
+    private fun createGuildSlashCommands(
+        guildId: String,
+        slashCommands: List<SlashCommandBuilder>
+    ) {
         slashCommands.forEach { slash ->
             ydwk.logger.debug("Sending slash command ${slash.name} to guild $guildId")
             ydwk.restApiManager

@@ -37,6 +37,8 @@ enum class MessageFlag(private val value: Long) {
     LOADING(1 shl 7),
     /** This message failed to mention some roles and add their members to the thread. */
     FAILED_TO_MENTION_SOME_ROLES_IN_THREAD(1 shl 8),
+    /** This message will not trigger push and desktop notifications. */
+    SUPPRESS_NOTIFICATIONS(1 shl 12),
     /** An Unknown Message Flag. */
     UNKNOWN(-1);
 

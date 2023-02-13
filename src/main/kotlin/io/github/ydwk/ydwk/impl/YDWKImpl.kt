@@ -26,7 +26,7 @@ import io.github.ydwk.ydwk.GateWayIntent
 import io.github.ydwk.ydwk.UserStatus
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.builders.message.IMessageCommandBuilder
-import io.github.ydwk.ydwk.builders.slash.SlashBuilder
+import io.github.ydwk.ydwk.builders.slash.ISlashCommandBuilder
 import io.github.ydwk.ydwk.builders.user.IUserCommandBuilder
 import io.github.ydwk.ydwk.cache.*
 import io.github.ydwk.ydwk.entities.*
@@ -192,7 +192,7 @@ class YDWKImpl(
     override val uptime: Instant
         get() = webSocketManager!!.upTime ?: throw IllegalStateException("Bot is not logged in")
 
-    override val slashBuilder: SlashBuilder
+    override val slashBuilder: ISlashCommandBuilder
         get() =
             SlashBuilderImpl(
                 this, guildIdList, applicationId ?: throw ApplicationIdNotSetException())

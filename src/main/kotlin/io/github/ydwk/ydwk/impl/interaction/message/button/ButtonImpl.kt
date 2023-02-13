@@ -27,7 +27,6 @@ import io.github.ydwk.ydwk.impl.entities.MessageImpl
 import io.github.ydwk.ydwk.impl.interaction.ComponentInteractionImpl
 import io.github.ydwk.ydwk.impl.interaction.application.sub.ReplyImpl
 import io.github.ydwk.ydwk.interaction.application.sub.Reply
-import io.github.ydwk.ydwk.interaction.message.Component
 import io.github.ydwk.ydwk.interaction.message.ComponentType
 import io.github.ydwk.ydwk.interaction.message.button.Button
 import io.github.ydwk.ydwk.interaction.message.button.ButtonStyle
@@ -41,8 +40,7 @@ open class ButtonImpl(
 ) : Button, ComponentInteractionImpl(ydwk, json, interactionId) {
 
     constructor(
-        componentInteractionImpl: ComponentInteractionImpl,
-        component: Component
+        componentInteractionImpl: ComponentInteractionImpl
     ) : this(
         componentInteractionImpl.ydwk,
         componentInteractionImpl.json,

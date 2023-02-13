@@ -21,7 +21,7 @@ package io.github.ydwk.ydwk
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.ydwk.ydwk.builders.message.IMessageCommandBuilder
-import io.github.ydwk.ydwk.builders.slash.SlashBuilder
+import io.github.ydwk.ydwk.builders.slash.ISlashCommandBuilder
 import io.github.ydwk.ydwk.builders.user.IUserCommandBuilder
 import io.github.ydwk.ydwk.cache.CacheIds
 import io.github.ydwk.ydwk.entities.*
@@ -162,7 +162,7 @@ interface YDWK {
     val uptime: Instant
 
     /** Adds or removes slash commands */
-    val slashBuilder: SlashBuilder
+    val slashBuilder: ISlashCommandBuilder
 
     /** Adds or removes user commands. */
     val userCommandBuilder: IUserCommandBuilder

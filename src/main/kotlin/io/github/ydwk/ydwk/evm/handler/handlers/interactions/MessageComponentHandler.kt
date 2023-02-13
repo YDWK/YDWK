@@ -43,8 +43,7 @@ class MessageComponentHandler(
                         ComponentType.BUTTON -> {
                             if (customId == children.customId) {
                                 ydwk.emitEvent(
-                                    ButtonClickEvent(
-                                        ydwk, ButtonImpl(interactionComponent, children)))
+                                    ButtonClickEvent(ydwk, ButtonImpl(interactionComponent)))
                             }
                         }
                         ComponentType.STRING_SELECT_MENU -> {

@@ -32,7 +32,7 @@ import io.github.ydwk.ydwk.util.Checks
  * @param guildOnly Whether the slash command can only be used in guilds.
  * @param specificGuildOnly Whether the slash command can only be used in a specific guild/s.
  */
-class Slash(
+class SlashCommandBuilder(
     val name: String,
     val description: String,
     private val guildOnly: Boolean = false,
@@ -42,47 +42,47 @@ class Slash(
     private var subCommandGroups: MutableList<SlashSubCommandGroup> = mutableListOf()
     private var subCommands: MutableList<SlashSubCommand> = mutableListOf()
 
-    fun addOption(option: SlashOption): Slash {
+    fun addOption(option: SlashOption): SlashCommandBuilder {
         options.add(option)
         return this
     }
 
-    fun addOptions(options: List<SlashOption>): Slash {
+    fun addOptions(options: List<SlashOption>): SlashCommandBuilder {
         this.options.addAll(options)
         return this
     }
 
-    fun addOptions(vararg options: SlashOption): Slash {
+    fun addOptions(vararg options: SlashOption): SlashCommandBuilder {
         this.options.addAll(options)
         return this
     }
 
-    fun addSubCommand(subCommand: SlashSubCommand): Slash {
+    fun addSubCommand(subCommand: SlashSubCommand): SlashCommandBuilder {
         subCommands.add(subCommand)
         return this
     }
 
-    fun addSubCommands(subCommands: List<SlashSubCommand>): Slash {
+    fun addSubCommands(subCommands: List<SlashSubCommand>): SlashCommandBuilder {
         this.subCommands.addAll(subCommands)
         return this
     }
 
-    fun addSubCommands(vararg subCommands: SlashSubCommand): Slash {
+    fun addSubCommands(vararg subCommands: SlashSubCommand): SlashCommandBuilder {
         this.subCommands.addAll(subCommands)
         return this
     }
 
-    fun addSubCommandGroup(subCommandGroup: SlashSubCommandGroup): Slash {
+    fun addSubCommandGroup(subCommandGroup: SlashSubCommandGroup): SlashCommandBuilder {
         subCommandGroups.add(subCommandGroup)
         return this
     }
 
-    fun addSubCommandGroups(subCommandGroups: List<SlashSubCommandGroup>): Slash {
+    fun addSubCommandGroups(subCommandGroups: List<SlashSubCommandGroup>): SlashCommandBuilder {
         this.subCommandGroups.addAll(subCommandGroups)
         return this
     }
 
-    fun addSubCommandGroups(vararg subCommandGroups: SlashSubCommandGroup): Slash {
+    fun addSubCommandGroups(vararg subCommandGroups: SlashSubCommandGroup): SlashCommandBuilder {
         this.subCommandGroups.addAll(subCommandGroups)
         return this
     }

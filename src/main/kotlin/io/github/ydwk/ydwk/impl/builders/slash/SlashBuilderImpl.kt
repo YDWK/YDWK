@@ -18,57 +18,57 @@
  */ 
 package io.github.ydwk.ydwk.impl.builders.slash
 
-import io.github.ydwk.ydwk.builders.slash.Slash
-import io.github.ydwk.ydwk.builders.slash.SlashBuilder
+import io.github.ydwk.ydwk.builders.slash.ISlashCommandBuilder
+import io.github.ydwk.ydwk.builders.slash.SlashCommandBuilder
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class SlashBuilderImpl(
     private val ydwk: YDWKImpl,
     private val guildIds: MutableList<String>,
     private val applicationId: String
-) : SlashBuilder {
-    private val slashCommands: MutableList<Slash> = mutableListOf()
+) : ISlashCommandBuilder {
+    private val slashCommands: MutableList<SlashCommandBuilder> = mutableListOf()
 
-    override fun addSlashCommand(name: String, description: String): SlashBuilder {
-        slashCommands.add(Slash(name, description))
+    override fun addSlashCommand(name: String, description: String): ISlashCommandBuilder {
+        slashCommands.add(SlashCommandBuilder(name, description))
         return this
     }
 
-    override fun addSlashCommand(slash: Slash): SlashBuilder {
+    override fun addSlashCommand(slash: SlashCommandBuilder): ISlashCommandBuilder {
         slashCommands.add(slash)
         return this
     }
 
-    override fun addSlashCommands(slashes: List<Slash>): SlashBuilder {
+    override fun addSlashCommands(slashes: List<SlashCommandBuilder>): ISlashCommandBuilder {
         slashCommands.addAll(slashes)
         return this
     }
 
-    override fun addSlashCommands(vararg slashes: Slash): SlashBuilder {
+    override fun addSlashCommands(vararg slashes: SlashCommandBuilder): ISlashCommandBuilder {
         slashCommands.addAll(slashes)
         return this
     }
 
-    override fun getSlashCommands(): List<Slash> {
+    override fun getSlashCommands(): List<SlashCommandBuilder> {
         return slashCommands
     }
 
-    override fun removeSlashCommand(slash: Slash): SlashBuilder {
+    override fun removeSlashCommand(slash: SlashCommandBuilder): ISlashCommandBuilder {
         slashCommands.remove(slash)
         return this
     }
 
-    override fun removeSlashCommands(slashes: List<Slash>): SlashBuilder {
+    override fun removeSlashCommands(slashes: List<SlashCommandBuilder>): ISlashCommandBuilder {
         slashCommands.removeAll(slashes)
         return this
     }
 
-    override fun removeSlashCommands(vararg slashes: Slash): SlashBuilder {
+    override fun removeSlashCommands(vararg slashes: SlashCommandBuilder): ISlashCommandBuilder {
         slashCommands.removeAll(slashes.toSet())
         return this
     }
 
-    override fun removeAllSlashCommands(): SlashBuilder {
+    override fun removeAllSlashCommands(): ISlashCommandBuilder {
         slashCommands.clear()
         return this
     }
