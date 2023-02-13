@@ -24,6 +24,7 @@ import io.github.ydwk.ydwk.interaction.message.ActionRow
 import io.github.ydwk.ydwk.rest.result.NoResult
 import java.util.concurrent.CompletableFuture
 
+/** Represents an object that can be used to reply to an interaction. */
 interface Reply {
 
     /**

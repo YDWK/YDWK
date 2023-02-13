@@ -88,7 +88,8 @@ suspend fun main() {
             "create_dm" -> {
                 withContext(Dispatchers.IO) {
                     val member = it.slash.member
-                    member?.createDmChannel?.get()?.sendMessage("Hello!")?.get()
+                    member?.createDmChannel?.get()?.setContent("Hello!")?.send()?.get()
+                        ?: throw Exception("Member is null!")
                 }
             }
             "button" -> {

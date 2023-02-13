@@ -18,22 +18,26 @@
  */ 
 package io.github.ydwk.ydwk.entities.message.build
 
+import com.fasterxml.jackson.databind.node.ArrayNode
+import com.fasterxml.jackson.databind.node.ObjectNode
+import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.channel.TextChannel
 import io.github.ydwk.ydwk.entities.guild.Member
 import io.github.ydwk.ydwk.entities.message.Embed
-import io.github.ydwk.ydwk.entities.message.Sendeadble
+import io.github.ydwk.ydwk.entities.message.MessageFlag
+import io.github.ydwk.ydwk.entities.message.SendAble
 import io.github.ydwk.ydwk.impl.entities.MessageImpl
 import io.github.ydwk.ydwk.rest.EndPoint
-import io.github.ydwk.ydwk.rest.json.sendMessageToChannelBody
 import java.util.concurrent.CompletableFuture
 import okhttp3.RequestBody.Companion.toRequestBody
 
 class MessageBuilder {
     private var content: String? = null
-    private var embed: Embed? = null
+    private var embeds: MutableList<Embed> = mutableListOf()
     private var tts: Boolean? = null
+    private var flags: MutableList<MessageFlag> = mutableListOf()
 
     /**
      * Sets the content of the message.
@@ -64,7 +68,62 @@ class MessageBuilder {
      * @return The [MessageBuilder] instance.
      */
     fun setEmbed(embed: Embed): MessageBuilder {
-        this.embed = embed
+        embeds.add(embed)
+        return this
+    }
+
+    /**
+     * Sets the embeds of the message.
+     *
+     * @param embeds The embeds of the message.
+     * @return The [MessageBuilder] instance.
+     */
+    fun setEmbeds(embeds: Array<out Embed>): MessageBuilder {
+        this.embeds.addAll(embeds)
+        return this
+    }
+
+    /**
+     * Sets the embeds of the message.
+     *
+     * @param embeds The embeds of the message.
+     * @return The [MessageBuilder] instance.
+     */
+    fun setEmbeds(embeds: List<Embed>): MessageBuilder {
+        this.embeds.addAll(embeds)
+        return this
+    }
+
+    /**
+     * Set a message flag.
+     *
+     * @param flag The flag to set.
+     * @return The [MessageBuilder] instance.
+     */
+    fun setFlag(flag: MessageFlag): MessageBuilder {
+        flags.add(flag)
+        return this
+    }
+
+    /**
+     * Sets the message flags.
+     *
+     * @param flags The flags to set.
+     * @return The [MessageBuilder] instance.
+     */
+    fun setFlags(flags: Array<out MessageFlag>): MessageBuilder {
+        this.flags.addAll(flags)
+        return this
+    }
+
+    /**
+     * Sets the message flags.
+     *
+     * @param flags The flags to set.
+     * @return The [MessageBuilder] instance.
+     */
+    fun setFlags(flags: List<MessageFlag>): MessageBuilder {
+        this.flags.addAll(flags)
         return this
     }
 
@@ -74,7 +133,7 @@ class MessageBuilder {
      * @param channel The channel to send the message to.
      * @return The [Message] that was sent.
      */
-    fun send(sendeadble: Sendeadble): CompletableFuture<Message> {
+    fun send(sendeadble: SendAble): CompletableFuture<Message> {
         return when (sendeadble) {
             is TextChannel -> {
                 sendToTextChannel(sendeadble)
@@ -98,7 +157,7 @@ class MessageBuilder {
      * @return The [Message] that was sent.
      */
     private fun sendToTextChannel(channel: TextChannel): CompletableFuture<Message> {
-        val body = sendMessageToChannelBody(channel.ydwk, content, tts, embed)
+        val body = sendMessageToChannelBody(channel.ydwk, content, tts, embeds, flags)
         return channel.ydwk.restApiManager
             .post(
                 body.toString().toRequestBody(),
@@ -121,7 +180,7 @@ class MessageBuilder {
      * @return The [Message] that was sent.
      */
     private fun sendToMember(member: Member): CompletableFuture<Message> {
-        return send(member.user as Sendeadble)
+        return send(member.user as SendAble)
     }
 
     /**
@@ -132,5 +191,24 @@ class MessageBuilder {
      */
     private fun sendToUser(user: User): CompletableFuture<Message> {
         return user.createDmChannel.thenCompose { channel -> send(channel) }
+    }
+
+    private fun sendMessageToChannelBody(
+        ydwk: YDWK,
+        content: String?,
+        tts: Boolean? = null,
+        embeds: List<Embed> = emptyList(),
+        flags: List<MessageFlag> = emptyList()
+    ): ObjectNode {
+        val body = ydwk.objectNode
+        if (content != null) body.put("content", content)
+        if (tts != null) body.put("tts", tts)
+        if (embeds.isNotEmpty()) {
+            val embedArray = ydwk.objectNode.arrayNode()
+            embeds.forEach { embedArray.add(it.json) }
+            body.set<ArrayNode>("embeds", embedArray)
+        }
+        if (flags.isNotEmpty()) body.put("flags", flags.sumOf { it.getValue() })
+        return body
     }
 }
