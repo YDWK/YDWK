@@ -16,9 +16,6 @@ YDWK is a discord wrapper made in kotlin that aims to be as simple and as fast a
 
 ## In progress and to be done
 
-- [ ] Create entities - in progress
-- [ ] Handle events - In progress
-
 ## Future Features
 
 ## Implemented
@@ -37,6 +34,8 @@ YDWK is a discord wrapper made in kotlin that aims to be as simple and as fast a
 - [x] Handle rate limiting in websocket
 - [x] Handle rate limiting in rest
 - [x] Support for channels
+- [x] Create entities - in progress
+- [x] Handle events - In progress
 
 ## Getting started
 

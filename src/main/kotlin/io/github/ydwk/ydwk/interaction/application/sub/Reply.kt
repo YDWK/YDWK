@@ -18,6 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.interaction.application.sub
 
+import io.github.ydwk.ydwk.entities.message.MessageFlag
 import io.github.ydwk.ydwk.impl.interaction.message.ComponentImpl
 import io.github.ydwk.ydwk.interaction.message.ActionRow
 import io.github.ydwk.ydwk.rest.result.NoResult
@@ -40,6 +41,22 @@ interface Reply {
      * @return The [Reply] instance.
      */
     fun setTTS(isTTS: Boolean): Reply
+
+    /**
+     * Adds any other message flag to the reply.
+     *
+     * @param flags The flags to add.
+     * @return The [Reply] instance.
+     */
+    fun addFlags(vararg flags: MessageFlag): Reply
+
+    /**
+     * Adds any other message flag to the reply.
+     *
+     * @param flags The flags to add.
+     * @return The [Reply] instance.
+     */
+    fun addFlags(flags: List<MessageFlag>): Reply
 
     /**
      * Adds an [ActionRow] to the reply.

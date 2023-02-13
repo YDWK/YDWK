@@ -199,9 +199,7 @@ class GuildImpl(override val ydwk: YDWK, override val json: JsonNode, override v
                         val jsonBody = it.jsonBody
                         jsonBody?.let {
                             val member = MemberImpl(ydwk as YDWKImpl, it, this)
-                            (ydwk as YDWKImpl)
-                                .memberCache
-                                .set(id, it["user"]["id"].asText(), member)
+                            ydwk.memberCache.set(id, it["user"]["id"].asText(), member)
                             member
                         }
                             ?: throw IllegalStateException("Response body is null")

@@ -25,7 +25,6 @@ import io.github.ydwk.ydwk.entities.message.Embed
 import io.github.ydwk.ydwk.entities.message.MessageFlag
 import io.github.ydwk.ydwk.impl.interaction.message.ComponentImpl
 import io.github.ydwk.ydwk.interaction.application.sub.Reply
-import io.github.ydwk.ydwk.interaction.message.ActionRow
 import io.github.ydwk.ydwk.interaction.sub.InteractionCallbackType
 import io.github.ydwk.ydwk.rest.EndPoint
 import io.github.ydwk.ydwk.rest.result.NoResult
@@ -41,8 +40,8 @@ class ReplyImpl(
 ) : Reply {
     private var isEphemeral: Boolean = false
     private var isTTS: Boolean = false
-    private var actionRow: ActionRow? = null
     private var actionRows = mutableListOf<ComponentImpl.ComponentCreator>()
+    private var flags = mutableListOf<MessageFlag>()
 
     override fun setEphemeral(isEphemeral: Boolean): Reply {
         this.isEphemeral = isEphemeral
@@ -51,6 +50,16 @@ class ReplyImpl(
 
     override fun setTTS(isTTS: Boolean): Reply {
         this.isTTS = isTTS
+        return this
+    }
+
+    override fun addFlags(vararg flags: MessageFlag): Reply {
+        this.flags.addAll(flags)
+        return this
+    }
+
+    override fun addFlags(flags: List<MessageFlag>): Reply {
+        this.flags.addAll(flags)
         return this
     }
 
@@ -76,12 +85,23 @@ class ReplyImpl(
 
         if (isTTS) secondBody.put("tts", true)
 
-        if (isEphemeral) secondBody.put("flags", MessageFlag.EPHEMERAL.getValue())
+        if (flags.isNotEmpty()) {
+            if (isEphemeral && !flags.contains(MessageFlag.EPHEMERAL)) {
+                flags.add(MessageFlag.EPHEMERAL)
+            }
 
-        // secondBody.set<ArrayNode>("components", actionRow?.toJson())
+            var flagValue: Long = 0
+            for (flag in flags) {
+                flagValue = flagValue or flag.getValue()
+            }
 
-        for (actionRow in actionRows) {
-            secondBody.set<ArrayNode>("components", actionRow.json)
+            secondBody.put("flags", flagValue)
+        }
+
+        if (actionRows.isNotEmpty()) {
+            for (actionRow in actionRows) {
+                secondBody.set<ArrayNode>("components", actionRow.json)
+            }
         }
 
         mainBody.set<JsonNode>("data", secondBody)

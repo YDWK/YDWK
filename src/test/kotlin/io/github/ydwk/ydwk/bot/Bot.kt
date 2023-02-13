@@ -21,7 +21,7 @@ package io.github.ydwk.ydwk.bot
 import io.github.realyusufismail.jconfig.util.JConfigUtils
 import io.github.ydwk.ydwk.Activity
 import io.github.ydwk.ydwk.BotBuilder.createDefaultBot
-import io.github.ydwk.ydwk.builders.slash.Slash
+import io.github.ydwk.ydwk.builders.slash.SlashCommandBuilder
 import io.github.ydwk.ydwk.builders.slash.SlashSubCommand
 import io.github.ydwk.ydwk.evm.backend.event.on
 import io.github.ydwk.ydwk.evm.event.events.interaction.button.ButtonClickEvent
@@ -44,14 +44,14 @@ suspend fun main() {
     ydwk
         .awaitReady()
         .slashBuilder
-        .addSlashCommand(Slash("join_vc", "Joins a vc"))
+        .addSlashCommand(SlashCommandBuilder("join_vc", "Joins a vc"))
         .addSlashCommand("leave_vc", "Leaves a vc")
-        .addSlashCommand(Slash("create_dm", "Creates a dm channel"))
+        .addSlashCommand(SlashCommandBuilder("create_dm", "Creates a dm channel"))
         .addSlashCommand("button", "A button test")
         .addSlashCommand("bot_info", "The bot info")
         .addSlashCommand("add_roles", "Add roles")
         .addSlashCommand(
-            Slash("subcommand", "A subcommand test")
+            SlashCommandBuilder("subcommand", "A subcommand test")
                 .addSubCommand(SlashSubCommand("subcommand", "A subcommand test"))
                 .addSubCommand(SlashSubCommand("subcommandtwo", "A subcommand test")))
         .build()

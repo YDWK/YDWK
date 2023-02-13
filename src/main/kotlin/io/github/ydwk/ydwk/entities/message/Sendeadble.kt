@@ -22,6 +22,7 @@ import io.github.ydwk.ydwk.entities.Message
 import io.github.ydwk.ydwk.entities.message.build.MessageBuilder
 import java.util.concurrent.CompletableFuture
 
+// TODO: Restructure to make it similar to the Reply interface
 interface Sendeadble {
     /**
      * Sends a message to this channel.
