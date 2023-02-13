@@ -48,7 +48,6 @@ apply(from = "gradle/tasks/eventClassJavaDocChecker.gradle")
 
 repositories {
     mavenCentral()
-    // maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
 }
 
 dependencies {
@@ -236,7 +235,7 @@ publishing {
                     }
                 }
                 ciManagement { system.set("GitHub Actions") }
-                inceptionYear.set("2022")
+                inceptionYear.set("2023")
                 developers {
                     developer {
                         id.set(extra["dev_id"] as String)
@@ -329,7 +328,7 @@ tasks.getByName("dokkaHtml", DokkaTask::class) {
         }
 
         pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
-            footerMessage = "Copyright © 2022 Yusuf Arfan Ismail and other YDWK contributors."
+            footerMessage = "Copyright © 2023 Yusuf Arfan Ismail and other YDWK contributors."
         }
     }
 }
