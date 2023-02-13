@@ -8,7 +8,7 @@
  *
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,30 +16,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.util
+package io.github.ydwk.ydwk.logging
 
-import java.util.concurrent.locks.ReentrantLock
+interface YDWKLogger {
+    /**
+     * Sets the [YDWKLoggerSeverity] to be used.
+     *
+     * @param severity The [YDWKLoggerSeverity] to be used.
+     * @return The [YDWKLogger] instance.
+     */
+    fun setSeverity(severity: YDWKLoggerSeverity): YDWKLogger
 
-class BlockingFactor<V> {
-    private val lock = ReentrantLock()
-    private var value: V? = null
-
-    fun set(value: V?) {
-        lock.lock()
-        this.value = value
-        lock.unlock()
-    }
-
-    fun get(): V? {
-        lock.lock()
-        val value = this.value
-        lock.unlock()
-        return value
-    }
-
-    fun clear() {
-        lock.lock()
-        this.value = null
-        lock.unlock()
-    }
+    /** Logs the message. */
+    fun log()
 }
