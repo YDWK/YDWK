@@ -19,7 +19,7 @@
 package io.github.ydwk.ydwk.entities
 
 import io.github.ydwk.ydwk.entities.channel.DmChannel
-import io.github.ydwk.ydwk.entities.message.Sendeadble
+import io.github.ydwk.ydwk.entities.message.SendAble
 import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.impl.entities.channel.DmChannelImpl
 import io.github.ydwk.ydwk.rest.EndPoint
@@ -29,7 +29,7 @@ import java.awt.Color
 import java.util.concurrent.CompletableFuture
 import okhttp3.RequestBody.Companion.toRequestBody
 
-interface User : SnowFlake, GenericEntity, NameAbleEntity, Sendeadble {
+interface User : SnowFlake, GenericEntity, NameAbleEntity, SendAble {
     /**
      * The user's 4-digit discord-tag.
      *

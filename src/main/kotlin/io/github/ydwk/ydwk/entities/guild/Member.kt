@@ -23,17 +23,16 @@ import io.github.ydwk.ydwk.entities.PermissionEntity
 import io.github.ydwk.ydwk.entities.User
 import io.github.ydwk.ydwk.entities.VoiceState
 import io.github.ydwk.ydwk.entities.channel.DmChannel
-import io.github.ydwk.ydwk.entities.message.Sendeadble
+import io.github.ydwk.ydwk.entities.message.SendAble
 import io.github.ydwk.ydwk.entities.util.GenericEntity
 import io.github.ydwk.ydwk.rest.result.NoResult
 import io.github.ydwk.ydwk.util.GetterSnowFlake
 import io.github.ydwk.ydwk.util.NameAbleEntity
 import io.github.ydwk.ydwk.util.SnowFlake
-import java.util.*
 import java.util.concurrent.CompletableFuture
 
 /** This class is used to represent a discord guild member entity. */
-interface Member : NameAbleEntity, GenericEntity, Sendeadble, SnowFlake, PermissionEntity {
+interface Member : NameAbleEntity, GenericEntity, SendAble, SnowFlake, PermissionEntity {
 
     /**
      * Gets thw member's Guild.

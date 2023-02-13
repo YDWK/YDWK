@@ -19,11 +19,11 @@
 package io.github.ydwk.ydwk.entities.channel
 
 import io.github.ydwk.ydwk.entities.Channel
-import io.github.ydwk.ydwk.entities.message.Sendeadble
+import io.github.ydwk.ydwk.entities.message.SendAble
 import io.github.ydwk.ydwk.util.NameAbleEntity
 
 /**
  * Contains all the functions that are common to all 'text' channels (i.e. channels that can send
  * messages).
  */
-interface TextChannel : Channel, Sendeadble, NameAbleEntity
+interface TextChannel : Channel, SendAble, NameAbleEntity
