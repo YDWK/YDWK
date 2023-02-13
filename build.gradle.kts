@@ -54,13 +54,13 @@ dependencies {
         "com.fasterxml.jackson.module:jackson-module-kotlin:" +
             properties["jacksonModuleKotlinVersion"])
 
+    // config.json
+    api("io.github.realyusufismail:jconfig:" + properties["jconfigVersion"])
+
     // logger
     api("ch.qos.logback:logback-classic:" + properties["logBackClassicVersion"])
     api("ch.qos.logback:logback-core:" + properties["logBackCoreVersion"])
     api("uk.org.lidalia:sysout-over-slf4j:" + properties["sysoutOverSlf4jVersion"])
-
-    // config.json
-    api("io.github.realyusufismail:jconfig:" + properties["jconfigVersion"])
 
     // ws and https
     api("com.squareup.okhttp3:okhttp:" + properties["okhttp3Version"])
@@ -136,7 +136,7 @@ spotless {
  *
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

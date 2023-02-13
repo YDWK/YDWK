@@ -17,7 +17,7 @@
   ~  */
   -->
 <configuration>
-    <conversionRule conversionWord="highlight" converterClass="io.github.ydwk.ydwk.logger.LoggerColorScheme"/>
+    <conversionRule conversionWord="highlight" converterClass="io.github.ydwk.ydwk.logging.LoggerColorScheme"/>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%cyan(%d{yyyy/mm/dd HH:mm:ss}) %green({%thread}) [%highlight(%level)]
