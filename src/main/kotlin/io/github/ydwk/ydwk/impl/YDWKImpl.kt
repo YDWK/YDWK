@@ -69,8 +69,6 @@ import kotlin.random.Random
 import kotlinx.coroutines.delay
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.toRequestBody
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 class YDWKImpl(
     private val client: OkHttpClient,
