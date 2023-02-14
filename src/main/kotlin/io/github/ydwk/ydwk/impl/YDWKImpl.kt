@@ -8,7 +8,7 @@
  *
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -53,6 +53,7 @@ import io.github.ydwk.ydwk.impl.entities.channel.DmChannelImpl
 import io.github.ydwk.ydwk.impl.entities.channel.guild.GuildChannelImpl
 import io.github.ydwk.ydwk.impl.entities.message.embed.builder.EmbedBuilderImpl
 import io.github.ydwk.ydwk.impl.rest.RestApiManagerImpl
+import io.github.ydwk.ydwk.logging.*
 import io.github.ydwk.ydwk.rest.EndPoint
 import io.github.ydwk.ydwk.rest.RestApiManager
 import io.github.ydwk.ydwk.util.EntityToStringBuilder
@@ -75,8 +76,8 @@ class YDWKImpl(
     private val client: OkHttpClient,
     private val simpleEventManager: SampleEventManager = SampleEventManager(),
     private val coroutineEventManager: CoroutineEventManager = CoroutineEventManager(),
-    val logger: Logger = LoggerFactory.getLogger(YDWKImpl::class.java),
     private val allowedCache: MutableSet<CacheIds> = mutableSetOf(),
+    val logger: Logger = LoggerFactory.getLogger(YDWKImpl::class.java),
     val cache: Cache = PerpetualCache(allowedCache),
     val memberCache: MemberCache = MemberCacheImpl(allowedCache),
     private var token: String? = null,
@@ -99,7 +100,7 @@ class YDWKImpl(
     override fun requestChannelById(id: Long): CompletableFuture<Channel> {
         return this.restApiManager
             .get(EndPoint.ChannelEndpoint.GET_CHANNEL, id.toString())
-            .execute { it ->
+            .execute {
                 val jsonBody = it.jsonBody
                 if (jsonBody == null) {
                     throw IllegalStateException("json body is null")
@@ -117,7 +118,7 @@ class YDWKImpl(
     override fun requestGuildChannelById(id: Long, guildId: Long): CompletableFuture<GuildChannel> {
         return this.restApiManager
             .get(EndPoint.ChannelEndpoint.GET_CHANNEL, id.toString())
-            .execute { it ->
+            .execute {
                 val jsonBody = it.jsonBody
                 if (jsonBody == null) {
                     throw IllegalStateException("json body is null")
@@ -152,12 +153,12 @@ class YDWKImpl(
     override fun shutdownAPI() {
         val oneToFiveSecondTimeout = Random.nextLong(1000, 5000)
         invalidateRestApi(oneToFiveSecondTimeout)
-        logger.info("Timeout for $oneToFiveSecondTimeout then shutting down")
+        info("Timeout for $oneToFiveSecondTimeout then shutting down")
 
         try {
             Thread.sleep(oneToFiveSecondTimeout)
         } catch (e: InterruptedException) {
-            logger.error("Error while sleeping", e)
+            error("Error while sleeping" + e.message)
         }
         webSocketManager?.shutdown()
     }
@@ -170,7 +171,7 @@ class YDWKImpl(
             try {
                 client.cache!!.close()
             } catch (e: Exception) {
-                logger.error("Error while closing cache", e)
+                error("Error while closing cache" + e.message)
             }
         }
         client.dispatcher.executorService.awaitTermination(
@@ -230,7 +231,7 @@ class YDWKImpl(
                     .toString()
                     .toRequestBody(),
                 EndPoint.UserEndpoint.CREATE_DM)
-            .execute { it ->
+            .execute {
                 val jsonBody = it.jsonBody
                 if (jsonBody == null) {
                     throw IllegalStateException("json body is null")
@@ -257,8 +258,7 @@ class YDWKImpl(
     }
 
     override fun requestUser(id: Long): CompletableFuture<User> {
-        return this.restApiManager.get(EndPoint.UserEndpoint.GET_USER, id.toString()).execute { it
-            ->
+        return this.restApiManager.get(EndPoint.UserEndpoint.GET_USER, id.toString()).execute {
             val jsonBody = it.jsonBody
             if (jsonBody == null) {
                 throw IllegalStateException("json body is null")
@@ -271,7 +271,7 @@ class YDWKImpl(
     override fun requestGuild(guildId: Long): CompletableFuture<Guild> {
         return this.restApiManager
             .get(EndPoint.GuildEndpoint.GET_GUILD, guildId.toString())
-            .execute { it ->
+            .execute {
                 val jsonBody = it.jsonBody
                 if (jsonBody == null) {
                     throw IllegalStateException("json body is null")
@@ -310,7 +310,7 @@ class YDWKImpl(
                     e.printStackTrace()
                 } finally {
                     if (field == null) {
-                        logger.error("Partial Application is null")
+                        error("Partial Application is null")
                     }
                 }
             } // wait for application to be set
@@ -326,7 +326,7 @@ class YDWKImpl(
                     e.printStackTrace()
                 } finally {
                     if (field == null) {
-                        logger.error("Application is null")
+                        error("Application is null")
                     }
                 }
             } // wait for application to be set
@@ -340,7 +340,7 @@ class YDWKImpl(
         val ws = webSocketManager ?: throw IllegalStateException("Bot is not logged in")
         while (!ws.ready) {
             delay(1000)
-            logger.debug("Waiting for bot to be ready")
+            debug("Waiting for bot to be ready")
         } // wait for bot to be ready
         return this
     }
@@ -355,7 +355,7 @@ class YDWKImpl(
                     coroutineEventManager.addEvent(eventListener)
                 }
                 else -> {
-                    logger.error(
+                    error(
                         "Event listener is not an instance of EventListener or CoroutineEventListener")
                 }
             }
@@ -372,7 +372,7 @@ class YDWKImpl(
                     coroutineEventManager.removeEvent(eventListener)
                 }
                 else -> {
-                    logger.error(
+                    error(
                         "Event listener is not an instance of EventListener or CoroutineEventListener")
                 }
             }
@@ -416,7 +416,43 @@ class YDWKImpl(
         this.loggedInStatus = loggedIn
     }
 
+    private val enabledLoggerStatus: List<YDWKLoggerStatus> = YDWKLoggerStatus.ALL
+    private val ydwkLoggerManager: YDWKLogManager = YDWKLogManager(enabledLoggerStatus)
+
+    fun info(name: String): YDWKLogger {
+        return YDWKLoggerImpl(ydwkLoggerManager, name).setSeverity(YDWKLoggerSeverity.INFO)
+    }
+
+    fun error(name: String): YDWKLogger {
+        return YDWKLoggerImpl(ydwkLoggerManager, name).setSeverity(YDWKLoggerSeverity.ERROR)
+    }
+
+    fun debug(name: String): YDWKLogger {
+        return YDWKLoggerImpl(ydwkLoggerManager, name).setSeverity(YDWKLoggerSeverity.DEBUG)
+    }
+
+    fun warn(name: String): YDWKLogger {
+        return YDWKLoggerImpl(ydwkLoggerManager, name).setSeverity(YDWKLoggerSeverity.WARN)
+    }
+
     companion object {
-        val logger: Logger = LoggerFactory.getLogger(YDWKImpl::class.java)
+        private val enabledLoggerStatus: List<YDWKLoggerStatus> = YDWKLoggerStatus.ALL
+        private val ydwkLoggerManager: YDWKLogManager = YDWKLogManager(enabledLoggerStatus)
+
+        fun info(name: String): YDWKLogger {
+            return YDWKLoggerImpl(ydwkLoggerManager, name).setSeverity(YDWKLoggerSeverity.INFO)
+        }
+
+        fun error(name: String, e: Throwable?): YDWKLogger {
+            return YDWKLoggerImpl(ydwkLoggerManager, name + e).setSeverity(YDWKLoggerSeverity.ERROR)
+        }
+
+        fun debug(name: String): YDWKLogger {
+            return YDWKLoggerImpl(ydwkLoggerManager, name).setSeverity(YDWKLoggerSeverity.DEBUG)
+        }
+
+        fun warn(name: String): YDWKLogger {
+            return YDWKLoggerImpl(ydwkLoggerManager, name).setSeverity(YDWKLoggerSeverity.WARN)
+        }
     }
 }

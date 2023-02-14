@@ -8,7 +8,7 @@
  *
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,11 +21,6 @@ package io.github.ydwk.ydwk.util
 import java.util.regex.Pattern
 
 object Checks {
-    fun checkNotNull(obj: Any?, message: String) {
-        if (obj == null) {
-            throw NullPointerException(message)
-        }
-    }
 
     fun checkLength(obj: String, length: Int, message: String) {
         if (obj.length >= length) {
