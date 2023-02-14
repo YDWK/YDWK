@@ -69,6 +69,8 @@ import kotlin.random.Random
 import kotlinx.coroutines.delay
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 class YDWKImpl(
     private val client: OkHttpClient,
@@ -441,8 +443,8 @@ class YDWKImpl(
             return YDWKLoggerImpl(ydwkLoggerManager, name).setSeverity(YDWKLoggerSeverity.INFO)
         }
 
-        fun error(name: String): YDWKLogger {
-            return YDWKLoggerImpl(ydwkLoggerManager, name).setSeverity(YDWKLoggerSeverity.ERROR)
+        fun error(name: String, e: Throwable?): YDWKLogger {
+            return YDWKLoggerImpl(ydwkLoggerManager, name + e).setSeverity(YDWKLoggerSeverity.ERROR)
         }
 
         fun debug(name: String): YDWKLogger {

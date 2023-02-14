@@ -35,7 +35,7 @@ class CoroutineEventManager : IEventManager, CoroutineScope by CoroutineScope(Di
                 try {
                     listener.onEvent(event)
                 } catch (e: Throwable) {
-                    YDWKImpl.logger.error(
+                    YDWKImpl.error(
                         "Error while emitting event ${event.javaClass.simpleName} to ${listener.javaClass.simpleName}",
                         e)
                     if (e is Error) {
