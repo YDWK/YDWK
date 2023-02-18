@@ -26,7 +26,7 @@ enum class YDWKInfo(private val url: String) {
     DISCORD_REST_VERSION("/v10"),
     FULL_DISCORD_REST_URL(DISCORD_REST_URL.url + DISCORD_REST_VERSION.url),
     VOICE_GATEWAY_VERSION("/?v=4"),
-    GITHUB_URL("https://github.com/RealYusufIsmail/YDWK"),
+    GITHUB_URL("https://github.com/ydwk/ydwk"),
     YDWK_VERSION("1.1.0");
 
     companion object {
