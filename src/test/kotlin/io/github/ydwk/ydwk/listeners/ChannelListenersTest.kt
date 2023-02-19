@@ -38,5 +38,5 @@ suspend fun main() {
             .setETFInsteadOfJson(true)
             .build()
 
-    ydwk.awaitReady().addEvent(ChannelListenersTest())
+    ydwk.awaitReady().addEventListeners(ChannelListenersTest())
 }

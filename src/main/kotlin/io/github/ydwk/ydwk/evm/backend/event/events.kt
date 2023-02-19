@@ -30,5 +30,5 @@ inline fun <reified T : GenericEvent> YDWK.on(
                 }
             }
         }
-        .also { this.addEvent(it) }
+        .also { this.addEventListeners(it) }
 }
