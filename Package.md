@@ -55,7 +55,7 @@ A default bot has all to recommend gateway intents.
 To use an event, you can use the ListenerAdapter or inline method
 
 ```kotlin
-class Bot : ListenerAdapter() {
+class Bot : CoreListeners {
     override fun onReady(event: ReadyEvent) {
         println("Bot is ready!")
     }
