@@ -22,9 +22,9 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.evm.event.events.interaction.AutoCompleteSlashCommandEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.ModelEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.PingEvent
-import io.github.ydwk.ydwk.evm.event.events.interaction.slash.MessageCommandEvent
+import io.github.ydwk.ydwk.evm.event.events.interaction.message.MessageCommandEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.slash.SlashCommandEvent
-import io.github.ydwk.ydwk.evm.event.events.interaction.slash.UserCommandEvent
+import io.github.ydwk.ydwk.evm.event.events.interaction.user.UserCommandEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.impl.interaction.ComponentInteractionImpl

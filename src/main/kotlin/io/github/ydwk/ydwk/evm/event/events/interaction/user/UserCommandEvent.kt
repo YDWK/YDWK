@@ -16,16 +16,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.evm.event.events.interaction.slash
+package io.github.ydwk.ydwk.evm.event.events.interaction.user
 
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.evm.event.Event
-import io.github.ydwk.ydwk.interaction.application.type.MessageCommand
+import io.github.ydwk.ydwk.interaction.application.type.UserCommand
 
 /**
- * This event is triggered when a message command is triggered.
+ * This event is triggered when a user command is triggered.
  *
  * @param ydwk The [YDWK] instance.
- * @param slash The [MessageCommand] that was triggered.
+ * @param slash The [UserCommand] that was triggered.
  */
-data class MessageCommandEvent(override val ydwk: YDWK, val slash: MessageCommand) : Event(ydwk)
+data class UserCommandEvent(override val ydwk: YDWK, val slash: UserCommand) : Event(ydwk)

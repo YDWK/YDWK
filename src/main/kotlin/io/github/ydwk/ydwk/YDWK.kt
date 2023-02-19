@@ -105,14 +105,14 @@ interface YDWK {
      *
      * @param eventListeners The event listeners to be added.
      */
-    fun addEvent(vararg eventListeners: Any)
+    fun addEventListeners(vararg eventListeners: Any)
 
     /**
      * Removes an event listener.
      *
      * @param eventListeners The event listeners to be removed.
      */
-    fun removeEvent(vararg eventListeners: Any)
+    fun removeEventListeners(vararg eventListeners: Any)
 
     /**
      * Emits an event

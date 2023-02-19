@@ -16,19 +16,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.evm.backend.event
+package io.github.ydwk.ydwk.evm.listeners
 
-import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
+import io.github.ydwk.ydwk.evm.backend.event.IEventListener
+import io.github.ydwk.ydwk.evm.event.events.voice.VoiceConnectionEvent
 
-inline fun <reified T : GenericEvent> YDWK.on(
-    crossinline consumer: suspend GenericEvent.(T) -> Unit
-): CoroutineEventListener {
-    return object : CoroutineEventListener {
-            override suspend fun onEvent(event: GenericEvent) {
-                if (event is T) {
-                    event.consumer(event)
-                }
-            }
+interface VoiceListeners : IEventListener {
+    /**
+     * Listens to VoiceConnectionEvent
+     *
+     * @param event The VoiceConnectionEvent
+     */
+    fun onVoiceConnection(event: VoiceConnectionEvent) {}
+
+    override fun onEvent(event: GenericEvent) {
+        when (event) {
+            is VoiceConnectionEvent -> onVoiceConnection(event)
         }
-        .also { this.addEventListeners(it) }
+    }
 }

@@ -16,16 +16,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.evm.event.events.interaction.slash
+package io.github.ydwk.ydwk.evm.listeners
 
-import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.evm.event.Event
-import io.github.ydwk.ydwk.interaction.application.type.UserCommand
+import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
+import io.github.ydwk.ydwk.evm.backend.event.IEventListener
+import io.github.ydwk.ydwk.evm.event.events.ban.GuildBanAddEvent
 
-/**
- * This event is triggered when a user command is triggered.
- *
- * @param ydwk The [YDWK] instance.
- * @param slash The [UserCommand] that was triggered.
- */
-data class UserCommandEvent(override val ydwk: YDWK, val slash: UserCommand) : Event(ydwk)
+interface GuildModerationListeners : IEventListener {
+    /**
+     * Listens to GuildBanAddEvent
+     *
+     * @param event The GuildBanAddEvent
+     */
+    fun onGuildBanAdd(event: GuildBanAddEvent) {}
+
+    override fun onEvent(event: GenericEvent) {
+        when (event) {
+            is GuildBanAddEvent -> onGuildBanAdd(event)
+        }
+    }
+}

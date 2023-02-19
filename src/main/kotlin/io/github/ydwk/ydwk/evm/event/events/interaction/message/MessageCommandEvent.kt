@@ -16,19 +16,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.evm.backend.event
+package io.github.ydwk.ydwk.evm.event.events.interaction.message
 
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.event.Event
+import io.github.ydwk.ydwk.interaction.application.type.MessageCommand
 
-inline fun <reified T : GenericEvent> YDWK.on(
-    crossinline consumer: suspend GenericEvent.(T) -> Unit
-): CoroutineEventListener {
-    return object : CoroutineEventListener {
-            override suspend fun onEvent(event: GenericEvent) {
-                if (event is T) {
-                    event.consumer(event)
-                }
-            }
-        }
-        .also { this.addEventListeners(it) }
-}
+/**
+ * This event is triggered when a message command is triggered.
+ *
+ * @param ydwk The [YDWK] instance.
+ * @param slash The [MessageCommand] that was triggered.
+ */
+data class MessageCommandEvent(override val ydwk: YDWK, val slash: MessageCommand) : Event(ydwk)

@@ -345,7 +345,7 @@ class YDWKImpl(
         return this
     }
 
-    override fun addEvent(vararg eventListeners: Any) {
+    override fun addEventListeners(vararg eventListeners: Any) {
         for (eventListener in eventListeners) {
             when (eventListener) {
                 is IEventListener -> {
@@ -362,7 +362,7 @@ class YDWKImpl(
         }
     }
 
-    override fun removeEvent(vararg eventListeners: Any) {
+    override fun removeEventListeners(vararg eventListeners: Any) {
         for (eventListener in eventListeners) {
             when (eventListener) {
                 is IEventListener -> {
