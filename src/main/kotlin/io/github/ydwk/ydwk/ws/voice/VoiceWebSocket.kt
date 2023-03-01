@@ -26,23 +26,21 @@ import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
 import io.github.ydwk.ydwk.ws.logging.WebsocketLogging
 import io.github.ydwk.ydwk.ws.util.HeartBeat
-import io.github.ydwk.ydwk.ws.voice.util.VoiceCloseCode
-import io.github.ydwk.ydwk.ws.voice.util.VoiceEncryption
+import io.github.ydwk.ydwk.ws.voice.util.*
 import io.github.ydwk.ydwk.ws.voice.util.VoiceEncryption.Companion.getPreferred
-import io.github.ydwk.ydwk.ws.voice.util.VoiceOpcode
+import io.github.ydwk.ydwk.ws.voice.util.handleUDP
 import java.io.IOException
 import java.net.*
-import java.nio.ByteBuffer
 import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 import org.slf4j.LoggerFactory
 
 /** Handles Voice connections. */
-class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
+class VoiceWebSocket(internal val voiceConnection: VoiceConnectionImpl) :
     WebSocketAdapter(), WebSocketListener {
-    private val logger = LoggerFactory.getLogger(VoiceWebSocket::class.java)
-    private var webSocket: WebSocket? = null
-    private val ydwk = (voiceConnection.ydwk as YDWKImpl)
+    internal val logger = LoggerFactory.getLogger(VoiceWebSocket::class.java)
+    internal var webSocket: WebSocket? = null
+    internal val ydwk = (voiceConnection.ydwk as YDWKImpl)
     private val webSocketManager =
         ydwk.webSocketManager ?: throw IllegalStateException("WebSocketManager is null!")
     private var timesTriedToConnect = 0
@@ -50,7 +48,7 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
     private var heartBeat: HeartBeat? = null
     var secretKey: ByteArray? = null
     var ssrc: Int? = null
-    private var encryptionMode: VoiceEncryption? = null
+    internal var encryptionMode: VoiceEncryption? = null
     private var wssUrl: String? = null
     private var reconnecting = false
     private var ready = false
@@ -260,69 +258,6 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
         }
     }
 
-    private fun sendCloseCode(code: VoiceCloseCode) {
-        checkNotNull(webSocket) { "WebSocket is null" }
-        webSocket!!.sendClose(code.code, code.reason)
-    }
-
-    private fun resume() {
-        val resumePayload = ydwk.objectNode
-        resumePayload.put("op", VoiceOpcode.RESUME.code)
-        val resumeData = ydwk.objectNode
-        resumeData.put("server_id", voiceConnection.channel.guild.idAsLong)
-        resumeData.put("session_id", voiceConnection.sessionId)
-        resumeData.put("token", voiceConnection.token)
-        resumePayload.set<JsonNode>("d", resumeData)
-        webSocket?.sendText(resumePayload.toString())
-    }
-
-    private fun identify() {
-        val identifyPayload = ydwk.objectNode
-        identifyPayload.put("op", VoiceOpcode.IDENTIFY.code)
-        val identifyData = ydwk.objectNode
-        identifyData.put("server_id", voiceConnection.channel.guild.idAsLong)
-        identifyData.put("user_id", voiceConnection.userId)
-        identifyData.put("session_id", voiceConnection.sessionId)
-        identifyData.put("token", voiceConnection.token)
-        identifyPayload.set<JsonNode>("d", identifyData)
-        webSocket?.sendText(identifyPayload.toString())
-    }
-
-    private fun onSelectProtocol(ourInetSocketAddress: InetSocketAddress) {
-        val selectProtocolPayload = ydwk.objectNode
-        selectProtocolPayload.put("op", VoiceOpcode.SELECT_PROTOCOL.code)
-
-        val selectProtocolData = ydwk.objectNode
-        selectProtocolData.put("protocol", "udp")
-
-        val dataPayload = ydwk.objectNode
-        dataPayload.put("address", ourInetSocketAddress.hostString)
-        dataPayload.put("port", ourInetSocketAddress.port)
-        dataPayload.put("mode", encryptionMode!!.getPreferredMode())
-
-        selectProtocolPayload.set<JsonNode>("d", selectProtocolData)
-        selectProtocolData.set<JsonNode>("data", dataPayload)
-
-        webSocket?.sendText(selectProtocolPayload.toString())
-    }
-
-    private fun sendSpeaking() {
-        val speakingPayload = ydwk.objectNode
-        speakingPayload.put("op", VoiceOpcode.SPEAKING.code)
-        val speakingData = ydwk.objectNode
-
-        val speakFlags: Long = 0
-        for (speakFlag in voiceConnection.speakingFlags) {
-            speakFlags.or(speakFlag.getValue())
-        }
-
-        speakingData.put("speaking", speakFlags)
-        speakingData.put("delay", 0)
-        speakingData.put("ssrc", ssrc)
-        speakingPayload.set<JsonNode>("d", speakingData)
-        webSocket?.sendText(speakingPayload.toString())
-    }
-
     fun close() {
         logger.info("Closing voice connection")
         sendCloseCode(VoiceCloseCode.DISCONNECTED)
@@ -331,65 +266,6 @@ class VoiceWebSocket(private val voiceConnection: VoiceConnectionImpl) :
         stopSendingEncodedData()
         ScheduledThreadPoolExecutor(1)
             .schedule({ heartBeat?.heartbeatThread?.cancel(false) }, 1, TimeUnit.MINUTES)
-    }
-
-    // UDP is a communication protocol that transmits independent packets over the network with no
-    // guarantee of arrival and no guarantee of the order of delivery.
-    private fun handleUDP(address: InetSocketAddress, ssrc: Int): InetSocketAddress? {
-        try {
-            // check if udp is already connected and if so close it
-            if (voiceConnection.udpsocket != null) {
-                voiceConnection.udpsocket!!.close()
-            }
-
-            // create a new udp socket
-            voiceConnection.udpsocket = DatagramSocket()
-
-            // create a byte array of length 70 containing the ssrc
-            val ssrcBytes = ByteBuffer.allocate(70)
-            ssrcBytes.putShort(1.toShort())
-            ssrcBytes.putShort(70.toShort())
-            ssrcBytes.putInt(ssrc)
-
-            // create a new datagram packet with the ssrc bytes and the address
-            val packet = DatagramPacket(ssrcBytes.array(), ssrcBytes.array().size, address)
-            voiceConnection.udpsocket!!.send(packet)
-
-            // Discord returns a packet with the port and ip of the udp socket
-            val receivedPacket = DatagramPacket(ByteArray(70), 70)
-            voiceConnection.udpsocket!!.soTimeout = 1000
-            voiceConnection.udpsocket!!.receive(receivedPacket)
-
-            // get the received bytes and convert them to a string
-            val receivedBytes: ByteArray = receivedPacket.data
-
-            // get the ip from the received bytes
-            var ip = String(receivedBytes, 4, receivedBytes.size - 6)
-            ip = ip.trim()
-
-            // get the port from the received bytes and end it with 0xFFFF to get the correct port
-            val port = getPort(receivedBytes, receivedBytes.size - 2).toInt() or 0xFFFF
-            voiceConnection.address = address
-            return InetSocketAddress(ip, port)
-        } catch (e: Exception) {
-            logger.error("Error while sending encoded data", e)
-            return null
-        }
-    }
-
-    private fun getPort(array: ByteArray, offset: Int): Short {
-        return (array[offset].toInt() and 0xff shl 8 or array[offset + 1].toInt() and 0xff)
-            .toShort()
-    }
-
-    private fun stopSendingEncodedData() {
-        try {
-            if (voiceConnection.udpsocket != null) {
-                voiceConnection.udpsocket!!.close()
-            }
-        } catch (e: Exception) {
-            logger.error("Error while stopping sending encoded data", e)
-        }
     }
 }
 
