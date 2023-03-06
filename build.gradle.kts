@@ -7,7 +7,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 buildscript {
     repositories { mavenCentral() }
 
-    dependencies { classpath("org.jetbrains.dokka:dokka-base:1.7.20") }
+    dependencies { classpath("org.jetbrains.dokka:dokka-base:1.8.10") }
 }
 
 plugins {
