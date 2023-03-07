@@ -324,13 +324,12 @@ tasks.getByName("dokkaHtml", DokkaTask::class) {
         jdkVersion.set(11)
         sourceLink {
             localDirectory.set(file("src/main/kotlin"))
-            remoteUrl.set(
-                URL("https://github.com/RealYusufIsmail/YDWK/tree/master/src/main/kotlin"))
+            remoteUrl.set(URL("https://github.com/YDWK/YDWK/tree/master/src/main/kotlin"))
             remoteLineSuffix.set("#L")
         }
 
         pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
-            footerMessage = "Copyright © 2023 Yusuf Arfan Ismail and other YDWK contributors."
+            footerMessage = "Copyright © 2023 YDWK inc."
         }
     }
 }
