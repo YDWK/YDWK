@@ -20,8 +20,8 @@ package io.github.ydwk.ydwk.slash
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ArrayNode
-import io.github.ydwk.ydwk.builders.slash.SlashOptionType
-import io.github.ydwk.ydwk.interaction.application.ApplicationCommandType
+import io.github.ydwk.yde.builders.slash.SlashOptionType
+import io.github.ydwk.yde.interaction.application.ApplicationCommandType
 import kotlin.test.assertEquals
 import org.junit.jupiter.api.Test
 

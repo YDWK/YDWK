@@ -18,9 +18,9 @@
  */ 
 package io.github.ydwk.ydwk.evm.event.events.interaction
 
+import io.github.ydwk.yde.interaction.Interaction
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.evm.event.Event
-import io.github.ydwk.ydwk.interaction.Interaction
 
 /**
  * This event is triggered when a slash command is auto-completed.

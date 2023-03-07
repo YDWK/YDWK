@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk
 
-import io.github.ydwk.ydwk.util.Checks
+import io.github.ydwk.yde.util.Checks
 import io.github.ydwk.ydwk.ws.util.ActivityType
 import java.util.regex.Pattern
 

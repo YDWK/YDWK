@@ -16,136 +16,53 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.impl
+package io.github.ydwk.yde.impl
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.node.JsonNodeFactory
-import com.fasterxml.jackson.databind.node.ObjectNode
-import io.github.ydwk.ydwk.ActivityPayload
-import io.github.ydwk.ydwk.GateWayIntent
-import io.github.ydwk.ydwk.UserStatus
-import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.builders.message.IMessageCommandBuilder
-import io.github.ydwk.ydwk.builders.slash.ISlashCommandBuilder
-import io.github.ydwk.ydwk.builders.user.IUserCommandBuilder
-import io.github.ydwk.ydwk.cache.*
-import io.github.ydwk.ydwk.entities.*
-import io.github.ydwk.ydwk.entities.application.PartialApplication
-import io.github.ydwk.ydwk.entities.builder.EntityBuilder
-import io.github.ydwk.ydwk.entities.channel.DmChannel
-import io.github.ydwk.ydwk.entities.channel.GuildChannel
-import io.github.ydwk.ydwk.entities.channel.enums.ChannelType
-import io.github.ydwk.ydwk.entities.guild.Member
-import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedBuilder
+import io.github.ydwk.yde.entities.Application
+import io.github.ydwk.yde.entities.Bot
+import io.github.ydwk.yde.entities.application.PartialApplication
+import io.github.ydwk.yde.util.EntityToStringBuilder
+import io.github.ydwk.yde.util.ThreadFactory
+import io.github.ydwk.ydwk.*
 import io.github.ydwk.ydwk.evm.backend.event.CoroutineEventListener
 import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
 import io.github.ydwk.ydwk.evm.backend.event.IEventListener
 import io.github.ydwk.ydwk.evm.backend.managers.CoroutineEventManager
 import io.github.ydwk.ydwk.evm.backend.managers.SampleEventManager
-import io.github.ydwk.ydwk.exceptions.ApplicationIdNotSetException
-import io.github.ydwk.ydwk.impl.builders.message.IMessageCommandBuilderImpl
-import io.github.ydwk.ydwk.impl.builders.slash.SlashBuilderImpl
-import io.github.ydwk.ydwk.impl.builders.user.IUserCommandBuilderImpl
-import io.github.ydwk.ydwk.impl.entities.GuildImpl
-import io.github.ydwk.ydwk.impl.entities.UserImpl
-import io.github.ydwk.ydwk.impl.entities.builder.EntityBuilderImpl
-import io.github.ydwk.ydwk.impl.entities.channel.DmChannelImpl
-import io.github.ydwk.ydwk.impl.entities.channel.guild.GuildChannelImpl
-import io.github.ydwk.ydwk.impl.entities.message.embed.builder.EmbedBuilderImpl
-import io.github.ydwk.ydwk.impl.rest.RestApiManagerImpl
 import io.github.ydwk.ydwk.logging.*
-import io.github.ydwk.ydwk.rest.EndPoint
-import io.github.ydwk.ydwk.rest.RestApiManager
-import io.github.ydwk.ydwk.util.EntityToStringBuilder
-import io.github.ydwk.ydwk.util.ThreadFactory
 import io.github.ydwk.ydwk.ws.WebSocketManager
 import io.github.ydwk.ydwk.ws.util.LoggedIn
 import java.time.Instant
-import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 import kotlinx.coroutines.delay
 import okhttp3.OkHttpClient
-import okhttp3.RequestBody.Companion.toRequestBody
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 class YDWKImpl(
     private val client: OkHttpClient,
-    private val simpleEventManager: SampleEventManager = SampleEventManager(),
-    private val coroutineEventManager: CoroutineEventManager = CoroutineEventManager(),
-    private val allowedCache: MutableSet<CacheIds> = mutableSetOf(),
-    val logger: Logger = LoggerFactory.getLogger(YDWKImpl::class.java),
-    val cache: Cache = PerpetualCache(allowedCache),
-    val memberCache: MemberCache = MemberCacheImpl(allowedCache),
     private var token: String? = null,
-    private var guildIdList: MutableList<String> = mutableListOf(),
-    var applicationId: String? = null,
-) : YDWK {
+    private val guildIdList: MutableList<String> = mutableListOf(),
+    applicationId: String? = null,
+) :
+    YDWK,
+    YDEImpl(
+        token,
+        applicationId,
+        client,
+        guildIdList,
+        YDWKInfo.GITHUB_URL.getUrl(),
+        YDWKInfo.YDWK_VERSION.getUrl()) {
+
+    private val simpleEventManager: SampleEventManager = SampleEventManager()
+    private val coroutineEventManager: CoroutineEventManager = CoroutineEventManager()
+
     override val defaultScheduledExecutorService: ScheduledExecutorService =
         Executors.newScheduledThreadPool(1)
+
     override val threadFactory: ThreadFactory
         get() = ThreadFactory
-
-    override fun getChannelById(id: Long): Channel? {
-        return cache[id.toString(), CacheIds.CHANNEL] as Channel?
-    }
-
-    override fun getChannels(): List<Channel> {
-        return cache.values(CacheIds.CHANNEL).map { it as Channel }
-    }
-
-    override fun requestChannelById(id: Long): CompletableFuture<Channel> {
-        return this.restApiManager
-            .get(EndPoint.ChannelEndpoint.GET_CHANNEL, id.toString())
-            .execute {
-                val jsonBody = it.jsonBody
-                if (jsonBody == null) {
-                    throw IllegalStateException("json body is null")
-                } else {
-                    val channelType = ChannelType.fromInt(jsonBody["type"].asInt())
-                    if (ChannelType.isGuildChannel(channelType)) {
-                        GuildChannelImpl(this, jsonBody, jsonBody["id"].asLong())
-                    } else {
-                        DmChannelImpl(this, jsonBody, jsonBody["id"].asLong())
-                    }
-                }
-            }
-    }
-
-    override fun requestGuildChannelById(id: Long, guildId: Long): CompletableFuture<GuildChannel> {
-        return this.restApiManager
-            .get(EndPoint.ChannelEndpoint.GET_CHANNEL, id.toString())
-            .execute {
-                val jsonBody = it.jsonBody
-                if (jsonBody == null) {
-                    throw IllegalStateException("json body is null")
-                } else {
-                    GuildChannelImpl(this, jsonBody, jsonBody["id"].asLong())
-                }
-            }
-    }
-
-    override fun requestGuildChannels(guildId: Long): CompletableFuture<List<GuildChannel>> {
-        return this.restApiManager
-            .get(EndPoint.GuildEndpoint.GET_GUILD_CHANNELS, guildId.toString())
-            .execute { it ->
-                val jsonBody = it.jsonBody
-                jsonBody?.map { GuildChannelImpl(this, it, it["id"].asLong()) }
-                    ?: throw IllegalStateException("json body is null")
-            }
-    }
-
-    override val entityBuilder: EntityBuilder
-        get() = EntityBuilderImpl(this)
-
-    override val objectNode: ObjectNode
-        get() = JsonNodeFactory.instance.objectNode()
-
-    override val objectMapper: ObjectMapper
-        get() = ObjectMapper()
 
     override var webSocketManager: WebSocketManager? = null
         private set
@@ -178,107 +95,11 @@ class YDWKImpl(
             oneToFiveSecondTimeout, TimeUnit.MILLISECONDS)
     }
 
-    override fun getGuildById(id: String): Guild? {
-        return cache[id, CacheIds.GUILD] as Guild?
-    }
-
-    override val guilds: List<Guild>
-        get() = cache.values(CacheIds.GUILD).map { it as Guild }
-
-    override val restApiManager: RestApiManager
-        get() {
-            val botToken = token ?: throw IllegalStateException("Bot token is not set")
-            return RestApiManagerImpl(botToken, this, client)
-        }
     override val uptime: Instant
         get() = webSocketManager!!.upTime ?: throw IllegalStateException("Bot is not logged in")
 
-    override val slashBuilder: ISlashCommandBuilder
-        get() =
-            SlashBuilderImpl(
-                this, guildIdList, applicationId ?: throw ApplicationIdNotSetException())
-    override val userCommandBuilder: IUserCommandBuilder
-        get() =
-            IUserCommandBuilderImpl(
-                this, guildIdList, applicationId ?: throw ApplicationIdNotSetException())
-
-    override val messageCommandBuilder: IMessageCommandBuilder
-        get() =
-            IMessageCommandBuilderImpl(
-                this, guildIdList, applicationId ?: throw ApplicationIdNotSetException())
-
     override fun setGuildIds(vararg guildIds: String) {
         guildIds.forEach { this.guildIdList.add(it) }
-    }
-
-    override fun setAllowedCache(vararg cacheTypes: CacheIds) {
-        allowedCache.addAll(cacheTypes.toSet())
-    }
-
-    override fun setDisallowedCache(vararg cacheTypes: CacheIds) {
-        allowedCache.removeAll(cacheTypes.toSet())
-    }
-
-    override val embedBuilder: EmbedBuilder
-        get() = EmbedBuilderImpl(this)
-
-    override fun createDmChannel(userId: Long): CompletableFuture<DmChannel> {
-        return this.restApiManager
-            .post(
-                this.objectMapper
-                    .createObjectNode()
-                    .put("recipient_id", userId)
-                    .toString()
-                    .toRequestBody(),
-                EndPoint.UserEndpoint.CREATE_DM)
-            .execute {
-                val jsonBody = it.jsonBody
-                if (jsonBody == null) {
-                    throw IllegalStateException("json body is null")
-                } else {
-                    DmChannelImpl(this, jsonBody, jsonBody["id"].asLong())
-                }
-            }
-    }
-
-    override fun getMemberById(guildId: Long, userId: Long): Member? {
-        return memberCache[guildId.toString(), userId.toString()]
-    }
-
-    override fun getMembers(): List<Member> {
-        return memberCache.values().map { it }
-    }
-
-    override fun getUserById(id: Long): User? {
-        return cache[id.toString(), CacheIds.USER] as User?
-    }
-
-    override fun getUsers(): List<User> {
-        return cache.values(CacheIds.USER).map { it as User }
-    }
-
-    override fun requestUser(id: Long): CompletableFuture<User> {
-        return this.restApiManager.get(EndPoint.UserEndpoint.GET_USER, id.toString()).execute {
-            val jsonBody = it.jsonBody
-            if (jsonBody == null) {
-                throw IllegalStateException("json body is null")
-            } else {
-                UserImpl(jsonBody, jsonBody["id"].asLong(), this)
-            }
-        }
-    }
-
-    override fun requestGuild(guildId: Long): CompletableFuture<Guild> {
-        return this.restApiManager
-            .get(EndPoint.GuildEndpoint.GET_GUILD, guildId.toString())
-            .execute {
-                val jsonBody = it.jsonBody
-                if (jsonBody == null) {
-                    throw IllegalStateException("json body is null")
-                } else {
-                    GuildImpl(this, jsonBody, jsonBody["id"].asLong())
-                }
-            }
     }
 
     override fun toString(): String {
@@ -398,7 +219,7 @@ class YDWKImpl(
         intents: List<GateWayIntent>,
         userStatus: UserStatus? = null,
         activity: ActivityPayload? = null,
-        etfInsteadOfJson: Boolean
+        etfInsteadOfJson: Boolean,
     ) {
         val ws: WebSocketManager?
         ws = WebSocketManager(this, token, intents, userStatus, activity, etfInsteadOfJson)

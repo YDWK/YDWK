@@ -21,7 +21,7 @@ package io.github.ydwk.ydwk.component
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
-import io.github.ydwk.ydwk.interaction.sub.InteractionCallbackType
+import io.github.ydwk.yde.interaction.sub.InteractionCallbackType
 import kotlin.test.assertEquals
 import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test

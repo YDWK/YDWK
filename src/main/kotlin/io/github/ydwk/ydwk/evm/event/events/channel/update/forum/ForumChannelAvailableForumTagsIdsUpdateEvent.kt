@@ -18,10 +18,10 @@
  */ 
 package io.github.ydwk.ydwk.evm.event.events.channel.update.forum
 
+import io.github.ydwk.yde.entities.channel.guild.forum.GuildForumChannel
+import io.github.ydwk.yde.util.GetterSnowFlake
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.channel.guild.forum.GuildForumChannel
 import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
-import io.github.ydwk.ydwk.util.GetterSnowFlake
 
 /**
  * This event is triggered when a guild forum channel's available forum tag ids are updated.

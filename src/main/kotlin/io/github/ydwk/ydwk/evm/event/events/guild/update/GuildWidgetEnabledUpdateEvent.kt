@@ -18,8 +18,8 @@
  */ 
 package io.github.ydwk.ydwk.evm.event.events.guild.update
 
+import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.Guild
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
 /**

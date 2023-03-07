@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.logging
 
-import io.github.ydwk.ydwk.util.getColourANSIEscape
+import io.github.ydwk.yde.util.getColourANSIEscape
 import io.github.ydwk.ydwk.ws.util.formatInstant
 import java.awt.Color
 import java.time.Instant

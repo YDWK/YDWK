@@ -19,12 +19,12 @@
 package io.github.ydwk.ydwk.evm.handler.handlers.voice
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.ydwk.ydwk.entities.guild.Member
+import io.github.ydwk.yde.entities.guild.Member
+import io.github.ydwk.yde.impl.YDWKImpl
+import io.github.ydwk.yde.impl.entities.GuildImpl
+import io.github.ydwk.yde.impl.entities.VoiceStateImpl
 import io.github.ydwk.ydwk.evm.event.events.voice.VoiceStateEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
-import io.github.ydwk.ydwk.impl.YDWKImpl
-import io.github.ydwk.ydwk.impl.entities.GuildImpl
-import io.github.ydwk.ydwk.impl.entities.VoiceStateImpl
 
 class VoiceStateUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override fun start() {

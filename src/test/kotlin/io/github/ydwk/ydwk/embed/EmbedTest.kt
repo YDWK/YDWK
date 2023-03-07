@@ -18,9 +18,9 @@
  */ 
 package io.github.ydwk.ydwk.embed
 
-import io.github.ydwk.ydwk.entities.message.embed.builder.EmbedImageBuilder
-import io.github.ydwk.ydwk.impl.YDWKImpl
-import io.github.ydwk.ydwk.impl.entities.message.embed.builder.EmbedBuilderImpl
+import io.github.ydwk.yde.entities.message.embed.builder.EmbedImageBuilder
+import io.github.ydwk.yde.impl.YDWKImpl
+import io.github.ydwk.yde.impl.entities.message.embed.builder.EmbedBuilderImpl
 import java.net.URL
 import java.time.Instant
 import kotlin.test.assertEquals

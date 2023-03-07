@@ -18,8 +18,8 @@
  */ 
 package io.github.ydwk.ydwk.evm.event.events.voice
 
+import io.github.ydwk.yde.entities.VoiceState
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.VoiceState
 import io.github.ydwk.ydwk.evm.event.Event
 
 /**

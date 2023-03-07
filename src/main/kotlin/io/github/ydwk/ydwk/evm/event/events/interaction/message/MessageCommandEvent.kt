@@ -18,9 +18,9 @@
  */ 
 package io.github.ydwk.ydwk.evm.event.events.interaction.message
 
+import io.github.ydwk.yde.interaction.application.type.MessageCommand
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.evm.event.Event
-import io.github.ydwk.ydwk.interaction.application.type.MessageCommand
 
 /**
  * This event is triggered when a message command is triggered.
