@@ -19,11 +19,11 @@
 package io.github.ydwk.ydwk.evm.handler.handlers.message
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.ydwk.ydwk.cache.CacheIds
+import io.github.ydwk.yde.cache.CacheIds
+import io.github.ydwk.yde.impl.YDWKImpl
+import io.github.ydwk.yde.impl.entities.MessageImpl
 import io.github.ydwk.ydwk.evm.event.events.message.MessageDeleteBulkEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
-import io.github.ydwk.ydwk.impl.YDWKImpl
-import io.github.ydwk.ydwk.impl.entities.MessageImpl
 
 class MessageBulkDeleteHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override fun start() {

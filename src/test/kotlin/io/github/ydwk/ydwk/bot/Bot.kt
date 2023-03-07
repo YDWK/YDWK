@@ -19,18 +19,20 @@
 package io.github.ydwk.ydwk.bot
 
 import io.github.realyusufismail.jconfig.util.JConfigUtils
+import io.github.ydwk.yde.builders.slash.SlashCommandBuilder
+import io.github.ydwk.yde.builders.slash.SlashSubCommand
+import io.github.ydwk.yde.interaction.message.ActionRow
+import io.github.ydwk.yde.interaction.message.button.Button
+import io.github.ydwk.yde.interaction.message.button.ButtonStyle
+import io.github.ydwk.yde.interaction.message.selectmenu.types.RoleSelectMenu
 import io.github.ydwk.ydwk.Activity
 import io.github.ydwk.ydwk.BotBuilder.createDefaultBot
-import io.github.ydwk.ydwk.builders.slash.SlashCommandBuilder
-import io.github.ydwk.ydwk.builders.slash.SlashSubCommand
 import io.github.ydwk.ydwk.evm.backend.event.on
 import io.github.ydwk.ydwk.evm.event.events.interaction.button.ButtonClickEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.selectmenu.RoleSelectMenuEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.slash.SlashCommandEvent
-import io.github.ydwk.ydwk.interaction.message.ActionRow
-import io.github.ydwk.ydwk.interaction.message.button.Button
-import io.github.ydwk.ydwk.interaction.message.button.ButtonStyle
-import io.github.ydwk.ydwk.interaction.message.selectmenu.types.RoleSelectMenu
+import io.github.ydwk.ydwk.voice.impl.util.joinNow
+import io.github.ydwk.ydwk.voice.impl.util.leaveNow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -64,7 +66,7 @@ suspend fun main() {
                     if (member != null) {
                         val voiceState = member.voiceState
                         it.slash.reply("Joined vc!").trigger()
-                        voiceState?.channel?.join()
+                        voiceState?.channel?.joinNow()
                     } else {
                         it.slash.reply("Member is null!").setEphemeral(true).trigger()
                     }

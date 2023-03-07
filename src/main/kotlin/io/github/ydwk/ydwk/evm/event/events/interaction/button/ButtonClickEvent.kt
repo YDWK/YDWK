@@ -18,9 +18,9 @@
  */ 
 package io.github.ydwk.ydwk.evm.event.events.interaction.button
 
+import io.github.ydwk.yde.interaction.message.button.Button
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.evm.event.Event
-import io.github.ydwk.ydwk.interaction.message.button.Button
 
 /**
  * This event is triggered when a button is clicked.

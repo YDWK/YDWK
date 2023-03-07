@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.voice
 
-import io.github.ydwk.ydwk.entities.channel.guild.vc.GuildVoiceChannel
+import io.github.ydwk.yde.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.ydwk.voice.sub.VoiceSource
 import io.github.ydwk.ydwk.ws.voice.util.SpeakingFlag
 import java.util.*

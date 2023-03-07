@@ -18,8 +18,8 @@
  */ 
 package io.github.ydwk.ydwk.evm.event.events.user
 
+import io.github.ydwk.yde.entities.User
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.User
 
 /**
  * This event is triggered when a user's name is updated.

@@ -21,8 +21,8 @@ package io.github.ydwk.ydwk.ws.voice
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.neovisionaries.ws.client.*
+import io.github.ydwk.yde.impl.YDWKImpl
 import io.github.ydwk.ydwk.YDWKInfo
-import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
 import io.github.ydwk.ydwk.ws.logging.WebsocketLogging
 import io.github.ydwk.ydwk.ws.util.HeartBeat

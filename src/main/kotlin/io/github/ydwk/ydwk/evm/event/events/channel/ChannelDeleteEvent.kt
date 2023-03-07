@@ -18,8 +18,8 @@
  */ 
 package io.github.ydwk.ydwk.evm.event.events.channel
 
+import io.github.ydwk.yde.entities.Channel
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.Channel
 import io.github.ydwk.ydwk.evm.event.Event
 
 /**

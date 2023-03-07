@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.cache
 
-import io.github.ydwk.ydwk.util.NameAbleEntity
-import io.github.ydwk.ydwk.util.SnowFlake
+import io.github.ydwk.yde.util.NameAbleEntity
+import io.github.ydwk.yde.util.SnowFlake
 
 interface DummyUser : SnowFlake, NameAbleEntity

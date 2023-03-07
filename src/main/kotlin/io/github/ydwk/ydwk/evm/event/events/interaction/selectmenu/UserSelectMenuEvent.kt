@@ -18,9 +18,9 @@
  */ 
 package io.github.ydwk.ydwk.evm.event.events.interaction.selectmenu
 
+import io.github.ydwk.yde.interaction.message.selectmenu.types.UserSelectMenu
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.evm.event.Event
-import io.github.ydwk.ydwk.interaction.message.selectmenu.types.UserSelectMenu
 
 /**
  * The event that is triggered when a user selects a user select menu.

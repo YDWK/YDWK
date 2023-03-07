@@ -7,7 +7,10 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 buildscript {
     repositories { mavenCentral() }
 
-    dependencies { classpath("org.jetbrains.dokka:dokka-base:1.7.20") }
+    dependencies {
+        classpath("org.jetbrains.dokka:dokka-base:1.8.10")
+        classpath("io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.30.0")
+    }
 }
 
 plugins {
@@ -21,6 +24,8 @@ plugins {
     signing
     jacoco // code coverage reports
 }
+
+apply(plugin = "io.codearte.nexus-staging")
 
 extra.apply {
     set("name", "YDWK")
@@ -38,13 +43,13 @@ group = "io.github.realyusufismail" // used for publishing. DON'T CHANGE
 
 val releaseVersion by extra(!version.toString().endsWith("-SNAPSHOT"))
 
-apply(from = "gradle/tasks/checkEntities.gradle.kts")
-
 apply(from = "gradle/tasks/incrementVersion.gradle.kts")
 
 apply(from = "gradle/tasks/checkEvents.gradle.kts")
 
 apply(from = "gradle/tasks/eventClassJavaDocChecker.gradle")
+
+apply(from = "gradle/tasks/Nexus.gradle")
 
 repositories { mavenCentral() }
 
@@ -66,6 +71,9 @@ dependencies {
     api("com.squareup.okhttp3:okhttp:" + properties["okhttp3Version"])
     api("com.neovisionaries:nv-websocket-client:" + properties["nvWebsocketClientVersion"])
     api("com.codahale:xsalsa20poly1305:" + properties["xsalsa20poly1305Version"])
+
+    // YDE Entities
+    api("io.github.realyusufismail:yde:" + properties["ydeVersion"])
 
     // kotlin
     api(
@@ -89,7 +97,6 @@ tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "11" }
 tasks.build {
     // dependsOn on custom tasks
     dependsOn(tasks.getByName("checkEvents")) // check if events are valid
-    dependsOn(tasks.getByName("checkEntities")) // check if entities are valid
     dependsOn(tasks.getByName("eventClassJavaDocChecker")) // check if event classes have javadoc
     dependsOn(tasks.test) // run tests before building
 
@@ -157,10 +164,7 @@ spotless {
 
 detekt {
     // only check javadoc in io/github/ydwk/ydwk/entities and io/github/ydwk/ydwk/evm/event/events
-    source =
-        files(
-            "src/main/kotlin/io/github/ydwk/ydwk/entities",
-            "src/main/kotlin/io/github/ydwk/ydwk/evm/event/events")
+    source = files("src/main/kotlin/io/github/ydwk/ydwk/evm/event/events")
     config = files("gradle/config/detekt.yml")
     baseline = file("gradle/config/detekt-baseline.xml")
     allRules = false

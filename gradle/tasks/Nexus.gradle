@@ -1,0 +1,6 @@
+nexusStaging {
+    packageGroup = 'io.github.realyusufismail'
+    serverUrl = "https://s01.oss.sonatype.org/service/local"
+    username = project.hasProperty('MAVEN_USERNAME') ? project.property('MAVEN_USERNAME') : 'username'
+    password = project.hasProperty('MAVEN_PASSWORD') ? project.property('MAVEN_PASSWORD') : 'password'
+}

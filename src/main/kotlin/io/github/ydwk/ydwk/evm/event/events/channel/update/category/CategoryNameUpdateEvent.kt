@@ -18,8 +18,8 @@
  */ 
 package io.github.ydwk.ydwk.evm.event.events.channel.update.category
 
+import io.github.ydwk.yde.entities.channel.guild.GuildCategory
 import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.entities.channel.guild.GuildCategory
 import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
 /**

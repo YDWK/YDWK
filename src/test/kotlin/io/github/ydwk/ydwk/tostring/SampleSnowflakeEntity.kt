@@ -18,6 +18,6 @@
  */ 
 package io.github.ydwk.ydwk.tostring
 
-import io.github.ydwk.ydwk.util.SnowFlake
+import io.github.ydwk.yde.util.SnowFlake
 
 class SampleSnowflakeEntity(override val idAsLong: Long) : SnowFlake

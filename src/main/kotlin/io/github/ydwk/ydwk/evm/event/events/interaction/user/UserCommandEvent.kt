@@ -18,9 +18,9 @@
  */ 
 package io.github.ydwk.ydwk.evm.event.events.interaction.user
 
+import io.github.ydwk.yde.interaction.application.type.UserCommand
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.evm.event.Event
-import io.github.ydwk.ydwk.interaction.application.type.UserCommand
 
 /**
  * This event is triggered when a user command is triggered.
