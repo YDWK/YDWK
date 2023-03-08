@@ -1,4 +1,4 @@
-![](https://github.com/RealYusufIsmail/YDWK/blob/master/ydwk-s.png)
+![](https://github.com/YDWK/YDWK/blob/master/ydwk-s.png)
 <br>
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Kotlin](https://img.shields.io/badge/kotlin-1.8.10-blue.svg?logo=kotlin)](http://kotlinlang.org)
@@ -8,11 +8,11 @@
 
 
 # Very important note
-Don't update to 1.22.0 it was a mistake release caused by a bug in the code, use the latest version found above.
+Don't update to 1.22.0 it was a mistaken release caused by a bug in the code, use the latest version found above.
 
 # YDWK
 
-YDWK is a discord wrapper made in kotlin that aims to be as simple and as fast as possible while still being easy to use and understand. It is built to be similar to discord.js but with some differences. It tries to adhere to the [discord api](https://discord.com/developers/docs/intro) as much as possible.
+YDWK is a discord wrapper made in Kotlin that aims to be as simple and as fast as possible while still being easy to use and understand. It is built to be similar to discord.js but with some differences. It tries to adhere to the [discord Api](https://discord.com/developers/docs/intro) as much as possible.
 
 ## In progress and to be done
 
@@ -22,7 +22,7 @@ YDWK is a discord wrapper made in kotlin that aims to be as simple and as fast a
 
 - [x] Handle Rest API
 - [x] Connect to gateway
-- [x] Parse json
+- [x] Parse Json
 - [x] Handle all op codes
 - [x] Caching
 - [x] Handle reconnect and resuming
@@ -31,7 +31,7 @@ YDWK is a discord wrapper made in kotlin that aims to be as simple and as fast a
 - [x] Reply system for slash commands
 - [x] Embed builder
 - [x] Support for messages
-- [x] Handle rate limiting in websocket
+- [x] Handle rate limiting in Websocket
 - [x] Handle rate limiting in rest
 - [x] Support for channels
 - [x] Create entities - in progress
@@ -55,12 +55,12 @@ fun main() {
 }
 ```
 
-A default bot has all the recommend gateway intents.
+A default bot has all the recommended gateway intents.
 
 ## Getting cached entities and getting entities through the rest api
 
-When you want to get a cached entity, it will be named `getEntity` and when you want to get an entity through the rest
-api, it will be named `requestEntity`.
+When you want to get a cached entity, it will be named `getEntity` and when you want to get an entity through the Rest
+API, it will be named `requestEntity`.
 
 ### Logging system
 
