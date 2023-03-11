@@ -19,9 +19,9 @@
 package io.github.ydwk.ydwk.evm.handler.handlers.ban
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.ydwk.yde.impl.YDWKImpl
 import io.github.ydwk.ydwk.evm.event.events.ban.GuildBanAddEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
+import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class GuildBanAddHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override fun start() {

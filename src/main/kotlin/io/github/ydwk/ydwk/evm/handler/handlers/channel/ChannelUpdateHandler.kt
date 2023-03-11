@@ -31,7 +31,6 @@ import io.github.ydwk.yde.entities.channel.guild.message.news.GuildNewsChannel
 import io.github.ydwk.yde.entities.channel.guild.message.text.GuildTextChannel
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildStageChannel
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildVoiceChannel
-import io.github.ydwk.yde.impl.YDWKImpl
 import io.github.ydwk.yde.impl.entities.channel.guild.*
 import io.github.ydwk.yde.impl.entities.channel.guild.forum.DefaultReactionEmojiImpl
 import io.github.ydwk.yde.impl.entities.channel.guild.forum.ForumTagImpl
@@ -47,6 +46,7 @@ import io.github.ydwk.ydwk.evm.event.events.channel.update.voice.VoiceChannelBit
 import io.github.ydwk.ydwk.evm.event.events.channel.update.voice.VoiceChannelRateLimitPerUserUpdateEvent
 import io.github.ydwk.ydwk.evm.event.events.channel.update.voice.VoiceChannelUserLimitUpdateEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
+import io.github.ydwk.ydwk.impl.YDWKImpl
 import java.util.*
 
 class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {

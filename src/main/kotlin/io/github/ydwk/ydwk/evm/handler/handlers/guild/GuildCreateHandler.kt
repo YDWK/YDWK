@@ -28,7 +28,6 @@ import io.github.ydwk.yde.entities.channel.GuildChannel
 import io.github.ydwk.yde.entities.channel.enums.ChannelType
 import io.github.ydwk.yde.entities.guild.Member
 import io.github.ydwk.yde.entities.guild.Role
-import io.github.ydwk.yde.impl.YDWKImpl
 import io.github.ydwk.yde.impl.entities.ChannelImpl
 import io.github.ydwk.yde.impl.entities.EmojiImpl
 import io.github.ydwk.yde.impl.entities.GuildImpl
@@ -37,6 +36,7 @@ import io.github.ydwk.yde.impl.entities.channel.guild.GuildChannelImpl
 import io.github.ydwk.yde.impl.entities.guild.MemberImpl
 import io.github.ydwk.yde.impl.entities.guild.RoleImpl
 import io.github.ydwk.ydwk.evm.handler.Handler
+import io.github.ydwk.ydwk.impl.YDWKImpl
 import java.util.EnumSet
 
 class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {

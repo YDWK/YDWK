@@ -19,8 +19,8 @@
 package io.github.ydwk.ydwk.evm.handler.handlers.intergration
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.ydwk.yde.impl.YDWKImpl
 import io.github.ydwk.ydwk.evm.handler.Handler
+import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class GuildIntegrationsUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override fun start() {

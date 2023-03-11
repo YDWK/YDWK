@@ -19,8 +19,8 @@
 package io.github.ydwk.ydwk
 
 import io.github.ydwk.yde.cache.CacheIds
-import io.github.ydwk.yde.impl.YDWKImpl
 import io.github.ydwk.yde.util.exception.LoginException
+import io.github.ydwk.ydwk.impl.YDWKImpl
 import javax.annotation.CheckReturnValue
 import okhttp3.OkHttpClient
 

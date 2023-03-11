@@ -18,9 +18,9 @@
  */ 
 package io.github.ydwk.ydwk.tostring
 
-import io.github.ydwk.yde.impl.YDWKImpl
 import io.github.ydwk.yde.util.EntityToStringBuilder
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.impl.YDWKImpl
 import kotlin.test.assertEquals
 import okhttp3.OkHttpClient
 import org.junit.jupiter.api.Order

@@ -16,11 +16,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.yde.impl
+package io.github.ydwk.ydwk.impl
 
 import io.github.ydwk.yde.entities.Application
 import io.github.ydwk.yde.entities.Bot
 import io.github.ydwk.yde.entities.application.PartialApplication
+import io.github.ydwk.yde.impl.YDEImpl
 import io.github.ydwk.yde.util.EntityToStringBuilder
 import io.github.ydwk.yde.util.ThreadFactory
 import io.github.ydwk.ydwk.*
@@ -41,9 +42,9 @@ import kotlinx.coroutines.delay
 import okhttp3.OkHttpClient
 
 class YDWKImpl(
-    private val client: OkHttpClient,
-    private var token: String? = null,
-    private val guildIdList: MutableList<String> = mutableListOf(),
+    override var client: OkHttpClient,
+    override var token: String? = null,
+    override var guildIdList: MutableList<String> = mutableListOf(),
     applicationId: String? = null,
 ) :
     YDWK,

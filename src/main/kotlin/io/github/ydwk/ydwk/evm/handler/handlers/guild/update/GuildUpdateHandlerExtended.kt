@@ -22,7 +22,6 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.entities.Emoji
 import io.github.ydwk.yde.entities.Sticker
 import io.github.ydwk.yde.entities.guild.enums.*
-import io.github.ydwk.yde.impl.YDWKImpl
 import io.github.ydwk.yde.impl.entities.EmojiImpl
 import io.github.ydwk.yde.impl.entities.GuildImpl
 import io.github.ydwk.yde.impl.entities.StickerImpl
@@ -30,6 +29,7 @@ import io.github.ydwk.yde.impl.entities.guild.WelcomeScreenImpl
 import io.github.ydwk.yde.util.GetterSnowFlake
 import io.github.ydwk.ydwk.evm.event.events.guild.update.*
 import io.github.ydwk.ydwk.evm.handler.handlers.guild.GuildUpdateHandler
+import io.github.ydwk.ydwk.impl.YDWKImpl
 import org.slf4j.LoggerFactory
 
 class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHandler(ydwk, json) {

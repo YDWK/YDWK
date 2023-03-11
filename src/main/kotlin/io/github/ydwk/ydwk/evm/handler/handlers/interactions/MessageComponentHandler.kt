@@ -18,7 +18,6 @@
  */ 
 package io.github.ydwk.ydwk.evm.handler.handlers.interactions
 
-import io.github.ydwk.yde.impl.YDWKImpl
 import io.github.ydwk.yde.impl.interaction.ComponentInteractionImpl
 import io.github.ydwk.yde.impl.interaction.message.button.ButtonImpl
 import io.github.ydwk.yde.impl.interaction.message.selectmenu.types.*
@@ -27,6 +26,7 @@ import io.github.ydwk.yde.interaction.message.ComponentType
 import io.github.ydwk.ydwk.evm.event.events.interaction.button.ButtonClickEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.selectmenu.*
 import io.github.ydwk.ydwk.evm.event.events.interaction.textinput.TextInputEvent
+import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class MessageComponentHandler(
     val type: ComponentType,

@@ -26,7 +26,6 @@ import io.github.ydwk.yde.cache.CacheIds
 import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.Message
 import io.github.ydwk.yde.entities.channel.GuildChannel
-import io.github.ydwk.yde.impl.YDWKImpl
 import io.github.ydwk.ydwk.*
 import io.github.ydwk.ydwk.evm.event.events.gateway.DisconnectEvent
 import io.github.ydwk.ydwk.evm.event.events.gateway.ReconnectEvent
@@ -63,6 +62,7 @@ import io.github.ydwk.ydwk.evm.handler.handlers.voice.VoiceServerUpdateHandler
 import io.github.ydwk.ydwk.evm.handler.handlers.voice.VoiceStateUpdateHandler
 import io.github.ydwk.ydwk.evm.handler.handlers.webhook.WebhooksUpdateHandler
 import io.github.ydwk.ydwk.evm.handler.handlers.ws.ReadyHandler
+import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.ws.logging.WebsocketLogging
 import io.github.ydwk.ydwk.ws.util.CloseCode
 import io.github.ydwk.ydwk.ws.util.EventNames
