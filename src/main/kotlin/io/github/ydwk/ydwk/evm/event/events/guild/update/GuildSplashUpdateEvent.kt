@@ -19,8 +19,8 @@
 package io.github.ydwk.ydwk.evm.event.events.guild.update
 
 import io.github.ydwk.yde.entities.Guild
-import io.github.ydwk.yde.impl.YDWKImpl
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
+import io.github.ydwk.ydwk.impl.YDWKImpl
 
 /**
  * This event is triggered when a guild's splash is updated.

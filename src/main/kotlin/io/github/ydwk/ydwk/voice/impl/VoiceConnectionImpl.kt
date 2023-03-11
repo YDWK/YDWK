@@ -19,9 +19,9 @@
 package io.github.ydwk.ydwk.voice.impl
 
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildVoiceChannel
-import io.github.ydwk.yde.impl.YDWKImpl
 import io.github.ydwk.yde.impl.entities.GuildImpl
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.voice.VoiceConnection
 import io.github.ydwk.ydwk.voice.impl.util.VoicePacket
 import io.github.ydwk.ydwk.voice.impl.util.removeVoiceConnection

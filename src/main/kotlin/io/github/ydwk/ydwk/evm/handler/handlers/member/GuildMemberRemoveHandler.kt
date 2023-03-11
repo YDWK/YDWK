@@ -19,10 +19,10 @@
 package io.github.ydwk.ydwk.evm.handler.handlers.member
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.ydwk.yde.impl.YDWKImpl
 import io.github.ydwk.yde.impl.entities.guild.MemberImpl
 import io.github.ydwk.ydwk.evm.event.events.member.GuildMemberRemoveEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
+import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class GuildMemberRemoveHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override fun start() {
