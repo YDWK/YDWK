@@ -108,7 +108,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
         oldEmoji: List<Emoji>,
         newEmoji: JsonNode?,
         oldFeatures: Set<GuildFeature>,
-        newFeatures: JsonNode
+        newFeatures: JsonNode,
     ) {
         if (oldName != newName) {
             onNameChange(guild, oldName, newName)
@@ -282,7 +282,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     private fun onDiscoverySplashChange(
         guild: GuildImpl,
         oldDiscoverySplash: String?,
-        newDiscoverySplash: String?
+        newDiscoverySplash: String?,
     ) {
         guild.discoverySplash = newDiscoverySplash
         ydwk.emitEvent(
@@ -300,7 +300,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     private fun onPermissionsChange(
         guild: GuildImpl,
         oldPermissions: String?,
-        newPermissions: String?
+        newPermissions: String?,
     ) {
         guild.permissions = newPermissions
         ydwk.emitEvent(GuildPermissionsUpdateEvent(ydwk, guild, oldPermissions, newPermissions))
@@ -310,7 +310,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     private fun onAfkChannelChange(
         guild: GuildImpl,
         oldAfkChannelId: Long?,
-        newAfkChannelId: Long?
+        newAfkChannelId: Long?,
     ) {
         guild.afkChannelId = newAfkChannelId?.let { GetterSnowFlake.of(it) }
         ydwk.emitEvent(GuildAfkChannelUpdateEvent(ydwk, guild, oldAfkChannelId, newAfkChannelId))
@@ -326,7 +326,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     private fun onWidgetEnabledChange(
         guild: GuildImpl,
         wasWidgetEnabled: Boolean?,
-        isWidgetEnabled: Boolean?
+        isWidgetEnabled: Boolean?,
     ) {
         guild.isWidgetEnabled = isWidgetEnabled
         ydwk.emitEvent(
@@ -337,7 +337,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     private fun onWidgetChannelChange(
         guild: GuildImpl,
         oldWidgetChannelId: Long?,
-        newWidgetChannelId: Long?
+        newWidgetChannelId: Long?,
     ) {
         guild.widgetChannelId = newWidgetChannelId?.let { GetterSnowFlake.of(it) }
         ydwk.emitEvent(
@@ -348,7 +348,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     private fun onVerificationLevelChange(
         guild: GuildImpl,
         oldVerificationLevel: Int,
-        newVerificationLevel: Int
+        newVerificationLevel: Int,
     ) {
         guild.verificationLevel = VerificationLevel.fromInt(newVerificationLevel)
         ydwk.emitEvent(
@@ -361,7 +361,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     private fun onDefaultMessageNotificationsChange(
         guild: GuildImpl,
         oldDefaultMessageNotifications: Int,
-        newDefaultMessageNotifications: Int
+        newDefaultMessageNotifications: Int,
     ) {
         guild.defaultMessageNotificationsLevel =
             MessageNotificationLevel.fromInt(newDefaultMessageNotifications)
@@ -378,7 +378,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     private fun onExplicitContentFilterChange(
         guild: GuildImpl,
         oldExplicitContentFilter: Int,
-        newExplicitContentFilter: Int
+        newExplicitContentFilter: Int,
     ) {
         guild.explicitContentFilterLevel =
             ExplicitContentFilterLevel.fromInt(newExplicitContentFilter)
@@ -403,7 +403,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     private fun onApplicationIdChange(
         guild: GuildImpl,
         oldApplicationId: Long?,
-        newApplicationId: Long?
+        newApplicationId: Long?,
     ) {
         guild.applicationId = newApplicationId?.let { GetterSnowFlake.of(it) }
         ydwk.emitEvent(
@@ -414,7 +414,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     private fun onSystemChannelChange(
         guild: GuildImpl,
         oldSystemChannelId: Long?,
-        newSystemChannelId: Long?
+        newSystemChannelId: Long?,
     ) {
         guild.systemChannelId = newSystemChannelId?.let { GetterSnowFlake.of(it) }
         ydwk.emitEvent(
@@ -425,7 +425,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     private fun onSystemChannelFlagsChange(
         guild: GuildImpl,
         oldSystemChannelFlags: Int,
-        newSystemChannelFlags: Int
+        newSystemChannelFlags: Int,
     ) {
         guild.systemChannelFlags = SystemChannelFlag.fromInt(newSystemChannelFlags)
         ydwk.emitEvent(
@@ -441,7 +441,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     private fun onRulesChannelChange(
         guild: GuildImpl,
         oldRulesChannelId: Long?,
-        newRulesChannelId: Long?
+        newRulesChannelId: Long?,
     ) {
         guild.rulesChannelId = newRulesChannelId?.let { GetterSnowFlake.of(it) }
         ydwk.emitEvent(
@@ -452,7 +452,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     private fun onMaxPresencesChange(
         guild: GuildImpl,
         oldMaxPresences: Int?,
-        newMaxPresences: Int?
+        newMaxPresences: Int?,
     ) {
         guild.maxPresences = newMaxPresences
         ydwk.emitEvent(GuildMaxPresencesUpdateEvent(ydwk, guild, oldMaxPresences, newMaxPresences))
@@ -468,7 +468,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     private fun onVanityUrlCodeChange(
         guild: GuildImpl,
         oldVanityUrlCode: String?,
-        newVanityUrlCode: String?
+        newVanityUrlCode: String?,
     ) {
         guild.vanityUrlCode = newVanityUrlCode
         ydwk.emitEvent(GuildVanityUrlUpdateEvent(ydwk, guild, oldVanityUrlCode, newVanityUrlCode))
@@ -478,7 +478,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     private fun onDescriptionChange(
         guild: GuildImpl,
         oldDescription: String?,
-        newDescription: String?
+        newDescription: String?,
     ) {
         guild.description = newDescription
         ydwk.emitEvent(GuildDescriptionUpdateEvent(ydwk, guild, oldDescription, newDescription))
@@ -500,7 +500,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     private fun onPremiumSubscriptionCountChange(
         guild: GuildImpl,
         oldPremiumSubscriptionCount: Int,
-        newPremiumSubscriptionCount: Int
+        newPremiumSubscriptionCount: Int,
     ) {
         guild.premiumSubscriptionCount = newPremiumSubscriptionCount
         ydwk.emitEvent(
@@ -513,7 +513,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     private fun onPreferredLocaleChange(
         guild: GuildImpl,
         oldPreferredLocale: String,
-        newPreferredLocale: String
+        newPreferredLocale: String,
     ) {
         guild.preferredLocale = newPreferredLocale
         ydwk.emitEvent(
@@ -525,7 +525,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     private fun onPublicUpdatesChannelChange(
         guild: GuildImpl,
         oldPublicUpdatesChannelId: Long?,
-        newPublicUpdatesChannelId: Long?
+        newPublicUpdatesChannelId: Long?,
     ) {
         guild.publicUpdatesChannelId = newPublicUpdatesChannelId?.let { GetterSnowFlake.of(it) }
         ydwk.emitEvent(
@@ -538,7 +538,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     private fun onMaxVideoChannelUsersChange(
         guild: GuildImpl,
         oldMaxVideoChannelUsers: Int?,
-        newMaxVideoChannelUsers: Int?
+        newMaxVideoChannelUsers: Int?,
     ) {
         guild.maxVideoChannelUsers = newMaxVideoChannelUsers
         ydwk.emitEvent(
@@ -551,7 +551,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     private fun onApproximateMemberCountChange(
         guild: GuildImpl,
         oldApproximateMemberCount: Int?,
-        newApproximateMemberCount: Int?
+        newApproximateMemberCount: Int?,
     ) {
         guild.approximateMemberCount = newApproximateMemberCount
         ydwk.emitEvent(
@@ -564,7 +564,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     private fun onApproximatePresenceCountChange(
         guild: GuildImpl,
         oldApproximatePresenceCount: Int?,
-        newApproximatePresenceCount: Int?
+        newApproximatePresenceCount: Int?,
     ) {
         guild.approximatePresenceCount = newApproximatePresenceCount
         ydwk.emitEvent(
@@ -577,7 +577,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     private fun onWelcomeScreenChange(
         guild: GuildImpl,
         oldWelcomeScreen: JsonNode?,
-        newWelcomeScreen: JsonNode?
+        newWelcomeScreen: JsonNode?,
     ) {
         guild.welcomeScreen = newWelcomeScreen?.let { WelcomeScreenImpl(ydwk, it) }
         ydwk.emitEvent(
@@ -599,7 +599,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     private fun onStickersChange(
         guild: GuildImpl,
         oldStickers: List<Sticker>,
-        newStickers: JsonNode?
+        newStickers: JsonNode?,
     ) {
         guild.stickers =
             newStickers?.let { it -> it.map { StickerImpl(ydwk, it, it["id"].asLong()) } }
@@ -617,7 +617,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     private fun onBoostProgressBarEnabledChange(
         guild: GuildImpl,
         oldBoostProgressBarEnabled: Boolean,
-        newBoostProgressBarEnabled: Boolean
+        newBoostProgressBarEnabled: Boolean,
     ) {
         guild.isBoostProgressBarEnabled = newBoostProgressBarEnabled
         ydwk.emitEvent(
@@ -641,7 +641,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     private fun onFeaturesChange(
         guild: GuildImpl,
         oldFeatures: Set<GuildFeature>,
-        newFeatures: JsonNode?
+        newFeatures: JsonNode?,
     ) {
         guild.features =
             newFeatures?.let { it -> it.map { GuildFeature.fromString(it.asText()) }.toSet() }

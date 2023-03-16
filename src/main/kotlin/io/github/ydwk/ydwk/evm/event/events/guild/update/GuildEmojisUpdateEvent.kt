@@ -35,5 +35,5 @@ data class GuildEmojisUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,
     val oldEmojis: List<Emoji>,
-    val newEmojis: List<Emoji>
+    val newEmojis: List<Emoji>,
 ) : GenericGuildUpdateEvent<List<Emoji>>(ydwk, entity, oldEmojis, newEmojis)

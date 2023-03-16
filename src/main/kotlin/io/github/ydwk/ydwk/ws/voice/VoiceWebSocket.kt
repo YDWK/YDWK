@@ -28,7 +28,6 @@ import io.github.ydwk.ydwk.ws.logging.WebsocketLogging
 import io.github.ydwk.ydwk.ws.util.HeartBeat
 import io.github.ydwk.ydwk.ws.voice.util.*
 import io.github.ydwk.ydwk.ws.voice.util.VoiceEncryption.Companion.getPreferred
-import io.github.ydwk.ydwk.ws.voice.util.handleUDP
 import java.io.IOException
 import java.net.*
 import java.util.concurrent.ScheduledThreadPoolExecutor
@@ -190,7 +189,7 @@ class VoiceWebSocket(internal val voiceConnection: VoiceConnectionImpl) :
     private fun handleMessage(message: String) {
         try {
             val payload = ydwk.objectMapper.readTree(message)
-            logger.debug("Received voice payload: ${payload.toString()}")
+            logger.debug("Received voice payload: $payload")
             onOpCode(payload)
         } catch (e: Exception) {
             logger.error("Error while handling message", e)

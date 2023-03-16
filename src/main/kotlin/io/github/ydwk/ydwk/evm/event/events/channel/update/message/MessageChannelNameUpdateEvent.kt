@@ -34,5 +34,5 @@ data class MessageChannelNameUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildMessageChannel,
     val oldName: String,
-    val newName: String
+    val newName: String,
 ) : GenericChannelUpdateEvent<String>(ydwk, entity, oldName, newName)

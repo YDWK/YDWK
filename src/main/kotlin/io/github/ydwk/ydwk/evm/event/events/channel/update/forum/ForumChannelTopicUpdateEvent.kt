@@ -34,5 +34,5 @@ data class ForumChannelTopicUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildForumChannel,
     val oldTopic: String?,
-    val newTopic: String?
+    val newTopic: String?,
 ) : GenericChannelUpdateEvent<String?>(ydwk, entity, oldTopic, newTopic)

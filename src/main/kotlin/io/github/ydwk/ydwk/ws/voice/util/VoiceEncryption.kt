@@ -18,8 +18,6 @@
  */ 
 package io.github.ydwk.ydwk.ws.voice.util
 
-import java.util.*
-
 enum class VoiceEncryption {
     XSALSA20_POLY1305_LITE,
     XSALSA20_POLY1305_SUFFIX,

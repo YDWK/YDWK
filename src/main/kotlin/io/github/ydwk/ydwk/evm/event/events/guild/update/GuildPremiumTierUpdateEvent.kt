@@ -34,5 +34,5 @@ data class GuildPremiumTierUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,
     val oldPremiumTier: Int,
-    val newPremiumTier: Int
+    val newPremiumTier: Int,
 ) : GenericGuildUpdateEvent<Int>(ydwk, entity, oldPremiumTier, newPremiumTier)

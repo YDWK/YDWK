@@ -34,5 +34,5 @@ open class GenericUserUpdateEvent<T>(
     override val ydwk: YDWK,
     override val entity: User,
     override val oldValue: T,
-    override val newValue: T
+    override val newValue: T,
 ) : IEventUpdate<User, T>

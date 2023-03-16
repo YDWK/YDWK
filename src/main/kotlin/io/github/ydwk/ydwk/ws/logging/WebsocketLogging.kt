@@ -29,7 +29,7 @@ class WebsocketLogging(val logger: Logger) : WebSocketListener {
 
     override fun onConnected(
         websocket: WebSocket?,
-        headers: MutableMap<String, MutableList<String>>?
+        headers: MutableMap<String, MutableList<String>>?,
     ) {
         logger.trace("Websocket connected")
     }
@@ -42,7 +42,7 @@ class WebsocketLogging(val logger: Logger) : WebSocketListener {
         websocket: WebSocket?,
         serverCloseFrame: WebSocketFrame?,
         clientCloseFrame: WebSocketFrame?,
-        closedByServer: Boolean
+        closedByServer: Boolean,
     ) {
         when {
             serverCloseFrame != null -> logger.trace("Websocket disconnected by server")
@@ -122,7 +122,7 @@ class WebsocketLogging(val logger: Logger) : WebSocketListener {
     override fun onFrameError(
         websocket: WebSocket?,
         cause: WebSocketException?,
-        frame: WebSocketFrame?
+        frame: WebSocketFrame?,
     ) {
         logger.trace("Websocket frame error with cause $cause and frame $frame")
     }
@@ -130,7 +130,7 @@ class WebsocketLogging(val logger: Logger) : WebSocketListener {
     override fun onMessageError(
         websocket: WebSocket?,
         cause: WebSocketException?,
-        frames: MutableList<WebSocketFrame>?
+        frames: MutableList<WebSocketFrame>?,
     ) {
         logger.trace("Websocket message error with cause $cause and frames $frames")
     }
@@ -138,7 +138,7 @@ class WebsocketLogging(val logger: Logger) : WebSocketListener {
     override fun onMessageDecompressionError(
         websocket: WebSocket?,
         cause: WebSocketException?,
-        compressed: ByteArray?
+        compressed: ByteArray?,
     ) {
         logger.trace(
             "Websocket message decompression error with cause $cause and compressed $compressed")
@@ -147,7 +147,7 @@ class WebsocketLogging(val logger: Logger) : WebSocketListener {
     override fun onTextMessageError(
         websocket: WebSocket?,
         cause: WebSocketException?,
-        data: ByteArray?
+        data: ByteArray?,
     ) {
         logger.trace("Websocket text message error with cause $cause and data $data")
     }
@@ -155,7 +155,7 @@ class WebsocketLogging(val logger: Logger) : WebSocketListener {
     override fun onSendError(
         websocket: WebSocket?,
         cause: WebSocketException?,
-        frame: WebSocketFrame?
+        frame: WebSocketFrame?,
     ) {
         logger.trace("Websocket send error with cause $cause and frame $frame")
     }
@@ -171,7 +171,7 @@ class WebsocketLogging(val logger: Logger) : WebSocketListener {
     override fun onSendingHandshake(
         websocket: WebSocket?,
         requestLine: String?,
-        headers: MutableList<Array<String>>?
+        headers: MutableList<Array<String>>?,
     ) {
         logger.trace(
             "Websocket sending handshake with request line $requestLine and headers $headers")

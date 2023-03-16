@@ -33,5 +33,5 @@ data class ReadyEvent(
     override val ydwk: YDWK,
     val amountOfAvailableGuilds: Int,
     val amountOfUnavailableGuilds: Int,
-    val totalGuildsAmount: Int = amountOfAvailableGuilds + amountOfUnavailableGuilds
+    val totalGuildsAmount: Int = amountOfAvailableGuilds + amountOfUnavailableGuilds,
 ) : Event(ydwk)

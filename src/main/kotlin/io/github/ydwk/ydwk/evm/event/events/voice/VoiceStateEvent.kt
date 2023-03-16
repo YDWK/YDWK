@@ -33,5 +33,5 @@ import io.github.ydwk.ydwk.evm.event.Event
 data class VoiceStateEvent(
     override val ydwk: YDWK,
     val voiceState: VoiceState,
-    val member: Member
+    val member: Member,
 ) : Event(ydwk)

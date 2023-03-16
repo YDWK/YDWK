@@ -37,5 +37,5 @@ data class GuildChannelParentUpdateEvent(
     override val entity: GuildChannel,
     val type: ChannelType,
     val oldParent: GuildCategory?,
-    val newParent: GuildCategory?
+    val newParent: GuildCategory?,
 ) : GenericChannelUpdateEvent<GuildCategory?>(ydwk, entity, oldParent, newParent)

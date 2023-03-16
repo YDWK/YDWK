@@ -31,9 +31,10 @@ class VoicePacket(
     private var audio: ByteArray?,
     private val ssrc: Int,
     private val seq: Char,
-    val timestamp: Int
+    val timestamp: Int,
 ) {
     private var header: ByteArray? = null
+
     init {
         if (audio != null) {
             audio = byteArrayOf(0xF8.toByte(), 0xFF.toByte(), 0xFE.toByte())
@@ -48,6 +49,7 @@ class VoicePacket(
                 .putInt(8, ssrc)
         header = buffer.array()
     }
+
     fun encrypt(secretKey: ByteArray?) {
         if (secretKey == null) return
         val nonce = ByteArray(24)

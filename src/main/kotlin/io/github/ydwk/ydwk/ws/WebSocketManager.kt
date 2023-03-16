@@ -428,12 +428,12 @@ open class WebSocketManager(
         guild: Guild?,
         channel: GuildChannel?,
         selfMute: Boolean?,
-        selfDeaf: Boolean?
+        selfDeaf: Boolean?,
     ) {
         logger.debug("Sending voice state update")
-        val mainVoiceUpdateJson: ObjectNode = ydwk.objectNode.put("op", OpCode.VOICE_STATE.code)
+        val mainVoiceUpdateJson: ObjectNode = ydwk.objectNode.put("op", VOICE_STATE.code)
 
-        val guildId: String? =
+        val guildId: String =
             when {
                 channel != null -> {
                     channel.guild.id

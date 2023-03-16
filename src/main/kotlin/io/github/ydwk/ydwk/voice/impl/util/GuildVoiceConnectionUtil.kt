@@ -28,7 +28,7 @@ import java.util.concurrent.CompletableFuture
 
 fun GuildVoiceChannel.getVoiceConnection(
     isMuted: Boolean,
-    isDeafened: Boolean
+    isDeafened: Boolean,
 ): CompletableFuture<VoiceConnection> {
     val future = CompletableFuture<VoiceConnection>()
     future

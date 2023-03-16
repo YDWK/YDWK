@@ -33,5 +33,5 @@ data class UserAvatarUpdateEvent(
     override val ydwk: YDWK,
     override val entity: User,
     val oldAvatar: String,
-    val newAvatar: String
+    val newAvatar: String,
 ) : GenericUserUpdateEvent<String>(ydwk, entity, oldAvatar, newAvatar)

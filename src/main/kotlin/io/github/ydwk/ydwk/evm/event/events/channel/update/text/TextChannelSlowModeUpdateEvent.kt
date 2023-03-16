@@ -36,5 +36,5 @@ data class TextChannelSlowModeUpdateEvent(
     override val entity: GuildMessageChannel,
     val channelType: ChannelType,
     val oldSlowMode: Int,
-    val newSlowMode: Int
+    val newSlowMode: Int,
 ) : GenericChannelUpdateEvent<Int>(ydwk, entity, oldSlowMode, newSlowMode)

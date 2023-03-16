@@ -34,5 +34,5 @@ data class GuildVanityUrlUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,
     val oldVanityUrl: String?,
-    val newVanityUrl: String?
+    val newVanityUrl: String?,
 ) : GenericGuildUpdateEvent<String?>(ydwk, entity, oldVanityUrl, newVanityUrl)

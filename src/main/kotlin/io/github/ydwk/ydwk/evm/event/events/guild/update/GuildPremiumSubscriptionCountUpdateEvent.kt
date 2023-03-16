@@ -34,7 +34,7 @@ data class GuildPremiumSubscriptionCountUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,
     val oldPremiumSubscriptionCount: Int,
-    val newPremiumSubscriptionCount: Int
+    val newPremiumSubscriptionCount: Int,
 ) :
     GenericGuildUpdateEvent<Int>(
         ydwk, entity, oldPremiumSubscriptionCount, newPremiumSubscriptionCount)

@@ -35,7 +35,7 @@ data class ForumChannelDefaultForumLayoutViewUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildForumChannel,
     val oldDefaultForumLayoutView: ForumLayoutType,
-    val newDefaultForumLayoutView: ForumLayoutType
+    val newDefaultForumLayoutView: ForumLayoutType,
 ) :
     GenericChannelUpdateEvent<ForumLayoutType?>(
         ydwk, entity, oldDefaultForumLayoutView, newDefaultForumLayoutView)

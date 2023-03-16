@@ -21,16 +21,20 @@ package io.github.ydwk.ydwk.logging
 enum class YDWKLoggerStatus(private vararg val severity: YDWKLoggerSeverity) {
     /** The [YDWKLoggerImpl] will log all messages except [WARN] and [ERROR] messages. */
     INFO(YDWKLoggerSeverity.INFO),
+
     /** The [YDWKLoggerImpl] will log all messages except [ERROR], [INFO] and [DEBUG] messages. */
     WARN(YDWKLoggerSeverity.WARN),
+
     /** The [YDWKLoggerImpl] will log all messages except [INFO] messages. */
     ERROR(YDWKLoggerSeverity.INFO, YDWKLoggerSeverity.WARN, YDWKLoggerSeverity.ERROR),
+
     /** The [YDWKLoggerImpl] will log all messages. */
     DEBUG(
         YDWKLoggerSeverity.INFO,
         YDWKLoggerSeverity.WARN,
         YDWKLoggerSeverity.ERROR,
         YDWKLoggerSeverity.DEBUG),
+
     /** The [YDWKLoggerImpl] will log no messages. */
     NONE();
 

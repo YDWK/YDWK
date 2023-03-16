@@ -34,5 +34,5 @@ data class GuildApplicationIdUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,
     val oldApplicationId: Long?,
-    val newApplicationId: Long?
+    val newApplicationId: Long?,
 ) : GenericGuildUpdateEvent<Long?>(ydwk, entity, oldApplicationId, newApplicationId)

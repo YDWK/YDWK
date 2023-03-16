@@ -35,5 +35,5 @@ data class ForumChannelChannelFlagsUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildForumChannel,
     val oldChannelFlags: ChannelFlag,
-    val newChannelFlags: ChannelFlag
+    val newChannelFlags: ChannelFlag,
 ) : GenericChannelUpdateEvent<ChannelFlag>(ydwk, entity, oldChannelFlags, newChannelFlags)

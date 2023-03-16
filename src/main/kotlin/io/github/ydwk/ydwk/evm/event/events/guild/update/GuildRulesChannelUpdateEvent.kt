@@ -34,5 +34,5 @@ data class GuildRulesChannelUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,
     val oldRulesChannel: Long?,
-    val newRulesChannel: Long?
+    val newRulesChannel: Long?,
 ) : GenericGuildUpdateEvent<Long?>(ydwk, entity, oldRulesChannel, newRulesChannel)

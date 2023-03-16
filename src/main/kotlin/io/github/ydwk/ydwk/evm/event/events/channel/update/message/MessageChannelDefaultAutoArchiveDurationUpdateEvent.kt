@@ -35,7 +35,7 @@ data class MessageChannelDefaultAutoArchiveDurationUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildMessageChannel,
     val oldDefaultAutoArchiveDuration: Int,
-    val newDefaultAutoArchiveDuration: Int
+    val newDefaultAutoArchiveDuration: Int,
 ) :
     GenericChannelUpdateEvent<Int>(
         ydwk, entity, oldDefaultAutoArchiveDuration, newDefaultAutoArchiveDuration)

@@ -34,7 +34,7 @@ data class GuildApproximateMemberCountUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,
     val oldApproximateMemberCount: Int?,
-    val newApproximateMemberCount: Int?
+    val newApproximateMemberCount: Int?,
 ) :
     GenericGuildUpdateEvent<Int?>(
         ydwk, entity, oldApproximateMemberCount, newApproximateMemberCount)

@@ -35,7 +35,7 @@ data class ForumChannelAvailableForumTagsUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildForumChannel,
     val oldAvailableForumTags: List<ForumTag>,
-    val newAvailableForumTags: List<ForumTag>
+    val newAvailableForumTags: List<ForumTag>,
 ) :
     GenericChannelUpdateEvent<List<ForumTag>>(
         ydwk, entity, oldAvailableForumTags, newAvailableForumTags)

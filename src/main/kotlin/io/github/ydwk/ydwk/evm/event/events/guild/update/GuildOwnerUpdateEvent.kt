@@ -34,5 +34,5 @@ data class GuildOwnerUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,
     val oldOwner: Long,
-    val newOwner: Long
+    val newOwner: Long,
 ) : GenericGuildUpdateEvent<Long>(ydwk, entity, oldOwner, newOwner)

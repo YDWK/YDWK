@@ -34,5 +34,5 @@ data class GuildPreferredLocaleUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,
     val oldPreferredLocale: String,
-    val newPreferredLocale: String
+    val newPreferredLocale: String,
 ) : GenericGuildUpdateEvent<String>(ydwk, entity, oldPreferredLocale, newPreferredLocale)

@@ -24,7 +24,7 @@ import java.awt.Color
 import java.time.Instant
 
 class YDWKLogManager(
-    private val enabledLoggerStatus: List<YDWKLoggerStatus> = YDWKLoggerStatus.ALL
+    private val enabledLoggerStatus: List<YDWKLoggerStatus> = YDWKLoggerStatus.ALL,
 ) {
     fun getEnabledLoggerStatus(): List<YDWKLoggerStatus> {
         return enabledLoggerStatus

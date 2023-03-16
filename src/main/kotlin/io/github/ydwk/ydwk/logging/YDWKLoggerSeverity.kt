@@ -23,12 +23,16 @@ import java.awt.Color
 enum class YDWKLoggerSeverity(private var colour: Color) {
     /** The [INFO] severity. */
     INFO(Color(0, 0, 0)),
+
     /** The [DEBUG] severity. */
     DEBUG(Color(0, 255, 0)),
+
     /** The [WARN] severity. */
     WARN(Color(255, 0, 0)),
+
     /** The [ERROR] severity. */
     ERROR(Color(255, 0, 255)),
+
     /** The [FATAL] severity. */
     FATAL(Color(255, 255, 255));
 

@@ -34,5 +34,5 @@ data class GuildMaxMembersUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,
     val oldMaxMembers: Int,
-    val newMaxMembers: Int
+    val newMaxMembers: Int,
 ) : GenericGuildUpdateEvent<Int>(ydwk, entity, oldMaxMembers, newMaxMembers)

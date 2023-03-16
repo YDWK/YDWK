@@ -106,7 +106,7 @@ interface ChannelListeners : IEventListener {
      * @param event The MessageChannelDefaultAutoArchiveDurationUpdateEvent
      */
     fun onMessageChannelDefaultAutoArchiveDurationUpdate(
-        event: MessageChannelDefaultAutoArchiveDurationUpdateEvent
+        event: MessageChannelDefaultAutoArchiveDurationUpdateEvent,
     ) {}
 
     /**
@@ -115,7 +115,7 @@ interface ChannelListeners : IEventListener {
      * @param event The MessageChannelPermissionOverwritesUpdateEvent
      */
     fun onMessageChannelPermissionOverwritesUpdate(
-        event: MessageChannelPermissionOverwritesUpdateEvent
+        event: MessageChannelPermissionOverwritesUpdateEvent,
     ) {}
 
     /**
@@ -198,7 +198,7 @@ interface ChannelListeners : IEventListener {
      * @param event The ForumChannelPermissionOverwritesUpdateEvent
      */
     fun onForumChannelPermissionOverwritesUpdate(
-        event: ForumChannelPermissionOverwritesUpdateEvent
+        event: ForumChannelPermissionOverwritesUpdateEvent,
     ) {}
 
     /**
@@ -235,7 +235,7 @@ interface ChannelListeners : IEventListener {
      * @param event The ForumChannelDefaultReactionEmojiUpdateEvent
      */
     fun onForumChannelDefaultReactionEmojiUpdate(
-        event: ForumChannelDefaultReactionEmojiUpdateEvent
+        event: ForumChannelDefaultReactionEmojiUpdateEvent,
     ) {}
 
     /**
@@ -251,7 +251,7 @@ interface ChannelListeners : IEventListener {
      * @param event The ForumChannelAvailableForumTagsIdsUpdateEvent
      */
     fun onForumChannelAvailableForumTagsIdsUpdate(
-        event: ForumChannelAvailableForumTagsIdsUpdateEvent
+        event: ForumChannelAvailableForumTagsIdsUpdateEvent,
     ) {}
 
     /**
@@ -260,7 +260,7 @@ interface ChannelListeners : IEventListener {
      * @param event The ForumChannelDefaultForumLayoutViewUpdateEvent
      */
     fun onForumChannelDefaultForumLayoutViewUpdate(
-        event: ForumChannelDefaultForumLayoutViewUpdateEvent
+        event: ForumChannelDefaultForumLayoutViewUpdateEvent,
     ) {}
 
     override fun onEvent(event: GenericEvent) {

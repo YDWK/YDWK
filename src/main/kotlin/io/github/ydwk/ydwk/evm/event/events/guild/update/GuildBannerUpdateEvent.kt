@@ -34,5 +34,5 @@ data class GuildBannerUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,
     val oldBanner: String?,
-    val newBanner: String?
+    val newBanner: String?,
 ) : GenericGuildUpdateEvent<String?>(ydwk, entity, oldBanner, newBanner)

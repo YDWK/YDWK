@@ -35,7 +35,7 @@ data class GuildExplicitContentFilterLevelUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,
     val oldExplicitContentFilterLevel: ExplicitContentFilterLevel,
-    val newExplicitContentFilterLevel: ExplicitContentFilterLevel
+    val newExplicitContentFilterLevel: ExplicitContentFilterLevel,
 ) :
     GenericGuildUpdateEvent<Int>(
         ydwk,
