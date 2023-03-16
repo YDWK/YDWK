@@ -564,11 +564,7 @@ open class WebSocketManager(
         if (webSocket != null) {
             webSocket!!.disconnect()
         }
-        logger.info("Shutting down gateway")
-        try {
-            Runtime.getRuntime().exit(0)
-        } catch (e: Exception) {
-            logger.error("Failed to shutdown vm", e)
-        }
+
+        logger.info("Finished shutting down YDWK Api, you can now safely close the application")
     }
 }
