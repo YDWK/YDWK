@@ -35,7 +35,7 @@ data class ForumChannelDefaultReactionEmojiUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildForumChannel,
     val oldDefaultReactionEmoji: DefaultReactionEmoji?,
-    val newDefaultReactionEmoji: DefaultReactionEmoji?
+    val newDefaultReactionEmoji: DefaultReactionEmoji?,
 ) :
     GenericChannelUpdateEvent<DefaultReactionEmoji?>(
         ydwk, entity, oldDefaultReactionEmoji, newDefaultReactionEmoji)

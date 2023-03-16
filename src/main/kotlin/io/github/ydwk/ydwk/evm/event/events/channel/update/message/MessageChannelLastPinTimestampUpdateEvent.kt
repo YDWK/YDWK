@@ -34,5 +34,5 @@ data class MessageChannelLastPinTimestampUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildMessageChannel,
     val oldLastPinTimestamp: String,
-    val newLastPinTimestamp: String
+    val newLastPinTimestamp: String,
 ) : GenericChannelUpdateEvent<String>(ydwk, entity, oldLastPinTimestamp, newLastPinTimestamp)

@@ -34,5 +34,5 @@ data class GuildDescriptionUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,
     val oldDescription: String?,
-    val newDescription: String?
+    val newDescription: String?,
 ) : GenericGuildUpdateEvent<String?>(ydwk, entity, oldDescription, newDescription)

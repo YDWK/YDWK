@@ -33,5 +33,5 @@ data class UserDiscriminatorUpdateEvent(
     override val ydwk: YDWK,
     override val entity: User,
     val oldDiscriminator: String,
-    val newDiscriminator: String
+    val newDiscriminator: String,
 ) : GenericUserUpdateEvent<String>(ydwk, entity, oldDiscriminator, newDiscriminator)

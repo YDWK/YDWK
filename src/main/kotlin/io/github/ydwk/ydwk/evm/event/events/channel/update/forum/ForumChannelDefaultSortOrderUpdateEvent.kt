@@ -34,5 +34,5 @@ data class ForumChannelDefaultSortOrderUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildForumChannel,
     val oldDefaultSortOrder: Int?,
-    val newDefaultSortOrder: Int?
+    val newDefaultSortOrder: Int?,
 ) : GenericChannelUpdateEvent<Int?>(ydwk, entity, oldDefaultSortOrder, newDefaultSortOrder)

@@ -34,5 +34,5 @@ data class DisconnectEvent(
     override val ydwk: YDWK,
     val closeCode: String,
     val closeCodeReason: String,
-    val instant: Instant
+    val instant: Instant,
 ) : Event(ydwk)

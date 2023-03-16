@@ -34,7 +34,7 @@ data class GuildBoostProgressBarEnabledUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,
     val oldBoostProgressBarEnabled: Boolean,
-    val newBoostProgressBarEnabled: Boolean
+    val newBoostProgressBarEnabled: Boolean,
 ) :
     GenericGuildUpdateEvent<Boolean>(
         ydwk, entity, oldBoostProgressBarEnabled, newBoostProgressBarEnabled)

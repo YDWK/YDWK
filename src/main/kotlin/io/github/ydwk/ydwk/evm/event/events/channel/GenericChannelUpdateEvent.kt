@@ -34,5 +34,5 @@ open class GenericChannelUpdateEvent<T>(
     override val ydwk: YDWK,
     override val entity: GuildChannel,
     override val oldValue: T,
-    override val newValue: T
+    override val newValue: T,
 ) : IEventUpdate<GuildChannel, T>

@@ -32,7 +32,7 @@ class MessageComponentHandler(
     val type: ComponentType,
     private val customId: String,
     private val interactionComponent: ComponentInteractionImpl,
-    val ydwk: YDWKImpl
+    val ydwk: YDWKImpl,
 ) {
     fun handle() {
         for (component in interactionComponent.components) {

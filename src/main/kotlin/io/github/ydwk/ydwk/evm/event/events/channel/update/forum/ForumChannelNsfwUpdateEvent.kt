@@ -34,5 +34,5 @@ data class ForumChannelNsfwUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildForumChannel,
     val oldNsfw: Boolean,
-    val newNsfw: Boolean
+    val newNsfw: Boolean,
 ) : GenericChannelUpdateEvent<Boolean>(ydwk, entity, oldNsfw, newNsfw)

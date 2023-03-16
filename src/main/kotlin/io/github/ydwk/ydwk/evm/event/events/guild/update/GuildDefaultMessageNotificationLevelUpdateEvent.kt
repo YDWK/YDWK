@@ -35,7 +35,7 @@ data class GuildDefaultMessageNotificationLevelUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,
     val oldMessageNotificationLevel: MessageNotificationLevel,
-    val newMessageNotificationLevel: MessageNotificationLevel
+    val newMessageNotificationLevel: MessageNotificationLevel,
 ) :
     GenericGuildUpdateEvent<Int>(
         ydwk,

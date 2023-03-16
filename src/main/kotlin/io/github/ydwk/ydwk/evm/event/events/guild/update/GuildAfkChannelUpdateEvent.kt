@@ -34,5 +34,5 @@ data class GuildAfkChannelUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,
     val oldAfkChannelId: Long?,
-    val newAfkChannelId: Long?
+    val newAfkChannelId: Long?,
 ) : GenericGuildUpdateEvent<Long?>(ydwk, entity, oldAfkChannelId, newAfkChannelId)

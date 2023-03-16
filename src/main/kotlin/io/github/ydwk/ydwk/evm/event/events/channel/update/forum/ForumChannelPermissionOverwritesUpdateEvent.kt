@@ -35,7 +35,7 @@ data class ForumChannelPermissionOverwritesUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildForumChannel,
     val oldPermissionOverwrites: List<PermissionOverwrite>,
-    val newPermissionOverwrites: List<PermissionOverwrite>
+    val newPermissionOverwrites: List<PermissionOverwrite>,
 ) :
     GenericChannelUpdateEvent<List<PermissionOverwrite>>(
         ydwk, entity, oldPermissionOverwrites, newPermissionOverwrites)

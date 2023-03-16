@@ -34,5 +34,5 @@ data class ForumChannelTemplateUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildForumChannel,
     val oldTemplate: String?,
-    val newTemplate: String?
+    val newTemplate: String?,
 ) : GenericChannelUpdateEvent<String?>(ydwk, entity, oldTemplate, newTemplate)

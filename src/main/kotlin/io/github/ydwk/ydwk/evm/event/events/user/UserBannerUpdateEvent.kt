@@ -33,5 +33,5 @@ data class UserBannerUpdateEvent(
     override val ydwk: YDWK,
     override val entity: User,
     val oldBanner: String?,
-    val newBanner: String?
+    val newBanner: String?,
 ) : GenericUserUpdateEvent<String?>(ydwk, entity, oldBanner, newBanner)

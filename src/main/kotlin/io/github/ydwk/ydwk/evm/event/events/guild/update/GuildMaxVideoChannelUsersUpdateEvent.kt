@@ -34,5 +34,5 @@ data class GuildMaxVideoChannelUsersUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,
     val oldMaxVideoChannelUsers: Int?,
-    val newMaxVideoChannelUsers: Int?
+    val newMaxVideoChannelUsers: Int?,
 ) : GenericGuildUpdateEvent<Int?>(ydwk, entity, oldMaxVideoChannelUsers, newMaxVideoChannelUsers)

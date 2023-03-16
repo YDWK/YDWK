@@ -36,5 +36,5 @@ data class VoiceChannelNameUpdateEvent(
     override val entity: GuildVoiceChannel,
     val channelType: ChannelType,
     val oldName: String,
-    val newName: String
+    val newName: String,
 ) : GenericChannelUpdateEvent<String>(ydwk, entity, oldName, newName)

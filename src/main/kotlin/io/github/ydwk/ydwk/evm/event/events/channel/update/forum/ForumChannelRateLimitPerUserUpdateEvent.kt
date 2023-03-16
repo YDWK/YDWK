@@ -34,5 +34,5 @@ data class ForumChannelRateLimitPerUserUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildForumChannel,
     val oldRateLimitPerUser: Int,
-    val newRateLimitPerUser: Int
+    val newRateLimitPerUser: Int,
 ) : GenericChannelUpdateEvent<Int>(ydwk, entity, oldRateLimitPerUser, newRateLimitPerUser)

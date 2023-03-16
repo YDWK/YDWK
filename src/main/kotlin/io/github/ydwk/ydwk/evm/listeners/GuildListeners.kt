@@ -115,7 +115,7 @@ interface GuildListeners : IEventListener {
      * @param event The GuildDefaultMessageNotificationLevelUpdateEvent
      */
     fun onGuildDefaultMessageNotificationLevelUpdate(
-        event: GuildDefaultMessageNotificationLevelUpdateEvent
+        event: GuildDefaultMessageNotificationLevelUpdateEvent,
     ) {}
 
     /**
@@ -124,7 +124,7 @@ interface GuildListeners : IEventListener {
      * @param event The GuildExplicitContentFilterLevelUpdateEvent
      */
     fun onGuildExplicitContentFilterLevelUpdate(
-        event: GuildExplicitContentFilterLevelUpdateEvent
+        event: GuildExplicitContentFilterLevelUpdateEvent,
     ) {}
 
     /**

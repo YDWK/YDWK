@@ -21,8 +21,10 @@ package io.github.ydwk.ydwk.ws.voice.util
 enum class SpeakingFlag(private val value: Long) {
     /** Normal transmission of voice audio. */
     MICROPHONE(1 shl 0),
+
     /** Transmission of context audio for video, no speaking indicator. */
     SOUND_SHARE(1 shl 1),
+
     /** Priority speaker, lowering audio of other speakers. */
     PRIORITY(1 shl 2);
 

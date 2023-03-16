@@ -36,5 +36,5 @@ data class GuildChannelPositionUpdateEvent(
     override val entity: GuildChannel,
     val type: ChannelType,
     val oldPosition: Int,
-    val newPosition: Int
+    val newPosition: Int,
 ) : GenericChannelUpdateEvent<Int>(ydwk, entity, oldPosition, newPosition)

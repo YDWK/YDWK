@@ -27,6 +27,7 @@ import io.github.ydwk.ydwk.evm.event.events.interaction.button.ButtonClickEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.message.MessageCommandEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.selectmenu.*
 import io.github.ydwk.ydwk.evm.event.events.interaction.slash.SlashCommandEvent
+import io.github.ydwk.ydwk.evm.event.events.interaction.textinput.TextInputEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.user.UserCommandEvent
 
 interface InteractionListeners : IEventListener {
@@ -101,6 +102,13 @@ interface InteractionListeners : IEventListener {
     fun onMemberSelectMenu(event: MemberSelectMenuEvent) {}
 
     /**
+     * Listens to Text Input Event
+     *
+     * @param event The Text Input Event
+     */
+    fun onTextInput(event: TextInputEvent) {}
+
+    /**
      * Listens to Model Event
      *
      * @param event The Model Event
@@ -126,6 +134,7 @@ interface InteractionListeners : IEventListener {
             is RoleSelectMenuEvent -> onRoleSelectMenu(event)
             is ChannelSelectMenuEvent -> onChannelSelectMenu(event)
             is MemberSelectMenuEvent -> onMemberSelectMenu(event)
+            is TextInputEvent -> onTextInput(event)
             is ModelEvent -> onModel(event)
             is PingEvent -> onPing(event)
         }

@@ -23,7 +23,7 @@ import java.time.Instant
 class YDWKLoggerImpl(
     private val manager: YDWKLogManager,
     val message: String,
-    private val classToLog: String? = null
+    private val classToLog: String? = null,
 ) : YDWKLogger {
     private var currentLoggerSeverity: YDWKLoggerSeverity = YDWKLoggerSeverity.INFO
 

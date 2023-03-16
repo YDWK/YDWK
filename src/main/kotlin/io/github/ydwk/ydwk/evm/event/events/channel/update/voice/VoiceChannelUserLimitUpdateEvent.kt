@@ -34,5 +34,5 @@ data class VoiceChannelUserLimitUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildVoiceChannel,
     val oldUserLimit: Int,
-    val newUserLimit: Int
+    val newUserLimit: Int,
 ) : GenericChannelUpdateEvent<Int>(ydwk, entity, oldUserLimit, newUserLimit)

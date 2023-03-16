@@ -34,5 +34,5 @@ data class VoiceChannelBitrateUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildVoiceChannel,
     val oldBitrate: Int,
-    val newBitrate: Int
+    val newBitrate: Int,
 ) : GenericChannelUpdateEvent<Int>(ydwk, entity, oldBitrate, newBitrate)

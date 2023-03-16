@@ -35,7 +35,7 @@ data class GuildVerificationLevelUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,
     val oldVerificationLevel: Int,
-    val newVerificationLevel: VerificationLevel
+    val newVerificationLevel: VerificationLevel,
 ) :
     GenericGuildUpdateEvent<Int>(
         ydwk, entity, oldVerificationLevel, newVerificationLevel.getLevel())

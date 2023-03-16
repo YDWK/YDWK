@@ -21,10 +21,13 @@ package io.github.ydwk.ydwk
 /** Sets the user status. */
 enum class UserStatus(private val status: String) {
     ONLINE("online"),
+
     /** Do not disturb. */
     DND("dnd"),
+
     /** Afk. */
     IDLE("idle"),
+
     /** Invisible and shown as offline. */
     INVISIBLE("invisible"),
     OFFLINE("offline");

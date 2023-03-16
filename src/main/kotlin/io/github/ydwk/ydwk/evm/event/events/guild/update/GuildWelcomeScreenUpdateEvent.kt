@@ -35,5 +35,5 @@ data class GuildWelcomeScreenUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,
     val oldWelcomeScreen: WelcomeScreen?,
-    val newWelcomeScreen: WelcomeScreen?
+    val newWelcomeScreen: WelcomeScreen?,
 ) : GenericGuildUpdateEvent<WelcomeScreen?>(ydwk, entity, oldWelcomeScreen, newWelcomeScreen)

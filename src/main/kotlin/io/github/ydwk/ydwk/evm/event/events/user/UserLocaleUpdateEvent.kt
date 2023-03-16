@@ -33,5 +33,5 @@ data class UserLocaleUpdateEvent(
     override val ydwk: YDWK,
     override val entity: User,
     val oldLocale: String?,
-    val newLocale: String?
+    val newLocale: String?,
 ) : GenericUserUpdateEvent<String?>(ydwk, entity, oldLocale, newLocale)

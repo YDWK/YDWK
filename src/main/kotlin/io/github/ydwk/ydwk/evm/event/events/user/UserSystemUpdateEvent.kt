@@ -33,5 +33,5 @@ data class UserSystemUpdateEvent(
     override val ydwk: YDWK,
     override val entity: User,
     val oldSystem: Boolean,
-    val newSystem: Boolean
+    val newSystem: Boolean,
 ) : GenericUserUpdateEvent<Boolean>(ydwk, entity, oldSystem, newSystem)

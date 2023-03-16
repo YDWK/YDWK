@@ -34,5 +34,5 @@ data class GuildWidgetEnabledUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,
     val oldWidgetEnabled: Boolean?,
-    val newWidgetEnabled: Boolean?
+    val newWidgetEnabled: Boolean?,
 ) : GenericGuildUpdateEvent<Boolean?>(ydwk, entity, oldWidgetEnabled, newWidgetEnabled)

@@ -34,5 +34,5 @@ data class UserAccentColorUpdateEvent(
     override val ydwk: YDWK,
     override val entity: User,
     val oldAccentColor: Color?,
-    val newAccentColor: Color?
+    val newAccentColor: Color?,
 ) : GenericUserUpdateEvent<Color?>(ydwk, entity, oldAccentColor, newAccentColor)

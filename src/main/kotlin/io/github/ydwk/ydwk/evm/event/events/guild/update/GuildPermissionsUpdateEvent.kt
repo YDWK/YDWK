@@ -34,5 +34,5 @@ data class GuildPermissionsUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,
     val oldPermissions: String?,
-    val newPermissions: String?
+    val newPermissions: String?,
 ) : GenericGuildUpdateEvent<String?>(ydwk, entity, oldPermissions, newPermissions)

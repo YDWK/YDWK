@@ -24,7 +24,10 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
 import io.github.ydwk.ydwk.ws.voice.util.VoiceCloseCode
 import io.github.ydwk.ydwk.ws.voice.util.VoiceOpcode
-import java.net.*
+import java.net.DatagramPacket
+import java.net.NoRouteToHostException
+import java.net.Socket
+import java.net.SocketException
 import java.util.concurrent.Future
 import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.ScheduledFuture

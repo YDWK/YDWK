@@ -34,5 +34,5 @@ data class GuildDiscoverySplashUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,
     val oldDiscoverySplash: String?,
-    val newDiscoverySplash: String?
+    val newDiscoverySplash: String?,
 ) : GenericGuildUpdateEvent<String?>(ydwk, entity, oldDiscoverySplash, newDiscoverySplash)
