@@ -22,12 +22,9 @@ enum class YDWKInfo(private val url: String) {
     DISCORD_GATEWAY_URL("wss://gateway.discord.gg/"),
     DISCORD_GATEWAY_VERSION("?v=10"),
     JSON_ENCODING("&encoding=json"),
-    DISCORD_REST_URL("https://discord.com/api"),
-    DISCORD_REST_VERSION("/v10"),
-    FULL_DISCORD_REST_URL(DISCORD_REST_URL.url + DISCORD_REST_VERSION.url),
     VOICE_GATEWAY_VERSION("/?v=4"),
     GITHUB_URL("https://github.com/ydwk/ydwk"),
-    YDWK_VERSION("1.5.5");
+    YDWK_VERSION("1.6.0");
 
     companion object {
         /**
