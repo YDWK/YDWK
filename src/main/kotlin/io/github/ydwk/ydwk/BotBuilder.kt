@@ -34,6 +34,7 @@ object BotBuilder {
     private var userStatus: UserStatus? = null
     private var activity: ActivityPayload? = null
     private var etfInsteadOfJson: Boolean = false
+    private var enableShutDownHook: Boolean = true
 
     /**
      * Creates a new bot builder with the default settings
@@ -223,6 +224,17 @@ object BotBuilder {
     }
 
     /**
+     * Enables/Disables the shutdown hook
+     *
+     * @param enableShutDownHook Whether to enable the shutdown hook
+     * @return The bot builder
+     */
+    fun setEnableShutDownHook(enableShutDownHook: Boolean): BotBuilder {
+        this.enableShutDownHook = enableShutDownHook
+        return this
+    }
+
+    /**
      * Builds the bot
      *
      * @return The bot
@@ -237,6 +249,7 @@ object BotBuilder {
         ydwk.setWebSocketManager(token!!, intents, userStatus, activity, etfInsteadOfJson)
         ydwk.setAllowedCache(allowedCache)
         ydwk.setDisallowedCache(disallowedCache)
+        ydwk.enableShutDownHook()
         return ydwk
     }
 }

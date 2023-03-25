@@ -36,10 +36,10 @@ import io.github.ydwk.ydwk.ws.util.LoggedIn
 import java.time.Instant
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
-import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 import kotlinx.coroutines.delay
 import okhttp3.OkHttpClient
+import org.slf4j.LoggerFactory
 
 class YDWKImpl(
     override var client: OkHttpClient,
@@ -58,6 +58,7 @@ class YDWKImpl(
 
     private val simpleEventManager: SampleEventManager = SampleEventManager()
     private val coroutineEventManager: CoroutineEventManager = CoroutineEventManager()
+    private val ydwkLogger = LoggerFactory.getLogger(YDWK::class.java)
 
     override val defaultScheduledExecutorService: ScheduledExecutorService =
         Executors.newScheduledThreadPool(1)
@@ -70,30 +71,35 @@ class YDWKImpl(
 
     override fun shutdownAPI() {
         val oneToFiveSecondTimeout = Random.nextLong(1000, 5000)
-        invalidateRestApi(oneToFiveSecondTimeout)
-        info("Timeout for $oneToFiveSecondTimeout then shutting down")
+        shutDownRestApi()
+        ydwkLogger.info("Timeout for $oneToFiveSecondTimeout then shutting down")
 
         try {
             Thread.sleep(oneToFiveSecondTimeout)
         } catch (e: InterruptedException) {
-            error("Error while sleeping" + e.message)
+            ydwkLogger.error("Error while sleeping" + e.message)
         }
-        webSocketManager?.shutdown()
+
+        try {
+            webSocketManager?.triggerShutdown()
+        } catch (e: Exception) {
+            ydwkLogger.error("Error while shutting down websocket" + e.message)
+        }
     }
 
-    private fun invalidateRestApi(oneToFiveSecondTimeout: Long) {
+    private fun shutDownRestApi() {
         client.dispatcher.executorService.shutdown()
         client.connectionPool.evictAll()
-        client.dispatcher.cancelAll()
-        if (client.cache != null) {
-            try {
-                client.cache!!.close()
-            } catch (e: Exception) {
-                error("Error while closing cache" + e.message)
-            }
-        }
-        client.dispatcher.executorService.awaitTermination(
-            oneToFiveSecondTimeout, TimeUnit.MILLISECONDS)
+        client.cache?.close()
+    }
+
+    fun enableShutDownHook() {
+        Runtime.getRuntime()
+            .addShutdownHook(
+                Thread {
+                    ydwkLogger.info("Shutting down YDWK")
+                    shutdownAPI()
+                })
     }
 
     override val uptime: Instant
@@ -101,14 +107,6 @@ class YDWKImpl(
 
     override fun setGuildIds(vararg guildIds: String) {
         guildIds.forEach { this.guildIdList.add(it) }
-    }
-
-    override fun toString(): String {
-        return EntityToStringBuilder(this, this)
-            .add("token", token)
-            .add("applicationId", applicationId)
-            .add("uptime", uptime)
-            .toString()
     }
 
     override var bot: Bot? = null
@@ -162,7 +160,7 @@ class YDWKImpl(
         val ws = webSocketManager ?: throw IllegalStateException("Bot is not logged in")
         while (!ws.ready) {
             delay(1000)
-            debug("Waiting for bot to be ready")
+            ydwkLogger.debug("Waiting for bot to be ready")
         } // wait for bot to be ready
         return this
     }
@@ -238,43 +236,11 @@ class YDWKImpl(
         this.loggedInStatus = loggedIn
     }
 
-    private val enabledLoggerStatus: List<YDWKLoggerStatus> = YDWKLoggerStatus.ALL
-    private val ydwkLoggerManager: YDWKLogManager = YDWKLogManager(enabledLoggerStatus)
-
-    fun info(name: String): YDWKLogger {
-        return YDWKLoggerImpl(ydwkLoggerManager, name).setSeverity(YDWKLoggerSeverity.INFO)
-    }
-
-    fun error(name: String): YDWKLogger {
-        return YDWKLoggerImpl(ydwkLoggerManager, name).setSeverity(YDWKLoggerSeverity.ERROR)
-    }
-
-    fun debug(name: String): YDWKLogger {
-        return YDWKLoggerImpl(ydwkLoggerManager, name).setSeverity(YDWKLoggerSeverity.DEBUG)
-    }
-
-    fun warn(name: String): YDWKLogger {
-        return YDWKLoggerImpl(ydwkLoggerManager, name).setSeverity(YDWKLoggerSeverity.WARN)
-    }
-
-    companion object {
-        private val enabledLoggerStatus: List<YDWKLoggerStatus> = YDWKLoggerStatus.ALL
-        private val ydwkLoggerManager: YDWKLogManager = YDWKLogManager(enabledLoggerStatus)
-
-        fun info(name: String): YDWKLogger {
-            return YDWKLoggerImpl(ydwkLoggerManager, name).setSeverity(YDWKLoggerSeverity.INFO)
-        }
-
-        fun error(name: String, e: Throwable?): YDWKLogger {
-            return YDWKLoggerImpl(ydwkLoggerManager, name + e).setSeverity(YDWKLoggerSeverity.ERROR)
-        }
-
-        fun debug(name: String): YDWKLogger {
-            return YDWKLoggerImpl(ydwkLoggerManager, name).setSeverity(YDWKLoggerSeverity.DEBUG)
-        }
-
-        fun warn(name: String): YDWKLogger {
-            return YDWKLoggerImpl(ydwkLoggerManager, name).setSeverity(YDWKLoggerSeverity.WARN)
-        }
+    override fun toString(): String {
+        return EntityToStringBuilder(this, this)
+            .add("token", token)
+            .add("applicationId", applicationId)
+            .add("uptime", uptime)
+            .toString()
     }
 }

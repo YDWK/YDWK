@@ -56,6 +56,7 @@ enum class CloseCode(
     RECONNECT(4999, "Sent when opcode 7 is received"),
     INVALID_SESSION(4998, "The session has been invalidated. We will reconnect you automatically."),
     MISSED_HEARTBEAT(4997, "You missed too many heartbeats, reconnecting."),
+    TRIGGERED_SHUTDOWN(5000, "The server is going down, disconnecting you."),
     UNKNOWN(4999, "Unknown error", false);
 
     companion object {

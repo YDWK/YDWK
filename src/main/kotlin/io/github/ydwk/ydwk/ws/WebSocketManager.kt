@@ -22,14 +22,13 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.neovisionaries.ws.client.*
-import io.github.ydwk.yde.cache.CacheIds
 import io.github.ydwk.yde.entities.Guild
-import io.github.ydwk.yde.entities.Message
 import io.github.ydwk.yde.entities.channel.GuildChannel
 import io.github.ydwk.ydwk.*
 import io.github.ydwk.ydwk.evm.event.events.gateway.DisconnectEvent
 import io.github.ydwk.ydwk.evm.event.events.gateway.ReconnectEvent
 import io.github.ydwk.ydwk.evm.event.events.gateway.ResumeEvent
+import io.github.ydwk.ydwk.evm.event.events.gateway.ShutDownEvent
 import io.github.ydwk.ydwk.evm.handler.handlers.ban.GuildBanAddHandler
 import io.github.ydwk.ydwk.evm.handler.handlers.ban.GuildBanRemoveHandler
 import io.github.ydwk.ydwk.evm.handler.handlers.channel.ChannelCreateHandler
@@ -73,7 +72,6 @@ import io.github.ydwk.ydwk.ws.util.impl.LoggedInImpl
 import java.io.IOException
 import java.net.SocketTimeoutException
 import java.time.Instant
-import java.time.temporal.ChronoUnit
 import java.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
@@ -253,12 +251,31 @@ open class WebSocketManager(
         if (closeCode.shouldReconnect()) {
             logger.info("Reconnecting to websocket")
             connect()
+        } else if (closeCode.getCode() == CloseCode.TRIGGERED_SHUTDOWN.getCode()) {
+            logger.info("Received shutdown code triggered by user or API, shutting down")
+            ydwk.emitEvent(ShutDownEvent(ydwk, closeCode, Instant.now()))
+            invalidate()
+            websocket.disconnect()
         } else {
-            logger.info("Not able to reconnect to websocket, shutting down")
-            ydwk.emitEvent(
-                io.github.ydwk.ydwk.evm.event.events.gateway.ShutDownEvent(
-                    ydwk, closeCode, Instant.now()))
+            logger.info("Not able to reconnect to websocket, sending shutdown code")
+            ydwk.emitEvent(ShutDownEvent(ydwk, closeCode, Instant.now()))
             ydwk.shutdownAPI()
+        }
+    }
+
+    private fun invalidate() {
+        sessionId = null
+        resumeUrl = null
+        ydwk.cache.clear()
+        heartBeat?.heartbeatThread?.cancel(false)
+        ydwk.setLoggedIn(LoggedInImpl(false).setDisconnectedTime())
+        scheduler.shutdownNow()
+        upTime = null
+    }
+
+    fun triggerShutdown() {
+        if (webSocket != null) {
+            sendCloseCode(CloseCode.TRIGGERED_SHUTDOWN)
         }
     }
 
@@ -398,32 +415,6 @@ open class WebSocketManager(
         }
     }
 
-    @Synchronized
-    fun deleteMessageCachePast14Days() {
-        // timer
-        val timer = Timer()
-        timer.scheduleAtFixedRate(
-            object : TimerTask() {
-                override fun run() {
-                    val now = Instant.now()
-                    val fourteenDaysAgo = now.minus(14, ChronoUnit.DAYS)
-                    val fourteenDaysAgoEpoch = fourteenDaysAgo.epochSecond
-                    val fourteenDaysAgoEpochMilli = fourteenDaysAgoEpoch * 1000
-
-                    val iterator = ydwk.cache.values(CacheIds.MESSAGE).iterator()
-                    while (iterator.hasNext()) {
-                        val entry = iterator.next()
-                        val message = entry as Message
-                        if (message.asTimestamp < fourteenDaysAgoEpochMilli) {
-                            ydwk.cache.remove(message.id, CacheIds.MESSAGE)
-                        }
-                    }
-                }
-            },
-            0,
-            1000 * 60 * 60 * 24)
-    }
-
     fun sendVoiceStateUpdate(
         guild: Guild?,
         channel: GuildChannel?,
@@ -547,24 +538,5 @@ open class WebSocketManager(
                 logger.error("Unknown event type: $eventType")
             }
         }
-    }
-
-    private fun invalidate() {
-        sessionId = null
-        resumeUrl = null
-        ydwk.cache.clear()
-        heartBeat?.heartbeatThread?.cancel(false)
-        ydwk.setLoggedIn(LoggedInImpl(false).setDisconnectedTime())
-        scheduler.shutdownNow()
-        upTime = null
-    }
-
-    fun shutdown() {
-        invalidate()
-        if (webSocket != null) {
-            webSocket!!.disconnect()
-        }
-
-        logger.info("Finished shutting down YDWK Api, you can now safely close the application")
     }
 }
