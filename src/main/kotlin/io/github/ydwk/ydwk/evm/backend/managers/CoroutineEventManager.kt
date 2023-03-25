@@ -20,14 +20,15 @@ package io.github.ydwk.ydwk.evm.backend.managers
 
 import io.github.ydwk.ydwk.evm.backend.event.CoroutineEventListener
 import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
-import io.github.ydwk.ydwk.impl.YDWKImpl
 import java.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.slf4j.LoggerFactory
 
 class CoroutineEventManager : IEventManager, CoroutineScope by CoroutineScope(Dispatchers.Default) {
     private val listeners: MutableList<CoroutineEventListener> = ArrayList()
+    private val logger = LoggerFactory.getLogger(CoroutineEventManager::class.java)
 
     override fun emitEvent(event: GenericEvent) {
         launch {
@@ -35,7 +36,7 @@ class CoroutineEventManager : IEventManager, CoroutineScope by CoroutineScope(Di
                 try {
                     listener.onEvent(event)
                 } catch (e: Throwable) {
-                    YDWKImpl.error(
+                    logger.error(
                         "Error while emitting event ${event.javaClass.simpleName} to ${listener.javaClass.simpleName}",
                         e)
                     if (e is Error) {
