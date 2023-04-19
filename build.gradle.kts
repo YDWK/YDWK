@@ -51,6 +51,8 @@ apply(from = "gradle/tasks/eventClassJavaDocChecker.gradle")
 
 apply(from = "gradle/tasks/Nexus.gradle")
 
+apply(from = "gradle/tasks/generateListeners.gradle.kts")
+
 repositories { mavenCentral() }
 
 dependencies {

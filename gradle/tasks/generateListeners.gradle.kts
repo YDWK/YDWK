@@ -1,5 +1,5 @@
 import com.squareup.kotlinpoet.*
-import io.github.classgraph.ClassGraph
+import io.github.classgraph.*
 import java.util.*
 
 buildscript {
@@ -11,15 +11,11 @@ buildscript {
     }
 }
 
-tasks.register("generate") {
+tasks.register("generateListeners") {
     doLast {
         val classGraph = ClassGraph()
             .enableAllInfo()
             .scan()
-
-        // two types of listeners.
-        // your normals ones such as CoreListeners 
-        // the other yde.coreListeners.onReadyEvent which is a special one
 
         val coreListeners = classGraph.getClassesImplementing("io.github.ydwk.ydwk.evm.listeners.extendable.ExtendableCoreListener")
         val guildListeners = classGraph.getClassesImplementing("io.github.ydwk.ydwk.evm.listeners.extendable.ExtendableGuildListener")
@@ -29,16 +25,6 @@ tasks.register("generate") {
         val interactionListeners = classGraph.getClassesImplementing("io.github.ydwk.ydwk.evm.listeners.extendable.ExtendableInteractionListener")
         val guildModerationListeners = classGraph.getClassesImplementing("io.github.ydwk.ydwk.evm.listeners.extendable.ExtendableGuildModerationListener")
 
-        // two files to write to
-        // one has an interface for each listener type (core, guild, channel, etc) and it extends IEventListener. At the end of the file it will overide onEvent(event : GenericEvent) and call the correct event (onReadyEvent, onGuildJoinEvent, etc
-        // the other will events.kt which will have events such as onReadyEvent
-        // in this format 
-        // inline fun onReadyEvent(crossinline block: suspend (ReadyEvent) -> Unit) {
-        //     coreListeners.onReadyEvent(block)
-        // }
-        // and the same for all the other events
-
-        //extend the IEventListener interface
         val coreListenerFile = FileSpec.builder("io.github.ydwk.ydwk.evm.listeners", "CoreListeners").addType(
             TypeSpec.interfaceBuilder("CoreListeners")
                 .addSuperinterface(ClassName("io.github.ydwk.ydwk.evm.backend.event.IEventListener", "IEventListener"))
@@ -80,5 +66,140 @@ tasks.register("generate") {
             )
 
         val eventFile = FileSpec.builder("io.github.ydwk.ydwk.evm.listeners", "Events")   
+
+        addFunctions(coreListenerFile, coreListeners)
+        addFunctions(guildListenerFile, guildListeners)
+        addFunctions(channelListenerFile, channelListeners)
+        addFunctions(userListenerFile, userListeners)
+        addFunctions(voiceListenerFile, voiceListeners)
+        addFunctions(interactionListenerFile, interactionListeners)
+        addFunctions(guildModerationListenerFile, guildModerationListeners)
+        
+        addOverideOnEvent(coreListenerFile, coreListeners)
+        addOverideOnEvent(guildListenerFile, guildListeners)
+        addOverideOnEvent(channelListenerFile, channelListeners)
+        addOverideOnEvent(userListenerFile, userListeners)
+        addOverideOnEvent(voiceListenerFile, voiceListeners)
+        addOverideOnEvent(interactionListenerFile, interactionListeners)
+        addOverideOnEvent(guildModerationListenerFile, guildModerationListeners)
+
+        addInlineEventsToEventFile(eventFile, coreListeners)
+        addInlineEventsToEventFile(eventFile, guildListeners)
+        addInlineEventsToEventFile(eventFile, channelListeners)
+        addInlineEventsToEventFile(eventFile, userListeners)
+        addInlineEventsToEventFile(eventFile, voiceListeners)
+        addInlineEventsToEventFile(eventFile, interactionListeners)
+        addInlineEventsToEventFile(eventFile, guildModerationListeners)
+    
+
+         File("${project.buildDir}/generated/kotlin").apply {
+            mkdirs()
+            coreListenerFile.build().writeTo(this)
+            guildListenerFile.build().writeTo(this)
+            channelListenerFile.build().writeTo(this)
+            userListenerFile.build().writeTo(this)
+            voiceListenerFile.build().writeTo(this)
+            interactionListenerFile.build().writeTo(this)
+            guildModerationListenerFile.build().writeTo(this)
+
+            eventFile.build().writeTo(this)
+         }
+    }
+}
+
+fun addFunctions(file: FileSpec.Builder, listeners: List<ClassInfo>) {
+    listeners.forEach { listener ->
+        //get the name of the class and add "on" to the front
+        val name = listener.simpleName
+        // the paramater in the function is just the event class name but with a lowercase first letter
+        val eventParam = listener.simpleName.first().toLowerCase() + listener.simpleName.substring(1)
+        val eventName = "on" + name
+        val eventPackage = listener.packageName
+
+        //add the function to the interface
+        file.addType(
+            TypeSpec.interfaceBuilder(name)
+                .addFunction(
+                    FunSpec.builder(eventName)
+                        .addParameter(eventParam, ClassName(eventPackage, name))
+                        .build()
+                )
+                .build()
+        )
+    }
+}
+
+fun addOverideOnEvent(file: FileSpec.Builder, listeners: List<ClassInfo>) {
+    listeners.forEach { listener ->
+        //get the name of the class and add "on" to the front
+        val name = listener.simpleName
+        // the paramater in the function is just the event class name but with a lowercase first letter
+        val eventParam = listener.simpleName.first().toLowerCase() + listener.simpleName.substring(1)
+        val eventName = "on" + name
+        val eventPackage = listener.packageName
+        
+        file.addFunction(
+            FunSpec.builder("onEvent")
+                .addParameter("event", ClassName("io.github.ydwk.ydwk.evm.backend.event.", "GenericEvent"))
+                .addCode(
+                    CodeBlock.builder()
+                        .beginControlFlow("when (event)")
+                        .addStatement("is %T -> %L(event)", ClassName(eventPackage, name), eventName)
+                        .endControlFlow()
+                        .build()
+                )
+                .build()
+        )
+    }
+}
+
+
+inline fun <reified T : GenericEvent> YDWK.on(
+    crossinline consumer: suspend GenericEvent.(T) -> Unit,
+): CoroutineEventListener {
+    return object : CoroutineEventListener {
+            override suspend fun onEvent(event: GenericEvent) {
+                if (event is T) {
+                    event.consumer(event)
+                }
+            }
+        }
+        .also { this.addEventListeners(it) }
+}
+
+// like this but no need for T as it will be like YDWK.onReadyEvent { }
+
+fun addInlineEventsToEventFile(file: FileSpec.Builder, listeners: List<ClassInfo> ) {
+    listeners.forEach { listener ->
+        //get the name of the class and add "on" to the front
+        val name = listener.simpleName
+        // the paramater in the function is just the event class name but with a lowercase first letter
+        val eventParam = listener.simpleName.first().toLowerCase() + listener.simpleName.substring(1)
+        val eventName = "on" + name
+        val eventPackage = listener.packageName
+        
+        file.addFunction(
+            FunSpec.builder("on${name}")
+                .addParameter("consumer", LambdaTypeName.get(
+                    parameters = listOf(
+                        ParameterSpec.builder("event", ClassName(eventPackage, name)).build()
+                    ),
+                    returnType = UNIT
+                ))
+                .returns(ClassName("io.github.ydwk.ydwk.evm.backend.event", "CoroutineEventListener"))
+                .addCode(
+                    CodeBlock.builder()
+                        .addStatement("return object : CoroutineEventListener {")
+                        .addStatement("override suspend fun onEvent(event: GenericEvent) {")
+                        .addStatement("if (event is %T) {", ClassName(eventPackage, name))
+                        .addStatement("event.consumer(event)")
+                        .addStatement("}")
+                        .addStatement("}")
+                        .addStatement("}")
+                        .addStatement(".also { this.addEventListeners(it) }")
+                        .build()
+                )
+                .build()
+        )
     }
 }
