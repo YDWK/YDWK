@@ -28,6 +28,7 @@ tasks.register("generateListeners") {
         val coreListenerFile = FileSpec.builder("io.github.ydwk.ydwk.evm.listeners", "CoreListeners").addType(
             TypeSpec.interfaceBuilder("CoreListeners")
                 .addSuperinterface(ClassName("io.github.ydwk.ydwk.evm.backend.event.IEventListener", "IEventListener"))
+        )
                 
         val guildListenerFile = FileSpec.builder("io.github.ydwk.ydwk.evm.listeners", "GuildListeners")
             .addType(
