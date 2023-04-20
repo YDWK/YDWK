@@ -118,14 +118,12 @@ fun addFunctions(file: FileSpec.Builder, listeners: List<ClassInfo>) {
         val eventPackage = listener.packageName
 
         //add the function to the interface
-        file.addType(
-            TypeSpec.interfaceBuilder(name)
+        file
                 .addFunction(
                     FunSpec.builder(eventName)
                         .addParameter(eventParam, ClassName(eventPackage, name))
                         .build()
-                )
-                .build()
+                
         )
     }
 }
