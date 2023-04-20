@@ -154,22 +154,6 @@ fun addOverideOnEvent(file: FileSpec.Builder, listeners: List<ClassInfo>) {
     }
 }
 
-
-inline fun <reified T : GenericEvent> YDWK.on(
-    crossinline consumer: suspend GenericEvent.(T) -> Unit,
-): CoroutineEventListener {
-    return object : CoroutineEventListener {
-            override suspend fun onEvent(event: GenericEvent) {
-                if (event is T) {
-                    event.consumer(event)
-                }
-            }
-        }
-        .also { this.addEventListeners(it) }
-}
-
-// like this but no need for T as it will be like YDWK.onReadyEvent { }
-
 fun addInlineEventsToEventFile(file: FileSpec.Builder, listeners: List<ClassInfo> ) {
     listeners.forEach { listener ->
         //get the name of the class and add "on" to the front
