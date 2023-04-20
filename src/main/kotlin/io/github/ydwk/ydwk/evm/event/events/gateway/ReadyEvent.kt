@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.evm.event.events.gateway
 
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.evm.event.Event
+import io.github.ydwk.ydwk.evm.listeners.extendable.ExtendableCoreListener
 
 /**
  * This event is triggered when the websocket triggers a resume event.
@@ -34,4 +35,4 @@ data class ReadyEvent(
     val amountOfAvailableGuilds: Int,
     val amountOfUnavailableGuilds: Int,
     val totalGuildsAmount: Int = amountOfAvailableGuilds + amountOfUnavailableGuilds,
-) : Event(ydwk)
+) : Event(ydwk), ExtendableCoreListener

@@ -12,162 +12,239 @@ buildscript {
 }
 
 tasks.register("generateListeners") {
-    doLast {
-        val classGraph = ClassGraph()
-            .enableAllInfo()
-            .scan()
+    try {
+        var classGraph: ScanResult? = null
+        try {
+            classGraph = ClassGraph().enableAllInfo().scan()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            logger.lifecycle("Failed to scan classpath")
+        }
 
-        val coreListeners = classGraph.getClassesImplementing("io.github.ydwk.ydwk.evm.listeners.extendable.ExtendableCoreListener")
-        val guildListeners = classGraph.getClassesImplementing("io.github.ydwk.ydwk.evm.listeners.extendable.ExtendableGuildListener")
-        val channelListeners = classGraph.getClassesImplementing("io.github.ydwk.ydwk.evm.listeners.extendable.ExtendableChannelListener")
-        val userListeners = classGraph.getClassesImplementing("io.github.ydwk.ydwk.evm.listeners.extendable.ExtendableUserListener")
-        val voiceListeners = classGraph.getClassesImplementing("io.github.ydwk.ydwk.evm.listeners.extendable.ExtendableVoiceListener")
-        val interactionListeners = classGraph.getClassesImplementing("io.github.ydwk.ydwk.evm.listeners.extendable.ExtendableInteractionListener")
-        val guildModerationListeners = classGraph.getClassesImplementing("io.github.ydwk.ydwk.evm.listeners.extendable.ExtendableGuildModerationListener")
+        if (classGraph == null) {
+            logger.lifecycle("Failed to scan classpath")
+            throw Exception("Failed to scan classpath")
+        } else {
 
-        val coreListenerFile : TypeSpec = FileSpec.builder("io.github.ydwk.ydwk.evm.listeners", "CoreListeners").addType(
-            TypeSpec.interfaceBuilder("CoreListeners")
-                .addSuperinterface(ClassName("io.github.ydwk.ydwk.evm.backend.event.IEventListener", "IEventListener"))
-        )
-                
-        val guildListenerFile : TypeSpec = FileSpec.builder("io.github.ydwk.ydwk.evm.listeners", "GuildListeners")
-            .addType(
-                TypeSpec.interfaceBuilder("GuildListeners")
-                    .addSuperinterface(ClassName("io.github.ydwk.ydwk.evm.backend.event.IEventListener", "IEventListener"))
-            )
-            
-        val channelListenerFile : TypeSpec = FileSpec.builder("io.github.ydwk.ydwk.evm.listeners", "ChannelListeners")
-            .addType(
-                TypeSpec.interfaceBuilder("ChannelListeners")
-                    .addSuperinterface(ClassName("io.github.ydwk.ydwk.evm.backend.event.IEventListener", "IEventListener"))
-            )
+            logger.lifecycle("Generating listeners")
 
-        val userListenerFile : TypeSpec = FileSpec.builder("io.github.ydwk.ydwk.evm.listeners", "UserListeners")
-            .addType(
-                TypeSpec.interfaceBuilder("UserListeners")
-                    .addSuperinterface(ClassName("io.github.ydwk.ydwk.evm.backend.event.IEventListener", "IEventListener"))
-            )
-            
-        val voiceListenerFile : TypeSpec = FileSpec.builder("io.github.ydwk.ydwk.evm.listeners", "VoiceListeners")
-            .addType(
-                TypeSpec.interfaceBuilder("VoiceListeners")
-                    .addSuperinterface(ClassName("io.github.ydwk.ydwk.evm.backend.event.IEventListener", "IEventListener"))
-            )
-            
-        val interactionListenerFile : TypeSpec = FileSpec.builder("io.github.ydwk.ydwk.evm.listeners", "InteractionListeners")
-            .addType(
-                TypeSpec.interfaceBuilder("InteractionListeners")
-                    .addSuperinterface(ClassName("io.github.ydwk.ydwk.evm.backend.event.IEventListener", "IEventListener"))
-            )
-            
-        val guildModerationListenerFile : TypeSpec = FileSpec.builder("io.github.ydwk.ydwk.evm.listeners", "GuildModerationListeners")
-            .addType(
-                TypeSpec.interfaceBuilder("GuildModerationListeners")
-                    .addSuperinterface(ClassName("io.github.ydwk.ydwk.evm.backend.event.IEventListener", "IEventListener"))
-            )
+            val coreListeners =
+                classGraph.getClassesImplementing(
+                    "io.github.ydwk.ydwk.evm.listeners.extendable.ExtendableCoreListener")
+            val guildListeners =
+                classGraph.getClassesImplementing(
+                    "io.github.ydwk.ydwk.evm.listeners.extendable.ExtendableGuildListener")
+            val channelListeners =
+                classGraph.getClassesImplementing(
+                    "io.github.ydwk.ydwk.evm.listeners.extendable.ExtendableChannelListener")
+            val userListeners =
+                classGraph.getClassesImplementing(
+                    "io.github.ydwk.ydwk.evm.listeners.extendable.ExtendableUserListener")
+            val voiceListeners =
+                classGraph.getClassesImplementing(
+                    "io.github.ydwk.ydwk.evm.listeners.extendable.ExtendableVoiceListener")
+            val interactionListeners =
+                classGraph.getClassesImplementing(
+                    "io.github.ydwk.ydwk.evm.listeners.extendable.ExtendableInteractionListener")
+            val guildModerationListeners =
+                classGraph.getClassesImplementing(
+                    "io.github.ydwk.ydwk.evm.listeners.extendable.ExtendableGuildModerationListener")
 
-        val eventFile = FileSpec.builder("io.github.ydwk.ydwk.evm.listeners", "Events")   
+            logger.lifecycle("Found ${coreListeners.size} core listeners")
+            val coreListenerFile: FileSpec.Builder =
+                FileSpec.builder("io.github.ydwk.ydwk.evm.listeners", "CoreListeners")
+                    .addType(
+                        TypeSpec.interfaceBuilder("CoreListeners")
+                            .addSuperinterface(
+                                ClassName(
+                                    "io.github.ydwk.ydwk.evm.backend.event.IEventListener",
+                                    "IEventListener"))
+                            .build())
 
-        addFunctions(coreListenerFile, coreListeners)
-        addFunctions(guildListenerFile, guildListeners)
-        addFunctions(channelListenerFile, channelListeners)
-        addFunctions(userListenerFile, userListeners)
-        addFunctions(voiceListenerFile, voiceListeners)
-        addFunctions(interactionListenerFile, interactionListeners)
-        addFunctions(guildModerationListenerFile, guildModerationListeners)
-        
-        addOverideOnEvent(coreListenerFile, coreListeners)
-        addOverideOnEvent(guildListenerFile, guildListeners)
-        addOverideOnEvent(channelListenerFile, channelListeners)
-        addOverideOnEvent(userListenerFile, userListeners)
-        addOverideOnEvent(voiceListenerFile, voiceListeners)
-        addOverideOnEvent(interactionListenerFile, interactionListeners)
-        addOverideOnEvent(guildModerationListenerFile, guildModerationListeners)
+            val guildListenerFile: FileSpec.Builder =
+                FileSpec.builder("io.github.ydwk.ydwk.evm.listeners", "GuildListeners")
+                    .addType(
+                        TypeSpec.interfaceBuilder("GuildListeners")
+                            .addSuperinterface(
+                                ClassName(
+                                    "io.github.ydwk.ydwk.evm.backend.event.IEventListener",
+                                    "IEventListener"))
+                            .build())
 
-        addInlineEventsToEventFile(eventFile, coreListeners)
-        addInlineEventsToEventFile(eventFile, guildListeners)
-        addInlineEventsToEventFile(eventFile, channelListeners)
-        addInlineEventsToEventFile(eventFile, userListeners)
-        addInlineEventsToEventFile(eventFile, voiceListeners)
-        addInlineEventsToEventFile(eventFile, interactionListeners)
-        addInlineEventsToEventFile(eventFile, guildModerationListeners)
-    
+            val channelListenerFile: FileSpec.Builder =
+                FileSpec.builder("io.github.ydwk.ydwk.evm.listeners", "ChannelListeners")
+                    .addType(
+                        TypeSpec.interfaceBuilder("ChannelListeners")
+                            .addSuperinterface(
+                                ClassName(
+                                    "io.github.ydwk.ydwk.evm.backend.event.IEventListener",
+                                    "IEventListener"))
+                            .build())
 
-         File("${project.buildDir}/generated/kotlin").apply {
-            mkdirs()
-            coreListenerFile.build().writeTo(this)
-            guildListenerFile.build().writeTo(this)
-            channelListenerFile.build().writeTo(this)
-            userListenerFile.build().writeTo(this)
-            voiceListenerFile.build().writeTo(this)
-            interactionListenerFile.build().writeTo(this)
-            guildModerationListenerFile.build().writeTo(this)
+            val userListenerFile: FileSpec.Builder =
+                FileSpec.builder("io.github.ydwk.ydwk.evm.listeners", "UserListeners")
+                    .addType(
+                        TypeSpec.interfaceBuilder("UserListeners")
+                            .addSuperinterface(
+                                ClassName(
+                                    "io.github.ydwk.ydwk.evm.backend.event.IEventListener",
+                                    "IEventListener"))
+                            .build())
 
-            eventFile.build().writeTo(this)
-         }
+            val voiceListenerFile: FileSpec.Builder =
+                FileSpec.builder("io.github.ydwk.ydwk.evm.listeners", "VoiceListeners")
+                    .addType(
+                        TypeSpec.interfaceBuilder("VoiceListeners")
+                            .addSuperinterface(
+                                ClassName(
+                                    "io.github.ydwk.ydwk.evm.backend.event.IEventListener",
+                                    "IEventListener"))
+                            .build())
+
+            val interactionListenerFile: FileSpec.Builder =
+                FileSpec.builder("io.github.ydwk.ydwk.evm.listeners", "InteractionListeners")
+                    .addType(
+                        TypeSpec.interfaceBuilder("InteractionListeners")
+                            .addSuperinterface(
+                                ClassName(
+                                    "io.github.ydwk.ydwk.evm.backend.event.IEventListener",
+                                    "IEventListener"))
+                            .build())
+
+            val guildModerationListenerFile: FileSpec.Builder =
+                FileSpec.builder("io.github.ydwk.ydwk.evm.listeners", "GuildModerationListeners")
+                    .addType(
+                        TypeSpec.interfaceBuilder("GuildModerationListeners")
+                            .addSuperinterface(
+                                ClassName(
+                                    "io.github.ydwk.ydwk.evm.backend.event.IEventListener",
+                                    "IEventListener"))
+                            .build())
+
+            val eventFile = FileSpec.builder("io.github.ydwk.ydwk.evm.listeners", "Events")
+
+            logger.lifecycle("Adding functions")
+            addFunctions(coreListenerFile, coreListeners)
+            addFunctions(guildListenerFile, guildListeners)
+            addFunctions(channelListenerFile, channelListeners)
+            addFunctions(userListenerFile, userListeners)
+            addFunctions(voiceListenerFile, voiceListeners)
+            addFunctions(interactionListenerFile, interactionListeners)
+            addFunctions(guildModerationListenerFile, guildModerationListeners)
+
+            logger.lifecycle("Adding overides")
+            addOverideOnEvent(coreListenerFile, coreListeners)
+            addOverideOnEvent(guildListenerFile, guildListeners)
+            addOverideOnEvent(channelListenerFile, channelListeners)
+            addOverideOnEvent(userListenerFile, userListeners)
+            addOverideOnEvent(voiceListenerFile, voiceListeners)
+            addOverideOnEvent(interactionListenerFile, interactionListeners)
+            addOverideOnEvent(guildModerationListenerFile, guildModerationListeners)
+
+            logger.lifecycle("Adding inline events")
+            addInlineEventsToEventFile(eventFile, coreListeners)
+            addInlineEventsToEventFile(eventFile, guildListeners)
+            addInlineEventsToEventFile(eventFile, channelListeners)
+            addInlineEventsToEventFile(eventFile, userListeners)
+            addInlineEventsToEventFile(eventFile, voiceListeners)
+            addInlineEventsToEventFile(eventFile, interactionListeners)
+            addInlineEventsToEventFile(eventFile, guildModerationListeners)
+
+            logger.lifecycle("Writing files")
+            File("${project.buildDir}/generated/kotlin").apply {
+                try {
+                    mkdirs()
+                    coreListenerFile.build().writeTo(this)
+                    guildListenerFile.build().writeTo(this)
+                    channelListenerFile.build().writeTo(this)
+                    userListenerFile.build().writeTo(this)
+                    voiceListenerFile.build().writeTo(this)
+                    interactionListenerFile.build().writeTo(this)
+                    guildModerationListenerFile.build().writeTo(this)
+
+                    eventFile.build().writeTo(this)
+
+                    logger.lifecycle("Done")
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    logger.error("Failed to write files")
+                }
+            }
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
+        logger.error("Failed to generate files")
     }
 }
 
 fun addFunctions(file: FileSpec.Builder, listeners: List<ClassInfo>) {
     listeners.forEach { listener ->
-        //get the name of the class and add "on" to the front
+        // get the name of the class and add "on" to the front
         val name = listener.simpleName
-        // the paramater in the function is just the event class name but with a lowercase first letter
-        val eventParam = listener.simpleName.first().toLowerCase() + listener.simpleName.substring(1)
+        // the paramater in the function is just the event class name but with a lowercase first
+        // letter
+        val eventParam =
+            listener.simpleName.first().toLowerCase() + listener.simpleName.substring(1)
         val eventName = "on" + name
         val eventPackage = listener.packageName
 
-        //add the function to the interface
+        // add the function to the interface
         file.addFunction(
-               FunSpec.builder(eventName)
-                     .addParameter(eventParam, ClassName(eventPackage, name))
-                     .build()
-        )
+            FunSpec.builder(eventName)
+                .addParameter(eventParam, ClassName(eventPackage, name))
+                .build())
     }
 }
 
 fun addOverideOnEvent(file: FileSpec.Builder, listeners: List<ClassInfo>) {
     listeners.forEach { listener ->
-        //get the name of the class and add "on" to the front
+        // get the name of the class and add "on" to the front
         val name = listener.simpleName
-        // the paramater in the function is just the event class name but with a lowercase first letter
-        val eventParam = listener.simpleName.first().toLowerCase() + listener.simpleName.substring(1)
+        // the paramater in the function is just the event class name but with a lowercase first
+        // letter
+        val eventParam =
+            listener.simpleName.first().toLowerCase() + listener.simpleName.substring(1)
         val eventName = "on" + name
         val eventPackage = listener.packageName
-        
+
         file.addFunction(
             FunSpec.builder("onEvent")
-                .addParameter("event", ClassName("io.github.ydwk.ydwk.evm.backend.event.", "GenericEvent"))
+                .addParameter(
+                    "event", ClassName("io.github.ydwk.ydwk.evm.backend.event.", "GenericEvent"))
                 .addCode(
                     CodeBlock.builder()
                         .beginControlFlow("when (event)")
-                        .addStatement("is %T -> %L(event)", ClassName(eventPackage, name), eventName)
+                        .addStatement(
+                            "is %T -> %L(event)", ClassName(eventPackage, name), eventName)
                         .endControlFlow()
-                        .build()
-                )
-                .build()
-        )
+                        .build())
+                .build())
     }
 }
 
-fun addInlineEventsToEventFile(file: FileSpec.Builder, listeners: List<ClassInfo> ) {
+fun addInlineEventsToEventFile(file: FileSpec.Builder, listeners: List<ClassInfo>) {
     listeners.forEach { listener ->
-        //get the name of the class and add "on" to the front
+        // get the name of the class and add "on" to the front
         val name = listener.simpleName
-        // the paramater in the function is just the event class name but with a lowercase first letter
-        val eventParam = listener.simpleName.first().toLowerCase() + listener.simpleName.substring(1)
+        // the paramater in the function is just the event class name but with a lowercase first
+        // letter
+        val eventParam =
+            listener.simpleName.first().toLowerCase() + listener.simpleName.substring(1)
         val eventName = "on" + name
         val eventPackage = listener.packageName
-        
+
         file.addFunction(
-            FunSpec.builder("on${name}")
-                .addParameter("consumer", LambdaTypeName.get(
-                    parameters = listOf(
-                        ParameterSpec.builder("event", ClassName(eventPackage, name)).build()
-                    ),
-                    returnType = UNIT
-                ))
-                .returns(ClassName("io.github.ydwk.ydwk.evm.backend.event", "CoroutineEventListener"))
+            FunSpec.builder(ClassName("io.github.ydwk.ydwk", "YDWK").toString() + ".on${name}")
+                .addParameter(
+                    "consumer",
+                    LambdaTypeName.get(
+                        parameters =
+                            listOf(
+                                ParameterSpec.builder("event", ClassName(eventPackage, name))
+                                    .build()),
+                        returnType = UNIT))
+                .returns(
+                    ClassName("io.github.ydwk.ydwk.evm.backend.event", "CoroutineEventListener"))
                 .addCode(
                     CodeBlock.builder()
                         .addStatement("return object : CoroutineEventListener {")
@@ -178,9 +255,7 @@ fun addInlineEventsToEventFile(file: FileSpec.Builder, listeners: List<ClassInfo
                         .addStatement("}")
                         .addStatement("}")
                         .addStatement(".also { this.addEventListeners(it) }")
-                        .build()
-                )
-                .build()
-        )
+                        .build())
+                .build())
     }
 }

@@ -100,6 +100,7 @@ tasks.build {
     // dependsOn on custom tasks
     dependsOn(tasks.getByName("checkEvents")) // check if events are valid
     dependsOn(tasks.getByName("eventClassJavaDocChecker")) // check if event classes have javadoc
+    dependsOn(tasks.getByName("generateListeners")) // generate listeners
     dependsOn(tasks.test) // run tests before building
 
     // check if version is not snapshot
