@@ -26,7 +26,7 @@ tasks.register("generateListeners") {
         val guildModerationListeners = classGraph.getClassesImplementing("io.github.ydwk.ydwk.evm.listeners.extendable.ExtendableGuildModerationListener")
 
         val coreListenerFile = FileSpec.builder("io.github.ydwk.ydwk.evm.listeners", "CoreListeners").addType(
-            TypeSpec.interfaceBuilder("CoreListeners")
+            TypeSpec.Builder.interfaceBuilder("CoreListeners")
                 .addSuperinterface(ClassName("io.github.ydwk.ydwk.evm.backend.event.IEventListener", "IEventListener"))
         )
                 
