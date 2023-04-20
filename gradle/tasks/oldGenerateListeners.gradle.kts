@@ -28,7 +28,7 @@ tasks.register("generateListeners") {
 
             logger.lifecycle("Generating listeners")
 
-           val coreListeners =
+            val coreListeners =
                 classGraph.getClassesImplementing(
                     "io.github.ydwk.ydwk.evm.listeners.extendable.ExtendableCoreListener")
             val guildListeners =
@@ -66,39 +66,31 @@ tasks.register("generateListeners") {
                                         .addModifiers(KModifier.ABSTRACT)
                                         .addParameter(
                                             ParameterSpec.builder(
-                                                "event",
-                                                ClassName(
-                                                    it.packageName,
-                                                    it.simpleName
-                                                )
-                                            ).build()
-                                        )
+                                                    "event",
+                                                    ClassName(it.packageName, it.simpleName))
+                                                .build())
                                         .build()
-                                }
-                            )//add overmide method
+                                }) // add overmide method
                             .addFunction(
                                 FunSpec.builder("onEvent")
                                     .addModifiers(KModifier.OVERRIDE)
                                     .addParameter(
                                         ParameterSpec.builder(
-                                            "event",
-                                            ClassName(
-                                                "io.github.ydwk.ydwk.evm.backend.event",
-                                                "Event"
-                                            )
-                                        ).build()
-                                    )
+                                                "event",
+                                                ClassName(
+                                                    "io.github.ydwk.ydwk.evm.backend.event",
+                                                    "Event"))
+                                            .build())
                                     .addStatement(
                                         "when(event) {" +
-                                                coreListeners.forEach {
+                                            coreListeners
+                                                .forEach {
                                                     "is ${it.packageName}.${it.simpleName} -> 0n${it.simpleName}(event)"
-                                                }.joinToString("\n") +
-                                                "}"
-                                    )
-                                    .build()
-                            )
-                            )
-                            .build()
+                                                }
+                                                .joinToString("\n") +
+                                            "}")
+                                    .build()))
+                    .build()
 
             val guildListenerFile: FileSpec.Builder =
                 FileSpec.builder("io.github.ydwk.ydwk.evm.listeners", "GuildListeners")
@@ -114,37 +106,31 @@ tasks.register("generateListeners") {
                                         .addModifiers(KModifier.ABSTRACT)
                                         .addParameter(
                                             ParameterSpec.builder(
-                                                "event",
-                                                ClassName(
-                                                    it.packageName,
-                                                    it.simpleName
-                                                )
-                                            ).build()
-                                        )
+                                                    "event",
+                                                    ClassName(it.packageName, it.simpleName))
+                                                .build())
                                         .build()
-                                }
-                            ).addFunction(
+                                })
+                            .addFunction(
                                 FunSpec.builder("onEvent")
                                     .addModifiers(KModifier.OVERRIDE)
                                     .addParameter(
                                         ParameterSpec.builder(
-                                            "event",
-                                            ClassName(
-                                                "io.github.ydwk.ydwk.evm.backend.event",
-                                                "Event"
-                                            )
-                                        ).build()
-                                    )
+                                                "event",
+                                                ClassName(
+                                                    "io.github.ydwk.ydwk.evm.backend.event",
+                                                    "Event"))
+                                            .build())
                                     .addStatement(
                                         "when(event) {" +
-                                                guildListeners.forEach {
+                                            guildListeners
+                                                .forEach {
                                                     "is ${it.packageName}.${it.simpleName} -> 0n${it.simpleName}(event)"
-                                                }.joinToString("\n") +
-                                                "}"
-                                    )
-                                    .build()
-                            )
-                    ).build()
+                                                }
+                                                .joinToString("\n") +
+                                            "}")
+                                    .build()))
+                    .build()
 
             val channelListenerFile: FileSpec.Builder =
                 FileSpec.builder("io.github.ydwk.ydwk.evm.listeners", "ChannelListeners")
@@ -160,38 +146,31 @@ tasks.register("generateListeners") {
                                         .addModifiers(KModifier.ABSTRACT)
                                         .addParameter(
                                             ParameterSpec.builder(
+                                                    "event",
+                                                    ClassName(it.packageName, it.simpleName))
+                                                .build())
+                                        .build()
+                                })
+                            .addFunction(
+                                FunSpec.builder("onEvent")
+                                    .addModifiers(KModifier.OVERRIDE)
+                                    .addParameter(
+                                        ParameterSpec.builder(
                                                 "event",
                                                 ClassName(
-                                                    it.packageName,
-                                                    it.simpleName
-                                                )
-                                            ).build()
-                                        )
-                                        .build()
-                                }
-                            )
-                    .addFunction(
-                        FunSpec.builder("onEvent")
-                            .addModifiers(KModifier.OVERRIDE)
-                            .addParameter(
-                                ParameterSpec.builder(
-                                    "event",
-                                    ClassName(
-                                        "io.github.ydwk.ydwk.evm.backend.event",
-                                        "Event"
-                                    )
-                                ).build()
-                            )
-                            .addStatement(
-                                "when(event) {" +
-                                        channelListeners.forEach {
-                                            "is ${it.packageName}.${it.simpleName} -> 0n${it.simpleName}(event)"
-                                        }.joinToString("\n") +
-                                        "}"
-                            )
-                            .build()
-                    )
-                    ).build()
+                                                    "io.github.ydwk.ydwk.evm.backend.event",
+                                                    "Event"))
+                                            .build())
+                                    .addStatement(
+                                        "when(event) {" +
+                                            channelListeners
+                                                .forEach {
+                                                    "is ${it.packageName}.${it.simpleName} -> 0n${it.simpleName}(event)"
+                                                }
+                                                .joinToString("\n") +
+                                            "}")
+                                    .build()))
+                    .build()
 
             val userListenerFile: FileSpec.Builder =
                 FileSpec.builder("io.github.ydwk.ydwk.evm.listeners", "UserListeners")
@@ -207,37 +186,31 @@ tasks.register("generateListeners") {
                                         .addModifiers(KModifier.ABSTRACT)
                                         .addParameter(
                                             ParameterSpec.builder(
-                                                "event",
-                                                ClassName(
-                                                    it.packageName,
-                                                    it.simpleName
-                                                )
-                                            ).build()
-                                        )
+                                                    "event",
+                                                    ClassName(it.packageName, it.simpleName))
+                                                .build())
                                         .build()
-                                }
-                            ).addFunction(
+                                })
+                            .addFunction(
                                 FunSpec.builder("onEvent")
                                     .addModifiers(KModifier.OVERRIDE)
                                     .addParameter(
                                         ParameterSpec.builder(
-                                            "event",
-                                            ClassName(
-                                                "io.github.ydwk.ydwk.evm.backend.event",
-                                                "Event"
-                                            )
-                                        ).build()
-                                    )
+                                                "event",
+                                                ClassName(
+                                                    "io.github.ydwk.ydwk.evm.backend.event",
+                                                    "Event"))
+                                            .build())
                                     .addStatement(
                                         "when(event) {" +
-                                                userListeners.forEach {
+                                            userListeners
+                                                .forEach {
                                                     "is ${it.packageName}.${it.simpleName} -> 0n${it.simpleName}(event)"
-                                                } .joinToString("\n") + 
-                                                "}"
-                                    )
-                                    .build()
-                            )
-                    ).build()
+                                                }
+                                                .joinToString("\n") +
+                                            "}")
+                                    .build()))
+                    .build()
 
             val voiceListenerFile: FileSpec.Builder =
                 FileSpec.builder("io.github.ydwk.ydwk.evm.listeners", "VoiceListeners")
@@ -253,38 +226,31 @@ tasks.register("generateListeners") {
                                         .addModifiers(KModifier.ABSTRACT)
                                         .addParameter(
                                             ParameterSpec.builder(
+                                                    "event",
+                                                    ClassName(it.packageName, it.simpleName))
+                                                .build())
+                                        .build()
+                                })
+                            .addFunction(
+                                FunSpec.builder("onEvent")
+                                    .addModifiers(KModifier.OVERRIDE)
+                                    .addParameter(
+                                        ParameterSpec.builder(
                                                 "event",
                                                 ClassName(
-                                                    it.packageName,
-                                                    it.simpleName
-                                                )
-                                            ).build()
-                                        )
-                                        .build()
-                                }
-                            )
-                    .addFunction(
-                        FunSpec.builder("onEvent")
-                            .addModifiers(KModifier.OVERRIDE)
-                            .addParameter(
-                                ParameterSpec.builder(
-                                    "event",
-                                    ClassName(
-                                        "io.github.ydwk.ydwk.evm.backend.event",
-                                        "Event"
-                                    )
-                                ).build()
-                            )
-                            .addStatement(
-                                "when(event) {" +
-                                        voiceListeners.forEach {
-                                            "is ${it.packageName}.${it.simpleName} -> 0n${it.simpleName}(event)"
-                                        }.joinToString("\n") +
-                                        "}"
-                            )
-                            .build()
-                    )
-                    ).build()
+                                                    "io.github.ydwk.ydwk.evm.backend.event",
+                                                    "Event"))
+                                            .build())
+                                    .addStatement(
+                                        "when(event) {" +
+                                            voiceListeners
+                                                .forEach {
+                                                    "is ${it.packageName}.${it.simpleName} -> 0n${it.simpleName}(event)"
+                                                }
+                                                .joinToString("\n") +
+                                            "}")
+                                    .build()))
+                    .build()
 
             val interactionListenerFile: FileSpec.Builder =
                 FileSpec.builder("io.github.ydwk.ydwk.evm.listeners", "InteractionListeners")
@@ -300,39 +266,31 @@ tasks.register("generateListeners") {
                                         .addModifiers(KModifier.ABSTRACT)
                                         .addParameter(
                                             ParameterSpec.builder(
+                                                    "event",
+                                                    ClassName(it.packageName, it.simpleName))
+                                                .build())
+                                        .build()
+                                })
+                            .addFunction(
+                                FunSpec.builder("onEvent")
+                                    .addModifiers(KModifier.OVERRIDE)
+                                    .addParameter(
+                                        ParameterSpec.builder(
                                                 "event",
                                                 ClassName(
-                                                    it.packageName,
-                                                    it.simpleName
-                                                )
-                                            ).build()
-                                        )
-                                        .build()
-                                }
-                            )
-                    .addFunction(
-                        FunSpec.builder("onEvent")
-                            .addModifiers(KModifier.OVERRIDE)
-                            .addParameter(
-                                ParameterSpec.builder(
-                                    "event",
-                                    ClassName(
-                                        "io.github.ydwk.ydwk.evm.backend.event",
-                                        "Event"
-                                    )
-                                ).build()
-                            )
-                            .addStatement(
-                                "when(event) {" +
-                                        interactionListeners.forEach {
-                                            "is ${it.packageName}.${it.simpleName} -> 0n${it.simpleName}(event)"
-                                        }.joinToString("\n") +
-                                        "}"
-                            )
-                            .build()
-                    )
-                    ).build()
-
+                                                    "io.github.ydwk.ydwk.evm.backend.event",
+                                                    "Event"))
+                                            .build())
+                                    .addStatement(
+                                        "when(event) {" +
+                                            interactionListeners
+                                                .forEach {
+                                                    "is ${it.packageName}.${it.simpleName} -> 0n${it.simpleName}(event)"
+                                                }
+                                                .joinToString("\n") +
+                                            "}")
+                                    .build()))
+                    .build()
 
             val guildModerationListenerFile: FileSpec.Builder =
                 FileSpec.builder("io.github.ydwk.ydwk.evm.listeners", "GuildModerationListeners")
@@ -348,63 +306,72 @@ tasks.register("generateListeners") {
                                         .addModifiers(KModifier.ABSTRACT)
                                         .addParameter(
                                             ParameterSpec.builder(
+                                                    "event",
+                                                    ClassName(it.packageName, it.simpleName))
+                                                .build())
+                                        .build()
+                                })
+                            .addFunction(
+                                FunSpec.builder("onEvent")
+                                    .addModifiers(KModifier.OVERRIDE)
+                                    .addParameter(
+                                        ParameterSpec.builder(
                                                 "event",
                                                 ClassName(
-                                                    it.packageName,
-                                                    it.simpleName
-                                                )
-                                            ).build()
-                                        )
-                                        .build()
-                                }
-                            )
+                                                    "io.github.ydwk.ydwk.evm.backend.event",
+                                                    "Event"))
+                                            .build())
+                                    .addStatement(
+                                        "when(event) {" +
+                                            guildModerationListeners
+                                                .forEach {
+                                                    "is ${it.packageName}.${it.simpleName} -> 0n${it.simpleName}(event)"
+                                                }
+                                                .joinToString("\n") +
+                                            "}")
+                                    .build()))
+                    .build()
+
+            val eventFile =
+                FileSpec.builder("io.github.ydwk.ydwk.evm.listeners", "Events")
+                    // add the above inline function
                     .addFunction(
-                        FunSpec.builder("onEvent")
-                            .addModifiers(KModifier.OVERRIDE)
+                        FunSpec.builder("on")
+                            .addModifiers(KModifier.INLINE)
+                            .addTypeVariable(TypeVariableName("reified T : GenericEvent"))
                             .addParameter(
-                                ParameterSpec.builder(
-                                    "event",
-                                    ClassName(
-                                        "io.github.ydwk.ydwk.evm.backend.event",
-                                        "Event"
-                                    )
-                                ).build()
-                            )
+                                "consumer",
+                                LambdaTypeName.get(
+                                    parameters =
+                                        listOf(
+                                            ParameterSpec.builder(
+                                                    "event",
+                                                    ClassName(
+                                                        "io.github.ydwk.ydwk.evm.backend.event",
+                                                        "GenericEvent"))
+                                                .build(),
+                                            ParameterSpec.builder(
+                                                    "T",
+                                                    ClassName(
+                                                        "io.github.ydwk.ydwk.evm.backend.event",
+                                                        "GenericEvent"))
+                                                .build()),
+                                    returnType = Unit::class.asClassName()))
+                            .returns(
+                                ClassName(
+                                    "io.github.ydwk.ydwk.evm.backend.event",
+                                    "CoroutineEventListener"))
                             .addStatement(
-                                "when(event) {" +
-                                        guildModerationListeners.forEach {
-                                            "is ${it.packageName}.${it.simpleName} -> 0n${it.simpleName}(event)"
-                                        }.joinToString("\n") +
-                                        "}"
-                            )
-                            .build()
-                    )
-                    ).build()
-      
-            val eventFile = FileSpec.builder("io.github.ydwk.ydwk.evm.listeners", "Events")
-                            //add the above inline function
-                            .addFunction(FunSpec.builder("on")
-                                .addModifiers(KModifier.INLINE)
-                                .addTypeVariable(TypeVariableName("reified T : GenericEvent"))
-                                .addParameter("consumer", LambdaTypeName.get(
-                                    parameters = listOf(
-                                        ParameterSpec.builder("event", ClassName("io.github.ydwk.ydwk.evm.backend.event", "GenericEvent")).build(),
-                                        ParameterSpec.builder("T", ClassName("io.github.ydwk.ydwk.evm.backend.event", "GenericEvent")).build()
-                                    ),
-                                    returnType = Unit::class.asClassName()
-                                ))
-                                .returns(ClassName("io.github.ydwk.ydwk.evm.backend.event", "CoroutineEventListener"))
-                                .addStatement("return object : CoroutineEventListener {\n" +
-                                        "            override suspend fun onEvent(event: GenericEvent) {\n" +
-                                        "                if (event is T) {\n" +
-                                        "                    event.consumer(event)\n" +
-                                        "                }\n" +
-                                        "            }\n" +
-                                        "        }\n" +
-                                        "        .also { this.addEventListeners(it) }")
-                                .build())
-                                //now add one each for the event classes returned by the above functions
-                                
+                                "return object : CoroutineEventListener {\n" +
+                                    "            override suspend fun onEvent(event: GenericEvent) {\n" +
+                                    "                if (event is T) {\n" +
+                                    "                    event.consumer(event)\n" +
+                                    "                }\n" +
+                                    "            }\n" +
+                                    "        }\n" +
+                                    "        .also { this.addEventListeners(it) }")
+                            .build())
+            // now add one each for the event classes returned by the above functions
 
             logger.lifecycle("Writing files")
             File("${project.buildDir}/generated/kotlin").apply {

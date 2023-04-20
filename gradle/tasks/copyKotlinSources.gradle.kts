@@ -7,7 +7,7 @@ tasks.register("copyKotlinSources") {
 
     doLast {
         copy {
-            from("src/main/kotlin") {
+            from("ydwk-event-manager/src/main/kotlin") {
                 include("**/*.kt")
             }
             into("buildSrc/src/main/kotlin")
@@ -63,11 +63,4 @@ tasks.register("copyKotlinSources") {
             testImplementation("org.jetbrains.kotlin:kotlin-test:" + properties["kotlinTestVersion"])
         }
     """.trimIndent())
-
-    val gradleWrapper = copy {
-        from("gradle/wrapper")
-        into("buildSrc/gradle/wrapper")
-    }
-
-
 }

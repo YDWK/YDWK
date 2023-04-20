@@ -52,59 +52,138 @@ apply(from = "gradle/tasks/eventClassJavaDocChecker.gradle")
 
 apply(from = "gradle/tasks/Nexus.gradle")
 
-apply(from = "gradle/tasks/copyKotlinSources.gradle.kts")
-
-apply(from = "gradle/tasks/generateListeners.gradle.kts")
+//apply(from = "gradle/tasks/generateListeners.gradle.kts")
 
 repositories { mavenCentral() }
 
 dependencies {
     // json
-    api(
-        "com.fasterxml.jackson.module:jackson-module-kotlin:" +
-            properties["jacksonModuleKotlinVersion"])
-
-    // config.json
-    api("io.github.realyusufismail:jconfig:" + properties["jconfigVersion"])
-
-    // logger
-    api("ch.qos.logback:logback-classic:" + properties["logBackClassicVersion"])
-    api("ch.qos.logback:logback-core:" + properties["logBackCoreVersion"])
-    api("uk.org.lidalia:sysout-over-slf4j:" + properties["sysoutOverSlf4jVersion"])
-
-    // ws and https
-    api("com.squareup.okhttp3:okhttp:" + properties["okhttp3Version"])
-    api("com.neovisionaries:nv-websocket-client:" + properties["nvWebsocketClientVersion"])
-    api("com.codahale:xsalsa20poly1305:" + properties["xsalsa20poly1305Version"])
-
-    // YDE Entities
-    api("io.github.realyusufismail:yde:" + properties["ydeVersion"])
-
-    // kotlin
-    api(
-        "org.jetbrains.kotlinx:kotlinx-coroutines-core:" +
-            properties["kotlinxCoroutinesCoreVersion"])
-
-    // annotations
-    implementation("com.google.code.findbugs:jsr305:" + properties["jsr305Version"])
-
-    // test
-    testImplementation("org.jetbrains.kotlin:kotlin-test:" + properties["kotlinTestVersion"])
+    api(project(":ydwk-core")) { isTransitive = true }
 }
 
-tasks.test {
-    useJUnitPlatform()
-    finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
-}
+allprojects {
+    extra.apply {
+        set("name", "YDWK")
+        set("description", "YDWK (Yusuf's Discord Wrapper Kotlin) My own Discord Wrapper in Kotlin")
+        set("dev_id", "yusuf")
+        set("dev_name", "Yusuf Ismail")
+        set("dev_email", "yusufgamer222@gmail.com")
+        set("dev_organization", "YDWK")
+        set("dev_organization_url", "https://github.com/YDWK")
+        set("gpl_name", "Apache-2.0 license")
+        set("gpl_url", "https://github.com/YDWK/YDWK/blob/master/LICENSE")
+    }
 
-tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "11" }
+    repositories { mavenCentral() }
+
+    apply(plugin = "kotlin")
+    apply(plugin = "com.diffplug.spotless")
+    apply(plugin = "org.jetbrains.dokka")
+    apply(plugin = "io.gitlab.arturbosch.detekt")
+
+    group = "io.github.realyusufismail" // used for publishing. DON'T CHANGE
+    description = "YDWK (Yusuf's Discord Wrapper Kotlin) My own Discord Wrapper in Kotlin"
+
+    tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "11" }
+
+    configurations { all { exclude(group = "org.slf4j", module = "slf4j-log4j12") } }
+
+    spotless {
+        kotlin {
+            // Excludes build folder since it contains generated java classes.
+            targetExclude("build/**")
+            ktfmt("0.42").dropboxStyle()
+
+            licenseHeader(
+                """/*
+ * Copyright 2022 YDWK inc.
+ *
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ *
+ * you may not use this file except in compliance with the License.
+ *
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */ """)
+        }
+
+        kotlinGradle {
+            target("**/*.gradle.kts")
+            ktfmt("0.42").dropboxStyle()
+            trimTrailingWhitespace()
+            indentWithSpaces()
+            endWithNewline()
+        }
+    }
+
+    detekt {
+        // only check javadoc in io/github/ydwk/ydwk/entities and
+        // io/github/ydwk/ydwk/evm/event/events
+        source = files("src/main/kotlin/io/github/ydwk/ydwk/evm/event/events")
+        config = files("gradle/config/detekt.yml")
+        baseline = file("gradle/config/detekt-baseline.xml")
+        allRules = false
+    }
+
+    tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+        reports {
+            xml.required.set(true)
+            html.required.set(true)
+        }
+    }
+
+    java {
+        withJavadocJar()
+        withSourcesJar()
+
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach { jvmTarget = "11" }
+
+    tasks.withType<io.gitlab.arturbosch.detekt.DetektCreateBaselineTask>().configureEach {
+        jvmTarget = "11"
+    }
+
+    tasks.jar {
+        manifest {
+            attributes(
+                "Implementation-Title" to project.name,
+                "Implementation-Version" to project.version,
+                "Implementation-Vendor" to project.extra["dev_organization"],
+                "Implementation-Vendor-Id" to project.extra["dev_id"],
+                "Implementation-Vendor-Name" to project.extra["dev_name"],
+                "Implementation-Vendor-Email" to project.extra["dev_email"],
+                "Implementation-Vendor-Organization" to project.extra["dev_organization"],
+                "Implementation-Vendor-Organization-Url" to project.extra["dev_organization_url"],
+                "Implementation-License" to project.extra["gpl_name"],
+                "Implementation-License-Url" to project.extra["gpl_url"],
+            )
+        }
+    }
+
+    tasks.javadoc {
+        if (JavaVersion.current().isJava9Compatible) {
+            (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
+        }
+    }
+}
 
 tasks.build {
     // dependsOn on custom tasks
     doFirst {
         dependsOn(tasks.getByName("checkEvents")) // check if events are valid
-        dependsOn(tasks.getByName("eventClassJavaDocChecker")) // check if event classes have javadoc
-        dependsOn(tasks.getByName("copyKotlinSources")) // copy kotlin sources to buildSrc
+        dependsOn(
+            tasks.getByName("eventClassJavaDocChecker")) // check if event classes have javadoc
     }
     dependsOn(tasks.getByName("generateListeners")) // generate listeners
     dependsOn(tasks.test) // run tests before building
@@ -123,6 +202,11 @@ tasks.build {
     }
 }
 
+tasks.test {
+    useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
+}
+
 tasks.jacocoTestReport {
     group = "Reporting"
     description = "Generate Jacoco coverage reports after running tests."
@@ -133,103 +217,13 @@ tasks.jacocoTestReport {
     finalizedBy("jacocoTestCoverageVerification")
 }
 
-configurations { all { exclude(group = "org.slf4j", module = "slf4j-log4j12") } }
-
-spotless {
-    kotlin {
-        // Excludes build folder since it contains generated java classes.
-        targetExclude("build/**")
-        ktfmt("0.42").dropboxStyle()
-
-        licenseHeader(
-            """/*
- * Copyright 2022 YDWK inc.
- *
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- *
- * you may not use this file except in compliance with the License.
- *
- * You may obtain a copy of the License at
- *
- * https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */ """)
-    }
-
-    kotlinGradle {
-        target("**/*.gradle.kts")
-        ktfmt("0.42").dropboxStyle()
-        trimTrailingWhitespace()
-        indentWithSpaces()
-        endWithNewline()
-    }
-}
-
-detekt {
-    // only check javadoc in io/github/ydwk/ydwk/entities and io/github/ydwk/ydwk/evm/event/events
-    source = files("src/main/kotlin/io/github/ydwk/ydwk/evm/event/events")
-    config = files("gradle/config/detekt.yml")
-    baseline = file("gradle/config/detekt-baseline.xml")
-    allRules = false
-}
-
-tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
-    reports {
-        xml.required.set(true)
-        html.required.set(true)
-    }
-}
-
-application { mainClass.set("MainKt") }
-
-java {
-    withJavadocJar()
-    withSourcesJar()
-
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
-}
-
-tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach { jvmTarget = "11" }
-
-tasks.withType<io.gitlab.arturbosch.detekt.DetektCreateBaselineTask>().configureEach {
-    jvmTarget = "11"
-}
-
-tasks.jar {
-    manifest {
-        attributes(
-            "Implementation-Title" to project.name,
-            "Implementation-Version" to project.version,
-            "Implementation-Vendor" to project.extra["dev_organization"],
-            "Implementation-Vendor-Id" to project.extra["dev_id"],
-            "Implementation-Vendor-Name" to project.extra["dev_name"],
-            "Implementation-Vendor-Email" to project.extra["dev_email"],
-            "Implementation-Vendor-Organization" to project.extra["dev_organization"],
-            "Implementation-Vendor-Organization-Url" to project.extra["dev_organization_url"],
-            "Implementation-License" to project.extra["gpl_name"],
-            "Implementation-License-Url" to project.extra["gpl_url"],
-        )
-    }
-}
-
-tasks.javadoc {
-    if (JavaVersion.current().isJava9Compatible) {
-        (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
-    }
-}
+val publishingProject = project(":ydwk-core")
 
 publishing {
     val isReleaseVersion = !version.toString().endsWith("SNAPSHOT")
     publications {
         create<MavenPublication>("ydwk") {
-            from(components["java"])
+            from(publishingProject.components["java"])
             // artifactId = project.artifactId // or maybe archiveBaseName?
             pom {
                 name.set(extra["name"] as String)
@@ -343,7 +337,7 @@ tasks.getByName("dokkaHtml", DokkaTask::class) {
     }
 }
 
-//edit clean task to remove buildSrc
+// edit clean task to remove buildSrc
 tasks.withType<Delete> {
     if (name == "clean") {
         logger.info("Removing buildSrc from clean task")

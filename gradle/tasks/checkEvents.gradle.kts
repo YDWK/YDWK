@@ -2,7 +2,8 @@
 tasks.register("checkEvents") {
     group = "Verification"
 
-    doLast { checkForDataClasses() } }
+    doLast { checkForDataClasses() }
+}
 
 fun checkForDataClasses() {
     if (File("src/main/kotlin/io/github/ydwk/ydwk/evm/backend/event/GenericEvent.kt").exists()) {

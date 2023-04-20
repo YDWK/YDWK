@@ -1,8 +1,7 @@
 import com.squareup.kotlinpoet.*
 import io.github.classgraph.*
+import io.github.ydwk.ydwk.evm.listeners.extendable.*
 import java.util.*
-import io.github.ydwk.ydwk.*
-import io.github.ydwk.ydwk.evm.listener.extendable.*
 
 buildscript {
     repositories { mavenCentral() }
@@ -10,8 +9,6 @@ buildscript {
     dependencies {
         classpath("com.squareup:kotlinpoet:" + properties["kotlinPoetVersion"])
         classpath("io.github.classgraph:classgraph:" + properties["classGraphVersion"])
-        //add buildSrc dependencies from root build.gradle.kts
-        //classpath("io.github.ydwk.ydwk:buildSrc:" + properties["buildSrcVersion"])
     }
 }
 
@@ -20,10 +17,8 @@ tasks.register("generateListeners") {
     description = "Generate listeners"
 
     doLast {
-        val classGraph = ClassGraph()
-            .enableAllInfo()
-            .whitelistPackages("io.github.ydwk.ydwk")
-            .scan()
+        val classGraph =
+            ClassGraph().enableAllInfo().whitelistPackages("io.github.ydwk.ydwk").scan()
 
         val coreListeners =
             classGraph.getClassesImplementing(ExtendableCoreListener::class.java.name)
@@ -40,7 +35,7 @@ tasks.register("generateListeners") {
         val voiceListeners =
             classGraph.getClassesImplementing(ExtendableVoiceListener::class.java.name)
 
-        val interactionListeners
+        val interactionListeners =
             classGraph.getClassesImplementing(ExtendableInteractionListener::class.java.name)
 
         val guildModerationListeners =

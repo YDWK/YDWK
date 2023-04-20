@@ -16,4 +16,6 @@ pluginManagement {
     }
 }
 
-includeBuild("buildSrc")
+gradle.settingsEvaluated {
+    include("ydwk-core", "ydwk-event-manager")
+}
