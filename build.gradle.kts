@@ -23,6 +23,7 @@ plugins {
     `maven-publish`
     signing
     jacoco // code coverage reports
+    `kotlin-dsl`
 }
 
 apply(plugin = "io.codearte.nexus-staging")
@@ -50,6 +51,8 @@ apply(from = "gradle/tasks/checkEvents.gradle.kts")
 apply(from = "gradle/tasks/eventClassJavaDocChecker.gradle")
 
 apply(from = "gradle/tasks/Nexus.gradle")
+
+apply(from = "gradle/tasks/copyKotlinSources.gradle.kts")
 
 apply(from = "gradle/tasks/generateListeners.gradle.kts")
 
@@ -98,8 +101,11 @@ tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "11" }
 
 tasks.build {
     // dependsOn on custom tasks
-    dependsOn(tasks.getByName("checkEvents")) // check if events are valid
-    dependsOn(tasks.getByName("eventClassJavaDocChecker")) // check if event classes have javadoc
+    doFirst {
+        dependsOn(tasks.getByName("checkEvents")) // check if events are valid
+        dependsOn(tasks.getByName("eventClassJavaDocChecker")) // check if event classes have javadoc
+        dependsOn(tasks.getByName("copyKotlinSources")) // copy kotlin sources to buildSrc
+    }
     dependsOn(tasks.getByName("generateListeners")) // generate listeners
     dependsOn(tasks.test) // run tests before building
 
@@ -334,5 +340,13 @@ tasks.getByName("dokkaHtml", DokkaTask::class) {
         pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
             footerMessage = "Copyright © 2023 YDWK inc."
         }
+    }
+}
+
+//edit clean task to remove buildSrc
+tasks.withType<Delete> {
+    if (name == "clean") {
+        logger.info("Removing buildSrc from clean task")
+        delete("buildSrc")
     }
 }

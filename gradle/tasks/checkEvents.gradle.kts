@@ -1,5 +1,8 @@
 /** Check if event classes are data classes unless they are open classes. */
-tasks.register("checkEvents") { doLast { checkForDataClasses() } }
+tasks.register("checkEvents") {
+    group = "Verification"
+
+    doLast { checkForDataClasses() } }
 
 fun checkForDataClasses() {
     if (File("src/main/kotlin/io/github/ydwk/ydwk/evm/backend/event/GenericEvent.kt").exists()) {

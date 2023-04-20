@@ -2,6 +2,8 @@
  * If an event data class in the folder src/main/kotlin/io/github/ydwk/ydwk/evm/event does not have javadoc, an error will be thrown.
  */
 tasks.register('eventClassJavaDocChecker') {
+    group = 'Verification'
+
     doLast {
         def eventClassDir = file("src/main/kotlin/io/github/ydwk/ydwk/evm/event/events")
         // in eventClassDir there is more folder. We need to go through each and check each data class and see if it has javadoc

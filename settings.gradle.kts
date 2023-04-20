@@ -15,3 +15,5 @@ pluginManagement {
         id("io.gitlab.arturbosch.detekt") version detektVersion
     }
 }
+
+includeBuild("buildSrc")
