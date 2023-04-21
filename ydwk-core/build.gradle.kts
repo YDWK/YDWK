@@ -1,21 +1,6 @@
-plugins {
-    kotlin("jvm")
-    kotlin("plugin.allopen")
-    id("com.diffplug.spotless")
-    id("org.jetbrains.dokka")
-    id("io.gitlab.arturbosch.detekt")
-    application
-    `maven-publish`
-    signing
-    jacoco // code coverage reports
-    `kotlin-dsl`
-}
-
 repositories { mavenCentral() }
 
 dependencies {
-    api(project(":ydwk-event-manager"))
-
     // json
     api(
         "com.fasterxml.jackson.module:jackson-module-kotlin:" +
@@ -43,8 +28,10 @@ dependencies {
             properties["kotlinxCoroutinesCoreVersion"])
 
     // annotations
-    implementation("com.google.code.findbugs:jsr305:" + properties["jsr305Version"])
+    api("com.google.code.findbugs:jsr305:" + properties["jsr305Version"])
 
     // test
-    testImplementation("org.jetbrains.kotlin:kotlin-test:" + properties["kotlinTestVersion"])
+    testApi("org.jetbrains.kotlin:kotlin-test:" + properties["kotlinTestVersion"])
 }
+
+kotlin { jvmToolchain(11) }

@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.evm.handler.handlers.role
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.cache.CacheIds
 import io.github.ydwk.yde.impl.entities.guild.RoleImpl
+import io.github.ydwk.ydwk.emitEvent
 import io.github.ydwk.ydwk.evm.event.events.role.GuildRoleCreateEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl

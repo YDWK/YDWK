@@ -19,6 +19,7 @@
 package io.github.ydwk.ydwk.evm.backend.event
 
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.addEventListeners
 
 inline fun <reified T : GenericEvent> YDWK.on(
     crossinline consumer: suspend GenericEvent.(T) -> Unit,

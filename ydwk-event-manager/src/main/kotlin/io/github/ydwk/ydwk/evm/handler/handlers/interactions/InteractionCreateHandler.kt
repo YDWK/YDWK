@@ -28,6 +28,7 @@ import io.github.ydwk.yde.interaction.Interaction
 import io.github.ydwk.yde.interaction.application.ApplicationCommandType
 import io.github.ydwk.yde.interaction.sub.InteractionType
 import io.github.ydwk.yde.util.GetterSnowFlake
+import io.github.ydwk.ydwk.emitEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.AutoCompleteSlashCommandEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.ModelEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.PingEvent

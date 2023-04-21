@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>InjectDispatcher:Bot.kt$IO</ID>
+    <ID>InvalidPackageDeclaration:DummyUser.kt$package io.github.ydwk.ydwk.cache</ID>
+    <ID>LongMethod:Bot.kt$fun main()</ID>
+    <ID>LongMethod:SlashTest.kt$SlashTest$@Test fun toJson()</ID>
+    <ID>TooGenericExceptionThrown:Bot.kt$throw Exception("Token not found!")</ID>
+  </CurrentIssues>
+</SmellBaseline>

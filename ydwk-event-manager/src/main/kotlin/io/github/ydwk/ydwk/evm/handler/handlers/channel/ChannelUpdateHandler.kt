@@ -35,6 +35,7 @@ import io.github.ydwk.yde.impl.entities.channel.guild.*
 import io.github.ydwk.yde.impl.entities.channel.guild.forum.DefaultReactionEmojiImpl
 import io.github.ydwk.yde.impl.entities.channel.guild.forum.ForumTagImpl
 import io.github.ydwk.yde.util.GetterSnowFlake
+import io.github.ydwk.ydwk.emitEvent
 import io.github.ydwk.ydwk.evm.event.events.channel.update.category.CategoryNameUpdateEvent
 import io.github.ydwk.ydwk.evm.event.events.channel.update.forum.*
 import io.github.ydwk.ydwk.evm.event.events.channel.update.guild.GuildChannelParentUpdateEvent

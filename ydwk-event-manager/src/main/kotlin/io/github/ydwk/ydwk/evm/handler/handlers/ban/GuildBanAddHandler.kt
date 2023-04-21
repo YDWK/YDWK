@@ -19,6 +19,7 @@
 package io.github.ydwk.ydwk.evm.handler.handlers.ban
 
 import com.fasterxml.jackson.databind.JsonNode
+import io.github.ydwk.ydwk.emitEvent
 import io.github.ydwk.ydwk.evm.event.events.ban.GuildBanAddEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl

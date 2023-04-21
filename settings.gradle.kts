@@ -17,5 +17,5 @@ pluginManagement {
 }
 
 gradle.settingsEvaluated {
-    include("ydwk-core", "ydwk-event-manager")
+    include("ydwk-core", "ydwk-event-manager", "ydwk-websocket", "ydwk-main")
 }

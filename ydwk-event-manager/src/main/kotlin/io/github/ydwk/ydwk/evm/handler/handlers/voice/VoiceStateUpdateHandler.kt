@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.entities.guild.Member
 import io.github.ydwk.yde.impl.entities.GuildImpl
 import io.github.ydwk.yde.impl.entities.VoiceStateImpl
+import io.github.ydwk.ydwk.emitEvent
 import io.github.ydwk.ydwk.evm.event.events.voice.VoiceStateEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl

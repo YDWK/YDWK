@@ -23,6 +23,7 @@ import io.github.ydwk.yde.cache.CacheIds
 import io.github.ydwk.yde.entities.channel.enums.ChannelType
 import io.github.ydwk.yde.impl.entities.ChannelImpl
 import io.github.ydwk.yde.impl.entities.channel.guild.GuildChannelImpl
+import io.github.ydwk.ydwk.emitEvent
 import io.github.ydwk.ydwk.evm.event.events.channel.ChannelCreateEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl

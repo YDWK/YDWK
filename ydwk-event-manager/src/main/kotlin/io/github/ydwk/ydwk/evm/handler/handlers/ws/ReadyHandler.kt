@@ -26,6 +26,7 @@ import io.github.ydwk.yde.entities.channel.GuildChannel
 import io.github.ydwk.yde.impl.entities.BotImpl
 import io.github.ydwk.yde.impl.entities.GuildImpl
 import io.github.ydwk.yde.impl.entities.application.PartialApplicationImpl
+import io.github.ydwk.ydwk.emitEvent
 import io.github.ydwk.ydwk.evm.event.events.gateway.ReadyEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl

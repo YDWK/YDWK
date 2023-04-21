@@ -2,7 +2,6 @@ import java.net.URL
 import org.jetbrains.dokka.base.DokkaBase
 import org.jetbrains.dokka.base.DokkaBaseConfiguration
 import org.jetbrains.dokka.gradle.DokkaTask
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
     repositories { mavenCentral() }
@@ -52,14 +51,9 @@ apply(from = "gradle/tasks/eventClassJavaDocChecker.gradle")
 
 apply(from = "gradle/tasks/Nexus.gradle")
 
-//apply(from = "gradle/tasks/generateListeners.gradle.kts")
+apply(from = "gradle/tasks/copyKotlinSources.gradle.kts")
 
-repositories { mavenCentral() }
-
-dependencies {
-    // json
-    api(project(":ydwk-core")) { isTransitive = true }
-}
+// apply(from = "gradle/tasks/generateListeners.gradle.kts")
 
 allprojects {
     extra.apply {
@@ -84,7 +78,7 @@ allprojects {
     group = "io.github.realyusufismail" // used for publishing. DON'T CHANGE
     description = "YDWK (Yusuf's Discord Wrapper Kotlin) My own Discord Wrapper in Kotlin"
 
-    tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "11" }
+    kotlin { jvmToolchain(11) }
 
     configurations { all { exclude(group = "org.slf4j", module = "slf4j-log4j12") } }
 
@@ -139,53 +133,9 @@ allprojects {
             html.required.set(true)
         }
     }
-
-    java {
-        withJavadocJar()
-        withSourcesJar()
-
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-
-    tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach { jvmTarget = "11" }
-
-    tasks.withType<io.gitlab.arturbosch.detekt.DetektCreateBaselineTask>().configureEach {
-        jvmTarget = "11"
-    }
-
-    tasks.jar {
-        manifest {
-            attributes(
-                "Implementation-Title" to project.name,
-                "Implementation-Version" to project.version,
-                "Implementation-Vendor" to project.extra["dev_organization"],
-                "Implementation-Vendor-Id" to project.extra["dev_id"],
-                "Implementation-Vendor-Name" to project.extra["dev_name"],
-                "Implementation-Vendor-Email" to project.extra["dev_email"],
-                "Implementation-Vendor-Organization" to project.extra["dev_organization"],
-                "Implementation-Vendor-Organization-Url" to project.extra["dev_organization_url"],
-                "Implementation-License" to project.extra["gpl_name"],
-                "Implementation-License-Url" to project.extra["gpl_url"],
-            )
-        }
-    }
-
-    tasks.javadoc {
-        if (JavaVersion.current().isJava9Compatible) {
-            (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
-        }
-    }
 }
 
 tasks.build {
-    // dependsOn on custom tasks
-    doFirst {
-        dependsOn(tasks.getByName("checkEvents")) // check if events are valid
-        dependsOn(
-            tasks.getByName("eventClassJavaDocChecker")) // check if event classes have javadoc
-    }
-    dependsOn(tasks.getByName("generateListeners")) // generate listeners
     dependsOn(tasks.test) // run tests before building
 
     // check if version is not snapshot
@@ -217,7 +167,52 @@ tasks.jacocoTestReport {
     finalizedBy("jacocoTestCoverageVerification")
 }
 
-val publishingProject = project(":ydwk-core")
+// edit clean task to remove buildSrc
+tasks.withType<Delete> {
+    if (name == "clean") {
+        logger.info("Removing buildSrc from clean task")
+        delete("buildSrc")
+    }
+}
+
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach { jvmTarget = "11" }
+
+tasks.withType<io.gitlab.arturbosch.detekt.DetektCreateBaselineTask>().configureEach {
+    jvmTarget = "11"
+}
+
+tasks.jar {
+    manifest {
+        attributes(
+            "Implementation-Title" to project.name,
+            "Implementation-Version" to project.version,
+            "Implementation-Vendor" to project.extra["dev_organization"],
+            "Implementation-Vendor-Id" to project.extra["dev_id"],
+            "Implementation-Vendor-Name" to project.extra["dev_name"],
+            "Implementation-Vendor-Email" to project.extra["dev_email"],
+            "Implementation-Vendor-Organization" to project.extra["dev_organization"],
+            "Implementation-Vendor-Organization-Url" to project.extra["dev_organization_url"],
+            "Implementation-License" to project.extra["gpl_name"],
+            "Implementation-License-Url" to project.extra["gpl_url"],
+        )
+    }
+}
+
+tasks.javadoc {
+    if (JavaVersion.current().isJava9Compatible) {
+        (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
+    }
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+val publishingProject = project(":ydwk-main")
 
 publishing {
     val isReleaseVersion = !version.toString().endsWith("SNAPSHOT")
@@ -337,10 +332,4 @@ tasks.getByName("dokkaHtml", DokkaTask::class) {
     }
 }
 
-// edit clean task to remove buildSrc
-tasks.withType<Delete> {
-    if (name == "clean") {
-        logger.info("Removing buildSrc from clean task")
-        delete("buildSrc")
-    }
-}
+kotlin { jvmToolchain(11) }
