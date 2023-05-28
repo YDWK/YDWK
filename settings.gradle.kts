@@ -6,6 +6,7 @@ pluginManagement {
     val spotlessVersion: String by settings
     val dokkaVersion: String by settings
     val detektVersion: String by settings
+    val benManesVersion: String by settings
 
     plugins {
         kotlin("jvm") version jvmVersion
@@ -13,5 +14,6 @@ pluginManagement {
         id("com.diffplug.spotless") version spotlessVersion
         id("org.jetbrains.dokka") version dokkaVersion
         id("io.gitlab.arturbosch.detekt") version detektVersion
+        id("com.github.ben-manes.versions") version benManesVersion
     }
 }
