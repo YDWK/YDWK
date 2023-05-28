@@ -27,7 +27,7 @@ import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class GuildRoleCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
 
-    override fun start() {
+    override suspend fun start() {
         val guild = ydwk.getGuildById(json.get("guild_id").asLong())
         if (guild != null) {
             val role = RoleImpl(ydwk, json.get("role"), json.get("role").get("id").asLong())

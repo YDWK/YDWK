@@ -28,7 +28,7 @@ import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class GuildDeleteHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override fun start() {
+    override suspend fun start() {
         val unavailableGuild = UnavailableGuildImpl(ydwk, json, json.get("id").asLong())
         val guild: Guild = ydwk.cache[unavailableGuild.id, CacheIds.GUILD] as GuildImpl
         guild.roles.forEach { role -> ydwk.cache.remove(role.id, CacheIds.ROLE) }

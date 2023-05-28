@@ -241,15 +241,29 @@ object BotBuilder {
      */
     fun build(): YDWK {
         val ydwk = YDWKImpl(okHttpClient ?: OkHttpClient())
+        val maxLength = 100 // Maximum length allowed for the JWT token
+        val minLength = 50 // Minimum length allowed for the JWT token
 
-        if (token.isNullOrEmpty()) {
-            throw LoginException("Token cannot be null or empty")
+        when {
+            token.isNullOrEmpty() -> {
+                throw LoginException("Token cannot be null or empty")
+            }
+            token!!.contains("/n") -> {
+                throw LoginException("Token cannot contain a new line")
+            }
+            token!!.length < minLength -> {
+                throw LoginException("Token cannot be shorter than $minLength characters")
+            }
+            token!!.length > maxLength -> {
+                throw LoginException("Token cannot be longer than $maxLength characters")
+            }
+            else -> {
+                ydwk.setWebSocketManager(token!!, intents, userStatus, activity, etfInsteadOfJson)
+                ydwk.setAllowedCache(allowedCache)
+                ydwk.setDisallowedCache(disallowedCache)
+                ydwk.enableShutDownHook()
+                return ydwk
+            }
         }
-
-        ydwk.setWebSocketManager(token!!, intents, userStatus, activity, etfInsteadOfJson)
-        ydwk.setAllowedCache(allowedCache)
-        ydwk.setDisallowedCache(disallowedCache)
-        ydwk.enableShutDownHook()
-        return ydwk
     }
 }

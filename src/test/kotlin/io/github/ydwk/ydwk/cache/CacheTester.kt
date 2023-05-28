@@ -21,18 +21,21 @@ package io.github.ydwk.ydwk.cache
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.ydwk.yde.cache.CacheIds
 import io.github.ydwk.yde.cache.DummyCache
+import io.github.ydwk.yde.impl.YDEImpl
 import io.github.ydwk.ydwk.cache.user.DummyUserImpl
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
+import okhttp3.OkHttpClient
 import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 
 class CacheTester {
+    val yde = YDEImpl("", "", OkHttpClient(), mutableListOf(), "", "")
     private val objectMapper = ObjectMapper()
-    private val cache = DummyCache(setOf(CacheIds.USER))
+    private val cache = DummyCache(setOf(CacheIds.USER), yde)
     private val userJson =
         objectMapper.readTree(Files.readString(Path.of("src/test/resources/cache/user.json")))
     private val newUserJson =

@@ -40,7 +40,7 @@ import io.github.ydwk.ydwk.impl.YDWKImpl
 import java.util.*
 
 class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override fun start() {
+    override suspend fun start() {
         val guild: Guild = GuildImpl(ydwk, json, json["id"].asLong())
 
         if (ydwk.cache.contains(guild.id, CacheIds.GUILD)) {
