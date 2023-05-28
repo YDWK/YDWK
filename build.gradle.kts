@@ -1,3 +1,4 @@
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import java.net.URL
 import org.jetbrains.dokka.base.DokkaBase
 import org.jetbrains.dokka.base.DokkaBaseConfiguration
@@ -19,6 +20,7 @@ plugins {
     id("com.diffplug.spotless")
     id("org.jetbrains.dokka")
     id("io.gitlab.arturbosch.detekt")
+    id("com.github.ben-manes.versions")
     application
     `maven-publish`
     signing
@@ -211,6 +213,16 @@ tasks.jar {
             "Implementation-License-Url" to project.extra["gpl_url"],
         )
     }
+}
+
+tasks.named<DependencyUpdatesTask>("dependencyUpdates").configure {
+    group = "dependency updates"
+
+    // optional parameters
+    checkForGradleUpdate = true
+    outputFormatter = "plain"
+    outputDir = "build/dependencyUpdates"
+    reportfileName = "report"
 }
 
 tasks.javadoc {
