@@ -23,7 +23,6 @@ import io.github.ydwk.yde.entities.Bot
 import io.github.ydwk.yde.entities.application.PartialApplication
 import io.github.ydwk.yde.impl.YDEImpl
 import io.github.ydwk.yde.util.EntityToStringBuilder
-import io.github.ydwk.yde.util.ThreadFactory
 import io.github.ydwk.ydwk.*
 import io.github.ydwk.ydwk.evm.backend.event.CoroutineEventListener
 import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
@@ -62,9 +61,6 @@ class YDWKImpl(
 
     override val defaultScheduledExecutorService: ScheduledExecutorService =
         Executors.newScheduledThreadPool(1)
-
-    override val threadFactory: ThreadFactory
-        get() = ThreadFactory
 
     override var webSocketManager: WebSocketManager? = null
         private set

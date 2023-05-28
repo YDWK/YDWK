@@ -34,8 +34,10 @@ import io.github.ydwk.ydwk.evm.event.events.interaction.slash.SlashCommandEvent
 import io.github.ydwk.ydwk.voice.impl.util.joinNow
 import io.github.ydwk.ydwk.voice.impl.util.leaveNow
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.withContext
 
+@OptIn(ExperimentalCoroutinesApi::class)
 suspend fun main() {
     val ydwk =
         createDefaultBot(JConfigUtils.getString("token") ?: throw Exception("Token not found!"))
@@ -90,7 +92,12 @@ suspend fun main() {
             "create_dm" -> {
                 withContext(Dispatchers.IO) {
                     val member = it.slash.member
-                    member?.createDmChannel?.get()?.setContent("Hello!")?.send()?.get()
+                    member
+                        ?.createDmChannel
+                        ?.getCompleted()
+                        ?.setContent("Hello!")
+                        ?.send()
+                        ?.getCompleted()
                         ?: throw Exception("Member is null!")
                 }
             }
@@ -141,7 +148,7 @@ suspend fun main() {
                     it.button.reply("Success button clicked!").trigger()
                 }
                 "4" -> {
-                    it.button.message.delete().get()
+                    it.button.message.delete().getCompleted()
                 }
             }
         }
@@ -151,7 +158,7 @@ suspend fun main() {
         withContext(Dispatchers.IO) {
             it.selectMenu.reply("Role added!").trigger()
             for (role in it.selectMenu.selectedRoles) {
-                it.selectMenu.member?.addRole(role)?.get()
+                it.selectMenu.member?.addRole(role)?.getCompleted()
             }
         }
     }

@@ -22,7 +22,6 @@ import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.Application
 import io.github.ydwk.yde.entities.application.PartialApplication
 import io.github.ydwk.yde.util.Incubating
-import io.github.ydwk.yde.util.ThreadFactory
 import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
 import io.github.ydwk.ydwk.ws.WebSocketManager
 import io.github.ydwk.ydwk.ws.util.LoggedIn
@@ -102,13 +101,6 @@ interface YDWK : YDE {
      * @return The [ScheduledExecutorService] object.
      */
     val defaultScheduledExecutorService: ScheduledExecutorService
-
-    /**
-     * The thread factory.
-     *
-     * @return The [ThreadFactory] object.
-     */
-    val threadFactory: ThreadFactory
 
     /**
      * Overrides the custom to string method.

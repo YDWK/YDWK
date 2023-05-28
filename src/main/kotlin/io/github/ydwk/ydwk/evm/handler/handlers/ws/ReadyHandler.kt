@@ -29,6 +29,7 @@ import io.github.ydwk.yde.impl.entities.application.PartialApplicationImpl
 import io.github.ydwk.ydwk.evm.event.events.gateway.ReadyEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 class ReadyHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override fun start() {
@@ -85,12 +86,14 @@ class ReadyHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
         ydwk.emitEvent(ReadyEvent(ydwk, availableGuildsAmount, unAvailableGuildsAmount))
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private fun requestGuild(guildId: Long): Guild {
-        val guild = ydwk.requestGuild(guildId).get()
+        val guild = ydwk.requestGuild(guildId).getCompleted()
         return GuildImpl(ydwk, guild.json, guildId)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private fun requestGuildChannels(guildId: Long): List<GuildChannel> {
-        return ydwk.requestGuildChannels(guildId).get()
+        return ydwk.requestGuildChannels(guildId).getCompleted()
     }
 }

@@ -126,73 +126,78 @@ data class VoiceConnectionImpl(
         var framesOfSilenceToPlay = 5
         var dontSleep = true
         var nextFrameTime = AtomicLong(System.nanoTime())
-        ydwk.threadFactory.createThreadExecutor("Sending Audio").execute {
-            try {
-                while (sendAudio) {
-                    val source = currentSource.poll() ?: return@execute
-                    if (source.isFinished) {
-                        currentSource.remove()
-                        dontSleep = true
-                        continue
-                    }
-
-                    var voicePacket: VoicePacket? = null
-                    var frame: ByteArray? =
-                        if (source.isNextAudioAvailable) source.nextAudio else null
-                    if (source.isPaused) {
-                        frame = null
-                    }
-
-                    sequence++
-                    if (frame != null || framesOfSilenceToPlay > 0) {
-                        if (!isSpeaking && frame != null) {
-                            isSpeaking = true
-                            setSpeaking(true)
+        ydwk.threadFactory.createThreadExecutor(
+            "Sending Audio",
+            Runnable {
+                try {
+                    while (sendAudio) {
+                        val source = currentSource.poll() ?: return@Runnable
+                        if (source.isFinished) {
+                            currentSource.remove()
+                            dontSleep = true
+                            continue
                         }
 
-                        voicePacket =
-                            VoicePacket(
-                                frame, voiceWebSocket?.ssrc!!, sequence, (sequence.code * 960))
+                        var voicePacket: VoicePacket? = null
+                        var frame: ByteArray? =
+                            if (source.isNextAudioAvailable) source.nextAudio else null
+                        if (source.isPaused) {
+                            frame = null
+                        }
 
-                        if (frame == null) {
-                            framesOfSilenceToPlay--
-                            if (framesOfSilenceToPlay == 0) {
-                                isSpeaking = false
-                                setSpeaking(false)
+                        sequence++
+                        if (frame != null || framesOfSilenceToPlay > 0) {
+                            if (!isSpeaking && frame != null) {
+                                isSpeaking = true
+                                setSpeaking(true)
                             }
-                        } else {
-                            framesOfSilenceToPlay = 5
-                        }
-                    }
-                    nextFrameTime.set(nextFrameTime.get() + 20_000_000)
 
-                    voicePacket?.encrypt(voiceWebSocket?.secretKey)
-                    try {
-                        if (dontSleep) {
-                            nextFrameTime = AtomicLong(System.nanoTime() + 20_000_000)
-                            dontSleep = false
-                        } else {
-                            val sleepTime = nextFrameTime.get() - System.nanoTime()
-                            if (sleepTime > 0) {
-                                Thread.sleep(sleepTime / 1_000_000, (sleepTime % 1_000_000).toInt())
+                            voicePacket =
+                                VoicePacket(
+                                    frame, voiceWebSocket?.ssrc!!, sequence, (sequence.code * 960))
+
+                            if (frame == null) {
+                                framesOfSilenceToPlay--
+                                if (framesOfSilenceToPlay == 0) {
+                                    isSpeaking = false
+                                    setSpeaking(false)
+                                }
+                            } else {
+                                framesOfSilenceToPlay = 5
                             }
                         }
-                        voicePacket?.let { socket.send(voicePacket.asDatagramPacket(address!!)) }
-                    } catch (e: InterruptedException) {
+                        nextFrameTime.set(nextFrameTime.get() + 20_000_000)
+
+                        voicePacket?.encrypt(voiceWebSocket?.secretKey)
+                        try {
+                            if (dontSleep) {
+                                nextFrameTime = AtomicLong(System.nanoTime() + 20_000_000)
+                                dontSleep = false
+                            } else {
+                                val sleepTime = nextFrameTime.get() - System.nanoTime()
+                                if (sleepTime > 0) {
+                                    Thread.sleep(
+                                        sleepTime / 1_000_000, (sleepTime % 1_000_000).toInt())
+                                }
+                            }
+                            voicePacket?.let {
+                                socket.send(voicePacket.asDatagramPacket(address!!))
+                            }
+                        } catch (e: InterruptedException) {
+                            logger.error("Failed to send audio", e)
+                        }
+                    }
+                } catch (e: InterruptedException) {
+                    if (sendAudio) {
                         logger.error("Failed to send audio", e)
                     }
                 }
-            } catch (e: InterruptedException) {
-                if (sendAudio) {
-                    logger.error("Failed to send audio", e)
-                }
-            }
-        }
+            })
     }
 
     fun stopSendingAudio() {
         sendAudio = false
-        ydwk.threadFactory.getThreadExecutorByName("Sending Audio")?.shutdown()
+        ydwk.threadFactory.getThreadByName("Sending Audio")?.interrupt()
     }
 
     override fun disconnect(): CompletableFuture<Void> {
