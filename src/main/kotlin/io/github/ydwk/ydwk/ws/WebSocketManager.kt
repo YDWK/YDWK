@@ -77,6 +77,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
+import kotlinx.coroutines.runBlocking
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -448,94 +449,97 @@ open class WebSocketManager(
     }
 
     private fun onEventType(eventType: String, d: JsonNode) {
-        when (EventNames.fromString(eventType)) {
-            EventNames.HELLO -> {
-                // do nothing
-            }
-            EventNames.READY -> {
-                // get rid of ?v=
-                val libraryVersion = YDWKInfo.DISCORD_GATEWAY_VERSION.getUrl().substring(3)
-                if (libraryVersion != d.get("v").asText()) {
-                    logger.warn(
-                        "Using library version {} but discord is using {}",
-                        libraryVersion,
-                        d.get("v").asText())
+        runBlocking {
+            when (EventNames.fromString(eventType)) {
+                EventNames.HELLO -> {
+                    // do nothing
                 }
+                EventNames.READY -> {
+                    // get rid of ?v=
+                    val libraryVersion = YDWKInfo.DISCORD_GATEWAY_VERSION.getUrl().substring(3)
+                    if (libraryVersion != d.get("v").asText()) {
+                        logger.warn(
+                            "Using library version {} but discord is using {}",
+                            libraryVersion,
+                            d.get("v").asText())
+                    }
 
-                sessionId = d.get("session_id").asText()
-                resumeUrl = d.get("resume_gateway_url").asText()
-                identifyRateLimit = false
-                attemptedToResume = false
-                ready = true
-                ReadyHandler(ydwk, d).start()
-            }
-            EventNames.RESUMED -> {
-                attemptedToResume = false
-                ydwk.emitEvent(ResumeEvent(ydwk))
-            }
-            EventNames.RECONNECT -> {
-                attemptedToResume = false
-                ydwk.emitEvent(ReconnectEvent(ydwk))
-            }
-            EventNames.INVALID_SESSION -> {
-                sessionId = null
-                resumeUrl = null
-            }
-            EventNames.APPLICATION_COMMAND_PERMISSIONS_UPDATE -> TODO()
-            EventNames.CHANNEL_CREATE -> ChannelCreateHandler(ydwk, d).start()
-            EventNames.CHANNEL_UPDATE -> ChannelUpdateHandler(ydwk, d).start()
-            EventNames.CHANNEL_DELETE -> ChannelDeleteHandler(ydwk, d).start()
-            EventNames.CHANNEL_PINS_UPDATE -> ChannelPinsUpdateHandler(ydwk, d).start()
-            EventNames.THREAD_CREATE -> ThreadCreateHandler(ydwk, d).start()
-            EventNames.THREAD_UPDATE -> ThreadUpdateHandler(ydwk, d).start()
-            EventNames.THREAD_DELETE -> ThreadDeleteHandler(ydwk, d).start()
-            EventNames.THREAD_LIST_SYNC -> ThreadListSyncHandler(ydwk, d).start()
-            EventNames.THREAD_MEMBERS_UPDATE -> ThreadMembersUpdateHandler(ydwk, d).start()
-            EventNames.GUILD_CREATE -> GuildCreateHandler(ydwk, d).start()
-            EventNames.GUILD_UPDATE -> GuildUpdateHandler(ydwk, d).start()
-            EventNames.GUILD_DELETE -> GuildDeleteHandler(ydwk, d).start()
-            EventNames.GUILD_BAN_ADD -> GuildBanAddHandler(ydwk, d).start()
-            EventNames.GUILD_BAN_REMOVE -> GuildBanRemoveHandler(ydwk, d).start()
-            EventNames.GUILD_EMOJIS_UPDATE -> GuildEmojisUpdateHandler(ydwk, d).start()
-            EventNames.GUILD_INTEGRATIONS_UPDATE -> GuildIntegrationsUpdateHandler(ydwk, d).start()
-            EventNames.GUILD_MEMBER_ADD -> GuildMemberAddHandler(ydwk, d).start()
-            EventNames.GUILD_MEMBER_REMOVE -> GuildMemberRemoveHandler(ydwk, d).start()
-            EventNames.GUILD_MEMBER_UPDATE -> GuildMemberUpdateHandler(ydwk, d).start()
-            EventNames.GUILD_ROLE_CREATE -> GuildRoleCreateHandler(ydwk, d).start()
-            EventNames.GUILD_ROLE_UPDATE -> GuildRoleUpdateHandler(ydwk, d).start()
-            EventNames.GUILD_ROLE_DELETE -> GuildRoleDeleteHandler(ydwk, d).start()
-            EventNames.GUILD_SCHEDULED_EVENT_CREATE ->
-                GuildScheduledEventCreateHandler(ydwk, d).start()
-            EventNames.GUILD_SCHEDULED_EVENT_UPDATE ->
-                GuildScheduledEventUpdateHandler(ydwk, d).start()
-            EventNames.GUILD_SCHEDULED_EVENT_DELETE ->
-                GuildScheduledEventDeleteHandler(ydwk, d).start()
-            EventNames.GUILD_SCHEDULED_EVENT_USER_ADD ->
-                GuildScheduledEventUserAddHandler(ydwk, d).start()
-            EventNames.GUILD_SCHEDULED_EVENT_USER_REMOVE ->
-                GuildScheduledEventUserRemoveHandler(ydwk, d).start()
-            EventNames.INTEGRATION_CREATE -> IntegrationCreateHandler(ydwk, d).start()
-            EventNames.INTEGRATION_UPDATE -> IntegrationUpdateHandler(ydwk, d).start()
-            EventNames.INTEGRATION_DELETE -> IntegrationDeleteHandler(ydwk, d).start()
-            EventNames.INTERACTION_CREATE -> InteractionCreateHandler(ydwk, d).start()
-            EventNames.INVITE_CREATE -> InviteCreateHandler(ydwk, d).start()
-            EventNames.INVITE_DELETE -> InviteDeleteHandler(ydwk, d).start()
-            EventNames.MESSAGE_CREATE -> MessageCreateHandler(ydwk, d).start()
-            EventNames.MESSAGE_UPDATE -> MessageUpdateHandler(ydwk, d).start()
-            EventNames.MESSAGE_DELETE -> MessageDeleteHandler(ydwk, d).start()
-            EventNames.MESSAGE_DELETE_BULK -> MessageBulkDeleteHandler(ydwk, d).start()
-            EventNames.MESSAGE_REACTION_ADD -> MessageReactionAddHandler(ydwk, d).start()
-            EventNames.MESSAGE_REACTION_REMOVE -> MessageReactionRemoveHandler(ydwk, d).start()
-            EventNames.MESSAGE_REACTION_REMOVE_ALL ->
-                MessageReactionRemoveAllHandler(ydwk, d).start()
-            EventNames.PRESENCE_UPDATE -> PresenceUpdateHandler(ydwk, d).start()
-            EventNames.TYPING_START -> logger.debug("This event is not supported")
-            EventNames.USER_UPDATE -> UserUpdateHandler(ydwk, d).start()
-            EventNames.VOICE_STATE_UPDATE -> VoiceStateUpdateHandler(ydwk, d).start()
-            EventNames.VOICE_SERVER_UPDATE -> VoiceServerUpdateHandler(ydwk, d).start()
-            EventNames.WEBHOOKS_UPDATE -> WebhooksUpdateHandler(ydwk, d).start()
-            EventNames.UNKNOWN -> {
-                logger.error("Unknown event type: $eventType")
+                    sessionId = d.get("session_id").asText()
+                    resumeUrl = d.get("resume_gateway_url").asText()
+                    identifyRateLimit = false
+                    attemptedToResume = false
+                    ready = true
+                    ReadyHandler(ydwk, d).start()
+                }
+                EventNames.RESUMED -> {
+                    attemptedToResume = false
+                    ydwk.emitEvent(ResumeEvent(ydwk))
+                }
+                EventNames.RECONNECT -> {
+                    attemptedToResume = false
+                    ydwk.emitEvent(ReconnectEvent(ydwk))
+                }
+                EventNames.INVALID_SESSION -> {
+                    sessionId = null
+                    resumeUrl = null
+                }
+                EventNames.APPLICATION_COMMAND_PERMISSIONS_UPDATE -> TODO()
+                EventNames.CHANNEL_CREATE -> ChannelCreateHandler(ydwk, d).start()
+                EventNames.CHANNEL_UPDATE -> ChannelUpdateHandler(ydwk, d).start()
+                EventNames.CHANNEL_DELETE -> ChannelDeleteHandler(ydwk, d).start()
+                EventNames.CHANNEL_PINS_UPDATE -> ChannelPinsUpdateHandler(ydwk, d).start()
+                EventNames.THREAD_CREATE -> ThreadCreateHandler(ydwk, d).start()
+                EventNames.THREAD_UPDATE -> ThreadUpdateHandler(ydwk, d).start()
+                EventNames.THREAD_DELETE -> ThreadDeleteHandler(ydwk, d).start()
+                EventNames.THREAD_LIST_SYNC -> ThreadListSyncHandler(ydwk, d).start()
+                EventNames.THREAD_MEMBERS_UPDATE -> ThreadMembersUpdateHandler(ydwk, d).start()
+                EventNames.GUILD_CREATE -> GuildCreateHandler(ydwk, d).start()
+                EventNames.GUILD_UPDATE -> GuildUpdateHandler(ydwk, d).start()
+                EventNames.GUILD_DELETE -> GuildDeleteHandler(ydwk, d).start()
+                EventNames.GUILD_BAN_ADD -> GuildBanAddHandler(ydwk, d).start()
+                EventNames.GUILD_BAN_REMOVE -> GuildBanRemoveHandler(ydwk, d).start()
+                EventNames.GUILD_EMOJIS_UPDATE -> GuildEmojisUpdateHandler(ydwk, d).start()
+                EventNames.GUILD_INTEGRATIONS_UPDATE ->
+                    GuildIntegrationsUpdateHandler(ydwk, d).start()
+                EventNames.GUILD_MEMBER_ADD -> GuildMemberAddHandler(ydwk, d).start()
+                EventNames.GUILD_MEMBER_REMOVE -> GuildMemberRemoveHandler(ydwk, d).start()
+                EventNames.GUILD_MEMBER_UPDATE -> GuildMemberUpdateHandler(ydwk, d).start()
+                EventNames.GUILD_ROLE_CREATE -> GuildRoleCreateHandler(ydwk, d).start()
+                EventNames.GUILD_ROLE_UPDATE -> GuildRoleUpdateHandler(ydwk, d).start()
+                EventNames.GUILD_ROLE_DELETE -> GuildRoleDeleteHandler(ydwk, d).start()
+                EventNames.GUILD_SCHEDULED_EVENT_CREATE ->
+                    GuildScheduledEventCreateHandler(ydwk, d).start()
+                EventNames.GUILD_SCHEDULED_EVENT_UPDATE ->
+                    GuildScheduledEventUpdateHandler(ydwk, d).start()
+                EventNames.GUILD_SCHEDULED_EVENT_DELETE ->
+                    GuildScheduledEventDeleteHandler(ydwk, d).start()
+                EventNames.GUILD_SCHEDULED_EVENT_USER_ADD ->
+                    GuildScheduledEventUserAddHandler(ydwk, d).start()
+                EventNames.GUILD_SCHEDULED_EVENT_USER_REMOVE ->
+                    GuildScheduledEventUserRemoveHandler(ydwk, d).start()
+                EventNames.INTEGRATION_CREATE -> IntegrationCreateHandler(ydwk, d).start()
+                EventNames.INTEGRATION_UPDATE -> IntegrationUpdateHandler(ydwk, d).start()
+                EventNames.INTEGRATION_DELETE -> IntegrationDeleteHandler(ydwk, d).start()
+                EventNames.INTERACTION_CREATE -> InteractionCreateHandler(ydwk, d).start()
+                EventNames.INVITE_CREATE -> InviteCreateHandler(ydwk, d).start()
+                EventNames.INVITE_DELETE -> InviteDeleteHandler(ydwk, d).start()
+                EventNames.MESSAGE_CREATE -> MessageCreateHandler(ydwk, d).start()
+                EventNames.MESSAGE_UPDATE -> MessageUpdateHandler(ydwk, d).start()
+                EventNames.MESSAGE_DELETE -> MessageDeleteHandler(ydwk, d).start()
+                EventNames.MESSAGE_DELETE_BULK -> MessageBulkDeleteHandler(ydwk, d).start()
+                EventNames.MESSAGE_REACTION_ADD -> MessageReactionAddHandler(ydwk, d).start()
+                EventNames.MESSAGE_REACTION_REMOVE -> MessageReactionRemoveHandler(ydwk, d).start()
+                EventNames.MESSAGE_REACTION_REMOVE_ALL ->
+                    MessageReactionRemoveAllHandler(ydwk, d).start()
+                EventNames.PRESENCE_UPDATE -> PresenceUpdateHandler(ydwk, d).start()
+                EventNames.TYPING_START -> logger.debug("This event is not supported")
+                EventNames.USER_UPDATE -> UserUpdateHandler(ydwk, d).start()
+                EventNames.VOICE_STATE_UPDATE -> VoiceStateUpdateHandler(ydwk, d).start()
+                EventNames.VOICE_SERVER_UPDATE -> VoiceServerUpdateHandler(ydwk, d).start()
+                EventNames.WEBHOOKS_UPDATE -> WebhooksUpdateHandler(ydwk, d).start()
+                EventNames.UNKNOWN -> {
+                    logger.error("Unknown event type: $eventType")
+                }
             }
         }
     }

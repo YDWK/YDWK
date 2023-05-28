@@ -30,7 +30,7 @@ import java.util.*
 
 class UserUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
 
-    override fun start() {
+    override suspend fun start() {
         val userJson: JsonNode = json
 
         val userCache = ydwk.cache[userJson.get("id").asText(), CacheIds.GUILD]

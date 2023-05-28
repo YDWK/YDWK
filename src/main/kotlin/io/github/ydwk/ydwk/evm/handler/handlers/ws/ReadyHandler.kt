@@ -31,7 +31,7 @@ import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class ReadyHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override fun start() {
+    override suspend fun start() {
         val bot = BotImpl(json.get("user"), json.get("user").get("id").asLong(), ydwk)
         ydwk.bot = bot
         ydwk.cache[json.get("user").get("id").asText(), bot] = CacheIds.USER
@@ -85,12 +85,12 @@ class ReadyHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
         ydwk.emitEvent(ReadyEvent(ydwk, availableGuildsAmount, unAvailableGuildsAmount))
     }
 
-    private fun requestGuild(guildId: Long): Guild {
-        val guild = ydwk.requestGuild(guildId).get()
+    private suspend fun requestGuild(guildId: Long): Guild {
+        val guild = ydwk.requestGuild(guildId).await()
         return GuildImpl(ydwk, guild.json, guildId)
     }
 
-    private fun requestGuildChannels(guildId: Long): List<GuildChannel> {
-        return ydwk.requestGuildChannels(guildId).get()
+    private suspend fun requestGuildChannels(guildId: Long): List<GuildChannel> {
+        return ydwk.requestGuildChannels(guildId).await()
     }
 }

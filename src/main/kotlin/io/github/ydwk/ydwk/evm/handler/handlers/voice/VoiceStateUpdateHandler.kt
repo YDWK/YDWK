@@ -27,7 +27,7 @@ import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class VoiceStateUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override fun start() {
+    override suspend fun start() {
         val userId = json.get("user_id").asText()
         val guildId = json.get("guild_id").asText()
         val guild = ydwk.getGuildById(guildId) ?: throw IllegalStateException("Guild not found")

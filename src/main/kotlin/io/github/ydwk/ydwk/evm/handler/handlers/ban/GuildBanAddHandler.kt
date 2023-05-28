@@ -24,7 +24,7 @@ import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class GuildBanAddHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override fun start() {
+    override suspend fun start() {
         val guildId: Long = json.get("id").asLong()
         val user = json.get("user")
         val cachedMember = ydwk.getGuildById(guildId)?.getMemberById(user.get("id").asLong())

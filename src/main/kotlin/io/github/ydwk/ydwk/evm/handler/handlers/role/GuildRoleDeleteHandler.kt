@@ -25,7 +25,7 @@ import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class GuildRoleDeleteHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override fun start() {
+    override suspend fun start() {
         val guild = ydwk.getGuildById(json.get("guild_id").asLong())
         if (guild != null) {
             // TODO: broken

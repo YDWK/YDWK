@@ -26,7 +26,7 @@ import io.github.ydwk.ydwk.evm.handler.handlers.guild.update.GuildUpdateHandlerE
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 open class GuildUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override fun start() {
+    override suspend fun start() {
         val guild: GuildImpl? = ydwk.getGuildById(json["id"].asLong()) as GuildImpl?
 
         if (guild == null) {

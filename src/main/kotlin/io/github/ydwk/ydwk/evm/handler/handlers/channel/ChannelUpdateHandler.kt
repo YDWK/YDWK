@@ -50,7 +50,7 @@ import io.github.ydwk.ydwk.impl.YDWKImpl
 import java.util.*
 
 class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override fun start() {
+    override suspend fun start() {
         when (ChannelType.fromInt(json["type"].asInt())) {
             ChannelType.TEXT -> updateTextChannel()
             ChannelType.DM -> ydwk.logger.warn("Dm is not supported")

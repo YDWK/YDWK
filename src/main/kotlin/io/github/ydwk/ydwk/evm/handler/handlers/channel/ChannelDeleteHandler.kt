@@ -28,7 +28,7 @@ import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class ChannelDeleteHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override fun start() {
+    override suspend fun start() {
         val channelType = ChannelType.fromInt(json.get("type").asInt())
         when {
             channelType.isGuildChannel -> {

@@ -90,7 +90,7 @@ suspend fun main() {
             "create_dm" -> {
                 withContext(Dispatchers.IO) {
                     val member = it.slash.member
-                    member?.createDmChannel?.get()?.setContent("Hello!")?.send()?.get()
+                    member?.createDmChannel?.await()?.setContent("Hello!")?.send()?.await()
                         ?: throw Exception("Member is null!")
                 }
             }
@@ -141,7 +141,7 @@ suspend fun main() {
                     it.button.reply("Success button clicked!").trigger()
                 }
                 "4" -> {
-                    it.button.message.delete().get()
+                    it.button.message.delete().await()
                 }
             }
         }
@@ -151,7 +151,7 @@ suspend fun main() {
         withContext(Dispatchers.IO) {
             it.selectMenu.reply("Role added!").trigger()
             for (role in it.selectMenu.selectedRoles) {
-                it.selectMenu.member?.addRole(role)?.get()
+                it.selectMenu.member?.addRole(role)?.await()
             }
         }
     }

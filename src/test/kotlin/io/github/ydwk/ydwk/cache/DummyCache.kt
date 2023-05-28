@@ -18,4 +18,6 @@
  */ 
 package io.github.ydwk.yde.cache
 
-class DummyCache(allowedCache: Set<CacheIds>) : PerpetualCache(allowedCache)
+import io.github.ydwk.yde.impl.YDEImpl
+
+class DummyCache(allowedCache: Set<CacheIds>, yde: YDEImpl) : PerpetualCache(allowedCache, yde)

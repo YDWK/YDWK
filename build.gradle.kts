@@ -51,7 +51,10 @@ apply(from = "gradle/tasks/eventClassJavaDocChecker.gradle")
 
 apply(from = "gradle/tasks/Nexus.gradle")
 
-repositories { mavenCentral() }
+repositories {
+    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+    mavenCentral()
+}
 
 dependencies {
     // json
