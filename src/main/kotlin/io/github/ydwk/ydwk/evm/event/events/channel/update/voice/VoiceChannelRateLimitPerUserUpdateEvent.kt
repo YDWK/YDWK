@@ -20,16 +20,18 @@ package io.github.ydwk.ydwk.evm.event.events.channel.update.voice
 
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.annotations.ChannelEvent
 import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
 /**
- * This event is triggered when a voice channel's user limit is updated.
+ * This event is triggered when a voice channel's rate limit per user is updated.
  *
  * @param ydwk The [YDWK] instance.
  * @param entity The [GuildVoiceChannel] that was updated.
- * @param oldUserLimit The old user limit.
- * @param newUserLimit The new user limit.
+ * @param oldRateLimitPerUser The old user rate limit.
+ * @param newRateLimitPerUser The new user rate limit.
  */
+@ChannelEvent
 data class VoiceChannelRateLimitPerUserUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildVoiceChannel,

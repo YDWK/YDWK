@@ -29,6 +29,7 @@ import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
 import io.github.ydwk.ydwk.evm.backend.event.IEventListener
 import io.github.ydwk.ydwk.evm.backend.managers.CoroutineEventManager
 import io.github.ydwk.ydwk.evm.backend.managers.SampleEventManager
+import io.github.ydwk.ydwk.evm.event.EventListeners
 import io.github.ydwk.ydwk.logging.*
 import io.github.ydwk.ydwk.ws.WebSocketManager
 import io.github.ydwk.ydwk.ws.util.LoggedIn
@@ -61,6 +62,8 @@ class YDWKImpl(
 
     override val defaultScheduledExecutorService: ScheduledExecutorService =
         Executors.newScheduledThreadPool(1)
+    override val eventListener: EventListeners
+        get() = EventListeners(this)
 
     override var webSocketManager: WebSocketManager? = null
         private set

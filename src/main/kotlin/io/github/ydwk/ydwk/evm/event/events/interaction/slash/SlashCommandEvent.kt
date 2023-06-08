@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.evm.event.events.interaction.slash
 
 import io.github.ydwk.yde.interaction.application.type.SlashCommand
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.annotations.InteractionEvent
 import io.github.ydwk.ydwk.evm.event.Event
 
 /**
@@ -28,4 +29,5 @@ import io.github.ydwk.ydwk.evm.event.Event
  * @param ydwk The [YDWK] instance.
  * @param slash The [SlashCommand] that was triggered.
  */
+@InteractionEvent
 data class SlashCommandEvent(override val ydwk: YDWK, val slash: SlashCommand) : Event(ydwk)

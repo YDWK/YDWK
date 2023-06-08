@@ -16,17 +16,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.evm.event.events.guild
+package io.github.ydwk.ydwk.evm.annotations
 
-import io.github.ydwk.yde.entities.Guild
-import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.evm.annotations.GuildEvent
-import io.github.ydwk.ydwk.evm.event.Event
-
-/**
- * This event is triggered when a guild is created.
- *
- * @param ydwk The [YDWK] instance.
- * @param guild The [Guild] that was created.
- */
-@GuildEvent data class GuildCreateEvent(override val ydwk: YDWK, val guild: Guild) : Event(ydwk)
+@Target(AnnotationTarget.CLASS)
+@Retention(AnnotationRetention.RUNTIME)
+annotation class VoiceEvent(val generate: Boolean = true)

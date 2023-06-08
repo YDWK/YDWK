@@ -16,19 +16,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.evm.backend.event
+package io.github.ydwk.ydwk.evm.annotations
 
-import io.github.ydwk.ydwk.YDWK
-
-inline fun <reified T : GenericEvent> YDWK.on(
-    crossinline consumer: suspend GenericEvent.(T) -> Unit,
-): CoroutineEventListener {
-    return object : CoroutineEventListener {
-            override suspend fun onEvent(event: GenericEvent) {
-                if (event is T) {
-                    event.consumer(event)
-                }
-            }
-        }
-        .also { this.addEventListeners(it) }
-}
+@Target(AnnotationTarget.CLASS)
+@Retention(AnnotationRetention.RUNTIME)
+annotation class ChannelEvent(val generate: Boolean = true)

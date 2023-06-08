@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.evm.event.events.channel.update.forum
 
 import io.github.ydwk.yde.entities.channel.guild.forum.GuildForumChannel
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.annotations.ChannelEvent
 import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
 /**
@@ -30,6 +31,7 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
  * @param oldRateLimitPerUser The old rate limit per user.
  * @param newRateLimitPerUser The new rate limit per user.
  */
+@ChannelEvent
 data class ForumChannelRateLimitPerUserUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildForumChannel,

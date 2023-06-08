@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.evm.event.events.channel.update.forum
 import io.github.ydwk.yde.entities.channel.guild.forum.DefaultReactionEmoji
 import io.github.ydwk.yde.entities.channel.guild.forum.GuildForumChannel
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.annotations.ChannelEvent
 import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
 /**
@@ -31,6 +32,7 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
  * @param oldDefaultReactionEmoji The old default reaction emoji.
  * @param newDefaultReactionEmoji The new default reaction emoji.
  */
+@ChannelEvent
 data class ForumChannelDefaultReactionEmojiUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildForumChannel,

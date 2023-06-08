@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.evm.event.events.user
 
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.annotations.UserEvent
 
 /**
  * This event is triggered when a user's name is updated.
@@ -29,6 +30,7 @@ import io.github.ydwk.ydwk.YDWK
  * @param oldName The user's old name.
  * @param newName The user's new name.
  */
+@UserEvent
 data class UserNameUpdateEvent(
     override val ydwk: YDWK,
     override val entity: User,

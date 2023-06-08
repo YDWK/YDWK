@@ -18,7 +18,6 @@
  */ 
 package io.github.ydwk.ydwk.event
 
-import io.github.ydwk.ydwk.evm.backend.event.on
 import io.github.ydwk.ydwk.exception.TestException
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import kotlin.test.assertEquals
@@ -37,7 +36,7 @@ object EvenTester {
         val ydwk = YDWKImpl(OkHttpClient())
         emitTestEvent(ydwk)
 
-        ydwk.on<TestEvent> { onTest() }
+        ydwk.eventListener.on<TestEvent> { onTest() }
 
         if (embedJson == null) {
             retriedAmount++

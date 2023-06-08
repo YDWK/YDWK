@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.evm.event.events.ban
 import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.guild.Member
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.annotations.GuildModerationEvent
 import io.github.ydwk.ydwk.evm.event.Event
 
 /**
@@ -30,5 +31,6 @@ import io.github.ydwk.ydwk.evm.event.Event
  * @param guild The guild the member was banned from.
  * @param member The member that was banned.
  */
+@GuildModerationEvent
 data class GuildBanAddEvent(override val ydwk: YDWK, val guild: Guild, val member: Member?) :
     Event(ydwk)

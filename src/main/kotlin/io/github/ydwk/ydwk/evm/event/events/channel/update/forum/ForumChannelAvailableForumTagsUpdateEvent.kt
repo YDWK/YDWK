@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.evm.event.events.channel.update.forum
 import io.github.ydwk.yde.entities.channel.guild.forum.ForumTag
 import io.github.ydwk.yde.entities.channel.guild.forum.GuildForumChannel
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.annotations.ChannelEvent
 import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
 /**
@@ -31,6 +32,7 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
  * @param oldAvailableForumTags The old available forum tags.
  * @param newAvailableForumTags The new available forum tags.
  */
+@ChannelEvent
 data class ForumChannelAvailableForumTagsUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildForumChannel,

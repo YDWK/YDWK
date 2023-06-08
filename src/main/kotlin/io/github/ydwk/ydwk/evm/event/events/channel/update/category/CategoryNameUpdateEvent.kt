@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.evm.event.events.channel.update.category
 
 import io.github.ydwk.yde.entities.channel.guild.GuildCategory
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.annotations.ChannelEvent
 import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
 /**
@@ -30,6 +31,7 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
  * @param oldName The old name.
  * @param newName The new name.
  */
+@ChannelEvent
 data class CategoryNameUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildCategory,

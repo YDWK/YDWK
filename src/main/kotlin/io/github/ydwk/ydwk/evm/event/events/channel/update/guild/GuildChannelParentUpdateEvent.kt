@@ -22,6 +22,7 @@ import io.github.ydwk.yde.entities.channel.GuildChannel
 import io.github.ydwk.yde.entities.channel.enums.ChannelType
 import io.github.ydwk.yde.entities.channel.guild.GuildCategory
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.annotations.ChannelEvent
 import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
 /**
@@ -32,6 +33,7 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
  * @param oldParent The old parent.
  * @param newParent The new parent.
  */
+@ChannelEvent
 data class GuildChannelParentUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildChannel,

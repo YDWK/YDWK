@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.evm.event.events.guild
 
 import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.annotations.GuildEvent
 import io.github.ydwk.ydwk.evm.event.Event
 
 /**
@@ -28,4 +29,4 @@ import io.github.ydwk.ydwk.evm.event.Event
  * @param ydwk The [YDWK] instance.
  * @param guild The [Guild] that was deleted.
  */
-data class GuildDeleteEvent(override val ydwk: YDWK, val guild: Guild) : Event(ydwk)
+@GuildEvent data class GuildDeleteEvent(override val ydwk: YDWK, val guild: Guild) : Event(ydwk)

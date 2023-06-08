@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.evm.event.events.channel.update.message
 
 import io.github.ydwk.yde.entities.channel.guild.message.GuildMessageChannel
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.annotations.ChannelEvent
 import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
 /**
@@ -30,6 +31,7 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
  * @param oldLastPinTimestamp The old last pin timestamp.
  * @param newLastPinTimestamp The new last pin timestamp.
  */
+@ChannelEvent
 data class MessageChannelLastPinTimestampUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildMessageChannel,

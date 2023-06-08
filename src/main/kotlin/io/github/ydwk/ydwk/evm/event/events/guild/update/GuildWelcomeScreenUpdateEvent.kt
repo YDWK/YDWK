@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.evm.event.events.guild.update
 import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.guild.WelcomeScreen
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.annotations.GuildEvent
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
 /**
@@ -31,6 +32,7 @@ import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
  * @param oldWelcomeScreen The old welcome screen.
  * @param newWelcomeScreen The new welcome screen.
  */
+@GuildEvent
 data class GuildWelcomeScreenUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,

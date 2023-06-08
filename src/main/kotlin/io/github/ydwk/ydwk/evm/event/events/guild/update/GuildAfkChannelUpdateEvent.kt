@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.evm.event.events.guild.update
 
 import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.annotations.GuildEvent
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
 /**
@@ -30,6 +31,7 @@ import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
  * @param oldAfkChannelId The old afk channel id.
  * @param newAfkChannelId The new afk channel id.
  */
+@GuildEvent
 data class GuildAfkChannelUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,

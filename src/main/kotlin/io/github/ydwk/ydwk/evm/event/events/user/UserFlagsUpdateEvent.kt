@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.evm.event.events.user
 
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.annotations.UserEvent
 
 /**
  * This event is triggered when a user's flags are updated.
@@ -29,6 +30,7 @@ import io.github.ydwk.ydwk.YDWK
  * @param oldFlags The user's old flags.
  * @param newFlags The user's new flags.
  */
+@UserEvent
 data class UserFlagsUpdateEvent(
     override val ydwk: YDWK,
     override val entity: User,

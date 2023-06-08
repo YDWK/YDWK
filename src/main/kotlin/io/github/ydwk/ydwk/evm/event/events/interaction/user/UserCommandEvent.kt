@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.evm.event.events.interaction.user
 
 import io.github.ydwk.yde.interaction.application.type.UserCommand
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.annotations.InteractionEvent
 import io.github.ydwk.ydwk.evm.event.Event
 
 /**
@@ -28,4 +29,5 @@ import io.github.ydwk.ydwk.evm.event.Event
  * @param ydwk The [YDWK] instance.
  * @param slash The [UserCommand] that was triggered.
  */
+@InteractionEvent
 data class UserCommandEvent(override val ydwk: YDWK, val slash: UserCommand) : Event(ydwk)

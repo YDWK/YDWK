@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.evm.event.events.guild.update
 import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.guild.enums.SystemChannelFlag
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.annotations.GuildEvent
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
 /**
@@ -31,6 +32,7 @@ import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
  * @param oldSystemChannelFlags The old flags.
  * @param newSystemChannelFlags The new flags.
  */
+@GuildEvent
 data class GuildSystemChannelFlagsUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,

@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.evm.event.events.interaction.button
 
 import io.github.ydwk.yde.interaction.message.button.Button
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.annotations.InteractionEvent
 import io.github.ydwk.ydwk.evm.event.Event
 
 /**
@@ -28,4 +29,5 @@ import io.github.ydwk.ydwk.evm.event.Event
  * @param ydwk The [YDWK] instance.
  * @param button The [Button] that was clicked.
  */
+@InteractionEvent
 data class ButtonClickEvent(override val ydwk: YDWK, val button: Button) : Event(ydwk)

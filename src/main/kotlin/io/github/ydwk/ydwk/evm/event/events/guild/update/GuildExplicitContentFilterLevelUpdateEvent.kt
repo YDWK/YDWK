@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.evm.event.events.guild.update
 import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.guild.enums.ExplicitContentFilterLevel
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.annotations.GuildEvent
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
 /**
@@ -31,6 +32,7 @@ import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
  * @param oldExplicitContentFilterLevel The old explicit content filter level.
  * @param newExplicitContentFilterLevel The new explicit content filter level.
  */
+@GuildEvent
 data class GuildExplicitContentFilterLevelUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,

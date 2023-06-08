@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.evm.event.events.channel.update.text
 import io.github.ydwk.yde.entities.channel.enums.ChannelType
 import io.github.ydwk.yde.entities.channel.guild.message.GuildMessageChannel
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.annotations.ChannelEvent
 import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
 /**
@@ -31,6 +32,7 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
  * @param oldSlowMode The old slow mode.
  * @param newSlowMode The new slow mode.
  */
+@ChannelEvent
 data class TextChannelSlowModeUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildMessageChannel,

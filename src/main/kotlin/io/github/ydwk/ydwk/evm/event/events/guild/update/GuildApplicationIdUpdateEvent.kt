@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.evm.event.events.guild.update
 
 import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.annotations.GuildEvent
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 
 /**
@@ -30,6 +31,7 @@ import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
  * @param oldApplicationId The old application id.
  * @param newApplicationId The new application id.
  */
+@GuildEvent
 data class GuildApplicationIdUpdateEvent(
     override val ydwk: YDWK,
     override val entity: Guild,

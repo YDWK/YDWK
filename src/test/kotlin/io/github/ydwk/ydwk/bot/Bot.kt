@@ -27,10 +27,6 @@ import io.github.ydwk.yde.interaction.message.button.ButtonStyle
 import io.github.ydwk.yde.interaction.message.selectmenu.types.RoleSelectMenu
 import io.github.ydwk.ydwk.Activity
 import io.github.ydwk.ydwk.BotBuilder.createDefaultBot
-import io.github.ydwk.ydwk.evm.backend.event.on
-import io.github.ydwk.ydwk.evm.event.events.interaction.button.ButtonClickEvent
-import io.github.ydwk.ydwk.evm.event.events.interaction.selectmenu.RoleSelectMenuEvent
-import io.github.ydwk.ydwk.evm.event.events.interaction.slash.SlashCommandEvent
 import io.github.ydwk.ydwk.voice.impl.util.joinNow
 import io.github.ydwk.ydwk.voice.impl.util.leaveNow
 import kotlinx.coroutines.Dispatchers
@@ -58,7 +54,7 @@ suspend fun main() {
                 .addSubCommand(SlashSubCommand("subcommandtwo", "A subcommand test")))
         .build()
 
-    ydwk.on<SlashCommandEvent> {
+    ydwk.eventListener.onSlashCommandEvent {
         when (it.slash.name) {
             "join_vc" -> {
                 withContext(Dispatchers.IO) {
@@ -128,7 +124,7 @@ suspend fun main() {
         }
     }
 
-    ydwk.on<ButtonClickEvent> {
+    ydwk.eventListener.onButtonClickEvent {
         withContext(Dispatchers.IO) {
             when (it.button.customId) {
                 "1" -> {
@@ -147,7 +143,7 @@ suspend fun main() {
         }
     }
 
-    ydwk.on<RoleSelectMenuEvent> {
+    ydwk.eventListener.onRoleSelectMenuEvent {
         withContext(Dispatchers.IO) {
             it.selectMenu.reply("Role added!").trigger()
             for (role in it.selectMenu.selectedRoles) {
