@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.evm.event.events.role
 
 import io.github.ydwk.yde.entities.guild.Role
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.annotations.GuildEvent
 import io.github.ydwk.ydwk.evm.event.Event
 
 /**
@@ -28,4 +29,4 @@ import io.github.ydwk.ydwk.evm.event.Event
  * @param ydwk The [YDWK] instance.
  * @param role The role that was deleted.
  */
-data class GuildRoleDeleteEvent(override val ydwk: YDWK, val role: Role) : Event(ydwk)
+@GuildEvent data class GuildRoleDeleteEvent(override val ydwk: YDWK, val role: Role) : Event(ydwk)

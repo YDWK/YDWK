@@ -19,6 +19,7 @@
 package io.github.ydwk.ydwk.evm.event.events.gateway
 
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.annotations.GatewayEvent
 import io.github.ydwk.ydwk.evm.event.Event
 
 /**
@@ -26,4 +27,4 @@ import io.github.ydwk.ydwk.evm.event.Event
  *
  * @param ydwk The [YDWK] instance.
  */
-data class ReconnectEvent(override val ydwk: YDWK) : Event(ydwk)
+@GatewayEvent data class ReconnectEvent(override val ydwk: YDWK) : Event(ydwk)

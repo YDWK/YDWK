@@ -16,23 +16,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.evm.listeners
+package io.github.ydwk.ydwk.evm.annotations
 
-import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
-import io.github.ydwk.ydwk.evm.backend.event.IEventListener
-import io.github.ydwk.ydwk.evm.event.events.voice.VoiceConnectionEvent
-
-interface VoiceListeners : IEventListener {
-    /**
-     * Listens to VoiceConnectionEvent
-     *
-     * @param event The VoiceConnectionEvent
-     */
-    fun onVoiceConnection(event: VoiceConnectionEvent) {}
-
-    override fun onEvent(event: GenericEvent) {
-        when (event) {
-            is VoiceConnectionEvent -> onVoiceConnection(event)
-        }
-    }
-}
+@Target(AnnotationTarget.CLASS)
+@Retention(AnnotationRetention.RUNTIME)
+annotation class GuildModerationEvent(val generate: Boolean = true)

@@ -19,6 +19,7 @@
 package io.github.ydwk.ydwk.evm.event.events.guild.update
 
 import io.github.ydwk.yde.entities.Guild
+import io.github.ydwk.ydwk.evm.annotations.GuildEvent
 import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
@@ -30,6 +31,7 @@ import io.github.ydwk.ydwk.impl.YDWKImpl
  * @param oldSplash The old splash.
  * @param newSplash The new splash.
  */
+@GuildEvent
 data class GuildSplashUpdateEvent(
     override val ydwk: YDWKImpl,
     override val entity: Guild,

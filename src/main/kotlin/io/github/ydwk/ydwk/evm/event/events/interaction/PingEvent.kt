@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.evm.event.events.interaction
 
 import io.github.ydwk.yde.interaction.Interaction
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.annotations.InteractionEvent
 import io.github.ydwk.ydwk.evm.event.Event
 
 /**
@@ -28,4 +29,5 @@ import io.github.ydwk.ydwk.evm.event.Event
  * @param ydwk The [YDWK] instance.
  * @param interaction The Ping [Interaction].
  */
+@InteractionEvent
 data class PingEvent(override val ydwk: YDWK, val interaction: Interaction) : Event(ydwk)

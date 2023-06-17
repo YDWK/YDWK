@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.evm.event.events.voice
 
 import io.github.ydwk.yde.entities.VoiceState
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.annotations.VoiceEvent
 import io.github.ydwk.ydwk.evm.event.Event
 
 /**
@@ -28,4 +29,5 @@ import io.github.ydwk.ydwk.evm.event.Event
  * @param ydwk The [YDWK] instance.
  * @param voiceState The new voice state of the member.
  */
+@VoiceEvent
 data class VoiceConnectionEvent(override val ydwk: YDWK, val voiceState: VoiceState) : Event(ydwk)

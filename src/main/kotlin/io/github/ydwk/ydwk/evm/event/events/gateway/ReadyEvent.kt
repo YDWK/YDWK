@@ -19,6 +19,7 @@
 package io.github.ydwk.ydwk.evm.event.events.gateway
 
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.annotations.GatewayEvent
 import io.github.ydwk.ydwk.evm.event.Event
 
 /**
@@ -29,6 +30,7 @@ import io.github.ydwk.ydwk.evm.event.Event
  * @param amountOfUnavailableGuilds The amount of guilds that are unavailable.
  * @param totalGuildsAmount The total amount of guilds.
  */
+@GatewayEvent
 data class ReadyEvent(
     override val ydwk: YDWK,
     val amountOfAvailableGuilds: Int,

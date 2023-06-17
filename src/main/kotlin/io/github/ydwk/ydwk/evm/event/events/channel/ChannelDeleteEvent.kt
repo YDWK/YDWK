@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.evm.event.events.channel
 
 import io.github.ydwk.yde.entities.Channel
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.annotations.ChannelEvent
 import io.github.ydwk.ydwk.evm.event.Event
 
 /**
@@ -28,4 +29,5 @@ import io.github.ydwk.ydwk.evm.event.Event
  * @param ydwk The [YDWK] instance.
  * @param channel The channel that was created.
  */
+@ChannelEvent
 data class ChannelDeleteEvent(override val ydwk: YDWK, val channel: Channel) : Event(ydwk)

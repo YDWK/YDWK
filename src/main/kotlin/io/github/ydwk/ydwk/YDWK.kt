@@ -23,6 +23,7 @@ import io.github.ydwk.yde.entities.Application
 import io.github.ydwk.yde.entities.application.PartialApplication
 import io.github.ydwk.yde.util.Incubating
 import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
+import io.github.ydwk.ydwk.evm.event.EventListeners
 import io.github.ydwk.ydwk.ws.WebSocketManager
 import io.github.ydwk.ydwk.ws.util.LoggedIn
 import java.time.Instant
@@ -101,6 +102,13 @@ interface YDWK : YDE {
      * @return The [ScheduledExecutorService] object.
      */
     val defaultScheduledExecutorService: ScheduledExecutorService
+
+    /**
+     * A shortcut to listening to events.
+     *
+     * @return The [EventListeners] object.
+     */
+    val eventListener: EventListeners
 
     /**
      * Overrides the custom to string method.

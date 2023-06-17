@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.evm.event.events.user
 
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.annotations.UserEvent
 
 /**
  * This event is triggered when a user's MFA enabled MFA is updated.
@@ -29,6 +30,7 @@ import io.github.ydwk.ydwk.YDWK
  * @param oldMfaEnabled The user's old MFA enabled status.
  * @param newMfaEnabled The user's new MFA enabled status.
  */
+@UserEvent
 data class UserMfaEnabledUpdateEvent(
     override val ydwk: YDWK,
     override val entity: User,

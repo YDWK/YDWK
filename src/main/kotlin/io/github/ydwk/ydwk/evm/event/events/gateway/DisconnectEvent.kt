@@ -19,6 +19,7 @@
 package io.github.ydwk.ydwk.evm.event.events.gateway
 
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.annotations.GatewayEvent
 import io.github.ydwk.ydwk.evm.event.Event
 import java.time.Instant
 
@@ -30,6 +31,7 @@ import java.time.Instant
  * @param closeCodeReason The reason of the disconnect.
  * @param instant The [Instant] of the disconnect.
  */
+@GatewayEvent
 data class DisconnectEvent(
     override val ydwk: YDWK,
     val closeCode: String,

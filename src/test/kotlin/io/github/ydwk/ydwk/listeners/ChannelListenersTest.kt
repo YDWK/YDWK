@@ -22,10 +22,10 @@ import io.github.realyusufismail.jconfig.util.JConfigUtils
 import io.github.ydwk.ydwk.Activity
 import io.github.ydwk.ydwk.BotBuilder
 import io.github.ydwk.ydwk.evm.event.events.channel.ChannelCreateEvent
-import io.github.ydwk.ydwk.evm.listeners.ChannelListeners
+import io.github.ydwk.ydwk.evm.listeners.ChannelEventListener
 
-class ChannelListenersTest : ChannelListeners {
-    override fun onChannelCreate(event: ChannelCreateEvent) {
+class ChannelListenersTest : ChannelEventListener {
+    override fun onChannelCreateEvent(event: ChannelCreateEvent) {
         println("Channel")
     }
 }

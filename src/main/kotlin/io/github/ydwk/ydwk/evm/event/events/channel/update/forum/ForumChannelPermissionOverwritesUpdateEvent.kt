@@ -21,6 +21,7 @@ package io.github.ydwk.ydwk.evm.event.events.channel.update.forum
 import io.github.ydwk.yde.entities.channel.guild.forum.GuildForumChannel
 import io.github.ydwk.yde.entities.channel.guild.message.text.PermissionOverwrite
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.annotations.ChannelEvent
 import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
 
 /**
@@ -31,6 +32,7 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
  * @param oldPermissionOverwrites The old permission overwrites.
  * @param newPermissionOverwrites The new permission overwrites.
  */
+@ChannelEvent
 data class ForumChannelPermissionOverwritesUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildForumChannel,

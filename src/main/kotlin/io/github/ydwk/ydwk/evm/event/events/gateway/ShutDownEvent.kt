@@ -19,6 +19,7 @@
 package io.github.ydwk.ydwk.evm.event.events.gateway
 
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.annotations.GatewayEvent
 import io.github.ydwk.ydwk.evm.event.Event
 import io.github.ydwk.ydwk.ws.util.CloseCode
 import java.time.Instant
@@ -30,5 +31,6 @@ import java.time.Instant
  * @param closeCode The [CloseCode] of the shutdown.
  * @param instant The [Instant] of the shutdown.
  */
+@GatewayEvent
 data class ShutDownEvent(override val ydwk: YDWK, val closeCode: CloseCode, val instant: Instant) :
     Event(ydwk)

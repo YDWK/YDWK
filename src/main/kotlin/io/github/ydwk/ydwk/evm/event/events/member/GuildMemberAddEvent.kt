@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.evm.event.events.member
 
 import io.github.ydwk.yde.entities.guild.Member
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.annotations.GuildEvent
 import io.github.ydwk.ydwk.evm.event.Event
 
 /**
@@ -28,4 +29,5 @@ import io.github.ydwk.ydwk.evm.event.Event
  * @param ydwk The [YDWK] instance.
  * @param member The [Member] that joined the guild.
  */
+@GuildEvent
 data class GuildMemberAddEvent(override val ydwk: YDWK, val member: Member) : Event(ydwk)

@@ -20,6 +20,7 @@ package io.github.ydwk.ydwk.evm.event.events.user
 
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.evm.annotations.UserEvent
 import java.awt.Color
 
 /**
@@ -30,6 +31,7 @@ import java.awt.Color
  * @param oldAccentColor The user's old accent color.
  * @param newAccentColor The user's new accent color.
  */
+@UserEvent
 data class UserAccentColorUpdateEvent(
     override val ydwk: YDWK,
     override val entity: User,

@@ -11,6 +11,7 @@ buildscript {
     dependencies {
         classpath("org.jetbrains.dokka:dokka-base:1.8.10")
         classpath("io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.30.0")
+        classpath("com.squareup:kotlinpoet:" + properties["kotlinPoetVersion"])
     }
 }
 
@@ -53,10 +54,9 @@ apply(from = "gradle/tasks/eventClassJavaDocChecker.gradle")
 
 apply(from = "gradle/tasks/Nexus.gradle")
 
-repositories {
-    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-    mavenCentral()
-}
+apply(from = "gradle/tasks/generateEvents.gradle.kts")
+
+repositories { mavenCentral() }
 
 dependencies {
     // json
@@ -98,6 +98,11 @@ tasks.test {
 }
 
 tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "11" }
+
+tasks {
+    val compileKotlinTask = named<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>("compileKotlin")
+    compileKotlinTask.configure { dependsOn("generateEvents") }
+}
 
 tasks.build {
     // dependsOn on custom tasks
@@ -348,3 +353,5 @@ tasks.getByName("dokkaHtml", DokkaTask::class) {
         }
     }
 }
+
+sourceSets { main { kotlin { srcDirs("src/main/kotlin", "build/generated/kotlin") } } }
