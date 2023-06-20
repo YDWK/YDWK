@@ -60,10 +60,13 @@ class UserUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
                 UserDiscriminatorUpdateEvent(ydwk, user, oldDiscriminator, newDiscriminator))
         }
 
+        val oldAvatarHash = user.avatarHash
         val oldAvatar = user.avatar
-        val newAvatar = userJson.get("avatar").asText()
-        if (!Objects.deepEquals(oldAvatar, newAvatar)) {
-            user.avatar = newAvatar
+        val newAvatarHash = if (json.hasNonNull("avatar")) json["avatar"].asText() else null
+        if (!Objects.deepEquals(oldAvatarHash, newAvatarHash)) {
+            user.avatarHash = newAvatarHash
+            val newAvatar =
+                (user as UserImpl).getAvatar(ydwk, user.discriminator, newAvatarHash, null)
             ydwk.emitEvent(UserAvatarUpdateEvent(ydwk, user, oldAvatar, newAvatar))
         }
 

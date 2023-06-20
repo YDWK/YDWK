@@ -19,6 +19,7 @@
 package io.github.ydwk.ydwk.evm.event.events.user
 
 import io.github.ydwk.yde.entities.User
+import io.github.ydwk.yde.entities.user.Avatar
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.evm.annotations.UserEvent
 
@@ -34,6 +35,6 @@ import io.github.ydwk.ydwk.evm.annotations.UserEvent
 data class UserAvatarUpdateEvent(
     override val ydwk: YDWK,
     override val entity: User,
-    val oldAvatar: String,
-    val newAvatar: String,
-) : GenericUserUpdateEvent<String>(ydwk, entity, oldAvatar, newAvatar)
+    val oldAvatar: Avatar?,
+    val newAvatar: Avatar?,
+) : GenericUserUpdateEvent<Avatar?>(ydwk, entity, oldAvatar, newAvatar)
