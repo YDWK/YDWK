@@ -23,6 +23,7 @@ import io.github.ydwk.ydwk.Activity
 import io.github.ydwk.ydwk.BotBuilder
 import io.github.ydwk.ydwk.evm.event.events.channel.ChannelCreateEvent
 import io.github.ydwk.ydwk.evm.listeners.ChannelEventListener
+import io.github.ydwk.ydwk.util.addEventListeners
 
 class ChannelListenersTest : ChannelEventListener {
     override fun onChannelCreateEvent(event: ChannelCreateEvent) {
@@ -38,5 +39,9 @@ suspend fun main() {
             .setETFInsteadOfJson(true)
             .build()
 
-    ydwk.awaitReady().addEventListeners(ChannelListenersTest())
+    ydwk.awaitReady().let {
+        val listenerList : MutableList<Any> = mutableListOf()
+        listenerList.add(ChannelListenersTest())
+        listenerList.addEventListeners
+    }
 }

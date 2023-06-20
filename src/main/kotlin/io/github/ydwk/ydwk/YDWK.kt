@@ -86,8 +86,15 @@ interface YDWK : YDE {
      */
     fun emitEvent(event: GenericEvent)
 
+    /**
+     * Emits an event
+     */
+    var GenericEvent.emitEvent: (GenericEvent) -> Unit
+        get() = ::emitEvent
+        set(value) = value(this)
+
     /** Shuts down the websocket manager */
-    @Incubating fun shutdownAPI()
+    fun shutdownAPI()
 
     /**
      * The bot's uptime.

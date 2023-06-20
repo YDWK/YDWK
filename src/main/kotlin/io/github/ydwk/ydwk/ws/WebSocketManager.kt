@@ -214,7 +214,6 @@ open class WebSocketManager(
     private fun handleMessage(message: String) {
         try {
             val payload = ydwk.objectMapper.readTree(message)
-            // logger.info("Received payload: ${payload.toPrettyString()}")
             onEvent(payload)
         } catch (e: Exception) {
             logger.error("Error while handling message", e)
