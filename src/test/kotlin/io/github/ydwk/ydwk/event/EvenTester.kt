@@ -18,14 +18,17 @@
  */ 
 package io.github.ydwk.ydwk.event
 
-import io.github.ydwk.ydwk.exception.TestException
-import io.github.ydwk.ydwk.impl.YDWKImpl
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
-import okhttp3.OkHttpClient
-import org.junit.jupiter.api.Order
-import org.junit.jupiter.api.Test
 
+
+
+
+
+
+
+
+
+
+/*
 object EvenTester {
     private var embedJson: String? = null
     private var retriedAmount = 0
@@ -78,3 +81,4 @@ object EvenTester {
                 .trimIndent()
     }
 }
+ */

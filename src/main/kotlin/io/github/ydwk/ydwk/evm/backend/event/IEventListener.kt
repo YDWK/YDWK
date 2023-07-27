@@ -26,5 +26,5 @@ interface IEventListener {
      *
      * @param event The event to be triggered
      */
-    fun onEvent(event: GenericEvent)
+    suspend fun onEvent(event: GenericEvent)
 }

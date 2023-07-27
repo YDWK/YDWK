@@ -25,7 +25,7 @@ import io.github.ydwk.ydwk.evm.event.events.channel.ChannelCreateEvent
 import io.github.ydwk.ydwk.evm.listeners.ChannelEventListener
 
 class ChannelListenersTest : ChannelEventListener {
-    override fun onChannelCreateEvent(event: ChannelCreateEvent) {
+    override suspend fun onChannelCreateEvent(event: ChannelCreateEvent) {
         println("Channel")
     }
 }

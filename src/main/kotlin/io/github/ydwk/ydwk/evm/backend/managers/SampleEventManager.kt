@@ -28,7 +28,7 @@ class SampleEventManager(private var eventListeners: MutableList<IEventListener>
     // Null as there is no default value for this parameter
     var event: Event? = null
 
-    override fun emitEvent(event: GenericEvent) {
+    override suspend fun emitEvent(event: GenericEvent) {
         this.event = event as Event
         eventListeners.forEach { listener -> listener.onEvent(event) }
     }
