@@ -23,6 +23,7 @@ import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
 import java.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
 
@@ -30,17 +31,19 @@ class CoroutineEventManager : IEventManager, CoroutineScope by CoroutineScope(Di
     private val listeners: MutableList<CoroutineEventListener> = ArrayList()
     private val logger = LoggerFactory.getLogger(CoroutineEventManager::class.java)
 
-    override fun emitEvent(event: GenericEvent) {
-        launch {
-            for (listener in listeners) {
-                try {
-                    listener.onEvent(event)
-                } catch (e: Throwable) {
-                    logger.error(
-                        "Error while emitting event ${event.javaClass.simpleName} to ${listener.javaClass.simpleName}",
-                        e)
-                    if (e is Error) {
-                        throw e
+    override suspend fun emitEvent(event: GenericEvent) {
+        coroutineScope {
+            launch {
+                for (listener in listeners) {
+                    try {
+                        listener.onEvent(event)
+                    } catch (e: Throwable) {
+                        logger.error(
+                            "Error while emitting event ${event.javaClass.simpleName} to ${listener.javaClass.simpleName}",
+                            e)
+                        if (e is Error) {
+                            throw e
+                        }
                     }
                 }
             }

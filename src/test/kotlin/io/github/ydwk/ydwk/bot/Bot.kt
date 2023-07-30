@@ -27,6 +27,8 @@ import io.github.ydwk.yde.interaction.message.button.ButtonStyle
 import io.github.ydwk.yde.interaction.message.selectmenu.types.RoleSelectMenu
 import io.github.ydwk.ydwk.Activity
 import io.github.ydwk.ydwk.BotBuilder.createDefaultBot
+import io.github.ydwk.ydwk.evm.event.events.interaction.slash.SlashCommandEvent
+import io.github.ydwk.ydwk.evm.listeners.InteractionEventListener
 import io.github.ydwk.ydwk.voice.impl.util.joinNow
 import io.github.ydwk.ydwk.voice.impl.util.leaveNow
 import kotlinx.coroutines.Dispatchers
@@ -53,6 +55,8 @@ suspend fun main() {
                 .addSubCommand(SlashSubCommand("subcommand", "A subcommand test"))
                 .addSubCommand(SlashSubCommand("subcommandtwo", "A subcommand test")))
         .build()
+
+    ydwk.awaitReady().addEventListeners(Test())
 
     ydwk.eventListener.onSlashCommandEvent {
         when (it.slash.name) {
@@ -104,11 +108,6 @@ suspend fun main() {
                         .trigger()
                 }
             }
-            "bot_info" -> {
-                withContext(Dispatchers.IO) {
-                    it.slash.reply("Bot info: ${it.slash.guild?.botAsMember?.joinedAt}").trigger()
-                }
-            }
             "add_roles" -> {
                 withContext(Dispatchers.IO) {
                     it.slash
@@ -149,6 +148,14 @@ suspend fun main() {
             for (role in it.selectMenu.selectedRoles) {
                 it.selectMenu.member?.addRole(role)?.await()
             }
+        }
+    }
+}
+
+class Test : InteractionEventListener {
+    override suspend fun onSlashCommandEvent(event: SlashCommandEvent) {
+        if (event.slash.name == "bot_info") {
+            event.slash.reply("Bot info: ${event.slash.guild?.botAsMember?.joinedAt}").trigger()
         }
     }
 }

@@ -250,20 +250,23 @@ fun generateEventListenersInterfaces(listenerName: String, listenerEvents: Map<S
 
     val onEventFunction =
         FunSpec.builder("onEvent")
-            .addModifiers(KModifier.PUBLIC, KModifier.OVERRIDE)
+            .addModifiers(
+                KModifier.PUBLIC,
+                KModifier.OVERRIDE,
+                KModifier.SUSPEND) // Add KModifier.SUSPEND here
             .addParameter(
                 "event", ClassName("io.github.ydwk.ydwk.evm.backend.event", "GenericEvent"))
             .beginControlFlow("when (event)")
 
     for ((name, path) in listenerEvents) {
-        val eventClassName =
-            ClassName(
-                path.substringAfter("src/main/kotlin/").substringBeforeLast("/").replace("/", "."),
-                name)
+        val eventPackage =
+            path.substringAfter("src/main/kotlin/").substringBeforeLast("/").replace("/", ".")
+        val eventClassName = ClassName(eventPackage, name)
+
         interfaceClass.addFunction(
             FunSpec.builder("on$name")
-                .addKdoc("Listens to the $name.\n\n@param event The $name.")
-                .addModifiers(KModifier.PUBLIC)
+                .addKdoc("Listens to the $name event.\n\n@param event The $name event.")
+                .addModifiers(KModifier.PUBLIC, KModifier.SUSPEND)
                 .addParameter("event", eventClassName)
                 .build())
 

@@ -26,7 +26,7 @@ interface IEventManager {
      *
      * @param event The event that is called
      */
-    fun emitEvent(event: GenericEvent)
+    suspend fun emitEvent(event: GenericEvent)
 
     /**
      * Adds the event to the event handler

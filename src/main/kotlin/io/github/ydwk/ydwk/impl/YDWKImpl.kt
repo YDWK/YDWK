@@ -38,6 +38,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
 import kotlin.random.Random
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import org.slf4j.LoggerFactory
 
@@ -199,8 +200,14 @@ class YDWKImpl(
     }
 
     override fun emitEvent(event: GenericEvent) {
-        simpleEventManager.emitEvent(event)
-        coroutineEventManager.emitEvent(event)
+        try {
+            runBlocking {
+                simpleEventManager.emitEvent(event)
+                coroutineEventManager.emitEvent(event)
+            }
+        } catch (e: Exception) {
+            ydwkLogger.error("Error while emitting event" + e.message)
+        }
     }
 
     /**
