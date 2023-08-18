@@ -60,7 +60,7 @@ enum class VoiceOpcode(val code: Int, val client: Boolean = true, val server: Bo
          * @return The [VoiceOpcode] with the given [code].
          */
         fun from(code: Int): VoiceOpcode? {
-            return values().firstOrNull { it.code == code }
+            return entries.firstOrNull { it.code == code }
         }
     }
 }

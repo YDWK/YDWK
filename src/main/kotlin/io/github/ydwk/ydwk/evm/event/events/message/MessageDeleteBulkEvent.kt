@@ -26,7 +26,7 @@ import io.github.ydwk.ydwk.evm.event.Event
  * This event is triggered when a number of messages are deleted.
  *
  * @param ydwk The [YDWK] instance.
- * @param messages The messages that were deleted.
+ * @param message The messages that were deleted.
  */
 data class MessageDeleteBulkEvent(override val ydwk: YDWK, val message: List<Message>) :
     Event(ydwk)

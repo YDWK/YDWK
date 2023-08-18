@@ -24,18 +24,24 @@ import org.slf4j.Logger
 class WebsocketLogging(val logger: Logger) : WebSocketListener {
 
     override fun onStateChanged(websocket: WebSocket?, newState: WebSocketState?) {
-        logger.trace("Websocket state changed to $newState")
+        logger.isTraceEnabled.let {
+            if (it) {
+                logger.trace("Websocket state changed to {}", newState)
+            }
+        }
     }
 
     override fun onConnected(
         websocket: WebSocket?,
         headers: MutableMap<String, MutableList<String>>?,
     ) {
-        logger.trace("Websocket connected")
+        logger.trace("Websocket connected with headers {}", headers?.forEach { (key, value) ->
+            logger.trace("Key: {}, Value: {}", key, value)
+        } ?: "null")
     }
 
     override fun onConnectError(websocket: WebSocket?, cause: WebSocketException?) {
-        logger.trace("Websocket connect error", cause)
+        logger.trace("Websocket connect error with cause {}", cause?.cause ?: "Missing cause")
     }
 
     override fun onDisconnected(
@@ -84,11 +90,11 @@ class WebsocketLogging(val logger: Logger) : WebSocketListener {
     }
 
     override fun onTextMessage(websocket: WebSocket?, data: ByteArray?) {
-        logger.trace("Websocket text message received $data")
+        logger.trace("Websocket text message received {}", data)
     }
 
     override fun onBinaryMessage(websocket: WebSocket?, binary: ByteArray?) {
-        logger.trace("Websocket binary message received $binary")
+        logger.trace("Websocket binary message received {}", binary)
     }
 
     override fun onSendingFrame(websocket: WebSocket?, frame: WebSocketFrame?) {
@@ -104,19 +110,19 @@ class WebsocketLogging(val logger: Logger) : WebSocketListener {
     }
 
     override fun onThreadCreated(websocket: WebSocket?, threadType: ThreadType?, thread: Thread?) {
-        logger.trace("Websocket thread created $threadType $thread")
+        logger.trace("Websocket thread created {} {}", threadType, thread)
     }
 
     override fun onThreadStarted(websocket: WebSocket?, threadType: ThreadType?, thread: Thread?) {
-        logger.trace("Websocket thread started $threadType $thread")
+        logger.trace("Websocket thread started {} {}", threadType, thread)
     }
 
     override fun onThreadStopping(websocket: WebSocket?, threadType: ThreadType?, thread: Thread?) {
-        logger.trace("Websocket thread stopping $threadType $thread")
+        logger.trace("Websocket thread stopping {} {}", threadType, thread)
     }
 
     override fun onError(websocket: WebSocket?, cause: WebSocketException?) {
-        logger.trace("Websocket error with cause $cause")
+        logger.trace("Websocket error with cause {}", cause)
     }
 
     override fun onFrameError(
@@ -124,7 +130,7 @@ class WebsocketLogging(val logger: Logger) : WebSocketListener {
         cause: WebSocketException?,
         frame: WebSocketFrame?,
     ) {
-        logger.trace("Websocket frame error with cause $cause and frame $frame")
+        logger.trace("Websocket frame error with cause {} and frame {}", cause, frame)
     }
 
     override fun onMessageError(
@@ -132,7 +138,7 @@ class WebsocketLogging(val logger: Logger) : WebSocketListener {
         cause: WebSocketException?,
         frames: MutableList<WebSocketFrame>?,
     ) {
-        logger.trace("Websocket message error with cause $cause and frames $frames")
+        logger.trace("Websocket message error with cause {} and frames {}", cause, frames)
     }
 
     override fun onMessageDecompressionError(
@@ -140,8 +146,7 @@ class WebsocketLogging(val logger: Logger) : WebSocketListener {
         cause: WebSocketException?,
         compressed: ByteArray?,
     ) {
-        logger.trace(
-            "Websocket message decompression error with cause $cause and compressed $compressed")
+        logger.trace("Websocket message decompression error with cause {} and compressed {}", cause, compressed)
     }
 
     override fun onTextMessageError(
@@ -149,7 +154,7 @@ class WebsocketLogging(val logger: Logger) : WebSocketListener {
         cause: WebSocketException?,
         data: ByteArray?,
     ) {
-        logger.trace("Websocket text message error with cause $cause and data $data")
+        logger.trace("Websocket text message error with cause {} and data {}", cause, data)
     }
 
     override fun onSendError(
@@ -157,15 +162,15 @@ class WebsocketLogging(val logger: Logger) : WebSocketListener {
         cause: WebSocketException?,
         frame: WebSocketFrame?,
     ) {
-        logger.trace("Websocket send error with cause $cause and frame $frame")
+        logger.trace("Websocket send error with cause {} and frame {}", cause, frame)
     }
 
     override fun onUnexpectedError(websocket: WebSocket?, cause: WebSocketException?) {
-        logger.trace("Websocket unexpected error with cause $cause")
+        logger.trace("Websocket unexpected error with cause {}", cause?.cause ?: "Missing cause")
     }
 
     override fun handleCallbackError(websocket: WebSocket?, cause: Throwable?) {
-        logger.trace("Websocket callback error with cause $cause")
+        logger.trace("Websocket callback error with cause {}", cause?.cause ?: "Missing cause")
     }
 
     override fun onSendingHandshake(
@@ -173,7 +178,6 @@ class WebsocketLogging(val logger: Logger) : WebSocketListener {
         requestLine: String?,
         headers: MutableList<Array<String>>?,
     ) {
-        logger.trace(
-            "Websocket sending handshake with request line $requestLine and headers $headers")
+        logger.trace("Websocket sending handshake with request line {} and headers {}", requestLine, headers)
     }
 }

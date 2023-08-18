@@ -49,7 +49,7 @@ enum class ActivityType(private val activity: Int) {
          * @return The activity.
          */
         fun fromInt(id: Int): ActivityType {
-            for (activity in values()) {
+            for (activity in entries) {
                 if (activity.activity == id) {
                     return activity
                 }

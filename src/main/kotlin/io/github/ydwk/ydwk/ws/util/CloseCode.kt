@@ -67,7 +67,7 @@ enum class CloseCode(
          * @return The [CloseCode] with the given [code].
          */
         fun fromInt(code: Int): CloseCode {
-            return values().firstOrNull { it.code == code } ?: UNKNOWN
+            return entries.firstOrNull { it.code == code } ?: UNKNOWN
         }
     }
 

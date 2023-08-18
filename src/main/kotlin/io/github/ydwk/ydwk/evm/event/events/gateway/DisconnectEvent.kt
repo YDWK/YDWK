@@ -27,7 +27,7 @@ import java.time.Instant
  * This event is triggered when the websocket triggers a disconnect event.
  *
  * @param ydwk The [YDWK] instance.
- * @param closeCode The [CloseCode] of the disconnect.
+ * @param closeCode The close code of the disconnect.
  * @param closeCodeReason The reason of the disconnect.
  * @param instant The [Instant] of the disconnect.
  */

@@ -40,7 +40,7 @@ enum class SpeakingFlag(private val value: Long) {
          * @return The speaking flag.
          */
         fun fromValue(value: Long): SpeakingFlag {
-            return values().first { it.value == value }
+            return entries.first { it.value == value }
         }
     }
 }

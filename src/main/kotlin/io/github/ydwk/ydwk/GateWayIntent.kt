@@ -44,7 +44,7 @@ enum class GateWayIntent(private var value: Int, private var privileged: Boolean
          * @return The [GateWayIntent] from the given [value].
          */
         fun fromInt(value: Int): GateWayIntent {
-            return values().firstOrNull { it.value == value } ?: UNKNOWN
+            return entries.firstOrNull { it.value == value } ?: UNKNOWN
         }
 
         /**
