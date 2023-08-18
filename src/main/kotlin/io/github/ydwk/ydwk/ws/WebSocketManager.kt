@@ -91,7 +91,7 @@ open class WebSocketManager(
 ) : WebSocketAdapter(), WebSocketListener {
     private val logger: Logger = LoggerFactory.getLogger(javaClass) as Logger
 
-    // Tha main websocket
+    // The main websocket
     private var webSocket: WebSocket? = null
     private var resumeUrl: String? = null
     private var sessionId: String? = null
@@ -318,7 +318,8 @@ open class WebSocketManager(
                     .objectNode()
                     .put("name", activity!!.name)
                     .put("type", activity!!.type)
-                    .put("url", activity!!.url))
+                    .put("url", activity!!.url)
+                    .put("state", activity!!.state))
 
             presence.set<ArrayNode>("activities", activitiesPayload)
         }
