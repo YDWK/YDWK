@@ -588,7 +588,10 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
                 newWelcomeScreen?.let { WelcomeScreenImpl(ydwk, it) }))
         logger.isDebugEnabled.let {
             if (it) {
-                logger.debug("Guild welcome screen changed from {} to {}", oldWelcomeScreen, newWelcomeScreen)
+                logger.debug(
+                    "Guild welcome screen changed from {} to {}",
+                    oldWelcomeScreen,
+                    newWelcomeScreen)
             }
         }
     }
@@ -615,7 +618,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
                 oldStickers,
                 newStickers?.let { it -> it.map { StickerImpl(ydwk, it, it["id"].asLong()) } }
                     ?: emptyList()))
-            logger.debug("Guild stickers changed from {} to {}", oldStickers, newStickers)
+        logger.debug("Guild stickers changed from {} to {}", oldStickers, newStickers)
     }
 
     private fun onBoostProgressBarEnabledChange(
@@ -639,7 +642,11 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
                 guild,
                 oldEmojis,
                 newEmojis?.let { it -> it.map { EmojiImpl(ydwk, it) } } ?: emptyList()))
-        logger.debug("Guild emojis changed from $oldEmojis to $newEmojis")
+        logger.isDebugEnabled.let {
+            if (it) {
+                logger.debug("Guild emojis changed from {} to {}", oldEmojis, newEmojis)
+            }
+        }
     }
 
     private fun onFeaturesChange(

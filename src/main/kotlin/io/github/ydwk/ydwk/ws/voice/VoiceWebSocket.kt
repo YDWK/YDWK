@@ -189,7 +189,11 @@ class VoiceWebSocket(internal val voiceConnection: VoiceConnectionImpl) :
     private fun handleMessage(message: String) {
         try {
             val payload = ydwk.objectMapper.readTree(message)
-            logger.debug("Received voice payload: $payload")
+            logger.isDebugEnabled.let {
+                if (it) {
+                    logger.debug("Received voice payload: {}", payload)
+                }
+            }
             onOpCode(payload)
         } catch (e: Exception) {
             logger.error("Error while handling message", e)

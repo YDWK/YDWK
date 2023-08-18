@@ -35,9 +35,10 @@ class WebsocketLogging(val logger: Logger) : WebSocketListener {
         websocket: WebSocket?,
         headers: MutableMap<String, MutableList<String>>?,
     ) {
-        logger.trace("Websocket connected with headers {}", headers?.forEach { (key, value) ->
-            logger.trace("Key: {}, Value: {}", key, value)
-        } ?: "null")
+        logger.trace(
+            "Websocket connected with headers {}",
+            headers?.forEach { (key, value) -> logger.trace("Key: {}, Value: {}", key, value) }
+                ?: "null")
     }
 
     override fun onConnectError(websocket: WebSocket?, cause: WebSocketException?) {
@@ -122,7 +123,7 @@ class WebsocketLogging(val logger: Logger) : WebSocketListener {
     }
 
     override fun onError(websocket: WebSocket?, cause: WebSocketException?) {
-        logger.trace("Websocket error with cause {}", cause)
+        logger.trace("Websocket error with cause {}", cause?.cause ?: "Missing cause")
     }
 
     override fun onFrameError(
@@ -146,7 +147,10 @@ class WebsocketLogging(val logger: Logger) : WebSocketListener {
         cause: WebSocketException?,
         compressed: ByteArray?,
     ) {
-        logger.trace("Websocket message decompression error with cause {} and compressed {}", cause, compressed)
+        logger.trace(
+            "Websocket message decompression error with cause {} and compressed {}",
+            cause,
+            compressed)
     }
 
     override fun onTextMessageError(
@@ -178,6 +182,7 @@ class WebsocketLogging(val logger: Logger) : WebSocketListener {
         requestLine: String?,
         headers: MutableList<Array<String>>?,
     ) {
-        logger.trace("Websocket sending handshake with request line {} and headers {}", requestLine, headers)
+        logger.trace(
+            "Websocket sending handshake with request line {} and headers {}", requestLine, headers)
     }
 }
