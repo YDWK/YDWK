@@ -22,6 +22,7 @@ plugins {
     id("org.jetbrains.dokka")
     id("io.gitlab.arturbosch.detekt")
     id("com.github.ben-manes.versions")
+    id("org.jetbrains.qodana")
     application
     `maven-publish`
     signing

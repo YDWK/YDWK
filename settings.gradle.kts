@@ -7,6 +7,7 @@ pluginManagement {
     val dokkaVersion: String by settings
     val detektVersion: String by settings
     val benManesVersion: String by settings
+    val qodanaVersion: String by settings
 
     plugins {
         kotlin("jvm") version jvmVersion
@@ -15,5 +16,6 @@ pluginManagement {
         id("org.jetbrains.dokka") version dokkaVersion
         id("io.gitlab.arturbosch.detekt") version detektVersion
         id("com.github.ben-manes.versions") version benManesVersion
+        id("org.jetbrains.qodana") version qodanaVersion
     }
 }
