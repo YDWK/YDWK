@@ -16,21 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.evm.event.events.voice
+package io.github.ydwk.ydwk.voice.opus
 
-import io.github.ydwk.yde.entities.VoiceState
-import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.evm.annotations.VoiceEvent
-import io.github.ydwk.ydwk.evm.event.Event
-
-/**
- * Emitted when a member's voice state changes.
- *
- * @param ydwk The [YDWK] instance.
- * @param voiceState The new voice state of the member.
- */
-@VoiceEvent
-data class VoiceStateEvent(
-    override val ydwk: YDWK,
-    val voiceState: VoiceState,
-) : Event(ydwk)
+class VoiceOpusHandler {}

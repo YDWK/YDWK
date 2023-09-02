@@ -16,21 +16,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.evm.event.events.voice
-
-import io.github.ydwk.yde.entities.VoiceState
-import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.evm.annotations.VoiceEvent
-import io.github.ydwk.ydwk.evm.event.Event
+package io.github.ydwk.ydwk.ws.voice.payload
 
 /**
- * Emitted when a member's voice state changes.
+ * Represents the payload for voice ready event.
  *
- * @param ydwk The [YDWK] instance.
- * @param voiceState The new voice state of the member.
+ * @property ssrc The synchronization source identifier.
+ * @property ip The IP address of the voice server.
+ * @property port The port number of the voice server.
+ * @property modes The list of supported voice modes.
  */
-@VoiceEvent
-data class VoiceStateEvent(
-    override val ydwk: YDWK,
-    val voiceState: VoiceState,
-) : Event(ydwk)
+data class VoiceReadyPayload(val ssrc: Int, val ip: String, val port: Int, val modes: List<String>)

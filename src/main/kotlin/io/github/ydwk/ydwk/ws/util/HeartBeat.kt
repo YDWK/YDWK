@@ -24,8 +24,6 @@ import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
 import io.github.ydwk.ydwk.ws.voice.util.VoiceCloseCode
 import io.github.ydwk.ydwk.ws.voice.util.VoiceOpcode
-import java.net.DatagramPacket
-import java.net.NoRouteToHostException
 import java.net.Socket
 import java.net.SocketException
 import java.util.concurrent.Future
@@ -141,31 +139,6 @@ class HeartBeat(
                     .put("op", VoiceOpcode.HEARTBEAT.code)
                     .put("d", System.currentTimeMillis())
             sendHeartBeat(keepAlive, closeCode, closeReason)
-        }
-
-        if (voiceConnection.udpsocket != null && !voiceConnection.udpsocket!!.isClosed) {
-            try {
-                val udpHeartbeat: ByteArray = byteArrayOf(0xC9.toByte(), 0, 0, 0, 0, 0, 0, 0, 0)
-                if (voiceConnection.address != null) {
-                    val packet =
-                        DatagramPacket(udpHeartbeat, udpHeartbeat.size, voiceConnection.address)
-                    voiceConnection.udpsocket!!.send(packet)
-                } else {
-                    logger.warn("Address is null, not sending UDP heartbeat")
-                    webSocket.sendClose(
-                        VoiceCloseCode.DISCONNECTED.code, VoiceCloseCode.DISCONNECTED.reason)
-                }
-            } catch (ex: NoRouteToHostException) {
-                logger.warn("Failed to send UDP as there is no route to host", ex)
-                webSocket.sendClose(
-                    VoiceCloseCode.NO_ROUTE_TO_HOST.code, VoiceCloseCode.NO_ROUTE_TO_HOST.reason)
-            } catch (ex: SocketException) {
-                logger.warn("Failed to send UDP as socket is closed", ex)
-                webSocket.sendClose()
-            } catch (ex: IllegalStateException) {
-                logger.warn("Failed to send UDP", ex)
-                webSocket.sendClose()
-            }
         }
     }
 

@@ -67,7 +67,7 @@ enum class OpCode(
          * @return The [OpCode] from the given [code].
          */
         fun fromInt(code: Int): OpCode {
-            for (opCode in values()) {
+            for (opCode in entries) {
                 if (opCode.code == code) {
                     return opCode
                 }

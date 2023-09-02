@@ -50,7 +50,10 @@ enum class VoiceOpcode(val code: Int, val client: Boolean = true, val server: Bo
     RESUMED(9, false, true),
 
     /** A client has disconnected from the voice channel. */
-    CLIENT_DISCONNECT(13, false, true);
+    CLIENT_DISCONNECT(13, false, true),
+
+    /** An Unknown opcode has been received. */
+    UNKNOWN(-1, false, false);
 
     companion object {
         /**
@@ -59,8 +62,13 @@ enum class VoiceOpcode(val code: Int, val client: Boolean = true, val server: Bo
          * @param code The code to get the [VoiceOpcode] from.
          * @return The [VoiceOpcode] with the given [code].
          */
-        fun from(code: Int): VoiceOpcode? {
-            return values().firstOrNull { it.code == code }
+        fun getOpCode(code: Int): VoiceOpcode {
+            for (opCode in entries) {
+                if (opCode.code == code) {
+                    return opCode
+                }
+            }
+            return UNKNOWN
         }
     }
 }

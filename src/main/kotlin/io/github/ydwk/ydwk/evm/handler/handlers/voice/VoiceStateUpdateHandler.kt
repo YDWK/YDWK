@@ -19,33 +19,39 @@
 package io.github.ydwk.ydwk.evm.handler.handlers.voice
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.ydwk.yde.entities.guild.Member
+import io.github.ydwk.yde.entities.VoiceState
 import io.github.ydwk.yde.impl.entities.GuildImpl
 import io.github.ydwk.yde.impl.entities.VoiceStateImpl
+import io.github.ydwk.yde.impl.entities.guild.MemberImpl
 import io.github.ydwk.ydwk.evm.event.events.voice.VoiceStateEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.voice.getVoiceConnection
 
 class VoiceStateUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override suspend fun start() {
-        val userId = json.get("user_id").asText()
-        val guildId = json.get("guild_id").asText()
-        val guild = ydwk.getGuildById(guildId) ?: throw IllegalStateException("Guild not found")
-        val bot = ydwk.bot
-        val voiceState = VoiceStateImpl(ydwk, json)
+        val voiceState: VoiceState = VoiceStateImpl(ydwk, json)
 
-        val newMember: Member =
-            if (userId == (bot?.id ?: throw IllegalStateException("Bot not found"))) {
-                val botAsMember = (guild as GuildImpl).botAsMember
-                botAsMember.voiceState = voiceState
-                botAsMember
+        val member = voiceState.member
+        val channel = voiceState.channel
+
+        if (member == null) {
+            ydwk.logger.debug("Voice member is null")
+        } else {
+            val botAsMember = voiceState.guild?.botAsMember as MemberImpl
+
+            if (member.idAsLong == botAsMember.idAsLong) {
+                botAsMember.voiceState = if (channel != null) voiceState else null
             } else {
-                val m = ydwk.memberCache.getOrPut(voiceState.member!!)
-                m.voiceState = voiceState
-                m
+                val action = if (channel != null) "save" else "remove"
+                ydwk.logger.debug("No need to $action i think")
             }
+        }
 
-        // TODO: returning null
-        ydwk.emitEvent(VoiceStateEvent(ydwk, voiceState, newMember))
+        ydwk.logger.debug("Setting voice state")
+
+        (voiceState.guild as GuildImpl).getVoiceConnection()?.setVoiceState(voiceState)
+
+        ydwk.emitEvent(VoiceStateEvent(ydwk, voiceState))
     }
 }

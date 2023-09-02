@@ -16,16 +16,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.voice
+package io.github.ydwk.ydwk.entity
 
-import io.github.ydwk.yde.entities.channel.guild.vc.GuildVoiceChannel
-import io.github.ydwk.ydwk.voice.sub.VoiceSource
-import io.github.ydwk.ydwk.ws.voice.util.SpeakingFlag
-import java.util.*
+import io.github.ydwk.ydwk.voice.VoiceSource
 import java.util.concurrent.CompletableFuture
 
 interface VoiceConnection {
-
     /**
      * Sets the bot as deafened.
      *
@@ -81,37 +77,9 @@ interface VoiceConnection {
     fun setSource(source: VoiceSource): VoiceConnection
 
     /**
-     * Disconnects the bot from the voice channel.
+     * Disconnects from the voice channel.
      *
-     * @return The [CompletableFuture] object.
+     * @return A CompletableFuture that represents the asynchronous operation.
      */
     fun disconnect(): CompletableFuture<Void>
-
-    /**
-     * The voice channel the bot is connected to.
-     *
-     * @return The voice channel the bot is connected to.
-     */
-    val channel: GuildVoiceChannel
-
-    /**
-     * The speaking flags.
-     *
-     * @return The speaking flags.
-     */
-    val speakingFlags: EnumSet<SpeakingFlag>
-
-    /**
-     * Whether the bot is deafened.
-     *
-     * @return Whether the bot is deafened.
-     */
-    val isDeafened: Boolean
-
-    /**
-     * Whether the bot is muted.
-     *
-     * @return Whether the bot is muted.
-     */
-    val isMuted: Boolean
 }
