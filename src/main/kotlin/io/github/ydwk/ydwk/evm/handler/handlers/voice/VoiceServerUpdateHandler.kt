@@ -22,32 +22,27 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.impl.entities.GuildImpl
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
-import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
-import io.github.ydwk.ydwk.voice.impl.util.getVoiceConnection
+import io.github.ydwk.ydwk.voice.getVoiceConnection
+import io.github.ydwk.ydwk.ws.voice.payload.VoiceServerUpdatePayload
 
 class VoiceServerUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
 
     override suspend fun start() {
         val guildId = json.get("guild_id").asLong()
         val guild = ydwk.getGuildById(guildId) ?: throw IllegalStateException("Guild not found")
+        val voiceServerUpdatePayload =
+            VoiceServerUpdatePayload(
+                json.get("token").asText(),
+                guild,
+                if (json.has("endpoint")) json.get("endpoint").asText() else null)
 
-        val token: String = json.get("token").asText()
-        val endPoint: String = json.get("endpoint").asText()
-        val sessionId: String =
-            guild.botAsMember.voiceState?.sessionId
-                ?: throw IllegalStateException(
-                    "SessionId not found, looks like VoiceStateUpdateHandler didn't run")
-        val userId: Long =
-            guild.botAsMember.voiceState?.user?.idAsLong
-                ?: throw IllegalStateException(
-                    "UserId not found, looks like VoiceStateUpdateHandler didn't run")
-        val voiceConnection: VoiceConnectionImpl =
-            (guild as GuildImpl).getVoiceConnection()
-                ?: throw IllegalStateException(
-                    "VoiceConnection not found, looks like it was not saved")
+        ydwk.logger.debug("Setting voice server payload")
+        (guild as GuildImpl)
+            .getVoiceConnection()
+            ?.setVoiceServerUpdatePayload(voiceServerUpdatePayload)
 
         try {
-            voiceConnection.safeConnect(endPoint, token, sessionId, userId)
+            guild.getVoiceConnection()?.connect()
         } catch (e: IllegalStateException) {
             throw IllegalStateException("Failed to connect to voice server", e)
         }

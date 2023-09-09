@@ -16,12 +16,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.voice.impl
+package io.github.ydwk.ydwk.ws.voice.payload
 
-private fun <E> ArrayDeque<E>.poll(): E? {
-    return if (isEmpty()) {
-        null
-    } else {
-        removeFirst()
-    }
-}
+/**
+ * Represents the payload for a voice session description.
+ *
+ * @property modes The list of voice modes available in the session.
+ * @property secretKeys The list of secret keys associated with the session.
+ */
+data class VoiceSessionDescriptionPayload(val mode: String, val secretKeys: MutableList<Int>)

@@ -16,21 +16,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.evm.event.events.voice
+package io.github.ydwk.ydwk.ws.voice.payload
 
-import io.github.ydwk.yde.entities.VoiceState
-import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.evm.annotations.VoiceEvent
-import io.github.ydwk.ydwk.evm.event.Event
+import io.github.ydwk.yde.entities.Guild
 
 /**
- * Emitted when a member's voice state changes.
+ * Represents a payload containing information about a voice server update.
  *
- * @param ydwk The [YDWK] instance.
- * @param voiceState The new voice state of the member.
+ * @param token The voice connection token.
+ * @param guild The guild associated with the voice server.
+ * @param endpoint The endpoint for the voice server host.
  */
-@VoiceEvent
-data class VoiceStateEvent(
-    override val ydwk: YDWK,
-    val voiceState: VoiceState,
-) : Event(ydwk)
+data class VoiceServerUpdatePayload(val token: String, val guild: Guild, val endpoint: String?)

@@ -22,8 +22,6 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.neovisionaries.ws.client.*
-import io.github.ydwk.yde.entities.Guild
-import io.github.ydwk.yde.entities.channel.GuildChannel
 import io.github.ydwk.ydwk.*
 import io.github.ydwk.ydwk.evm.event.events.gateway.DisconnectEvent
 import io.github.ydwk.ydwk.evm.event.events.gateway.ReconnectEvent
@@ -62,6 +60,7 @@ import io.github.ydwk.ydwk.evm.handler.handlers.voice.VoiceStateUpdateHandler
 import io.github.ydwk.ydwk.evm.handler.handlers.webhook.WebhooksUpdateHandler
 import io.github.ydwk.ydwk.evm.handler.handlers.ws.ReadyHandler
 import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.voice.leaveVC
 import io.github.ydwk.ydwk.ws.logging.WebsocketLogging
 import io.github.ydwk.ydwk.ws.util.CloseCode
 import io.github.ydwk.ydwk.ws.util.EventNames
@@ -87,7 +86,7 @@ open class WebSocketManager(
     private var intents: List<GateWayIntent>,
     private var userStatus: UserStatus? = null,
     private var activity: ActivityPayload? = null,
-    private val etfInsteadOfJson: Boolean,
+    val etfInsteadOfJson: Boolean,
 ) : WebSocketAdapter(), WebSocketListener {
     private val logger: Logger = LoggerFactory.getLogger(javaClass) as Logger
 
@@ -238,7 +237,7 @@ open class WebSocketManager(
         val closeCodeAsString: String =
             if (closeFrame != null)
                 CloseCode.fromInt(closeFrame.closeCode).name + " (" + closeFrame.closeCode + ")"
-            else "Unknown code"
+            else "Unknown close code"
 
         logger.info(
             "Disconnected from websocket with close code $closeCodeAsString and reason $closeCodeReason")
@@ -252,11 +251,6 @@ open class WebSocketManager(
         if (closeCode.shouldReconnect()) {
             logger.info("Reconnecting to websocket")
             connect()
-        } else if (closeCode.getCode() == CloseCode.TRIGGERED_SHUTDOWN.getCode()) {
-            logger.info("Received shutdown code triggered by user or API, shutting down")
-            ydwk.emitEvent(ShutDownEvent(ydwk, closeCode, Instant.now()))
-            invalidate()
-            websocket.disconnect()
         } else {
             logger.info("Not able to reconnect to websocket, sending shutdown code")
             ydwk.emitEvent(ShutDownEvent(ydwk, closeCode, Instant.now()))
@@ -265,6 +259,11 @@ open class WebSocketManager(
     }
 
     private fun invalidate() {
+
+        checkForAnyBotsInVC()
+        logger.info("Disconnecting bot from any potential vcs ")
+        Thread.sleep(1000)
+
         sessionId = null
         resumeUrl = null
         ydwk.cache.clear()
@@ -274,10 +273,19 @@ open class WebSocketManager(
         upTime = null
     }
 
-    fun triggerShutdown() {
-        if (webSocket != null) {
-            sendCloseCode(CloseCode.TRIGGERED_SHUTDOWN)
+    private fun checkForAnyBotsInVC() {
+        ydwk.getGuilds().forEach { it ->
+            val botAsMember = it.botAsMember
+            if (botAsMember.voiceState != null) {
+                botAsMember.leaveVC()
+            }
         }
+    }
+
+    fun triggerShutdown() {
+        logger.info("API has requested to be sut down")
+        invalidate()
+        webSocket!!.disconnect()
     }
 
     override fun onError(websocket: WebSocket, cause: WebSocketException) {
@@ -416,36 +424,17 @@ open class WebSocketManager(
         }
     }
 
-    fun sendVoiceStateUpdate(
-        guild: Guild?,
-        channel: GuildChannel?,
-        selfMute: Boolean?,
-        selfDeaf: Boolean?,
-    ) {
-        logger.debug("Sending voice state update")
-        val mainVoiceUpdateJson: ObjectNode = ydwk.objectNode.put("op", VOICE_STATE.code)
+    fun sendVoiceState(guildId: Long, channelId: Long?, muted: Boolean, deafen: Boolean) {
+        val voiceJson: ObjectNode = ydwk.objectNode.put("op", VOICE_STATE.code)
+        val dataObjectNode = ydwk.objectNode
+        dataObjectNode
+            .put("guild_id", guildId)
+            .put("channel_id", channelId)
+            .put("self_mute", muted)
+            .put("self_mute", deafen)
 
-        val guildId: String =
-            when {
-                channel != null -> {
-                    channel.guild.id
-                }
-                guild != null -> {
-                    guild.id
-                }
-                else -> {
-                    throw IllegalArgumentException("Guild and channel cannot both be null")
-                }
-            }
-
-        val dataVoiceUpdateJson = ydwk.objectNode
-        dataVoiceUpdateJson.put("guild_id", guildId)
-        dataVoiceUpdateJson.put("channel_id", channel?.id)
-        dataVoiceUpdateJson.put("self_mute", selfMute ?: guild?.botAsMember?.mute)
-        dataVoiceUpdateJson.put("self_deaf", selfDeaf ?: guild?.botAsMember?.deaf)
-
-        mainVoiceUpdateJson.set<JsonNode>("d", dataVoiceUpdateJson)
-        webSocket?.sendText(mainVoiceUpdateJson.toString())
+        voiceJson.set<JsonNode>("d", dataObjectNode)
+        webSocket?.sendText(voiceJson.toString())
     }
 
     private fun onEventType(eventType: String, d: JsonNode) {

@@ -30,7 +30,6 @@ import io.github.ydwk.ydwk.evm.backend.event.IEventListener
 import io.github.ydwk.ydwk.evm.backend.managers.CoroutineEventManager
 import io.github.ydwk.ydwk.evm.backend.managers.SampleEventManager
 import io.github.ydwk.ydwk.evm.event.EventListeners
-import io.github.ydwk.ydwk.logging.*
 import io.github.ydwk.ydwk.ws.WebSocketManager
 import io.github.ydwk.ydwk.ws.util.LoggedIn
 import java.time.Instant
@@ -97,7 +96,8 @@ class YDWKImpl(
         Runtime.getRuntime()
             .addShutdownHook(
                 Thread {
-                    ydwkLogger.info("Shutting down YDWK")
+                    ydwkLogger.info(
+                        "Received shutdown code triggered by user or API, shutting down")
                     shutdownAPI()
                 })
     }

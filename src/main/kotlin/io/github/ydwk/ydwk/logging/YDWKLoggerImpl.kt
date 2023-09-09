@@ -86,7 +86,6 @@ class YDWKLoggerImpl(
                         classToLog)
                 }
             }
-            null -> throw YDWKLoggerException("The severity is null for the message: $message")
         }
     }
 }

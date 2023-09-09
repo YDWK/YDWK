@@ -29,8 +29,6 @@ import io.github.ydwk.ydwk.Activity
 import io.github.ydwk.ydwk.BotBuilder.createDefaultBot
 import io.github.ydwk.ydwk.evm.event.events.interaction.slash.SlashCommandEvent
 import io.github.ydwk.ydwk.evm.listeners.InteractionEventListener
-import io.github.ydwk.ydwk.voice.impl.util.joinNow
-import io.github.ydwk.ydwk.voice.impl.util.leaveNow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -44,8 +42,6 @@ suspend fun main() {
     ydwk
         .awaitReady()
         .slashBuilder
-        .addSlashCommand(SlashCommandBuilder("join_vc", "Joins a vc"))
-        .addSlashCommand("leave_vc", "Leaves a vc")
         .addSlashCommand(SlashCommandBuilder("create_dm", "Creates a dm channel"))
         .addSlashCommand("button", "A button test")
         .addSlashCommand("bot_info", "The bot info")
@@ -60,30 +56,6 @@ suspend fun main() {
 
     ydwk.eventListener.onSlashCommandEvent {
         when (it.slash.name) {
-            "join_vc" -> {
-                withContext(Dispatchers.IO) {
-                    val member = it.slash.member
-                    if (member != null) {
-                        val voiceState = member.voiceState
-                        it.slash.reply("Joined vc!").trigger()
-                        voiceState?.channel?.joinNow()
-                    } else {
-                        it.slash.reply("Member is null!").setEphemeral(true).trigger()
-                    }
-                }
-            }
-            "leave_vc" -> {
-                withContext(Dispatchers.IO) {
-                    val member = it.slash.member
-                    if (member != null) {
-                        val voiceState = member.voiceState
-                        it.slash.reply("Left vc!").trigger()
-                        voiceState?.channel?.leaveNow()
-                    } else {
-                        it.slash.reply("Member is null!").setEphemeral(true).trigger()
-                    }
-                }
-            }
             "ping" -> {
                 it.slash.reply("Pong!").trigger()
             }

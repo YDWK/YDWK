@@ -18,69 +18,150 @@
  */ 
 package io.github.ydwk.ydwk.voice.impl
 
+import io.github.ydwk.yde.entities.Guild
+import io.github.ydwk.yde.entities.VoiceState
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.yde.impl.entities.GuildImpl
-import io.github.ydwk.ydwk.YDWK
+import io.github.ydwk.ydwk.entity.VoiceConnection
 import io.github.ydwk.ydwk.impl.YDWKImpl
-import io.github.ydwk.ydwk.voice.VoiceConnection
-import io.github.ydwk.ydwk.voice.impl.util.VoicePacket
-import io.github.ydwk.ydwk.voice.impl.util.removeVoiceConnection
-import io.github.ydwk.ydwk.voice.sub.VoiceSource
+import io.github.ydwk.ydwk.util.ydwk
+import io.github.ydwk.ydwk.voice.VoiceSource
+import io.github.ydwk.ydwk.voice.removeVoiceConnection
 import io.github.ydwk.ydwk.ws.voice.VoiceWebSocket
+import io.github.ydwk.ydwk.ws.voice.payload.VoiceReadyPayload
+import io.github.ydwk.ydwk.ws.voice.payload.VoiceServerUpdatePayload
 import io.github.ydwk.ydwk.ws.voice.util.SpeakingFlag
-import java.net.DatagramSocket
-import java.net.InetSocketAddress
 import java.util.*
-import java.util.concurrent.BlockingQueue
 import java.util.concurrent.CompletableFuture
-import java.util.concurrent.LinkedBlockingDeque
-import java.util.concurrent.atomic.AtomicLong
 
+/**
+ * Represents a voice connection implementation.
+ *
+ * @param connectFuture A CompletableFuture that represents the future result of connecting to a
+ *   voice channel.
+ * @param guild The guild that the voice connection belongs to.
+ * @param voiceChannel The voice channel that the voice connection is connected to.
+ * @param muted Indicates whether the voice connection is muted or not.
+ * @param deafen Indicates whether the voice connection is deafened or not.
+ */
 data class VoiceConnectionImpl(
-    override var channel: GuildVoiceChannel,
-    val ydwk: YDWK,
-    val future: CompletableFuture<VoiceConnection>? = null,
-    override var isMuted: Boolean = false,
-    override var isDeafened: Boolean = false,
+    val connectFuture: CompletableFuture<VoiceConnection>,
+    val guild: Guild,
+    var voiceChannel: GuildVoiceChannel,
+    var muted: Boolean,
+    var deafen: Boolean
 ) : VoiceConnection {
-    override val speakingFlags: EnumSet<SpeakingFlag> = EnumSet.noneOf(SpeakingFlag::class.java)
-    private var currentSource: BlockingQueue<VoiceSource> = LinkedBlockingDeque()
-    private val logger = (ydwk as YDWKImpl).logger
-    private var sendAudio = false
-    private var sequence: Char = 0.toChar()
-
+    val ydwk = voiceChannel.ydwk
+    private var voiceServerUpdatePayload: VoiceServerUpdatePayload? = null
+    private var voiceState: VoiceState? = null
+    private var voiceWebSocket: VoiceWebSocket? = null
     private var disconnectFuture: CompletableFuture<Void> = CompletableFuture()
     private var changedChannelFuture: CompletableFuture<Void>? = CompletableFuture()
-    private var voiceWebSocket: VoiceWebSocket? = null
-    var udpsocket: DatagramSocket? = null
     private var attemptingToConnectOrConnected = false
-
-    var voiceEndpoint: String? = null
-    var token: String? = null
-    var sessionId: String? = null
-    var userId: String? = null
-    var address: InetSocketAddress? = null
+    private var voiceReadyPayload: VoiceReadyPayload? = null
+    private var voiceSource: VoiceSource? = null
+    private val speakingFlags: EnumSet<SpeakingFlag> = EnumSet.noneOf(SpeakingFlag::class.java)
 
     init {
-        ydwk.webSocketManager?.sendVoiceStateUpdate(channel.guild, channel, isMuted, isDeafened)
+        ydwk.webSocketManager?.sendVoiceState(guild.idAsLong, voiceChannel.idAsLong, muted, deafen)
     }
 
+    /**
+     * Sets the Voice Server Update Payload.
+     *
+     * @param payload The Voice Server Update Payload to set.
+     */
+    fun setVoiceServerUpdatePayload(payload: VoiceServerUpdatePayload) {
+        this.voiceServerUpdatePayload = payload
+    }
+
+    /**
+     * Sets the voice state of the current instance.
+     *
+     * @param voiceState the voice state to be set.
+     */
+    fun setVoiceState(voiceState: VoiceState) {
+        this.voiceState = voiceState
+    }
+
+    /**
+     * Retrieves the payload for a voice server update.
+     *
+     * @return the voice server update payload, or null if none is found.
+     */
+    fun getVoiceServerUpdatePayload(): VoiceServerUpdatePayload? {
+        return voiceServerUpdatePayload
+    }
+
+    /**
+     * Retrieves the current voice state.
+     *
+     * @return The voice state of the user, or null if the voice state has not been set.
+     */
+    fun getVoiceState(): VoiceState? {
+        return voiceState
+    }
+
+    /**
+     * Sets the voice ready payload.
+     *
+     * @param voiceReadyPayload The voice ready payload to set.
+     */
+    fun setVoiceReadyPayload(voiceReadyPayload: VoiceReadyPayload) {
+        this.voiceReadyPayload = voiceReadyPayload
+    }
+
+    /**
+     * Retrieves the VoiceReadyPayload object.
+     *
+     * @return The VoiceReadyPayload object, or null if it hasn't been set yet.
+     */
+    fun getVoiceReadyPayload(): VoiceReadyPayload? {
+        return voiceReadyPayload
+    }
+
+    /**
+     * Sets the deafened state of the voice connection.
+     *
+     * @param deafened true to deafen the voice connection, false to undeafen
+     * @return the updated voice connection
+     */
     override fun setDeafened(deafened: Boolean): VoiceConnection {
-        this.isDeafened = deafened
-        ydwk.webSocketManager?.sendVoiceStateUpdate(channel.guild, channel, isDeafened, isMuted)
+        this.deafen = deafened
         return this
     }
 
+    /**
+     * Sets the muted state of the voice connection.
+     *
+     * @param muted true if the voice connection should be muted, false otherwise
+     * @return the modified VoiceConnection object
+     */
     override fun setMuted(muted: Boolean): VoiceConnection {
-        this.isMuted = muted
-        ydwk.webSocketManager?.sendVoiceStateUpdate(channel.guild, channel, isDeafened, isMuted)
+        this.muted = muted
         return this
     }
 
+    fun getSpeakingFlags(): EnumSet<SpeakingFlag> {
+        return speakingFlags
+    }
+
+    /**
+     * Determines whether the speaker has priority.
+     *
+     * @return `true` if the speaker has priority, `false` otherwise.
+     */
     override fun isPrioritySpeaker(): Boolean {
         return speakingFlags.contains(SpeakingFlag.PRIORITY)
     }
 
+    /**
+     * Set the priority of the VoiceConnection.
+     *
+     * @param priority the priority value to be set. True indicates high priority, False indicates
+     *   normal priority.
+     * @return the modified VoiceConnection object.
+     */
     override fun setPriority(priority: Boolean): VoiceConnection {
         val newSpeakingFlags = speakingFlags.clone()
         if (priority) {
@@ -92,10 +173,22 @@ data class VoiceConnectionImpl(
         return this
     }
 
+    /**
+     * Check if the engine is currently speaking.
+     *
+     * @return true if the engine is speaking, false otherwise.
+     */
     override fun isSpeaking(): Boolean {
         return speakingFlags.contains(SpeakingFlag.MICROPHONE)
     }
 
+    /**
+     * Sets the speaking state of the voice connection.
+     *
+     * @param speaking The speaking state to set. `true` to indicate that the connection is
+     *   speaking, `false` otherwise.
+     * @return The updated VoiceConnection with the speaking state set.
+     */
     override fun setSpeaking(speaking: Boolean): VoiceConnection {
         val newSpeakingFlags = speakingFlags.clone()
         if (speaking) {
@@ -107,116 +200,40 @@ data class VoiceConnectionImpl(
         return this
     }
 
+    fun getVoiceSource(): VoiceSource? {
+        return voiceSource
+    }
+
+    /**
+     * Sets the source for the voice connection.
+     *
+     * @param source the voice source to set
+     * @return the updated voice connection object
+     */
     override fun setSource(source: VoiceSource): VoiceConnection {
-        currentSource.add(source)
+        this.voiceSource = source
         return this
     }
 
-    fun sendSendingAudio() {
-        val socket = udpsocket
-        if (socket == null) {
-            logger.error("UDP socket is null")
-            return
-        }
-        if (sendAudio) {
-            return
-        }
-        sendAudio = true
-        var isSpeaking = false
-        var framesOfSilenceToPlay = 5
-        var dontSleep = true
-        var nextFrameTime = AtomicLong(System.nanoTime())
-        ydwk.threadFactory.createThreadExecutor(
-            "Sending Audio",
-            Runnable {
-                try {
-                    while (sendAudio) {
-                        val source = currentSource.poll() ?: return@Runnable
-                        if (source.isFinished) {
-                            currentSource.remove()
-                            dontSleep = true
-                            continue
-                        }
-
-                        var voicePacket: VoicePacket? = null
-                        var frame: ByteArray? =
-                            if (source.isNextAudioAvailable) source.nextAudio else null
-                        if (source.isPaused) {
-                            frame = null
-                        }
-
-                        sequence++
-                        if (frame != null || framesOfSilenceToPlay > 0) {
-                            if (!isSpeaking && frame != null) {
-                                isSpeaking = true
-                                setSpeaking(true)
-                            }
-
-                            voicePacket =
-                                VoicePacket(
-                                    frame, voiceWebSocket?.ssrc!!, sequence, (sequence.code * 960))
-
-                            if (frame == null) {
-                                framesOfSilenceToPlay--
-                                if (framesOfSilenceToPlay == 0) {
-                                    isSpeaking = false
-                                    setSpeaking(false)
-                                }
-                            } else {
-                                framesOfSilenceToPlay = 5
-                            }
-                        }
-                        nextFrameTime.set(nextFrameTime.get() + 20_000_000)
-
-                        voicePacket?.encrypt(voiceWebSocket?.secretKey)
-                        try {
-                            if (dontSleep) {
-                                nextFrameTime = AtomicLong(System.nanoTime() + 20_000_000)
-                                dontSleep = false
-                            } else {
-                                val sleepTime = nextFrameTime.get() - System.nanoTime()
-                                if (sleepTime > 0) {
-                                    Thread.sleep(
-                                        sleepTime / 1_000_000, (sleepTime % 1_000_000).toInt())
-                                }
-                            }
-                            voicePacket?.let {
-                                socket.send(voicePacket.asDatagramPacket(address!!))
-                            }
-                        } catch (e: InterruptedException) {
-                            logger.error("Failed to send audio", e)
-                        }
-                    }
-                } catch (e: InterruptedException) {
-                    if (sendAudio) {
-                        logger.error("Failed to send audio", e)
-                    }
-                }
-            })
-    }
-
-    fun stopSendingAudio() {
-        sendAudio = false
-        ydwk.threadFactory.getThreadByName("Sending Audio")?.interrupt()
-    }
-
-    override fun disconnect(): CompletableFuture<Void> {
-        return if (attemptingToConnectOrConnected) {
-            disconnectFuture = CompletableFuture()
-            voiceWebSocket?.close()
-            ydwk.webSocketManager?.sendVoiceStateUpdate(channel.guild, null, isDeafened, isMuted)
-            (channel.guild as GuildImpl).removeVoiceConnection()
-            attemptingToConnectOrConnected = false
-            disconnectFuture
-        } else {
-            (ydwk as YDWKImpl)
-                .logger
-                .warn("Attempted to disconnect from a voice channel that was not connected to.")
-            CompletableFuture.completedFuture(null)
-        }
-    }
-
-    fun safeConnect(endPoint: String, token: String, sessionId: String, userId: Long) {
+    /**
+     * Establishes a connection to a voice channel.
+     *
+     * If there is a pending channel change (stored in `changedChannelFuture`), it is completed with
+     * `null`.
+     *
+     * If the client is already attempting to connect or is already connected to a voice channel, a
+     * warning message is logged and the method returns.
+     *
+     * Otherwise, a new `VoiceWebSocket` is created with the current `this` instance and the
+     * `etfInsteadOfJson` flag from the `webSocketManager` (defaulting to `false` if not set) and a
+     * connection is established by calling the `connect()` method on the websocket.
+     *
+     * The `voiceChannel` field is updated with the latest information from
+     * `ydwk.getGuildChannelById()` (if available) or remains unchanged.
+     *
+     * Finally, the `connectFuture` is completed with `this` instance.
+     */
+    fun connect() {
         if (changedChannelFuture != null && !changedChannelFuture!!.isDone) {
             changedChannelFuture!!.complete(null)
         }
@@ -228,20 +245,34 @@ data class VoiceConnectionImpl(
             return // We are already connecting or we don't have enough information to connect
         }
 
-        this.voiceEndpoint = endPoint
-        this.token = token
-        this.sessionId = sessionId
-        this.userId = userId.toString()
-
         attemptingToConnectOrConnected = true
-        connect()
+
+        voiceWebSocket =
+            VoiceWebSocket(this, ydwk.webSocketManager?.etfInsteadOfJson ?: false).connect()
+
+        voiceChannel =
+            ydwk.getGuildChannelById(voiceChannel.id)?.guildChannelGetter?.asGuildVoiceChannel()
+                ?: voiceChannel // Update the channel in case it was updated
+
+        connectFuture.complete(this)
     }
 
-    private fun connect() {
-        voiceWebSocket = VoiceWebSocket(this)
-        channel =
-            ydwk.getGuildChannelById(channel.id)?.guildChannelGetter?.asGuildVoiceChannel()
-                ?: channel // Update the channel in case it was updated
-        future?.complete(this)
+    override fun disconnect(): CompletableFuture<Void> {
+        return if (attemptingToConnectOrConnected) {
+            disconnectFuture = CompletableFuture()
+            voiceWebSocket?.triggerDisconnect()
+
+            ydwk.webSocketManager?.sendVoiceState(guild.idAsLong, null, false, false)
+
+            (guild as GuildImpl).removeVoiceConnection()
+
+            attemptingToConnectOrConnected = false
+            disconnectFuture
+        } else {
+            (ydwk as YDWKImpl)
+                .logger
+                .warn("Attempted to disconnect from a voice channel that was not connected to.")
+            CompletableFuture.completedFuture(null)
+        }
     }
 }

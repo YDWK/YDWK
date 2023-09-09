@@ -88,6 +88,12 @@ dependencies {
     // annotations
     implementation("com.google.code.findbugs:jsr305:" + properties["jsr305Version"])
 
+    // decode Opus
+    api("org.jitsi:libjitsi:" + properties["libjitsiVersion"])
+
+    // files to bytes
+    api("commons-io:commons-io:" + properties["commonsIoVersion"])
+
     // test
     testImplementation("org.jetbrains.kotlin:kotlin-test:" + properties["kotlinTestVersion"])
 }
