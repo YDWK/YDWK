@@ -24,7 +24,7 @@ enum class YDWKInfo(private val url: String) {
     JSON_ENCODING("&encoding=json"),
     VOICE_GATEWAY_VERSION("/?v=4"),
     GITHUB_URL("https://github.com/ydwk/ydwk"),
-    YDWK_VERSION("1.6.0");
+    YDWK_VERSION("2.0.0");
 
     companion object {
         /**

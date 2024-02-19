@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.bot
 
-import io.github.realyusufismail.jconfig.util.JConfigUtils
+import io.github.realyusufismail.jconfig.JConfig
 import io.github.ydwk.yde.builders.slash.SlashCommandBuilder
 import io.github.ydwk.yde.builders.slash.SlashSubCommand
 import io.github.ydwk.yde.interaction.message.ActionRow
@@ -34,7 +34,7 @@ import kotlinx.coroutines.withContext
 
 suspend fun main() {
     val ydwk =
-        createDefaultBot(JConfigUtils.getString("token") ?: throw Exception("Token not found!"))
+        createDefaultBot(JConfig.build().get("token")?.asText() ?: throw Exception("Token not found!"))
             .setActivity(Activity.playing("YDWK"))
             .setETFInsteadOfJson(true)
             .build()

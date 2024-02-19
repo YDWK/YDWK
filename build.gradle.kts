@@ -9,7 +9,7 @@ buildscript {
     repositories { mavenCentral() }
 
     dependencies {
-        classpath("org.jetbrains.dokka:dokka-base:1.8.10")
+        classpath("org.jetbrains.dokka:dokka-base:1.9.10")
         classpath("io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.30.0")
         classpath("com.squareup:kotlinpoet:" + properties["kotlinPoetVersion"])
     }
@@ -54,6 +54,8 @@ apply(from = "gradle/tasks/eventClassJavaDocChecker.gradle")
 
 apply(from = "gradle/tasks/Nexus.gradle")
 
+apply(from = "gradle/tasks/GenerateKotlinCode.gradle.kts")
+
 apply(from = "gradle/tasks/generateEvents.gradle.kts")
 
 repositories { mavenCentral() }
@@ -76,9 +78,6 @@ dependencies {
     api("com.squareup.okhttp3:okhttp:" + properties["okhttp3Version"])
     api("com.neovisionaries:nv-websocket-client:" + properties["nvWebsocketClientVersion"])
     api("com.codahale:xsalsa20poly1305:" + properties["xsalsa20poly1305Version"])
-
-    // YDE Entities
-    api("io.github.realyusufismail:yde:" + properties["ydeVersion"])
 
     // kotlin
     api(
@@ -242,41 +241,63 @@ tasks.javadoc {
     }
 }
 
+val developerInfo = DeveloperInfo(
+    id = extra["dev_id"] as String,
+    name = extra["dev_name"] as String,
+    email = extra["dev_email"] as String,
+    organization = extra["dev_organization"] as String,
+    organizationUrl = extra["dev_organization_url"] as String
+)
+
+val licenseInfo = LicenseInfo(
+    name = extra["gpl_name"] as String,
+    url = extra["gpl_url"] as String
+)
+
+val ciInfo = "GitHub Actions"
+
+val issueManagementInfo = IssueManagementInfo(
+    system = "GitHub",
+    url = "https://github.com/YDWK/YDWK/issues"
+)
+
 publishing {
     val isReleaseVersion = !version.toString().endsWith("SNAPSHOT")
     publications {
         create<MavenPublication>("ydwk") {
             from(components["java"])
-            // artifactId = project.artifactId // or maybe archiveBaseName?
+            groupId = "io.github.realyusufismail"
+            artifactId = "ydwk"
+            version = project.version.toString()
+            setupDeveloperInfo(developerInfo)
+            setupLicenseInfo(licenseInfo)
+            setupCiManagement(ciInfo)
+            setupIssueManagement(issueManagementInfo)
             pom {
-                name.set(extra["name"] as String)
-                description.set(extra["description"] as String)
-                url.set("https://www.ydwk.org")
-                issueManagement {
-                    system.set("GitHub")
-                    url.set("https://github.com/YDWK/YDWK/issues")
-                }
-                licenses {
-                    license {
-                        name.set(extra["gpl_name"] as String)
-                        url.set(extra["gpl_url"] as String)
-                    }
-                }
-                ciManagement { system.set("GitHub Actions") }
-                inceptionYear.set("2023")
-                developers {
-                    developer {
-                        id.set(extra["dev_id"] as String)
-                        name.set(extra["dev_name"] as String)
-                        email.set(extra["dev_email"] as String)
-                        organization.set(extra["dev_organization"] as String)
-                        organizationUrl.set(extra["dev_organization_url"] as String)
-                    }
-                }
                 scm {
                     connection.set("https://github.com/YDWK/YDWK.git")
                     developerConnection.set("scm:git:ssh://git@github.com/YDWK/YDWK.git")
-                    url.set("github.com/YDWK/YDWK")
+                    url.set("github.com/YDWK/YDWK/")
+                }
+            }
+        }
+
+        publications {
+            create<MavenPublication>("yde") {
+                from(components["java"])
+                groupId = "io.github.realyusufismai"
+                artifactId = "yde"
+                version = project.version.toString()
+                setupDeveloperInfo(developerInfo)
+                setupLicenseInfo(licenseInfo)
+                setupCiManagement(ciInfo)
+                setupIssueManagement(issueManagementInfo)
+                pom {
+                    scm {
+                        connection.set("https://github.com/YDWK/YDWK.git")
+                        developerConnection.set("scm:git:ssh://git@github.com/YDWK/YDWK.git")
+                        url.set("github.com/YDWK/YDWK/")
+                    }
                 }
             }
         }
@@ -355,9 +376,72 @@ tasks.getByName("dokkaHtml", DokkaTask::class) {
         }
 
         pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
-            footerMessage = "Copyright © 2023 YDWK inc."
+            footerMessage = "Copyright © 2024 YDWK inc."
         }
     }
 }
 
-sourceSets { main { kotlin { srcDirs("src/main/kotlin", "build/generated/kotlin") } } }
+sourceSets { main { kotlin {
+    srcDirs("src/main/kotlin/io/github/ydwk/ydwk", "src/main/kotlin/io/github/ydwk/yde", "build/generated/kotlin")
+} } }
+
+
+fun MavenPublication.setupDeveloperInfo(developerInfo: DeveloperInfo) {
+    pom {
+        developers {
+            developer {
+                id.set(developerInfo.id)
+                name.set(developerInfo.name)
+                email.set(developerInfo.email)
+                organization.set(developerInfo.organization)
+                organizationUrl.set(developerInfo.organizationUrl)
+            }
+        }
+    }
+}
+
+fun MavenPublication.setupLicenseInfo(licenseInfo: LicenseInfo) {
+    pom {
+        licenses {
+            license {
+                name.set(licenseInfo.name)
+                url.set(licenseInfo.url)
+            }
+        }
+    }
+}
+
+fun MavenPublication.setupCiManagement(ciInfo: String) {
+    pom {
+        ciManagement {
+            system.set(ciInfo)
+        }
+    }
+}
+
+fun MavenPublication.setupIssueManagement(issueManagementInfo: IssueManagementInfo) {
+    pom {
+        issueManagement {
+            system.set(issueManagementInfo.system)
+            url.set(issueManagementInfo.url)
+        }
+    }
+}
+
+data class LicenseInfo(
+    val name: String,
+    val url: String
+)
+
+data class IssueManagementInfo(
+    val system: String,
+    val url: String
+)
+
+data class DeveloperInfo(
+    val id: String,
+    val name: String,
+    val email: String,
+    val organization: String,
+    val organizationUrl: String
+)

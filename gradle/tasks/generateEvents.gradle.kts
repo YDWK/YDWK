@@ -103,27 +103,29 @@ fun generateEventFile() {
         if (it.isFile && it.name.endsWith(".kt")) {
             val file = it.readText()
             val name = it.name.substring(0, it.name.length - 3)
+            val sanitizedPath = it.absolutePath.replace('\\', '/')
+
             when {
                 file.contains("@ChannelEvent") -> {
-                    channelEvents[name] = it.absolutePath
+                    channelEvents[name] = sanitizedPath
                 }
                 file.contains("@GatewayEvent") -> {
-                    gatewayEvents[name] = it.absolutePath
+                    gatewayEvents[name] = sanitizedPath
                 }
                 file.contains("@GuildEvent") -> {
-                    guildEvents[name] = it.absolutePath
+                    guildEvents[name] = sanitizedPath
                 }
                 file.contains("@GuildModerationEvent") -> {
-                    guildModerationEvents[name] = it.absolutePath
+                    guildModerationEvents[name] = sanitizedPath
                 }
                 file.contains("@InteractionEvent") -> {
-                    interactionEvents[name] = it.absolutePath
+                    interactionEvents[name] = sanitizedPath
                 }
                 file.contains("@UserEvent") -> {
-                    userEvents[name] = it.absolutePath
+                    userEvents[name] = sanitizedPath
                 }
                 file.contains("@VoiceEvent") -> {
-                    voiceEvents[name] = it.absolutePath
+                    voiceEvents[name] = sanitizedPath
                 }
             }
         }
