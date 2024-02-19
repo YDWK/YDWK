@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 YDWK inc.
+ * Copyright 2024 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,10 +24,10 @@ import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.guild.Member
 import io.github.ydwk.yde.entities.message.MessageInteraction
 import io.github.ydwk.yde.impl.YDEImpl
-import io.github.ydwk.yde.impl.entities.UserImpl
 import io.github.ydwk.yde.impl.entities.guild.MemberImpl
 import io.github.ydwk.yde.interaction.sub.InteractionType
 import io.github.ydwk.yde.util.EntityToStringBuilder
+import io.github.ydwk.ydwk.util.ydwk
 
 class MessageInteractionImpl(
     override val yde: YDE,
@@ -42,7 +42,7 @@ class MessageInteractionImpl(
         get() = json.get("name").asText()
 
     override val user: User
-        get() = UserImpl(json.get("user"), json.get("user").get("id").asLong(), yde)
+        get() = ydwk.entityInstanceBuilder.buildUser(json.get("user"))
 
     override val member: Member?
         get() =

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 YDWK inc.
+ * Copyright 2024 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -503,6 +503,13 @@ interface YDE {
      * @return The [EmbedBuilder] object.
      */
     val embedBuilder: EmbedBuilder
+
+    /**
+     * Used to build an instance of an entity from a json object.
+     *
+     * @return The entity builder.
+     */
+    val entityInstanceBuilder: EntityInstanceBuilder
 
     /**
      * Overrides the custom to string method.

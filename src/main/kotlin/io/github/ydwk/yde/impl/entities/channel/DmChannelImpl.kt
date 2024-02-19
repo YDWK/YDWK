@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 YDWK inc.
+ * Copyright 2024 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +24,6 @@ import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.channel.DmChannel
 import io.github.ydwk.yde.entities.channel.enums.ChannelType
 import io.github.ydwk.yde.impl.entities.ChannelImpl
-import io.github.ydwk.yde.impl.entities.UserImpl
 import io.github.ydwk.yde.util.EntityToStringBuilder
 import io.github.ydwk.yde.util.GetterSnowFlake
 
@@ -39,8 +38,7 @@ class DmChannelImpl(
         else null
 
     override var recipient: User? =
-        if (json.has("recipients"))
-            UserImpl(json["recipients"][0], json["recipients"][0]["id"].asLong(), yde)
+        if (json.has("recipients")) yde.entityInstanceBuilder.buildUser(json["recipients"][0])
         else null
 
     override val type: ChannelType

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 YDWK inc.
+ * Copyright 2024 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.google.common.util.concurrent.ThreadFactoryBuilder
+import io.github.ydwk.yde.EntityInstanceBuilder
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.builders.message.IMessageCommandBuilder
 import io.github.ydwk.yde.builders.slash.ISlashCommandBuilder
@@ -176,6 +177,8 @@ open class YDEImpl(
     private val threadBuilder = ThreadFactoryBuilder()
 
     override val threadFactory: ThreadFactory = ThreadFactory(threadBuilder)
+
+    override val entityInstanceBuilder: EntityInstanceBuilder = EntityInstanceBuilderImpl(this)
 
     override fun toString(): String {
         return EntityToStringBuilder(this, this).add("applicationId", applicationId).toString()

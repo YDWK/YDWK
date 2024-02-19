@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 YDWK inc.
+ * Copyright 2024 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,6 +27,7 @@ import io.github.ydwk.yde.entities.sticker.StickerFormatType
 import io.github.ydwk.yde.entities.sticker.StickerType
 import io.github.ydwk.yde.util.EntityToStringBuilder
 import io.github.ydwk.yde.util.GetterSnowFlake
+import io.github.ydwk.ydwk.util.ydwk
 
 class StickerImpl(
     override val yde: YDE,
@@ -53,7 +54,7 @@ class StickerImpl(
         get() = if (json.has("guild_id")) yde.getGuildById(json["guild_id"].asLong()) else null
 
     override var user: User? =
-        if (json.has("user")) UserImpl(json["user"], json["user"]["id"].asLong(), yde) else null
+        if (json.has("user")) ydwk.entityInstanceBuilder.buildUser(json["user"]) else null
 
     override var sortvarue: Int? =
         if (json.has("sort_value")) json.get("sort_value").asInt() else null

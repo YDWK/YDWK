@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 YDWK inc.
+ * Copyright 2024 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,8 +28,8 @@ import io.github.ydwk.yde.entities.guild.GuildScheduledEvent
 import io.github.ydwk.yde.entities.guild.Invite
 import io.github.ydwk.yde.entities.guild.invite.TargetType
 import io.github.ydwk.yde.impl.entities.ApplicationImpl
-import io.github.ydwk.yde.impl.entities.UserImpl
 import io.github.ydwk.yde.util.EntityToStringBuilder
+import io.github.ydwk.ydwk.util.ydwk
 import java.time.ZonedDateTime
 
 class InviteImpl(override val yde: YDE, override val json: JsonNode) : Invite {
@@ -48,8 +48,7 @@ class InviteImpl(override val yde: YDE, override val json: JsonNode) : Invite {
 
     override val inviter: User?
         get() =
-            if (json["inviter"] != null)
-                UserImpl(json["inviter"], json["inviter"]["id"].asLong(), yde)
+            if (json["inviter"] != null) ydwk.entityInstanceBuilder.buildUser(json["inviter"])
             else null
 
     override val targetType: TargetType
@@ -58,7 +57,7 @@ class InviteImpl(override val yde: YDE, override val json: JsonNode) : Invite {
     override val targetUser: User?
         get() =
             if (json["target_user"] != null)
-                UserImpl(json["target_user"], json["target_user"]["id"].asLong(), yde)
+                yde.entityInstanceBuilder.buildUser(json["target_user"])
             else null
 
     override val targetApplication: Application?

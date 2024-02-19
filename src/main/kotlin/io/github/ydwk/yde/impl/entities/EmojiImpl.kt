@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 YDWK inc.
+ * Copyright 2024 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ class EmojiImpl(override val yde: YDE, override val json: JsonNode) : Emoji {
         else emptyList()
 
     override var user: User? =
-        if (json.has("user")) UserImpl(json["user"], json["user"]["id"].asLong(), yde) else null
+        if (json.has("user")) yde.entityInstanceBuilder.buildUser(json["user"]) else null
 
     override var requireColons: Boolean =
         if (json.has("require_colons")) json["require_colons"].asBoolean() else false

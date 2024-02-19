@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 YDWK inc.
+ * Copyright 2024 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,6 +20,7 @@ package io.github.ydwk.yde.entities.util
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
+import io.github.ydwk.yde.util.EntityToStringBuilder
 
 interface GenericEntity {
 
@@ -30,7 +31,7 @@ interface GenericEntity {
     val json: JsonNode
 
     /**
-     * Converts this entity to a string using the [io.github.ydwk.ydwk.util.EntityToStringBuilder].
+     * Converts this entity to a string using the [EntityToStringBuilder].
      *
      * @return The string representation of this entity.
      */

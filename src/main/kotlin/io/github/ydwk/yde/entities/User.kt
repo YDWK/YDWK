@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 YDWK inc.
+ * Copyright 2024 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,14 +28,6 @@ import java.awt.Color
 import kotlinx.coroutines.CompletableDeferred
 
 interface User : SnowFlake, GenericEntity, NameAbleEntity, SendAble {
-    /**
-     * The user's 4-digit discord-tag.
-     *
-     * @return the user's 4-digit discord-tag.
-     */
-    @Deprecated("Discord has removed discriminator in favour of the new @mention system.")
-    var discriminator: String
-
     /**
      * The global name of the user.
      *

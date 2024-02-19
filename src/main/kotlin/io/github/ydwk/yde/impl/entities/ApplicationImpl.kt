@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 YDWK inc.
+ * Copyright 2024 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -54,8 +54,7 @@ class ApplicationImpl(
         else null
 
     override var botOwner: User? =
-        if (json.hasNonNull("owner")) UserImpl(json["owner"], json["owner"].get("id").asLong(), yde)
-        else null
+        if (json.hasNonNull("owner")) yde.entityInstanceBuilder.buildUser(json["owner"]) else null
 
     override var verifyKey: String? =
         if (json.hasNonNull("verify_key")) json["verify_key"].asText() else null

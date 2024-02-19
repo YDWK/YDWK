@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 YDWK inc.
+ * Copyright 2024 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,7 +27,6 @@ import io.github.ydwk.yde.entities.channel.TextChannel
 import io.github.ydwk.yde.entities.guild.Member
 import io.github.ydwk.yde.impl.YDEImpl
 import io.github.ydwk.yde.impl.entities.MessageImpl
-import io.github.ydwk.yde.impl.entities.UserImpl
 import io.github.ydwk.yde.impl.entities.guild.MemberImpl
 import io.github.ydwk.yde.impl.interaction.message.ComponentInteractionDataImpl
 import io.github.ydwk.yde.interaction.ComponentInteraction
@@ -59,8 +58,7 @@ open class ComponentInteractionImpl(
             if (json.has("member")) MemberImpl((yde as YDEImpl), json["member"], guild!!) else null
 
     override val user: User?
-        get() =
-            if (json.has("user")) UserImpl(json["user"], json["user"]["id"].asLong(), yde) else null
+        get() = if (json.has("user")) yde.entityInstanceBuilder.buildUser(json["user"]) else null
 
     override val channel: TextChannel?
         get() =

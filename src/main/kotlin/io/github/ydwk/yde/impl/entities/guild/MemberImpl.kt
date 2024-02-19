@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 YDWK inc.
+ * Copyright 2024 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,11 +27,11 @@ import io.github.ydwk.yde.entities.guild.Role
 import io.github.ydwk.yde.entities.guild.enums.GuildPermission
 import io.github.ydwk.yde.entities.user.Avatar
 import io.github.ydwk.yde.impl.YDEImpl
-import io.github.ydwk.yde.impl.entities.UserImpl
 import io.github.ydwk.yde.impl.entities.user.AvatarImpl
 import io.github.ydwk.yde.util.EntityToStringBuilder
 import io.github.ydwk.yde.util.GetterSnowFlake
 import io.github.ydwk.yde.util.formatZonedDateTime
+import io.github.ydwk.ydwk.util.ydwk
 import java.net.MalformedURLException
 import java.net.URL
 import java.util.*
@@ -44,7 +44,7 @@ class MemberImpl(
 ) : Member {
 
     override var user: User =
-        if (json.has("user")) UserImpl(json["user"], json["user"]["id"].asLong(), yde)
+        if (json.has("user")) ydwk.entityInstanceBuilder.buildUser(json["user"])
         else backupUser ?: throw IllegalStateException("Member must have a user")
 
     override var nick: String? = if (json.has("nick")) json["nick"].asText() else null

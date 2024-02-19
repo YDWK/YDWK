@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 YDWK inc.
+ * Copyright 2024 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,10 +28,10 @@ import io.github.ydwk.yde.entities.guild.schedule.EntityMetadata
 import io.github.ydwk.yde.entities.guild.schedule.EntityType
 import io.github.ydwk.yde.entities.guild.schedule.PrivacyLevel
 import io.github.ydwk.yde.entities.guild.schedule.ScheduledEventStatus
-import io.github.ydwk.yde.impl.entities.UserImpl
 import io.github.ydwk.yde.impl.entities.guild.schedule.EntityMetadataImpl
 import io.github.ydwk.yde.util.EntityToStringBuilder
 import io.github.ydwk.yde.util.GetterSnowFlake
+import io.github.ydwk.ydwk.util.ydwk
 import java.time.ZonedDateTime
 
 class GuildScheduledEventImpl(
@@ -80,8 +80,7 @@ class GuildScheduledEventImpl(
             else null
 
     override val user: User?
-        get() =
-            if (json.has("user")) UserImpl(json["user"], json["user"]["id"].asLong(), yde) else null
+        get() = if (json.has("user")) ydwk.entityInstanceBuilder.buildUser(json["user"]) else null
 
     override val subscriberCount: Int
         get() = json["subscriber_count"].asInt()

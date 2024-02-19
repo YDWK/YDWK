@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 YDWK inc.
+ * Copyright 2024 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,7 +27,6 @@ import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.guild.Member
 import io.github.ydwk.yde.impl.YDEImpl
 import io.github.ydwk.yde.impl.entities.MessageImpl
-import io.github.ydwk.yde.impl.entities.UserImpl
 import io.github.ydwk.yde.impl.entities.guild.MemberImpl
 import io.github.ydwk.yde.impl.interaction.application.type.MessageCommandImpl
 import io.github.ydwk.yde.impl.interaction.application.type.SlashCommandImpl
@@ -38,6 +37,7 @@ import io.github.ydwk.yde.interaction.sub.GenericCommandData
 import io.github.ydwk.yde.interaction.sub.InteractionType
 import io.github.ydwk.yde.util.EntityToStringBuilder
 import io.github.ydwk.yde.util.GetterSnowFlake
+import io.github.ydwk.ydwk.util.ydwk
 
 class InteractionImpl(
     override val yde: YDE,
@@ -70,9 +70,9 @@ class InteractionImpl(
 
     override val user: User
         get() {
-            return if (json.has("user")) UserImpl(json["user"], json["user"]["id"].asLong(), yde)
+            return if (json.has("user")) ydwk.entityInstanceBuilder.buildUser(json["user"])
             else if (json.has("member"))
-                UserImpl(json["member"]["user"], json["member"]["user"]["id"].asLong(), yde)
+                ydwk.entityInstanceBuilder.buildUser(json["member"]["user"])
             else throw IllegalStateException("No user or member found in interaction")
         }
 

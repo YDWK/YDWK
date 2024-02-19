@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 YDWK inc.
+ * Copyright 2024 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,8 @@ import kotlinx.coroutines.withContext
 
 suspend fun main() {
     val ydwk =
-        createDefaultBot(JConfig.build().get("token")?.asText() ?: throw Exception("Token not found!"))
+        createDefaultBot(
+                JConfig.build().get("token")?.asText() ?: throw Exception("Token not found!"))
             .setActivity(Activity.playing("YDWK"))
             .setETFInsteadOfJson(true)
             .build()

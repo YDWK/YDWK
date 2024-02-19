@@ -93,6 +93,9 @@ dependencies {
     // files to bytes
     api("commons-io:commons-io:" + properties["commonsIoVersion"])
 
+    // guava
+    api("com.google.guava:guava:" + properties["guavaVersion"])
+
     // test
     testImplementation("org.jetbrains.kotlin:kotlin-test:" + properties["kotlinTestVersion"])
 }
@@ -149,7 +152,7 @@ spotless {
 
         licenseHeader(
             """/*
- * Copyright 2022 YDWK inc.
+ * Copyright 2024 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -241,33 +244,26 @@ tasks.javadoc {
     }
 }
 
-val developerInfo = DeveloperInfo(
-    id = extra["dev_id"] as String,
-    name = extra["dev_name"] as String,
-    email = extra["dev_email"] as String,
-    organization = extra["dev_organization"] as String,
-    organizationUrl = extra["dev_organization_url"] as String
-)
+val developerInfo =
+    DeveloperInfo(
+        id = extra["dev_id"] as String,
+        name = extra["dev_name"] as String,
+        email = extra["dev_email"] as String,
+        organization = extra["dev_organization"] as String,
+        organizationUrl = extra["dev_organization_url"] as String)
 
-val licenseInfo = LicenseInfo(
-    name = extra["gpl_name"] as String,
-    url = extra["gpl_url"] as String
-)
+val licenseInfo = LicenseInfo(name = extra["gpl_name"] as String, url = extra["gpl_url"] as String)
 
 val ciInfo = "GitHub Actions"
 
-val issueManagementInfo = IssueManagementInfo(
-    system = "GitHub",
-    url = "https://github.com/YDWK/YDWK/issues"
-)
+val issueManagementInfo =
+    IssueManagementInfo(system = "GitHub", url = "https://github.com/YDWK/YDWK/issues")
 
 publishing {
     val isReleaseVersion = !version.toString().endsWith("SNAPSHOT")
     publications {
         create<MavenPublication>("ydwk") {
             from(components["java"])
-            groupId = "io.github.realyusufismail"
-            artifactId = "ydwk"
             version = project.version.toString()
             setupDeveloperInfo(developerInfo)
             setupLicenseInfo(licenseInfo)
@@ -281,27 +277,8 @@ publishing {
                 }
             }
         }
-
-        publications {
-            create<MavenPublication>("yde") {
-                from(components["java"])
-                groupId = "io.github.realyusufismai"
-                artifactId = "yde"
-                version = project.version.toString()
-                setupDeveloperInfo(developerInfo)
-                setupLicenseInfo(licenseInfo)
-                setupCiManagement(ciInfo)
-                setupIssueManagement(issueManagementInfo)
-                pom {
-                    scm {
-                        connection.set("https://github.com/YDWK/YDWK.git")
-                        developerConnection.set("scm:git:ssh://git@github.com/YDWK/YDWK.git")
-                        url.set("github.com/YDWK/YDWK/")
-                    }
-                }
-            }
-        }
     }
+
     repositories {
         maven {
             name = "MavenCentral"
@@ -381,10 +358,7 @@ tasks.getByName("dokkaHtml", DokkaTask::class) {
     }
 }
 
-sourceSets { main { kotlin {
-    srcDirs("src/main/kotlin/io/github/ydwk/ydwk", "src/main/kotlin/io/github/ydwk/yde", "build/generated/kotlin")
-} } }
-
+sourceSets { main { kotlin { srcDirs("src/main/kotlin", "build/generated/kotlin") } } }
 
 fun MavenPublication.setupDeveloperInfo(developerInfo: DeveloperInfo) {
     pom {
@@ -412,11 +386,7 @@ fun MavenPublication.setupLicenseInfo(licenseInfo: LicenseInfo) {
 }
 
 fun MavenPublication.setupCiManagement(ciInfo: String) {
-    pom {
-        ciManagement {
-            system.set(ciInfo)
-        }
-    }
+    pom { ciManagement { system.set(ciInfo) } }
 }
 
 fun MavenPublication.setupIssueManagement(issueManagementInfo: IssueManagementInfo) {
@@ -428,15 +398,9 @@ fun MavenPublication.setupIssueManagement(issueManagementInfo: IssueManagementIn
     }
 }
 
-data class LicenseInfo(
-    val name: String,
-    val url: String
-)
+data class LicenseInfo(val name: String, val url: String)
 
-data class IssueManagementInfo(
-    val system: String,
-    val url: String
-)
+data class IssueManagementInfo(val system: String, val url: String)
 
 data class DeveloperInfo(
     val id: String,

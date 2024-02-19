@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 YDWK inc.
+ * Copyright 2024 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +23,6 @@ import com.fasterxml.jackson.databind.node.ArrayNode
 import io.github.ydwk.yde.cache.CacheIds
 import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.channel.GuildChannel
-import io.github.ydwk.yde.impl.entities.BotImpl
 import io.github.ydwk.yde.impl.entities.GuildImpl
 import io.github.ydwk.yde.impl.entities.application.PartialApplicationImpl
 import io.github.ydwk.ydwk.evm.event.events.gateway.ReadyEvent
@@ -32,7 +31,7 @@ import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class ReadyHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override suspend fun start() {
-        val bot = BotImpl(json.get("user"), json.get("user").get("id").asLong(), ydwk)
+        val bot = ydwk.entityInstanceBuilder.buildBot(json.get("user"))
         ydwk.bot = bot
         ydwk.cache[json.get("user").get("id").asText(), bot] = CacheIds.USER
 

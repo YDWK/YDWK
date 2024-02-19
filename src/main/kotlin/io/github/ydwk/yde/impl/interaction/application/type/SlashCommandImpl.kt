@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 YDWK inc.
+ * Copyright 2024 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,7 +26,6 @@ import io.github.ydwk.yde.entities.channel.enums.ChannelType
 import io.github.ydwk.yde.entities.message.Embed
 import io.github.ydwk.yde.entities.util.GenericEntity
 import io.github.ydwk.yde.impl.YDEImpl
-import io.github.ydwk.yde.impl.entities.UserImpl
 import io.github.ydwk.yde.impl.entities.channel.DmChannelImpl
 import io.github.ydwk.yde.impl.entities.channel.guild.GuildChannelImpl
 import io.github.ydwk.yde.impl.entities.guild.MemberImpl
@@ -73,7 +72,7 @@ class SlashCommandImpl(yde: YDE, json: JsonNode, idAsLong: Long, interaction: In
     ): List<SlashOptionGetter> {
         resolved["users"]?.let {
             it.fields().forEach { (id, node) ->
-                map[id.toLong()] = UserImpl(node, node["id"].asLong(), yde)
+                map[id.toLong()] = yde.entityInstanceBuilder.buildUser(node)
             }
         }
         resolved["attachments"]?.let {
@@ -92,8 +91,7 @@ class SlashCommandImpl(yde: YDE, json: JsonNode, idAsLong: Long, interaction: In
                                 yde as YDEImpl,
                                 node,
                                 guild,
-                                UserImpl(user, user["id"].asLong(), yde))
-
+                                yde.entityInstanceBuilder.buildUser(user))
                         val newMember = yde.memberCache.getOrPut(member)
                         map[id.toLong()] = newMember
                     }

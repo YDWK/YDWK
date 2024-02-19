@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 YDWK inc.
+ * Copyright 2024 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,11 +18,7 @@
  */ 
 package io.github.ydwk.yde.impl.entities
 
-import com.fasterxml.jackson.databind.JsonNode
-import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.Bot
+import io.github.ydwk.yde.entities.User
 
-class BotImpl(json: JsonNode, id: Long, yde: YDE) : UserImpl(json, id, yde), Bot {
-
-    override var email: String = json["email"].asText()
-}
+class BotImpl(user: User, override var email: String) : UserImpl(user), Bot

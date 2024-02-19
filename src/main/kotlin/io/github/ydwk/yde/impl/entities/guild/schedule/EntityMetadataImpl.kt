@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 YDWK inc.
+ * Copyright 2024 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +23,6 @@ import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.guild.Member
 import io.github.ydwk.yde.entities.guild.schedule.EntityMetadata
-import io.github.ydwk.yde.impl.entities.UserImpl
 import io.github.ydwk.yde.util.EntityToStringBuilder
 import io.github.ydwk.yde.util.GetterSnowFlake
 
@@ -32,7 +31,7 @@ class EntityMetadataImpl(override val yde: YDE, override val json: JsonNode) : E
         get() = GetterSnowFlake.of(json["scheduled_event_id"].asText())
 
     override val user: User
-        get() = UserImpl(json["user"], json["user"]["id"].asLong(), yde)
+        get() = yde.entityInstanceBuilder.buildUser(json["user"])
 
     override val member: Member?
         get() =

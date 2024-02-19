@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 YDWK inc.
+ * Copyright 2024 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,7 +21,7 @@ package io.github.ydwk.ydwk.evm.handler.handlers.user
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.cache.CacheIds
 import io.github.ydwk.yde.entities.User
-import io.github.ydwk.yde.impl.entities.UserImpl
+import io.github.ydwk.yde.impl.EntityInstanceBuilderImpl
 import io.github.ydwk.ydwk.evm.event.events.user.*
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
@@ -38,7 +38,7 @@ class UserUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
         if (userCache == null) {
             ydwk.logger.debug(
                 "UserUpdateHandler: User with id ${userJson.get("id").asLong()} not found in cache, will add it")
-            val user = UserImpl(json, json.get("id").asLong(), ydwk)
+            val user = ydwk.entityInstanceBuilder.buildUser(userJson)
             ydwk.cache[user.id, user] = CacheIds.USER
             return
         }
@@ -52,21 +52,14 @@ class UserUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
             ydwk.emitEvent(UserNameUpdateEvent(ydwk, user, oldName, newName))
         }
 
-        val oldDiscriminator = user.discriminator
-        val newDiscriminator = userJson.get("discriminator").asText()
-        if (!Objects.deepEquals(oldDiscriminator, newDiscriminator)) {
-            user.discriminator = newDiscriminator
-            ydwk.emitEvent(
-                UserDiscriminatorUpdateEvent(ydwk, user, oldDiscriminator, newDiscriminator))
-        }
-
         val oldAvatarHash = user.avatarHash
         val oldAvatar = user.avatar
         val newAvatarHash = if (json.hasNonNull("avatar")) json["avatar"].asText() else null
         if (!Objects.deepEquals(oldAvatarHash, newAvatarHash)) {
             user.avatarHash = newAvatarHash
             val newAvatar =
-                (user as UserImpl).getAvatar(ydwk, user.discriminator, newAvatarHash, null)
+                (ydwk.entityInstanceBuilder as EntityInstanceBuilderImpl).getAvatar(
+                    ydwk, json["discriminator"].asText(), newAvatarHash, null, user.idAsLong)
             ydwk.emitEvent(UserAvatarUpdateEvent(ydwk, user, oldAvatar, newAvatar))
         }
 

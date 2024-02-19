@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 YDWK inc.
+ * Copyright 2024 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,6 +39,7 @@ import io.github.ydwk.yde.interaction.message.Component
 import io.github.ydwk.yde.util.EntityToStringBuilder
 import io.github.ydwk.yde.util.GetterSnowFlake
 import io.github.ydwk.yde.util.formatZonedDateTime
+import io.github.ydwk.ydwk.util.ydwk
 
 class MessageImpl(
     override val yde: YDE,
@@ -52,7 +53,7 @@ class MessageImpl(
             else throw IllegalStateException("Channel is null")
 
     override val author: User
-        get() = UserImpl(json.get("author"), json.get("author").get("id").asLong(), yde)
+        get() = ydwk.entityInstanceBuilder.buildUser(json["author"])
 
     override val content: String
         get() = json.get("content").asText()
@@ -75,7 +76,7 @@ class MessageImpl(
     override val mentionedUsers: List<User>
         get() {
             val list = mutableListOf<User>()
-            json.get("mentions").forEach { list.add(UserImpl(it, it.get("id").asLong(), yde)) }
+            json.get("mentions").forEach { list.add(yde.entityInstanceBuilder.buildUser(it)) }
             return list
         }
 

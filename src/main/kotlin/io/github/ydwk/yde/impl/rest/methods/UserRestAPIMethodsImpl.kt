@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 YDWK inc.
+ * Copyright 2024 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,7 +21,6 @@ package io.github.ydwk.yde.impl.rest.methods
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.channel.DmChannel
-import io.github.ydwk.yde.impl.entities.UserImpl
 import io.github.ydwk.yde.impl.entities.channel.DmChannelImpl
 import io.github.ydwk.yde.rest.EndPoint
 import io.github.ydwk.yde.rest.methods.UserRestAPIMethods
@@ -56,7 +55,7 @@ class UserRestAPIMethodsImpl(val yde: YDE) : UserRestAPIMethods {
             if (jsonBody == null) {
                 throw IllegalStateException("json body is null")
             } else {
-                UserImpl(jsonBody, jsonBody["id"].asLong(), yde)
+                yde.entityInstanceBuilder.buildUser(jsonBody)
             }
         }
     }
@@ -64,7 +63,7 @@ class UserRestAPIMethodsImpl(val yde: YDE) : UserRestAPIMethods {
     override fun requestUsers(): CompletableDeferred<List<User>> {
         return this.restApiManager.get(EndPoint.UserEndpoint.GET_USERS).execute { it ->
             val jsonBody = it.jsonBody
-            jsonBody?.map { UserImpl(it, it["id"].asLong(), yde) }
+            jsonBody?.map { yde.entityInstanceBuilder.buildUser(it) }
                 ?: throw IllegalStateException("json body is null")
         }
     }
