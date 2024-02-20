@@ -25,6 +25,7 @@ import io.github.ydwk.yde.interaction.message.ActionRow
 import io.github.ydwk.yde.interaction.message.button.Button
 import io.github.ydwk.yde.interaction.message.button.ButtonStyle
 import io.github.ydwk.yde.interaction.message.selectmenu.types.RoleSelectMenu
+import io.github.ydwk.yde.util.LOOM
 import io.github.ydwk.ydwk.Activity
 import io.github.ydwk.ydwk.BotBuilder.createDefaultBot
 import io.github.ydwk.ydwk.evm.event.events.interaction.slash.SlashCommandEvent
@@ -61,14 +62,14 @@ suspend fun main() {
                 it.slash.reply("Pong!").trigger()
             }
             "create_dm" -> {
-                withContext(Dispatchers.IO) {
+                withContext(Dispatchers.LOOM) {
                     val member = it.slash.member
                     member?.createDmChannel?.await()?.setContent("Hello!")?.send()?.await()
                         ?: throw Exception("Member is null!")
                 }
             }
             "button" -> {
-                withContext(Dispatchers.IO) {
+                withContext(Dispatchers.LOOM) {
                     it.slash
                         .reply("This is a button test!")
                         .addActionRow(
@@ -82,7 +83,7 @@ suspend fun main() {
                 }
             }
             "add_roles" -> {
-                withContext(Dispatchers.IO) {
+                withContext(Dispatchers.LOOM) {
                     it.slash
                         .reply("Add your role by choose the roles through the select menu")
                         .addActionRow(
@@ -97,7 +98,7 @@ suspend fun main() {
     }
 
     ydwk.eventListener.onButtonClickEvent {
-        withContext(Dispatchers.IO) {
+        withContext(Dispatchers.LOOM) {
             when (it.button.customId) {
                 "1" -> {
                     it.button.reply("Primary button clicked!").trigger()
@@ -116,7 +117,7 @@ suspend fun main() {
     }
 
     ydwk.eventListener.onRoleSelectMenuEvent {
-        withContext(Dispatchers.IO) {
+        withContext(Dispatchers.LOOM) {
             it.selectMenu.reply("Role added!").trigger()
             for (role in it.selectMenu.selectedRoles) {
                 it.selectMenu.member?.addRole(role)?.await()
