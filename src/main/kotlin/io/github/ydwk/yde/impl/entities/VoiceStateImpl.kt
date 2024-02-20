@@ -25,66 +25,25 @@ import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.VoiceState
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.yde.entities.guild.Member
-import io.github.ydwk.yde.impl.YDEImpl
-import io.github.ydwk.yde.impl.entities.guild.MemberImpl
 import io.github.ydwk.yde.util.EntityToStringBuilder
-import io.github.ydwk.yde.util.formatZonedDateTime
 
 class VoiceStateImpl(
     override val yde: YDE,
     override val json: JsonNode,
     private val backupGuild: Guild? = null,
+    override val guild: Guild?,
+    override val channel: GuildVoiceChannel?,
+    override val user: User?,
+    override val member: Member?,
+    override val sessionId: String,
+    override val isDeafened: Boolean,
+    override val isMuted: Boolean,
+    override val isSelfDeafened: Boolean,
+    override val isSelfMuted: Boolean,
+    override val isStreaming: Boolean,
+    override val isSuppressed: Boolean,
+    override val requestToSpeakTimestamp: String?,
 ) : VoiceState {
-
-    override val guild: Guild?
-        get() =
-            if (yde.getGuildById(json["guild_id"].asLong()) != null)
-                yde.getGuildById(json["guild_id"].asLong())
-            else backupGuild
-
-    override val channel: GuildVoiceChannel?
-        get() =
-            if (json.hasNonNull("channel_id") || json.get("channel_id").asText() != "null") {
-                if (yde.getGuildChannelGetterById(json["channel_id"].asText()) != null)
-                    yde.getGuildChannelGetterById(json["channel_id"].asText())!!
-                        .asGuildVoiceChannel()
-                else null
-            } else null
-
-    override val user: User?
-        get() = yde.getUserById(json["user_id"].asLong())
-
-    override val member: Member?
-        get() =
-            if (json.has("member")) MemberImpl(yde as YDEImpl, json["member"], guild!!, user)
-            else null
-
-    override val sessionId: String
-        get() = json["session_id"].asText()
-
-    override val isDeafened: Boolean
-        get() = json["deaf"].asBoolean()
-
-    override val isMuted: Boolean
-        get() = json["mute"].asBoolean()
-
-    override val isSelfDeafened: Boolean
-        get() = json["self_deaf"].asBoolean()
-
-    override val isSelfMuted: Boolean
-        get() = json["self_mute"].asBoolean()
-
-    override val isStreaming: Boolean
-        get() = json["self_stream"].asBoolean()
-
-    override val isSuppressed: Boolean
-        get() = json["suppress"].asBoolean()
-
-    override val requestToSpeakTimestamp: String?
-        get() =
-            if (json.has("request_to_speak_timestamp"))
-                formatZonedDateTime(json["request_to_speak_timestamp"].asText())
-            else null
 
     override fun toString(): String {
         return EntityToStringBuilder(yde, this).add("sessionId", sessionId).toString()
@@ -94,20 +53,13 @@ class VoiceStateImpl(
         override val yde: YDE,
         override val json: JsonNode,
         override val idAsLong: Long,
+        override val isOptimal: Boolean,
+        override val isDeprecated: Boolean,
+        override val isCustom: Boolean,
+        override var name: String,
     ) : VoiceState.VoiceRegion {
-        override val isOptimal: Boolean
-            get() = json["optimal"].asBoolean()
-
-        override val isDeprecated: Boolean
-            get() = json["deprecated"].asBoolean()
-
-        override val isCustom: Boolean
-            get() = json["custom"].asBoolean()
-
         override fun toString(): String {
             return EntityToStringBuilder(yde, this).name(name).toString()
         }
-
-        override var name: String = json["name"].asText()
     }
 }

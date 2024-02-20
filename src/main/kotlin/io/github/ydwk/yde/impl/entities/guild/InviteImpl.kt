@@ -27,60 +27,24 @@ import io.github.ydwk.yde.entities.channel.GuildChannel
 import io.github.ydwk.yde.entities.guild.GuildScheduledEvent
 import io.github.ydwk.yde.entities.guild.Invite
 import io.github.ydwk.yde.entities.guild.invite.TargetType
-import io.github.ydwk.yde.impl.entities.ApplicationImpl
 import io.github.ydwk.yde.util.EntityToStringBuilder
-import io.github.ydwk.ydwk.util.ydwk
 import java.time.ZonedDateTime
 
-class InviteImpl(override val yde: YDE, override val json: JsonNode) : Invite {
-    override val code: String
-        get() = json["code"].asText()
-
-    override val guild: Guild
-        get() =
-            yde.getGuildById(json["guild"]["id"].asText())
-                ?: throw IllegalStateException("Guild is null")
-
-    override val channel: GuildChannel
-        get() =
-            yde.getGuildChannelById(json["channel"]["id"].asText())
-                ?: throw IllegalStateException("Channel is null")
-
-    override val inviter: User?
-        get() =
-            if (json["inviter"] != null) ydwk.entityInstanceBuilder.buildUser(json["inviter"])
-            else null
-
-    override val targetType: TargetType
-        get() = TargetType.fromValue(json["target_type"].asInt())
-
-    override val targetUser: User?
-        get() =
-            if (json["target_user"] != null)
-                yde.entityInstanceBuilder.buildUser(json["target_user"])
-            else null
-
-    override val targetApplication: Application?
-        get() =
-            if (json["target_application"] != null)
-                ApplicationImpl(
-                    json["target_application"], json["target_application"]["id"].asLong(), yde)
-            else null
-
-    override val approximatePresenceCount: Int
-        get() = json["approximate_presence_count"].asInt()
-
-    override val approximateMemberCount: Int
-        get() = json["approximate_member_count"].asInt()
-
-    override val expirationDate: ZonedDateTime
-        get() = ZonedDateTime.parse(json["expires_at"].asText())
-
+class InviteImpl(
+    override val yde: YDE,
+    override val json: JsonNode,
+    override val code: String,
+    override val guild: Guild,
+    override val channel: GuildChannel,
+    override val inviter: User?,
+    override val targetType: TargetType,
+    override val targetUser: User?,
+    override val targetApplication: Application?,
+    override val approximatePresenceCount: Int,
+    override val approximateMemberCount: Int,
+    override val expirationDate: ZonedDateTime,
     override val guildScheduledEvent: GuildScheduledEvent
-        get() =
-            GuildScheduledEventImpl(
-                yde, json["guild_scheduled_event"], json["guild_scheduled_event"]["id"].asLong())
-
+) : Invite {
     override fun toString(): String {
         return EntityToStringBuilder(yde, this).toString()
     }

@@ -27,8 +27,8 @@ class UnavailableGuildImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,
+    override var unavailable: Boolean,
 ) : UnavailableGuild {
-    override var unavailable: Boolean = json["unavailable"].asBoolean()
     override fun toString(): String {
         return EntityToStringBuilder(yde, this).name("UnavailableGuild").toString()
     }

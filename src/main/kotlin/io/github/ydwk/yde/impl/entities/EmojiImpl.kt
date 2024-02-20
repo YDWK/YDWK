@@ -23,34 +23,20 @@ import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.Emoji
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.guild.Role
-import io.github.ydwk.yde.impl.entities.guild.RoleImpl
 import io.github.ydwk.yde.util.EntityToStringBuilder
 
-class EmojiImpl(override val yde: YDE, override val json: JsonNode) : Emoji {
-    override val idLong: Long?
-        get() = if (json.has("id")) json["id"].asLong() else null
-
-    override var roles: List<Role> =
-        if (json.has("roles")) json["roles"].map { RoleImpl(yde, it, it["id"].asLong()) }
-        else emptyList()
-
-    override var user: User? =
-        if (json.has("user")) yde.entityInstanceBuilder.buildUser(json["user"]) else null
-
-    override var requireColons: Boolean =
-        if (json.has("require_colons")) json["require_colons"].asBoolean() else false
-
-    override var isManaged: Boolean =
-        if (json.has("managed")) json["managed"].asBoolean() else false
-
-    override var isAnimated: Boolean =
-        if (json.has("animated")) json["animated"].asBoolean() else false
-
-    override var isAvailable: Boolean =
-        if (json.has("available")) json["available"].asBoolean() else false
-
-    override var name: String = if (json.has("name")) json["name"].asText() else ""
-
+class EmojiImpl(
+    override val yde: YDE,
+    override val json: JsonNode,
+    override val idLong: Long?,
+    override var roles: List<Role>,
+    override var user: User?,
+    override var requireColons: Boolean,
+    override var isManaged: Boolean,
+    override var isAnimated: Boolean,
+    override var isAvailable: Boolean,
+    override var name: String
+) : Emoji {
     override fun toString(): String {
         return EntityToStringBuilder(yde, this).name(this.name).toString()
     }

@@ -20,16 +20,14 @@ package io.github.ydwk.yde.impl
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.EntityInstanceBuilder
-import io.github.ydwk.yde.YDE
-import io.github.ydwk.yde.entities.Bot
-import io.github.ydwk.yde.entities.User
-import io.github.ydwk.yde.entities.user.Avatar
+import io.github.ydwk.yde.entities.*
+import io.github.ydwk.yde.entities.guild.*
+import io.github.ydwk.yde.entities.guild.enums.GuildPermission
 import io.github.ydwk.yde.impl.entities.BotImpl
 import io.github.ydwk.yde.impl.entities.UserImpl
-import io.github.ydwk.yde.impl.entities.user.AvatarImpl
+import io.github.ydwk.yde.impl.entities.guild.MemberImpl
+import io.github.ydwk.yde.util.*
 import java.awt.Color
-import java.net.MalformedURLException
-import java.net.URL
 
 /** Used to build entites */
 class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
@@ -47,7 +45,7 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             yde,
             json["global_name"].asText(),
             avatarHash,
-            getAvatar(yde, discriminator, avatarHash, null, id.toLong()),
+            getAvatar(yde, discriminator, avatarHash, null, id),
             json["avatar"].isNull,
             json["bot"].asBoolean(),
             if (json.hasNonNull("system")) json["system"].asBoolean() else null,
@@ -65,45 +63,98 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
         return BotImpl(buildUser(json), json["email"].asText())
     }
 
-    fun getAvatar(
-        yde: YDE,
-        discriminator: String,
-        avatarHash: String?,
-        size: Int?,
-        idAsLong: Long
-    ): Avatar {
-        val url = StringBuilder(("https://" + "cdn.discordapp.com") + "/")
-        val isDiscriminatorZero = discriminator == "0"
+    override fun buildGuild(json: JsonNode): Guild {
+        TODO("Not yet implemented")
+    }
 
-        // For users with migrated accounts, default avatar URLs will be based on the user ID
-        // instead of the discriminator.
-        // The URL can now be calculated using (user_id >> 22) % 6. Users on the legacy username
-        // system will continue using discriminator % 5.
+    override fun buildMessage(json: JsonNode): Message {
+        TODO("Not yet implemented")
+    }
 
-        if (avatarHash == null) {
-            if (isDiscriminatorZero) {
-                url.append("embed/avatars/").append(idAsLong % 5).append(".png")
-            } else {
-                url.append("embed/avatars/").append(discriminator.toInt() % 5).append(".png")
+    override fun buildSticker(json: JsonNode): Sticker {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildUnavailableGuild(json: JsonNode): UnavailableGuild {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildVoiceState(json: JsonNode): VoiceState {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildAuditLog(json: JsonNode): AuditLog {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildApplication(json: JsonNode): Application {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildBan(json: JsonNode): Ban {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildGuildScheduledEvent(json: JsonNode): GuildScheduledEvent {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildInvite(json: JsonNode): Invite {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildMember(json: JsonNode, guild: Guild, backUpUser: User?): Member {
+        val roleIds = json["roles"].map { GetterSnowFlake.of(it.asLong()) }
+
+        val roles =
+            roleIds.map {
+                if (guild.getRoleById(it.asLong) != null) guild.getRoleById(it.asLong) else null
             }
-        } else {
-            url.append("avatars/")
-                .append(idAsLong)
-                .append("/")
-                .append(avatarHash)
-                .append(if (avatarHash.startsWith("a_")) ".gif" else ".png")
-        }
 
-        if (size != null) {
-            url.append("?size=").append(size)
-        }
+        val user = if (json.has("user")) buildUser(json["user"]) else backUpUser
 
-        try {
-            return AvatarImpl(yde, URL(url.toString()))
-        } catch (urlError: MalformedURLException) {
-            throw RuntimeException(
-                "An issue occurred while creating the avatar URL, either update to the latest version of the library or report this issue to the developer.",
-                urlError)
-        }
+        val isOwner = guild.ownerId.asString == user?.id
+
+        val isTimedOut =
+            if (json.has("communication_disabled_until"))
+                json["communication_disabled_until"].asBoolean()
+            else null
+
+        val guildAvatarHash = if (json.has("avatar")) json["avatar"].asText() else null
+
+        val nickName = if (json.has("nick")) json["nick"].asText() else null
+
+        return MemberImpl(
+            yde,
+            json,
+            guild,
+            backUpUser,
+            GuildPermission.fromLongs(getPermissions(guild, isOwner, roles, isTimedOut ?: false)),
+            user ?: throw IllegalStateException("User is null"),
+            nickName,
+            guildAvatarHash,
+            getGuildAvatar(1024, guildAvatarHash, guild, user),
+            roleIds,
+            roles,
+            if (json.has("joined_at")) formatZonedDateTime(json["joined_at"].asText()) else null,
+            if (json.has("premium_since")) formatZonedDateTime(json["premium_since"].asText())
+            else null,
+            if (json.has("deaf")) json["deaf"].asBoolean() else false,
+            if (json.has("mute")) json["mute"].asBoolean() else false,
+            json["pending"].asBoolean(),
+            if (json.has("communication_disabled_until"))
+                formatZonedDateTime(json["communication_disabled_until"].asText())
+            else null,
+            isOwner,
+            null,
+            nickName ?: user.name)
+    }
+
+    override fun buildRole(json: JsonNode): Role {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildWelcomeScreen(json: JsonNode): WelcomeScreen {
+        TODO("Not yet implemented")
     }
 }

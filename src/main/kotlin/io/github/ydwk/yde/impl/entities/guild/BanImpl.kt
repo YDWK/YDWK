@@ -24,14 +24,12 @@ import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.guild.Ban
 import io.github.ydwk.yde.util.EntityToStringBuilder
 
-class BanImpl(override val yde: YDE, override val json: JsonNode) : Ban {
-
-    override val reason: String?
-        get() = if (json.has("reason")) json["reason"].asText() else null
-
+class BanImpl(
+    override val yde: YDE,
+    override val json: JsonNode,
+    override val reason: String?,
     override val user: User
-        get() = yde.entityInstanceBuilder.buildUser(json["user"])
-
+) : Ban {
     override fun toString(): String {
         return EntityToStringBuilder(yde, this).toString()
     }

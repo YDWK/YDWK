@@ -22,18 +22,15 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.AuditLog
 import io.github.ydwk.yde.entities.audit.AuditLogEntry
-import io.github.ydwk.yde.impl.entities.audit.AuditLogEntryImpl
 import io.github.ydwk.yde.interaction.application.type.SlashCommand
 import io.github.ydwk.yde.util.EntityToStringBuilder
 
-class AuditLogImpl(override val yde: YDE, override val json: JsonNode) : AuditLog {
-
-    override val applicationCommands: List<SlashCommand>
-        get() = emptyList()
-
+class AuditLogImpl(
+    override val yde: YDE,
+    override val json: JsonNode,
+    override val applicationCommands: List<SlashCommand>,
     override val entries: List<AuditLogEntry>
-        get() = json["entries"].map { AuditLogEntryImpl(yde, it, it["id"].asLong()) }
-
+) : AuditLog {
     override fun toString(): String {
         return EntityToStringBuilder(yde, this).name("AuditLog").toString()
     }

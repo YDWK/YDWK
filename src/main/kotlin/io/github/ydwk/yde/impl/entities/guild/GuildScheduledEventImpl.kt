@@ -28,71 +28,32 @@ import io.github.ydwk.yde.entities.guild.schedule.EntityMetadata
 import io.github.ydwk.yde.entities.guild.schedule.EntityType
 import io.github.ydwk.yde.entities.guild.schedule.PrivacyLevel
 import io.github.ydwk.yde.entities.guild.schedule.ScheduledEventStatus
-import io.github.ydwk.yde.impl.entities.guild.schedule.EntityMetadataImpl
 import io.github.ydwk.yde.util.EntityToStringBuilder
 import io.github.ydwk.yde.util.GetterSnowFlake
-import io.github.ydwk.ydwk.util.ydwk
 import java.time.ZonedDateTime
 
 class GuildScheduledEventImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,
+    override val guild: Guild,
+    override val channel: GuildChannel?,
+    override val creator: User?,
+    override val description: String?,
+    override val scheduledStart: ZonedDateTime,
+    override val scheduledEnd: ZonedDateTime?,
+    override val privacyLevel: PrivacyLevel,
+    override val status: ScheduledEventStatus,
+    override val entityType: EntityType,
+    override val entityId: GetterSnowFlake?,
+    override val entityMetadata: EntityMetadata?,
+    override val user: User?,
+    override val subscriberCount: Int,
+    override val coverImage: String?,
+    override var name: String,
 ) : GuildScheduledEvent {
-    override val guild: Guild
-        get() = yde.getGuildById(json["guild_id"].asText())!!
-
-    override val channel: GuildChannel?
-        get() =
-            if (json.has("channel_id")) yde.getGuildChannelById(json["channel_id"].asText())
-            else null
-
-    override val creator: User?
-        get() = if (json.has("creator")) yde.getUserById(json["creator"]["id"].asText()) else null
-
-    override val description: String?
-        get() = if (json.has("description")) json["description"].asText() else null
-
-    override val scheduledStart: ZonedDateTime
-        get() = ZonedDateTime.parse(json["scheduled_start_time"].asText())
-
-    override val scheduledEnd: ZonedDateTime?
-        get() =
-            if (json.has("scheduled_end_time"))
-                ZonedDateTime.parse(json["scheduled_end_time"].asText())
-            else null
-
-    override val privacyLevel: PrivacyLevel
-        get() = PrivacyLevel.getValue(json["privacy_level"].asInt())
-
-    override val status: ScheduledEventStatus
-        get() = ScheduledEventStatus.getValue(json["status"].asInt())
-
-    override val entityType: EntityType
-        get() = EntityType.getValue(json["entity_type"].asInt())
-
-    override val entityId: GetterSnowFlake?
-        get() = if (json.has("entity_id")) GetterSnowFlake.of(json["entity_id"].asLong()) else null
-
-    override val entityMetadata: EntityMetadata?
-        get() =
-            if (json.hasNonNull("entity_metadata")) EntityMetadataImpl(yde, json["entity_metadata"])
-            else null
-
-    override val user: User?
-        get() = if (json.has("user")) ydwk.entityInstanceBuilder.buildUser(json["user"]) else null
-
-    override val subscriberCount: Int
-        get() = json["subscriber_count"].asInt()
-
-    override val coverImage: String?
-        get() = if (json.has("cover_image")) json["cover_image"].asText() else null
 
     override fun toString(): String {
         return EntityToStringBuilder(yde, this).name(name).toString()
     }
-
-    override var name: String
-        get() = json["name"].asText()
-        set(value) {}
 }

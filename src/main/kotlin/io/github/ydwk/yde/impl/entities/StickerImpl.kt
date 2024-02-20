@@ -27,41 +27,23 @@ import io.github.ydwk.yde.entities.sticker.StickerFormatType
 import io.github.ydwk.yde.entities.sticker.StickerType
 import io.github.ydwk.yde.util.EntityToStringBuilder
 import io.github.ydwk.yde.util.GetterSnowFlake
-import io.github.ydwk.ydwk.util.ydwk
 
 class StickerImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,
+    override val packId: GetterSnowFlake?,
+    override var description: String?,
+    override var tags: List<String>,
+    override var type: StickerType,
+    override var formatType: StickerFormatType,
+    override var available: Boolean,
+    override val guild: Guild?,
+    override var user: User?,
+    override var sortvarue: Int?,
+    override var name: String,
 ) : Sticker {
-    override val packId: GetterSnowFlake?
-        get() = if (json.has("pack_id")) GetterSnowFlake.of(json.get("pack_id").asLong()) else null
-
-    override var description: String? =
-        if (json.has("description")) json.get("description").asText() else null
-
-    override var tags: List<String> =
-        if (json.has("tags")) json.get("tags").map { it.asText() } else emptyList()
-
-    override var type: StickerType = StickerType.fromInt(json.get("type").asInt())
-
-    override var formatType: StickerFormatType =
-        StickerFormatType.fromInt(json.get("format_type").asInt())
-
-    override var available: Boolean = json.get("available").asBoolean()
-
-    override val guild: Guild?
-        get() = if (json.has("guild_id")) yde.getGuildById(json["guild_id"].asLong()) else null
-
-    override var user: User? =
-        if (json.has("user")) ydwk.entityInstanceBuilder.buildUser(json["user"]) else null
-
-    override var sortvarue: Int? =
-        if (json.has("sort_value")) json.get("sort_value").asInt() else null
-
     override fun toString(): String {
         return EntityToStringBuilder(yde, this).name(this.name).toString()
     }
-
-    override var name: String = json.get("name").asText()
 }

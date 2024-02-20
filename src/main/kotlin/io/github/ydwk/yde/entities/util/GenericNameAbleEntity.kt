@@ -16,21 +16,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.yde.impl.entities.guild
+package io.github.ydwk.yde.entities.util
 
-import com.fasterxml.jackson.databind.JsonNode
-import io.github.ydwk.yde.YDE
-import io.github.ydwk.yde.entities.guild.WelcomeScreen
-import io.github.ydwk.yde.entities.guild.ws.WelcomeChannel
-import io.github.ydwk.yde.util.EntityToStringBuilder
+import io.github.ydwk.yde.util.NameAbleEntity
 
-class WelcomeScreenImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override var description: String?,
-    override var welcomeChannels: List<WelcomeChannel>
-) : WelcomeScreen {
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).toString()
-    }
+interface GenericNameAbleEntity : GenericEntity, NameAbleEntity {
+    override var name: String
+        get() = json["name"].asText()
+        set(value) {}
 }
