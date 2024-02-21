@@ -59,8 +59,8 @@ enum class MessageFlag(private val value: Long) {
          * @param value The value of the flag.
          * @return The [MessageFlag] with the given value.
          */
-        fun fromLong(value: Long): MessageFlag {
-            return values().firstOrNull { it.value == value } ?: UNKNOWN
+        fun getValue(value: Long): MessageFlag {
+            return entries.firstOrNull { it.value == value } ?: UNKNOWN
         }
     }
 

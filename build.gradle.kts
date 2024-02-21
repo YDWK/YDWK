@@ -122,13 +122,9 @@ tasks.withType<io.gitlab.arturbosch.detekt.DetektCreateBaselineTask>().configure
     jvmTarget = "21"
 }
 
-tasks.withType<JavaCompile> {
-    options.compilerArgs.add("--enable-preview")
-}
+tasks.withType<JavaCompile> { options.compilerArgs.add("--enable-preview") }
 
-tasks.withType<JavaExec> {
-    jvmArgs("--enable-preview")
-}
+tasks.withType<JavaExec> { jvmArgs("--enable-preview") }
 
 tasks {
     val compileKotlinTask = named<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>("compileKotlin")

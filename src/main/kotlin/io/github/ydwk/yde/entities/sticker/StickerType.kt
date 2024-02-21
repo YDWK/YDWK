@@ -35,8 +35,8 @@ enum class StickerType(private val value: Int) {
          * @param value The value to get the [StickerType] from.
          * @return The [StickerType] from the provided [value].
          */
-        fun fromInt(value: Int): StickerType {
-            return values().firstOrNull { it.value == value } ?: UNKNOWN
+        fun getValue(value: Int): StickerType {
+            return entries.firstOrNull { it.value == value } ?: UNKNOWN
         }
     }
 

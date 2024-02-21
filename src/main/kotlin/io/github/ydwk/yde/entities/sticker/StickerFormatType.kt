@@ -38,7 +38,7 @@ enum class StickerFormatType(private val value: Int) {
          * @param value The value to get the [StickerFormatType] from.
          * @return The [StickerFormatType] from the given [value].
          */
-        fun fromInt(value: Int) = values().firstOrNull { it.value == value } ?: UNKNOWN
+        fun getValue(value: Int) = entries.firstOrNull { it.value == value } ?: UNKNOWN
     }
 
     /**

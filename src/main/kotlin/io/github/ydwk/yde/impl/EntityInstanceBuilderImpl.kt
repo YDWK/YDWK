@@ -20,12 +20,41 @@ package io.github.ydwk.yde.impl
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.EntityInstanceBuilder
+import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.*
+import io.github.ydwk.yde.entities.application.PartialApplication
+import io.github.ydwk.yde.entities.audit.AuditLogChange
+import io.github.ydwk.yde.entities.audit.AuditLogEntry
+import io.github.ydwk.yde.entities.channel.DmChannel
+import io.github.ydwk.yde.entities.channel.GuildChannel
+import io.github.ydwk.yde.entities.channel.enums.ChannelType
+import io.github.ydwk.yde.entities.channel.guild.GuildCategory
+import io.github.ydwk.yde.entities.channel.guild.forum.DefaultReactionEmoji
+import io.github.ydwk.yde.entities.channel.guild.forum.ForumTag
+import io.github.ydwk.yde.entities.channel.guild.forum.GuildForumChannel
+import io.github.ydwk.yde.entities.channel.guild.message.GuildMessageChannel
+import io.github.ydwk.yde.entities.channel.guild.message.news.GuildNewsChannel
+import io.github.ydwk.yde.entities.channel.guild.message.text.GuildTextChannel
+import io.github.ydwk.yde.entities.channel.guild.message.text.PermissionOverwrite
+import io.github.ydwk.yde.entities.channel.guild.vc.GuildStageChannel
+import io.github.ydwk.yde.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.yde.entities.guild.*
 import io.github.ydwk.yde.entities.guild.enums.GuildPermission
+import io.github.ydwk.yde.entities.guild.role.RoleTag
+import io.github.ydwk.yde.entities.guild.ws.WelcomeChannel
+import io.github.ydwk.yde.entities.message.*
+import io.github.ydwk.yde.entities.message.embed.*
+import io.github.ydwk.yde.entities.sticker.StickerFormatType
+import io.github.ydwk.yde.entities.sticker.StickerItem
+import io.github.ydwk.yde.entities.sticker.StickerType
+import io.github.ydwk.yde.entities.user.Avatar
 import io.github.ydwk.yde.impl.entities.BotImpl
+import io.github.ydwk.yde.impl.entities.MessageImpl
+import io.github.ydwk.yde.impl.entities.StickerImpl
 import io.github.ydwk.yde.impl.entities.UserImpl
 import io.github.ydwk.yde.impl.entities.guild.MemberImpl
+import io.github.ydwk.yde.impl.entities.guild.RoleImpl
+import io.github.ydwk.yde.impl.interaction.message.ComponentImpl
 import io.github.ydwk.yde.util.*
 import java.awt.Color
 
@@ -68,11 +97,80 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     }
 
     override fun buildMessage(json: JsonNode): Message {
-        TODO("Not yet implemented")
+        val channels = mutableListOf<Channel>()
+
+        json["mention_channels"].map {
+            val channelType = ChannelType.fromInt(it["type"].asInt())
+            if (ChannelType.isGuildChannel(channelType)) {
+                channels.add(buildGuildChannel(it))
+            } else {
+                channels.add(buildDMChannel(it))
+            }
+        }
+
+        val thread: Channel? =
+            if (json.has("thread")) {
+                val newThreadJson = json.get("thread")
+                val channelType = ChannelType.fromInt(newThreadJson["type"].asInt())
+                if (ChannelType.isGuildChannel(channelType)) {
+                    buildGuildChannel(newThreadJson)
+                } else {
+                    buildDMChannel(newThreadJson)
+                }
+            } else null
+
+        return MessageImpl(
+            yde,
+            json,
+            json["id"].asLong(),
+            yde.getChannelById(json["channel_id"].asLong())
+                ?: throw IllegalStateException("Channel is null"),
+            buildUser(json["author"]),
+            json["content"].asText(),
+            formatZonedDateTime(json["timestamp"].asText()),
+            if (json.has("edited_timestamp")) formatZonedDateTime(json["edited_timestamp"].asText())
+            else null,
+            json["tts"].asBoolean(),
+            json["mention_everyone"].asBoolean(),
+            json["mentions"].map { buildUser(it) },
+            json["mention_roles"].map { buildRole(it) },
+            channels,
+            json["attachments"].map { buildAttachment(it) },
+            json["embeds"].map { buildEmbed(it) },
+            json["reactions"].map { buildReaction(it) },
+            if (json.has("nonce")) json["nonce"].asText() else null,
+            json["pinned"].asBoolean(),
+            if (json.has("webhook_id")) GetterSnowFlake.of(json["webhook_id"].asLong()) else null,
+            MessageType.getValue(json["type"].asInt()),
+            if (json.has("activity")) buildMessageActivity(json["activity"]) else null,
+            if (json.has("application")) buildPartialApplication(json["application"]) else null,
+            if (json.has("message_reference")) buildMessageReference(json["message_reference"])
+            else null,
+            if (json.has("flags")) MessageFlag.getValue(json["flags"].asLong()) else null,
+            if (json.has("referenced_message")) buildMessage(json["referenced_message"]) else null,
+            if (json.has("interaction")) buildMessageInteraction(json["interaction"]) else null,
+            thread,
+            json["components"].map { ComponentImpl(yde, it) },
+            json["sticker_items"].map { buildStickerItem(it) },
+            if (json.has("position")) json["position"].asLong() else null,
+        )
     }
 
     override fun buildSticker(json: JsonNode): Sticker {
-        TODO("Not yet implemented")
+        return StickerImpl(
+            yde,
+            json,
+            json["id"].asLong(),
+            if (json.has("pack_id")) GetterSnowFlake.of(json["pack_id"].asLong()) else null,
+            if (json.has("description")) json["description"].asText() else null,
+            if (json.has("tags")) json["tags"].map { it.asText() } else emptyList(),
+            StickerType.getValue(json["type"].asInt()),
+            StickerFormatType.getValue(json["format_type"].asInt()),
+            json["available"].asBoolean(),
+            if (json.has("guild_id")) yde.getGuildById(json["guild_id"].asLong()) else null,
+            if (json.has("user")) buildUser(json["user"]) else null,
+            if (json.has("sort_value")) json["sort_value"].asInt() else null,
+            json["name"].asText())
     }
 
     override fun buildUnavailableGuild(json: JsonNode): UnavailableGuild {
@@ -129,7 +227,7 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             json,
             guild,
             backUpUser,
-            GuildPermission.fromLongs(getPermissions(guild, isOwner, roles, isTimedOut ?: false)),
+            GuildPermission.getValues(getPermissions(guild, isOwner, roles, isTimedOut ?: false)),
             user ?: throw IllegalStateException("User is null"),
             nickName,
             guildAvatarHash,
@@ -151,10 +249,174 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     }
 
     override fun buildRole(json: JsonNode): Role {
-        TODO("Not yet implemented")
+        return RoleImpl(
+            yde,
+            json,
+            json["id"].asLong(),
+            GuildPermission.getValues(json["permissions"].asLong()),
+            Color(json["color"].asInt()),
+            json["hoist"].asBoolean(),
+            if (json.has("icon")) json["icon"].asText() else null,
+            if (json.has("unicode_emoji")) json["unicode_emoji"].asText() else null,
+            json["position"].asInt(),
+            json["managed"].asBoolean(),
+            json["mentionable"].asBoolean(),
+            if (json.has("tags")) buildRoleTag(json["tags"]) else null,
+            json["permissions"].asLong(),
+            json["name"].asText())
     }
 
     override fun buildWelcomeScreen(json: JsonNode): WelcomeScreen {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildWelcomeScreenChannel(json: JsonNode): WelcomeChannel {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildRoleTag(json: JsonNode): RoleTag {
+        val yde = yde
+        return object : RoleTag {
+            override val botId: GetterSnowFlake?
+                get() =
+                    if (json.has("bot_id")) GetterSnowFlake.of(json["bot_id"].asLong()) else null
+            override val integrationId: GetterSnowFlake?
+                get() =
+                    if (json.has("integration_id"))
+                        GetterSnowFlake.of(json["integration_id"].asLong())
+                    else null
+            override val yde: YDE
+                get() = yde
+            override val json: JsonNode
+                get() = json
+
+            override fun toString(): String {
+                return EntityToStringBuilder(yde, this).toString()
+            }
+        }
+    }
+
+    override fun buildChannel(json: JsonNode): Channel {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildDMChannel(json: JsonNode): DmChannel {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildGuildChannel(json: JsonNode): GuildChannel {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildGuildCategory(json: JsonNode): GuildCategory {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildGuildForumChannel(json: JsonNode): GuildForumChannel {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildGuildMessageChannel(json: JsonNode): GuildMessageChannel {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildGuildNewsChannel(json: JsonNode): GuildNewsChannel {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildGuildStageChannel(json: JsonNode): GuildStageChannel {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildGuildTextChannel(json: JsonNode): GuildTextChannel {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildGuildVoiceChannel(json: JsonNode): GuildVoiceChannel {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildPermissionOverwrite(json: JsonNode): PermissionOverwrite {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildForumTag(json: JsonNode): ForumTag {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildDefaultReactionEmoji(json: JsonNode): DefaultReactionEmoji {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildAuditLogEntry(json: JsonNode): AuditLogEntry {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildAuditLogChange(json: JsonNode): AuditLogChange {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildPartialApplication(json: JsonNode): PartialApplication {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildStickerItem(json: JsonNode): StickerItem {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildAvatar(json: JsonNode): Avatar {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildMessageReference(json: JsonNode): MessageReference {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildReaction(json: JsonNode): Reaction {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildMessageInteraction(json: JsonNode): MessageInteraction {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildMessageActivity(json: JsonNode): MessageActivity {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildEmbed(json: JsonNode): Embed {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildAttachment(json: JsonNode): Attachment {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildAuthor(json: JsonNode): Author {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildField(json: JsonNode): Field {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildFooter(json: JsonNode): Footer {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildImage(json: JsonNode): Image {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildProvider(json: JsonNode): Provider {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildThumbnail(json: JsonNode): Thumbnail {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildVideo(json: JsonNode): Video {
         TODO("Not yet implemented")
     }
 }
