@@ -24,5 +24,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asCoroutineDispatcher
 import org.jetbrains.annotations.BlockingExecutor
 
+/**
+ * A [CoroutineDispatcher] that is backed by a [java.util.concurrent.Executor] that is optimized for
+ * I/O tasks. It is using virtual threads to execute tasks.
+ */
 val Dispatchers.LOOM: @BlockingExecutor CoroutineDispatcher
     get() = Executors.newVirtualThreadPerTaskExecutor().asCoroutineDispatcher()

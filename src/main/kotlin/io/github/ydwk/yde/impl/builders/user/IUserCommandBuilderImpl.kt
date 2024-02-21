@@ -21,7 +21,6 @@ package io.github.ydwk.yde.impl.builders.user
 import io.github.ydwk.yde.builders.user.IUserCommandBuilder
 import io.github.ydwk.yde.builders.user.UserCommandBuilder
 import io.github.ydwk.yde.impl.YDEImpl
-import io.github.ydwk.ydwk.impl.builders.user.UserCommandSender
 
 class IUserCommandBuilderImpl(
     private val yde: YDEImpl,

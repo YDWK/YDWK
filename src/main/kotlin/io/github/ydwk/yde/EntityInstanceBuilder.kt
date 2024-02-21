@@ -154,6 +154,18 @@ interface EntityInstanceBuilder {
     fun buildMember(json: JsonNode, guild: Guild, backUpUser: User? = null): Member
 
     /**
+     * Used to build an instance of [Member]
+     *
+     * @param json the json
+     * @param guild the guild
+     * @param backUpUser the back up user json
+     * @return [Member] the member
+     */
+    fun buildMember(json: JsonNode, guild: Guild, backUpUser: JsonNode? = null): Member {
+        return buildMember(json, guild, backUpUser?.let { buildUser(it) })
+    }
+
+    /**
      * Used to build an instance of [Role]
      *
      * @param json the json

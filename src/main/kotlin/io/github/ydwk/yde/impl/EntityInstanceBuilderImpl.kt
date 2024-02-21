@@ -20,7 +20,6 @@ package io.github.ydwk.yde.impl
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.EntityInstanceBuilder
-import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.*
 import io.github.ydwk.yde.entities.application.PartialApplication
 import io.github.ydwk.yde.entities.audit.AuditLogChange
@@ -48,17 +47,18 @@ import io.github.ydwk.yde.entities.sticker.StickerFormatType
 import io.github.ydwk.yde.entities.sticker.StickerItem
 import io.github.ydwk.yde.entities.sticker.StickerType
 import io.github.ydwk.yde.entities.user.Avatar
-import io.github.ydwk.yde.impl.entities.BotImpl
-import io.github.ydwk.yde.impl.entities.MessageImpl
-import io.github.ydwk.yde.impl.entities.StickerImpl
-import io.github.ydwk.yde.impl.entities.UserImpl
+import io.github.ydwk.yde.impl.entities.*
+import io.github.ydwk.yde.impl.entities.application.PartialApplicationImpl
 import io.github.ydwk.yde.impl.entities.guild.MemberImpl
 import io.github.ydwk.yde.impl.entities.guild.RoleImpl
+import io.github.ydwk.yde.impl.entities.guild.WelcomeScreenImpl
+import io.github.ydwk.yde.impl.entities.guild.role.RoleTagImpl
+import io.github.ydwk.yde.impl.entities.guild.ws.WelcomeChannelImpl
 import io.github.ydwk.yde.impl.interaction.message.ComponentImpl
 import io.github.ydwk.yde.util.*
 import java.awt.Color
 
-/** Used to build entites */
+/** Used to build entities */
 class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
 
     override fun buildUser(json: JsonNode): User {
@@ -174,7 +174,12 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     }
 
     override fun buildUnavailableGuild(json: JsonNode): UnavailableGuild {
-        TODO("Not yet implemented")
+        return object :
+            UnavailableGuildImpl(yde, json, json["id"].asLong(), json["unavailable"].asBoolean()) {
+            override fun toString(): String {
+                return EntityToStringBuilder(yde, this).toString()
+            }
+        }
     }
 
     override fun buildVoiceState(json: JsonNode): VoiceState {
@@ -267,29 +272,41 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     }
 
     override fun buildWelcomeScreen(json: JsonNode): WelcomeScreen {
-        TODO("Not yet implemented")
+        return object :
+            WelcomeScreenImpl(
+                yde,
+                json,
+                if (json.has("description")) json["description"].asText() else null,
+                json["welcome_channels"].map { buildWelcomeScreenChannel(it) }) {
+            override fun toString(): String {
+                return EntityToStringBuilder(yde, this).toString()
+            }
+        }
     }
 
     override fun buildWelcomeScreenChannel(json: JsonNode): WelcomeChannel {
-        TODO("Not yet implemented")
+        return object :
+            WelcomeChannelImpl(
+                yde,
+                json,
+                GetterSnowFlake.of(json["channel_id"].asLong()),
+                json["description"].asText(),
+                if (json.has("emoji_id")) GetterSnowFlake.of(json["emoji_id"].asLong()) else null,
+                if (json.has("emoji_name")) json["emoji_name"].asText() else null) {
+            override fun toString(): String {
+                return EntityToStringBuilder(yde, this).toString()
+            }
+        }
     }
 
     override fun buildRoleTag(json: JsonNode): RoleTag {
-        val yde = yde
-        return object : RoleTag {
-            override val botId: GetterSnowFlake?
-                get() =
-                    if (json.has("bot_id")) GetterSnowFlake.of(json["bot_id"].asLong()) else null
-            override val integrationId: GetterSnowFlake?
-                get() =
-                    if (json.has("integration_id"))
-                        GetterSnowFlake.of(json["integration_id"].asLong())
-                    else null
-            override val yde: YDE
-                get() = yde
-            override val json: JsonNode
-                get() = json
-
+        return object :
+            RoleTagImpl(
+                yde,
+                json,
+                if (json.has("bot_id")) GetterSnowFlake.of(json["bot_id"].asLong()) else null,
+                if (json.has("integration_id")) GetterSnowFlake.of(json["integration_id"].asLong())
+                else null) {
             override fun toString(): String {
                 return EntityToStringBuilder(yde, this).toString()
             }
@@ -357,7 +374,12 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     }
 
     override fun buildPartialApplication(json: JsonNode): PartialApplication {
-        TODO("Not yet implemented")
+        return object :
+            PartialApplicationImpl(json, json["id"].asLong(), yde, json["flags"].asInt()) {
+            override fun toString(): String {
+                return EntityToStringBuilder(yde, this).toString()
+            }
+        }
     }
 
     override fun buildStickerItem(json: JsonNode): StickerItem {

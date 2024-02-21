@@ -16,14 +16,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.impl.builders.slash
+package io.github.ydwk.yde.impl.builders.slash
 
 import io.github.ydwk.yde.builders.slash.SlashCommandBuilder
 import io.github.ydwk.yde.impl.YDEImpl
+import io.github.ydwk.yde.impl.builders.util.getCommandNameAndIds
+import io.github.ydwk.yde.impl.builders.util.getCurrentGuildCommandsNameAndIds
 import io.github.ydwk.yde.rest.EndPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import okhttp3.RequestBody.Companion.toRequestBody
 
 class SlashInfoSender(
@@ -179,45 +179,11 @@ class SlashInfoSender(
     }
 
     private suspend fun getCurrentGlobalSlashCommandsNameAndIds(): Map<Long, String> {
-        return withContext(Dispatchers.IO) {
-            yde.restApiManager
-                .get(EndPoint.ApplicationCommandsEndpoint.GET_GLOBAL_COMMANDS, applicationId)
-                .execute { it ->
-                    yde.logger.debug("Getting current global slash commands")
-                    val jsonBody = it.jsonBody
-                    if (jsonBody == null) {
-                        return@execute emptyMap()
-                    } else {
-                        return@execute jsonBody.associate {
-                            it["id"].asLong() to it["name"].asText()
-                        }
-                    }
-                }
-                .await()
-        }
+        return getCommandNameAndIds(yde, applicationId)
     }
 
     private suspend fun getCurrentGuildSlashCommandsNameAndIds(): Map<String, Map<Long, String>> {
-        return withContext(Dispatchers.IO) {
-            guildIds.associateWith { guildId ->
-                yde.restApiManager
-                    .get(
-                        EndPoint.ApplicationCommandsEndpoint.GET_GUILD_COMMANDS,
-                        applicationId,
-                        guildId)
-                    .execute { it ->
-                        val jsonBody = it.jsonBody
-                        if (jsonBody == null) {
-                            return@execute emptyMap()
-                        } else {
-                            return@execute jsonBody.associate {
-                                it["id"].asLong() to it["name"].asText()
-                            }
-                        }
-                    }
-                    .await()
-            }
-        }
+        return getCurrentGuildCommandsNameAndIds(yde, guildIds, applicationId)
     }
 
     private fun deleteGlobalSlashCommands(ids: List<Long>) {

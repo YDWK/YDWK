@@ -90,6 +90,18 @@ class EntityToStringBuilder(val yde: YDE, val entity: Any) {
             subJson.put("increment", snowflake.asIncrement)
         }
 
+        val fieldJson = yde.objectMapper.createObjectNode()
+        val fields = entity.javaClass.declaredFields
+        for (field in fields) {
+            field.isAccessible = true
+            val value = field.get(entity)
+            fieldJson.put(field.name, value.toString())
+        }
+
+        if (fieldJson.size() > 0) {
+            subJson.set<JsonNode>("fields", fieldJson)
+        }
+
         if (subJson.size() > 0) {
             mainJson.set<JsonNode>("data", subJson)
         }

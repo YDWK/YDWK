@@ -21,7 +21,6 @@ package io.github.ydwk.yde.impl.builders.slash
 import io.github.ydwk.yde.builders.slash.ISlashCommandBuilder
 import io.github.ydwk.yde.builders.slash.SlashCommandBuilder
 import io.github.ydwk.yde.impl.YDEImpl
-import io.github.ydwk.ydwk.impl.builders.slash.SlashInfoSender
 
 class SlashBuilderImpl(
     private val yde: YDEImpl,

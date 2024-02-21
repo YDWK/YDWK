@@ -21,17 +21,10 @@ package io.github.ydwk.yde.impl.entities.application
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.application.PartialApplication
-import io.github.ydwk.yde.util.EntityToStringBuilder
 
-class PartialApplicationImpl(
+abstract class PartialApplicationImpl(
     override val json: JsonNode,
     override val idAsLong: Long,
     override val yde: YDE,
-) : PartialApplication {
-
-    override var flags: Int = json.get("flags").asInt()
-
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).toString()
-    }
-}
+    override var flags: Int,
+) : PartialApplication

@@ -21,15 +21,10 @@ package io.github.ydwk.yde.impl.entities
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.UnavailableGuild
-import io.github.ydwk.yde.util.EntityToStringBuilder
 
-class UnavailableGuildImpl(
+abstract class UnavailableGuildImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,
     override var unavailable: Boolean,
-) : UnavailableGuild {
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).name("UnavailableGuild").toString()
-    }
-}
+) : UnavailableGuild

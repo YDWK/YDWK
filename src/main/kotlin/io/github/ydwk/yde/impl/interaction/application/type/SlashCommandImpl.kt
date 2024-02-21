@@ -28,7 +28,6 @@ import io.github.ydwk.yde.entities.util.GenericEntity
 import io.github.ydwk.yde.impl.YDEImpl
 import io.github.ydwk.yde.impl.entities.channel.DmChannelImpl
 import io.github.ydwk.yde.impl.entities.channel.guild.GuildChannelImpl
-import io.github.ydwk.yde.impl.entities.guild.MemberImpl
 import io.github.ydwk.yde.impl.entities.guild.RoleImpl
 import io.github.ydwk.yde.impl.entities.message.AttachmentImpl
 import io.github.ydwk.yde.impl.interaction.application.ApplicationCommandImpl
@@ -86,13 +85,8 @@ class SlashCommandImpl(yde: YDE, json: JsonNode, idAsLong: Long, interaction: In
                 it.fields().forEach { (id, node) ->
                     resolved["users"]?.let { users ->
                         val user = users[id]
-                        val member =
-                            MemberImpl(
-                                yde as YDEImpl,
-                                node,
-                                guild,
-                                yde.entityInstanceBuilder.buildUser(user))
-                        val newMember = yde.memberCache.getOrPut(member)
+                        val member = yde.entityInstanceBuilder.buildMember(node, guild, user)
+                        val newMember = (yde as YDEImpl).memberCache.getOrPut(member)
                         map[id.toLong()] = newMember
                     }
                 }
