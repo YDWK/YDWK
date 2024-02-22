@@ -90,7 +90,7 @@ fun generateRestAPIMethodGetters() {
                     .build())
             .build()
 
-    File("${project.buildDir}/generated/kotlin").apply {
+    File("${project.layout.buildDirectory.get().getAsFile()}/generated/kotlin").apply {
         mkdirs()
 
         restAPIMethodGettersInterface.writeTo(this)

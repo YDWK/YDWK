@@ -149,7 +149,7 @@ class InviteCreator(val yde: YDE, private val channelId: String) {
                 if (jsonBody == null) {
                     throw IllegalStateException("json body is null")
                 } else {
-                    InviteImpl(yde, jsonBody)
+                    yde.entityInstanceBuilder.buildInvite(jsonBody) as InviteImpl
                 }
             }
     }

@@ -23,8 +23,6 @@ import com.fasterxml.jackson.databind.node.ArrayNode
 import io.github.ydwk.yde.cache.CacheIds
 import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.channel.GuildChannel
-import io.github.ydwk.yde.impl.entities.GuildImpl
-import io.github.ydwk.yde.impl.entities.application.PartialApplicationImpl
 import io.github.ydwk.ydwk.evm.event.events.gateway.ReadyEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
@@ -36,8 +34,7 @@ class ReadyHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
         ydwk.cache[json.get("user").get("id").asText(), bot] = CacheIds.USER
 
         val partialApplication =
-            PartialApplicationImpl(
-                json.get("application"), json.get("application").get("id").asLong(), ydwk)
+            ydwk.entityInstanceBuilder.buildPartialApplication(json.get("application"))
         ydwk.applicationId = partialApplication.id
         ydwk.partialApplication = partialApplication
         ydwk.cache[json.get("application").get("id").asText(), partialApplication] =
@@ -60,7 +57,7 @@ class ReadyHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
         val availableGuild: MutableList<Guild> = mutableListOf()
         for (guild in guildArray) {
             if (!guild.get("unavailable").asBoolean()) {
-                availableGuild.add(GuildImpl(ydwk, guild, guild.get("id").asLong()))
+                availableGuild.add(ydwk.entityInstanceBuilder.buildGuild(guild))
             } else {
                 unavailableGuild.add(requestGuild(guild.get("id").asLong()))
             }
@@ -86,7 +83,7 @@ class ReadyHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
 
     private suspend fun requestGuild(guildId: Long): Guild {
         val guild = ydwk.requestGuild(guildId).await()
-        return GuildImpl(ydwk, guild.json, guildId)
+        return ydwk.entityInstanceBuilder.buildGuild(guild.json)
     }
 
     private suspend fun requestGuildChannels(guildId: Long): List<GuildChannel> {

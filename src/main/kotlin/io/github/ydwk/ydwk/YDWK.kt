@@ -27,7 +27,7 @@ import io.github.ydwk.ydwk.evm.event.EventListeners
 import io.github.ydwk.ydwk.ws.WebSocketManager
 import io.github.ydwk.ydwk.ws.util.LoggedIn
 import java.time.Instant
-import java.util.concurrent.ScheduledExecutorService
+import kotlinx.coroutines.ExecutorCoroutineDispatcher
 
 /**
  * The main class of the YDWK library. This class is used to interact with the Discord API. Also
@@ -97,11 +97,11 @@ interface YDWK : YDE {
     val uptime: Instant
 
     /**
-     * The default ScheduledExecutorService.
+     * The default [ExecutorCoroutineDispatcher] object.
      *
-     * @return The [ScheduledExecutorService] object.
+     * @return The [ExecutorCoroutineDispatcher] object.
      */
-    val defaultScheduledExecutorService: ScheduledExecutorService
+    val defaultExecutorCoroutineDispatcher: ExecutorCoroutineDispatcher
 
     /**
      * A shortcut to listening to events.

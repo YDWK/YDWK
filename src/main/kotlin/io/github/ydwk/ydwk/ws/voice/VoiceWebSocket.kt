@@ -38,6 +38,7 @@ import java.io.IOException
 import java.net.*
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.coroutines.cancellation.CancellationException
 import org.slf4j.LoggerFactory
 
 /**
@@ -403,7 +404,7 @@ class VoiceWebSocket(
         logger.info(
             "Disconnected from voice websocket with close code $closeCodeAsString and reason $closeCodeReason")
 
-        heartBeat?.heartbeatThread?.cancel(false)
+        heartBeat?.heartbeatJob?.cancel(CancellationException("Voice heartbeat stopped"))
 
         val closeCode = VoiceCloseCode.fromCode(closeFrame?.closeCode ?: 1000)
 
@@ -427,7 +428,7 @@ class VoiceWebSocket(
             voiceConnection.guild.botAsMember.leaveVC()
         }
 
-        heartBeat?.heartbeatThread?.cancel(false)
+        heartBeat?.heartbeatJob?.cancel(CancellationException("Voice heartbeat stopped"))
     }
 
     override fun onError(websocket: WebSocket, cause: WebSocketException) {

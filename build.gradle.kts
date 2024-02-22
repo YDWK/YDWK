@@ -201,8 +201,8 @@ spotless {
 
 detekt {
     // only check javadoc in io/github/ydwk/ydwk/entities and io/github/ydwk/ydwk/evm/event/events
-    source = files("src/main/kotlin/io/github/ydwk/ydwk/evm/event/events")
-    config = files("gradle/config/detekt.yml")
+    source.from(files("src/main/kotlin/io/github/ydwk/ydwk/evm/event/events"))
+    config.from(files("gradle/config/detekt.yml"))
     baseline = file("gradle/config/detekt-baseline.xml")
     allRules = false
 }

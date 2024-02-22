@@ -34,8 +34,9 @@ import io.github.ydwk.ydwk.ws.WebSocketManager
 import io.github.ydwk.ydwk.ws.util.LoggedIn
 import java.time.Instant
 import java.util.concurrent.Executors
-import java.util.concurrent.ScheduledExecutorService
 import kotlin.random.Random
+import kotlinx.coroutines.ExecutorCoroutineDispatcher
+import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
@@ -60,8 +61,9 @@ class YDWKImpl(
     private val coroutineEventManager: CoroutineEventManager = CoroutineEventManager()
     private val ydwkLogger = LoggerFactory.getLogger(YDWK::class.java)
 
-    override val defaultScheduledExecutorService: ScheduledExecutorService =
-        Executors.newScheduledThreadPool(1)
+    override val defaultExecutorCoroutineDispatcher: ExecutorCoroutineDispatcher =
+        Executors.newVirtualThreadPerTaskExecutor().asCoroutineDispatcher()
+
     override val eventListener: EventListeners
         get() = EventListeners(this)
 

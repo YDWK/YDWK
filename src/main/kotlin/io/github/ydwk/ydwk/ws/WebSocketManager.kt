@@ -72,6 +72,7 @@ import java.io.IOException
 import java.net.SocketTimeoutException
 import java.time.Instant
 import java.util.*
+import java.util.concurrent.CancellationException
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
@@ -244,7 +245,11 @@ open class WebSocketManager(
 
         ydwk.emitEvent(DisconnectEvent(ydwk, closeCodeAsString, closeCodeReason, Instant.now()))
 
-        heartBeat?.heartbeatThread?.cancel(false)
+        heartBeat
+            ?.heartbeatJob
+            ?.cancel(
+                CancellationException(
+                    "Disconnected from websocket, cancelling heartbeat job$closeCodeAsString"))
 
         val closeCode = CloseCode.fromInt(closeFrame?.closeCode ?: 1000)
 
@@ -267,7 +272,7 @@ open class WebSocketManager(
         sessionId = null
         resumeUrl = null
         ydwk.cache.clear()
-        heartBeat?.heartbeatThread?.cancel(false)
+        heartBeat?.heartbeatJob?.cancel(CancellationException("Invalidating websocket"))
         ydwk.setLoggedIn(LoggedInImpl(false).setDisconnectedTime())
         scheduler.shutdownNow()
         upTime = null

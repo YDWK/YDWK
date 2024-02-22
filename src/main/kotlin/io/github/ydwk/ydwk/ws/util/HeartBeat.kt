@@ -26,22 +26,20 @@ import io.github.ydwk.ydwk.ws.voice.util.VoiceCloseCode
 import io.github.ydwk.ydwk.ws.voice.util.VoiceOpcode
 import java.net.Socket
 import java.net.SocketException
-import java.util.concurrent.Future
-import java.util.concurrent.ScheduledExecutorService
-import java.util.concurrent.ScheduledFuture
-import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 class HeartBeat(
     private val ydwk: YDWK,
     private val webSocket: WebSocket,
-    var heartbeatThread: Future<*>? = null,
+    var heartbeatJob: Job? = null,
 ) {
     private var heartbeatsMissed: Int = 0
     private var heartbeatStartTime: Long = 0
-    private val wsScheduler: ScheduledExecutorService = ydwk.defaultScheduledExecutorService
-    private val voiceWsScheduler: ScheduledExecutorService = ydwk.defaultScheduledExecutorService
+    private val wsScheduler: ExecutorCoroutineDispatcher = ydwk.defaultExecutorCoroutineDispatcher
+    private val voiceWsScheduler: ExecutorCoroutineDispatcher =
+        ydwk.defaultExecutorCoroutineDispatcher
     private val logger: Logger = LoggerFactory.getLogger(HeartBeat::class.java)
 
     fun startGateWayHeartbeat(heartbeatInterval: Long, connected: Boolean, seq: Int?) {
@@ -50,7 +48,7 @@ class HeartBeat(
         val heartbeat: JsonNode =
             ydwk.objectMapper.createObjectNode().put("op", OpCode.HEARTBEAT.code).put("d", seq)
 
-        heartbeatThread =
+        heartbeatJob =
             heartbeatThread(
                 heartbeatInterval,
                 connected,
@@ -66,7 +64,7 @@ class HeartBeat(
     ) {
         tryWebSocket(heartbeatInterval)
 
-        heartbeatThread =
+        heartbeatJob =
             voiceHeartbeatThread(
                 heartbeatInterval,
                 connected,
@@ -92,18 +90,17 @@ class HeartBeat(
         heartbeat: JsonNode,
         closeCode: Int,
         closeReason: String,
-    ): ScheduledFuture<*> {
-        return wsScheduler.scheduleAtFixedRate(
-            {
+    ): Job {
+        return CoroutineScope(wsScheduler).launch {
+            while (isActive) {
+                delay(heartbeatInterval)
                 if (connected) {
                     sendHeartBeat(heartbeat, closeCode, closeReason)
                 } else {
                     logger.info("Not sending heartbeat because not connected")
                 }
-            },
-            0,
-            heartbeatInterval,
-            TimeUnit.MILLISECONDS)
+            }
+        }
     }
 
     private fun voiceHeartbeatThread(
@@ -112,18 +109,17 @@ class HeartBeat(
         closeCode: Int,
         closeReason: String,
         voiceConnection: VoiceConnectionImpl,
-    ): ScheduledFuture<*> {
-        return voiceWsScheduler.scheduleAtFixedRate(
-            {
+    ): Job {
+        return CoroutineScope(voiceWsScheduler).launch {
+            while (isActive) {
+                delay(heartbeatInterval)
                 if (connected) {
                     handleVoiceConnection(closeCode, closeReason, voiceConnection)
                 } else {
                     logger.info("Not sending heartbeat because not connected")
                 }
-            },
-            0,
-            heartbeatInterval,
-            TimeUnit.MILLISECONDS)
+            }
+        }
     }
 
     private fun handleVoiceConnection(
@@ -156,8 +152,8 @@ class HeartBeat(
     }
 
     fun stopVoiceHeartbeat() {
-        heartbeatThread?.cancel(true)
-        heartbeatThread = null
+        heartbeatJob?.cancel(CancellationException("Voice heartbeat stopped"))
+        heartbeatJob = null
     }
 
     fun receivedHeartbeatAck() {

@@ -229,7 +229,7 @@ fun generateEventFile() {
             name)
     }
 
-    File("${project.buildDir}/generated/kotlin").apply {
+    File("${project.layout.buildDirectory.get().getAsFile()}/generated/kotlin").apply {
         mkdirs()
 
         eventFile.build().writeTo(this)
@@ -285,7 +285,7 @@ fun generateEventListenersInterfaces(listenerName: String, listenerEvents: Map<S
             .addType(interfaceClass.build())
             .build()
 
-    File("${project.buildDir}/generated/kotlin").apply {
+    File("${project.layout.buildDirectory.get().getAsFile()}/generated/kotlin").apply {
         mkdirs()
         interfaceFile.writeTo(this)
     }
