@@ -49,6 +49,7 @@ import io.github.ydwk.yde.entities.sticker.StickerType
 import io.github.ydwk.yde.entities.user.Avatar
 import io.github.ydwk.yde.impl.entities.*
 import io.github.ydwk.yde.impl.entities.application.PartialApplicationImpl
+import io.github.ydwk.yde.impl.entities.guild.BanImpl
 import io.github.ydwk.yde.impl.entities.guild.MemberImpl
 import io.github.ydwk.yde.impl.entities.guild.RoleImpl
 import io.github.ydwk.yde.impl.entities.guild.WelcomeScreenImpl
@@ -182,12 +183,53 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
         }
     }
 
-    override fun buildVoiceState(json: JsonNode): VoiceState {
-        TODO("Not yet implemented")
+    override fun buildVoiceState(json: JsonNode, backUpGuild: Guild?): VoiceState {
+
+        val channel: GuildVoiceChannel? =
+            if (json.hasNonNull("channel_id") || json.get("channel_id").asText() != "null") {
+                if (yde.getGuildChannelGetterById(json["channel_id"].asText()) != null)
+                    yde.getGuildChannelGetterById(json["channel_id"].asText())!!
+                        .asGuildVoiceChannel()
+                else null
+            } else null
+        val guild =
+            if (yde.getGuildById(json["guild_id"].asLong()) != null)
+                yde.getGuildById(json["guild_id"].asLong())
+            else backUpGuild
+        val user = yde.getUserById(json["user_id"].asLong())
+
+        return object :
+            VoiceStateImpl(
+                yde,
+                json,
+                backUpGuild,
+                guild,
+                channel,
+                user,
+                if (json.has("member")) buildMember(json["member"], guild!!, user) else null,
+                json["session_id"].asText(),
+                json["deaf"].asBoolean(),
+                json["mute"].asBoolean(),
+                json["self_deaf"].asBoolean(),
+                json["self_mute"].asBoolean(),
+                json["self_stream"].asBoolean(),
+                json["suppress"].asBoolean(),
+                if (json.has("request_to_speak_timestamp"))
+                    json["request_to_speak_timestamp"].asText()
+                else null) {
+            override fun toString(): String {
+                return EntityToStringBuilder(yde, this).add("sessionId", sessionId).toString()
+            }
+        }
     }
 
     override fun buildAuditLog(json: JsonNode): AuditLog {
-        TODO("Not yet implemented")
+        return object :
+            AuditLogImpl(yde, json, emptyList(), json["entries"].map { buildAuditLogEntry(it) }) {
+            override fun toString(): String {
+                return EntityToStringBuilder(yde, this).name("AuditLog").toString()
+            }
+        }
     }
 
     override fun buildApplication(json: JsonNode): Application {
@@ -195,7 +237,16 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     }
 
     override fun buildBan(json: JsonNode): Ban {
-        TODO("Not yet implemented")
+        return object :
+            BanImpl(
+                yde,
+                json,
+                if (json.has("reason")) json["reason"].asText() else null,
+                buildUser(json["user"])) {
+            override fun toString(): String {
+                return EntityToStringBuilder(yde, this).toString()
+            }
+        }
     }
 
     override fun buildGuildScheduledEvent(json: JsonNode): GuildScheduledEvent {

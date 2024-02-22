@@ -22,15 +22,10 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.guild.Ban
-import io.github.ydwk.yde.util.EntityToStringBuilder
 
-class BanImpl(
+abstract class BanImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val reason: String?,
     override val user: User
-) : Ban {
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).toString()
-    }
-}
+) : Ban

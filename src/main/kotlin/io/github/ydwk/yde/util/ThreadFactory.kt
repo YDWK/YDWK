@@ -23,7 +23,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.Future
 
 class ThreadFactory(private val threadBuild: ThreadFactoryBuilder) {
-    private val executor = Executors.newCachedThreadPool()
+    private val executor = Executors.newVirtualThreadPerTaskExecutor()
 
     private fun createThread(name: String, daemon: Boolean, block: Runnable): Thread {
         return threadBuild.setNameFormat("yde-$name-%d").setDaemon(daemon).build().newThread(block)

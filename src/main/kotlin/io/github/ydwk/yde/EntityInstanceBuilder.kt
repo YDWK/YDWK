@@ -97,9 +97,21 @@ interface EntityInstanceBuilder {
      * Used to build an instance of [VoiceState]
      *
      * @param json the json
+     * @param backUpGuild the back up guild
      * @return [VoiceState] the voice state
      */
-    fun buildVoiceState(json: JsonNode): VoiceState
+    fun buildVoiceState(json: JsonNode, backUpGuild: Guild? = null): VoiceState
+
+    /**
+     * Used to build an instance of [VoiceState]
+     *
+     * @param json the json
+     * @param backUpGuild the back up guild json
+     * @return [VoiceState] the voice state
+     */
+    fun buildVoiceState(json: JsonNode, backUpGuild: JsonNode? = null): VoiceState {
+        return buildVoiceState(json, backUpGuild?.let { buildGuild(it) })
+    }
 
     /**
      * Used to build an instance of [AuditLog]

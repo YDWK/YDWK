@@ -23,15 +23,10 @@ import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.AuditLog
 import io.github.ydwk.yde.entities.audit.AuditLogEntry
 import io.github.ydwk.yde.interaction.application.type.SlashCommand
-import io.github.ydwk.yde.util.EntityToStringBuilder
 
-class AuditLogImpl(
+abstract class AuditLogImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val applicationCommands: List<SlashCommand>,
     override val entries: List<AuditLogEntry>
-) : AuditLog {
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).name("AuditLog").toString()
-    }
-}
+) : AuditLog
