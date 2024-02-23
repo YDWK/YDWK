@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.neovisionaries.ws.client.*
 import io.github.ydwk.yde.entities.VoiceState
+import io.github.ydwk.yde.util.LOOM
 import io.github.ydwk.ydwk.YDWKInfo
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
@@ -39,6 +40,9 @@ import java.net.*
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.cancellation.CancellationException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
 
 /**
@@ -424,11 +428,13 @@ class VoiceWebSocket(
     }
 
     private fun invalidate() {
-        if (voiceConnection.guild.botAsMember.voiceState != null) {
-            voiceConnection.guild.botAsMember.leaveVC()
-        }
+        CoroutineScope(Dispatchers.LOOM).launch {
+            if (voiceConnection.guild.getBotAsMember().voiceState != null) {
+                voiceConnection.guild.getBotAsMember().leaveVC()
+            }
 
-        heartBeat?.heartbeatJob?.cancel(CancellationException("Voice heartbeat stopped"))
+            heartBeat?.heartbeatJob?.cancel(CancellationException("Voice heartbeat stopped"))
+        }
     }
 
     override fun onError(websocket: WebSocket, cause: WebSocketException) {

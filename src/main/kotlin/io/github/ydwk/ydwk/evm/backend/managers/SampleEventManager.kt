@@ -37,7 +37,7 @@ class SampleEventManager(private var eventListeners: MutableList<IEventListener>
         if (event is IEventListener) {
             eventListeners.add(event)
         } else {
-            throw IllegalArgumentException("Event must be an instance of EventListener")
+            require(event !is IEventListener) { "Event must be an instance of EventListener" }
         }
     }
 
@@ -45,7 +45,7 @@ class SampleEventManager(private var eventListeners: MutableList<IEventListener>
         if (event is IEventListener) {
             eventListeners.remove(event)
         } else {
-            throw IllegalArgumentException("Event must be an instance of EventListener")
+            require(event !is IEventListener) { "Event must be an instance of EventListener" }
         }
     }
 

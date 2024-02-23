@@ -44,8 +44,8 @@ enum class VerificationLevel(private val level: Int) {
          * @param level The level to get the [VerificationLevel] by.
          * @return The [VerificationLevel] by the provided [level].
          */
-        fun fromInt(level: Int): VerificationLevel {
-            return values().firstOrNull { it.level == level } ?: UNKNOWN
+        fun getValue(level: Int): VerificationLevel {
+            return entries.firstOrNull { it.level == level } ?: UNKNOWN
         }
     }
 

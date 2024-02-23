@@ -38,8 +38,8 @@ enum class ExplicitContentFilterLevel(private val value: Int) {
          * @param value The value to get the [ExplicitContentFilterLevel] for.
          * @return The [ExplicitContentFilterLevel] for the given [value].
          */
-        fun fromInt(value: Int): ExplicitContentFilterLevel {
-            return values().firstOrNull { it.value == value } ?: UNKNOWN
+        fun getValue(value: Int): ExplicitContentFilterLevel {
+            return entries.firstOrNull { it.value == value } ?: UNKNOWN
         }
     }
 

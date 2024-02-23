@@ -29,7 +29,6 @@ import io.github.ydwk.yde.entities.guild.enums.ExplicitContentFilterLevel
 import io.github.ydwk.yde.entities.guild.enums.MessageNotificationLevel
 import io.github.ydwk.yde.entities.guild.enums.SystemChannelFlag
 import io.github.ydwk.yde.entities.guild.enums.VerificationLevel
-import io.github.ydwk.yde.impl.entities.GuildImpl
 import io.github.ydwk.yde.rest.EndPoint
 import io.github.ydwk.yde.util.Checks
 import kotlinx.coroutines.CompletableDeferred
@@ -180,7 +179,7 @@ class GuildBuilderImpl(val yde: YDE, val name: String) : GuildBuilder {
                 if (jsonBody == null) {
                     throw IllegalStateException("json body is null")
                 } else {
-                    GuildImpl(yde, jsonBody, jsonBody["id"].asLong())
+                    yde.entityInstanceBuilder.buildGuild(jsonBody)
                 }
             }
     }

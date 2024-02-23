@@ -28,14 +28,9 @@ class StickerItemImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,
+    override val name: String,
+    override val type: StickerType,
 ) : StickerItem {
-
-    override val name: String
-        get() = json.get("name").asText()
-
-    override val type: StickerType
-        get() = StickerType.fromInt(json.get("type").asInt())
-
     override fun toString(): String {
         return EntityToStringBuilder(yde, this).name(this.name).toString()
     }

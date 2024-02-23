@@ -31,7 +31,7 @@ open class GuildUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, js
 
         if (guild == null) {
             ydwk.logger.warn("GuildUpdateHandler: Guild ${json["id"].asLong()} not found in cache")
-            ydwk.cache[json["id"].asText(), GuildImpl(ydwk, json, json["id"].asLong())] =
+            ydwk.cache[json["id"].asText(), ydwk.entityInstanceBuilder.buildGuild(json)] =
                 CacheIds.GUILD
             return
         }

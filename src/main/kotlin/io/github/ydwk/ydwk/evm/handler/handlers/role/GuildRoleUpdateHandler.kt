@@ -32,7 +32,7 @@ class GuildRoleUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, jso
                 ?.getRoleById(json.get("role").get("id").asLong())
         if (role == null) {
             ydwk.logger.info("Role not found in cache, creating new role")
-            val roleImpl = RoleImpl(ydwk, json.get("role"), json.get("role").get("id").asLong())
+            val roleImpl = ydwk.entityInstanceBuilder.buildRole(json) as RoleImpl
             ydwk.cache[roleImpl.id, roleImpl] = CacheIds.ROLE
         }
     }

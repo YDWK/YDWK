@@ -30,7 +30,7 @@ class GuildRoleCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, jso
     override suspend fun start() {
         val guild = ydwk.getGuildById(json.get("guild_id").asLong())
         if (guild != null) {
-            val role = RoleImpl(ydwk, json.get("role"), json.get("role").get("id").asLong())
+            val role = ydwk.entityInstanceBuilder.buildRole(json) as RoleImpl
             ydwk.cache[json.get("role").get("id").asText(), role] = CacheIds.ROLE
             ydwk.emitEvent(GuildRoleCreateEvent(ydwk, role))
         } else {

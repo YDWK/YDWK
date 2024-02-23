@@ -24,7 +24,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.channel.enums.ChannelType
 import io.github.ydwk.yde.entities.message.Embed
-import io.github.ydwk.yde.impl.entities.MessageImpl
 import io.github.ydwk.yde.impl.interaction.ComponentInteractionImpl
 import io.github.ydwk.yde.impl.interaction.application.sub.ReplyImpl
 import io.github.ydwk.yde.impl.interaction.message.ComponentImpl
@@ -40,19 +39,34 @@ open class SelectMenuImpl(
     yde: YDE,
     json: JsonNode,
     interactionId: GetterSnowFlake,
+    override val placeholder: String?,
+    override val minValues: Int,
+    override val maxValues: Int,
+    override val values: List<String>,
+    override val isDisabled: Boolean,
 ) : SelectMenu, ComponentInteractionImpl(yde, json, interactionId) {
     constructor(
         componentInteractionImpl: ComponentInteractionImpl,
+        placeholder: String?,
+        minValues: Int,
+        maxValues: Int,
+        values: List<String>,
+        isDisabled: Boolean
     ) : this(
         componentInteractionImpl.yde,
         componentInteractionImpl.json,
-        componentInteractionImpl.interactionId)
+        componentInteractionImpl.interactionId,
+        placeholder,
+        minValues,
+        maxValues,
+        values,
+        isDisabled)
 
     override val customId: String
         get() = json["data"]["custom_id"].asText()
 
     protected val componentJson: JsonNode = run {
-        val message = MessageImpl(yde, json["message"], json["message"]["id"].asLong()).json
+        val message = yde.entityInstanceBuilder.buildMessage(json).json
         val mainComponents = message["components"]
         for (mainComponent in mainComponents) {
             val components = mainComponent["components"]
@@ -63,21 +77,6 @@ open class SelectMenuImpl(
         }
         throw IllegalStateException("Component not found")
     }
-
-    override val placeholder: String?
-        get() =
-            if (componentJson.has("placeholder")) componentJson["placeholder"].asText() else null
-
-    override val minValues: Int
-        get() = componentJson["min_values"].asInt()
-
-    override val maxValues: Int
-        get() = componentJson["max_values"].asInt()
-    override val values: List<String>
-        get() = json["data"]["values"].map { it.asText() }
-
-    override val isDisabled: Boolean
-        get() = componentJson["disabled"].asBoolean()
 
     override fun reply(content: String): Reply {
         return ReplyImpl(yde, content, null, interactionId.asString, interactionToken)

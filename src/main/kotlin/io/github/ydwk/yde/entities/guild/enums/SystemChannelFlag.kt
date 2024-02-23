@@ -41,8 +41,8 @@ enum class SystemChannelFlag(private val value: Int) {
          * @param value The value to get the [SystemChannelFlag] by.
          * @return The [SystemChannelFlag] by the given [value].
          */
-        fun fromInt(value: Int): SystemChannelFlag {
-            return values().firstOrNull { it.value == value } ?: UNKNOWN
+        fun getValue(value: Int): SystemChannelFlag {
+            return entries.firstOrNull { it.value == value } ?: UNKNOWN
         }
     }
 

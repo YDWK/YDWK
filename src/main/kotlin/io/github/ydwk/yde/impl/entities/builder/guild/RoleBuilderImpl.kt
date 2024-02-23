@@ -23,7 +23,6 @@ import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.builder.guild.RoleBuilder
 import io.github.ydwk.yde.entities.guild.Role
 import io.github.ydwk.yde.entities.guild.enums.GuildPermission
-import io.github.ydwk.yde.impl.entities.guild.RoleImpl
 import io.github.ydwk.yde.rest.EndPoint
 import io.github.ydwk.yde.util.Checks
 import java.awt.Color
@@ -116,7 +115,7 @@ class RoleBuilderImpl(val yde: YDE, val guildId: String?, val name: String) : Ro
                 if (jsonBody == null) {
                     throw IllegalStateException("json body is null")
                 } else {
-                    RoleImpl(yde, jsonBody, jsonBody["id"].asLong())
+                    yde.entityInstanceBuilder.buildRole(jsonBody)
                 }
             }
     }

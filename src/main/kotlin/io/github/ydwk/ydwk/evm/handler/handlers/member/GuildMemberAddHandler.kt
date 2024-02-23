@@ -28,7 +28,7 @@ class GuildMemberAddHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json
     override suspend fun start() {
         val guild = ydwk.getGuildById(json.get("guild_id").asLong())
         if (guild != null) {
-            val member = MemberImpl(ydwk, json, guild)
+            val member = ydwk.entityInstanceBuilder.buildMember(json, guild)
             ydwk.memberCache[guild.id, json.get("user").get("id").asText()] = member
             ydwk.emitEvent(GuildMemberAddEvent(ydwk, member))
         } else {

@@ -21,41 +21,30 @@ package io.github.ydwk.yde.impl.interaction.message
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.Emoji
-import io.github.ydwk.yde.impl.entities.EmojiImpl
 import io.github.ydwk.yde.interaction.message.ComponentInteractionData
 import io.github.ydwk.yde.interaction.message.ComponentType
 import io.github.ydwk.yde.util.EntityToStringBuilder
 
-class ComponentInteractionDataImpl(override val yde: YDE, override val json: JsonNode) :
-    ComponentInteractionData {
-    override val customId: String
-        get() = json["custom_id"].asText()
-
-    override val componentType: ComponentType
-        get() = ComponentType.fromInt(json["component_type"].asInt())
+class ComponentInteractionDataImpl(
+    override val yde: YDE,
+    override val json: JsonNode,
+    override val customId: String,
+    override val componentType: ComponentType,
     override val values: List<ComponentInteractionData.SelectOptionValue>?
-        get() = json["values"]?.map { ComponentInteractionDataImpl.SelectOptionValueImpl(yde, it) }
-
+) : ComponentInteractionData {
     override fun toString(): String {
         return EntityToStringBuilder(yde, this).toString()
     }
 
-    class SelectOptionValueImpl(override val yde: YDE, override val json: JsonNode) :
-        ComponentInteractionData.SelectOptionValue {
-        override val label: String
-            get() = json["label"].asText()
-
-        override val value: String
-            get() = json["value"].asText()
-
-        override val description: String?
-            get() = if (json.has("description")) json["description"].asText() else null
-
-        override val emoji: Emoji?
-            get() = if (json.has("emoji")) EmojiImpl(yde, json["emoji"]) else null
-
+    class SelectOptionValueImpl(
+        override val yde: YDE,
+        override val json: JsonNode,
+        override val label: String,
+        override val value: String,
+        override val description: String?,
+        override val emoji: Emoji?,
         override val default: Boolean?
-            get() = if (json.has("default")) json["default"].asBoolean() else null
+    ) : ComponentInteractionData.SelectOptionValue {
 
         override fun toString(): String {
             return EntityToStringBuilder(yde, this).toString()

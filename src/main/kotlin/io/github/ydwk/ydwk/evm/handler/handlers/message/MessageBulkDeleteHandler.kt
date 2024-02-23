@@ -19,6 +19,7 @@
 package io.github.ydwk.ydwk.evm.handler.handlers.message
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.sun.org.apache.xml.internal.serializer.utils.Utils.messages
 import io.github.ydwk.yde.cache.CacheIds
 import io.github.ydwk.yde.impl.entities.MessageImpl
 import io.github.ydwk.ydwk.evm.event.events.message.MessageDeleteBulkEvent
@@ -27,7 +28,7 @@ import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class MessageBulkDeleteHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override suspend fun start() {
-        val messages = json.get("ids").map { MessageImpl(ydwk, json, json.asLong()) }
+        val messages = json.get("ids").map { ydwk.entityInstanceBuilder.buildMessage(it) }
         messages.forEach { ydwk.cache.remove(it.id, CacheIds.MESSAGE) }
         ydwk.emitEvent(MessageDeleteBulkEvent(ydwk, messages))
     }

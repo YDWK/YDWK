@@ -41,7 +41,7 @@ import java.util.*
 
 class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override suspend fun start() {
-        val guild: Guild = GuildImpl(ydwk, json, json["id"].asLong())
+        val guild: Guild = ydwk.entityInstanceBuilder.buildGuild(json)
 
         if (ydwk.cache.contains(guild.id, CacheIds.GUILD)) {
             ydwk.logger.warn(

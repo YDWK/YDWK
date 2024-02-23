@@ -22,19 +22,15 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.Emoji
 import io.github.ydwk.yde.entities.message.Reaction
-import io.github.ydwk.yde.impl.entities.EmojiImpl
 import io.github.ydwk.yde.util.EntityToStringBuilder
 
-class ReactionImpl(override val yde: YDE, override val json: JsonNode) : Reaction {
-    override val count: Int
-        get() = json.get("count").asInt()
-
-    override val me: Boolean
-        get() = json.get("me").asBoolean()
-
+class ReactionImpl(
+    override val yde: YDE,
+    override val json: JsonNode,
+    override val count: Int,
+    override val me: Boolean,
     override val emoji: Emoji
-        get() = EmojiImpl(yde, json.get("emoji"))
-
+) : Reaction {
     override fun toString(): String {
         return EntityToStringBuilder(yde, this).toString()
     }

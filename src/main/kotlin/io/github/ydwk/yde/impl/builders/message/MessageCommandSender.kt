@@ -23,6 +23,7 @@ import io.github.ydwk.yde.impl.YDEImpl
 import io.github.ydwk.yde.impl.builders.util.getCommandNameAndIds
 import io.github.ydwk.yde.impl.builders.util.getCurrentGuildCommandsNameAndIds
 import io.github.ydwk.yde.rest.EndPoint
+import io.github.ydwk.yde.util.LOOM
 import kotlinx.coroutines.*
 import okhttp3.RequestBody.Companion.toRequestBody
 
@@ -36,143 +37,143 @@ class MessageCommandSender(
     init {
         yde.logger.info("Sending Message Commands to Discord")
 
-        val currentGlobalMessageCommandsNameAndId: Map<Long, String> = runBlocking {
-            getCurrentGlobalMessageCommandsNameAndIds()
-        }
+        CoroutineScope(Dispatchers.LOOM).launch {
+            val currentGlobalMessageCommandsNameAndId: Map<Long, String> =
+                getCurrentGlobalMessageCommandsNameAndIds()
 
-        val currentGuildMessageCommandsNameAndId: Map<String, Map<Long, String>> = runBlocking {
-            if (guildIds.isNotEmpty()) {
-                getCurrentGuildMessageCommandsNameAndIds()
-            } else {
-                emptyMap()
-            }
-        }
-
-        val globalMessageCommands: MutableMap<String, MessageCommandBuilder> = HashMap()
-        val guildMessageCommands: MutableMap<String, MessageCommandBuilder> = HashMap()
-
-        messageCommands.forEach { message ->
-            if (!message.specificGuildOnly) {
-                globalMessageCommands[message.name] = message
-            } else {
-                guildMessageCommands[message.name] = message
-            }
-        }
-
-        val globalMessageCommandsIdsToDelete: MutableList<Long> = mutableListOf()
-        val guildMessageCommandsIdsToDelete: MutableList<Long> = mutableListOf()
-        val globalMessageCommandsToAdd: MutableList<MessageCommandBuilder> = mutableListOf()
-        val guildMessageCommandsToAdd = mutableListOf<MessageCommandBuilder>()
-
-        if (currentGlobalMessageCommandsNameAndId.isNotEmpty()) {
-            currentGlobalMessageCommandsNameAndId.forEach { (id, name) ->
-                if (globalMessageCommands.containsKey(name)) {
-                    globalMessageCommandsToAdd.add(globalMessageCommands[name]!!)
-                } else if (!globalMessageCommands.containsKey(name)) {
-                    globalMessageCommandsIdsToDelete.add(id)
+            val currentGuildMessageCommandsNameAndId: Map<String, Map<Long, String>> =
+                if (guildIds.isNotEmpty()) {
+                    getCurrentGuildMessageCommandsNameAndIds()
                 } else {
-                    globalMessageCommandsToAdd.add(globalMessageCommands[name]!!)
+                    emptyMap()
+                }
+
+            val globalMessageCommands: MutableMap<String, MessageCommandBuilder> = HashMap()
+            val guildMessageCommands: MutableMap<String, MessageCommandBuilder> = HashMap()
+
+            messageCommands.forEach { message ->
+                if (!message.specificGuildOnly) {
+                    globalMessageCommands[message.name] = message
+                } else {
+                    guildMessageCommands[message.name] = message
                 }
             }
 
-            globalMessageCommands.forEach { (name, message) ->
-                if (!currentGlobalMessageCommandsNameAndId.containsValue(name)) {
-                    globalMessageCommandsToAdd.add(message)
-                }
-            }
-        } else {
-            globalMessageCommandsToAdd.addAll(globalMessageCommands.values)
-        }
+            val globalMessageCommandsIdsToDelete: MutableList<Long> = mutableListOf()
+            val guildMessageCommandsIdsToDelete: MutableList<Long> = mutableListOf()
+            val globalMessageCommandsToAdd: MutableList<MessageCommandBuilder> = mutableListOf()
+            val guildMessageCommandsToAdd = mutableListOf<MessageCommandBuilder>()
 
-        if (currentGuildMessageCommandsNameAndId.isNotEmpty()) {
-            currentGuildMessageCommandsNameAndId.forEach { (_, nameAndId) ->
-                nameAndId.forEach { (id, name) ->
-                    if (guildMessageCommands.containsKey(name)) {
-                        guildMessageCommandsToAdd.add(guildMessageCommands[name]!!)
-                    } else if (!guildMessageCommands.containsKey(name)) {
-                        guildMessageCommandsIdsToDelete.add(id)
+            if (currentGlobalMessageCommandsNameAndId.isNotEmpty()) {
+                currentGlobalMessageCommandsNameAndId.forEach { (id, name) ->
+                    if (globalMessageCommands.containsKey(name)) {
+                        globalMessageCommandsToAdd.add(globalMessageCommands[name]!!)
+                    } else if (!globalMessageCommands.containsKey(name)) {
+                        globalMessageCommandsIdsToDelete.add(id)
                     } else {
-                        guildMessageCommandsToAdd.add(guildMessageCommands[name]!!)
+                        globalMessageCommandsToAdd.add(globalMessageCommands[name]!!)
                     }
                 }
+
+                globalMessageCommands.forEach { (name, message) ->
+                    if (!currentGlobalMessageCommandsNameAndId.containsValue(name)) {
+                        globalMessageCommandsToAdd.add(message)
+                    }
+                }
+            } else {
+                globalMessageCommandsToAdd.addAll(globalMessageCommands.values)
             }
 
-            guildMessageCommands.forEach { (name, message) ->
+            if (currentGuildMessageCommandsNameAndId.isNotEmpty()) {
                 currentGuildMessageCommandsNameAndId.forEach { (_, nameAndId) ->
-                    if (!nameAndId.containsValue(name)) {
-                        guildMessageCommandsToAdd.add(message)
+                    nameAndId.forEach { (id, name) ->
+                        if (guildMessageCommands.containsKey(name)) {
+                            guildMessageCommandsToAdd.add(guildMessageCommands[name]!!)
+                        } else if (!guildMessageCommands.containsKey(name)) {
+                            guildMessageCommandsIdsToDelete.add(id)
+                        } else {
+                            guildMessageCommandsToAdd.add(guildMessageCommands[name]!!)
+                        }
                     }
                 }
-            }
-        } else {
-            guildMessageCommandsToAdd.addAll(guildMessageCommands.values)
-        }
 
-        // being rate limited, do 5 at a time
-        val globalMessageCommandsToAddChunks = globalMessageCommandsToAdd.chunked(1)
-        val guildMessageCommandsToAddChunks = guildMessageCommandsToAdd.chunked(1)
-
-        if (globalMessageCommandsToAddChunks.isNotEmpty()) {
-            var amountAdded = 0
-            globalMessageCommandsToAddChunks.forEach {
-                if (amountAdded >= 4) {
-                    yde.logger.debug("Sleeping for 25 seconds to avoid rate limit")
-                    Thread.sleep(25000)
-                    amountAdded = 0
-                    createGlobalMessageCommands(it)
-                } else {
-                    amountAdded++
-                    createGlobalMessageCommands(it)
+                guildMessageCommands.forEach { (name, message) ->
+                    currentGuildMessageCommandsNameAndId.forEach { (_, nameAndId) ->
+                        if (!nameAndId.containsValue(name)) {
+                            guildMessageCommandsToAdd.add(message)
+                        }
+                    }
                 }
+            } else {
+                guildMessageCommandsToAdd.addAll(guildMessageCommands.values)
             }
-        }
 
-        if (guildMessageCommandsToAddChunks.isNotEmpty()) {
-            var amountAdded = 0
-            guildMessageCommandsToAddChunks.forEach { chunk ->
-                guildIds.forEach { guildId ->
+            // being rate limited, do 5 at a time
+            val globalMessageCommandsToAddChunks = globalMessageCommandsToAdd.chunked(1)
+            val guildMessageCommandsToAddChunks = guildMessageCommandsToAdd.chunked(1)
+
+            if (globalMessageCommandsToAddChunks.isNotEmpty()) {
+                var amountAdded = 0
+                globalMessageCommandsToAddChunks.forEach {
                     if (amountAdded >= 4) {
                         yde.logger.debug("Sleeping for 25 seconds to avoid rate limit")
                         Thread.sleep(25000)
-                        createGuildMessageCommands(guildId, chunk)
+                        amountAdded = 0
+                        createGlobalMessageCommands(it)
                     } else {
                         amountAdded++
-                        createGuildMessageCommands(guildId, chunk)
+                        createGlobalMessageCommands(it)
                     }
                 }
             }
-        }
 
-        val globalMessageCommandsIdsToDeleteChunks = globalMessageCommandsIdsToDelete.chunked(1)
-        val guildMessageCommandsIdsToDeleteChunks = guildMessageCommandsIdsToDelete.chunked(1)
-
-        if (globalMessageCommandsIdsToDeleteChunks.isNotEmpty()) {
-            var amountDeleted = 0
-            globalMessageCommandsIdsToDeleteChunks.forEach { chunk ->
-                if (amountDeleted >= 4) {
-                    yde.logger.debug("Sleeping for 25 seconds to avoid rate limit")
-                    Thread.sleep(25000)
-                    amountDeleted = 0
-                    deleteGlobalMessageCommands(chunk)
-                } else {
-                    amountDeleted++
-                    deleteGlobalMessageCommands(chunk)
+            if (guildMessageCommandsToAddChunks.isNotEmpty()) {
+                var amountAdded = 0
+                guildMessageCommandsToAddChunks.forEach { chunk ->
+                    guildIds.forEach { guildId ->
+                        if (amountAdded >= 4) {
+                            yde.logger.debug("Sleeping for 25 seconds to avoid rate limit")
+                            Thread.sleep(25000)
+                            createGuildMessageCommands(guildId, chunk)
+                        } else {
+                            amountAdded++
+                            createGuildMessageCommands(guildId, chunk)
+                        }
+                    }
                 }
             }
-        }
 
-        if (guildMessageCommandsIdsToDeleteChunks.isNotEmpty()) {
-            guildIds.forEach { _ ->
+            val globalMessageCommandsIdsToDeleteChunks = globalMessageCommandsIdsToDelete.chunked(1)
+            val guildMessageCommandsIdsToDeleteChunks = guildMessageCommandsIdsToDelete.chunked(1)
+
+            if (globalMessageCommandsIdsToDeleteChunks.isNotEmpty()) {
                 var amountDeleted = 0
-                guildMessageCommandsIdsToDeleteChunks.forEach { chunk ->
+                globalMessageCommandsIdsToDeleteChunks.forEach { chunk ->
                     if (amountDeleted >= 4) {
                         yde.logger.debug("Sleeping for 25 seconds to avoid rate limit")
                         Thread.sleep(25000)
                         amountDeleted = 0
-                        deleteGuildMessageCommands(chunk)
+                        deleteGlobalMessageCommands(chunk)
                     } else {
                         amountDeleted++
-                        deleteGuildMessageCommands(chunk)
+                        deleteGlobalMessageCommands(chunk)
+                    }
+                }
+            }
+
+            if (guildMessageCommandsIdsToDeleteChunks.isNotEmpty()) {
+                guildIds.forEach { _ ->
+                    var amountDeleted = 0
+                    guildMessageCommandsIdsToDeleteChunks.forEach { chunk ->
+                        if (amountDeleted >= 4) {
+                            yde.logger.debug("Sleeping for 25 seconds to avoid rate limit")
+                            Thread.sleep(25000)
+                            amountDeleted = 0
+                            deleteGuildMessageCommands(chunk)
+                        } else {
+                            amountDeleted++
+                            deleteGuildMessageCommands(chunk)
+                        }
                     }
                 }
             }

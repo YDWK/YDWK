@@ -41,8 +41,8 @@ enum class PremiumTier(private val value: Int) {
          * @param value The value to get the [PremiumTier] by.
          * @return The [PremiumTier] by the given [value].
          */
-        fun fromInt(value: Int): PremiumTier {
-            return values().firstOrNull { it.value == value } ?: UNKNOWN
+        fun getValue(value: Int): PremiumTier {
+            return entries.firstOrNull { it.value == value } ?: UNKNOWN
         }
     }
 

@@ -41,14 +41,8 @@ enum class NSFWLeveL(private val level: Int) {
          * @param level The level to get the [NSFWLeveL] for.
          * @return The [NSFWLeveL] for the provided [level].
          */
-        fun fromInt(level: Int): NSFWLeveL {
-            return when (level) {
-                0 -> DEFAULT
-                1 -> EXPLICIT
-                2 -> SAFE
-                3 -> AGE_RESTRICTED
-                else -> UNKNOWN
-            }
+        fun getValue(level: Int): NSFWLeveL {
+            return entries.firstOrNull { it.level == level } ?: UNKNOWN
         }
     }
 

@@ -86,7 +86,7 @@ class GuildRestAPIMethodsImpl(val yde: YDE) : GuildRestAPIMethods {
             .get(EndPoint.GuildEndpoint.GET_BANS, guildId.toString())
             .execute { it ->
                 val jsonBody = it.jsonBody
-                jsonBody?.map { BanImpl(yde, it) }
+                jsonBody?.map { yde.entityInstanceBuilder.buildBan(it) }
                     ?: throw IllegalStateException("Response body is null")
             }
     }
@@ -120,7 +120,7 @@ class GuildRestAPIMethodsImpl(val yde: YDE) : GuildRestAPIMethods {
                 if (jsonBody == null) {
                     throw IllegalStateException("json body is null")
                 } else {
-                    AuditLogImpl(yde, jsonBody)
+                    yde.entityInstanceBuilder.buildAuditLog(jsonBody)
                 }
             }
     }
@@ -134,7 +134,7 @@ class GuildRestAPIMethodsImpl(val yde: YDE) : GuildRestAPIMethods {
                 val members: ArrayNode = jsonBody as ArrayNode
                 val memberList = mutableListOf<Member>()
                 for (member in members) {
-                    memberList.add(MemberImpl(yde as YDEImpl, member, guild))
+                    memberList.add(yde.entityInstanceBuilder.buildMember(member, guild))
                 }
                 memberList
             }
@@ -148,7 +148,7 @@ class GuildRestAPIMethodsImpl(val yde: YDE) : GuildRestAPIMethods {
                 if (jsonBody == null) {
                     throw IllegalStateException("json body is null")
                 } else {
-                    GuildImpl(yde, jsonBody, jsonBody["id"].asLong())
+                    yde.entityInstanceBuilder.buildGuild(jsonBody)
                 }
             }
     }
@@ -156,7 +156,7 @@ class GuildRestAPIMethodsImpl(val yde: YDE) : GuildRestAPIMethods {
     override fun requestedGuilds(): CompletableDeferred<List<Guild>> {
         return this.yde.restApiManager.get(EndPoint.GuildEndpoint.GET_GUILDS).execute() { it ->
             val jsonBody = it.jsonBody
-            jsonBody?.map { GuildImpl(yde, it, it["id"].asLong()) }
+            jsonBody?.map { yde.entityInstanceBuilder.buildGuild(it) }
                 ?: throw IllegalStateException("json body is null")
         }
     }

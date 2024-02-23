@@ -25,9 +25,6 @@ import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.Message
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.guild.Member
-import io.github.ydwk.yde.impl.YDEImpl
-import io.github.ydwk.yde.impl.entities.MessageImpl
-import io.github.ydwk.yde.impl.entities.guild.MemberImpl
 import io.github.ydwk.yde.impl.interaction.application.type.MessageCommandImpl
 import io.github.ydwk.yde.impl.interaction.application.type.SlashCommandImpl
 import io.github.ydwk.yde.impl.interaction.application.type.UserCommandImpl
@@ -37,60 +34,24 @@ import io.github.ydwk.yde.interaction.sub.GenericCommandData
 import io.github.ydwk.yde.interaction.sub.InteractionType
 import io.github.ydwk.yde.util.EntityToStringBuilder
 import io.github.ydwk.yde.util.GetterSnowFlake
-import io.github.ydwk.ydwk.util.ydwk
 
 class InteractionImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,
+    override val applicationId: GetterSnowFlake,
+    override val type: InteractionType,
+    override val guild: Guild?,
+    override val channel: Channel?,
+    override val member: Member?,
+    override val user: User,
+    override val token: String,
+    override val version: Int,
+    override val message: Message?,
+    override val permissions: Long?,
+    override val locale: String?,
+    override val guildLocale: String?,
 ) : Interaction {
-
-    override val applicationId: GetterSnowFlake =
-        GetterSnowFlake.of(json["application_id"].asLong())
-
-    override val type: InteractionType = InteractionType.fromInt(json["type"].asInt())
-
-    override val guild: Guild? =
-        if (json.has("guild_id")) yde.getGuildById(json["guild_id"].asLong()) else null
-
-    override val channel: Channel? =
-        if (json.has("channel_id")) yde.getChannelById(json["channel_id"].asLong()) else null
-
-    override val member: Member?
-        get() {
-            if (json.has("member")) {
-                if (json.has("member")) {
-                    // TODO : Not updating when the bot joins a new guild
-                    val member = MemberImpl(yde as YDEImpl, json["member"], guild!!)
-                    return yde.memberCache.getOrPut(member)
-                }
-            }
-            return null
-        }
-
-    override val user: User
-        get() {
-            return if (json.has("user")) ydwk.entityInstanceBuilder.buildUser(json["user"])
-            else if (json.has("member"))
-                ydwk.entityInstanceBuilder.buildUser(json["member"]["user"])
-            else throw IllegalStateException("No user or member found in interaction")
-        }
-
-    override val token: String = json["token"].asText()
-
-    override val version: Int = json["version"].asInt()
-
-    override val message: Message? =
-        if (json.has("message")) MessageImpl(yde, json["message"], json["message"]["id"].asLong())
-        else null
-
-    override val permissions: Long? =
-        if (json.has("permissions")) json["permissions"].asLong() else null
-
-    override val locale: String? = if (json.has("locale")) json["locale"].asText() else null
-
-    override val guildLocale: String? =
-        if (json.has("guild_locale")) json["guild_locale"].asText() else null
 
     override val data: GenericCommandData? =
         when (type) {

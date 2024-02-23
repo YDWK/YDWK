@@ -345,12 +345,12 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
     fun createDmChannel(user: User): CompletableDeferred<DmChannel> = createDmChannel(user.id)
 
     /**
-     * The bot as a member of the guild.
+     * Gets the bot as a member of the guild.
      *
      * @return The [Member] object.
      * @throws IllegalStateException If the bot is not in the guild.
      */
-    val botAsMember: Member
+    suspend fun getBotAsMember(): Member
 
     /**
      * Bans a user from the guild.

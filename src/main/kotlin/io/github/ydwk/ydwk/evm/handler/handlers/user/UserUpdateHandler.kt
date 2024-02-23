@@ -21,7 +21,7 @@ package io.github.ydwk.ydwk.evm.handler.handlers.user
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.cache.CacheIds
 import io.github.ydwk.yde.entities.User
-import io.github.ydwk.yde.impl.EntityInstanceBuilderImpl
+import io.github.ydwk.yde.util.getAvatar
 import io.github.ydwk.ydwk.evm.event.events.user.*
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
@@ -58,8 +58,7 @@ class UserUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
         if (!Objects.deepEquals(oldAvatarHash, newAvatarHash)) {
             user.avatarHash = newAvatarHash
             val newAvatar =
-                (ydwk.entityInstanceBuilder as EntityInstanceBuilderImpl).getAvatar(
-                    ydwk, json["discriminator"].asText(), newAvatarHash, null, user.idAsLong)
+                getAvatar(ydwk, json["discriminator"].asText(), newAvatarHash, null, user.idAsLong)
             ydwk.emitEvent(UserAvatarUpdateEvent(ydwk, user, oldAvatar, newAvatar))
         }
 

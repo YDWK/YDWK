@@ -28,7 +28,7 @@ class GuildMemberRemoveHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, j
     override suspend fun start() {
         val guild = ydwk.getGuildById(json.get("guild_id").asLong())
         if (guild != null) {
-            val member = MemberImpl(ydwk, json, guild)
+            val member = ydwk.entityInstanceBuilder.buildMember(json, guild)
             ydwk.memberCache.remove(guild.id, json.get("user").get("id").asText())
             ydwk.emitEvent(GuildMemberRemoveEvent(ydwk, member))
         } else {

@@ -54,8 +54,9 @@ class CoroutineEventManager : IEventManager, CoroutineScope by CoroutineScope(Di
         if (event is CoroutineEventListener) {
             listeners.add(event)
         } else {
-            throw IllegalArgumentException(
-                "Event ${event.javaClass.simpleName} is not a valid event listener")
+            require(event !is CoroutineEventListener) {
+                "Event must be an instance of EventListener"
+            }
         }
     }
 
@@ -63,7 +64,9 @@ class CoroutineEventManager : IEventManager, CoroutineScope by CoroutineScope(Di
         if (event is CoroutineEventListener) {
             listeners.remove(event)
         } else {
-            throw IllegalArgumentException("Event must be an instance of EventListener")
+            require(event !is CoroutineEventListener) {
+                "Event must be an instance of EventListener"
+            }
         }
     }
 

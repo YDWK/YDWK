@@ -23,7 +23,8 @@ import io.github.ydwk.yde.impl.YDEImpl
 import io.github.ydwk.yde.impl.builders.util.getCommandNameAndIds
 import io.github.ydwk.yde.impl.builders.util.getCurrentGuildCommandsNameAndIds
 import io.github.ydwk.yde.rest.EndPoint
-import kotlinx.coroutines.runBlocking
+import io.github.ydwk.yde.util.LOOM
+import kotlinx.coroutines.*
 import okhttp3.RequestBody.Companion.toRequestBody
 
 class UserCommandSender(
@@ -35,146 +36,34 @@ class UserCommandSender(
 
     init {
         yde.logger.info("Sending User Commands to Discord")
+        sendUserCommands()
+    }
 
-        val currentGlobalUserCommandsNameAndId = runBlocking {
-            getCurrentGlobalUserCommandsNameAndIds()
-        }
-        val currentGuildUserCommandsNameAndId: Map<String, Map<Long, String>> = runBlocking {
-            if (guildIds.isNotEmpty()) {
-                getCurrentGuildUserCommandsNameAndIds()
-            } else {
-                emptyMap()
-            }
-        }
+    private fun sendUserCommands() {
+        CoroutineScope(Dispatchers.LOOM).launch {
+            val currentGlobalUserCommandsNameAndId = getCurrentGlobalUserCommandsNameAndIds()
+            val currentGuildUserCommandsNameAndId =
+                if (guildIds.isNotEmpty()) getCurrentGuildUserCommandsNameAndIds() else emptyMap()
 
-        val globalUserCommands: MutableMap<String, UserCommandBuilder> = HashMap()
-        val guildUserCommands: MutableMap<String, UserCommandBuilder> = HashMap()
+            val globalUserCommandsToAdd = mutableListOf<UserCommandBuilder>()
+            val guildUserCommandsToAdd = mutableListOf<UserCommandBuilder>()
+            val globalUserCommandsIdsToDelete = mutableListOf<Long>()
+            val guildUserCommandsIdsToDelete = mutableListOf<Long>()
 
-        userCommands.forEach { user ->
-            if (!user.specificGuildOnly) {
-                globalUserCommands[user.name] = user
-            } else {
-                guildUserCommands[user.name] = user
-            }
-        }
+            // Populate lists of commands to add or delete
+            populateCommandsToAddAndDelete(
+                currentGlobalUserCommandsNameAndId,
+                currentGuildUserCommandsNameAndId,
+                globalUserCommandsToAdd,
+                guildUserCommandsToAdd,
+                globalUserCommandsIdsToDelete,
+                guildUserCommandsIdsToDelete)
 
-        val globalUserCommandsIdsToDelete: MutableList<Long> = mutableListOf()
-        val guildUserCommandsIdsToDelete: MutableList<Long> = mutableListOf()
-        val globalUserCommandsToAdd: MutableList<UserCommandBuilder> = mutableListOf()
-        val guildUserCommandsToAdd = mutableListOf<UserCommandBuilder>()
+            // Add or delete global user commands
+            processGlobalUserCommands(globalUserCommandsToAdd, globalUserCommandsIdsToDelete)
 
-        if (currentGlobalUserCommandsNameAndId.isNotEmpty()) {
-            currentGlobalUserCommandsNameAndId.forEach { (id, name) ->
-                if (globalUserCommands.containsKey(name)) {
-                    globalUserCommandsToAdd.add(globalUserCommands[name]!!)
-                } else if (!globalUserCommands.containsKey(name)) {
-                    globalUserCommandsIdsToDelete.add(id)
-                } else {
-                    globalUserCommandsToAdd.add(globalUserCommands[name]!!)
-                }
-            }
-
-            globalUserCommands.forEach { (name, user) ->
-                if (!currentGlobalUserCommandsNameAndId.containsValue(name)) {
-                    globalUserCommandsToAdd.add(user)
-                }
-            }
-        } else {
-            globalUserCommandsToAdd.addAll(globalUserCommands.values)
-        }
-
-        if (currentGuildUserCommandsNameAndId.isNotEmpty()) {
-            currentGuildUserCommandsNameAndId.forEach { (_, nameAndId) ->
-                nameAndId.forEach { (id, name) ->
-                    if (guildUserCommands.containsKey(name)) {
-                        guildUserCommandsToAdd.add(guildUserCommands[name]!!)
-                    } else if (!guildUserCommands.containsKey(name)) {
-                        guildUserCommandsIdsToDelete.add(id)
-                    } else {
-                        guildUserCommandsToAdd.add(guildUserCommands[name]!!)
-                    }
-                }
-            }
-
-            guildUserCommands.forEach { (name, user) ->
-                currentGuildUserCommandsNameAndId.forEach { (_, nameAndId) ->
-                    if (!nameAndId.containsValue(name)) {
-                        guildUserCommandsToAdd.add(user)
-                    }
-                }
-            }
-        } else {
-            guildUserCommandsToAdd.addAll(guildUserCommands.values)
-        }
-
-        // being rate limited, do 5 at a time
-        val globalUserCommandsToAddChunks = globalUserCommandsToAdd.chunked(1)
-        val guildUserCommandsToAddChunks = guildUserCommandsToAdd.chunked(1)
-
-        if (globalUserCommandsToAddChunks.isNotEmpty()) {
-            var amountAdded = 0
-            globalUserCommandsToAddChunks.forEach {
-                if (amountAdded >= 4) {
-                    yde.logger.debug("Sleeping for 25 seconds to avoid rate limit")
-                    Thread.sleep(25000)
-                    amountAdded = 0
-                    createGlobalUserCommands(it)
-                } else {
-                    amountAdded++
-                    createGlobalUserCommands(it)
-                }
-            }
-        }
-
-        if (guildUserCommandsToAddChunks.isNotEmpty()) {
-            var amountAdded = 0
-            guildUserCommandsToAddChunks.forEach { chunk ->
-                guildIds.forEach { guildId ->
-                    if (amountAdded >= 4) {
-                        yde.logger.debug("Sleeping for 25 seconds to avoid rate limit")
-                        Thread.sleep(25000)
-                        createGuildUserCommands(guildId, chunk)
-                    } else {
-                        amountAdded++
-                        createGuildUserCommands(guildId, chunk)
-                    }
-                }
-            }
-        }
-
-        val globalUserCommandsIdsToDeleteChunks = globalUserCommandsIdsToDelete.chunked(1)
-        val guildUserCommandsIdsToDeleteChunks = guildUserCommandsIdsToDelete.chunked(1)
-
-        if (globalUserCommandsIdsToDeleteChunks.isNotEmpty()) {
-            var amountDeleted = 0
-            globalUserCommandsIdsToDeleteChunks.forEach { chunk ->
-                if (amountDeleted >= 4) {
-                    yde.logger.debug("Sleeping for 25 seconds to avoid rate limit")
-                    Thread.sleep(25000)
-                    amountDeleted = 0
-                    deleteGlobalUserCommands(chunk)
-                } else {
-                    amountDeleted++
-                    deleteGlobalUserCommands(chunk)
-                }
-            }
-        }
-
-        if (guildUserCommandsIdsToDeleteChunks.isNotEmpty()) {
-            guildIds.forEach { _ ->
-                var amountDeleted = 0
-                guildUserCommandsIdsToDeleteChunks.forEach { chunk ->
-                    if (amountDeleted >= 4) {
-                        yde.logger.debug("Sleeping for 25 seconds to avoid rate limit")
-                        Thread.sleep(25000)
-                        amountDeleted = 0
-                        deleteGuildUserCommands(chunk)
-                    } else {
-                        amountDeleted++
-                        deleteGuildUserCommands(chunk)
-                    }
-                }
-            }
+            // Add or delete guild user commands
+            processGuildUserCommands(guildUserCommandsToAdd, guildUserCommandsIdsToDelete)
         }
     }
 
@@ -184,6 +73,83 @@ class UserCommandSender(
 
     private suspend fun getCurrentGuildUserCommandsNameAndIds(): Map<String, Map<Long, String>> {
         return getCurrentGuildCommandsNameAndIds(yde, guildIds, applicationId)
+    }
+
+    private fun populateCommandsToAddAndDelete(
+        currentGlobalUserCommandsNameAndId: Map<Long, String>,
+        currentGuildUserCommandsNameAndId: Map<String, Map<Long, String>>,
+        globalUserCommandsToAdd: MutableList<UserCommandBuilder>,
+        guildUserCommandsToAdd: MutableList<UserCommandBuilder>,
+        globalUserCommandsIdsToDelete: MutableList<Long>,
+        guildUserCommandsIdsToDelete: MutableList<Long>
+    ) {
+        userCommands.forEach { user ->
+            if (currentGlobalUserCommandsNameAndId.containsValue(user.name)) {
+                val commandId =
+                    currentGlobalUserCommandsNameAndId.filterValues { it == user.name }.keys.first()
+                if (!user.specificGuildOnly) {
+                    globalUserCommandsToAdd.add(user)
+                } else {
+                    globalUserCommandsIdsToDelete.add(commandId)
+                }
+            } else {
+                globalUserCommandsToAdd.add(user)
+            }
+        }
+
+        userCommands.forEach { user ->
+            if (guildIds.isNotEmpty()) {
+                val guildCommands = currentGuildUserCommandsNameAndId.flatMap { it.value.entries }
+                if (guildCommands.any { it.value == user.name }) {
+                    guildUserCommandsToAdd.add(user)
+                } else {
+                    guildUserCommandsIdsToDelete.add(
+                        guildCommands.first { it.value == user.name }.key)
+                }
+            }
+        }
+    }
+
+    private suspend fun processGlobalUserCommands(
+        globalUserCommandsToAdd: List<UserCommandBuilder>,
+        globalUserCommandsIdsToDelete: List<Long>
+    ) {
+        processUserCommands(
+            globalUserCommandsToAdd,
+            ::createGlobalUserCommands,
+            globalUserCommandsIdsToDelete,
+            ::deleteGlobalUserCommands)
+    }
+
+    private suspend fun processGuildUserCommands(
+        guildUserCommandsToAdd: List<UserCommandBuilder>,
+        guildUserCommandsIdsToDelete: List<Long>
+    ) {
+        processUserCommands(
+            guildUserCommandsToAdd,
+            ::createGuildUserCommands,
+            guildUserCommandsIdsToDelete,
+            ::deleteGuildUserCommands)
+    }
+
+    private suspend fun processUserCommands(
+        userCommandsToAdd: List<UserCommandBuilder>,
+        addCommandFunction: suspend (List<UserCommandBuilder>) -> Unit,
+        userCommandsIdsToDelete: List<Long>,
+        deleteCommandFunction: suspend (List<Long>) -> Unit
+    ) {
+        val commandsToAddChunks = userCommandsToAdd.chunked(5)
+        val commandsIdsToDeleteChunks = userCommandsIdsToDelete.chunked(5)
+
+        commandsToAddChunks.forEach { chunk ->
+            addCommandFunction(chunk)
+            delay(25000) // Delay to avoid rate limit
+        }
+
+        commandsIdsToDeleteChunks.forEach { chunk ->
+            deleteCommandFunction(chunk)
+            delay(25000) // Delay to avoid rate limit
+        }
     }
 
     private fun deleteGlobalUserCommands(ids: List<Long>) {
@@ -225,16 +191,18 @@ class UserCommandSender(
         }
     }
 
-    private fun createGuildUserCommands(guildId: String, userCommands: List<UserCommandBuilder>) {
+    private fun createGuildUserCommands(userCommands: List<UserCommandBuilder>) {
         userCommands.forEach { user ->
-            yde.logger.debug("Sending User command ${user.name} to guild $guildId")
-            yde.restApiManager
-                .post(
-                    user.toJson().toString().toRequestBody(),
-                    EndPoint.ApplicationCommandsEndpoint.CREATE_GUILD_COMMAND,
-                    applicationId,
-                    guildId)
-                .executeWithNoResult()
+            guildIds.forEach { guildId ->
+                yde.logger.debug("Sending User command ${user.name} to guild $guildId")
+                yde.restApiManager
+                    .post(
+                        user.toJson().toString().toRequestBody(),
+                        EndPoint.ApplicationCommandsEndpoint.CREATE_GUILD_COMMAND,
+                        applicationId,
+                        guildId)
+                    .executeWithNoResult()
+            }
         }
     }
 }

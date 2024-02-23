@@ -27,7 +27,7 @@ import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class MessageCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override suspend fun start() {
-        val message = MessageImpl(ydwk, json, json.get("id").asLong())
+        val message = ydwk.entityInstanceBuilder.buildMessage(json) as MessageImpl
         ydwk.cache[json.get("id").asText(), message] = CacheIds.MESSAGE
         ydwk.emitEvent(MessageCreateEvent(ydwk, message))
     }

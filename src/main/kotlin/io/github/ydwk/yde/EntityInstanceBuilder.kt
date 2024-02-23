@@ -109,8 +109,8 @@ interface EntityInstanceBuilder {
      * @param backUpGuild the back up guild json
      * @return [VoiceState] the voice state
      */
-    fun buildVoiceState(json: JsonNode, backUpGuild: JsonNode? = null): VoiceState {
-        return buildVoiceState(json, backUpGuild?.let { buildGuild(it) })
+    fun buildVoiceState(json: JsonNode, backUpGuild: JsonNode): VoiceState {
+        return buildVoiceState(json, buildGuild(backUpGuild))
     }
 
     /**
@@ -173,8 +173,8 @@ interface EntityInstanceBuilder {
      * @param backUpUser the back up user json
      * @return [Member] the member
      */
-    fun buildMember(json: JsonNode, guild: Guild, backUpUser: JsonNode? = null): Member {
-        return buildMember(json, guild, backUpUser?.let { buildUser(it) })
+    fun buildMember(json: JsonNode, guild: Guild, backUpUser: JsonNode): Member {
+        return buildMember(json, guild, buildUser(backUpUser))
     }
 
     /**
@@ -420,6 +420,14 @@ interface EntityInstanceBuilder {
      * @return [Attachment] the attachment
      */
     fun buildAttachment(json: JsonNode): Attachment
+
+    /**
+     * Used to build an instance of [Emoji]
+     *
+     * @param json the json
+     * @return [Emoji] the emoji
+     */
+    fun buildEmoji(json: JsonNode): Emoji
 
     // Embed entities
 

@@ -23,6 +23,7 @@ import io.github.ydwk.yde.entities.Bot
 import io.github.ydwk.yde.entities.application.PartialApplication
 import io.github.ydwk.yde.impl.YDEImpl
 import io.github.ydwk.yde.util.EntityToStringBuilder
+import io.github.ydwk.yde.util.LOOM
 import io.github.ydwk.ydwk.*
 import io.github.ydwk.ydwk.evm.backend.event.CoroutineEventListener
 import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
@@ -35,10 +36,7 @@ import io.github.ydwk.ydwk.ws.util.LoggedIn
 import java.time.Instant
 import java.util.concurrent.Executors
 import kotlin.random.Random
-import kotlinx.coroutines.ExecutorCoroutineDispatcher
-import kotlinx.coroutines.asCoroutineDispatcher
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import okhttp3.OkHttpClient
 import org.slf4j.LoggerFactory
 
@@ -203,10 +201,16 @@ class YDWKImpl(
 
     override fun emitEvent(event: GenericEvent) {
         try {
-            runBlocking {
-                simpleEventManager.emitEvent(event)
-                coroutineEventManager.emitEvent(event)
-            }
+            CoroutineScope(Dispatchers.LOOM)
+                .launch {
+                    simpleEventManager.emitEvent(event)
+                    coroutineEventManager.emitEvent(event)
+                }
+                .invokeOnCompletion {
+                    if (it != null) {
+                        ydwkLogger.error("Error while emitting event" + it.message)
+                    }
+                }
         } catch (e: Exception) {
             ydwkLogger.error("Error while emitting event" + e.message)
         }

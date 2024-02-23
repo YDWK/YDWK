@@ -29,7 +29,7 @@ class GuildRoleDeleteHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, jso
         val guild = ydwk.getGuildById(json.get("guild_id").asLong())
         if (guild != null) {
             // TODO: broken
-            val role = RoleImpl(ydwk, json.get("role"), json.get("role").get("id").asLong())
+            val role = ydwk.entityInstanceBuilder.buildRole(json) as RoleImpl
             ydwk.cache.remove(json.get("role").get("id").asText(), CacheIds.ROLE)
             ydwk.emitEvent(
                 io.github.ydwk.ydwk.evm.event.events.role.GuildRoleDeleteEvent(ydwk, role))

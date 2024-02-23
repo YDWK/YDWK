@@ -23,7 +23,10 @@ import io.github.ydwk.yde.impl.YDEImpl
 import io.github.ydwk.yde.impl.builders.util.getCommandNameAndIds
 import io.github.ydwk.yde.impl.builders.util.getCurrentGuildCommandsNameAndIds
 import io.github.ydwk.yde.rest.EndPoint
-import kotlinx.coroutines.runBlocking
+import io.github.ydwk.yde.util.LOOM
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import okhttp3.RequestBody.Companion.toRequestBody
 
 class SlashInfoSender(
@@ -35,143 +38,142 @@ class SlashInfoSender(
     init {
         yde.logger.info("Sending slash commands to Discord")
 
-        val currentGlobalSlashCommandsNameAndId = runBlocking {
-            getCurrentGlobalSlashCommandsNameAndIds()
-        }
+        CoroutineScope(Dispatchers.LOOM).launch {
+            val currentGlobalSlashCommandsNameAndId = getCurrentGlobalSlashCommandsNameAndIds()
 
-        val currentGuildSlashCommandsNameAndId: Map<String, Map<Long, String>> = runBlocking {
-            if (guildIds.isNotEmpty()) {
-                getCurrentGuildSlashCommandsNameAndIds()
-            } else {
-                emptyMap()
-            }
-        }
-
-        val globalSlashCommands: MutableMap<String, SlashCommandBuilder> = HashMap()
-        val guildSlashCommands: MutableMap<String, SlashCommandBuilder> = HashMap()
-
-        slashCommands.forEach { slash ->
-            if (!slash.specificGuildOnly) {
-                globalSlashCommands[slash.name] = slash
-            } else {
-                guildSlashCommands[slash.name] = slash
-            }
-        }
-
-        val globalSlashCommandsIdsToDelete: MutableList<Long> = mutableListOf()
-        val guildSlashCommandsIdsToDelete: MutableList<Long> = mutableListOf()
-        val globalSlashCommandsToAdd: MutableList<SlashCommandBuilder> = mutableListOf()
-        val guildSlashCommandsToAdd = mutableListOf<SlashCommandBuilder>()
-
-        if (currentGlobalSlashCommandsNameAndId.isNotEmpty()) {
-            currentGlobalSlashCommandsNameAndId.forEach { (id, name) ->
-                if (globalSlashCommands.containsKey(name)) {
-                    globalSlashCommandsToAdd.add(globalSlashCommands[name]!!)
-                } else if (!globalSlashCommands.containsKey(name)) {
-                    globalSlashCommandsIdsToDelete.add(id)
+            val currentGuildSlashCommandsNameAndId: Map<String, Map<Long, String>> =
+                if (guildIds.isNotEmpty()) {
+                    getCurrentGuildSlashCommandsNameAndIds()
                 } else {
-                    globalSlashCommandsToAdd.add(globalSlashCommands[name]!!)
+                    emptyMap()
+                }
+
+            val globalSlashCommands: MutableMap<String, SlashCommandBuilder> = HashMap()
+            val guildSlashCommands: MutableMap<String, SlashCommandBuilder> = HashMap()
+
+            slashCommands.forEach { slash ->
+                if (!slash.specificGuildOnly) {
+                    globalSlashCommands[slash.name] = slash
+                } else {
+                    guildSlashCommands[slash.name] = slash
                 }
             }
 
-            globalSlashCommands.forEach { (name, slash) ->
-                if (!currentGlobalSlashCommandsNameAndId.containsValue(name)) {
-                    globalSlashCommandsToAdd.add(slash)
-                }
-            }
-        } else {
-            globalSlashCommandsToAdd.addAll(globalSlashCommands.values)
-        }
+            val globalSlashCommandsIdsToDelete: MutableList<Long> = mutableListOf()
+            val guildSlashCommandsIdsToDelete: MutableList<Long> = mutableListOf()
+            val globalSlashCommandsToAdd: MutableList<SlashCommandBuilder> = mutableListOf()
+            val guildSlashCommandsToAdd = mutableListOf<SlashCommandBuilder>()
 
-        if (currentGuildSlashCommandsNameAndId.isNotEmpty()) {
-            currentGuildSlashCommandsNameAndId.forEach { (_, nameAndId) ->
-                nameAndId.forEach { (id, name) ->
-                    if (guildSlashCommands.containsKey(name)) {
-                        guildSlashCommandsToAdd.add(guildSlashCommands[name]!!)
-                    } else if (!guildSlashCommands.containsKey(name)) {
-                        guildSlashCommandsIdsToDelete.add(id)
+            if (currentGlobalSlashCommandsNameAndId.isNotEmpty()) {
+                currentGlobalSlashCommandsNameAndId.forEach { (id, name) ->
+                    if (globalSlashCommands.containsKey(name)) {
+                        globalSlashCommandsToAdd.add(globalSlashCommands[name]!!)
+                    } else if (!globalSlashCommands.containsKey(name)) {
+                        globalSlashCommandsIdsToDelete.add(id)
                     } else {
-                        guildSlashCommandsToAdd.add(guildSlashCommands[name]!!)
+                        globalSlashCommandsToAdd.add(globalSlashCommands[name]!!)
                     }
                 }
+
+                globalSlashCommands.forEach { (name, slash) ->
+                    if (!currentGlobalSlashCommandsNameAndId.containsValue(name)) {
+                        globalSlashCommandsToAdd.add(slash)
+                    }
+                }
+            } else {
+                globalSlashCommandsToAdd.addAll(globalSlashCommands.values)
             }
 
-            guildSlashCommands.forEach { (name, slash) ->
+            if (currentGuildSlashCommandsNameAndId.isNotEmpty()) {
                 currentGuildSlashCommandsNameAndId.forEach { (_, nameAndId) ->
-                    if (!nameAndId.containsValue(name)) {
-                        guildSlashCommandsToAdd.add(slash)
+                    nameAndId.forEach { (id, name) ->
+                        if (guildSlashCommands.containsKey(name)) {
+                            guildSlashCommandsToAdd.add(guildSlashCommands[name]!!)
+                        } else if (!guildSlashCommands.containsKey(name)) {
+                            guildSlashCommandsIdsToDelete.add(id)
+                        } else {
+                            guildSlashCommandsToAdd.add(guildSlashCommands[name]!!)
+                        }
                     }
                 }
-            }
-        } else {
-            guildSlashCommandsToAdd.addAll(guildSlashCommands.values)
-        }
 
-        // being rate limited, do 5 at a time
-        val globalSlashCommandsToAddChunks = globalSlashCommandsToAdd.chunked(1)
-        val guildSlashCommandsToAddChunks = guildSlashCommandsToAdd.chunked(1)
-
-        if (globalSlashCommandsToAddChunks.isNotEmpty()) {
-            var amountAdded = 0
-            globalSlashCommandsToAddChunks.forEach {
-                if (amountAdded >= 4) {
-                    yde.logger.debug("Sleeping for 25 seconds to avoid rate limit")
-                    Thread.sleep(25000)
-                    amountAdded = 0
-                    createGlobalSlashCommands(it)
-                } else {
-                    amountAdded++
-                    createGlobalSlashCommands(it)
+                guildSlashCommands.forEach { (name, slash) ->
+                    currentGuildSlashCommandsNameAndId.forEach { (_, nameAndId) ->
+                        if (!nameAndId.containsValue(name)) {
+                            guildSlashCommandsToAdd.add(slash)
+                        }
+                    }
                 }
+            } else {
+                guildSlashCommandsToAdd.addAll(guildSlashCommands.values)
             }
-        }
 
-        if (guildSlashCommandsToAddChunks.isNotEmpty()) {
-            var amountAdded = 0
-            guildSlashCommandsToAddChunks.forEach { chunk ->
-                guildIds.forEach { guildId ->
+            // being rate limited, do 5 at a time
+            val globalSlashCommandsToAddChunks = globalSlashCommandsToAdd.chunked(1)
+            val guildSlashCommandsToAddChunks = guildSlashCommandsToAdd.chunked(1)
+
+            if (globalSlashCommandsToAddChunks.isNotEmpty()) {
+                var amountAdded = 0
+                globalSlashCommandsToAddChunks.forEach {
                     if (amountAdded >= 4) {
                         yde.logger.debug("Sleeping for 25 seconds to avoid rate limit")
                         Thread.sleep(25000)
-                        createGuildSlashCommands(guildId, chunk)
+                        amountAdded = 0
+                        createGlobalSlashCommands(it)
                     } else {
                         amountAdded++
-                        createGuildSlashCommands(guildId, chunk)
+                        createGlobalSlashCommands(it)
                     }
                 }
             }
-        }
 
-        val globalSlashCommandsIdsToDeleteChunks = globalSlashCommandsIdsToDelete.chunked(1)
-        val guildSlashCommandsIdsToDeleteChunks = guildSlashCommandsIdsToDelete.chunked(1)
-
-        if (globalSlashCommandsIdsToDeleteChunks.isNotEmpty()) {
-            var amountDeleted = 0
-            globalSlashCommandsIdsToDeleteChunks.forEach { chunk ->
-                if (amountDeleted >= 4) {
-                    yde.logger.debug("Sleeping for 25 seconds to avoid rate limit")
-                    Thread.sleep(25000)
-                    amountDeleted = 0
-                    deleteGlobalSlashCommands(chunk)
-                } else {
-                    amountDeleted++
-                    deleteGlobalSlashCommands(chunk)
+            if (guildSlashCommandsToAddChunks.isNotEmpty()) {
+                var amountAdded = 0
+                guildSlashCommandsToAddChunks.forEach { chunk ->
+                    guildIds.forEach { guildId ->
+                        if (amountAdded >= 4) {
+                            yde.logger.debug("Sleeping for 25 seconds to avoid rate limit")
+                            Thread.sleep(25000)
+                            createGuildSlashCommands(guildId, chunk)
+                        } else {
+                            amountAdded++
+                            createGuildSlashCommands(guildId, chunk)
+                        }
+                    }
                 }
             }
-        }
 
-        if (guildSlashCommandsIdsToDeleteChunks.isNotEmpty()) {
-            guildIds.forEach { _ ->
+            val globalSlashCommandsIdsToDeleteChunks = globalSlashCommandsIdsToDelete.chunked(1)
+            val guildSlashCommandsIdsToDeleteChunks = guildSlashCommandsIdsToDelete.chunked(1)
+
+            if (globalSlashCommandsIdsToDeleteChunks.isNotEmpty()) {
                 var amountDeleted = 0
-                guildSlashCommandsIdsToDeleteChunks.forEach { chunk ->
+                globalSlashCommandsIdsToDeleteChunks.forEach { chunk ->
                     if (amountDeleted >= 4) {
                         yde.logger.debug("Sleeping for 25 seconds to avoid rate limit")
                         Thread.sleep(25000)
                         amountDeleted = 0
-                        deleteGuildSlashCommands(chunk)
+                        deleteGlobalSlashCommands(chunk)
                     } else {
                         amountDeleted++
-                        deleteGuildSlashCommands(chunk)
+                        deleteGlobalSlashCommands(chunk)
+                    }
+                }
+            }
+
+            if (guildSlashCommandsIdsToDeleteChunks.isNotEmpty()) {
+                guildIds.forEach { _ ->
+                    var amountDeleted = 0
+                    guildSlashCommandsIdsToDeleteChunks.forEach { chunk ->
+                        if (amountDeleted >= 4) {
+                            yde.logger.debug("Sleeping for 25 seconds to avoid rate limit")
+                            Thread.sleep(25000)
+                            amountDeleted = 0
+                            deleteGuildSlashCommands(chunk)
+                        } else {
+                            amountDeleted++
+                            deleteGuildSlashCommands(chunk)
+                        }
                     }
                 }
             }

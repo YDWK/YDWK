@@ -35,8 +35,8 @@ enum class MessageNotificationLevel(private val value: Int) {
          * @param value The value to get the [MessageNotificationLevel] by.
          * @return The [MessageNotificationLevel] by the given [value].
          */
-        fun fromInt(value: Int): MessageNotificationLevel {
-            return values().firstOrNull { it.value == value } ?: UNKNOWN
+        fun getValue(value: Int): MessageNotificationLevel {
+            return entries.firstOrNull { it.value == value } ?: UNKNOWN
         }
     }
 

@@ -38,7 +38,7 @@ import io.github.ydwk.yde.entities.channel.guild.message.text.PermissionOverwrit
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildStageChannel
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.yde.entities.guild.*
-import io.github.ydwk.yde.entities.guild.enums.GuildPermission
+import io.github.ydwk.yde.entities.guild.enums.*
 import io.github.ydwk.yde.entities.guild.role.RoleTag
 import io.github.ydwk.yde.entities.guild.ws.WelcomeChannel
 import io.github.ydwk.yde.entities.message.*
@@ -94,7 +94,77 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     }
 
     override fun buildGuild(json: JsonNode): Guild {
-        TODO("Not yet implemented")
+        val voiceStates =
+            if (json.hasNonNull("voice_states")) json["voice_states"].map { buildVoiceState(it) }
+            else emptyList()
+
+        if (voiceStates.isNotEmpty()) {
+            for (vc in voiceStates) {
+                val member = vc.member
+                if (member != null) {
+                    member.voiceState = vc
+                }
+            }
+        }
+
+        val id = json["id"].asLong()
+
+        return GuildImpl(
+            yde,
+            json,
+            id,
+            if (json.has("icon")) json["icon"].asText() else null,
+            if (json.has("splash")) json["splash"].asText() else null,
+            if (json.has("discovery_splash")) json["discovery_splash"].asText() else null,
+            if (json.hasNonNull("owner")) json["owner"].asBoolean() else null,
+            GetterSnowFlake.of(json["owner_id"].asLong()),
+            if (json.has("permissions")) json["permissions"].asText() else null,
+            if (json.has("afk_channel_id")) GetterSnowFlake.of(json["afk_channel_id"].asLong())
+            else null,
+            json["afk_timeout"].asInt(),
+            if (json.has("widget_enabled")) json["widget_enabled"].asBoolean() else null,
+            if (json.has("widget_channel_id"))
+                GetterSnowFlake.of(json["widget_channel_id"].asLong())
+            else null,
+            VerificationLevel.getValue(json["verification_level"].asInt()),
+            MessageNotificationLevel.getValue(json["default_message_notifications"].asInt()),
+            ExplicitContentFilterLevel.getValue(json["explicit_content_filter"].asInt()),
+            json["roles"].map { buildRole(it) },
+            json["emojis"].map { buildEmoji(it) },
+            json["features"].map { GuildFeature.getValue(it.asText()) }.toSet(),
+            MFALevel.getValue(json["mfa_level"].asInt()),
+            if (json.has("application_id")) GetterSnowFlake.of(json["application_id"].asLong())
+            else null,
+            if (json.has("system_channel_id"))
+                GetterSnowFlake.of(json["system_channel_id"].asLong())
+            else null,
+            SystemChannelFlag.getValue(json["system_channel_flags"].asInt()),
+            if (json.has("rules_channel_id")) GetterSnowFlake.of(json["rules_channel_id"].asLong())
+            else null,
+            if (json.has("max_presences")) json["max_presences"].asInt() else null,
+            json["max_members"].asInt(),
+            if (json.has("vanity_url_code")) json["vanity_url_code"].asText() else null,
+            if (json.has("description")) json["description"].asText() else null,
+            if (json.has("banner")) json["banner"].asText() else null,
+            PremiumTier.getValue(json["premium_tier"].asInt()),
+            json["premium_subscription_count"].asInt(),
+            json["preferred_locale"].asText(),
+            if (json.has("public_updates_channel_id"))
+                GetterSnowFlake.of(json["public_updates_channel_id"].asLong())
+            else null,
+            if (json.has("max_video_channel_users")) json["max_video_channel_users"].asInt()
+            else null,
+            if (json.has("approximate_member_count")) json["approximate_member_count"].asInt()
+            else null,
+            if (json.has("approximate_presence_count")) json["approximate_presence_count"].asInt()
+            else null,
+            if (json.has("welcome_screen")) buildWelcomeScreen(json["welcome_screen"]) else null,
+            NSFWLeveL.getValue(json["nsfw_level"].asInt()),
+            json["stickers"].map { buildSticker(it) },
+            json["premium_progress_bar_enabled"].asBoolean(),
+            voiceStates,
+            yde.getGuildChannels().filter { it.idAsLong == id },
+            json["name"].asText())
     }
 
     override fun buildMessage(json: JsonNode): Message {
@@ -462,6 +532,10 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     }
 
     override fun buildAttachment(json: JsonNode): Attachment {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildEmoji(json: JsonNode): Emoji {
         TODO("Not yet implemented")
     }
 

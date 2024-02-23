@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.neovisionaries.ws.client.*
+import io.github.ydwk.yde.util.LOOM
 import io.github.ydwk.ydwk.*
 import io.github.ydwk.ydwk.evm.event.events.gateway.DisconnectEvent
 import io.github.ydwk.ydwk.evm.event.events.gateway.ReconnectEvent
@@ -77,7 +78,9 @@ import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -279,10 +282,12 @@ open class WebSocketManager(
     }
 
     private fun checkForAnyBotsInVC() {
-        ydwk.getGuilds().forEach { it ->
-            val botAsMember = it.botAsMember
-            if (botAsMember.voiceState != null) {
-                botAsMember.leaveVC()
+        CoroutineScope(Dispatchers.LOOM).launch {
+            ydwk.getGuilds().forEach { it ->
+                val botAsMember = it.getBotAsMember()
+                if (botAsMember.voiceState != null) {
+                    botAsMember.leaveVC()
+                }
             }
         }
     }
@@ -443,7 +448,7 @@ open class WebSocketManager(
     }
 
     private fun onEventType(eventType: String, d: JsonNode) {
-        runBlocking {
+        CoroutineScope(Dispatchers.LOOM).launch {
             when (EventNames.fromString(eventType)) {
                 EventNames.HELLO -> {
                     // do nothing

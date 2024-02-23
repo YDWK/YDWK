@@ -23,27 +23,20 @@ import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.guild.Member
 import io.github.ydwk.yde.entities.message.Embed
-import io.github.ydwk.yde.impl.YDEImpl
-import io.github.ydwk.yde.impl.entities.guild.MemberImpl
 import io.github.ydwk.yde.impl.interaction.application.ApplicationCommandImpl
 import io.github.ydwk.yde.impl.interaction.application.sub.ReplyImpl
 import io.github.ydwk.yde.interaction.Interaction
 import io.github.ydwk.yde.interaction.application.sub.Reply
 import io.github.ydwk.yde.interaction.application.type.UserCommand
 
-class UserCommandImpl(yde: YDE, json: JsonNode, idAsLong: Long, interaction: Interaction) :
-    ApplicationCommandImpl(yde, json, idAsLong, interaction), UserCommand {
-    override val targetUser: User
-        get() = yde.entityInstanceBuilder.buildUser(json["data"]["resolved"]["users"])
-
+class UserCommandImpl(
+    yde: YDE,
+    json: JsonNode,
+    idAsLong: Long,
+    interaction: Interaction,
+    override val targetUser: User,
     override val targetMember: Member
-        get() =
-            if (guild != null) {
-                MemberImpl((yde as YDEImpl), json["data"]["resolved"]["members"], guild, targetUser)
-            } else {
-                throw IllegalStateException("This command was not executed in a guild")
-            }
-
+) : ApplicationCommandImpl(yde, json, idAsLong, interaction), UserCommand {
     override fun reply(content: String): Reply {
         return ReplyImpl(yde, content, null, interaction.id, token)
     }

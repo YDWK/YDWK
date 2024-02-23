@@ -38,6 +38,14 @@ class TextInputImpl(
     yde: YDE,
     json: JsonNode,
     interactionId: GetterSnowFlake,
+    override val customId: String,
+    override val style: TextInput.TextInputStyle,
+    override val label: String,
+    override val minLength: Int?,
+    override val maxLength: Int?,
+    override val required: Boolean?,
+    override val initialValue: String?,
+    override val placeholder: String?,
 ) : TextInput, ComponentInteractionImpl(yde, json, interactionId) {
     private val componentJson: JsonNode =
         MessageImpl(yde, json["message"], json["message"]["id"].asLong()).json
@@ -48,32 +56,6 @@ class TextInputImpl(
         componentInteractionImpl.yde,
         componentInteractionImpl.json,
         componentInteractionImpl.interactionId)
-
-    override val customId: String
-        get() = componentJson["custom_id"].asText()
-
-    override val style: TextInput.TextInputStyle
-        get() = TextInput.TextInputStyle.fromValue(componentJson["style"].asInt())
-
-    override val label: String
-        get() = componentJson["label"].asText()
-
-    override val minLength: Int?
-        get() = if (componentJson.has("min_length")) componentJson["min_length"].asInt() else null
-
-    override val maxLength: Int?
-        get() = if (componentJson.has("max_length")) componentJson["max_length"].asInt() else null
-
-    override val required: Boolean?
-        get() = if (componentJson.has("required")) componentJson["required"].asBoolean() else null
-    override val initialValue: String?
-        get() =
-            if (componentJson.has("initial_value")) componentJson["initial_value"].asText()
-            else null
-
-    override val placeholder: String?
-        get() =
-            if (componentJson.has("placeholder")) componentJson["placeholder"].asText() else null
 
     override fun reply(content: String): Reply {
         return ReplyImpl(yde, content, null, interactionId.asString, interactionToken)

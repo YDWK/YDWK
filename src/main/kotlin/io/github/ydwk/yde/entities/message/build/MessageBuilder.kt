@@ -28,7 +28,6 @@ import io.github.ydwk.yde.entities.guild.Member
 import io.github.ydwk.yde.entities.message.Embed
 import io.github.ydwk.yde.entities.message.MessageFlag
 import io.github.ydwk.yde.entities.message.SendAble
-import io.github.ydwk.yde.impl.entities.MessageImpl
 import io.github.ydwk.yde.rest.EndPoint
 import kotlinx.coroutines.CompletableDeferred
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -168,7 +167,7 @@ class MessageBuilder {
                 if (json == null) {
                     throw IllegalStateException("Response body is null")
                 } else {
-                    MessageImpl(channel.yde, json, json["id"].asLong())
+                    channel.yde.entityInstanceBuilder.buildMessage(json)
                 }
             }
     }

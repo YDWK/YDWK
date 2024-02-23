@@ -98,8 +98,8 @@ enum class GuildFeature(private val feature: String) {
          * @param feature The feature to get the [GuildFeature] for.
          * @return The [GuildFeature] for the provided [feature].
          */
-        fun fromString(feature: String): GuildFeature {
-            return values().firstOrNull { it.feature == feature } ?: UNKNOWN
+        fun getValue(feature: String): GuildFeature {
+            return entries.firstOrNull { it.feature == feature } ?: UNKNOWN
         }
     }
 

@@ -22,8 +22,6 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.Emoji
 import io.github.ydwk.yde.entities.message.Embed
-import io.github.ydwk.yde.impl.entities.EmojiImpl
-import io.github.ydwk.yde.impl.entities.MessageImpl
 import io.github.ydwk.yde.impl.interaction.ComponentInteractionImpl
 import io.github.ydwk.yde.impl.interaction.application.sub.ReplyImpl
 import io.github.ydwk.yde.interaction.application.sub.Reply
@@ -37,20 +35,35 @@ open class ButtonImpl(
     yde: YDE,
     json: JsonNode,
     interactionId: GetterSnowFlake,
+    override val style: ButtonStyle,
+    override val label: String?,
+    override val customId: String?,
+    override val emoji: Emoji?,
+    override val url: URL?,
+    override val disabled: Boolean,
 ) : Button, ComponentInteractionImpl(yde, json, interactionId) {
 
     constructor(
         componentInteractionImpl: ComponentInteractionImpl,
+        style: ButtonStyle,
+        label: String?,
+        customId: String?,
+        emoji: Emoji?,
+        url: URL?,
+        disabled: Boolean,
     ) : this(
         componentInteractionImpl.yde,
         componentInteractionImpl.json,
-        componentInteractionImpl.interactionId)
-
-    override val customId: String?
-        get() = json["data"]["custom_id"]?.asText()
+        componentInteractionImpl.interactionId,
+        style,
+        label,
+        customId,
+        emoji,
+        url,
+        disabled)
 
     private val componentJson: JsonNode = run {
-        val message = MessageImpl(yde, json["message"], json["message"]["id"].asLong()).json
+        val message = yde.entityInstanceBuilder.buildMessage(json["message"]).json
         val mainComponents = message["components"]
         for (mainComponent in mainComponents) {
             val components = mainComponent["components"]
@@ -62,12 +75,6 @@ open class ButtonImpl(
         throw IllegalStateException("Component not found")
     }
 
-    override val url: URL?
-        get() = if (componentJson.has("url")) URL(componentJson["url"].asText()) else null
-
-    override val disabled: Boolean
-        get() = componentJson["disabled"].asBoolean()
-
     override fun reply(content: String): Reply {
         return ReplyImpl(yde, content, null, interactionId.asString, interactionToken)
     }
@@ -75,15 +82,6 @@ open class ButtonImpl(
     override fun reply(embed: Embed): Reply {
         return ReplyImpl(yde, null, embed, interactionId.asString, interactionToken)
     }
-
-    override val label: String?
-        get() = if (componentJson.has("label")) componentJson["label"].asText() else null
-
-    override val emoji: Emoji?
-        get() = if (componentJson.has("emoji")) EmojiImpl(yde, componentJson["emoji"]) else null
-
-    override val style: ButtonStyle
-        get() = ButtonStyle.fromInt(componentJson["style"].asInt())
 
     override val type: ComponentType
         get() = ComponentType.BUTTON

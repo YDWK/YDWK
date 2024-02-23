@@ -30,7 +30,7 @@ import io.github.ydwk.ydwk.voice.getVoiceConnection
 
 class VoiceStateUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override suspend fun start() {
-        val voiceState: VoiceState = VoiceStateImpl(ydwk, json)
+        val voiceState: VoiceState = ydwk.entityInstanceBuilder.buildVoiceState(json)
 
         val member = voiceState.member
         val channel = voiceState.channel
@@ -38,7 +38,7 @@ class VoiceStateUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, js
         if (member == null) {
             ydwk.logger.debug("Voice member is null")
         } else {
-            val botAsMember = voiceState.guild?.botAsMember as MemberImpl
+            val botAsMember = voiceState.guild?.getBotAsMember() as MemberImpl
 
             if (member.idAsLong == botAsMember.idAsLong) {
                 botAsMember.voiceState = if (channel != null) voiceState else null

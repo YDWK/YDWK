@@ -22,22 +22,19 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.Message
 import io.github.ydwk.yde.entities.message.Embed
-import io.github.ydwk.yde.impl.entities.MessageImpl
 import io.github.ydwk.yde.impl.interaction.application.ApplicationCommandImpl
 import io.github.ydwk.yde.impl.interaction.application.sub.ReplyImpl
 import io.github.ydwk.yde.interaction.Interaction
 import io.github.ydwk.yde.interaction.application.sub.Reply
 import io.github.ydwk.yde.interaction.application.type.MessageCommand
 
-class MessageCommandImpl(yde: YDE, json: JsonNode, idAsLong: Long, interaction: Interaction) :
-    ApplicationCommandImpl(yde, json, idAsLong, interaction), MessageCommand {
+class MessageCommandImpl(
+    yde: YDE,
+    json: JsonNode,
+    idAsLong: Long,
+    interaction: Interaction,
     override val targetMessage: Message
-        get() =
-            MessageImpl(
-                yde,
-                json["data"]["resolved"]["messages"],
-                json["data"]["resolved"]["messages"]["id"].asLong())
-
+) : ApplicationCommandImpl(yde, json, idAsLong, interaction), MessageCommand {
     override fun reply(content: String): Reply {
         return ReplyImpl(yde, content, null, interaction.id, token)
     }

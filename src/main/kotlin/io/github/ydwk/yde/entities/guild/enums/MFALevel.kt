@@ -35,8 +35,8 @@ enum class MFALevel(private val value: Int) {
          * @param value The value to get the [MFALevel] for.
          * @return The [MFALevel] for the given [value].
          */
-        fun fromInt(value: Int): MFALevel {
-            return values().firstOrNull { it.value == value } ?: UNKNOWN
+        fun getValue(value: Int): MFALevel {
+            return entries.firstOrNull { it.value == value } ?: UNKNOWN
         }
     }
 

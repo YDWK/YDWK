@@ -25,10 +25,6 @@ import io.github.ydwk.yde.entities.Message
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.channel.TextChannel
 import io.github.ydwk.yde.entities.guild.Member
-import io.github.ydwk.yde.impl.YDEImpl
-import io.github.ydwk.yde.impl.entities.MessageImpl
-import io.github.ydwk.yde.impl.entities.guild.MemberImpl
-import io.github.ydwk.yde.impl.interaction.message.ComponentInteractionDataImpl
 import io.github.ydwk.yde.interaction.ComponentInteraction
 import io.github.ydwk.yde.interaction.message.Component
 import io.github.ydwk.yde.interaction.message.ComponentInteractionData
@@ -40,43 +36,17 @@ open class ComponentInteractionImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val interactionId: GetterSnowFlake,
+    override val type: ComponentType,
+    override val interactionToken: String,
+    override val message: Message,
+    override val member: Member?,
+    override val user: User?,
+    override val guild: Guild?,
+    override val channel: TextChannel?,
+    override val applicationId: GetterSnowFlake?,
+    override val components: List<Component>,
+    override val data: ComponentInteractionData,
 ) : ComponentInteraction {
-    override val type: ComponentType
-        get() = ComponentType.fromInt(json["component_type"].asInt())
-
-    override val interactionToken: String
-        get() = json["token"].asText()
-
-    override val message: Message
-        get() = MessageImpl(yde, json["message"], json["message"]["id"].asLong())
-
-    override val guild: Guild?
-        get() = if (json.has("guild_id")) yde.getGuildById(json["guild_id"].asLong()) else null
-
-    override val member: Member?
-        get() =
-            if (json.has("member")) MemberImpl((yde as YDEImpl), json["member"], guild!!) else null
-
-    override val user: User?
-        get() = if (json.has("user")) yde.entityInstanceBuilder.buildUser(json["user"]) else null
-
-    override val channel: TextChannel?
-        get() =
-            if (json.has("channel_id"))
-                yde.getChannelById(json["channel_id"].asLong()) as TextChannel
-            else null
-
-    override val applicationId: GetterSnowFlake?
-        get() =
-            if (json.has("application_id")) GetterSnowFlake.of(json["application_id"].asLong())
-            else null
-
-    override val components: List<Component>
-        get() = message.components
-
-    override val data: ComponentInteractionData
-        get() = ComponentInteractionDataImpl(yde, json["data"])
-
     override fun toString(): String {
         return EntityToStringBuilder(yde, this).toString()
     }

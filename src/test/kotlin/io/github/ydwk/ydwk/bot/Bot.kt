@@ -129,7 +129,7 @@ suspend fun main() {
 class Test : InteractionEventListener {
     override suspend fun onSlashCommandEvent(event: SlashCommandEvent) {
         if (event.slash.name == "bot_info") {
-            event.slash.reply("Bot info: ${event.slash.guild?.botAsMember?.joinedAt}").trigger()
+            event.slash.reply("Bot info: ${event.slash.guild?.getBotAsMember()?.joinedAt}").trigger()
         }
     }
 }
