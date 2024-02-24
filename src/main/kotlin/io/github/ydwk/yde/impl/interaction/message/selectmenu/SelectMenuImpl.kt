@@ -44,7 +44,11 @@ open class SelectMenuImpl(
     override val maxValues: Int,
     override val values: List<String>,
     override val isDisabled: Boolean,
-) : SelectMenu, ComponentInteractionImpl(yde, json, interactionId) {
+) :
+    SelectMenu,
+    ComponentInteractionImpl(
+        yde.entityInstanceBuilder.buildComponentInteraction(json, interactionId)
+            as ComponentInteractionImpl) {
     constructor(
         componentInteractionImpl: ComponentInteractionImpl,
         placeholder: String?,
@@ -61,6 +65,18 @@ open class SelectMenuImpl(
         maxValues,
         values,
         isDisabled)
+
+    constructor(
+        selectMenu: SelectMenu,
+    ) : this(
+        selectMenu.yde,
+        selectMenu.json,
+        selectMenu.interactionId,
+        selectMenu.placeholder,
+        selectMenu.minValues,
+        selectMenu.maxValues,
+        selectMenu.values,
+        selectMenu.isDisabled)
 
     override val customId: String
         get() = json["data"]["custom_id"].asText()

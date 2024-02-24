@@ -24,20 +24,14 @@ import io.github.ydwk.yde.entities.message.embed.Video
 import io.github.ydwk.yde.util.EntityToStringBuilder
 import java.net.URL
 
-class VideoImpl(override val yde: YDE, override val json: JsonNode) : Video {
-
-    override val url: URL?
-        get() = if (json.has("url")) URL(json["url"].asText()) else null
-
-    override val proxyUrl: String?
-        get() = if (json.has("proxy_url")) json["proxy_url"].asText() else null
-
-    override val height: Int?
-        get() = if (json.has("height")) json["height"].asInt() else null
-
+class VideoImpl(
+    override val yde: YDE,
+    override val json: JsonNode,
+    override val url: URL?,
+    override val proxyUrl: String?,
+    override val height: Int?,
     override val width: Int?
-        get() = if (json.has("width")) json["width"].asInt() else null
-
+) : Video {
     override fun toString(): String {
         return EntityToStringBuilder(yde, this).toString()
     }

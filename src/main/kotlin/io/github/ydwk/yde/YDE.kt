@@ -41,6 +41,8 @@ import io.github.ydwk.yde.util.ThreadFactory
 import java.time.Duration
 import java.util.concurrent.CompletableFuture
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineDispatcher
+import org.jetbrains.annotations.BlockingExecutor
 
 interface YDE {
 
@@ -78,6 +80,13 @@ interface YDE {
      * @return The thread factory.
      */
     val threadFactory: ThreadFactory
+
+    /**
+     * The coroutine dispatcher used by the bot.
+     *
+     * @return The coroutine dispatcher.
+     */
+    val coroutineDispatcher: @BlockingExecutor CoroutineDispatcher
 
     /**
      * Creates a dm channel.

@@ -23,8 +23,7 @@ import io.github.ydwk.yde.impl.YDEImpl
 import io.github.ydwk.yde.impl.builders.util.getCommandNameAndIds
 import io.github.ydwk.yde.impl.builders.util.getCurrentGuildCommandsNameAndIds
 import io.github.ydwk.yde.rest.EndPoint
-import io.github.ydwk.yde.util.LOOM
-import kotlinx.coroutines.*
+import kotlinx.coroutines.* 
 import okhttp3.RequestBody.Companion.toRequestBody
 
 class UserCommandSender(
@@ -40,7 +39,7 @@ class UserCommandSender(
     }
 
     private fun sendUserCommands() {
-        CoroutineScope(Dispatchers.LOOM).launch {
+        CoroutineScope(yde.coroutineDispatcher).launch {
             val currentGlobalUserCommandsNameAndId = getCurrentGlobalUserCommandsNameAndIds()
             val currentGuildUserCommandsNameAndId =
                 if (guildIds.isNotEmpty()) getCurrentGuildUserCommandsNameAndIds() else emptyMap()

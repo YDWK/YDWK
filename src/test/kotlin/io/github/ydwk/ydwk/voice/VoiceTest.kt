@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.voice
 
-import io.github.realyusufismail.jconfig.util.JConfigUtils
+import io.github.realyusufismail.jconfig.JConfig
 import io.github.ydwk.yde.builders.slash.SlashCommandBuilder
 import io.github.ydwk.ydwk.Activity
 import io.github.ydwk.ydwk.BotBuilder
@@ -49,7 +49,7 @@ class VoiceTest : InteractionEventListener {
                 .also { slash.reply("Joined vc").trigger() }
         } else if (event.slash.name == "leave_vc") {
             val slash = event.slash
-            slash.guild!!.botAsMember.leaveVC().join()
+            slash.guild!!.getBotAsMember().leaveVC().join()
         }
     }
 }
@@ -57,7 +57,7 @@ class VoiceTest : InteractionEventListener {
 suspend fun main() {
     val ydwk =
         BotBuilder.createDefaultBot(
-                JConfigUtils.getString("token") ?: throw Exception("Token not found!"))
+                JConfig.build().get("token")?.asText() ?: throw Exception("Token not found!"))
             .setActivity(Activity.playing("YDWK"))
             .setETFInsteadOfJson(true)
             .build()

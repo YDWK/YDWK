@@ -56,6 +56,21 @@ import io.github.ydwk.yde.impl.entities.guild.WelcomeScreenImpl
 import io.github.ydwk.yde.impl.entities.guild.role.RoleTagImpl
 import io.github.ydwk.yde.impl.entities.guild.ws.WelcomeChannelImpl
 import io.github.ydwk.yde.impl.interaction.message.ComponentImpl
+import io.github.ydwk.yde.interaction.ComponentInteraction
+import io.github.ydwk.yde.interaction.Interaction
+import io.github.ydwk.yde.interaction.application.ApplicationCommand
+import io.github.ydwk.yde.interaction.application.ApplicationCommandOption
+import io.github.ydwk.yde.interaction.application.type.MessageCommand
+import io.github.ydwk.yde.interaction.application.type.SlashCommand
+import io.github.ydwk.yde.interaction.application.type.UserCommand
+import io.github.ydwk.yde.interaction.message.ActionRow
+import io.github.ydwk.yde.interaction.message.Component
+import io.github.ydwk.yde.interaction.message.ComponentInteractionData
+import io.github.ydwk.yde.interaction.message.button.Button
+import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenu
+import io.github.ydwk.yde.interaction.message.selectmenu.types.*
+import io.github.ydwk.yde.interaction.message.selectmenu.types.string.StringSelectMenuOption
+import io.github.ydwk.yde.interaction.message.textinput.TextInput
 import io.github.ydwk.yde.util.*
 import java.awt.Color
 
@@ -291,6 +306,10 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
                 return EntityToStringBuilder(yde, this).add("sessionId", sessionId).toString()
             }
         }
+    }
+
+    override fun buildVoiceRegion(json: JsonNode): VoiceState.VoiceRegion {
+        TODO("Not yet implemented")
     }
 
     override fun buildAuditLog(json: JsonNode): AuditLog {
@@ -564,6 +583,91 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     }
 
     override fun buildVideo(json: JsonNode): Video {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildInteraction(json: JsonNode): Interaction {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildComponentInteraction(
+        json: JsonNode,
+        interactionId: GetterSnowFlake
+    ): ComponentInteraction {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildComponent(json: JsonNode): Component {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildComponentInteractionData(json: JsonNode): ComponentInteractionData {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildSelectOptionValue(
+        json: JsonNode
+    ): ComponentInteractionData.SelectOptionValue {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildTextInput(json: JsonNode): TextInput {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildSelectMenu(json: JsonNode, interactionId: GetterSnowFlake): SelectMenu {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildButton(json: JsonNode): Button {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildActionRow(json: JsonNode): ActionRow {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildUserSelectMenu(json: JsonNode): UserSelectMenu {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildStringSelectMenu(json: JsonNode): StringSelectMenu {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildRoleSelectMenu(json: JsonNode): RoleSelectMenu {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildMemberSelectMenu(json: JsonNode): MemberSelectMenu {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildChannelSelectMenu(json: JsonNode): ChannelSelectMenu {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildStringSelectMenuOption(json: JsonNode): StringSelectMenuOption {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildApplicationCommand(json: JsonNode): ApplicationCommand {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildApplicationCommandOption(json: JsonNode): ApplicationCommandOption {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildUserCommand(json: JsonNode, interaction: Interaction?): UserCommand {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildSlashCommand(json: JsonNode, interaction: Interaction?): SlashCommand {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildMessageCommand(json: JsonNode, interaction: Interaction?): MessageCommand {
         TODO("Not yet implemented")
     }
 }

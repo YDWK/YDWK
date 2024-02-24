@@ -20,7 +20,6 @@ package io.github.ydwk.yde.impl.rest.methods
 
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.VoiceState
-import io.github.ydwk.yde.impl.entities.VoiceStateImpl
 import io.github.ydwk.yde.rest.EndPoint
 import io.github.ydwk.yde.rest.methods.VoiceRestAPIMethods
 import kotlinx.coroutines.CompletableDeferred
@@ -34,7 +33,7 @@ class VoiceRestAPIMethodsImpl(val yde: YDE) : VoiceRestAPIMethods {
                 throw IllegalStateException("json body is null")
             } else {
                 jsonBody.forEach { json ->
-                    voiceRegions.add(VoiceStateImpl.VoiceRegionImpl(yde, json, json["id"].asLong()))
+                    voiceRegions.add(yde.entityInstanceBuilder.buildVoiceRegion(json))
                 }
             }
             voiceRegions

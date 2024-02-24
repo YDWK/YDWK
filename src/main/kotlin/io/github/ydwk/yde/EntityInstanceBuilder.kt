@@ -42,6 +42,22 @@ import io.github.ydwk.yde.entities.message.*
 import io.github.ydwk.yde.entities.message.embed.*
 import io.github.ydwk.yde.entities.sticker.StickerItem
 import io.github.ydwk.yde.entities.user.Avatar
+import io.github.ydwk.yde.interaction.ComponentInteraction
+import io.github.ydwk.yde.interaction.Interaction
+import io.github.ydwk.yde.interaction.application.ApplicationCommand
+import io.github.ydwk.yde.interaction.application.ApplicationCommandOption
+import io.github.ydwk.yde.interaction.application.type.MessageCommand
+import io.github.ydwk.yde.interaction.application.type.SlashCommand
+import io.github.ydwk.yde.interaction.application.type.UserCommand
+import io.github.ydwk.yde.interaction.message.ActionRow
+import io.github.ydwk.yde.interaction.message.Component
+import io.github.ydwk.yde.interaction.message.ComponentInteractionData
+import io.github.ydwk.yde.interaction.message.button.Button
+import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenu
+import io.github.ydwk.yde.interaction.message.selectmenu.types.*
+import io.github.ydwk.yde.interaction.message.selectmenu.types.string.StringSelectMenuOption
+import io.github.ydwk.yde.interaction.message.textinput.TextInput
+import io.github.ydwk.yde.util.GetterSnowFlake
 
 interface EntityInstanceBuilder {
 
@@ -112,6 +128,14 @@ interface EntityInstanceBuilder {
     fun buildVoiceState(json: JsonNode, backUpGuild: JsonNode): VoiceState {
         return buildVoiceState(json, buildGuild(backUpGuild))
     }
+
+    /**
+     * Used to build an instance of [VoiceState.VoiceRegion]
+     *
+     * @param json the json
+     * @return [VoiceState.VoiceRegion] the voice region
+     */
+    fun buildVoiceRegion(json: JsonNode): VoiceState.VoiceRegion
 
     /**
      * Used to build an instance of [AuditLog]
@@ -486,4 +510,182 @@ interface EntityInstanceBuilder {
      * @return [Video] the video in the embed
      */
     fun buildVideo(json: JsonNode): Video
+
+    // Interaction entities
+
+    /**
+     * Used to build an instance of [Interaction]
+     *
+     * @param json the json
+     * @return [Interaction] the interaction
+     */
+    fun buildInteraction(json: JsonNode): Interaction
+
+    /**
+     * Used to build an instance of [ComponentInteraction]
+     *
+     * @param json the json
+     * @param interactionId the interaction id
+     * @return [ComponentInteraction] the component interaction
+     */
+    fun buildComponentInteraction(
+        json: JsonNode,
+        interactionId: GetterSnowFlake
+    ): ComponentInteraction
+
+    // Message Interaction entities
+
+    /**
+     * Used to build an instance of [Component]
+     *
+     * @param json the json
+     * @return [Component] the message component
+     */
+    fun buildComponent(json: JsonNode): Component
+
+    /**
+     * Used to build an instance of [ComponentInteractionData]
+     *
+     * @param json the json
+     * @return [ComponentInteractionData] the component interaction data
+     */
+    fun buildComponentInteractionData(json: JsonNode): ComponentInteractionData
+
+    /**
+     * Used to build an instance of [ComponentInteractionData.SelectOptionValue]
+     *
+     * @param json the json
+     * @return [ComponentInteractionData.SelectOptionValue] the select option value
+     */
+    fun buildSelectOptionValue(json: JsonNode): ComponentInteractionData.SelectOptionValue
+
+    /**
+     * Used to build an instance of [TextInput]
+     *
+     * @param json the json
+     * @return [TextInput] the text input
+     */
+    fun buildTextInput(json: JsonNode): TextInput
+
+    /**
+     * Used to build an instance of [SelectMenu]
+     *
+     * @param json the json
+     * @param interactionId the interaction id
+     * @return [SelectMenu] the select menu
+     */
+    fun buildSelectMenu(json: JsonNode, interactionId: GetterSnowFlake): SelectMenu
+
+    /**
+     * Used to build an instance of [Button]
+     *
+     * @param json the json
+     * @return [Button] the button
+     */
+    fun buildButton(json: JsonNode): Button
+
+    /**
+     * Used to build an instance of [ActionRow]
+     *
+     * @param json the json
+     * @return [ActionRow] the action row
+     */
+    fun buildActionRow(json: JsonNode): ActionRow
+
+    // SelectMenu entities
+
+    /**
+     * Used to build an instance of [UserSelectMenu]
+     *
+     * @param json the json
+     * @return [UserSelectMenu] the user select menu
+     */
+    fun buildUserSelectMenu(json: JsonNode): UserSelectMenu
+
+    /**
+     * Used to build an instance of [StringSelectMenu]
+     *
+     * @param json the json
+     * @return [StringSelectMenu] the string select menu
+     */
+    fun buildStringSelectMenu(json: JsonNode): StringSelectMenu
+
+    /**
+     * Used to build an instance of [RoleSelectMenu]
+     *
+     * @param json the json
+     * @return [RoleSelectMenu] the role select menu
+     */
+    fun buildRoleSelectMenu(json: JsonNode): RoleSelectMenu
+
+    /**
+     * Used to build an instance of [MemberSelectMenu]
+     *
+     * @param json the json
+     * @return [MemberSelectMenu] the member select menu
+     */
+    fun buildMemberSelectMenu(json: JsonNode): MemberSelectMenu
+
+    /**
+     * Used to build an instance of [ChannelSelectMenu]
+     *
+     * @param json the json
+     * @return [ChannelSelectMenu] the channel select menu
+     */
+    fun buildChannelSelectMenu(json: JsonNode): ChannelSelectMenu
+
+    /**
+     * Used to build an instance of [StringSelectMenuOption]
+     *
+     * @param json the json
+     * @return [StringSelectMenuOption] the string select menu option
+     */
+    fun buildStringSelectMenuOption(json: JsonNode): StringSelectMenuOption
+
+    // Application Command entities
+
+    /**
+     * Used to build an instance of [ApplicationCommand]
+     *
+     * @param json the json
+     * @return [ApplicationCommand] the application command
+     */
+    fun buildApplicationCommand(json: JsonNode): ApplicationCommand
+
+    /**
+     * Used to build an instance of [ApplicationCommandOption]
+     *
+     * @param json the json
+     * @return [ApplicationCommandOption] the application command option
+     */
+    fun buildApplicationCommandOption(json: JsonNode): ApplicationCommandOption
+
+    // Application Command Types
+
+    /**
+     * Used to build an instance of [UserCommand]
+     *
+     * @param json the json
+     * @param interaction the interaction
+     * @return [UserCommand] the user command
+     */
+    fun buildUserCommand(json: JsonNode, interaction: Interaction? = null): UserCommand
+
+    /**
+     * Used to build an instance of [SlashCommand]
+     *
+     * @param json the json
+     * @param interaction the interaction
+     * @return [SlashCommand] the slash command
+     */
+    fun buildSlashCommand(json: JsonNode, interaction: Interaction? = null): SlashCommand
+
+    /**
+     * Used to build an instance of [MessageCommand]
+     *
+     * @param json the json
+     * @param interaction the interaction
+     * @return [MessageCommand] the message command
+     */
+    fun buildMessageCommand(json: JsonNode, interaction: Interaction? = null): MessageCommand
 }

@@ -23,7 +23,6 @@ import io.github.ydwk.yde.impl.YDEImpl
 import io.github.ydwk.yde.impl.builders.util.getCommandNameAndIds
 import io.github.ydwk.yde.impl.builders.util.getCurrentGuildCommandsNameAndIds
 import io.github.ydwk.yde.rest.EndPoint
-import io.github.ydwk.yde.util.LOOM
 import kotlinx.coroutines.*
 import okhttp3.RequestBody.Companion.toRequestBody
 
@@ -37,7 +36,7 @@ class MessageCommandSender(
     init {
         yde.logger.info("Sending Message Commands to Discord")
 
-        CoroutineScope(Dispatchers.LOOM).launch {
+        CoroutineScope(yde.coroutineDispatcher).launch {
             val currentGlobalMessageCommandsNameAndId: Map<Long, String> =
                 getCurrentGlobalMessageCommandsNameAndIds()
 

@@ -20,10 +20,6 @@ package io.github.ydwk.ydwk.evm.handler.handlers.interactions
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.impl.interaction.ComponentInteractionImpl
-import io.github.ydwk.yde.impl.interaction.InteractionImpl
-import io.github.ydwk.yde.impl.interaction.application.type.MessageCommandImpl
-import io.github.ydwk.yde.impl.interaction.application.type.SlashCommandImpl
-import io.github.ydwk.yde.impl.interaction.application.type.UserCommandImpl
 import io.github.ydwk.yde.interaction.Interaction
 import io.github.ydwk.yde.interaction.application.ApplicationCommandType
 import io.github.ydwk.yde.interaction.sub.InteractionType
@@ -39,26 +35,26 @@ import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class InteractionCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override suspend fun start() {
-        val interaction: Interaction = InteractionImpl(ydwk, json, json["id"].asLong())
+        val interaction: Interaction = ydwk.entityInstanceBuilder.buildInteraction(json)
         when (interaction.type) {
             InteractionType.APPLICATION_COMMAND -> {
                 val dataJson = json["data"]
                 when (ApplicationCommandType.fromInt(dataJson["type"].asInt())) {
                     ApplicationCommandType.CHAT_INPUT -> {
                         val slashCommand =
-                            SlashCommandImpl(ydwk, dataJson, dataJson["id"].asLong(), interaction)
+                            ydwk.entityInstanceBuilder.buildSlashCommand(json, interaction)
                         val event = SlashCommandEvent(ydwk, slashCommand)
                         ydwk.emitEvent(event)
                     }
                     ApplicationCommandType.USER -> {
                         val userCommand =
-                            UserCommandImpl(ydwk, dataJson, dataJson["id"].asLong(), interaction)
+                            ydwk.entityInstanceBuilder.buildUserCommand(json, interaction)
                         val event = UserCommandEvent(ydwk, userCommand)
                         ydwk.emitEvent(event)
                     }
                     ApplicationCommandType.MESSAGE -> {
                         val messageCommand =
-                            MessageCommandImpl(ydwk, dataJson, dataJson["id"].asLong(), interaction)
+                            ydwk.entityInstanceBuilder.buildMessageCommand(json, interaction)
                         val event = MessageCommandEvent(ydwk, messageCommand)
                         ydwk.emitEvent(event)
                     }
@@ -67,8 +63,8 @@ class InteractionCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, j
             }
             InteractionType.MESSAGE_COMPONENT -> {
                 val interactionComponent =
-                    ComponentInteractionImpl(
-                        ydwk, interaction.json, GetterSnowFlake.of(interaction.id))
+                    ydwk.entityInstanceBuilder.buildComponentInteraction(
+                        json, GetterSnowFlake.of(json["id"].asLong())) as ComponentInteractionImpl
                 val data = interactionComponent.data
                 val type = data.componentType
                 val customId = data.customId

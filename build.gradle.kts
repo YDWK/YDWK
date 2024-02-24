@@ -20,7 +20,7 @@ plugins {
     kotlin("plugin.allopen")
     id("com.diffplug.spotless")
     id("org.jetbrains.dokka")
-    id("io.gitlab.arturbosch.detekt")
+    // id("io.gitlab.arturbosch.detekt")
     id("com.github.ben-manes.versions")
     application
     `maven-publish`
@@ -116,11 +116,11 @@ java {
     targetCompatibility = JavaVersion.VERSION_21
 }
 
-tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach { jvmTarget = "21" }
+// tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach { jvmTarget = "21" }
 
-tasks.withType<io.gitlab.arturbosch.detekt.DetektCreateBaselineTask>().configureEach {
-    jvmTarget = "21"
-}
+// tasks.withType<io.gitlab.arturbosch.detekt.DetektCreateBaselineTask>().configureEach {
+// jvmTarget = "21"
+// }
 
 tasks.withType<JavaCompile> { options.compilerArgs.add("--enable-preview") }
 
@@ -199,6 +199,7 @@ spotless {
     }
 }
 
+/*
 detekt {
     // only check javadoc in io/github/ydwk/ydwk/entities and io/github/ydwk/ydwk/evm/event/events
     source.from(files("src/main/kotlin/io/github/ydwk/ydwk/evm/event/events"))
@@ -207,12 +208,14 @@ detekt {
     allRules = false
 }
 
-tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
-    reports {
-        xml.required.set(true)
-        html.required.set(true)
-    }
-}
+ */
+
+// tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+//  reports {
+//    xml.required.set(true)
+//  html.required.set(true)
+// }
+// }
 
 application { mainClass.set("MainKt") }
 
@@ -350,7 +353,7 @@ signing {
 tasks.getByName("dokkaHtml", DokkaTask::class) {
     dokkaSourceSets.configureEach {
         includes.from("Package.md")
-        jdkVersion.set(11)
+        jdkVersion.set(21)
         sourceLink {
             localDirectory.set(file("src/main/kotlin"))
             remoteUrl.set(URL("https://github.com/YDWK/YDWK/tree/master/src/main/kotlin"))

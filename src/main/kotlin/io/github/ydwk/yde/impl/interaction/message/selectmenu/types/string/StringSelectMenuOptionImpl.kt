@@ -21,25 +21,18 @@ package io.github.ydwk.yde.impl.interaction.message.selectmenu.types.string
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.Emoji
-import io.github.ydwk.yde.impl.entities.EmojiImpl
 import io.github.ydwk.yde.interaction.message.selectmenu.types.string.StringSelectMenuOption
 import io.github.ydwk.yde.util.EntityToStringBuilder
 
-class StringSelectMenuOptionImpl(override val yde: YDE, override val json: JsonNode) :
-    StringSelectMenuOption {
-    override val label: String
-        get() = json["label"].asText()
-
-    override val value: String
-        get() = json["value"].asText()
-
-    override val description: String?
-        get() = json["description"]?.asText()
-    override val emoji: Emoji?
-        get() = json["emoji"]?.let { EmojiImpl(yde, it) }
+class StringSelectMenuOptionImpl(
+    override val yde: YDE,
+    override val json: JsonNode,
+    override val label: String,
+    override val value: String,
+    override val description: String?,
+    override val emoji: Emoji?,
     override val default: Boolean
-        get() = json["default"].asBoolean()
-
+) : StringSelectMenuOption {
     override fun toString(): String {
         return EntityToStringBuilder(yde, this).toString()
     }

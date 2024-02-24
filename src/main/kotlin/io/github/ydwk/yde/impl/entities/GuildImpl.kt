@@ -33,7 +33,6 @@ import io.github.ydwk.yde.impl.YDEImpl
 import io.github.ydwk.yde.rest.EndPoint
 import io.github.ydwk.yde.util.EntityToStringBuilder
 import io.github.ydwk.yde.util.GetterSnowFlake
-import io.github.ydwk.yde.util.LOOM
 import kotlinx.coroutines.*
 
 class GuildImpl(
@@ -84,7 +83,7 @@ class GuildImpl(
 
     private suspend fun getBotAsMember(id: String, botId: String): Member {
         return yde.getMemberById(id, botId)
-            ?: withContext(Dispatchers.LOOM) {
+            ?: withContext(yde.coroutineDispatcher) {
                 yde.restApiManager
                     .get(EndPoint.GuildEndpoint.GET_MEMBER, id, botId)
                     .execute { response ->
@@ -110,7 +109,7 @@ class GuildImpl(
     }
 
     override suspend fun getBotAsMember(): Member {
-        return CoroutineScope(Dispatchers.LOOM)
+        return CoroutineScope(yde.coroutineDispatcher)
             .async {
                 getBotAsMember(
                     id.toString(), yde.bot?.id ?: throw IllegalStateException("Bot is null"))

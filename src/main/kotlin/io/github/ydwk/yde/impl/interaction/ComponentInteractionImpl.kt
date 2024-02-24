@@ -47,6 +47,24 @@ open class ComponentInteractionImpl(
     override val components: List<Component>,
     override val data: ComponentInteractionData,
 ) : ComponentInteraction {
+
+    constructor(
+        componentInteractionImpl: ComponentInteractionImpl
+    ) : this(
+        componentInteractionImpl.yde,
+        componentInteractionImpl.json,
+        componentInteractionImpl.interactionId,
+        componentInteractionImpl.type,
+        componentInteractionImpl.interactionToken,
+        componentInteractionImpl.message,
+        componentInteractionImpl.member,
+        componentInteractionImpl.user,
+        componentInteractionImpl.guild,
+        componentInteractionImpl.channel,
+        componentInteractionImpl.applicationId,
+        componentInteractionImpl.components,
+        componentInteractionImpl.data)
+
     override fun toString(): String {
         return EntityToStringBuilder(yde, this).toString()
     }

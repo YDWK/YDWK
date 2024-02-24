@@ -22,7 +22,6 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.neovisionaries.ws.client.*
 import io.github.ydwk.yde.entities.VoiceState
-import io.github.ydwk.yde.util.LOOM
 import io.github.ydwk.ydwk.YDWKInfo
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
@@ -41,7 +40,6 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.cancellation.CancellationException
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
 
@@ -428,7 +426,7 @@ class VoiceWebSocket(
     }
 
     private fun invalidate() {
-        CoroutineScope(Dispatchers.LOOM).launch {
+        CoroutineScope(ydwk.coroutineDispatcher).launch {
             if (voiceConnection.guild.getBotAsMember().voiceState != null) {
                 voiceConnection.guild.getBotAsMember().leaveVC()
             }

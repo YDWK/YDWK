@@ -29,12 +29,7 @@ import io.github.ydwk.yde.entities.channel.enums.ChannelType
 import io.github.ydwk.yde.entities.guild.Member
 import io.github.ydwk.yde.entities.guild.Role
 import io.github.ydwk.yde.impl.entities.ChannelImpl
-import io.github.ydwk.yde.impl.entities.EmojiImpl
-import io.github.ydwk.yde.impl.entities.GuildImpl
-import io.github.ydwk.yde.impl.entities.StickerImpl
 import io.github.ydwk.yde.impl.entities.channel.guild.GuildChannelImpl
-import io.github.ydwk.yde.impl.entities.guild.MemberImpl
-import io.github.ydwk.yde.impl.entities.guild.RoleImpl
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import java.util.*
@@ -52,17 +47,19 @@ class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
         ydwk.cache[guild.id, guild] = CacheIds.GUILD
 
         val members: ArrayList<Member> = ArrayList()
-        json["members"].forEach { member -> members.add(MemberImpl(ydwk, member, guild)) }
+        json["members"].forEach { member ->
+            members.add(ydwk.entityInstanceBuilder.buildMember(member, guild))
+        }
 
         members.forEach { member -> member.user.let { ydwk.memberCache[guild.id, it.id] = member } }
 
         val roles = ArrayList<Role>()
-        json["roles"].forEach { role -> roles.add(RoleImpl(ydwk, role, role.get("id").asLong())) }
+        json["roles"].forEach { role -> roles.add(ydwk.entityInstanceBuilder.buildRole(role)) }
 
         roles.forEach { role -> ydwk.cache[role.id, role] = CacheIds.ROLE }
 
         val emojis = ArrayList<Emoji>()
-        json["emojis"].forEach { emoji -> emojis.add(EmojiImpl(ydwk, emoji)) }
+        json["emojis"].forEach { emoji -> emojis.add(ydwk.entityInstanceBuilder.buildEmoji(emoji)) }
 
         emojis.forEach { emoji ->
             if (emoji.idLong != null) {
@@ -72,7 +69,7 @@ class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
 
         val stickers = ArrayList<Sticker>()
         json["stickers"].forEach { sticker ->
-            stickers.add(StickerImpl(ydwk, sticker, sticker["id"].asLong()))
+            stickers.add(ydwk.entityInstanceBuilder.buildSticker(sticker))
         }
 
         stickers.forEach { sticker -> ydwk.cache[sticker.id, sticker] = CacheIds.STICKER }

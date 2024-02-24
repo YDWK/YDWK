@@ -23,9 +23,7 @@ import io.github.ydwk.yde.impl.YDEImpl
 import io.github.ydwk.yde.impl.builders.util.getCommandNameAndIds
 import io.github.ydwk.yde.impl.builders.util.getCurrentGuildCommandsNameAndIds
 import io.github.ydwk.yde.rest.EndPoint
-import io.github.ydwk.yde.util.LOOM
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.RequestBody.Companion.toRequestBody
 
@@ -38,7 +36,7 @@ class SlashInfoSender(
     init {
         yde.logger.info("Sending slash commands to Discord")
 
-        CoroutineScope(Dispatchers.LOOM).launch {
+        CoroutineScope(yde.coroutineDispatcher).launch {
             val currentGlobalSlashCommandsNameAndId = getCurrentGlobalSlashCommandsNameAndIds()
 
             val currentGuildSlashCommandsNameAndId: Map<String, Map<Long, String>> =

@@ -23,7 +23,6 @@ import io.github.ydwk.yde.entities.Bot
 import io.github.ydwk.yde.entities.application.PartialApplication
 import io.github.ydwk.yde.impl.YDEImpl
 import io.github.ydwk.yde.util.EntityToStringBuilder
-import io.github.ydwk.yde.util.LOOM
 import io.github.ydwk.ydwk.*
 import io.github.ydwk.ydwk.evm.backend.event.CoroutineEventListener
 import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
@@ -201,7 +200,7 @@ class YDWKImpl(
 
     override fun emitEvent(event: GenericEvent) {
         try {
-            CoroutineScope(Dispatchers.LOOM)
+            CoroutineScope(coroutineDispatcher)
                 .launch {
                     simpleEventManager.emitEvent(event)
                     coroutineEventManager.emitEvent(event)

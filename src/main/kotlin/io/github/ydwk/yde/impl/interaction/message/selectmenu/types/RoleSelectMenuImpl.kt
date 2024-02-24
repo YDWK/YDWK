@@ -30,7 +30,10 @@ class RoleSelectMenuImpl(
     yde: YDE,
     json: JsonNode,
     interactionId: GetterSnowFlake,
-) : RoleSelectMenu, SelectMenuImpl(yde, json, interactionId) {
+) :
+    RoleSelectMenu,
+    SelectMenuImpl(
+        yde.entityInstanceBuilder.buildSelectMenu(json, interactionId) as SelectMenuImpl) {
     constructor(
         componentInteractionImpl: ComponentInteractionImpl,
     ) : this(

@@ -21,13 +21,11 @@ package io.github.ydwk.yde.impl.builders.util
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.rest.EndPoint
 import io.github.ydwk.yde.rest.cf.CompletableFutureManager
-import io.github.ydwk.yde.util.LOOM
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 // TODO: Rework this to be more efficient and clean
 suspend fun getCommandNameAndIds(yde: YDE, applicationId: String): Map<Long, String> {
-    return withContext(Dispatchers.LOOM) {
+    return withContext(yde.coroutineDispatcher) {
         yde.restApiManager
             .get(EndPoint.ApplicationCommandsEndpoint.GET_GLOBAL_COMMANDS, applicationId)
             .execute { execute(it) }
@@ -40,7 +38,7 @@ suspend fun getCurrentGuildCommandsNameAndIds(
     guildIds: List<String>,
     applicationId: String
 ): Map<String, Map<Long, String>> {
-    return withContext(Dispatchers.LOOM) {
+    return withContext(yde.coroutineDispatcher) {
         guildIds.associateWith { guildId ->
             yde.restApiManager
                 .get(

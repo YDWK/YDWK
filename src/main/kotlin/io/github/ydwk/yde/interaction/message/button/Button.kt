@@ -91,18 +91,23 @@ interface Button : ComponentInteraction, Repliable {
         }
 
         /**
-         * Creates a new [Button] with the specified, [label] and [url] (for [ButtonStyle.LINK]).
+         * Creates a new [Button] with the specified [label] and [url] (for [ButtonStyle.LINK]).
          *
          * @param label The label of the button. (Max 80 characters)
-         * @param url The url of the button.
-         * @return [ComponentImpl.ComponentCreator] which contains the json representation of the
+         * @param url The URL of the button.
+         * @return [ComponentImpl.ComponentCreator] which contains the JSON representation of the
          *   button.
+         * @throws IllegalArgumentException if the label is null or longer than 80 characters, or if
+         *   the URL is not a valid HTTPS URL.
          */
         operator fun invoke(label: String?, url: String): ComponentImpl.ComponentCreator {
-            Checks.customCheck(
-                label != null && label.length <= 80,
-                "Label must be between 1 and 80 characters long.")
-            Checks.customCheck(URL(url).protocol == "https", "Url must be a valid https url.")
+            // Check label length
+            requireNotNull(label) { "Label must not be null" }
+            require(label.length in 1..80) { "Label must be between 1 and 80 characters long." }
+
+            // Check if URL is a valid HTTPS URL
+            require(url.startsWith("https://")) { "URL must start with 'https://'." }
+
             return ComponentImpl.ButtonCreator(ButtonStyle.LINK, null, label, url)
         }
     }

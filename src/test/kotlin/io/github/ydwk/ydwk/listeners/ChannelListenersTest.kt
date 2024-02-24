@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.listeners
 
-import io.github.realyusufismail.jconfig.util.JConfigUtils
+import io.github.realyusufismail.jconfig.JConfig
 import io.github.ydwk.ydwk.Activity
 import io.github.ydwk.ydwk.BotBuilder
 import io.github.ydwk.ydwk.evm.event.events.channel.ChannelCreateEvent
@@ -33,7 +33,7 @@ class ChannelListenersTest : ChannelEventListener {
 suspend fun main() {
     val ydwk =
         BotBuilder.createDefaultBot(
-                JConfigUtils.getString("token") ?: throw Exception("Token not found!"))
+                JConfig.build().get("token")?.asText() ?: throw Exception("Token not found!"))
             .setActivity(Activity.playing("YDWK"))
             .setETFInsteadOfJson(true)
             .build()

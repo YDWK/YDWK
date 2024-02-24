@@ -24,20 +24,14 @@ import io.github.ydwk.yde.entities.message.embed.Thumbnail
 import io.github.ydwk.yde.util.EntityToStringBuilder
 import java.net.URL
 
-class ThumbnailImpl(override val yde: YDE, override val json: JsonNode) : Thumbnail {
-
-    override val url: URL
-        get() = URL(json["url"].asText())
-
-    override val proxyUrl: String?
-        get() = if (json.has("proxy_url")) json["proxy_url"].asText() else null
-
-    override val height: Int?
-        get() = if (json.has("height")) json["height"].asInt() else null
-
+class ThumbnailImpl(
+    override val yde: YDE,
+    override val json: JsonNode,
+    override val url: URL,
+    override val proxyUrl: String?,
+    override val height: Int?,
     override val width: Int?
-        get() = if (json.has("width")) json["width"].asInt() else null
-
+) : Thumbnail {
     override fun toString(): String {
         return EntityToStringBuilder(yde, this).toString()
     }

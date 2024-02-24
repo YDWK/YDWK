@@ -22,10 +22,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.entities.Emoji
 import io.github.ydwk.yde.entities.Sticker
 import io.github.ydwk.yde.entities.guild.enums.*
-import io.github.ydwk.yde.impl.entities.EmojiImpl
 import io.github.ydwk.yde.impl.entities.GuildImpl
-import io.github.ydwk.yde.impl.entities.StickerImpl
-import io.github.ydwk.yde.impl.entities.guild.WelcomeScreenImpl
 import io.github.ydwk.yde.util.GetterSnowFlake
 import io.github.ydwk.ydwk.evm.event.events.guild.update.*
 import io.github.ydwk.ydwk.evm.handler.handlers.guild.GuildUpdateHandler
@@ -353,7 +350,10 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
         guild.verificationLevel = VerificationLevel.getValue(newVerificationLevel)
         ydwk.emitEvent(
             GuildVerificationLevelUpdateEvent(
-                ydwk, guild, oldVerificationLevel, VerificationLevel.getValue(newVerificationLevel)))
+                ydwk,
+                guild,
+                oldVerificationLevel,
+                VerificationLevel.getValue(newVerificationLevel)))
         logger.debug(
             "Guild verification level changed from $oldVerificationLevel to $newVerificationLevel")
     }
@@ -579,14 +579,16 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
         oldWelcomeScreen: JsonNode?,
         newWelcomeScreen: JsonNode?,
     ) {
-        guild.welcomeScreen = newWelcomeScreen?.let { ydwk.entityInstanceBuilder.buildWelcomeScreen(it) }
+        guild.welcomeScreen =
+            newWelcomeScreen?.let { ydwk.entityInstanceBuilder.buildWelcomeScreen(it) }
         ydwk.emitEvent(
             GuildWelcomeScreenUpdateEvent(
                 ydwk,
                 guild,
                 oldWelcomeScreen?.let { ydwk.entityInstanceBuilder.buildWelcomeScreen(it) },
                 newWelcomeScreen?.let { ydwk.entityInstanceBuilder.buildWelcomeScreen(it) }))
-        logger.debug("Guild welcome screen changed from {} to {}", oldWelcomeScreen, newWelcomeScreen)
+        logger.debug(
+            "Guild welcome screen changed from {} to {}", oldWelcomeScreen, newWelcomeScreen)
     }
 
     private fun onNSFWLevelChange(guild: GuildImpl, oldNSFWLevel: Int, newNSFWLevel: Int) {
@@ -628,8 +630,9 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     }
 
     private fun onEmojiChange(guild: GuildImpl, oldEmojis: List<Emoji>, newEmojis: JsonNode?) {
-        guild.emojis = newEmojis?.let { it -> it.map { ydwk.entityInstanceBuilder.buildEmoji(it) } } ?: emptyList()
-            ?: emptyList()
+        guild.emojis =
+            newEmojis?.let { it -> it.map { ydwk.entityInstanceBuilder.buildEmoji(it) } }
+                ?: emptyList() ?: emptyList()
         ydwk.emitEvent(
             GuildEmojisUpdateEvent(
                 ydwk,

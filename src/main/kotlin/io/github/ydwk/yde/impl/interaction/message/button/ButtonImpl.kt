@@ -41,7 +41,11 @@ open class ButtonImpl(
     override val emoji: Emoji?,
     override val url: URL?,
     override val disabled: Boolean,
-) : Button, ComponentInteractionImpl(yde, json, interactionId) {
+) :
+    Button,
+    ComponentInteractionImpl(
+        yde.entityInstanceBuilder.buildComponentInteraction(json, interactionId)
+            as ComponentInteractionImpl) {
 
     constructor(
         componentInteractionImpl: ComponentInteractionImpl,

@@ -22,6 +22,7 @@ import io.github.ydwk.yde.cache.CacheIds
 import io.github.ydwk.yde.util.exception.LoginException
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import javax.annotation.CheckReturnValue
+import kotlinx.coroutines.CoroutineDispatcher
 import okhttp3.OkHttpClient
 
 object BotBuilder {
@@ -35,6 +36,7 @@ object BotBuilder {
     private var activity: ActivityPayload? = null
     private var etfInsteadOfJson: Boolean = false
     private var enableShutDownHook: Boolean = true
+    private var dispatcher: CoroutineDispatcher? = null
 
     /**
      * Creates a new bot builder with the default settings
@@ -235,6 +237,17 @@ object BotBuilder {
     }
 
     /**
+     * Sets the dispatcher to use
+     *
+     * @param dispatcher The dispatcher to use
+     * @return The bot builder
+     */
+    fun setDispatcher(dispatcher: CoroutineDispatcher): BotBuilder {
+        this.dispatcher = dispatcher
+        return this
+    }
+
+    /**
      * Builds the bot
      *
      * @return The bot
@@ -262,6 +275,7 @@ object BotBuilder {
                 ydwk.setAllowedCache(allowedCache)
                 ydwk.setDisallowedCache(disallowedCache)
                 ydwk.enableShutDownHook()
+                if (dispatcher != null) ydwk.coroutineDispatcher = dispatcher!!
                 return ydwk
             }
         }

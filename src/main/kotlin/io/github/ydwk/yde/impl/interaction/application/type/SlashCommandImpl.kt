@@ -28,7 +28,6 @@ import io.github.ydwk.yde.entities.util.GenericEntity
 import io.github.ydwk.yde.impl.YDEImpl
 import io.github.ydwk.yde.impl.entities.channel.DmChannelImpl
 import io.github.ydwk.yde.impl.entities.channel.guild.GuildChannelImpl
-import io.github.ydwk.yde.impl.entities.message.AttachmentImpl
 import io.github.ydwk.yde.impl.interaction.application.ApplicationCommandImpl
 import io.github.ydwk.yde.impl.interaction.application.ApplicationCommandOptionImpl
 import io.github.ydwk.yde.impl.interaction.application.sub.ReplyImpl
@@ -75,7 +74,7 @@ class SlashCommandImpl(yde: YDE, json: JsonNode, idAsLong: Long, interaction: In
         }
         resolved["attachments"]?.let {
             it.fields().forEach { (id, node) ->
-                map[id.toLong()] = AttachmentImpl(yde, node, node["id"].asLong())
+                map[id.toLong()] = yde.entityInstanceBuilder.buildAttachment(node)
             }
         }
 

@@ -27,48 +27,23 @@ import io.github.ydwk.yde.util.EntityToStringBuilder
 import java.awt.Color
 import java.net.URL
 
-class EmbedImpl(override val yde: YDE, override val json: JsonNode) : Embed {
-
-    override val title: String?
-        get() = if (json.hasNonNull("title")) json["title"].asText() else null
-
-    override val type: EmbedType?
-        get() = if (json.hasNonNull("type")) EmbedType.fromString(json["type"].asText()) else null
-
-    override val description: String?
-        get() = if (json.hasNonNull("description")) json["description"].asText() else null
-
-    override val url: URL?
-        get() = if (json.hasNonNull("url")) URL(json["url"].asText()) else null
-
-    override val timestamp: String?
-        get() = if (json.hasNonNull("timestamp")) json["timestamp"].asText() else null
-
-    override val color: Color?
-        get() = if (json.hasNonNull("color")) Color(json["color"].asInt()) else null
-
-    override val footer: Footer?
-        get() = if (json.hasNonNull("footer")) FooterImpl(yde, json["footer"]) else null
-
-    override val image: Image?
-        get() = if (json.hasNonNull("image")) ImageImpl(yde, json["image"]) else null
-
-    override val thumbnail: Thumbnail?
-        get() = if (json.hasNonNull("thumbnail")) ThumbnailImpl(yde, json["thumbnail"]) else null
-
-    override val video: Video?
-        get() = if (json.hasNonNull("video")) VideoImpl(yde, json["video"]) else null
-
-    override val provider: Provider?
-        get() = if (json.hasNonNull("provider")) ProviderImpl(yde, json["provider"]) else null
-
-    override val author: Author?
-        get() = if (json.hasNonNull("author")) AuthorImpl(yde, json["author"]) else null
-
+class EmbedImpl(
+    override val yde: YDE,
+    override val json: JsonNode,
+    override val title: String?,
+    override val type: EmbedType?,
+    override val description: String?,
+    override val url: URL?,
+    override val timestamp: String?,
+    override val color: Color?,
+    override val footer: Footer?,
+    override val image: Image?,
+    override val thumbnail: Thumbnail?,
+    override val video: Video?,
+    override val provider: Provider?,
+    override val author: Author?,
     override val fields: List<Field>
-        get() =
-            if (json.hasNonNull("fields")) json["fields"].map { FieldImpl(yde, it) }
-            else emptyList()
+) : Embed {
 
     override fun toString(): String {
         return EntityToStringBuilder(yde, this).toString()

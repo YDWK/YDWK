@@ -22,7 +22,6 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.message.Embed
 import io.github.ydwk.yde.entities.message.embed.builder.*
-import io.github.ydwk.yde.impl.entities.message.EmbedImpl
 import io.github.ydwk.yde.util.Checks
 import io.github.ydwk.yde.util.toOffsetDateTime
 import java.awt.Color
@@ -181,6 +180,6 @@ class EmbedBuilderImpl(private val yde: YDE) : EmbedBuilder {
         if (authorJson.size() > 0) json.set<JsonNode>("author", authorJson)
         if (fieldsJson.size() > 0) json.set<JsonNode>("fields", fieldsJson)
 
-        return EmbedImpl(yde, json)
+        return yde.entityInstanceBuilder.buildEmbed(json)
     }
 }

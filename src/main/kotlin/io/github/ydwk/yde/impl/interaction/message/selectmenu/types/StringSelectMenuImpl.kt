@@ -26,7 +26,7 @@ import io.github.ydwk.yde.entities.Emoji
 import io.github.ydwk.yde.impl.interaction.ComponentInteractionImpl
 import io.github.ydwk.yde.impl.interaction.message.ComponentImpl
 import io.github.ydwk.yde.impl.interaction.message.selectmenu.SelectMenuImpl
-import io.github.ydwk.yde.impl.interaction.message.selectmenu.types.string.StringSelectMenuOptionImpl
+import io.github.ydwk.yde.interaction.message.selectmenu.creator.types.StringSelectMenuCreator
 import io.github.ydwk.yde.interaction.message.selectmenu.types.StringSelectMenu
 import io.github.ydwk.yde.interaction.message.selectmenu.types.string.StringSelectMenuOption
 import io.github.ydwk.yde.util.GetterSnowFlake
@@ -35,7 +35,10 @@ class StringSelectMenuImpl(
     yde: YDE,
     json: JsonNode,
     interactionId: GetterSnowFlake,
-) : StringSelectMenu, SelectMenuImpl(yde, json, interactionId) {
+) :
+    StringSelectMenu,
+    SelectMenuImpl(
+        yde.entityInstanceBuilder.buildSelectMenu(json, interactionId) as SelectMenuImpl) {
     constructor(
         componentInteractionImpl: ComponentInteractionImpl,
     ) : this(
@@ -44,7 +47,10 @@ class StringSelectMenuImpl(
         componentInteractionImpl.interactionId)
 
     override val options: List<StringSelectMenuOption>
-        get() = componentJson["options"].map { StringSelectMenuOptionImpl(yde, it) }
+        get() =
+            componentJson["options"].map {
+                yde.entityInstanceBuilder.buildStringSelectMenuOption(it)
+            }
 
     data class StringSelectMenuOptionCreator(
         val label: String,

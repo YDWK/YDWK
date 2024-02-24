@@ -25,9 +25,6 @@ import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.Message
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.guild.Member
-import io.github.ydwk.yde.impl.interaction.application.type.MessageCommandImpl
-import io.github.ydwk.yde.impl.interaction.application.type.SlashCommandImpl
-import io.github.ydwk.yde.impl.interaction.application.type.UserCommandImpl
 import io.github.ydwk.yde.interaction.Interaction
 import io.github.ydwk.yde.interaction.application.ApplicationCommandType
 import io.github.ydwk.yde.interaction.sub.GenericCommandData
@@ -59,11 +56,11 @@ class InteractionImpl(
                 // get type
                 when (ApplicationCommandType.fromInt(json["data"]["type"].asInt())) {
                     ApplicationCommandType.CHAT_INPUT ->
-                        SlashCommandImpl(yde, json["data"], idAsLong, this)
+                        yde.entityInstanceBuilder.buildSlashCommand(json["data"], this)
                     ApplicationCommandType.USER ->
-                        UserCommandImpl(yde, json["data"], idAsLong, this)
+                        yde.entityInstanceBuilder.buildUserCommand(json["data"], this)
                     ApplicationCommandType.MESSAGE ->
-                        MessageCommandImpl(yde, json["data"], idAsLong, this)
+                        yde.entityInstanceBuilder.buildMessageCommand(json["data"], this)
                     else ->
                         throw IllegalStateException(
                             "Unknown ApplicationCommandType ${json["data"]["type"].asInt()}")

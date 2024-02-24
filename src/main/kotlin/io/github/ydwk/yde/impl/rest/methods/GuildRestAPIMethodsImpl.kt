@@ -25,11 +25,6 @@ import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.audit.AuditLogType
 import io.github.ydwk.yde.entities.guild.Ban
 import io.github.ydwk.yde.entities.guild.Member
-import io.github.ydwk.yde.impl.YDEImpl
-import io.github.ydwk.yde.impl.entities.AuditLogImpl
-import io.github.ydwk.yde.impl.entities.GuildImpl
-import io.github.ydwk.yde.impl.entities.guild.BanImpl
-import io.github.ydwk.yde.impl.entities.guild.MemberImpl
 import io.github.ydwk.yde.rest.EndPoint
 import io.github.ydwk.yde.rest.methods.GuildRestAPIMethods
 import io.github.ydwk.yde.rest.result.NoResult

@@ -24,20 +24,14 @@ import io.github.ydwk.yde.entities.message.embed.Author
 import io.github.ydwk.yde.util.EntityToStringBuilder
 import java.net.URL
 
-class AuthorImpl(override val yde: YDE, override val json: JsonNode) : Author {
-
-    override val name: String
-        get() = json["name"].asText()
-
-    override val url: URL?
-        get() = if (json.has("url")) URL(json["url"].asText()) else null
-
-    override val iconUrl: String?
-        get() = if (json.has("icon_url")) json["icon_url"].asText() else null
-
+class AuthorImpl(
+    override val yde: YDE,
+    override val json: JsonNode,
+    override val name: String,
+    override val url: URL?,
+    override val iconUrl: String?,
     override val proxyIconUrl: String?
-        get() = if (json.has("proxy_icon_url")) json["proxy_icon_url"].asText() else null
-
+) : Author {
     override fun toString(): String {
         return EntityToStringBuilder(yde, this).name(this.name).toString()
     }

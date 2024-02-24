@@ -30,7 +30,10 @@ class ChannelSelectMenuImpl(
     yde: YDE,
     json: JsonNode,
     interactionId: GetterSnowFlake,
-) : ChannelSelectMenu, SelectMenuImpl(yde, json, interactionId) {
+) :
+    ChannelSelectMenu,
+    SelectMenuImpl(
+        yde.entityInstanceBuilder.buildSelectMenu(json, interactionId) as SelectMenuImpl) {
     constructor(
         componentInteractionImpl: ComponentInteractionImpl,
     ) : this(

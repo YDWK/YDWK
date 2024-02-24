@@ -23,7 +23,6 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.message.Embed
-import io.github.ydwk.yde.impl.entities.MessageImpl
 import io.github.ydwk.yde.impl.interaction.ComponentInteractionImpl
 import io.github.ydwk.yde.impl.interaction.application.sub.ReplyImpl
 import io.github.ydwk.yde.impl.interaction.message.ComponentImpl
@@ -46,16 +45,34 @@ class TextInputImpl(
     override val required: Boolean?,
     override val initialValue: String?,
     override val placeholder: String?,
-) : TextInput, ComponentInteractionImpl(yde, json, interactionId) {
-    private val componentJson: JsonNode =
-        MessageImpl(yde, json["message"], json["message"]["id"].asLong()).json
-
+) :
+    TextInput,
+    ComponentInteractionImpl(
+        yde.entityInstanceBuilder.buildComponentInteraction(json, interactionId)
+            as ComponentInteractionImpl) {
     constructor(
         componentInteractionImpl: ComponentInteractionImpl,
+        customId: String,
+        style: TextInput.TextInputStyle,
+        label: String,
+        minLength: Int?,
+        maxLength: Int?,
+        required: Boolean?,
+        initialValue: String?,
+        placeholder: String?,
     ) : this(
         componentInteractionImpl.yde,
         componentInteractionImpl.json,
-        componentInteractionImpl.interactionId)
+        componentInteractionImpl.interactionId,
+        customId,
+        style,
+        label,
+        minLength,
+        maxLength,
+        required,
+        initialValue,
+        placeholder,
+    )
 
     override fun reply(content: String): Reply {
         return ReplyImpl(yde, content, null, interactionId.asString, interactionToken)

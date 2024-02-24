@@ -28,33 +28,16 @@ class AttachmentImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,
+    override val description: String?,
+    override val mediaType: String?,
+    override val url: URL,
+    override val proxyUrl: URL,
+    override val size: Int,
+    override val height: Int?,
+    override val width: Int?,
+    override val ephemeral: Boolean,
+    override var name: String,
 ) : Attachment {
-    override val description: String?
-        get() = if (json.has("description")) json.get("description").asText() else null
-
-    override val mediaType: String?
-        get() = if (json.has("media_type")) json.get("media_type").asText() else null
-
-    override val url: URL
-        get() = URL(json.get("url").asText())
-
-    override val proxyUrl: URL
-        get() = URL(json.get("proxy_url").asText())
-
-    override val size: Int
-        get() = json.get("size").asInt()
-
-    override val height: Int?
-        get() = if (json.has("height")) json.get("height").asInt() else null
-
-    override val width: Int?
-        get() = if (json.has("width")) json.get("width").asInt() else null
-
-    override val ephemeral: Boolean
-        get() = json.get("ephemeral").asBoolean()
-
-    override var name: String = json.get("name").asText()
-
     override fun toString(): String {
         return EntityToStringBuilder(yde, this).name(this.name).toString()
     }
