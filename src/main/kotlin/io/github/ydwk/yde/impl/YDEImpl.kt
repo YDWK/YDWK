@@ -68,8 +68,12 @@ open class YDEImpl(
     val logger: Logger = LoggerFactory.getLogger(YDEImpl::class.java)
 
     private val allowedCache: MutableSet<CacheIds> = mutableSetOf()
-    val cache: Cache = PerpetualCache(allowedCache, this)
-    val memberCache: MemberCache = MemberCacheImpl(allowedCache, this)
+
+    val cache: Cache
+        get() = ConcurrentCache(allowedCache, this)
+
+    val memberCache: MemberCache
+        get() = MemberCacheImpl(allowedCache, this)
 
     override val objectNode: ObjectNode
         get() = JsonNodeFactory.instance.objectNode()

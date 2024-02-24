@@ -16,8 +16,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.yde.cache
+package io.github.ydwk.ydwk.cache
 
+import io.github.ydwk.yde.cache.CacheIds
+import io.github.ydwk.yde.cache.ConcurrentCache
 import io.github.ydwk.yde.impl.YDEImpl
 
-class DummyCache(allowedCache: Set<CacheIds>, yde: YDEImpl) : PerpetualCache(allowedCache, yde)
+class DummyCache(allowedCache: Set<CacheIds>, yde: YDEImpl) : ConcurrentCache(allowedCache, yde)

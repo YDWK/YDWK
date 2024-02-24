@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory
 /**
  * This is the implementation of the [Cache] interface that uses a [Map] to store and retrieve data.
  */
+@Deprecated("Use ConcurrentCache instead", ReplaceWith("ConcurrentCache"), DeprecationLevel.WARNING)
 open class PerpetualCache(private val allowedCache: Set<CacheIds>, private val yde: YDEImpl) :
     Cache {
     private val cache = HashMap<String, Any>()

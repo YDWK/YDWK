@@ -20,7 +20,6 @@ package io.github.ydwk.ydwk.cache
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.ydwk.yde.cache.CacheIds
-import io.github.ydwk.yde.cache.DummyCache
 import io.github.ydwk.yde.impl.YDEImpl
 import io.github.ydwk.ydwk.cache.user.DummyUserImpl
 import java.nio.file.Files

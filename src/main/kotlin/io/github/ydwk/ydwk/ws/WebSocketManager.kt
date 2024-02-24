@@ -78,6 +78,8 @@ import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -273,6 +275,8 @@ open class WebSocketManager(
         sessionId = null
         resumeUrl = null
         ydwk.cache.clear()
+        ydwk.coroutineDispatcher.cancelChildren(CancellationException("Invalidating websocket"))
+        ydwk.coroutineDispatcher.cancel(CancellationException("Invalidating websocket"))
         heartBeat?.heartbeatJob?.cancel(CancellationException("Invalidating websocket"))
         ydwk.setLoggedIn(LoggedInImpl(false).setDisconnectedTime())
         scheduler.shutdownNow()

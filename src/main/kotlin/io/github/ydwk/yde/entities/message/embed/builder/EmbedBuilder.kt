@@ -20,6 +20,7 @@ package io.github.ydwk.yde.entities.message.embed.builder
 
 import io.github.ydwk.yde.entities.message.Embed
 import java.awt.Color
+import java.net.URI
 import java.net.URL
 import java.time.temporal.TemporalAccessor
 
@@ -54,7 +55,19 @@ interface EmbedBuilder {
      * @param url The url of the embed.
      * @return The current [EmbedBuilder] instance.
      */
+    @Deprecated(
+        "Use setUrl(URI) instead",
+        ReplaceWith("setUrl(Paths.get(url).toUri())"),
+        DeprecationLevel.WARNING)
     fun setUrl(url: URL): EmbedBuilder
+
+    /**
+     * Sets the url of the embed.
+     *
+     * @param uri The uri of the embed.
+     * @return The current [EmbedBuilder] instance.
+     */
+    fun setUrl(uri: URI): EmbedBuilder
 
     /**
      * Sets the color of the embed.

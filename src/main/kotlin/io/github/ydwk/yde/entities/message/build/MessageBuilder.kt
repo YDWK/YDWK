@@ -29,6 +29,7 @@ import io.github.ydwk.yde.entities.message.Embed
 import io.github.ydwk.yde.entities.message.MessageFlag
 import io.github.ydwk.yde.entities.message.SendAble
 import io.github.ydwk.yde.rest.EndPoint
+import io.github.ydwk.yde.rest.type.handleApiResponse
 import kotlinx.coroutines.CompletableDeferred
 import okhttp3.RequestBody.Companion.toRequestBody
 
@@ -163,12 +164,9 @@ class MessageBuilder {
                 EndPoint.ChannelEndpoint.CREATE_MESSAGE,
                 channel.id)
             .execute { response ->
-                val json = response.jsonBody
-                if (json == null) {
-                    throw IllegalStateException("Response body is null")
-                } else {
-                    channel.yde.entityInstanceBuilder.buildMessage(json)
-                }
+                handleApiResponse(
+                    response,
+                    { jsonBody -> channel.yde.entityInstanceBuilder.buildMessage(jsonBody) })
             }
     }
 

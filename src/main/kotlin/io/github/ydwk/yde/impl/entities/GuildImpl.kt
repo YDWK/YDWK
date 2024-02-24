@@ -31,6 +31,7 @@ import io.github.ydwk.yde.entities.guild.WelcomeScreen
 import io.github.ydwk.yde.entities.guild.enums.*
 import io.github.ydwk.yde.impl.YDEImpl
 import io.github.ydwk.yde.rest.EndPoint
+import io.github.ydwk.yde.rest.type.handleApiResponse
 import io.github.ydwk.yde.util.EntityToStringBuilder
 import io.github.ydwk.yde.util.GetterSnowFlake
 import kotlinx.coroutines.*
@@ -82,22 +83,26 @@ class GuildImpl(
 ) : Guild {
 
     private suspend fun getBotAsMember(id: String, botId: String): Member {
-        return yde.getMemberById(id, botId)
-            ?: withContext(yde.coroutineDispatcher) {
-                yde.restApiManager
-                    .get(EndPoint.GuildEndpoint.GET_MEMBER, id, botId)
-                    .execute { response ->
-                        val jsonBody =
-                            response.jsonBody
-                                ?: throw IllegalStateException("Response body is null")
-                        yde.entityInstanceBuilder.buildMember(jsonBody, this@GuildImpl).also {
-                            member ->
+        return yde.getMemberById(id, botId) ?: fetchMemberFromRestApi(id, botId)
+    }
+
+    private suspend fun fetchMemberFromRestApi(id: String, botId: String): Member {
+        return withContext(yde.coroutineDispatcher) {
+            yde.restApiManager
+                .get(EndPoint.GuildEndpoint.GET_MEMBER, id, botId)
+                .execute { response ->
+                    handleApiResponse(
+                        response,
+                        { jsonBody ->
+                            val member =
+                                yde.entityInstanceBuilder.buildMember(jsonBody, this@GuildImpl)
                             (yde as YDEImpl).memberCache[id, jsonBody["user"]["id"].asText()] =
                                 member
-                        }
-                    }
-                    .await()
-            }
+                            member
+                        })
+                }
+                .await()
+        }
     }
 
     override fun getRoleById(roleId: Long): Role? {
@@ -110,10 +115,7 @@ class GuildImpl(
 
     override suspend fun getBotAsMember(): Member {
         return CoroutineScope(yde.coroutineDispatcher)
-            .async {
-                getBotAsMember(
-                    id.toString(), yde.bot?.id ?: throw IllegalStateException("Bot is null"))
-            }
+            .async { getBotAsMember(id, yde.bot?.id ?: throw IllegalStateException("Bot is null")) }
             .await()
     }
 

@@ -25,7 +25,7 @@ import io.github.ydwk.yde.impl.entities.guild.MemberImpl
 
 /** Discord's Member do not have a unique ID, so we need to use a combination of the user id */
 class MemberCacheImpl(allowedCache: Set<CacheIds>, yde: YDEImpl) :
-    MemberCache, PerpetualCache(allowedCache, yde) {
+    MemberCache, ConcurrentCache(allowedCache, yde) {
     override fun set(guildId: String, userId: String, value: Member) {
         super.set(guildId + userId, value, CacheIds.MEMBER)
     }

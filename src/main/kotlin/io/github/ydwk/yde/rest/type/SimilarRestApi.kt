@@ -18,6 +18,7 @@
  */ 
 package io.github.ydwk.yde.rest.type
 
+import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.rest.cf.CompletableFutureManager
 import io.github.ydwk.yde.rest.result.NoResult
 import java.util.function.Function
@@ -40,4 +41,15 @@ interface SimilarRestApi {
     fun <T : Any> execute(function: Function<CompletableFutureManager, T>): CompletableDeferred<T>
 
     fun executeWithNoResult(): CompletableDeferred<NoResult>
+}
+
+fun <T> handleApiResponse(
+    response: CompletableFutureManager,
+    entityBuilder: (JsonNode) -> T,
+    additionalAction: (T) -> Unit = {}
+): T {
+    val jsonBody = response.jsonBody ?: throw IllegalStateException("Response body is null")
+    val entity = entityBuilder(jsonBody)
+    additionalAction(entity)
+    return entity
 }

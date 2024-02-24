@@ -25,6 +25,7 @@ import io.github.ydwk.yde.entities.message.embed.builder.*
 import io.github.ydwk.yde.util.Checks
 import io.github.ydwk.yde.util.toOffsetDateTime
 import java.awt.Color
+import java.net.URI
 import java.net.URL
 import java.time.OffsetDateTime
 import java.time.temporal.TemporalAccessor
@@ -59,8 +60,18 @@ class EmbedBuilderImpl(private val yde: YDE) : EmbedBuilder {
         return this
     }
 
+    @Deprecated(
+        "Use setUrl(URI) instead",
+        replaceWith = ReplaceWith("setUrl(Paths.get(url).toUri())"),
+        level = DeprecationLevel.WARNING
+    )
     override fun setUrl(url: URL): EmbedBuilder {
         this.url = url.toString()
+        return this
+    }
+
+    override fun setUrl(uri: URI): EmbedBuilder {
+        this.url = uri.toString()
         return this
     }
 

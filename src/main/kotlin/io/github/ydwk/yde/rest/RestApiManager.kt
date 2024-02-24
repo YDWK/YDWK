@@ -157,17 +157,6 @@ interface RestApiManager {
         vararg params: String,
     ): PatchRestApi
 
-    /**
-     * Patches something from the API.
-     *
-     * @param body The body of the request.
-     * @param endPoint The endpoint to patch from.
-     * @return The [PatchRestApi] object.
-     */
-    fun patch(body: RequestBody, endPoint: EndPoint.IEnumEndpoint): PatchRestApi {
-        return patch(body, endPoint, *arrayOf())
-    }
-
     companion object {
         var FULL_DISCORD_REST_URL = "https://discord.com/api/v10"
 

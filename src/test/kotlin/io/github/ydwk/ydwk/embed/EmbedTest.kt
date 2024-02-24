@@ -26,6 +26,7 @@ import java.time.Instant
 import kotlin.test.assertEquals
 import okhttp3.OkHttpClient
 import org.junit.jupiter.api.Test
+import java.nio.file.Paths
 
 class EmbedTest {
 
@@ -36,7 +37,7 @@ class EmbedTest {
             EmbedBuilderImpl(ydwk)
                 .setTitle("test")
                 .setDescription("test")
-                .setUrl(URL("https://www.google.com"))
+                .setUrl(Paths.get("https://www.google.com").toUri())
                 .setTimestamp(Instant.now())
                 .setImage(EmbedImageBuilder(URL("https://www.google.com")))
                 .setAuthor("test", URL("https://www.google.com"), URL("https://www.google.com"))
