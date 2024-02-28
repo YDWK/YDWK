@@ -26,6 +26,7 @@ class EntityToStringBuilder(val yde: YDE, val entity: Any) {
     private var type: Any? = null
     private var name: String? = null
     private var customFields: MutableMap<String, Any?> = HashMap()
+    private var autoAddFields: Boolean = false
 
     fun type(type: Any): EntityToStringBuilder {
         this.type = type
@@ -44,6 +45,11 @@ class EntityToStringBuilder(val yde: YDE, val entity: Any) {
 
     fun add(field: String, value: Any?): EntityToStringBuilder {
         customFields[field] = value
+        return this
+    }
+
+    fun autoAddFields(): EntityToStringBuilder {
+        this.autoAddFields = true
         return this
     }
 
@@ -90,16 +96,18 @@ class EntityToStringBuilder(val yde: YDE, val entity: Any) {
             subJson.put("increment", snowflake.asIncrement)
         }
 
-        val fieldJson = yde.objectMapper.createObjectNode()
-        val fields = entity.javaClass.declaredFields
-        for (field in fields) {
-            field.isAccessible = true
-            val value = field.get(entity)
-            fieldJson.put(field.name, value.toString())
-        }
+        if (autoAddFields) {
+            val fieldJson = yde.objectMapper.createObjectNode()
+            val fields = entity.javaClass.declaredFields
+            for (field in fields) {
+                field.isAccessible = true
+                val value = field.get(entity)
+                fieldJson.put(field.name, value.toString())
+            }
 
-        if (fieldJson.size() > 0) {
-            subJson.set<JsonNode>("fields", fieldJson)
+            if (fieldJson.size() > 0) {
+                subJson.set<JsonNode>("fields", fieldJson)
+            }
         }
 
         if (subJson.size() > 0) {

@@ -21,13 +21,14 @@ package io.github.ydwk.yde.impl.entities.guild.ws
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.guild.ws.WelcomeChannel
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.util.GetterSnowFlake
 
-abstract class WelcomeChannelImpl(
+class WelcomeChannelImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val channelId: GetterSnowFlake,
     override var description: String,
     override val emojiId: GetterSnowFlake?,
     override var emojiName: String?
-) : WelcomeChannel
+) : WelcomeChannel, ToStringEntityImpl<WelcomeChannel>(yde, WelcomeChannel::class.java)

@@ -21,11 +21,12 @@ package io.github.ydwk.yde.impl.entities.guild.role
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.guild.role.RoleTag
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.util.GetterSnowFlake
 
-abstract class RoleTagImpl(
+class RoleTagImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val botId: GetterSnowFlake?,
     override val integrationId: GetterSnowFlake?
-) : RoleTag
+) : RoleTag, ToStringEntityImpl<RoleTag>(yde, RoleTag::class.java)

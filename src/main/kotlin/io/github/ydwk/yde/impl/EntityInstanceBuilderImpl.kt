@@ -73,6 +73,7 @@ import io.github.ydwk.yde.interaction.message.selectmenu.types.string.StringSele
 import io.github.ydwk.yde.interaction.message.textinput.TextInput
 import io.github.ydwk.yde.util.*
 import java.awt.Color
+import java.net.URL
 
 /** Used to build entities */
 class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
@@ -263,7 +264,9 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
         return object :
             UnavailableGuildImpl(yde, json, json["id"].asLong(), json["unavailable"].asBoolean()) {
             override fun toString(): String {
-                return EntityToStringBuilder(yde, this).toString()
+                return EntityToStringBuilder(yde, this)
+                    .autoAddFields()
+                    .toString()
             }
         }
     }
@@ -283,8 +286,7 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             else backUpGuild
         val user = yde.getUserById(json["user_id"].asLong())
 
-        return object :
-            VoiceStateImpl(
+        return VoiceStateImpl(
                 yde,
                 json,
                 backUpGuild,
@@ -301,28 +303,46 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
                 json["suppress"].asBoolean(),
                 if (json.has("request_to_speak_timestamp"))
                     json["request_to_speak_timestamp"].asText()
-                else null) {
-            override fun toString(): String {
-                return EntityToStringBuilder(yde, this).add("sessionId", sessionId).toString()
-            }
-        }
+                else null)
     }
 
     override fun buildVoiceRegion(json: JsonNode): VoiceState.VoiceRegion {
-        TODO("Not yet implemented")
+        return VoiceStateImpl.VoiceRegionImpl(
+            yde,
+            json,
+            json["id"].asLong(),
+            json["optimal"].asBoolean(),
+            json["deprecated"].asBoolean(),
+            json["custom"].asBoolean(),
+            json["name"].asText()
+        )
     }
 
     override fun buildAuditLog(json: JsonNode): AuditLog {
-        return object :
-            AuditLogImpl(yde, json, emptyList(), json["entries"].map { buildAuditLogEntry(it) }) {
-            override fun toString(): String {
-                return EntityToStringBuilder(yde, this).name("AuditLog").toString()
-            }
-        }
+        return AuditLogImpl(yde, json, emptyList(), json["entries"].map { buildAuditLogEntry(it) })
     }
 
     override fun buildApplication(json: JsonNode): Application {
-        TODO("Not yet implemented")
+        return ApplicationImpl(
+            json,
+            json["id"].asLong(),
+            yde as YDEImpl,
+            if (json.has("icon")) json["icon"].asText() else null,
+            json["description"].asText(),
+            if (json.has("rpc_origins")) json["rpc_origins"].asText().split(",").toTypedArray() else null,
+            json["bot_public"].asBoolean(),
+            json["bot_require_code_grant"].asBoolean(),
+            if (json.has("terms_of_service_url")) URL(json["terms_of_service_url"].asText()) else null,
+            if (json.has("privacy_policy_url")) URL(json["privacy_policy_url"].asText()) else null,
+            if (json.has("owner")) buildUser(json["owner"]) else null,
+            if (json.has("verify_key")) json["verify_key"].asText() else null,
+            if (json.has("guild_id")) yde.getGuildById(json["guild_id"].asLong()) else null,
+            if (json.has("game_sdk_id")) GetterSnowFlake.of(json["game_sdk_id"].asLong()) else null,
+            if (json.has("slug")) json["slug"].asText() else null,
+            if (json.has("cover_image")) json["cover_image"].asText() else null,
+            if (json.has("flags")) json["flags"].asInt() else null,
+            if (json.has("tags")) json["tags"].asText().split(",").toTypedArray() else null,
+            json["name"].asText())
     }
 
     override fun buildBan(json: JsonNode): Ban {
@@ -425,32 +445,22 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     }
 
     override fun buildWelcomeScreenChannel(json: JsonNode): WelcomeChannel {
-        return object :
-            WelcomeChannelImpl(
+        return WelcomeChannelImpl(
                 yde,
                 json,
                 GetterSnowFlake.of(json["channel_id"].asLong()),
                 json["description"].asText(),
                 if (json.has("emoji_id")) GetterSnowFlake.of(json["emoji_id"].asLong()) else null,
-                if (json.has("emoji_name")) json["emoji_name"].asText() else null) {
-            override fun toString(): String {
-                return EntityToStringBuilder(yde, this).toString()
-            }
-        }
+                if (json.has("emoji_name")) json["emoji_name"].asText() else null)
     }
 
     override fun buildRoleTag(json: JsonNode): RoleTag {
-        return object :
-            RoleTagImpl(
+        return RoleTagImpl(
                 yde,
                 json,
                 if (json.has("bot_id")) GetterSnowFlake.of(json["bot_id"].asLong()) else null,
                 if (json.has("integration_id")) GetterSnowFlake.of(json["integration_id"].asLong())
-                else null) {
-            override fun toString(): String {
-                return EntityToStringBuilder(yde, this).toString()
-            }
-        }
+                else null)
     }
 
     override fun buildChannel(json: JsonNode): Channel {

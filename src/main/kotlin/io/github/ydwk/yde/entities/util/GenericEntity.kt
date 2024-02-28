@@ -20,20 +20,15 @@ package io.github.ydwk.yde.entities.util
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
-import io.github.ydwk.yde.util.EntityToStringBuilder
 
-interface GenericEntity {
+/**
+ * A generic entity that can be used to represent any discord entity.
+ */
+interface GenericEntity : ToStringEntity {
 
     /** The main YDE instance. */
     val yde: YDE
 
     /** The json representation of this entity. */
     val json: JsonNode
-
-    /**
-     * Converts this entity to a string using the [EntityToStringBuilder].
-     *
-     * @return The string representation of this entity.
-     */
-    override fun toString(): String
 }

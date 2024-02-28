@@ -23,6 +23,7 @@ import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.user.Avatar
 import io.github.ydwk.yde.impl.YDEImpl
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.util.EntityToStringBuilder
 import java.awt.Color
 
@@ -44,7 +45,7 @@ open class UserImpl(
     override var flags: Int?,
     override var publicFlags: Int?,
     override var name: String,
-) : User {
+) : User, ToStringEntityImpl<User>(yde, User::class.java) {
 
     constructor(
         user: User
@@ -94,9 +95,5 @@ open class UserImpl(
         } else {
             avatar
         }
-    }
-
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).name(this.name).toString()
     }
 }

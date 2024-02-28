@@ -23,11 +23,12 @@ import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.Application
 import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.User
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.util.EntityToStringBuilder
 import io.github.ydwk.yde.util.GetterSnowFlake
 import java.net.URL
 
-class ApplicationImpl(
+open class ApplicationImpl(
     override val json: JsonNode,
     override val idAsLong: Long,
     override val yde: YDE,
@@ -47,8 +48,4 @@ class ApplicationImpl(
     override var flags: Int?,
     override var tags: Array<String>?,
     override var name: String,
-) : Application {
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).name(this.name).toString()
-    }
-}
+) : Application, ToStringEntityImpl<Application>(yde, Application::class.java)

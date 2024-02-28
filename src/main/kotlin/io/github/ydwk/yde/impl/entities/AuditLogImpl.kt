@@ -22,11 +22,11 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.AuditLog
 import io.github.ydwk.yde.entities.audit.AuditLogEntry
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.interaction.application.type.SlashCommand
-
-abstract class AuditLogImpl(
+class AuditLogImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val applicationCommands: List<SlashCommand>,
     override val entries: List<AuditLogEntry>
-) : AuditLog
+) : AuditLog, ToStringEntityImpl<AuditLog>(yde, AuditLog::class.java)

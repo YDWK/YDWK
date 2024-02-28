@@ -30,6 +30,7 @@ import io.github.ydwk.yde.entities.guild.Role
 import io.github.ydwk.yde.entities.guild.WelcomeScreen
 import io.github.ydwk.yde.entities.guild.enums.*
 import io.github.ydwk.yde.impl.YDEImpl
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.rest.EndPoint
 import io.github.ydwk.yde.rest.type.handleApiResponse
 import io.github.ydwk.yde.util.EntityToStringBuilder
@@ -80,7 +81,7 @@ class GuildImpl(
     override val voiceStates: List<VoiceState>,
     override val getUnorderedChannels: List<GuildChannel>,
     override var name: String
-) : Guild {
+) : Guild, ToStringEntityImpl<Guild>(yde, Guild::class.java) {
 
     private suspend fun getBotAsMember(id: String, botId: String): Member {
         return yde.getMemberById(id, botId) ?: fetchMemberFromRestApi(id, botId)
@@ -121,9 +122,5 @@ class GuildImpl(
 
     override fun getChannelById(channelId: Long): GuildChannel? {
         return getUnorderedChannels.firstOrNull { it.idAsLong == channelId }
-    }
-
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).name(this.name).toString()
     }
 }
