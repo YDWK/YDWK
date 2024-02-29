@@ -36,7 +36,7 @@ enum class EntityType(private val value: Int) {
          * @return the entity type.
          */
         fun getValue(value: Int): EntityType {
-            return values().first { it.value == value }
+            return entries.first { it.value == value }
         }
     }
 

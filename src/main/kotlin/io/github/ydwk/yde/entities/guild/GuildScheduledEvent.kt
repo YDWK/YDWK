@@ -29,7 +29,6 @@ import io.github.ydwk.yde.entities.util.GenericEntity
 import io.github.ydwk.yde.util.GetterSnowFlake
 import io.github.ydwk.yde.util.NameAbleEntity
 import io.github.ydwk.yde.util.SnowFlake
-import java.time.ZonedDateTime
 
 interface GuildScheduledEvent : SnowFlake, GenericEntity, NameAbleEntity {
     /**
@@ -65,14 +64,14 @@ interface GuildScheduledEvent : SnowFlake, GenericEntity, NameAbleEntity {
      *
      * @return the Scheduled start time of the scheduled event.
      */
-    val scheduledStart: ZonedDateTime
+    val scheduledStart: String
 
     /**
      * The Scheduled end time of the scheduled event.
      *
      * @return the Scheduled end time of the scheduled event.
      */
-    val scheduledEnd: ZonedDateTime?
+    val scheduledEnd: String?
 
     /**
      * The privacy level of the scheduled event.
@@ -108,13 +107,6 @@ interface GuildScheduledEvent : SnowFlake, GenericEntity, NameAbleEntity {
      * @return the entity metadata of the scheduled event.
      */
     val entityMetadata: EntityMetadata?
-
-    /**
-     * The user that created the scheduled event.
-     *
-     * @return the user that created the scheduled event.
-     */
-    val user: User?
 
     /**
      * The number of users subscribed to the scheduled event.

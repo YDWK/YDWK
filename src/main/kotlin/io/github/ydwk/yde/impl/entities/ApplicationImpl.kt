@@ -24,7 +24,6 @@ import io.github.ydwk.yde.entities.Application
 import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
-import io.github.ydwk.yde.util.EntityToStringBuilder
 import io.github.ydwk.yde.util.GetterSnowFlake
 import java.net.URL
 

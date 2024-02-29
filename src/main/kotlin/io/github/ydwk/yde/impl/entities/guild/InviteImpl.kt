@@ -27,8 +27,7 @@ import io.github.ydwk.yde.entities.channel.GuildChannel
 import io.github.ydwk.yde.entities.guild.GuildScheduledEvent
 import io.github.ydwk.yde.entities.guild.Invite
 import io.github.ydwk.yde.entities.guild.invite.TargetType
-import io.github.ydwk.yde.util.EntityToStringBuilder
-import java.time.ZonedDateTime
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
 class InviteImpl(
     override val yde: YDE,
@@ -42,10 +41,6 @@ class InviteImpl(
     override val targetApplication: Application?,
     override val approximatePresenceCount: Int,
     override val approximateMemberCount: Int,
-    override val expirationDate: ZonedDateTime,
+    override val expirationDate: String,
     override val guildScheduledEvent: GuildScheduledEvent
-) : Invite {
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).toString()
-    }
-}
+) : Invite, ToStringEntityImpl<Invite>(yde, Invite::class.java)

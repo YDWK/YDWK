@@ -24,7 +24,6 @@ import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.channel.GuildChannel
 import io.github.ydwk.yde.entities.guild.invite.TargetType
 import io.github.ydwk.yde.entities.util.GenericEntity
-import java.time.ZonedDateTime
 
 interface Invite : GenericEntity {
 
@@ -96,7 +95,7 @@ interface Invite : GenericEntity {
      *
      * @return the expiration date.
      */
-    val expirationDate: ZonedDateTime
+    val expirationDate: String
 
     /**
      * The guild scheduled event this invite is for.

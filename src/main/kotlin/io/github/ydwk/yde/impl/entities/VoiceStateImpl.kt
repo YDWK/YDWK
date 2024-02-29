@@ -26,7 +26,6 @@ import io.github.ydwk.yde.entities.VoiceState
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.yde.entities.guild.Member
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
-import io.github.ydwk.yde.util.EntityToStringBuilder
 
 class VoiceStateImpl(
     override val yde: YDE,
@@ -54,5 +53,7 @@ class VoiceStateImpl(
         override val isDeprecated: Boolean,
         override val isCustom: Boolean,
         override var name: String,
-    ) : VoiceState.VoiceRegion, ToStringEntityImpl<VoiceState.VoiceRegion>(yde, VoiceState.VoiceRegion::class.java)
+    ) :
+        VoiceState.VoiceRegion,
+        ToStringEntityImpl<VoiceState.VoiceRegion>(yde, VoiceState.VoiceRegion::class.java)
 }

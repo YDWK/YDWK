@@ -39,7 +39,12 @@ import io.github.ydwk.yde.entities.channel.guild.vc.GuildStageChannel
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.yde.entities.guild.*
 import io.github.ydwk.yde.entities.guild.enums.*
+import io.github.ydwk.yde.entities.guild.invite.TargetType
 import io.github.ydwk.yde.entities.guild.role.RoleTag
+import io.github.ydwk.yde.entities.guild.schedule.EntityMetadata
+import io.github.ydwk.yde.entities.guild.schedule.EntityType
+import io.github.ydwk.yde.entities.guild.schedule.PrivacyLevel
+import io.github.ydwk.yde.entities.guild.schedule.ScheduledEventStatus
 import io.github.ydwk.yde.entities.guild.ws.WelcomeChannel
 import io.github.ydwk.yde.entities.message.*
 import io.github.ydwk.yde.entities.message.embed.*
@@ -49,10 +54,7 @@ import io.github.ydwk.yde.entities.sticker.StickerType
 import io.github.ydwk.yde.entities.user.Avatar
 import io.github.ydwk.yde.impl.entities.*
 import io.github.ydwk.yde.impl.entities.application.PartialApplicationImpl
-import io.github.ydwk.yde.impl.entities.guild.BanImpl
-import io.github.ydwk.yde.impl.entities.guild.MemberImpl
-import io.github.ydwk.yde.impl.entities.guild.RoleImpl
-import io.github.ydwk.yde.impl.entities.guild.WelcomeScreenImpl
+import io.github.ydwk.yde.impl.entities.guild.*
 import io.github.ydwk.yde.impl.entities.guild.role.RoleTagImpl
 import io.github.ydwk.yde.impl.entities.guild.ws.WelcomeChannelImpl
 import io.github.ydwk.yde.impl.interaction.message.ComponentImpl
@@ -74,6 +76,7 @@ import io.github.ydwk.yde.interaction.message.textinput.TextInput
 import io.github.ydwk.yde.util.*
 import java.awt.Color
 import java.net.URL
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 /** Used to build entities */
 class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
@@ -264,9 +267,7 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
         return object :
             UnavailableGuildImpl(yde, json, json["id"].asLong(), json["unavailable"].asBoolean()) {
             override fun toString(): String {
-                return EntityToStringBuilder(yde, this)
-                    .autoAddFields()
-                    .toString()
+                return EntityToStringBuilder(yde, this).autoAddFields().toString()
             }
         }
     }
@@ -287,23 +288,22 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
         val user = yde.getUserById(json["user_id"].asLong())
 
         return VoiceStateImpl(
-                yde,
-                json,
-                backUpGuild,
-                guild,
-                channel,
-                user,
-                if (json.has("member")) buildMember(json["member"], guild!!, user) else null,
-                json["session_id"].asText(),
-                json["deaf"].asBoolean(),
-                json["mute"].asBoolean(),
-                json["self_deaf"].asBoolean(),
-                json["self_mute"].asBoolean(),
-                json["self_stream"].asBoolean(),
-                json["suppress"].asBoolean(),
-                if (json.has("request_to_speak_timestamp"))
-                    json["request_to_speak_timestamp"].asText()
-                else null)
+            yde,
+            json,
+            backUpGuild,
+            guild,
+            channel,
+            user,
+            if (json.has("member")) buildMember(json["member"], guild!!, user) else null,
+            json["session_id"].asText(),
+            json["deaf"].asBoolean(),
+            json["mute"].asBoolean(),
+            json["self_deaf"].asBoolean(),
+            json["self_mute"].asBoolean(),
+            json["self_stream"].asBoolean(),
+            json["suppress"].asBoolean(),
+            if (json.has("request_to_speak_timestamp")) json["request_to_speak_timestamp"].asText()
+            else null)
     }
 
     override fun buildVoiceRegion(json: JsonNode): VoiceState.VoiceRegion {
@@ -314,8 +314,7 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             json["optimal"].asBoolean(),
             json["deprecated"].asBoolean(),
             json["custom"].asBoolean(),
-            json["name"].asText()
-        )
+            json["name"].asText())
     }
 
     override fun buildAuditLog(json: JsonNode): AuditLog {
@@ -326,13 +325,15 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
         return ApplicationImpl(
             json,
             json["id"].asLong(),
-            yde as YDEImpl,
+            yde,
             if (json.has("icon")) json["icon"].asText() else null,
             json["description"].asText(),
-            if (json.has("rpc_origins")) json["rpc_origins"].asText().split(",").toTypedArray() else null,
+            if (json.has("rpc_origins")) json["rpc_origins"].asText().split(",").toTypedArray()
+            else null,
             json["bot_public"].asBoolean(),
             json["bot_require_code_grant"].asBoolean(),
-            if (json.has("terms_of_service_url")) URL(json["terms_of_service_url"].asText()) else null,
+            if (json.has("terms_of_service_url")) URL(json["terms_of_service_url"].asText())
+            else null,
             if (json.has("privacy_policy_url")) URL(json["privacy_policy_url"].asText()) else null,
             if (json.has("owner")) buildUser(json["owner"]) else null,
             if (json.has("verify_key")) json["verify_key"].asText() else null,
@@ -358,12 +359,52 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun buildGuildScheduledEvent(json: JsonNode): GuildScheduledEvent {
-        TODO("Not yet implemented")
+        return GuildScheduledEventImpl(
+            yde,
+            json,
+            json["id"].asLong(),
+            yde.getGuildById(json["guild_id"].asLong())
+                ?: yde.requestGuild(json["guild_id"].asLong()).getCompleted(),
+            if (json.has("channel_id")) yde.getGuildChannelById(json["channel_id"].asLong())
+            else null,
+            if (json.has("creator")) buildUser(json["creator"]) else null,
+            if (json.has("description")) json["description"].asText() else null,
+            formatZonedDateTime(json["scheduled_start"].asText()),
+            if (json.has("scheduled_end_time"))
+                formatZonedDateTime(json["scheduled_end_time"].asText())
+            else null,
+            PrivacyLevel.getValue(json["privacy_level"].asInt()),
+            ScheduledEventStatus.getValue(json["status"].asInt()),
+            EntityType.getValue(json["entity_type"].asInt()),
+            if (json.has("entity_id")) GetterSnowFlake.of(json["entity_id"].asLong()) else null,
+            if (json.has("entity_metadata")) buildEntityMetadata(json["entity_metadata"]) else null,
+            if (json.has("user_count")) json["user_count"].asInt() else 0,
+            if (json.has("image")) json["image"].asText() else null,
+            json["name"].asText())
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun buildInvite(json: JsonNode): Invite {
-        TODO("Not yet implemented")
+        return InviteImpl(
+            yde,
+            json,
+            json["code"].asText(),
+            yde.getGuildById(json["guild_id"].asLong())
+                ?: yde.requestGuild(json["guild_id"].asLong()).getCompleted(),
+            yde.getGuildChannelById(json["channel_id"].asLong())
+                ?: throw IllegalStateException("Channel is null"),
+            if (json.has("inviter")) buildUser(json["inviter"]) else null,
+            TargetType.getValue(json["target_type"].asInt()),
+            if (json.has("target_user")) buildUser(json["target_user"]) else null,
+            if (json.has("target_application")) buildApplication(json["target_application"])
+            else null,
+            json["approximate_presence_count"].asInt(),
+            json["approximate_member_count"].asInt(),
+            formatZonedDateTime(json["expires_at"].asText()),
+            if (json.has("scheduled_event")) buildGuildScheduledEvent(json["scheduled_event"])
+            else throw IllegalStateException("Scheduled event is null"))
     }
 
     override fun buildMember(json: JsonNode, guild: Guild, backUpUser: User?): Member {
@@ -446,21 +487,21 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
 
     override fun buildWelcomeScreenChannel(json: JsonNode): WelcomeChannel {
         return WelcomeChannelImpl(
-                yde,
-                json,
-                GetterSnowFlake.of(json["channel_id"].asLong()),
-                json["description"].asText(),
-                if (json.has("emoji_id")) GetterSnowFlake.of(json["emoji_id"].asLong()) else null,
-                if (json.has("emoji_name")) json["emoji_name"].asText() else null)
+            yde,
+            json,
+            GetterSnowFlake.of(json["channel_id"].asLong()),
+            json["description"].asText(),
+            if (json.has("emoji_id")) GetterSnowFlake.of(json["emoji_id"].asLong()) else null,
+            if (json.has("emoji_name")) json["emoji_name"].asText() else null)
     }
 
     override fun buildRoleTag(json: JsonNode): RoleTag {
         return RoleTagImpl(
-                yde,
-                json,
-                if (json.has("bot_id")) GetterSnowFlake.of(json["bot_id"].asLong()) else null,
-                if (json.has("integration_id")) GetterSnowFlake.of(json["integration_id"].asLong())
-                else null)
+            yde,
+            json,
+            if (json.has("bot_id")) GetterSnowFlake.of(json["bot_id"].asLong()) else null,
+            if (json.has("integration_id")) GetterSnowFlake.of(json["integration_id"].asLong())
+            else null)
     }
 
     override fun buildChannel(json: JsonNode): Channel {
@@ -468,6 +509,10 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     }
 
     override fun buildDMChannel(json: JsonNode): DmChannel {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildEntityMetadata(json: JsonNode): EntityMetadata {
         TODO("Not yet implemented")
     }
 

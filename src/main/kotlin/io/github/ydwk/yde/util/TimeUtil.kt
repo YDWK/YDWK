@@ -37,6 +37,19 @@ fun formatZonedDateTime(time: String): String {
     }
 }
 
+fun formatZonedDateTimeAsZoned(time: String): String {
+    return if (time == "null") {
+        "null"
+    } else {
+        val formatter =
+            DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
+                .withLocale(Locale.ENGLISH)
+                .withZone(ZoneId.systemDefault())
+
+        formatter.format(ZonedDateTime.parse(time))
+    }
+}
+
 fun toOffsetDateTime(time: TemporalAccessor): OffsetDateTime {
     if (time is OffsetDateTime) {
         return time

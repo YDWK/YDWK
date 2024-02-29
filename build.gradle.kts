@@ -98,6 +98,7 @@ dependencies {
 
     // test
     testImplementation("org.jetbrains.kotlin:kotlin-test:" + properties["kotlinTestVersion"])
+    testImplementation("org.mockito:mockito-core:" + properties["mockitoCoreVersion"])
 }
 
 tasks.test {

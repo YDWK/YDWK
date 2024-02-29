@@ -33,7 +33,6 @@ import io.github.ydwk.yde.impl.YDEImpl
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.rest.EndPoint
 import io.github.ydwk.yde.rest.type.handleApiResponse
-import io.github.ydwk.yde.util.EntityToStringBuilder
 import io.github.ydwk.yde.util.GetterSnowFlake
 import kotlinx.coroutines.*
 

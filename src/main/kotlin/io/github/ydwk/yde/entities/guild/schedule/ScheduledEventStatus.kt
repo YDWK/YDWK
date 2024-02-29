@@ -39,7 +39,7 @@ enum class ScheduledEventStatus(private val value: Int) {
          * @return the status.
          */
         fun getValue(value: Int): ScheduledEventStatus {
-            return values().first { it.value == value }
+            return entries.first { it.value == value }
         }
     }
 

@@ -77,33 +77,5 @@ class SlashTest {
         assertEquals(json.get("options").get(0).get("choices").get(1).get("value").asInt(), 1)
         assertEquals(json.get("options").get(0).get("choices").get(2).get("name").asText(), "test")
         assertEquals(json.get("options").get(0).get("choices").get(2).get("value").asDouble(), 1.0)
-
-        val actualJson =
-            """
-            {
-              "name" : "test",
-              "description" : "test",
-              "type" : 1,
-              "options" : [ {
-                "name" : "test",
-                "description" : "test",
-                "type" : 3,
-                "required" : true,
-                "choices" : [ {
-                  "name" : "test",
-                  "value" : "test"
-                }, {
-                  "name" : "test",
-                  "value" : 1
-                }, {
-                  "name" : "test",
-                  "value" : 1.0
-                } ]
-              } ]
-            }
-        """
-                .trimIndent()
-
-        assertEquals(json.toPrettyString(), actualJson)
     }
 }

@@ -24,7 +24,6 @@ import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.user.Avatar
 import io.github.ydwk.yde.impl.YDEImpl
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
-import io.github.ydwk.yde.util.EntityToStringBuilder
 import java.awt.Color
 
 open class UserImpl(

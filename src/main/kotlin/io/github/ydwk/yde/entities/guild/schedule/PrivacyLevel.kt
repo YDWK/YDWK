@@ -30,7 +30,7 @@ enum class PrivacyLevel(private val value: Int) {
          * @return the privacy level.
          */
         fun getValue(value: Int): PrivacyLevel {
-            return values().first { it.value == value }
+            return entries.first { it.value == value }
         }
     }
 

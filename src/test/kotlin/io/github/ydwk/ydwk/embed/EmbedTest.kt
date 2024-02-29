@@ -20,24 +20,38 @@ package io.github.ydwk.ydwk.embed
 
 import io.github.ydwk.yde.entities.message.embed.builder.EmbedImageBuilder
 import io.github.ydwk.yde.impl.entities.message.embed.builder.EmbedBuilderImpl
+import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import java.net.URL
 import java.time.Instant
 import kotlin.test.assertEquals
 import okhttp3.OkHttpClient
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import java.nio.file.Paths
+import org.mockito.Mock
+import org.mockito.Mockito.mock
 
 class EmbedTest {
 
+    @Mock
+    lateinit var ydwk: YDWKImpl
+
+    @Mock
+    lateinit var client: OkHttpClient
+
+    @BeforeEach
+    fun setUp() {
+        client = mock(OkHttpClient::class.java)
+        ydwk = YDWKImpl(client)
+    }
+
     @Test
     fun testEmbed() {
-        val ydwk = YDWKImpl(OkHttpClient())
         val embed =
             EmbedBuilderImpl(ydwk)
                 .setTitle("test")
                 .setDescription("test")
-                .setUrl(Paths.get("https://www.google.com").toUri())
+                .setUrl(URL("https://www.google.com"))
                 .setTimestamp(Instant.now())
                 .setImage(EmbedImageBuilder(URL("https://www.google.com")))
                 .setAuthor("test", URL("https://www.google.com"), URL("https://www.google.com"))

@@ -37,6 +37,7 @@ import io.github.ydwk.yde.entities.channel.guild.vc.GuildStageChannel
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.yde.entities.guild.*
 import io.github.ydwk.yde.entities.guild.role.RoleTag
+import io.github.ydwk.yde.entities.guild.schedule.EntityMetadata
 import io.github.ydwk.yde.entities.guild.ws.WelcomeChannel
 import io.github.ydwk.yde.entities.message.*
 import io.github.ydwk.yde.entities.message.embed.*
@@ -59,6 +60,7 @@ import io.github.ydwk.yde.interaction.message.selectmenu.types.string.StringSele
 import io.github.ydwk.yde.interaction.message.textinput.TextInput
 import io.github.ydwk.yde.util.GetterSnowFlake
 
+/** The [EntityInstanceBuilder] is used to build instances of entities. */
 interface EntityInstanceBuilder {
 
     /**
@@ -117,17 +119,6 @@ interface EntityInstanceBuilder {
      * @return [VoiceState] the voice state
      */
     fun buildVoiceState(json: JsonNode, backUpGuild: Guild? = null): VoiceState
-
-    /**
-     * Used to build an instance of [VoiceState]
-     *
-     * @param json the json
-     * @param backUpGuild the back up guild json
-     * @return [VoiceState] the voice state
-     */
-    fun buildVoiceState(json: JsonNode, backUpGuild: JsonNode): VoiceState {
-        return buildVoiceState(json, buildGuild(backUpGuild))
-    }
 
     /**
      * Used to build an instance of [VoiceState.VoiceRegion]
@@ -254,6 +245,14 @@ interface EntityInstanceBuilder {
      * @return [DmChannel] the dm channel
      */
     fun buildDMChannel(json: JsonNode): DmChannel
+
+    /**
+     * Used to build an instance of [EntityMetadata]
+     *
+     * @param json the json
+     * @return [EntityMetadata] the entity metadata
+     */
+    fun buildEntityMetadata(json: JsonNode): EntityMetadata
 
     // Guild channel entities
 

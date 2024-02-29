@@ -21,9 +21,7 @@ package io.github.ydwk.yde.entities.util
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 
-/**
- * A generic entity that can be used to represent any discord entity.
- */
+/** A generic entity that can be used to represent any discord entity. */
 interface GenericEntity : ToStringEntity {
 
     /** The main YDE instance. */

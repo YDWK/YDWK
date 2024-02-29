@@ -29,8 +29,8 @@ enum class TargetType(private val value: Int) {
          * @param value the value.
          * @return the [TargetType].
          */
-        fun fromValue(value: Int): TargetType {
-            return values().first { it.value == value }
+        fun getValue(value: Int): TargetType {
+            return entries.first { it.value == value }
         }
     }
 

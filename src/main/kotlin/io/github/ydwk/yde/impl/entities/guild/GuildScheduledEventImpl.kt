@@ -28,9 +28,8 @@ import io.github.ydwk.yde.entities.guild.schedule.EntityMetadata
 import io.github.ydwk.yde.entities.guild.schedule.EntityType
 import io.github.ydwk.yde.entities.guild.schedule.PrivacyLevel
 import io.github.ydwk.yde.entities.guild.schedule.ScheduledEventStatus
-import io.github.ydwk.yde.util.EntityToStringBuilder
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.util.GetterSnowFlake
-import java.time.ZonedDateTime
 
 class GuildScheduledEventImpl(
     override val yde: YDE,
@@ -40,20 +39,16 @@ class GuildScheduledEventImpl(
     override val channel: GuildChannel?,
     override val creator: User?,
     override val description: String?,
-    override val scheduledStart: ZonedDateTime,
-    override val scheduledEnd: ZonedDateTime?,
+    override val scheduledStart: String,
+    override val scheduledEnd: String?,
     override val privacyLevel: PrivacyLevel,
     override val status: ScheduledEventStatus,
     override val entityType: EntityType,
     override val entityId: GetterSnowFlake?,
     override val entityMetadata: EntityMetadata?,
-    override val user: User?,
     override val subscriberCount: Int,
     override val coverImage: String?,
     override var name: String,
-) : GuildScheduledEvent {
-
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).name(name).toString()
-    }
-}
+) :
+    GuildScheduledEvent,
+    ToStringEntityImpl<GuildScheduledEvent>(yde, GuildScheduledEvent::class.java)
