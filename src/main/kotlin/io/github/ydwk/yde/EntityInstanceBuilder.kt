@@ -234,9 +234,11 @@ interface EntityInstanceBuilder {
      * Used to build an instance of [Channel]
      *
      * @param json the json
+     * @param isGuildChannel weather the channel is a guild channel
+     * @param isDmChannel weather the channel is a dm channel
      * @return [Channel] the channel
      */
-    fun buildChannel(json: JsonNode): Channel
+    fun buildChannel(json: JsonNode, isGuildChannel: Boolean, isDmChannel: Boolean): Channel
 
     /**
      * Used to build an instance of [DmChannel]

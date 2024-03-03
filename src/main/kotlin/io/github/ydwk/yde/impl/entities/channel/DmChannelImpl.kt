@@ -22,31 +22,17 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.channel.DmChannel
-import io.github.ydwk.yde.entities.channel.enums.ChannelType
 import io.github.ydwk.yde.impl.entities.ChannelImpl
-import io.github.ydwk.yde.util.EntityToStringBuilder
 import io.github.ydwk.yde.util.GetterSnowFlake
 
 class DmChannelImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,
-) : ChannelImpl(yde, json, idAsLong, false, true), DmChannel {
-
-    override var lastMessageId: GetterSnowFlake? =
-        if (json.has("last_message_id")) GetterSnowFlake.of(json["last_message_id"].asLong())
-        else null
-
-    override var recipient: User? =
-        if (json.has("recipients")) yde.entityInstanceBuilder.buildUser(json["recipients"][0])
-        else null
-
-    override val type: ChannelType
-        get() = ChannelType.DM
-
-    override var name: String = if (json.has("name")) json["name"].asText() else ""
-
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).name(this.name).toString()
-    }
-}
+    override var lastMessageId: GetterSnowFlake?,
+    override var recipient: User?,
+    override var name: String,
+) :
+    ChannelImpl(
+        yde.entityInstanceBuilder.buildChannel(json, isGuildChannel = false, isDmChannel = true)),
+    DmChannel

@@ -26,38 +26,18 @@ import io.github.ydwk.yde.entities.channel.getter.guild.GuildChannelGetter
 import io.github.ydwk.yde.entities.channel.guild.GuildCategory
 import io.github.ydwk.yde.entities.guild.invite.InviteCreator
 import io.github.ydwk.yde.impl.entities.ChannelImpl
-import io.github.ydwk.yde.impl.entities.channel.getter.guild.GuildChannelGetterImpl
-import io.github.ydwk.yde.util.EntityToStringBuilder
 
 open class GuildChannelImpl(
-    yde: YDE,
-    json: JsonNode,
-    idAsLong: Long,
-) : ChannelImpl(yde, json, idAsLong, true, false), GuildChannel {
-
-    override val guild: Guild
-        get() = yde.getGuildById(json["guild_id"].asText())!!
-
-    override var position: Int = json["position"].asInt()
-
-    override var parent: GuildCategory? =
-        if (json.hasNonNull("parent_id")) {
-            yde.getGuildChannelById(json["parent_id"].asLong())
-                ?.guildChannelGetter
-                ?.asGuildCategory()
-        } else {
-            null
-        }
-
-    override val guildChannelGetter: GuildChannelGetter
-        get() = GuildChannelGetterImpl(yde, json, idAsLong)
-
-    override val inviteCreator: InviteCreator
-        get() = InviteCreator(yde, this.id)
-
-    override var name: String = json["name"].asText()
-
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).toString()
-    }
-}
+    override val yde: YDE,
+    override val json: JsonNode,
+    override val idAsLong: Long,
+    override val guild: Guild,
+    override var position: Int,
+    override var parent: GuildCategory?,
+    override val guildChannelGetter: GuildChannelGetter,
+    override val inviteCreator: InviteCreator,
+    override var name: String,
+) :
+    ChannelImpl(
+        yde.entityInstanceBuilder.buildChannel(json, isGuildChannel = true, isDmChannel = false)),
+    GuildChannel

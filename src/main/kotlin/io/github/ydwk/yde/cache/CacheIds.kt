@@ -34,7 +34,7 @@ enum class CacheIds(private val value: String, private val cacheType: CacheType)
     companion object {
         /** Get the [CacheIds] from a [String] type. */
         fun fromString(string: String): CacheIds {
-            return values().firstOrNull { it.value == string } ?: UNKNOWN
+            return entries.firstOrNull { it.value == string } ?: UNKNOWN
         }
 
         fun getDefaultCache(): Set<CacheIds> {
@@ -42,7 +42,7 @@ enum class CacheIds(private val value: String, private val cacheType: CacheType)
         }
 
         fun getAllCache(): Set<CacheIds> {
-            return values().toSet()
+            return entries.toSet()
         }
     }
 

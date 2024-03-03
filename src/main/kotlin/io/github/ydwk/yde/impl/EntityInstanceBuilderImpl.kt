@@ -54,6 +54,7 @@ import io.github.ydwk.yde.entities.sticker.StickerType
 import io.github.ydwk.yde.entities.user.Avatar
 import io.github.ydwk.yde.impl.entities.*
 import io.github.ydwk.yde.impl.entities.application.PartialApplicationImpl
+import io.github.ydwk.yde.impl.entities.channel.getter.ChannelGetterImpl
 import io.github.ydwk.yde.impl.entities.guild.*
 import io.github.ydwk.yde.impl.entities.guild.role.RoleTagImpl
 import io.github.ydwk.yde.impl.entities.guild.ws.WelcomeChannelImpl
@@ -190,7 +191,7 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
         val channels = mutableListOf<Channel>()
 
         json["mention_channels"].map {
-            val channelType = ChannelType.fromInt(it["type"].asInt())
+            val channelType = ChannelType.getValue(it["type"].asInt())
             if (ChannelType.isGuildChannel(channelType)) {
                 channels.add(buildGuildChannel(it))
             } else {
@@ -201,7 +202,7 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
         val thread: Channel? =
             if (json.has("thread")) {
                 val newThreadJson = json.get("thread")
-                val channelType = ChannelType.fromInt(newThreadJson["type"].asInt())
+                val channelType = ChannelType.getValue(newThreadJson["type"].asInt())
                 if (ChannelType.isGuildChannel(channelType)) {
                     buildGuildChannel(newThreadJson)
                 } else {
@@ -504,8 +505,20 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             else null)
     }
 
-    override fun buildChannel(json: JsonNode): Channel {
-        TODO("Not yet implemented")
+    override fun buildChannel(
+        json: JsonNode,
+        isGuildChannel: Boolean,
+        isDmChannel: Boolean
+    ): Channel {
+        val id = json["id"].asLong()
+        return ChannelImpl(
+            yde,
+            json,
+            id,
+            isGuildChannel,
+            isDmChannel,
+            ChannelType.getValue(json["type"].asInt()),
+            ChannelGetterImpl(yde, json, id, isGuildChannel, isDmChannel))
     }
 
     override fun buildDMChannel(json: JsonNode): DmChannel {

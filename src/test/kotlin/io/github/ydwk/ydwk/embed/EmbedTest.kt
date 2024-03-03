@@ -20,7 +20,6 @@ package io.github.ydwk.ydwk.embed
 
 import io.github.ydwk.yde.entities.message.embed.builder.EmbedImageBuilder
 import io.github.ydwk.yde.impl.entities.message.embed.builder.EmbedBuilderImpl
-import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import java.net.URL
 import java.time.Instant
@@ -33,11 +32,9 @@ import org.mockito.Mockito.mock
 
 class EmbedTest {
 
-    @Mock
-    lateinit var ydwk: YDWKImpl
+    @Mock lateinit var ydwk: YDWKImpl
 
-    @Mock
-    lateinit var client: OkHttpClient
+    @Mock lateinit var client: OkHttpClient
 
     @BeforeEach
     fun setUp() {

@@ -23,8 +23,7 @@ import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.Channel
 import io.github.ydwk.yde.entities.channel.enums.ChannelType
 import io.github.ydwk.yde.entities.channel.getter.ChannelGetter
-import io.github.ydwk.yde.impl.entities.channel.getter.ChannelGetterImpl
-import io.github.ydwk.yde.util.EntityToStringBuilder
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
 open class ChannelImpl(
     override val yde: YDE,
@@ -32,15 +31,18 @@ open class ChannelImpl(
     override val idAsLong: Long,
     override val isGuildChannel: Boolean,
     override val isDmChannel: Boolean,
-) : Channel {
-
-    override val type: ChannelType
-        get() = ChannelType.fromInt(json["type"].asInt())
-
-    override val channelGetter: ChannelGetter
-        get() = ChannelGetterImpl(yde, json, idAsLong, isGuildChannel, isDmChannel)
-
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).toString()
-    }
+    override val type: ChannelType,
+    override val channelGetter: ChannelGetter,
+) : Channel, ToStringEntityImpl<Channel>(yde, Channel::class.java) {
+    constructor(
+        channel: Channel
+    ) : this(
+        channel.yde,
+        channel.json,
+        channel.idAsLong,
+        channel.isGuildChannel,
+        channel.isDmChannel,
+        channel.type,
+        channel.channelGetter,
+    )
 }
