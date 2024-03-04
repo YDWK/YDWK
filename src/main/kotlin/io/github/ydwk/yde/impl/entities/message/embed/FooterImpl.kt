@@ -21,19 +21,12 @@ package io.github.ydwk.yde.impl.entities.message.embed
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.message.embed.Footer
-import io.github.ydwk.yde.util.EntityToStringBuilder
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
-class FooterImpl(override val yde: YDE, override val json: JsonNode) : Footer {
-    override val text: String
-        get() = json["text"].asText()
-
-    override val iconUrl: String?
-        get() = if (json.has("icon_url")) json["icon_url"].asText() else null
-
+class FooterImpl(
+    override val yde: YDE,
+    override val json: JsonNode,
+    override val text: String,
+    override val iconUrl: String?,
     override val proxyIconUrl: String?
-        get() = if (json.has("proxy_icon_url")) json["proxy_icon_url"].asText() else null
-
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).toString()
-    }
-}
+) : Footer, ToStringEntityImpl<Footer>(yde, Footer::class.java)

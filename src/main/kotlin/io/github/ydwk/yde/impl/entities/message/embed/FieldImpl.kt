@@ -21,20 +21,12 @@ package io.github.ydwk.yde.impl.entities.message.embed
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.message.embed.Field
-import io.github.ydwk.yde.util.EntityToStringBuilder
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
-class FieldImpl(override val yde: YDE, override val json: JsonNode) : Field {
-
-    override val name: String
-        get() = json["name"].asText()
-
-    override val value: String
-        get() = json["value"].asText()
-
+class FieldImpl(
+    override val yde: YDE,
+    override val json: JsonNode,
+    override val name: String,
+    override val value: String,
     override val inline: Boolean?
-        get() = if (json.has("inline")) json["inline"].asBoolean() else null
-
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).name(this.name).toString()
-    }
-}
+) : Field, ToStringEntityImpl<Field>(yde, Field::class.java)

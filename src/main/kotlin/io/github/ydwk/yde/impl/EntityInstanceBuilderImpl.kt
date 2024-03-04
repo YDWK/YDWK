@@ -39,6 +39,7 @@ import io.github.ydwk.yde.entities.channel.guild.vc.GuildStageChannel
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.yde.entities.guild.*
 import io.github.ydwk.yde.entities.guild.enums.*
+import io.github.ydwk.yde.entities.guild.invite.InviteCreator
 import io.github.ydwk.yde.entities.guild.invite.TargetType
 import io.github.ydwk.yde.entities.guild.role.RoleTag
 import io.github.ydwk.yde.entities.guild.schedule.EntityMetadata
@@ -54,10 +55,17 @@ import io.github.ydwk.yde.entities.sticker.StickerType
 import io.github.ydwk.yde.entities.user.Avatar
 import io.github.ydwk.yde.impl.entities.*
 import io.github.ydwk.yde.impl.entities.application.PartialApplicationImpl
+import io.github.ydwk.yde.impl.entities.channel.DmChannelImpl
 import io.github.ydwk.yde.impl.entities.channel.getter.ChannelGetterImpl
+import io.github.ydwk.yde.impl.entities.channel.getter.guild.GuildChannelGetterImpl
+import io.github.ydwk.yde.impl.entities.channel.guild.GuildCategoryImpl
+import io.github.ydwk.yde.impl.entities.channel.guild.GuildChannelImpl
 import io.github.ydwk.yde.impl.entities.guild.*
 import io.github.ydwk.yde.impl.entities.guild.role.RoleTagImpl
+import io.github.ydwk.yde.impl.entities.guild.schedule.EntityMetadataImpl
 import io.github.ydwk.yde.impl.entities.guild.ws.WelcomeChannelImpl
+import io.github.ydwk.yde.impl.entities.message.AttachmentImpl
+import io.github.ydwk.yde.impl.entities.message.EmbedImpl
 import io.github.ydwk.yde.impl.interaction.message.ComponentImpl
 import io.github.ydwk.yde.interaction.ComponentInteraction
 import io.github.ydwk.yde.interaction.Interaction
@@ -265,12 +273,7 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     }
 
     override fun buildUnavailableGuild(json: JsonNode): UnavailableGuild {
-        return object :
-            UnavailableGuildImpl(yde, json, json["id"].asLong(), json["unavailable"].asBoolean()) {
-            override fun toString(): String {
-                return EntityToStringBuilder(yde, this).autoAddFields().toString()
-            }
-        }
+        return UnavailableGuildImpl(yde, json, json["id"].asLong(), json["unavailable"].asBoolean())
     }
 
     override fun buildVoiceState(json: JsonNode, backUpGuild: Guild?): VoiceState {
@@ -348,26 +351,23 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     }
 
     override fun buildBan(json: JsonNode): Ban {
-        return object :
-            BanImpl(
-                yde,
-                json,
-                if (json.has("reason")) json["reason"].asText() else null,
-                buildUser(json["user"])) {
-            override fun toString(): String {
-                return EntityToStringBuilder(yde, this).toString()
-            }
-        }
+        return BanImpl(
+            yde,
+            json,
+            if (json.has("reason")) json["reason"].asText() else null,
+            buildUser(json["user"]))
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun buildGuildScheduledEvent(json: JsonNode): GuildScheduledEvent {
+        val guild =
+            yde.getGuildById(json["guild_id"].asLong())
+                ?: yde.requestGuild(json["guild_id"].asLong()).getCompleted()
         return GuildScheduledEventImpl(
             yde,
             json,
             json["id"].asLong(),
-            yde.getGuildById(json["guild_id"].asLong())
-                ?: yde.requestGuild(json["guild_id"].asLong()).getCompleted(),
+            guild,
             if (json.has("channel_id")) yde.getGuildChannelById(json["channel_id"].asLong())
             else null,
             if (json.has("creator")) buildUser(json["creator"]) else null,
@@ -380,7 +380,8 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             ScheduledEventStatus.getValue(json["status"].asInt()),
             EntityType.getValue(json["entity_type"].asInt()),
             if (json.has("entity_id")) GetterSnowFlake.of(json["entity_id"].asLong()) else null,
-            if (json.has("entity_metadata")) buildEntityMetadata(json["entity_metadata"]) else null,
+            if (json.has("entity_metadata")) buildEntityMetadata(json["entity_metadata"], guild)
+            else null,
             if (json.has("user_count")) json["user_count"].asInt() else 0,
             if (json.has("image")) json["image"].asText() else null,
             json["name"].asText())
@@ -474,16 +475,11 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     }
 
     override fun buildWelcomeScreen(json: JsonNode): WelcomeScreen {
-        return object :
-            WelcomeScreenImpl(
-                yde,
-                json,
-                if (json.has("description")) json["description"].asText() else null,
-                json["welcome_channels"].map { buildWelcomeScreenChannel(it) }) {
-            override fun toString(): String {
-                return EntityToStringBuilder(yde, this).toString()
-            }
-        }
+        return WelcomeScreenImpl(
+            yde,
+            json,
+            if (json.has("description")) json["description"].asText() else null,
+            json["welcome_channels"].map { buildWelcomeScreenChannel(it) })
     }
 
     override fun buildWelcomeScreenChannel(json: JsonNode): WelcomeChannel {
@@ -522,19 +518,50 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     }
 
     override fun buildDMChannel(json: JsonNode): DmChannel {
-        TODO("Not yet implemented")
+        return DmChannelImpl(
+            yde,
+            json,
+            json["id"].asLong(),
+            if (json.has("last_message_id")) GetterSnowFlake.of(json["last_message_id"].asLong())
+            else null,
+            if (json.has("recipients")) json["recipients"].map { buildUser(it) } else emptyList(),
+            json["name"].asText())
     }
 
-    override fun buildEntityMetadata(json: JsonNode): EntityMetadata {
-        TODO("Not yet implemented")
+    override fun buildEntityMetadata(json: JsonNode, guild: Guild): EntityMetadata {
+        return EntityMetadataImpl(
+            yde,
+            json,
+            GetterSnowFlake.of(json["scheduled_event_id"].asLong()),
+            buildUser(json["user"]),
+            if (json.has("member")) buildMember(json["member"], guild, buildUser(json["user"]))
+            else null)
     }
 
     override fun buildGuildChannel(json: JsonNode): GuildChannel {
-        TODO("Not yet implemented")
+        return GuildChannelImpl(
+            yde,
+            json,
+            json["id"].asLong(),
+            yde.getGuildById(json["guild_id"].asLong())!!,
+            json["position"].asInt(),
+            if (json.has("parent_id"))
+                yde.getGuildChannelById(json["parent_id"].asLong())
+                    ?.guildChannelGetter
+                    ?.asGuildCategory()
+            else null,
+            GuildChannelGetterImpl(yde, json, json["id"].asLong()),
+            InviteCreator(yde, json["id"].asText()),
+            json["name"].asText())
     }
 
     override fun buildGuildCategory(json: JsonNode): GuildCategory {
-        TODO("Not yet implemented")
+        return GuildCategoryImpl(
+            yde,
+            json,
+            json["id"].asLong(),
+            yde.getGuildChannels().filter { it.idAsLong == json["id"].asLong() },
+            if (json.has("nsfw")) json["nsfw"].asBoolean() else false)
     }
 
     override fun buildGuildForumChannel(json: JsonNode): GuildForumChannel {
@@ -582,12 +609,7 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     }
 
     override fun buildPartialApplication(json: JsonNode): PartialApplication {
-        return object :
-            PartialApplicationImpl(json, json["id"].asLong(), yde, json["flags"].asInt()) {
-            override fun toString(): String {
-                return EntityToStringBuilder(yde, this).toString()
-            }
-        }
+        return PartialApplicationImpl(json, json["id"].asLong(), yde, json["flags"].asInt())
     }
 
     override fun buildStickerItem(json: JsonNode): StickerItem {
@@ -615,11 +637,41 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     }
 
     override fun buildEmbed(json: JsonNode): Embed {
-        TODO("Not yet implemented")
+        return EmbedImpl(
+            yde,
+            json,
+            if (json.has("title")) json["title"].asText() else null,
+            if (json.has("type")) EmbedType.getValue(json["type"].asText()) else null,
+            if (json.has("description")) json["description"].asText() else null,
+            if (json.has("url")) URL(json["url"].asText()) else null,
+            if (json.has("timestamp")) json["timestamp"].asText() else null,
+            if (json.has("color")) Color(json["color"].asInt()) else null,
+            if (json.has("footer")) buildFooter(json["footer"]) else null,
+            if (json.has("image")) buildImage(json["image"]) else null,
+            if (json.has("thumbnail")) buildThumbnail(json["thumbnail"]) else null,
+            if (json.has("video")) buildVideo(json["video"]) else null,
+            if (json.has("provider")) buildProvider(json["provider"]) else null,
+            if (json.has("author")) buildAuthor(json["author"]) else null,
+            if (json.has("fields")) json["fields"].map { buildField(it) } else emptyList())
     }
 
     override fun buildAttachment(json: JsonNode): Attachment {
-        TODO("Not yet implemented")
+        return AttachmentImpl(
+            yde,
+            json,
+            json["id"].asLong(),
+            if (json.has("description")) json["description"].asText() else null,
+            if (json.has("media_type")) json["media_type"].asText() else null,
+            URL(json["url"].asText()),
+            URL(json["proxy_url"].asText()),
+            json["size"].asInt(),
+            if (json.has("height")) json["height"].asInt() else null,
+            if (json.has("width")) json["width"].asInt() else null,
+            json["ephemeral"].asBoolean(),
+            if (json.has("duration_secs")) json["duration_secs"].floatValue() else null,
+            if (json.has("waveform")) json["waveform"].asText() else null,
+            if (json.has("flags")) AttachmentFlags.getValue(json["flags"].asInt()) else null,
+            json["filename"].asText())
     }
 
     override fun buildEmoji(json: JsonNode): Emoji {

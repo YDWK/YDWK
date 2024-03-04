@@ -21,7 +21,7 @@ package io.github.ydwk.yde.impl.entities.message.embed
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.message.embed.Thumbnail
-import io.github.ydwk.yde.util.EntityToStringBuilder
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import java.net.URL
 
 class ThumbnailImpl(
@@ -31,8 +31,4 @@ class ThumbnailImpl(
     override val proxyUrl: String?,
     override val height: Int?,
     override val width: Int?
-) : Thumbnail {
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).toString()
-    }
-}
+) : Thumbnail, ToStringEntityImpl<Thumbnail>(yde, Thumbnail::class.java)

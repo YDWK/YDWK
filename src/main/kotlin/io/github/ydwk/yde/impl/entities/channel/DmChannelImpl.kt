@@ -30,8 +30,8 @@ class DmChannelImpl(
     override val json: JsonNode,
     override val idAsLong: Long,
     override var lastMessageId: GetterSnowFlake?,
-    override var recipient: User?,
-    override var name: String,
+    override var recipients: List<User>,
+    override var name: String
 ) :
     ChannelImpl(
         yde.entityInstanceBuilder.buildChannel(json, isGuildChannel = false, isDmChannel = true)),

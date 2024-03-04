@@ -23,24 +23,13 @@ import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.guild.Member
 import io.github.ydwk.yde.entities.guild.schedule.EntityMetadata
-import io.github.ydwk.yde.util.EntityToStringBuilder
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.util.GetterSnowFlake
 
-class EntityMetadataImpl(override val yde: YDE, override val json: JsonNode) : EntityMetadata {
-    override val scheduledEventId: GetterSnowFlake
-        get() = GetterSnowFlake.of(json["scheduled_event_id"].asText())
-
-    override val user: User
-        get() = yde.entityInstanceBuilder.buildUser(json["user"])
-
+class EntityMetadataImpl(
+    override val yde: YDE,
+    override val json: JsonNode,
+    override val scheduledEventId: GetterSnowFlake,
+    override val user: User,
     override val member: Member?
-        get() =
-            if (json.has("member"))
-                yde.getMemberById(
-                    json["member"]["guild_id"].asText(), json["member"]["user"]["id"].asText())
-            else null
-
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).toString()
-    }
-}
+) : EntityMetadata, ToStringEntityImpl<EntityMetadata>(yde, EntityMetadata::class.java)

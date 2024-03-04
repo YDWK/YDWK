@@ -74,9 +74,30 @@ interface Attachment : SnowFlake, NameAbleEntity, GenericEntity {
     val width: Int?
 
     /**
-     * Gets weather this attachment is ephemeral.
+     * Whether this attachment is ephemeral.
      *
-     * @return Weather this attachment is ephemeral.
+     * @return Whether this attachment is ephemeral.
      */
-    val ephemeral: Boolean
+    val isEphemeral: Boolean
+
+    /**
+     * The duration of the audio file in seconds.
+     *
+     * @return The duration of the audio file in seconds.
+     */
+    val duration: Float?
+
+    /**
+     * The base64 encoded bytearray representing a sampled waveform.
+     *
+     * @return The base64 encoded bytearray representing a sampled waveform.
+     */
+    val waveForm: String?
+
+    /**
+     * The attachment flags combined as a bitfield.
+     *
+     * @return The attachment flags combined as a bitfield.
+     */
+    val flags: AttachmentFlags?
 }

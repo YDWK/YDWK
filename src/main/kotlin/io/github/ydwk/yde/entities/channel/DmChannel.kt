@@ -20,7 +20,6 @@ package io.github.ydwk.yde.entities.channel
 
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.util.GetterSnowFlake
-import kotlinx.coroutines.CompletableDeferred
 
 interface DmChannel : TextChannel {
     /**
@@ -31,17 +30,9 @@ interface DmChannel : TextChannel {
     var lastMessageId: GetterSnowFlake?
 
     /**
-     * The recipient of the dm.
+     * The recipients in the dm.
      *
-     * @return the recipient of the dm.
+     * @return the recipients in the dm.
      */
-    var recipient: User?
-
-    /**
-     * Retrieves the recipient of the dm.
-     *
-     * @return the recipient of the dm.
-     */
-    val retrieveRecipient: CompletableDeferred<User>
-        get() = yde.restAPIMethodGetters.getUserRestAPIMethods().requestUser(idAsLong)
+    var recipients: List<User>
 }

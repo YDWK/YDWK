@@ -22,16 +22,11 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.message.MessageActivity
 import io.github.ydwk.yde.entities.message.activity.MessageActivityType
-import io.github.ydwk.yde.util.EntityToStringBuilder
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
-class MessageActivityImpl(override val yde: YDE, override val json: JsonNode) : MessageActivity {
-    override val type: MessageActivityType
-        get() = MessageActivityType.fromInt(json.get("type").asInt())
-
+class MessageActivityImpl(
+    override val yde: YDE,
+    override val json: JsonNode,
+    override val type: MessageActivityType,
     override val partyId: String?
-        get() = if (json.has("party_id")) json.get("party_id").asText() else null
-
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).toString()
-    }
-}
+) : MessageActivity, ToStringEntityImpl<MessageActivity>(yde, MessageActivity::class.java)

@@ -16,19 +16,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.yde.impl.entities.message.embed
+package io.github.ydwk.yde.entities.message
 
-import com.fasterxml.jackson.databind.JsonNode
-import io.github.ydwk.yde.YDE
-import io.github.ydwk.yde.entities.message.embed.Image
-import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
-import java.net.URL
+enum class AttachmentFlags(private val value: Int) {
+    /** This attachment has been edited using the remix feature on mobile. */
+    IS_REMIX(1 shl 2),
+    /** An unknown flag. */
+    UNKNOWN(-1);
 
-class ImageImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val url: URL,
-    override val proxyUrl: URL?,
-    override val height: Int?,
-    override val width: Int?
-) : Image, ToStringEntityImpl<Image>(yde, Image::class.java)
+    companion object {
+        fun getValue(value: Int): AttachmentFlags {
+            return when (value) {
+                4 -> IS_REMIX
+                else -> UNKNOWN
+            }
+        }
+    }
+}

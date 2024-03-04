@@ -40,4 +40,17 @@ open class GuildChannelImpl(
 ) :
     ChannelImpl(
         yde.entityInstanceBuilder.buildChannel(json, isGuildChannel = true, isDmChannel = false)),
-    GuildChannel
+    GuildChannel {
+    constructor(
+        guildChannel: GuildChannel
+    ) : this(
+        guildChannel.yde,
+        guildChannel.json,
+        guildChannel.idAsLong,
+        guildChannel.guild,
+        guildChannel.position,
+        guildChannel.parent,
+        guildChannel.guildChannelGetter,
+        guildChannel.inviteCreator,
+        guildChannel.name)
+}

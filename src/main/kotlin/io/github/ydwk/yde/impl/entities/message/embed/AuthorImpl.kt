@@ -21,7 +21,7 @@ package io.github.ydwk.yde.impl.entities.message.embed
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.message.embed.Author
-import io.github.ydwk.yde.util.EntityToStringBuilder
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import java.net.URL
 
 class AuthorImpl(
@@ -31,8 +31,4 @@ class AuthorImpl(
     override val url: URL?,
     override val iconUrl: String?,
     override val proxyIconUrl: String?
-) : Author {
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).name(this.name).toString()
-    }
-}
+) : Author, ToStringEntityImpl<Author>(yde, Author::class.java)

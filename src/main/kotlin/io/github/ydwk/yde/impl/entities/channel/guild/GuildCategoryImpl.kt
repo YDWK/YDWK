@@ -20,28 +20,13 @@ package io.github.ydwk.yde.impl.entities.channel.guild
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
-import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.channel.GuildChannel
-import io.github.ydwk.yde.entities.channel.enums.ChannelType
 import io.github.ydwk.yde.entities.channel.guild.GuildCategory
-import io.github.ydwk.yde.util.EntityToStringBuilder
 
-class GuildCategoryImpl(yde: YDE, json: JsonNode, idAsLong: Long) :
-    GuildCategory, GuildChannelImpl(yde, json, idAsLong) {
-
-    override val channels: List<GuildChannel>
-        get() = yde.getGuildChannels().filter { it.parent == this }
-
+class GuildCategoryImpl(
+    yde: YDE,
+    json: JsonNode,
+    idAsLong: Long,
+    override val channels: List<GuildChannel>,
     override val nsfw: Boolean
-        get() = json.has("nsfw") && json["nsfw"].asBoolean()
-
-    override val guild: Guild = yde.getGuildById(json["guild_id"].asText())!!
-
-    override var parent: GuildCategory? = null
-
-    override val type: ChannelType = ChannelType.CATEGORY
-
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).name(this.name).toString()
-    }
-}
+) : GuildCategory, GuildChannelImpl(yde.entityInstanceBuilder.buildGuildChannel(json))

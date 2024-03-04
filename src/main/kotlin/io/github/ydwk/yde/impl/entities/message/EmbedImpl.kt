@@ -23,7 +23,7 @@ import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.message.Embed
 import io.github.ydwk.yde.entities.message.embed.*
 import io.github.ydwk.yde.impl.entities.message.embed.*
-import io.github.ydwk.yde.util.EntityToStringBuilder
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import java.awt.Color
 import java.net.URL
 
@@ -43,9 +43,4 @@ class EmbedImpl(
     override val provider: Provider?,
     override val author: Author?,
     override val fields: List<Field>
-) : Embed {
-
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).toString()
-    }
-}
+) : Embed, ToStringEntityImpl<Embed>(yde, Embed::class.java)

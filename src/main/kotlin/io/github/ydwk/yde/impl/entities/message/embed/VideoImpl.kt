@@ -21,7 +21,7 @@ package io.github.ydwk.yde.impl.entities.message.embed
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.message.embed.Video
-import io.github.ydwk.yde.util.EntityToStringBuilder
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import java.net.URL
 
 class VideoImpl(
@@ -31,8 +31,4 @@ class VideoImpl(
     override val proxyUrl: String?,
     override val height: Int?,
     override val width: Int?
-) : Video {
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).toString()
-    }
-}
+) : Video, ToStringEntityImpl<Video>(yde, Video::class.java)

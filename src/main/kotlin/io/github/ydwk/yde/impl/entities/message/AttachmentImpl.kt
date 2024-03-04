@@ -21,7 +21,8 @@ package io.github.ydwk.yde.impl.entities.message
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.message.Attachment
-import io.github.ydwk.yde.util.EntityToStringBuilder
+import io.github.ydwk.yde.entities.message.AttachmentFlags
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import java.net.URL
 
 class AttachmentImpl(
@@ -35,10 +36,9 @@ class AttachmentImpl(
     override val size: Int,
     override val height: Int?,
     override val width: Int?,
-    override val ephemeral: Boolean,
+    override val isEphemeral: Boolean,
+    override val duration: Float?,
+    override val waveForm: String?,
+    override val flags: AttachmentFlags?,
     override var name: String,
-) : Attachment {
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).name(this.name).toString()
-    }
-}
+) : Attachment, ToStringEntityImpl<Attachment>(yde, Attachment::class.java)

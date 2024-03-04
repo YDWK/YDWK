@@ -22,10 +22,11 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.guild.WelcomeScreen
 import io.github.ydwk.yde.entities.guild.ws.WelcomeChannel
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
-abstract class WelcomeScreenImpl(
+class WelcomeScreenImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override var description: String?,
     override var welcomeChannels: List<WelcomeChannel>
-) : WelcomeScreen
+) : WelcomeScreen, ToStringEntityImpl<WelcomeScreen>(yde, WelcomeScreen::class.java)

@@ -21,17 +21,11 @@ package io.github.ydwk.yde.impl.entities.message.embed
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.message.embed.Provider
-import io.github.ydwk.yde.util.EntityToStringBuilder
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
-class ProviderImpl(override val yde: YDE, override val json: JsonNode) : Provider {
-
-    override val name: String?
-        get() = if (json.has("name")) json["name"].asText() else null
-
+class ProviderImpl(
+    override val yde: YDE,
+    override val json: JsonNode,
+    override val name: String?,
     override val url: String?
-        get() = if (json.has("url")) json["url"].asText() else null
-
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).name(this.name ?: "null").toString()
-    }
-}
+) : Provider, ToStringEntityImpl<Provider>(yde, Provider::class.java)

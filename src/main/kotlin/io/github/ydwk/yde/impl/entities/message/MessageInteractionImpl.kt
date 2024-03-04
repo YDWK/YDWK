@@ -23,35 +23,15 @@ import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.guild.Member
 import io.github.ydwk.yde.entities.message.MessageInteraction
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.interaction.sub.InteractionType
-import io.github.ydwk.yde.util.EntityToStringBuilder
-import io.github.ydwk.ydwk.util.ydwk
 
 class MessageInteractionImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,
-) : MessageInteraction {
-
-    override val type: InteractionType
-        get() = InteractionType.fromInt(json.get("type").asInt())
-
-    override val name: String
-        get() = json.get("name").asText()
-
-    override val user: User
-        get() = ydwk.entityInstanceBuilder.buildUser(json.get("user"))
-
-    override val member: Member?
-        get() =
-            if (json.has("member"))
-                yde.entityInstanceBuilder.buildMember(
-                    json.get("member"),
-                    yde.getGuildById(json.get("guild_id").asLong())
-                        ?: throw IllegalStateException("Bot is not in guild"))
-            else null
-
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).name(this.name).toString()
-    }
-}
+    override val type: InteractionType,
+    override val name: String,
+    override val user: User,
+    override val member: Member?,
+) : MessageInteraction, ToStringEntityImpl<MessageInteraction>(yde, MessageInteraction::class.java)
