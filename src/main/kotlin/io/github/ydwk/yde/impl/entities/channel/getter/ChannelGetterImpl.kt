@@ -24,29 +24,33 @@ import io.github.ydwk.yde.entities.channel.DmChannel
 import io.github.ydwk.yde.entities.channel.GuildChannel
 import io.github.ydwk.yde.entities.channel.getter.ChannelGetter
 import io.github.ydwk.yde.impl.entities.ChannelImpl
-import io.github.ydwk.yde.impl.entities.channel.DmChannelImpl
-import io.github.ydwk.yde.impl.entities.channel.guild.GuildChannelImpl
 
 class ChannelGetterImpl(
-    yde: YDE,
-    json: JsonNode,
-    idAsLong: Long,
-    isGuildChannel: Boolean,
-    isDmChannel: Boolean,
-) : ChannelImpl(yde, json, idAsLong, isGuildChannel, isDmChannel), ChannelGetter {
+    override val yde: YDE,
+    override val json: JsonNode,
+    override val idAsLong: Long,
+    override val isGuildChannel: Boolean,
+    override val isDmChannel: Boolean,
+) :
+    ChannelImpl(yde.entityInstanceBuilder.buildChannel(json, isGuildChannel, isDmChannel)),
+    ChannelGetter {
     override fun asGuildChannel(): GuildChannel? {
-        return if (isGuildChannel) {
-            GuildChannelImpl(yde, json, idAsLong)
-        } else {
-            null
+        return isGuildChannel.let {
+            if (it) {
+                yde.entityInstanceBuilder.buildGuildChannel(json)
+            } else {
+                null
+            }
         }
     }
 
     override fun asDmChannel(): DmChannel? {
-        return if (isDmChannel) {
-            DmChannelImpl(yde, json, idAsLong)
-        } else {
-            null
+        return isDmChannel.let {
+            if (it) {
+                yde.entityInstanceBuilder.buildDMChannel(json)
+            } else {
+                null
+            }
         }
     }
 }

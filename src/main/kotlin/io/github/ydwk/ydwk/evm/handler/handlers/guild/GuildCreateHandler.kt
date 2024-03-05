@@ -28,8 +28,6 @@ import io.github.ydwk.yde.entities.channel.GuildChannel
 import io.github.ydwk.yde.entities.channel.enums.ChannelType
 import io.github.ydwk.yde.entities.guild.Member
 import io.github.ydwk.yde.entities.guild.Role
-import io.github.ydwk.yde.impl.entities.ChannelImpl
-import io.github.ydwk.yde.impl.entities.channel.guild.GuildChannelImpl
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import java.util.*
@@ -77,7 +75,7 @@ class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
         val channelJson = json["channels"]
         val channelType: EnumSet<ChannelType> =
             channelJson
-                .map { ChannelType.fromInt(it["type"].asInt()) }
+                .map { ChannelType.getValue(it["type"].asInt()) }
                 .toCollection(EnumSet.noneOf(ChannelType::class.java))
 
         val guildChannels = ArrayList<GuildChannel>()
@@ -87,8 +85,7 @@ class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
                 it.isGuildChannel -> {
                     channelJson.forEach { channel ->
                         if (channel["type"].asInt() == it.getId()) {
-                            guildChannels.add(
-                                GuildChannelImpl(ydwk, channel, channel["id"].asLong()))
+                            guildChannels.add(ydwk.entityInstanceBuilder.buildGuildChannel(channel))
                         }
                     }
                 }
@@ -96,7 +93,7 @@ class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
                     channelJson.forEach { channel ->
                         if (channel["type"].asInt() == it.getId()) {
                             nonGuildChannels.add(
-                                ChannelImpl(ydwk, channel, channel["id"].asLong(), false, true))
+                                ydwk.entityInstanceBuilder.buildChannel(channel, false, true))
                         }
                     }
                 }

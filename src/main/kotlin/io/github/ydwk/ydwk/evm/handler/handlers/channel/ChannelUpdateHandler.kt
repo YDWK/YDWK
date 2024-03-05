@@ -32,8 +32,6 @@ import io.github.ydwk.yde.entities.channel.guild.message.text.GuildTextChannel
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildStageChannel
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.yde.impl.entities.channel.guild.*
-import io.github.ydwk.yde.impl.entities.channel.guild.forum.DefaultReactionEmojiImpl
-import io.github.ydwk.yde.impl.entities.channel.guild.forum.ForumTagImpl
 import io.github.ydwk.yde.util.GetterSnowFlake
 import io.github.ydwk.ydwk.evm.event.events.channel.update.category.CategoryNameUpdateEvent
 import io.github.ydwk.ydwk.evm.event.events.channel.update.forum.*
@@ -51,7 +49,7 @@ import java.util.*
 
 class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override suspend fun start() {
-        when (ChannelType.fromInt(json["type"].asInt())) {
+        when (ChannelType.getValue(json["type"].asInt())) {
             ChannelType.TEXT -> updateTextChannel()
             ChannelType.DM -> ydwk.logger.warn("Dm is not supported")
             ChannelType.VOICE -> updateVoiceChannel()
@@ -81,7 +79,8 @@ class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json)
 
         if (channel == null) {
             ydwk.logger.info("Channel ${json["id"].asText()} is not cached, creating new one.")
-            ydwk.cache[json["id"].asText(), GuildTextChannelImpl(ydwk, json, json["id"].asLong())] =
+            ydwk.cache[
+                    json["id"].asText(), ydwk.entityInstanceBuilder.buildGuildTextChannel(json)] =
                 CacheIds.CHANNEL
             return
         }
@@ -177,7 +176,7 @@ class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json)
         val oldPermissionOverwrites = channel.permissionOverwrites
         val newPermissionOverwrites =
             json["permission_overwrites"].map {
-                PermissionOverwriteImpl(ydwk, it, it["id"].asLong())
+                ydwk.entityInstanceBuilder.buildPermissionOverwrite(it)
             }
         if (!Objects.deepEquals(oldPermissionOverwrites, newPermissionOverwrites)) {
             channel.permissionOverwrites = newPermissionOverwrites
@@ -195,7 +194,7 @@ class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json)
 
         if (channel == null) {
             ydwk.logger.info("Channel ${json["id"].asText()} is not cached, creating new one.")
-            ydwk.cache[json["id"].asText(), GuildCategoryImpl(ydwk, json, json["id"].asLong())] =
+            ydwk.cache[json["id"].asText(), ydwk.entityInstanceBuilder.buildGuildCategory(json)] =
                 CacheIds.CHANNEL
             return
         }
@@ -241,7 +240,7 @@ class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json)
         if (channel == null) {
             ydwk.logger.info("Channel ${json["id"].asText()} is not cached, creating new one.")
             ydwk.cache[
-                    json["id"].asText(), GuildStageChannelImpl(ydwk, json, json["id"].asLong())] =
+                    json["id"].asText(), ydwk.entityInstanceBuilder.buildGuildStageChannel(json)] =
                 CacheIds.CHANNEL
             return
         }
@@ -265,7 +264,7 @@ class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json)
         if (channel == null) {
             ydwk.logger.info("Channel ${json["id"].asText()} is not cached, creating new one.")
             ydwk.cache[
-                    json["id"].asText(), GuildVoiceChannelImpl(ydwk, json, json["id"].asLong())] =
+                    json["id"].asText(), ydwk.entityInstanceBuilder.buildGuildVoiceChannel(json)] =
                 CacheIds.CHANNEL
             return
         }
@@ -310,7 +309,7 @@ class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json)
         if (channel == null) {
             ydwk.logger.info("Channel ${json["id"].asText()} is not cached, creating new one.")
             ydwk.cache[
-                    json["id"].asText(), GuildForumChannelImpl(ydwk, json, json["id"].asLong())] =
+                    json["id"].asText(), ydwk.entityInstanceBuilder.buildGuildForumChannel(json)] =
                 CacheIds.CHANNEL
             return
         }
@@ -350,7 +349,7 @@ class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json)
         val oldPermissionOverwrites = channel.permissionOverwrites
         val newPermissionOverwrites =
             json["permission_overwrites"].map {
-                PermissionOverwriteImpl(ydwk, it, it["id"].asLong())
+                ydwk.entityInstanceBuilder.buildPermissionOverwrite(it)
             }
         if (!Objects.deepEquals(oldPermissionOverwrites, newPermissionOverwrites)) {
             channel.permissionOverwrites = newPermissionOverwrites
@@ -401,7 +400,7 @@ class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json)
         val oldDefaultReactionEmoji = channel.defaultReactionEmoji
         val newDefaultReactionEmoji =
             if (json.hasNonNull("default_reaction_emoji"))
-                DefaultReactionEmojiImpl(ydwk, json["default_reaction_emoji"])
+                ydwk.entityInstanceBuilder.buildDefaultReactionEmoji(json["default_reaction_emoji"])
             else null
         if (!Objects.deepEquals(oldDefaultReactionEmoji, newDefaultReactionEmoji)) {
             channel.defaultReactionEmoji = newDefaultReactionEmoji
@@ -412,7 +411,7 @@ class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json)
 
         val oldAvailableForumTags = channel.availableForumTags
         val newAvailableForumTags =
-            json["available_tags"].map { ForumTagImpl(ydwk, it, it["id"].asLong()) }
+            json["available_tags"].map { ydwk.entityInstanceBuilder.buildForumTag(it) }
         if (!Objects.deepEquals(oldAvailableForumTags, newAvailableForumTags)) {
             channel.availableForumTags = newAvailableForumTags
             ydwk.emitEvent(

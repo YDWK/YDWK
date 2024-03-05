@@ -24,7 +24,6 @@ import io.github.ydwk.yde.entities.builder.guild.channel.VoiceChannelBuilder
 import io.github.ydwk.yde.entities.channel.enums.ChannelType
 import io.github.ydwk.yde.entities.channel.guild.message.text.PermissionOverwrite
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildVoiceChannel
-import io.github.ydwk.yde.impl.entities.channel.guild.GuildVoiceChannelImpl
 import io.github.ydwk.yde.rest.EndPoint
 import kotlinx.coroutines.CompletableDeferred
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -89,19 +88,14 @@ class VoiceChannelBuilderImpl(val yde: YDE, val guildId: String?, val name: Stri
         }
 
     override fun create(): CompletableDeferred<GuildVoiceChannel> {
-        if (guildId == null) {
-            throw IllegalStateException("Guild id is not set")
-        }
+        requireNotNull(guildId) { "Guild id is not set" }
 
+        val requestBody = json.toString().toRequestBody()
         return yde.restApiManager
-            .post(json.toString().toRequestBody(), EndPoint.GuildEndpoint.CREATE_CHANNEL, guildId)
-            .execute {
-                val jsonBody = it.jsonBody
-                if (jsonBody == null) {
-                    throw IllegalStateException("json body is null")
-                } else {
-                    GuildVoiceChannelImpl(yde, jsonBody, jsonBody["id"].asLong())
-                }
+            .post(requestBody, EndPoint.GuildEndpoint.CREATE_CHANNEL, guildId)
+            .execute { response ->
+                val jsonBody = response.jsonBody ?: throw IllegalStateException("json body is null")
+                yde.entityInstanceBuilder.buildGuildVoiceChannel(jsonBody)
             }
     }
 }

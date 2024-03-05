@@ -18,17 +18,17 @@
  */ 
 package io.github.ydwk.yde.impl.rest.methods
 
+import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.channel.DmChannel
-import io.github.ydwk.yde.impl.entities.channel.DmChannelImpl
 import io.github.ydwk.yde.rest.EndPoint
 import io.github.ydwk.yde.rest.methods.UserRestAPIMethods
 import kotlinx.coroutines.CompletableDeferred
 import okhttp3.RequestBody.Companion.toRequestBody
 
 class UserRestAPIMethodsImpl(val yde: YDE) : UserRestAPIMethods {
-    val restApiManager = yde.restApiManager
+    private val restApiManager = yde.restApiManager
 
     override fun createDm(id: Long): CompletableDeferred<DmChannel> {
         return restApiManager
@@ -39,32 +39,32 @@ class UserRestAPIMethodsImpl(val yde: YDE) : UserRestAPIMethods {
                     .toString()
                     .toRequestBody(),
                 EndPoint.UserEndpoint.CREATE_DM)
-            .execute() {
-                val jsonBody = it.jsonBody
-                if (jsonBody == null) {
-                    throw IllegalStateException("json body is null")
-                } else {
-                    DmChannelImpl(yde, jsonBody, jsonBody["id"].asLong())
-                }
+            .execute { response ->
+                val jsonBody = response.jsonBody ?: throw IllegalStateException("json body is null")
+                yde.entityInstanceBuilder.buildDMChannel(jsonBody)
             }
     }
 
     override fun requestUser(id: Long): CompletableDeferred<User> {
-        return this.restApiManager.get(EndPoint.UserEndpoint.GET_USER, id.toString()).execute() {
-            val jsonBody = it.jsonBody
-            if (jsonBody == null) {
-                throw IllegalStateException("json body is null")
-            } else {
-                yde.entityInstanceBuilder.buildUser(jsonBody)
-            }
+        return restApiManager.get(EndPoint.UserEndpoint.GET_USER, id.toString()).execute { response
+            ->
+            val jsonBody = response.jsonBody ?: throw IllegalStateException("json body is null")
+            yde.entityInstanceBuilder.buildUser(jsonBody)
         }
     }
 
     override fun requestUsers(): CompletableDeferred<List<User>> {
-        return this.restApiManager.get(EndPoint.UserEndpoint.GET_USERS).execute { it ->
-            val jsonBody = it.jsonBody
-            jsonBody?.map { yde.entityInstanceBuilder.buildUser(it) }
-                ?: throw IllegalStateException("json body is null")
+        return restApiManager.get(EndPoint.UserEndpoint.GET_USERS).execute { response ->
+            val jsonBody = response.jsonBody ?: throw IllegalStateException("json body is null")
+            buildUsersFromJson(jsonBody)
         }
+    }
+
+    private fun buildUsersFromJson(jsonBody: JsonNode): List<User> {
+        val users = mutableListOf<User>()
+        for (i in 0 until jsonBody.size()) {
+            users.add(yde.entityInstanceBuilder.buildUser(jsonBody[i]))
+        }
+        return users
     }
 }

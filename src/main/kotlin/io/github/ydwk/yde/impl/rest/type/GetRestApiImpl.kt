@@ -28,7 +28,7 @@ class GetRestApiImpl(
     private val yde: YDEImpl,
     private val client: OkHttpClient,
     private val builder: Request.Builder,
-) : GetRestApi, SimilarRestApiImpl(yde, builder, client) {
+) : GetRestApi, OldSimilarRestApiImpl(yde, builder, client) {
     override val execute: JsonNode
         get() {
             return try {

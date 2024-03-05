@@ -27,4 +27,4 @@ data class PostRestApiImpl(
     private val yde: YDEImpl,
     private val client: OkHttpClient,
     private val builder: Request.Builder,
-) : PostRestApi, SimilarRestApiImpl(yde, builder, client)
+) : PostRestApi, OldSimilarRestApiImpl(yde, builder, client)

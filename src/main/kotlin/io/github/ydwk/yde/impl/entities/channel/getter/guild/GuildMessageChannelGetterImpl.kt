@@ -25,14 +25,18 @@ import io.github.ydwk.yde.entities.channel.getter.guild.GuildMessageChannelGette
 import io.github.ydwk.yde.entities.channel.guild.message.news.GuildNewsChannel
 import io.github.ydwk.yde.entities.channel.guild.message.text.GuildTextChannel
 import io.github.ydwk.yde.impl.entities.channel.guild.GuildMessageChannelImpl
-import io.github.ydwk.yde.impl.entities.channel.guild.GuildNewsChannelImpl
-import io.github.ydwk.yde.impl.entities.channel.guild.GuildTextChannelImpl
 
-class GuildMessageChannelGetterImpl(yde: YDE, json: JsonNode, idAsLong: Long) :
-    GuildMessageChannelImpl(yde, json, idAsLong), GuildMessageChannelGetter {
+class GuildMessageChannelGetterImpl(
+    override val yde: YDE,
+    override val json: JsonNode,
+    override val idAsLong: Long
+) :
+    GuildMessageChannelImpl(yde.entityInstanceBuilder.buildGuildMessageChannel(json)),
+    GuildMessageChannelGetter {
+
     override fun asGuildTextChannel(): GuildTextChannel? {
         return if (type == ChannelType.TEXT) {
-            GuildTextChannelImpl(yde, json, idAsLong)
+            yde.entityInstanceBuilder.buildGuildTextChannel(json)
         } else {
             null
         }
@@ -40,7 +44,7 @@ class GuildMessageChannelGetterImpl(yde: YDE, json: JsonNode, idAsLong: Long) :
 
     override fun asGuildNewsChannel(): GuildNewsChannel? {
         return if (type == ChannelType.NEWS) {
-            GuildNewsChannelImpl(yde, json, idAsLong)
+            yde.entityInstanceBuilder.buildGuildNewsChannel(json)
         } else {
             null
         }

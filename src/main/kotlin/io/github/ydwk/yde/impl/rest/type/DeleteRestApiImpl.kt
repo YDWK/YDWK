@@ -27,4 +27,4 @@ data class DeleteRestApiImpl(
     private val yde: YDEImpl,
     private val client: OkHttpClient,
     private val builder: Request.Builder,
-) : DeleteRestApi, SimilarRestApiImpl(yde, builder, client)
+) : DeleteRestApi, OldSimilarRestApiImpl(yde, builder, client)

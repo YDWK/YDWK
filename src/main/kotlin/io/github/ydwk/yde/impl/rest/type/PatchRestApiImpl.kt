@@ -27,4 +27,4 @@ class PatchRestApiImpl(
     private val yde: YDEImpl,
     private val client: OkHttpClient,
     private val builder: Request.Builder,
-) : PatchRestApi, SimilarRestApiImpl(yde, builder, client)
+) : PatchRestApi, OldSimilarRestApiImpl(yde, builder, client)

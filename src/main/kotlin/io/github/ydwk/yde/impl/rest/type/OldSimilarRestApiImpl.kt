@@ -34,13 +34,16 @@ import kotlinx.coroutines.CompletableDeferred
 import okhttp3.*
 import org.slf4j.LoggerFactory
 
-open class SimilarRestApiImpl(
+@Deprecated(
+    "Use SimilarRestApiNew instead as soon as its implementation is complete",
+    level = DeprecationLevel.WARNING)
+open class OldSimilarRestApiImpl(
     private val yde: YDEImpl,
     private val builder: Request.Builder,
     private val client: OkHttpClient,
 ) : SimilarRestApi {
     private val httpLogger: Logger = Logger.getLogger(OkHttpClient::class.simpleName)
-    private val logger = LoggerFactory.getLogger(SimilarRestApiImpl::class.java)
+    private val logger = LoggerFactory.getLogger(OldSimilarRestApiImpl::class.java)
 
     init {
         httpLogger.level = Level.ALL

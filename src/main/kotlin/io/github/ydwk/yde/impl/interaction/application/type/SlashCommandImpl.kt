@@ -26,8 +26,6 @@ import io.github.ydwk.yde.entities.channel.enums.ChannelType
 import io.github.ydwk.yde.entities.message.Embed
 import io.github.ydwk.yde.entities.util.GenericEntity
 import io.github.ydwk.yde.impl.YDEImpl
-import io.github.ydwk.yde.impl.entities.channel.DmChannelImpl
-import io.github.ydwk.yde.impl.entities.channel.guild.GuildChannelImpl
 import io.github.ydwk.yde.impl.interaction.application.ApplicationCommandImpl
 import io.github.ydwk.yde.impl.interaction.application.ApplicationCommandOptionImpl
 import io.github.ydwk.yde.impl.interaction.application.sub.ReplyImpl
@@ -98,11 +96,11 @@ class SlashCommandImpl(yde: YDE, json: JsonNode, idAsLong: Long, interaction: In
 
             resolved["channels"]?.let {
                 it.fields().forEach { (id, node) ->
-                    val channelType = ChannelType.fromInt(node["type"].asInt())
+                    val channelType = ChannelType.getValue(node["type"].asInt())
                     if (ChannelType.isGuildChannel(channelType)) {
-                        map[id.toLong()] = GuildChannelImpl(yde, node, node["id"].asLong())
+                        map[id.toLong()] = yde.entityInstanceBuilder.buildGuildChannel(node)
                     } else {
-                        map[id.toLong()] = DmChannelImpl(yde, node, node["id"].asLong())
+                        map[id.toLong()] = yde.entityInstanceBuilder.buildDMChannel(node)
                     }
                 }
             }

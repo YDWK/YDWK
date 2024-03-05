@@ -21,23 +21,21 @@ package io.github.ydwk.ydwk.evm.handler.handlers.channel
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.cache.CacheIds
 import io.github.ydwk.yde.entities.channel.enums.ChannelType
-import io.github.ydwk.yde.impl.entities.ChannelImpl
-import io.github.ydwk.yde.impl.entities.channel.guild.GuildChannelImpl
 import io.github.ydwk.ydwk.evm.event.events.channel.ChannelCreateEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class ChannelCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override suspend fun start() {
-        val channelType = ChannelType.fromInt(json.get("type").asInt())
+        val channelType = ChannelType.getValue(json.get("type").asInt())
         when {
             channelType.isGuildChannel -> {
-                val channel = GuildChannelImpl(ydwk, json, json.get("id").asLong())
+                val channel = ydwk.entityInstanceBuilder.buildGuildChannel(json)
                 ydwk.cache[json.get("id").asText(), channel] = CacheIds.CHANNEL
                 ydwk.emitEvent(ChannelCreateEvent(ydwk, channel))
             }
             channelType.isNonGuildChannel -> {
-                val channel = ChannelImpl(ydwk, json, json.get("id").asLong(), false, true)
+                val channel = ydwk.entityInstanceBuilder.buildChannel(json, false, true)
                 ydwk.cache[json.get("id").asText(), channel] = CacheIds.CHANNEL
                 ydwk.emitEvent(ChannelCreateEvent(ydwk, channel))
             }

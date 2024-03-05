@@ -27,4 +27,4 @@ class PutRestApiImpl(
     private val yde: YDEImpl,
     private val client: OkHttpClient,
     private val builder: Request.Builder,
-) : PutRestApi, SimilarRestApiImpl(yde, builder, client)
+) : PutRestApi, OldSimilarRestApiImpl(yde, builder, client)
