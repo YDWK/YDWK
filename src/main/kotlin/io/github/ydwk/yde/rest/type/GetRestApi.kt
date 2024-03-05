@@ -20,6 +20,4 @@ package io.github.ydwk.yde.rest.type
 
 import com.fasterxml.jackson.databind.JsonNode
 
-interface GetRestApi : SimilarRestApi {
-    val execute: JsonNode
-}
+interface GetRestApi : SimilarRestApiNew

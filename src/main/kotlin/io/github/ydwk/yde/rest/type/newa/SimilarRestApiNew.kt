@@ -18,6 +18,8 @@
  */ 
 package io.github.ydwk.yde.rest.type
 
+import com.fasterxml.jackson.databind.JsonNode
+import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.rest.result.NoResult
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -45,4 +47,10 @@ interface SimilarRestApiNew {
 sealed class RestResult<out T> {
     data class Success<T>(val data: T) : RestResult<T>()
     data class Error(val message: String) : RestResult<Nothing>()
+}
+
+suspend fun HttpResponse.json(yde : YDE): JsonNode {
+    val body = this.body<String>() ?: ""
+
+    return yde.objectMapper.readTree(body)
 }

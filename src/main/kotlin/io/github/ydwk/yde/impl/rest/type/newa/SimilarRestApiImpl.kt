@@ -33,7 +33,7 @@ import java.time.Instant
 import kotlinx.coroutines.delay
 import org.slf4j.LoggerFactory
 
-class SimilarRestApiImpl(
+open class SimilarRestApiImpl(
     private val yde: YDEImpl,
     private val builder: HttpRequestBuilder,
     private val client: HttpClient,

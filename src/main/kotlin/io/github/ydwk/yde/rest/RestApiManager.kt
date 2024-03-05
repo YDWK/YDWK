@@ -19,6 +19,7 @@
 package io.github.ydwk.yde.rest
 
 import io.github.ydwk.yde.rest.type.*
+import io.ktor.client.statement.*
 import okhttp3.RequestBody
 
 /** Manages the REST API */
@@ -40,7 +41,7 @@ interface RestApiManager {
      * @param params The parameters to be used in the endpoint.
      * @return The [GetRestApi] instance.
      */
-    fun get(endPoint: EndPoint.IEnumEndpoint, vararg params: String): GetRestApi
+    suspend fun get(endPoint: EndPoint.IEnumEndpoint, vararg params: String): HttpResponse
 
     /**
      * Gets a certain endpoint from the API.
@@ -48,7 +49,7 @@ interface RestApiManager {
      * @param endPoint The endpoint to get.
      * @return The [GetRestApi] instance.
      */
-    fun get(endPoint: EndPoint.IEnumEndpoint): GetRestApi {
+    suspend fun get(endPoint: EndPoint.IEnumEndpoint): HttpResponse {
         return get(endPoint, *arrayOf())
     }
 

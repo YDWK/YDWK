@@ -23,6 +23,10 @@ import io.github.ydwk.yde.impl.rest.type.*
 import io.github.ydwk.yde.rest.EndPoint
 import io.github.ydwk.yde.rest.RestApiManager
 import io.github.ydwk.yde.rest.type.*
+import io.ktor.client.*
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
+import io.ktor.http.*
 import okhttp3.Headers
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -32,7 +36,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 class RestApiManagerImpl(
     private val token: String,
     private val yde: YDEImpl,
-    private val client: OkHttpClient,
+    private val client: HttpClient
 ) : RestApiManager {
     private val addQueryParameterMap: MutableMap<String, String> = mutableMapOf()
 
@@ -41,9 +45,9 @@ class RestApiManagerImpl(
         return this
     }
 
-    override fun get(endPoint: EndPoint.IEnumEndpoint, vararg params: String): GetRestApi {
-        val builder = requestBuilder(endPoint, *params).get()
-        return GetRestApiImpl(yde, client, builder)
+    override suspend fun get(endPoint: EndPoint.IEnumEndpoint, vararg params: String): HttpResponse {
+        val builder = requestBuilder(endPoint, *params)
+        return client.get(builder = builder)
     }
 
     override fun post(
@@ -87,14 +91,22 @@ class RestApiManagerImpl(
     private fun requestBuilder(
         endPoint: EndPoint.IEnumEndpoint,
         vararg params: String,
-    ): Request.Builder {
-        val builder =
-            Request.Builder().headers(requiredHeaders()).url(getEndpoint(endPoint, *params))
-        if (addQueryParameterMap.isNotEmpty()) {
-            val url = builder.build().url.newBuilder()
-            addQueryParameterMap.forEach { (key, value) -> url.addQueryParameter(key, value) }
-            builder.url(url.build())
+    ): HttpRequestBuilder {
+        val builder = HttpRequestBuilder()
+
+        builder.headers{
+            requiredHeaders()
         }
+
+        builder.url(getEndpoint(endPoint, *params))
+
+        if (addQueryParameterMap.isNotEmpty()) {
+            addQueryParameterMap.forEach() { (key, value) ->
+                builder.url.parameters.append(key, value)
+            }
+        }
+
+
         return builder
     }
 
@@ -114,14 +126,12 @@ class RestApiManagerImpl(
         }
     }
 
-    private fun requiredHeaders(): Headers {
-        return Headers.Builder()
-            .add("Content-Type", "application/json")
-            .add("Authorization", "Bot $token")
-            .add(
-                "user-agent",
-                "DiscordBot (" + yde.githubRepositoryUrl + ", " + yde.wrapperVersion + ")")
-            .add("accept-encoding", "json")
-            .build()
+    private fun HeadersBuilder.requiredHeaders() {
+        this.append("Content-Type", "application/json")
+        this.append("Authorization", "Bot $token")
+        this.append(
+            "user-agent",
+            "DiscordBot (" + yde.githubRepositoryUrl + ", " + yde.wrapperVersion + ")")
+        this.append("accept-encoding", "json")
     }
 }

@@ -24,6 +24,8 @@ import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.channel.DmChannel
 import io.github.ydwk.yde.rest.EndPoint
 import io.github.ydwk.yde.rest.methods.UserRestAPIMethods
+import io.github.ydwk.yde.rest.type.RestResult
+import io.github.ydwk.yde.rest.type.json
 import kotlinx.coroutines.CompletableDeferred
 import okhttp3.RequestBody.Companion.toRequestBody
 
@@ -45,17 +47,17 @@ class UserRestAPIMethodsImpl(val yde: YDE) : UserRestAPIMethods {
             }
     }
 
-    override fun requestUser(id: Long): CompletableDeferred<User> {
+    override suspend fun requestUser(id: Long): RestResult<User> {
         return restApiManager.get(EndPoint.UserEndpoint.GET_USER, id.toString()).execute { response
             ->
-            val jsonBody = response.jsonBody ?: throw IllegalStateException("json body is null")
+            val jsonBody = response.json(yde)
             yde.entityInstanceBuilder.buildUser(jsonBody)
         }
     }
 
-    override fun requestUsers(): CompletableDeferred<List<User>> {
+    override suspend fun requestUsers(): RestResult<List<User>> {
         return restApiManager.get(EndPoint.UserEndpoint.GET_USERS).execute { response ->
-            val jsonBody = response.jsonBody ?: throw IllegalStateException("json body is null")
+            val jsonBody = response.json(yde)
             buildUsersFromJson(jsonBody)
         }
     }
