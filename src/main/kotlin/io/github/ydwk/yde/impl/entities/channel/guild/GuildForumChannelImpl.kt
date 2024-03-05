@@ -22,58 +22,23 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.channel.guild.forum.*
 import io.github.ydwk.yde.entities.channel.guild.message.text.PermissionOverwrite
-import io.github.ydwk.yde.impl.entities.channel.guild.forum.DefaultReactionEmojiImpl
-import io.github.ydwk.yde.impl.entities.channel.guild.forum.ForumTagImpl
 import io.github.ydwk.yde.util.GetterSnowFlake
 
 class GuildForumChannelImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,
-) : GuildForumChannel, GuildChannelImpl(yde, json, idAsLong) {
-
-    override var topic: String? = if (json.has("topic")) json["topic"].asText() else null
-
-    override var template: String? = if (json.has("template")) json["template"].asText() else null
-
-    override var rateLimitPerUser: Int =
-        if (json.has("rate_limit_per_user")) json["rate_limit_per_user"].asInt() else 0
-
-    override var permissionOverwrites: List<PermissionOverwrite> =
-        if (json.has("permission_overwrites"))
-            json["permission_overwrites"].map {
-                PermissionOverwriteImpl(yde, it, it["id"].asLong())
-            }
-        else emptyList()
-
-    override var nsfw: Boolean = json["nsfw"].asBoolean()
-
-    override var lastMessageId: GetterSnowFlake? =
-        if (json.has("last_message_id")) GetterSnowFlake.of(json["last_message_id"].asLong())
-        else null
-
-    override var channelFlags: ChannelFlag = ChannelFlag.fromValue(json["channel_flags"].asLong())
-
-    override var defaultRateLimitPerUser: Int = json["default_rate_limit_per_user"].asInt()
-
-    override var defaultSortOrder: Int? =
-        if (json.has("default_sort_order")) json["default_sort_order"].asInt() else null
-
-    override var defaultReactionEmoji: DefaultReactionEmoji? =
-        if (json.has("default_reaction_emoji"))
-            DefaultReactionEmojiImpl(yde, json["default_reaction_emoji"])
-        else null
-
-    override var availableForumTags: List<ForumTag> =
-        if (json.has("available_forum_tags"))
-            json["available_forum_tags"].map { ForumTagImpl(yde, it, it["id"].asLong()) }
-        else emptyList()
-
-    override var availableForumTagsIds: List<GetterSnowFlake> =
-        if (json.has("available_forum_tags"))
-            json["available_forum_tags"].map { GetterSnowFlake.of(it["id"].asLong()) }
-        else emptyList()
-
-    override var defaultForumLayoutView: ForumLayoutType =
-        ForumLayoutType.fromValue(json["default_forum_layout_view"].asInt())
-}
+    override var topic: String?,
+    override var template: String?,
+    override var rateLimitPerUser: Int,
+    override var permissionOverwrites: List<PermissionOverwrite>,
+    override var nsfw: Boolean,
+    override var lastMessageId: GetterSnowFlake?,
+    override var channelFlags: ChannelFlag,
+    override var defaultRateLimitPerUser: Int,
+    override var defaultSortOrder: Int?,
+    override var defaultReactionEmoji: DefaultReactionEmoji?,
+    override var availableForumTags: List<ForumTag>,
+    override var availableForumTagsIds: List<GetterSnowFlake>,
+    override var defaultForumLayoutView: ForumLayoutType,
+) : GuildForumChannel, GuildChannelImpl(yde.entityInstanceBuilder.buildGuildForumChannel(json))

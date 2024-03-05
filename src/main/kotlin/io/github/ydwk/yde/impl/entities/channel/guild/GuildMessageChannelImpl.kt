@@ -20,41 +20,33 @@ package io.github.ydwk.yde.impl.entities.channel.guild
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
-import io.github.ydwk.yde.entities.channel.enums.ChannelType
 import io.github.ydwk.yde.entities.channel.getter.guild.GuildMessageChannelGetter
 import io.github.ydwk.yde.entities.channel.guild.message.GuildMessageChannel
 import io.github.ydwk.yde.entities.channel.guild.message.text.PermissionOverwrite
-import io.github.ydwk.yde.impl.entities.channel.getter.guild.GuildMessageChannelGetterImpl
-import io.github.ydwk.yde.util.EntityToStringBuilder
 
-open class GuildMessageChannelImpl(yde: YDE, json: JsonNode, idAsLong: Long) :
-    GuildMessageChannel, GuildChannelImpl(yde, json, idAsLong) {
-
-    override var topic: String = json["topic"].asText()
-
-    override var nsfw: Boolean = json["nsfw"].asBoolean()
-
-    override var defaultAutoArchiveDuration: Int =
-        if (json["default_auto_archive_duration"].isInt) {
-            json["default_auto_archive_duration"].asInt()
-        } else {
-            0
-        }
-
-    override var lastMessageId: String = json["last_message_id"].asText()
-
-    override var lastPinTimestamp: String = json["last_pin_timestamp"].asText()
-
-    override var permissionOverwrites: List<PermissionOverwrite> =
-        json["permission_overwrites"].map { PermissionOverwriteImpl(yde, it, it["id"].asLong()) }
-
+open class GuildMessageChannelImpl(
+    yde: YDE,
+    json: JsonNode,
+    idAsLong: Long,
+    override var topic: String,
+    override var nsfw: Boolean,
+    override var defaultAutoArchiveDuration: Int,
+    override var lastMessageId: String,
+    override var lastPinTimestamp: String,
+    override var permissionOverwrites: List<PermissionOverwrite>,
     override val guildMessageChannelGetter: GuildMessageChannelGetter
-        get() = GuildMessageChannelGetterImpl(yde, json, idAsLong)
-
-    override val type: ChannelType
-        get() = if (json["type"].asInt() == 0) ChannelType.TEXT else ChannelType.NEWS
-
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).name(this.name).toString()
-    }
+) : GuildMessageChannel, GuildChannelImpl(yde.entityInstanceBuilder.buildGuildChannel(json)) {
+    constructor(
+        guildMessageChannel: GuildMessageChannel
+    ) : this(
+        guildMessageChannel.yde,
+        guildMessageChannel.json,
+        guildMessageChannel.idAsLong,
+        guildMessageChannel.topic,
+        guildMessageChannel.nsfw,
+        guildMessageChannel.defaultAutoArchiveDuration,
+        guildMessageChannel.lastMessageId,
+        guildMessageChannel.lastPinTimestamp,
+        guildMessageChannel.permissionOverwrites,
+        guildMessageChannel.guildMessageChannelGetter)
 }

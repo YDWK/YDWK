@@ -26,4 +26,6 @@ class GuildNewsChannelImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,
-) : GuildNewsChannel, GuildMessageChannelImpl(yde, json, idAsLong)
+) :
+    GuildNewsChannel,
+    GuildMessageChannelImpl(yde.entityInstanceBuilder.buildGuildMessageChannel(json))

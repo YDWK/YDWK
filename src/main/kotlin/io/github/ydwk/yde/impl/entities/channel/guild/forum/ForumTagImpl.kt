@@ -21,25 +21,15 @@ package io.github.ydwk.yde.impl.entities.channel.guild.forum
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.channel.guild.forum.ForumTag
-import io.github.ydwk.yde.util.EntityToStringBuilder
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.util.GetterSnowFlake
 
 class ForumTagImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,
-) : ForumTag {
-    override val isManaged: Boolean
-        get() = json["moderated"].asBoolean()
-
-    override val emojiId: GetterSnowFlake?
-        get() = if (json.has("emoji_id")) GetterSnowFlake.of(json["emoji_id"].asText()) else null
-    override val emojiName: String?
-        get() = if (json.has("name")) json["name"].asText() else null
-
-    override var name: String = json["name"].asText()
-
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).toString()
-    }
-}
+    override val isManaged: Boolean,
+    override val emojiId: GetterSnowFlake?,
+    override val emojiName: String?,
+    override var name: String,
+) : ForumTag, ToStringEntityImpl<ForumTag>(yde, ForumTag::class.java)

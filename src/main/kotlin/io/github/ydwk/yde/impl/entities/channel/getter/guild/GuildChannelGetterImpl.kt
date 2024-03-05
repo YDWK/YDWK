@@ -29,11 +29,11 @@ import io.github.ydwk.yde.entities.channel.guild.vc.GuildStageChannel
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.yde.impl.entities.channel.guild.*
 
-class GuildChannelGetterImpl(yde: YDE, json: JsonNode, idAsLong: Long) :
+class GuildChannelGetterImpl(yde: YDE, json: JsonNode) :
     GuildChannelImpl(yde.entityInstanceBuilder.buildGuildChannel(json)), GuildChannelGetter {
     override fun asGuildMessageChannel(): GuildMessageChannel? {
         return if (type == ChannelType.TEXT || type == ChannelType.NEWS) {
-            GuildMessageChannelImpl(yde, json, idAsLong)
+            yde.entityInstanceBuilder.buildGuildMessageChannel(json)
         } else {
             null
         }
@@ -41,7 +41,7 @@ class GuildChannelGetterImpl(yde: YDE, json: JsonNode, idAsLong: Long) :
 
     override fun asGuildVoiceChannel(): GuildVoiceChannel? {
         return if (type == ChannelType.VOICE) {
-            GuildVoiceChannelImpl(yde, json, idAsLong)
+            yde.entityInstanceBuilder.buildGuildVoiceChannel(json)
         } else {
             null
         }
@@ -49,7 +49,7 @@ class GuildChannelGetterImpl(yde: YDE, json: JsonNode, idAsLong: Long) :
 
     override fun asGuildStageChannel(): GuildStageChannel? {
         return if (type == ChannelType.STAGE_VOICE) {
-            GuildStageChannelImpl(yde, json, idAsLong)
+            yde.entityInstanceBuilder.buildGuildStageChannel(json)
         } else {
             null
         }
@@ -57,7 +57,7 @@ class GuildChannelGetterImpl(yde: YDE, json: JsonNode, idAsLong: Long) :
 
     override fun asGuildCategory(): GuildCategory? {
         return if (type == ChannelType.CATEGORY) {
-            GuildCategoryImpl(yde, json, idAsLong)
+            yde.entityInstanceBuilder.buildGuildCategory(json)
         } else {
             null
         }
@@ -65,7 +65,7 @@ class GuildChannelGetterImpl(yde: YDE, json: JsonNode, idAsLong: Long) :
 
     override fun asGuildForumChannel(): GuildForumChannel? {
         return if (type == ChannelType.FORUM) {
-            GuildForumChannelImpl(yde, json, idAsLong)
+            yde.entityInstanceBuilder.buildGuildForumChannel(json)
         } else {
             null
         }

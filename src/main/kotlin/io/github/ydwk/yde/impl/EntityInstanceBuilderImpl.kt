@@ -550,7 +550,7 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
                     ?.guildChannelGetter
                     ?.asGuildCategory()
             else null,
-            GuildChannelGetterImpl(yde, json, json["id"].asLong()),
+            GuildChannelGetterImpl(yde, json),
             InviteCreator(yde, json["id"].asText()),
             json["name"].asText())
     }

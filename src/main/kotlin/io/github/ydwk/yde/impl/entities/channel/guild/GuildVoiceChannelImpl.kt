@@ -21,15 +21,22 @@ package io.github.ydwk.yde.impl.entities.channel.guild
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildVoiceChannel
-import org.slf4j.LoggerFactory
 
-open class GuildVoiceChannelImpl(yde: YDE, json: JsonNode, idAsLong: Long) :
-    GuildVoiceChannel, GuildChannelImpl(yde, json, idAsLong) {
-    private val logger = LoggerFactory.getLogger(GuildVoiceChannelImpl::class.java)
-
-    override var bitrate: Int = json["bitrate"].asInt()
-
-    override var userLimit: Int = json["user_limit"].asInt()
-
-    override var rateLimitPerUser: Int = json["rate_limit_per_user"].asInt()
+open class GuildVoiceChannelImpl(
+    yde: YDE,
+    json: JsonNode,
+    idAsLong: Long,
+    override var bitrate: Int,
+    override var userLimit: Int,
+    override var rateLimitPerUser: Int
+) : GuildVoiceChannel, GuildChannelImpl(yde.entityInstanceBuilder.buildGuildChannel(json)) {
+    constructor(
+        guildVoiceChannel: GuildVoiceChannel
+    ) : this(
+        guildVoiceChannel.yde,
+        guildVoiceChannel.json,
+        guildVoiceChannel.idAsLong,
+        guildVoiceChannel.bitrate,
+        guildVoiceChannel.userLimit,
+        guildVoiceChannel.rateLimitPerUser)
 }

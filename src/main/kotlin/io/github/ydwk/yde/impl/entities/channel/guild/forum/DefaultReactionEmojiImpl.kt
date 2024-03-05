@@ -21,17 +21,14 @@ package io.github.ydwk.yde.impl.entities.channel.guild.forum
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.channel.guild.forum.DefaultReactionEmoji
-import io.github.ydwk.yde.util.EntityToStringBuilder
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.util.GetterSnowFlake
 
-class DefaultReactionEmojiImpl(override val yde: YDE, override val json: JsonNode) :
-    DefaultReactionEmoji {
-    override val emojiId: GetterSnowFlake?
-        get() = if (json.has("id")) GetterSnowFlake.of(json["id"].asText()) else null
-
-    override var name: String = json["name"].asText()
-
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).toString()
-    }
-}
+class DefaultReactionEmojiImpl(
+    override val yde: YDE,
+    override val json: JsonNode,
+    override val emojiId: GetterSnowFlake?,
+    override var name: String
+) :
+    DefaultReactionEmoji,
+    ToStringEntityImpl<DefaultReactionEmoji>(yde, DefaultReactionEmoji::class.java)

@@ -26,7 +26,7 @@ class GuildTextChannelImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,
-) : GuildTextChannel, GuildMessageChannelImpl(yde, json, idAsLong) {
-
-    override var rateLimitPerUser: Int = json["rate_limit_per_user"].asInt()
-}
+    override var rateLimitPerUser: Int,
+) :
+    GuildTextChannel,
+    GuildMessageChannelImpl(yde.entityInstanceBuilder.buildGuildMessageChannel(json))

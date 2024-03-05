@@ -22,8 +22,11 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildStageChannel
 
-class GuildStageChannelImpl(yde: YDE, override val json: JsonNode, idAsLong: Long) :
-    GuildStageChannel, GuildVoiceChannelImpl(yde, json, idAsLong) {
-
-    override var topic: String? = if (json.has("topic")) json["topic"].asText() else null
-}
+class GuildStageChannelImpl(
+    yde: YDE,
+    override val json: JsonNode,
+    idAsLong: Long,
+    override var topic: String?
+) :
+    GuildStageChannel,
+    GuildVoiceChannelImpl(yde.entityInstanceBuilder.buildGuildVoiceChannel(json))

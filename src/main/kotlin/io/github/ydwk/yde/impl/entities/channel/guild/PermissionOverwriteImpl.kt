@@ -21,21 +21,15 @@ package io.github.ydwk.yde.impl.entities.channel.guild
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.channel.guild.message.text.PermissionOverwrite
-import io.github.ydwk.yde.util.EntityToStringBuilder
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
 class PermissionOverwriteImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,
-) : PermissionOverwrite {
-    override val type: Int
-        get() = json["type"].asInt()
-    override val allow: String
-        get() = json["allow"].asText()
-    override val deny: String
-        get() = json["deny"].asText()
-
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).toString()
-    }
-}
+    override val type: Int,
+    override val allow: String,
+    override val deny: String,
+) :
+    PermissionOverwrite,
+    ToStringEntityImpl<PermissionOverwrite>(yde, PermissionOverwrite::class.java)
