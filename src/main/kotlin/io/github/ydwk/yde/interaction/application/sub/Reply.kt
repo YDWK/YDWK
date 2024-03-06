@@ -21,8 +21,9 @@ package io.github.ydwk.yde.interaction.application.sub
 import io.github.ydwk.yde.entities.message.MessageFlag
 import io.github.ydwk.yde.impl.interaction.message.ComponentImpl
 import io.github.ydwk.yde.interaction.message.ActionRow
+import io.github.ydwk.yde.rest.error.RestAPIException
 import io.github.ydwk.yde.rest.result.NoResult
-import kotlinx.coroutines.CompletableDeferred
+import io.github.ydwk.yde.rest.type.RestResult
 
 /** Represents an object that can be used to reply to an interaction. */
 interface Reply {
@@ -73,7 +74,7 @@ interface Reply {
      * @return The [NoResult] instance.
      */
     suspend fun trigger(): NoResult {
-        return triggerWithFuture().await()
+        return triggerWithFuture().mapBoth({ it }, { throw RestAPIException(it) })
     }
 
     /**
@@ -82,5 +83,5 @@ interface Reply {
      *
      * @return The [CompletableDeferred<NoResult>] instance.
      */
-    fun triggerWithFuture(): CompletableDeferred<NoResult>
+    suspend fun triggerWithFuture(): RestResult<NoResult>
 }

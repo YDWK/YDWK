@@ -18,4 +18,10 @@
  */ 
 package io.github.ydwk.yde.rest.type
 
-interface PostRestApi : SimilarRestApi
+enum class RequestType {
+    GET,
+    POST,
+    PUT,
+    DELETE,
+    PATCH
+}

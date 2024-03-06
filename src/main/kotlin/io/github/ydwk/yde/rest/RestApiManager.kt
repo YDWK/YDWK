@@ -39,17 +39,17 @@ interface RestApiManager {
      *
      * @param endPoint The endpoint to get.
      * @param params The parameters to be used in the endpoint.
-     * @return The [GetRestApi] instance.
+     * @return The [SimilarRestApi] instance.
      */
-    suspend fun get(endPoint: EndPoint.IEnumEndpoint, vararg params: String): HttpResponse
+    suspend fun get(endPoint: EndPoint.IEnumEndpoint, vararg params: String): SimilarRestApi
 
     /**
      * Gets a certain endpoint from the API.
      *
      * @param endPoint The endpoint to get.
-     * @return The [GetRestApi] instance.
+     * @return The [SimilarRestApi] instance.
      */
-    suspend fun get(endPoint: EndPoint.IEnumEndpoint): HttpResponse {
+    suspend fun get(endPoint: EndPoint.IEnumEndpoint): SimilarRestApi {
         return get(endPoint, *arrayOf())
     }
 
@@ -59,22 +59,22 @@ interface RestApiManager {
      * @param body The body of the request.
      * @param endPoint The endpoint to post to.
      * @param params The parameters to be added to the endpoint.
-     * @return The [PostRestApi] object.
+     * @return The [SimilarRestApi] instance.
      */
-    fun post(
+    suspend fun post(
         body: RequestBody?,
         endPoint: EndPoint.IEnumEndpoint,
         vararg params: String,
-    ): PostRestApi
+    ): SimilarRestApi
 
     /**
      * Pots something to the API.
      *
      * @param body The body of the request.
      * @param endPoint The endpoint to post to.
-     * @return The [PostRestApi] object.
+     * @return The [SimilarRestApi] instance.
      */
-    fun post(body: RequestBody?, endPoint: EndPoint.IEnumEndpoint): PostRestApi {
+    suspend fun post(body: RequestBody?, endPoint: EndPoint.IEnumEndpoint): SimilarRestApi {
         return post(body, endPoint, *arrayOf())
     }
 
@@ -84,18 +84,22 @@ interface RestApiManager {
      * @param body The body of the request.
      * @param endPoint The endpoint to put to.
      * @param params The parameters to put to the endpoint.
-     * @return The [DeleteRestApi] object.
+     * @return The [SimilarRestApi] instance.
      */
-    fun put(body: RequestBody?, endPoint: EndPoint.IEnumEndpoint, vararg params: String): PutRestApi
+    suspend fun put(
+        body: RequestBody?,
+        endPoint: EndPoint.IEnumEndpoint,
+        vararg params: String
+    ): SimilarRestApi
 
     /**
      * Puts something to the API.
      *
      * @param body The body of the request.
      * @param endPoint The endpoint to put to.
-     * @return The [DeleteRestApi] object.
+     * @return The [SimilarRestApi] instance.
      */
-    fun put(body: RequestBody?, endPoint: EndPoint.IEnumEndpoint): PutRestApi {
+    suspend fun put(body: RequestBody?, endPoint: EndPoint.IEnumEndpoint): SimilarRestApi {
         return put(body, endPoint, *arrayOf())
     }
 
@@ -104,22 +108,22 @@ interface RestApiManager {
      *
      * @param endPoint The endpoint to delete from.
      * @param params The parameters to be used in the endpoint.
-     * @return The [DeleteRestApi] object.
+     * @return The [SimilarRestApi] instance.
      */
-    fun delete(
+    suspend fun delete(
         body: RequestBody?,
         endPoint: EndPoint.IEnumEndpoint,
         vararg params: String,
-    ): DeleteRestApi
+    ): SimilarRestApi
 
     /**
      * Deletes something from the API.
      *
      * @param body The body of the request.
      * @param endPoint The endpoint to delete from.
-     * @return The [DeleteRestApi] object.
+     * @return The [SimilarRestApi] instance.
      */
-    fun delete(body: RequestBody, endPoint: EndPoint.IEnumEndpoint): DeleteRestApi {
+    suspend fun delete(body: RequestBody, endPoint: EndPoint.IEnumEndpoint): SimilarRestApi {
         return delete(body, endPoint, *arrayOf())
     }
 
@@ -128,9 +132,9 @@ interface RestApiManager {
      *
      * @param endPoint The endpoint to delete from.
      * @param params The parameters to be used in the endpoint.
-     * @return The [DeleteRestApi] object.
+     * @return The [SimilarRestApi] instance.
      */
-    fun delete(endPoint: EndPoint.IEnumEndpoint, vararg params: String): DeleteRestApi {
+    suspend fun delete(endPoint: EndPoint.IEnumEndpoint, vararg params: String): SimilarRestApi {
         return delete(null, endPoint, *params)
     }
 
@@ -138,9 +142,9 @@ interface RestApiManager {
      * Deletes something from the API.
      *
      * @param endPoint The endpoint to delete from.
-     * @return The [DeleteRestApi] object.
+     * @return The [SimilarRestApi] instance.
      */
-    fun delete(endPoint: EndPoint.IEnumEndpoint): DeleteRestApi {
+    suspend fun delete(endPoint: EndPoint.IEnumEndpoint): SimilarRestApi {
         return delete(null, endPoint)
     }
 
@@ -150,13 +154,13 @@ interface RestApiManager {
      * @param body The body of the request.
      * @param endPoint The endpoint to patch from.
      * @param params The parameters to be used in the endpoint.
-     * @return The [PatchRestApi] object.
+     * @return The [SimilarRestApi] instance.
      */
-    fun patch(
+    suspend fun patch(
         body: RequestBody,
         endPoint: EndPoint.IEnumEndpoint,
         vararg params: String,
-    ): PatchRestApi
+    ): SimilarRestApi
 
     companion object {
         var FULL_DISCORD_REST_URL = "https://discord.com/api/v10"

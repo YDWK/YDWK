@@ -21,29 +21,28 @@ package io.github.ydwk.yde.rest.methods
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.channel.DmChannel
 import io.github.ydwk.yde.rest.type.RestResult
-import kotlinx.coroutines.CompletableDeferred
 
 interface UserRestAPIMethods {
     /**
      * Creates a direct message channel with this user.
      *
      * @param id the id of the user.
-     * @return a future containing the direct message channel.
+     * @return the result of the request containing the created channel.
      */
-    fun createDm(id: Long): CompletableDeferred<DmChannel>
+    suspend fun createDm(id: Long): RestResult<DmChannel>
 
     /**
      * Request a user by its id.
      *
      * @param id the id of the user.
-     * @return a future containing the user.
+     * @return the result of the request containing the user.
      */
     suspend fun requestUser(id: Long): RestResult<User>
 
     /**
      * Request to get a list of all the users that are visible to the bot.
      *
-     * @return a future containing the list of users.
+     * @return the result of the request containing the list of users.
      */
     suspend fun requestUsers(): RestResult<List<User>>
 }

@@ -19,37 +19,78 @@
 package io.github.ydwk.yde.rest.type
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.ydwk.yde.rest.cf.CompletableFutureManager
+import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.rest.result.NoResult
-import java.util.function.Function
-import kotlinx.coroutines.CompletableDeferred
-import okhttp3.Headers
+import io.ktor.client.call.*
+import io.ktor.client.statement.*
+import io.ktor.http.*
 
+/** Interface for a REST API with similar functionality. */
 interface SimilarRestApi {
+    /** Sets a header for the request. */
     fun header(name: String, value: String): SimilarRestApi
 
+    /** Adds a header to the request. */
     fun addHeader(name: String, value: String): SimilarRestApi
 
+    /** Removes a header from the request. */
     fun removeHeader(name: String): SimilarRestApi
 
+    /** Sets multiple headers for the request. */
     fun headers(headers: Headers): SimilarRestApi
 
+    /** Adds a reason to the request. */
     fun addReason(reason: String?): SimilarRestApi
 
-    fun execute()
+    /** Executes the request and returns the response. */
+    suspend fun execute(): RestResult<HttpResponse>
 
-    fun <T : Any> execute(function: Function<CompletableFutureManager, T>): CompletableDeferred<T>
+    /** Executes the request and applies a function to the response. */
+    suspend fun <T : Any> execute(function: suspend (HttpResponse) -> T): RestResult<T>
 
-    fun executeWithNoResult(): CompletableDeferred<NoResult>
+    /** Executes the request and returns a result indicating success or failure. */
+    suspend fun executeWithNoResult(): RestResult<NoResult>
 }
 
-fun <T> handleApiResponse(
-    response: CompletableFutureManager,
-    entityBuilder: (JsonNode) -> T,
-    additionalAction: (T) -> Unit = {}
-): T {
-    val jsonBody = response.jsonBody ?: throw IllegalStateException("Response body is null")
-    val entity = entityBuilder(jsonBody)
-    additionalAction(entity)
-    return entity
+/** Sealed class representing the result of a REST request. */
+sealed class RestResult<out T> {
+    /** Represents a successful result with data. */
+    data class Success<T>(val data: T) : RestResult<T>()
+
+    /** Represents an error result with a message. */
+    data class Error(val message: String) : RestResult<Nothing>()
+
+    /** Transforms the result data if it's a success. */
+    fun <R> map(transform: (T) -> R): RestResult<R> {
+        return when (this) {
+            is Success -> Success(transform(data))
+            is Error -> this
+        }
+    }
+
+    /** Returns the result data if it's a success, or null otherwise. */
+    fun getOrNull(): T? {
+        return when (this) {
+            is Success -> data
+            is Error -> null
+        }
+    }
+
+    /**
+     * Applies a function to the result data if it's a success, or to the error message if it's an
+     * error.
+     */
+    fun <R> mapBoth(onSuccess: (T) -> R, onError: (String) -> R): R {
+        return when (this) {
+            is Success -> onSuccess(data)
+            is Error -> onError(message)
+        }
+    }
+}
+
+/** Extension function to parse the response body as JSON. */
+suspend fun HttpResponse.json(yde: YDE): JsonNode {
+    val body = this.body<String>() ?: ""
+
+    return yde.objectMapper.readTree(body)
 }

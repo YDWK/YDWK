@@ -16,13 +16,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.yde.impl.rest.type.newa
+package io.github.ydwk.yde.impl.rest.type
 
 import io.github.ydwk.yde.impl.YDEImpl
 import io.github.ydwk.yde.rest.error.HttpResponseCode
 import io.github.ydwk.yde.rest.result.NoResult
+import io.github.ydwk.yde.rest.type.RequestType
 import io.github.ydwk.yde.rest.type.RestResult
-import io.github.ydwk.yde.rest.type.SimilarRestApiNew
+import io.github.ydwk.yde.rest.type.SimilarRestApi
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -37,30 +38,31 @@ open class SimilarRestApiImpl(
     private val yde: YDEImpl,
     private val builder: HttpRequestBuilder,
     private val client: HttpClient,
-) : SimilarRestApiNew {
+    private val requestType: RequestType
+) : SimilarRestApi {
     private val logger = LoggerFactory.getLogger(SimilarRestApiImpl::class.java)
 
-    override fun header(name: String, value: String): SimilarRestApiNew {
+    override fun header(name: String, value: String): SimilarRestApi {
         builder.headers[name] = value
         return this
     }
 
-    override fun addHeader(name: String, value: String): SimilarRestApiNew {
+    override fun addHeader(name: String, value: String): SimilarRestApi {
         builder.headers.append(name, value)
         return this
     }
 
-    override fun removeHeader(name: String): SimilarRestApiNew {
+    override fun removeHeader(name: String): SimilarRestApi {
         builder.headers.remove(name)
         return this
     }
 
-    override fun headers(headers: Headers): SimilarRestApiNew {
+    override fun headers(headers: Headers): SimilarRestApi {
         builder.headers.appendAll(headers)
         return this
     }
 
-    override fun addReason(reason: String?): SimilarRestApiNew {
+    override fun addReason(reason: String?): SimilarRestApi {
         if (reason != null) {
             addHeader(
                 "X-Audit-Log-Reason",
@@ -81,7 +83,8 @@ open class SimilarRestApiImpl(
 
     override suspend fun <T : Any> execute(function: suspend (HttpResponse) -> T): RestResult<T> {
         return try {
-            val response = client.request(builder = builder)
+
+            val response = executeRequest(builder)
 
             checkRateLimit(response).let {
                 if (it) {
@@ -98,7 +101,7 @@ open class SimilarRestApiImpl(
 
     override suspend fun executeWithNoResult(): RestResult<NoResult> {
         return try {
-            val response = client.request(builder = builder)
+            val response = executeRequest(builder)
 
             checkRateLimit(response).let {
                 if (it) {
@@ -121,6 +124,16 @@ open class SimilarRestApiImpl(
         val retryAfter = response.headers["Retry-After"]?.toIntOrNull() ?: 0
         delay(retryAfter.toLong())
         return executeWithNoResult()
+    }
+
+    private suspend fun executeRequest(builder: HttpRequestBuilder): HttpResponse {
+        return when (requestType) {
+            RequestType.GET -> client.get(builder = builder)
+            RequestType.POST -> client.post(builder = builder)
+            RequestType.PUT -> client.put(builder = builder)
+            RequestType.DELETE -> client.delete(builder = builder)
+            RequestType.PATCH -> client.patch(builder = builder)
+        }
     }
 
     private suspend fun <T> handleRateLimitForResult(

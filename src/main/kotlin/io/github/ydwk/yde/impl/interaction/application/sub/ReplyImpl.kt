@@ -28,7 +28,7 @@ import io.github.ydwk.yde.interaction.application.sub.Reply
 import io.github.ydwk.yde.interaction.sub.InteractionCallbackType
 import io.github.ydwk.yde.rest.EndPoint
 import io.github.ydwk.yde.rest.result.NoResult
-import kotlinx.coroutines.CompletableDeferred
+import io.github.ydwk.yde.rest.type.RestResult
 import okhttp3.RequestBody.Companion.toRequestBody
 
 class ReplyImpl(
@@ -68,7 +68,7 @@ class ReplyImpl(
         return this
     }
 
-    override fun triggerWithFuture(): CompletableDeferred<NoResult> {
+    override suspend fun triggerWithFuture(): RestResult<NoResult> {
         val mainBody =
             yde.objectNode.put(
                 "type", InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE.getType())

@@ -16,15 +16,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.yde.impl.rest.type
+package io.github.ydwk.yde.rest.error
 
-import io.github.ydwk.yde.impl.YDEImpl
-import io.github.ydwk.yde.rest.type.PatchRestApi
-import okhttp3.OkHttpClient
-import okhttp3.Request
-
-class PatchRestApiImpl(
-    private val yde: YDEImpl,
-    private val client: OkHttpClient,
-    private val builder: Request.Builder,
-) : PatchRestApi, OldSimilarRestApiImpl(yde, builder, client)
+class RestAPIException : Exception {
+    constructor(message: String) : super(message)
+    constructor(message: String, cause: Throwable) : super(message, cause)
+}

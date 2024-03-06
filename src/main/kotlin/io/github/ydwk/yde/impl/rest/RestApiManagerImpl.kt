@@ -25,11 +25,7 @@ import io.github.ydwk.yde.rest.RestApiManager
 import io.github.ydwk.yde.rest.type.*
 import io.ktor.client.*
 import io.ktor.client.request.*
-import io.ktor.client.statement.*
 import io.ktor.http.*
-import okhttp3.Headers
-import okhttp3.OkHttpClient
-import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 
@@ -45,58 +41,66 @@ class RestApiManagerImpl(
         return this
     }
 
-    override suspend fun get(endPoint: EndPoint.IEnumEndpoint, vararg params: String): HttpResponse {
+    override suspend fun get(
+        endPoint: EndPoint.IEnumEndpoint,
+        vararg params: String
+    ): SimilarRestApi {
         val builder = requestBuilder(endPoint, *params)
-        return client.get(builder = builder)
+        return SimilarRestApiImpl(yde, builder, client, RequestType.GET)
     }
 
-    override fun post(
+    override suspend fun post(
         body: RequestBody?,
         endPoint: EndPoint.IEnumEndpoint,
         vararg params: String,
-    ): PostRestApi {
-        val builder =
-            requestBuilder(endPoint, *params).post(body ?: ByteArray(0).toRequestBody(null, 0, 0))
-        return PostRestApiImpl(yde, client, builder)
+    ): SimilarRestApi {
+        val builder = requestBuilder(endPoint, *params)
+
+        builder.setBody(body ?: ByteArray(0).toRequestBody(null, 0, 0))
+        return SimilarRestApiImpl(yde, builder, client, RequestType.POST)
     }
 
-    override fun put(
+    override suspend fun put(
         body: RequestBody?,
         endPoint: EndPoint.IEnumEndpoint,
         vararg params: String,
-    ): PutRestApi {
-        val builder =
-            requestBuilder(endPoint, *params).put(body ?: ByteArray(0).toRequestBody(null, 0, 0))
-        return PutRestApiImpl(yde, client, builder)
+    ): SimilarRestApi {
+        val builder = requestBuilder(endPoint, *params)
+        builder.setBody(body ?: ByteArray(0).toRequestBody(null, 0, 0))
+        return SimilarRestApiImpl(yde, builder, client, RequestType.PUT)
     }
 
-    override fun delete(
+    override suspend fun delete(
         body: RequestBody?,
         endPoint: EndPoint.IEnumEndpoint,
         vararg params: String,
-    ): DeleteRestApi {
-        val builder = requestBuilder(endPoint, *params).delete(body)
-        return DeleteRestApiImpl(yde, client, builder)
+    ): SimilarRestApi {
+        val builder = requestBuilder(endPoint, *params)
+
+        body?.let { builder.setBody(it) }
+
+        return SimilarRestApiImpl(yde, builder, client, RequestType.DELETE)
     }
 
-    override fun patch(
+    override suspend fun patch(
         body: RequestBody,
         endPoint: EndPoint.IEnumEndpoint,
         vararg params: String,
-    ): PatchRestApi {
-        val builder = requestBuilder(endPoint, *params).patch(body)
-        return PatchRestApiImpl(yde, client, builder)
+    ): SimilarRestApi {
+        val builder = requestBuilder(endPoint, *params)
+
+        builder.setBody(body)
+
+        return SimilarRestApiImpl(yde, builder, client, RequestType.PATCH)
     }
 
-    private fun requestBuilder(
+    private suspend fun requestBuilder(
         endPoint: EndPoint.IEnumEndpoint,
         vararg params: String,
     ): HttpRequestBuilder {
         val builder = HttpRequestBuilder()
 
-        builder.headers{
-            requiredHeaders()
-        }
+        builder.headers { requiredHeaders() }
 
         builder.url(getEndpoint(endPoint, *params))
 
@@ -105,7 +109,6 @@ class RestApiManagerImpl(
                 builder.url.parameters.append(key, value)
             }
         }
-
 
         return builder
     }

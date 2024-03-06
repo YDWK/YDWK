@@ -29,7 +29,6 @@ import io.github.ydwk.yde.entities.message.Embed
 import io.github.ydwk.yde.entities.message.MessageFlag
 import io.github.ydwk.yde.entities.message.SendAble
 import io.github.ydwk.yde.rest.EndPoint
-import io.github.ydwk.yde.rest.type.handleApiResponse
 import kotlinx.coroutines.CompletableDeferred
 import okhttp3.RequestBody.Companion.toRequestBody
 

@@ -26,13 +26,12 @@ import io.github.ydwk.yde.rest.EndPoint
 import io.github.ydwk.yde.rest.methods.UserRestAPIMethods
 import io.github.ydwk.yde.rest.type.RestResult
 import io.github.ydwk.yde.rest.type.json
-import kotlinx.coroutines.CompletableDeferred
 import okhttp3.RequestBody.Companion.toRequestBody
 
 class UserRestAPIMethodsImpl(val yde: YDE) : UserRestAPIMethods {
     private val restApiManager = yde.restApiManager
 
-    override fun createDm(id: Long): CompletableDeferred<DmChannel> {
+    override suspend fun createDm(id: Long): RestResult<DmChannel> {
         return restApiManager
             .post(
                 yde.objectMapper
@@ -42,7 +41,8 @@ class UserRestAPIMethodsImpl(val yde: YDE) : UserRestAPIMethods {
                     .toRequestBody(),
                 EndPoint.UserEndpoint.CREATE_DM)
             .execute { response ->
-                val jsonBody = response.jsonBody ?: throw IllegalStateException("json body is null")
+                val jsonBody =
+                    response.json(yde) ?: throw IllegalStateException("json body is null")
                 yde.entityInstanceBuilder.buildDMChannel(jsonBody)
             }
     }
