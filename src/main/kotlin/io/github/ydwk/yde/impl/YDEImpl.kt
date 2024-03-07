@@ -47,18 +47,18 @@ import io.github.ydwk.yde.rest.methods.RestAPIMethodGetterImpl
 import io.github.ydwk.yde.rest.methods.RestAPIMethodGetters
 import io.github.ydwk.yde.util.EntityToStringBuilder
 import io.github.ydwk.yde.util.ThreadFactory
+import io.ktor.client.*
 import java.time.Duration
 import java.util.concurrent.Executors
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.asCoroutineDispatcher
-import okhttp3.OkHttpClient
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 open class YDEImpl(
     protected open var token: String? = null,
     open var applicationId: String? = null,
-    protected open val client: OkHttpClient,
+    protected open val client: HttpClient,
     protected open var guildIdList: MutableList<String> = mutableListOf(),
     override val githubRepositoryUrl: String,
     override val wrapperVersion: String,

@@ -26,8 +26,7 @@ import io.github.ydwk.yde.rest.type.*
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
+import io.ktor.http.content.*
 
 class RestApiManagerImpl(
     private val token: String,
@@ -50,28 +49,28 @@ class RestApiManagerImpl(
     }
 
     override suspend fun post(
-        body: RequestBody?,
+        body: OutgoingContent?,
         endPoint: EndPoint.IEnumEndpoint,
         vararg params: String,
     ): SimilarRestApi {
         val builder = requestBuilder(endPoint, *params)
 
-        builder.setBody(body ?: ByteArray(0).toRequestBody(null, 0, 0))
+        builder.setBody(body ?: ByteArrayContent(ByteArray(0)))
         return SimilarRestApiImpl(yde, builder, client, RequestType.POST)
     }
 
     override suspend fun put(
-        body: RequestBody?,
+        body: OutgoingContent?,
         endPoint: EndPoint.IEnumEndpoint,
         vararg params: String,
     ): SimilarRestApi {
         val builder = requestBuilder(endPoint, *params)
-        builder.setBody(body ?: ByteArray(0).toRequestBody(null, 0, 0))
+        builder.setBody(body ?: ByteArrayContent(ByteArray(0)))
         return SimilarRestApiImpl(yde, builder, client, RequestType.PUT)
     }
 
     override suspend fun delete(
-        body: RequestBody?,
+        body: OutgoingContent?,
         endPoint: EndPoint.IEnumEndpoint,
         vararg params: String,
     ): SimilarRestApi {
@@ -83,7 +82,7 @@ class RestApiManagerImpl(
     }
 
     override suspend fun patch(
-        body: RequestBody,
+        body: OutgoingContent,
         endPoint: EndPoint.IEnumEndpoint,
         vararg params: String,
     ): SimilarRestApi {

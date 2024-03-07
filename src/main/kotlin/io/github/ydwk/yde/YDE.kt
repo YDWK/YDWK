@@ -36,10 +36,10 @@ import io.github.ydwk.yde.entities.guild.Member
 import io.github.ydwk.yde.entities.message.embed.builder.EmbedBuilder
 import io.github.ydwk.yde.rest.RestApiManager
 import io.github.ydwk.yde.rest.methods.RestAPIMethodGetters
+import io.github.ydwk.yde.rest.type.RestResult
 import io.github.ydwk.yde.util.Incubating
 import io.github.ydwk.yde.util.ThreadFactory
 import java.time.Duration
-import java.util.concurrent.CompletableFuture
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineDispatcher
 import org.jetbrains.annotations.BlockingExecutor
@@ -94,7 +94,7 @@ interface YDE {
      * @param userId The id of the user.
      * @return The [DmChannel] object.
      */
-    fun createDmChannel(userId: Long): CompletableDeferred<DmChannel> =
+    suspend fun createDmChannel(userId: Long): RestResult<DmChannel> =
         restAPIMethodGetters.getUserRestAPIMethods().createDm(userId)
 
     /**
@@ -103,7 +103,7 @@ interface YDE {
      * @param userId The id of the user.
      * @return The [DmChannel] object.
      */
-    fun createDmChannel(userId: String): CompletableDeferred<DmChannel> =
+    suspend fun createDmChannel(userId: String): RestResult<DmChannel> =
         createDmChannel(userId.toLong())
 
     /**
@@ -112,7 +112,7 @@ interface YDE {
      * @param user The user who you want to create a dm channel with.
      * @return The [DmChannel] object.
      */
-    fun createDmChannel(user: User): CompletableDeferred<DmChannel> = createDmChannel(user.id)
+    suspend fun createDmChannel(user: User): RestResult<DmChannel> = createDmChannel(user.id)
 
     /**
      * Gets a member by its id.
@@ -167,32 +167,32 @@ interface YDE {
      * Requests a user using its id.
      *
      * @param id The id of the user.
-     * @return The [CompletableFuture] object.
+     * @return The [RestResult] object.
      */
-    fun requestUser(id: Long): CompletableDeferred<User> =
+    suspend fun requestUser(id: Long): RestResult<User> =
         restAPIMethodGetters.getUserRestAPIMethods().requestUser(id)
 
     /**
      * Requests a user using its id.
      *
      * @param id The id of the user.
-     * @return The [CompletableFuture] object.
+     * @return The [RestResult] object.
      */
-    fun requestUser(id: String): CompletableDeferred<User> = requestUser(id.toLong())
+    suspend fun requestUser(id: String): RestResult<User> = requestUser(id.toLong())
 
     /**
      * Requests all the users the bot can see.
      *
-     * @return The [CompletableFuture] object.
+     * @return The [RestResult] object.
      */
-    fun requestUsers(): CompletableDeferred<List<User>> =
+    suspend fun requestUsers(): RestResult<List<User>> =
         restAPIMethodGetters.getUserRestAPIMethods().requestUsers()
 
     /**
      * Requests a guild using its id.
      *
      * @param id The id of the guild.
-     * @return The [CompletableFuture] object.
+     * @return The [RestResult] object.
      */
     fun requestGuild(guildId: Long): CompletableDeferred<Guild> =
         restAPIMethodGetters.getGuildRestAPIMethods().requestedGuild(guildId)
@@ -201,14 +201,14 @@ interface YDE {
      * Requests a guild using its id.
      *
      * @param id The id of the guild.
-     * @return The [CompletableFuture] object.
+     * @return The [RestResult] object.
      */
     fun requestGuild(guildId: String): CompletableDeferred<Guild> = requestGuild(guildId.toLong())
 
     /**
      * Requests all the guilds the bot is in.
      *
-     * @return The [CompletableFuture] object.
+     * @return The [RestResult] object.
      */
     fun requestGuilds(): CompletableDeferred<List<Guild>> =
         restAPIMethodGetters.getGuildRestAPIMethods().requestedGuilds()
@@ -306,7 +306,7 @@ interface YDE {
      * Requests a channel using its id.
      *
      * @param id The id of the channel.
-     * @return The [CompletableFuture] object.
+     * @return The [RestResult] object.
      */
     fun requestChannelById(id: Long): CompletableDeferred<Channel> =
         restAPIMethodGetters.getChannelRestAPIMethods().requestChannel(id)
@@ -315,7 +315,7 @@ interface YDE {
      * Requests a channel using its id.
      *
      * @param id The id of the channel.
-     * @return The [CompletableFuture] object.
+     * @return The [RestResult] object.
      */
     fun requestChannelById(id: String): CompletableDeferred<Channel> =
         requestChannelById(id.toLong())
@@ -325,7 +325,7 @@ interface YDE {
      *
      * @param id The id of the channel.
      * @param guildId The id of the guild.
-     * @return The [CompletableFuture] object.
+     * @return The [RestResult] object.
      */
     fun requestGuildChannelById(id: Long, guildId: Long): CompletableDeferred<GuildChannel> =
         restAPIMethodGetters.getChannelRestAPIMethods().requestGuildChannel(id, guildId)
@@ -335,7 +335,7 @@ interface YDE {
      *
      * @param id The id of the channel.
      * @param guildId The id of the guild.
-     * @return The [CompletableFuture] object.
+     * @return The [RestResult] object.
      */
     fun requestGuildChannelById(id: String, guildId: String): CompletableDeferred<GuildChannel> =
         requestGuildChannelById(id.toLong(), guildId.toLong())
@@ -344,7 +344,7 @@ interface YDE {
      * Requests a list of guild channels by the guild id.
      *
      * @param guildId The id of the guild.
-     * @return The [CompletableFuture] object.
+     * @return The [RestResult] object.
      */
     fun requestGuildChannels(guildId: Long): CompletableDeferred<List<GuildChannel>> =
         restAPIMethodGetters.getChannelRestAPIMethods().requestGuildChannels(guildId)
@@ -353,7 +353,7 @@ interface YDE {
      * Requests a list of guild channels by the guild id.
      *
      * @param guildId The id of the guild.
-     * @return The [CompletableFuture] object.
+     * @return The [RestResult] object.
      */
     fun requestGuildChannels(guildId: String): CompletableDeferred<List<GuildChannel>> =
         requestGuildChannels(guildId.toLong())
@@ -366,7 +366,7 @@ interface YDE {
         setGuildIds(*guildIds.map { it.toString() }.toTypedArray())
 
     /** Sets the guild ids for guild commands */
-    fun setGuildIds(guildIds: MutableList<String>) = setGuildIds(*guildIds.toTypedArray())
+    fun setGuildIds(guildIds: Set<String>) = setGuildIds(*guildIds.toTypedArray())
 
     /**
      * Sets the allowed cache ids.
@@ -380,7 +380,7 @@ interface YDE {
      *
      * @param cacheIds The cache ids to be allowed.
      */
-    fun setAllowedCache(cacheIds: MutableList<CacheIds>) = setAllowedCache(*cacheIds.toTypedArray())
+    fun setAllowedCache(cacheIds: Set<CacheIds>) = setAllowedCache(*cacheIds.toTypedArray())
 
     /**
      * Sets the disallowed cache ids.
@@ -394,8 +394,7 @@ interface YDE {
      *
      * @param cacheIds The cache ids to be disallowed.
      */
-    fun setDisallowedCache(cacheIds: MutableList<CacheIds>) =
-        setDisallowedCache(*cacheIds.toTypedArray())
+    fun setDisallowedCache(cacheIds: Set<CacheIds>) = setDisallowedCache(*cacheIds.toTypedArray())
 
     /**
      * Triggers a thread to clear a certain cache type after a certain amount of time
@@ -426,7 +425,7 @@ interface YDE {
      * @param repeat whether to repeat the clearing of the cache
      */
     @Incubating
-    fun triggerCacheTypeClear(cacheIds: List<CacheIds>, duration: Duration, repeat: Boolean = true)
+    fun triggerCacheTypeClear(cacheIds: Set<CacheIds>, duration: Duration, repeat: Boolean = true)
 
     /**
      * Triggers a thread to clear a list of cache types after a certain amount of time
@@ -436,7 +435,7 @@ interface YDE {
      * @param repeat whether to repeat the clearing of the cache
      */
     @Incubating
-    fun triggerCacheTypeClear(cacheIds: List<CacheIds>, duration: Long, repeat: Boolean = true) =
+    fun triggerCacheTypeClear(cacheIds: Set<CacheIds>, duration: Long, repeat: Boolean = true) =
         triggerCacheTypeClear(cacheIds, Duration.ofMillis(duration), repeat)
 
     /**

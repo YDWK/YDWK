@@ -26,18 +26,18 @@ import io.github.ydwk.yde.interaction.message.button.Button
 import io.github.ydwk.yde.interaction.message.button.ButtonStyle
 import io.github.ydwk.yde.interaction.message.selectmenu.types.RoleSelectMenu
 import io.github.ydwk.ydwk.Activity
-import io.github.ydwk.ydwk.BotBuilder.createDefaultBot
+import io.github.ydwk.ydwk.BotBuilder.Companion.buildBot
 import io.github.ydwk.ydwk.evm.event.events.interaction.slash.SlashCommandEvent
 import io.github.ydwk.ydwk.evm.listeners.InteractionEventListener
 import kotlinx.coroutines.withContext
 
 suspend fun main() {
     val ydwk =
-        createDefaultBot(
-                JConfig.build().get("token")?.asText() ?: throw Exception("Token not found!"))
-            .setActivity(Activity.playing("YDWK"))
-            .setETFInsteadOfJson(true)
+        buildBot(JConfig.build().get("token")?.asText() ?: throw Exception("Token not found!"))
+            .activity(Activity.playing("YDWK"))
+            .etfInsteadOfJson(true)
             .build()
+            .buildYDWK()
 
     ydwk
         .awaitReady()

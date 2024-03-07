@@ -20,7 +20,7 @@ package io.github.ydwk.yde.rest
 
 import io.github.ydwk.yde.rest.type.*
 import io.ktor.client.statement.*
-import okhttp3.RequestBody
+import io.ktor.http.content.*
 
 /** Manages the REST API */
 interface RestApiManager {
@@ -62,7 +62,7 @@ interface RestApiManager {
      * @return The [SimilarRestApi] instance.
      */
     suspend fun post(
-        body: RequestBody?,
+        body: OutgoingContent?,
         endPoint: EndPoint.IEnumEndpoint,
         vararg params: String,
     ): SimilarRestApi
@@ -74,7 +74,7 @@ interface RestApiManager {
      * @param endPoint The endpoint to post to.
      * @return The [SimilarRestApi] instance.
      */
-    suspend fun post(body: RequestBody?, endPoint: EndPoint.IEnumEndpoint): SimilarRestApi {
+    suspend fun post(body: OutgoingContent?, endPoint: EndPoint.IEnumEndpoint): SimilarRestApi {
         return post(body, endPoint, *arrayOf())
     }
 
@@ -87,7 +87,7 @@ interface RestApiManager {
      * @return The [SimilarRestApi] instance.
      */
     suspend fun put(
-        body: RequestBody?,
+        body: OutgoingContent?,
         endPoint: EndPoint.IEnumEndpoint,
         vararg params: String
     ): SimilarRestApi
@@ -99,7 +99,7 @@ interface RestApiManager {
      * @param endPoint The endpoint to put to.
      * @return The [SimilarRestApi] instance.
      */
-    suspend fun put(body: RequestBody?, endPoint: EndPoint.IEnumEndpoint): SimilarRestApi {
+    suspend fun put(body: OutgoingContent?, endPoint: EndPoint.IEnumEndpoint): SimilarRestApi {
         return put(body, endPoint, *arrayOf())
     }
 
@@ -111,7 +111,7 @@ interface RestApiManager {
      * @return The [SimilarRestApi] instance.
      */
     suspend fun delete(
-        body: RequestBody?,
+        body: OutgoingContent?,
         endPoint: EndPoint.IEnumEndpoint,
         vararg params: String,
     ): SimilarRestApi
@@ -123,7 +123,7 @@ interface RestApiManager {
      * @param endPoint The endpoint to delete from.
      * @return The [SimilarRestApi] instance.
      */
-    suspend fun delete(body: RequestBody, endPoint: EndPoint.IEnumEndpoint): SimilarRestApi {
+    suspend fun delete(body: OutgoingContent, endPoint: EndPoint.IEnumEndpoint): SimilarRestApi {
         return delete(body, endPoint, *arrayOf())
     }
 
@@ -157,7 +157,7 @@ interface RestApiManager {
      * @return The [SimilarRestApi] instance.
      */
     suspend fun patch(
-        body: RequestBody,
+        body: OutgoingContent,
         endPoint: EndPoint.IEnumEndpoint,
         vararg params: String,
     ): SimilarRestApi
