@@ -21,13 +21,13 @@ package io.github.ydwk.ydwk.tostring
 import io.github.ydwk.yde.util.EntityToStringBuilder
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.ktor.client.*
 import kotlin.test.assertEquals
-import okhttp3.OkHttpClient
 import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 
 class ToStringTest {
-    private val sampleYDWK: YDWK = YDWKImpl(OkHttpClient())
+    private val sampleYDWK: YDWK = YDWKImpl(HttpClient())
 
     @Test
     @Order(1)

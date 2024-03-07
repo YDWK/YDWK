@@ -25,7 +25,7 @@ import io.github.ydwk.yde.entities.channel.GuildChannel
 import io.github.ydwk.yde.entities.channel.getter.ChannelGetter
 import io.github.ydwk.yde.impl.entities.ChannelImpl
 
-class ChannelGetterImpl(
+internal class ChannelGetterImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,

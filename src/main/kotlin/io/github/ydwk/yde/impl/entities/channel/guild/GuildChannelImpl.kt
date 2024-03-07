@@ -27,7 +27,7 @@ import io.github.ydwk.yde.entities.channel.guild.GuildCategory
 import io.github.ydwk.yde.entities.guild.invite.InviteCreator
 import io.github.ydwk.yde.impl.entities.ChannelImpl
 
-open class GuildChannelImpl(
+internal open class GuildChannelImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,

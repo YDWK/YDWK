@@ -23,7 +23,7 @@ import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.message.embed.Field
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
-class FieldImpl(
+internal class FieldImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val name: String,

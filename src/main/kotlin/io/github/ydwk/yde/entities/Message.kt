@@ -24,10 +24,10 @@ import io.github.ydwk.yde.entities.message.*
 import io.github.ydwk.yde.entities.sticker.StickerItem
 import io.github.ydwk.yde.entities.util.GenericEntity
 import io.github.ydwk.yde.interaction.message.Component
+import io.github.ydwk.yde.rest.RestResult
 import io.github.ydwk.yde.rest.result.NoResult
 import io.github.ydwk.yde.util.GetterSnowFlake
 import io.github.ydwk.yde.util.SnowFlake
-import kotlinx.coroutines.CompletableDeferred
 
 interface Message : SnowFlake, GenericEntity {
     /**
@@ -224,11 +224,7 @@ interface Message : SnowFlake, GenericEntity {
     /**
      * Deletes this message.
      *
-     * @return A future which returns nothing.
+     * @return A [RestResult] that will contain the result of the operation.
      */
-    fun delete(): CompletableDeferred<NoResult> {
-        return yde.restAPIMethodGetters
-            .getMessageRestAPIMethods()
-            .deleteMessage(channel.idAsLong, idAsLong)
-    }
+    suspend fun delete(): RestResult<NoResult>
 }

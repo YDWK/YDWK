@@ -23,7 +23,7 @@ import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.message.embed.Footer
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
-class FooterImpl(
+internal class FooterImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val text: String,

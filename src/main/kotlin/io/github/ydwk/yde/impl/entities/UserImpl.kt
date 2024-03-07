@@ -21,12 +21,14 @@ package io.github.ydwk.yde.impl.entities
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.User
+import io.github.ydwk.yde.entities.channel.DmChannel
 import io.github.ydwk.yde.entities.user.Avatar
 import io.github.ydwk.yde.impl.YDEImpl
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
+import io.github.ydwk.yde.rest.RestResult
 import java.awt.Color
 
-open class UserImpl(
+internal open class UserImpl(
     final override val json: JsonNode,
     override val idAsLong: Long,
     override val yde: YDE,
@@ -94,5 +96,9 @@ open class UserImpl(
         } else {
             avatar
         }
+    }
+
+    override suspend fun createDmChannel(): RestResult<DmChannel> {
+        return yde.restAPIMethodGetters.getUserRestAPIMethods().createDm(idAsLong)
     }
 }

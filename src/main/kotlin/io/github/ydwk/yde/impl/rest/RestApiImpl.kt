@@ -16,14 +16,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.yde.impl.rest.type
+package io.github.ydwk.yde.impl.rest
 
-import io.github.ydwk.yde.impl.YDEImpl
+import io.github.ydwk.yde.rest.RestResult
+import io.github.ydwk.yde.rest.SimilarRestApi
 import io.github.ydwk.yde.rest.error.HttpResponseCode
+import io.github.ydwk.yde.rest.error.RestAPIException
 import io.github.ydwk.yde.rest.result.NoResult
 import io.github.ydwk.yde.rest.type.RequestType
-import io.github.ydwk.yde.rest.type.RestResult
-import io.github.ydwk.yde.rest.type.SimilarRestApi
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -34,13 +34,12 @@ import java.time.Instant
 import kotlinx.coroutines.delay
 import org.slf4j.LoggerFactory
 
-open class SimilarRestApiImpl(
-    private val yde: YDEImpl,
+open class RestApiImpl(
     private val builder: HttpRequestBuilder,
     private val client: HttpClient,
     private val requestType: RequestType
 ) : SimilarRestApi {
-    private val logger = LoggerFactory.getLogger(SimilarRestApiImpl::class.java)
+    private val logger = LoggerFactory.getLogger(RestApiImpl::class.java)
 
     override fun header(name: String, value: String): SimilarRestApi {
         builder.headers[name] = value
@@ -77,7 +76,7 @@ open class SimilarRestApiImpl(
             RestResult.Success(response)
         } catch (e: Exception) {
             logger.error("Error while executing request", e)
-            RestResult.Error("Error while executing request: ${e.message}")
+            RestResult.Error(RestAPIException("Error while executing request: ${e.message}"))
         }
     }
 
@@ -95,7 +94,7 @@ open class SimilarRestApiImpl(
             }
         } catch (e: Exception) {
             logger.error("Error while executing request", e)
-            RestResult.Error("Error while executing request: ${e.message}")
+            RestResult.Error(RestAPIException("Error while executing request: ${e.message}"))
         }
     }
 
@@ -112,7 +111,7 @@ open class SimilarRestApiImpl(
             }
         } catch (e: Exception) {
             logger.error("Error while executing request", e)
-            RestResult.Error("Error while executing request: ${e.message}")
+            RestResult.Error(RestAPIException("Error while executing request: ${e.message}"))
         }
     }
 
@@ -147,7 +146,8 @@ open class SimilarRestApiImpl(
             RestResult.Success(result)
         } catch (e: Exception) {
             logger.error("Error while executing request after rate limit", e)
-            RestResult.Error("Error while executing request after rate limit: ${e.message}")
+            RestResult.Error(
+                RestAPIException("Error while executing request after rate limit: ${e.message}"))
         }
     }
 }

@@ -26,11 +26,11 @@ import io.github.ydwk.yde.entities.channel.DmChannel
 import io.github.ydwk.yde.entities.message.SendAble
 import io.github.ydwk.yde.entities.user.Avatar
 import io.github.ydwk.yde.entities.util.GenericEntity
+import io.github.ydwk.yde.rest.RestResult
 import io.github.ydwk.yde.rest.result.NoResult
 import io.github.ydwk.yde.util.GetterSnowFlake
 import io.github.ydwk.yde.util.NameAbleEntity
 import io.github.ydwk.yde.util.SnowFlake
-import kotlinx.coroutines.CompletableDeferred
 
 /** This class is used to represent a discord guild member entity. */
 interface Member : NameAbleEntity, GenericEntity, SendAble, SnowFlake, PermissionEntity {
@@ -144,10 +144,9 @@ interface Member : NameAbleEntity, GenericEntity, SendAble, SnowFlake, Permissio
     /**
      * Creates a direct message channel with this member.
      *
-     * @return A future that completes with the created channel.
+     * @return A [RestResult] with the [DmChannel].
      */
-    val createDmChannel: CompletableDeferred<DmChannel>
-        get() = user.createDmChannel
+    suspend fun createDmChannel(): RestResult<DmChannel>
 
     /**
      * If the member is in avc it will get there voice state.
@@ -160,31 +159,25 @@ interface Member : NameAbleEntity, GenericEntity, SendAble, SnowFlake, Permissio
      * Adds a role to this member.
      *
      * @param role The role to add.
-     * @return A future that completes with an empty result.
+     * @return A [RestResult] with the [NoResult].
      */
-    fun addRole(role: Role): CompletableDeferred<NoResult> =
-        yde.restAPIMethodGetters
-            .getMemberRestAPIMethods()
-            .removeRoleFromMember(guild.idAsLong, user.idAsLong, role.idAsLong)
+    suspend fun addRole(role: Role): RestResult<NoResult>
 
     /**
      * Adds a list of roles to this member.
      *
      * @param roles The roles to add.
-     * @return A future that completes with an empty result.
+     * @return A list of [RestResult]s with the [NoResult].
      */
-    fun addRoles(roles: List<Role>): List<CompletableDeferred<NoResult>> =
-        yde.restAPIMethodGetters
-            .getMemberRestAPIMethods()
-            .addRolesToMember(guild.idAsLong, user.idAsLong, roles.map { it.idAsLong })
+    suspend fun addRoles(roles: List<Role>): List<RestResult<NoResult>>
 
     /**
      * Adds a list of roles to this member.
      *
      * @param roles The roles to add.
-     * @return A future that completes with an empty result.
+     * @return A list of [RestResult]s with the [NoResult].
      */
-    fun addRoles(vararg roles: Role): List<CompletableDeferred<NoResult>> = addRoles(roles.toList())
+    suspend fun addRoles(vararg roles: Role): List<RestResult<NoResult>> = addRoles(roles.toList())
 
     /**
      * Removes a role from this member.
@@ -192,28 +185,22 @@ interface Member : NameAbleEntity, GenericEntity, SendAble, SnowFlake, Permissio
      * @param role The role to remove.
      * @return A future that completes with an empty result.
      */
-    fun removeRole(role: Role): CompletableDeferred<NoResult> =
-        yde.restAPIMethodGetters
-            .getMemberRestAPIMethods()
-            .removeRoleFromMember(guild.idAsLong, user.idAsLong, role.idAsLong)
+    suspend fun removeRole(role: Role): RestResult<NoResult>
 
     /**
      * Removes a list of roles from this member.
      *
      * @param roles The roles to remove.
-     * @return A future that completes an empty result.
+     * @return A list of [RestResult]s with the [NoResult].
      */
-    fun removeRoles(roles: List<Role>): List<CompletableDeferred<NoResult>> =
-        yde.restAPIMethodGetters
-            .getMemberRestAPIMethods()
-            .removeRolesFromMember(guild.idAsLong, user.idAsLong, roles.map { it.idAsLong })
+    suspend fun removeRoles(roles: List<Role>): List<RestResult<NoResult>>
 
     /**
      * Removes a list of roles from this member.
      *
      * @param roles The roles to remove.
-     * @return A future that completes with an empty result.
+     * @return A list of [RestResult]s with the [NoResult].
      */
-    fun removeRoles(vararg roles: Role): List<CompletableDeferred<NoResult>> =
+    suspend fun removeRoles(vararg roles: Role): List<RestResult<NoResult>> =
         removeRoles(roles.toList())
 }

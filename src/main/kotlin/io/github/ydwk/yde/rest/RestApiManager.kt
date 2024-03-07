@@ -18,8 +18,6 @@
  */ 
 package io.github.ydwk.yde.rest
 
-import io.github.ydwk.yde.rest.type.*
-import io.ktor.client.statement.*
 import io.ktor.http.content.*
 
 /** Manages the REST API */

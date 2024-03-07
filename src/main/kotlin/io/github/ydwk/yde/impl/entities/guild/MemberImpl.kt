@@ -22,20 +22,22 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.VoiceState
+import io.github.ydwk.yde.entities.channel.DmChannel
 import io.github.ydwk.yde.entities.guild.Member
 import io.github.ydwk.yde.entities.guild.Role
 import io.github.ydwk.yde.entities.guild.enums.GuildPermission
 import io.github.ydwk.yde.entities.user.Avatar
 import io.github.ydwk.yde.impl.YDEImpl
+import io.github.ydwk.yde.rest.RestResult
+import io.github.ydwk.yde.rest.result.NoResult
 import io.github.ydwk.yde.util.EntityToStringBuilder
 import io.github.ydwk.yde.util.GetterSnowFlake
 import java.util.*
 
-class MemberImpl(
+internal class MemberImpl(
     override val yde: YDEImpl,
     override val json: JsonNode,
     override val guild: Guild,
-    backupUser: User? = null,
     override val permissions: EnumSet<GuildPermission>,
     override var user: User,
     override var nick: String?,
@@ -60,6 +62,30 @@ class MemberImpl(
 
     override fun hasPermission(permission: Collection<GuildPermission>): Boolean {
         return permissions.containsAll(permission)
+    }
+
+    override suspend fun createDmChannel(): RestResult<DmChannel> {
+        return user.createDmChannel()
+    }
+
+    override suspend fun addRole(role: Role): RestResult<NoResult> {
+        return yde.restAPIMethodGetters
+            .getMemberRestAPIMethods()
+            .addRoleToMember(guild.idAsLong, idAsLong, role.idAsLong)
+    }
+
+    override suspend fun addRoles(roles: List<Role>): List<RestResult<NoResult>> {
+        return roles.map { addRole(it) }
+    }
+
+    override suspend fun removeRole(role: Role): RestResult<NoResult> {
+        return yde.restAPIMethodGetters
+            .getMemberRestAPIMethods()
+            .removeRoleFromMember(guild.idAsLong, idAsLong, role.idAsLong)
+    }
+
+    override suspend fun removeRoles(roles: List<Role>): List<RestResult<NoResult>> {
+        return roles.map { removeRole(it) }
     }
 
     override fun toString(): String {

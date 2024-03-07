@@ -23,7 +23,7 @@ import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.message.embed.Provider
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
-class ProviderImpl(
+internal class ProviderImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val name: String?,

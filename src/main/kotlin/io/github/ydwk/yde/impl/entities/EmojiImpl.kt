@@ -25,7 +25,7 @@ import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.guild.Role
 import io.github.ydwk.yde.util.EntityToStringBuilder
 
-class EmojiImpl(
+internal class EmojiImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idLong: Long?,

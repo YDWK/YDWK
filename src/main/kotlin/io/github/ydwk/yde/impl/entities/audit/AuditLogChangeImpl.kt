@@ -23,7 +23,8 @@ import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.audit.AuditLogChange
 import io.github.ydwk.yde.util.EntityToStringBuilder
 
-class AuditLogChangeImpl(override val yde: YDE, override val json: JsonNode) : AuditLogChange {
+internal class AuditLogChangeImpl(override val yde: YDE, override val json: JsonNode) :
+    AuditLogChange {
     override val newValue: Any?
         get() = if (json.has("new_value")) checkType(json["new_value"]) else null
 

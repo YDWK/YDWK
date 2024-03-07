@@ -28,7 +28,7 @@ import io.github.ydwk.yde.entities.sticker.StickerType
 import io.github.ydwk.yde.util.EntityToStringBuilder
 import io.github.ydwk.yde.util.GetterSnowFlake
 
-class StickerImpl(
+internal class StickerImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,

@@ -24,7 +24,7 @@ import io.github.ydwk.yde.entities.channel.guild.forum.*
 import io.github.ydwk.yde.entities.channel.guild.message.text.PermissionOverwrite
 import io.github.ydwk.yde.util.GetterSnowFlake
 
-class GuildForumChannelImpl(
+internal class GuildForumChannelImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,

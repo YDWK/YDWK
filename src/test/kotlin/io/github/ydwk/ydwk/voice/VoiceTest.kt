@@ -56,11 +56,12 @@ class VoiceTest : InteractionEventListener {
 
 suspend fun main() {
     val ydwk =
-        BotBuilder.createDefaultBot(
+        BotBuilder.buildBot(
                 JConfig.build().get("token")?.asText() ?: throw Exception("Token not found!"))
-            .setActivity(Activity.playing("YDWK"))
-            .setETFInsteadOfJson(true)
+            .activity(Activity.playing("YDWK"))
+            .etfInsteadOfJson(true)
             .build()
+            .buildYDWK()
 
     ydwk.addEventListeners(VoiceTest())
 

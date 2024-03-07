@@ -20,16 +20,16 @@ package io.github.ydwk.yde.impl.rest.methods
 
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.rest.EndPoint
+import io.github.ydwk.yde.rest.RestResult
 import io.github.ydwk.yde.rest.methods.MemberRestAPIMethods
 import io.github.ydwk.yde.rest.result.NoResult
-import kotlinx.coroutines.CompletableDeferred
 
 class MemberRestAPIMethodsImpl(val yde: YDE) : MemberRestAPIMethods {
-    override fun addRoleToMember(
+    override suspend fun addRoleToMember(
         guildId: Long,
         userId: Long,
         roleId: Long
-    ): CompletableDeferred<NoResult> {
+    ): RestResult<NoResult> {
         return yde.restApiManager
             .put(
                 null,
@@ -40,23 +40,23 @@ class MemberRestAPIMethodsImpl(val yde: YDE) : MemberRestAPIMethods {
             .executeWithNoResult()
     }
 
-    override fun addRolesToMember(
+    override suspend fun addRolesToMember(
         guildId: Long,
         userId: Long,
         roleIds: List<Long>
-    ): List<CompletableDeferred<NoResult>> {
-        val actions = mutableListOf<CompletableDeferred<NoResult>>()
+    ): List<RestResult<NoResult>> {
+        val actions = mutableListOf<RestResult<NoResult>>()
         for (roleId in roleIds) {
             actions.add(addRoleToMember(guildId, userId, roleId))
         }
         return actions
     }
 
-    override fun removeRoleFromMember(
+    override suspend fun removeRoleFromMember(
         guildId: Long,
         userId: Long,
         roleId: Long
-    ): CompletableDeferred<NoResult> {
+    ): RestResult<NoResult> {
         return yde.restApiManager
             .delete(
                 null,
@@ -67,12 +67,12 @@ class MemberRestAPIMethodsImpl(val yde: YDE) : MemberRestAPIMethods {
             .executeWithNoResult()
     }
 
-    override fun removeRolesFromMember(
+    override suspend fun removeRolesFromMember(
         guildId: Long,
         userId: Long,
         roleIds: List<Long>
-    ): List<CompletableDeferred<NoResult>> {
-        val actions = mutableListOf<CompletableDeferred<NoResult>>()
+    ): List<RestResult<NoResult>> {
+        val actions = mutableListOf<RestResult<NoResult>>()
         for (roleId in roleIds) {
             actions.add(removeRoleFromMember(guildId, userId, roleId))
         }

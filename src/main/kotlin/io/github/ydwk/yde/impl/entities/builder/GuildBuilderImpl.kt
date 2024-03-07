@@ -30,11 +30,12 @@ import io.github.ydwk.yde.entities.guild.enums.MessageNotificationLevel
 import io.github.ydwk.yde.entities.guild.enums.SystemChannelFlag
 import io.github.ydwk.yde.entities.guild.enums.VerificationLevel
 import io.github.ydwk.yde.rest.EndPoint
+import io.github.ydwk.yde.rest.RestResult
+import io.github.ydwk.yde.rest.json
+import io.github.ydwk.yde.rest.toTextContent
 import io.github.ydwk.yde.util.Checks
-import kotlinx.coroutines.CompletableDeferred
-import okhttp3.RequestBody.Companion.toRequestBody
 
-class GuildBuilderImpl(val yde: YDE, val name: String) : GuildBuilder {
+internal class GuildBuilderImpl(val yde: YDE, val name: String) : GuildBuilder {
     private var icon: String? = null
     private var verificationLevel: VerificationLevel? = null
     private var defaultMessageNotifications: MessageNotificationLevel? = null
@@ -171,16 +172,12 @@ class GuildBuilderImpl(val yde: YDE, val name: String) : GuildBuilder {
             return jsonBuilder
         }
 
-    override fun create(): CompletableDeferred<Guild> {
+    override suspend fun create(): RestResult<Guild> {
         return yde.restApiManager
-            .post(json.toString().toRequestBody(), EndPoint.GuildEndpoint.CREATE_GUILD)
+            .post(json.toString().toTextContent(), EndPoint.GuildEndpoint.CREATE_GUILD)
             .execute {
-                val jsonBody = it.jsonBody
-                if (jsonBody == null) {
-                    throw IllegalStateException("json body is null")
-                } else {
-                    yde.entityInstanceBuilder.buildGuild(jsonBody)
-                }
+                val jsonBody = it.json(yde)
+                yde.entityInstanceBuilder.buildGuild(jsonBody)
             }
     }
 }

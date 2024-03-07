@@ -18,8 +18,8 @@
  */ 
 package io.github.ydwk.yde.rest.methods
 
+import io.github.ydwk.yde.rest.RestResult
 import io.github.ydwk.yde.rest.result.NoResult
-import kotlinx.coroutines.CompletableDeferred
 
 interface MemberRestAPIMethods {
 
@@ -29,9 +29,9 @@ interface MemberRestAPIMethods {
      * @param guildId The guild id.
      * @param userId The user id.
      * @param roleId The role id.
-     * @return A future that completes when the role is added.
+     * @return A [RestResult] that will contain [NoResult].
      */
-    fun addRoleToMember(guildId: Long, userId: Long, roleId: Long): CompletableDeferred<NoResult>
+    suspend fun addRoleToMember(guildId: Long, userId: Long, roleId: Long): RestResult<NoResult>
 
     /**
      * Adds a list of roles to a member.
@@ -39,13 +39,13 @@ interface MemberRestAPIMethods {
      * @param guildId The guild id.
      * @param userId The user id.
      * @param roleIds The role ids.
-     * @return A future that completes when the roles are added.
+     * @return A list of [RestResult]s that will contain [NoResult].
      */
-    fun addRolesToMember(
+    suspend fun addRolesToMember(
         guildId: Long,
         userId: Long,
         roleIds: List<Long>
-    ): List<CompletableDeferred<NoResult>>
+    ): List<RestResult<NoResult>>
 
     /**
      * Removes a role from a member.
@@ -53,13 +53,13 @@ interface MemberRestAPIMethods {
      * @param guildId The guild id.
      * @param userId The user id.
      * @param roleId The role id.
-     * @return A future that completes when the role is removed.
+     * @return A [RestResult] that will contain [NoResult
      */
-    fun removeRoleFromMember(
+    suspend fun removeRoleFromMember(
         guildId: Long,
         userId: Long,
         roleId: Long
-    ): CompletableDeferred<NoResult>
+    ): RestResult<NoResult>
 
     /**
      * Removes a list of roles from a member.
@@ -67,11 +67,11 @@ interface MemberRestAPIMethods {
      * @param guildId The guild id.
      * @param userId The user id.
      * @param roleIds The role ids.
-     * @return A future that completes when the roles are removed.
+     * @return A list of [RestResult]s that will contain [NoResult].
      */
-    fun removeRolesFromMember(
+    suspend fun removeRolesFromMember(
         guildId: Long,
         userId: Long,
         roleIds: List<Long>
-    ): List<CompletableDeferred<NoResult>>
+    ): List<RestResult<NoResult>>
 }

@@ -29,10 +29,12 @@ import io.github.ydwk.yde.entities.message.*
 import io.github.ydwk.yde.entities.sticker.StickerItem
 import io.github.ydwk.yde.impl.entities.message.*
 import io.github.ydwk.yde.interaction.message.Component
+import io.github.ydwk.yde.rest.RestResult
+import io.github.ydwk.yde.rest.result.NoResult
 import io.github.ydwk.yde.util.EntityToStringBuilder
 import io.github.ydwk.yde.util.GetterSnowFlake
 
-class MessageImpl(
+internal class MessageImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,
@@ -64,6 +66,12 @@ class MessageImpl(
     override val stickerItems: List<StickerItem>,
     override val position: Long?,
 ) : Message {
+    override suspend fun delete(): RestResult<NoResult> {
+        return yde.restAPIMethodGetters
+            .getMessageRestAPIMethods()
+            .deleteMessage(channel.idAsLong, idAsLong)
+    }
+
     override fun toString(): String {
         return EntityToStringBuilder(yde, this).toString()
     }

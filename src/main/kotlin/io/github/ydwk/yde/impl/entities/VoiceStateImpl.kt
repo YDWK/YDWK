@@ -26,8 +26,9 @@ import io.github.ydwk.yde.entities.VoiceState
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.yde.entities.guild.Member
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
+import io.github.ydwk.yde.rest.RestResult
 
-class VoiceStateImpl(
+internal class VoiceStateImpl(
     override val yde: YDE,
     override val json: JsonNode,
     private val backupGuild: Guild? = null,
@@ -56,4 +57,8 @@ class VoiceStateImpl(
     ) :
         VoiceState.VoiceRegion,
         ToStringEntityImpl<VoiceState.VoiceRegion>(yde, VoiceState.VoiceRegion::class.java)
+
+    override suspend fun requestVoiceRegion(): RestResult<List<VoiceState.VoiceRegion>> {
+        return yde.restAPIMethodGetters.getVoiceRestAPIMethods().requestVoiceRegions()
+    }
 }

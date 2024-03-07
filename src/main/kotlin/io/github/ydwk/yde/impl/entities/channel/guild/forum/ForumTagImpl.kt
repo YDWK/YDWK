@@ -24,7 +24,7 @@ import io.github.ydwk.yde.entities.channel.guild.forum.ForumTag
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.util.GetterSnowFlake
 
-class ForumTagImpl(
+internal class ForumTagImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,

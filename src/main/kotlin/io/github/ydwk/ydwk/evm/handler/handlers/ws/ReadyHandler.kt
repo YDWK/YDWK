@@ -82,11 +82,11 @@ class ReadyHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     }
 
     private suspend fun requestGuild(guildId: Long): Guild {
-        val guild = ydwk.requestGuild(guildId).await()
+        val guild = ydwk.requestGuild(guildId).mapBoth({ it }, { throw it })
         return ydwk.entityInstanceBuilder.buildGuild(guild.json)
     }
 
     private suspend fun requestGuildChannels(guildId: Long): List<GuildChannel> {
-        return ydwk.requestGuildChannels(guildId).await()
+        return ydwk.requestGuildChannels(guildId).mapBoth({ it }, { throw it })
     }
 }

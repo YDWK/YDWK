@@ -23,7 +23,7 @@ import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.channel.GuildChannel
 import io.github.ydwk.yde.entities.channel.guild.GuildCategory
 
-class GuildCategoryImpl(
+internal class GuildCategoryImpl(
     yde: YDE,
     json: JsonNode,
     idAsLong: Long,

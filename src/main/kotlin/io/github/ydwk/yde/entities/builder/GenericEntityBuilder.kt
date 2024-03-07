@@ -19,7 +19,7 @@
 package io.github.ydwk.yde.entities.builder
 
 import com.fasterxml.jackson.databind.JsonNode
-import kotlinx.coroutines.CompletableDeferred
+import io.github.ydwk.yde.rest.RestResult
 
 interface GenericEntityBuilder<T> {
 
@@ -35,5 +35,5 @@ interface GenericEntityBuilder<T> {
      *
      * @return A completable future that completes with the created entity.
      */
-    fun create(): CompletableDeferred<T>
+    suspend fun create(): RestResult<T>
 }

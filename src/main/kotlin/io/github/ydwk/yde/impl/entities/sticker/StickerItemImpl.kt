@@ -24,7 +24,7 @@ import io.github.ydwk.yde.entities.sticker.StickerItem
 import io.github.ydwk.yde.entities.sticker.StickerType
 import io.github.ydwk.yde.util.EntityToStringBuilder
 
-class StickerItemImpl(
+internal class StickerItemImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,

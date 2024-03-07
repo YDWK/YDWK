@@ -23,8 +23,8 @@ import io.github.ydwk.yde.impl.YDEImpl
 import io.github.ydwk.yde.impl.builders.util.getCommandNameAndIds
 import io.github.ydwk.yde.impl.builders.util.getCurrentGuildCommandsNameAndIds
 import io.github.ydwk.yde.rest.EndPoint
+import io.github.ydwk.yde.rest.toTextContent
 import kotlinx.coroutines.*
-import okhttp3.RequestBody.Companion.toRequestBody
 
 class MessageCommandSender(
     val yde: YDEImpl,
@@ -187,7 +187,7 @@ class MessageCommandSender(
         return getCurrentGuildCommandsNameAndIds(yde, guildIds, applicationId)
     }
 
-    private fun deleteGlobalMessageCommands(ids: List<Long>) {
+    private suspend fun deleteGlobalMessageCommands(ids: List<Long>) {
         ids.forEach { id ->
             yde.logger.debug("Deleting global Message command with id $id")
             yde.restApiManager
@@ -199,7 +199,7 @@ class MessageCommandSender(
         }
     }
 
-    private fun deleteGuildMessageCommands(ids: List<Long>) {
+    private suspend fun deleteGuildMessageCommands(ids: List<Long>) {
         ids.forEach { id ->
             guildIds.forEach { guildId ->
                 yde.logger.debug("Deleting guild Message command $id")
@@ -214,19 +214,19 @@ class MessageCommandSender(
         }
     }
 
-    private fun createGlobalMessageCommands(messageCommands: List<MessageCommandBuilder>) {
+    private suspend fun createGlobalMessageCommands(messageCommands: List<MessageCommandBuilder>) {
         messageCommands.forEach { message ->
             yde.logger.debug("Sending global Message command ${message.name} to Discord")
             yde.restApiManager
                 .post(
-                    message.toJson().toString().toRequestBody(),
+                    message.toJson().toString().toTextContent(),
                     EndPoint.ApplicationCommandsEndpoint.CREATE_GLOBAL_COMMAND,
                     applicationId)
                 .executeWithNoResult()
         }
     }
 
-    private fun createGuildMessageCommands(
+    private suspend fun createGuildMessageCommands(
         guildId: String,
         messageCommands: List<MessageCommandBuilder>
     ) {
@@ -234,7 +234,7 @@ class MessageCommandSender(
             yde.logger.debug("Sending Message command ${message.name} to guild $guildId")
             yde.restApiManager
                 .post(
-                    message.toJson().toString().toRequestBody(),
+                    message.toJson().toString().toTextContent(),
                     EndPoint.ApplicationCommandsEndpoint.CREATE_GUILD_COMMAND,
                     applicationId,
                     guildId)

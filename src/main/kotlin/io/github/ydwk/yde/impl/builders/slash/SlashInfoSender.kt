@@ -23,9 +23,9 @@ import io.github.ydwk.yde.impl.YDEImpl
 import io.github.ydwk.yde.impl.builders.util.getCommandNameAndIds
 import io.github.ydwk.yde.impl.builders.util.getCurrentGuildCommandsNameAndIds
 import io.github.ydwk.yde.rest.EndPoint
+import io.github.ydwk.yde.rest.toTextContent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import okhttp3.RequestBody.Companion.toRequestBody
 
 class SlashInfoSender(
     val yde: YDEImpl,
@@ -186,7 +186,7 @@ class SlashInfoSender(
         return getCurrentGuildCommandsNameAndIds(yde, guildIds, applicationId)
     }
 
-    private fun deleteGlobalSlashCommands(ids: List<Long>) {
+    private suspend fun deleteGlobalSlashCommands(ids: List<Long>) {
         ids.forEach { id ->
             yde.logger.debug("Deleting global slash command with id $id")
             yde.restApiManager
@@ -198,7 +198,7 @@ class SlashInfoSender(
         }
     }
 
-    private fun deleteGuildSlashCommands(ids: List<Long>) {
+    private suspend fun deleteGuildSlashCommands(ids: List<Long>) {
         ids.forEach { id ->
             guildIds.forEach { guildId ->
                 yde.logger.debug("Deleting guild slash command $id")
@@ -213,19 +213,19 @@ class SlashInfoSender(
         }
     }
 
-    private fun createGlobalSlashCommands(slashCommands: List<SlashCommandBuilder>) {
+    private suspend fun createGlobalSlashCommands(slashCommands: List<SlashCommandBuilder>) {
         slashCommands.forEach { slash ->
             yde.logger.debug("Sending global slash command ${slash.name} to Discord")
             yde.restApiManager
                 .post(
-                    slash.toJson().toString().toRequestBody(),
+                    slash.toJson().toString().toTextContent(),
                     EndPoint.ApplicationCommandsEndpoint.CREATE_GLOBAL_COMMAND,
                     applicationId)
                 .executeWithNoResult()
         }
     }
 
-    private fun createGuildSlashCommands(
+    private suspend fun createGuildSlashCommands(
         guildId: String,
         slashCommands: List<SlashCommandBuilder>
     ) {
@@ -233,7 +233,7 @@ class SlashInfoSender(
             yde.logger.debug("Sending slash command ${slash.name} to guild $guildId")
             yde.restApiManager
                 .post(
-                    slash.toJson().toString().toRequestBody(),
+                    slash.toJson().toString().toTextContent(),
                     EndPoint.ApplicationCommandsEndpoint.CREATE_GUILD_COMMAND,
                     applicationId,
                     guildId)

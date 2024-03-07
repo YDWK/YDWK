@@ -25,7 +25,7 @@ import io.github.ydwk.yde.entities.channel.enums.ChannelType
 import io.github.ydwk.yde.entities.channel.getter.ChannelGetter
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
-open class ChannelImpl(
+internal open class ChannelImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,

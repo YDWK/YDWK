@@ -26,7 +26,7 @@ import java.net.URL
 import java.util.*
 import javax.imageio.ImageIO
 
-class AvatarImpl(val yde: YDE, override val url: URL) : Avatar {
+internal class AvatarImpl(val yde: YDE, override val url: URL) : Avatar {
 
     override val asByteArray: ByteArray
         get() = url.readBytes()

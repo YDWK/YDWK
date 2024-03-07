@@ -27,7 +27,7 @@ import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.util.GetterSnowFlake
 import java.net.URL
 
-open class ApplicationImpl(
+internal open class ApplicationImpl(
     override val json: JsonNode,
     override val idAsLong: Long,
     override val yde: YDE,

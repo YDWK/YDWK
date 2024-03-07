@@ -68,17 +68,17 @@ private var voiceConnection: VoiceConnectionImpl? = null
  *
  * @param vc The voice connection.
  */
-fun GuildImpl.setVoiceConnection(vc: VoiceConnectionImpl) {
+fun Guild.setVoiceConnection(vc: VoiceConnectionImpl) {
     voiceConnection = vc
 }
 
 /** Removes the voice connection from the guild. */
-fun GuildImpl.removeVoiceConnection() {
+fun Guild.removeVoiceConnection() {
     voiceConnection = null
 }
 
 /** Gets the voice connection. */
-fun GuildImpl.getVoiceConnection(): VoiceConnectionImpl? {
+fun Guild.getVoiceConnection(): VoiceConnectionImpl? {
     return voiceConnection
 }
 

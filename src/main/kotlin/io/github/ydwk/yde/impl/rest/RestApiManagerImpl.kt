@@ -19,9 +19,9 @@
 package io.github.ydwk.yde.impl.rest
 
 import io.github.ydwk.yde.impl.YDEImpl
-import io.github.ydwk.yde.impl.rest.type.*
 import io.github.ydwk.yde.rest.EndPoint
 import io.github.ydwk.yde.rest.RestApiManager
+import io.github.ydwk.yde.rest.SimilarRestApi
 import io.github.ydwk.yde.rest.type.*
 import io.ktor.client.*
 import io.ktor.client.request.*
@@ -45,7 +45,7 @@ class RestApiManagerImpl(
         vararg params: String
     ): SimilarRestApi {
         val builder = requestBuilder(endPoint, *params)
-        return SimilarRestApiImpl(yde, builder, client, RequestType.GET)
+        return RestApiImpl(builder, client, RequestType.GET)
     }
 
     override suspend fun post(
@@ -56,7 +56,7 @@ class RestApiManagerImpl(
         val builder = requestBuilder(endPoint, *params)
 
         builder.setBody(body ?: ByteArrayContent(ByteArray(0)))
-        return SimilarRestApiImpl(yde, builder, client, RequestType.POST)
+        return RestApiImpl(builder, client, RequestType.POST)
     }
 
     override suspend fun put(
@@ -66,7 +66,7 @@ class RestApiManagerImpl(
     ): SimilarRestApi {
         val builder = requestBuilder(endPoint, *params)
         builder.setBody(body ?: ByteArrayContent(ByteArray(0)))
-        return SimilarRestApiImpl(yde, builder, client, RequestType.PUT)
+        return RestApiImpl(builder, client, RequestType.PUT)
     }
 
     override suspend fun delete(
@@ -78,7 +78,7 @@ class RestApiManagerImpl(
 
         body?.let { builder.setBody(it) }
 
-        return SimilarRestApiImpl(yde, builder, client, RequestType.DELETE)
+        return RestApiImpl(builder, client, RequestType.DELETE)
     }
 
     override suspend fun patch(
@@ -90,7 +90,7 @@ class RestApiManagerImpl(
 
         builder.setBody(body)
 
-        return SimilarRestApiImpl(yde, builder, client, RequestType.PATCH)
+        return RestApiImpl(builder, client, RequestType.PATCH)
     }
 
     private suspend fun requestBuilder(

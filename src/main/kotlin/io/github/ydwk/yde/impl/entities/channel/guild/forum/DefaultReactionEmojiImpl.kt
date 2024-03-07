@@ -24,7 +24,7 @@ import io.github.ydwk.yde.entities.channel.guild.forum.DefaultReactionEmoji
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.util.GetterSnowFlake
 
-class DefaultReactionEmojiImpl(
+internal class DefaultReactionEmojiImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val emojiId: GetterSnowFlake?,

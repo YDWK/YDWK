@@ -22,12 +22,12 @@ import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.guild.Invite
 import io.github.ydwk.yde.impl.entities.guild.InviteImpl
 import io.github.ydwk.yde.rest.EndPoint
-import io.github.ydwk.yde.rest.type.RestResult
-import io.github.ydwk.yde.rest.type.json
+import io.github.ydwk.yde.rest.RestResult
+import io.github.ydwk.yde.rest.json
+import io.github.ydwk.yde.rest.toTextContent
 import io.github.ydwk.yde.util.Checks
 import io.github.ydwk.yde.util.GetterSnowFlake
 import java.util.concurrent.CompletableFuture
-import okhttp3.RequestBody.Companion.toRequestBody
 
 class InviteCreator(val yde: YDE, private val channelId: String) {
     private var maxAge = 86400
@@ -122,7 +122,7 @@ class InviteCreator(val yde: YDE, private val channelId: String) {
      *
      * @return The [CompletableFuture] of the [Invite].
      */
-    suspend fun create(): RestResult<InviteImpl> {
+    suspend fun create(): RestResult<Invite> {
         val json = yde.objectMapper.createObjectNode()
 
         json.put("max_age", maxAge)
@@ -144,7 +144,7 @@ class InviteCreator(val yde: YDE, private val channelId: String) {
 
         return yde.restApiManager
             .post(
-                json.toString().toRequestBody(), EndPoint.ChannelEndpoint.CREATE_INVITE, channelId)
+                json.toString().toTextContent(), EndPoint.ChannelEndpoint.CREATE_INVITE, channelId)
             .execute {
                 val jsonBody = it.json(yde)
                 yde.entityInstanceBuilder.buildInvite(jsonBody) as InviteImpl

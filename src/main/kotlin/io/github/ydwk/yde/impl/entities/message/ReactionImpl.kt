@@ -24,7 +24,7 @@ import io.github.ydwk.yde.entities.Emoji
 import io.github.ydwk.yde.entities.message.Reaction
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
-class ReactionImpl(
+internal class ReactionImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val count: Int,

@@ -29,7 +29,7 @@ import io.github.ydwk.yde.entities.guild.Invite
 import io.github.ydwk.yde.entities.guild.invite.TargetType
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
-class InviteImpl(
+internal class InviteImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val code: String,

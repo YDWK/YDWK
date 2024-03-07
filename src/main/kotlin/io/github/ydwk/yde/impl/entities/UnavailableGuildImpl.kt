@@ -23,7 +23,7 @@ import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.UnavailableGuild
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
-class UnavailableGuildImpl(
+internal class UnavailableGuildImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,

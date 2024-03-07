@@ -32,15 +32,15 @@ import io.github.ydwk.ydwk.evm.backend.managers.SampleEventManager
 import io.github.ydwk.ydwk.evm.event.EventListeners
 import io.github.ydwk.ydwk.ws.WebSocketManager
 import io.github.ydwk.ydwk.ws.util.LoggedIn
+import io.ktor.client.*
 import java.time.Instant
 import java.util.concurrent.Executors
 import kotlin.random.Random
 import kotlinx.coroutines.*
-import okhttp3.OkHttpClient
 import org.slf4j.LoggerFactory
 
 class YDWKImpl(
-    override var client: OkHttpClient,
+    override var client: HttpClient,
     override var token: String? = null,
     override var guildIdList: MutableList<String> = mutableListOf(),
     applicationId: String? = null,
@@ -86,9 +86,11 @@ class YDWKImpl(
     }
 
     private fun shutDownRestApi() {
-        client.dispatcher.executorService.shutdown()
-        client.connectionPool.evictAll()
-        client.cache?.close()
+        try {
+            client.close()
+        } catch (e: Exception) {
+            ydwkLogger.error("Error while shutting down rest api" + e.message)
+        }
     }
 
     fun enableShutDownHook() {

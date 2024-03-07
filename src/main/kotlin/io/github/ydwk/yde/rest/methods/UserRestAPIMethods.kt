@@ -20,14 +20,14 @@ package io.github.ydwk.yde.rest.methods
 
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.channel.DmChannel
-import io.github.ydwk.yde.rest.type.RestResult
+import io.github.ydwk.yde.rest.RestResult
 
 interface UserRestAPIMethods {
     /**
      * Creates a direct message channel with this user.
      *
      * @param id the id of the user.
-     * @return the result of the request containing the created channel.
+     * @return A [RestResult] that will contain the created [DmChannel].
      */
     suspend fun createDm(id: Long): RestResult<DmChannel>
 
@@ -35,14 +35,14 @@ interface UserRestAPIMethods {
      * Request a user by its id.
      *
      * @param id the id of the user.
-     * @return the result of the request containing the user.
+     * @return A [RestResult] that will contain the requested [User].
      */
     suspend fun requestUser(id: Long): RestResult<User>
 
     /**
      * Request to get a list of all the users that are visible to the bot.
      *
-     * @return the result of the request containing the list of users.
+     * @return A [RestResult] that will contain a list of [User]s.
      */
     suspend fun requestUsers(): RestResult<List<User>>
 }

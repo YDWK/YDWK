@@ -20,16 +20,16 @@ package io.github.ydwk.yde.impl.builders.util
 
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.rest.EndPoint
-import io.github.ydwk.yde.rest.cf.CompletableFutureManager
+import io.github.ydwk.yde.rest.json
+import io.ktor.client.statement.*
 import kotlinx.coroutines.withContext
 
-// TODO: Rework this to be more efficient and clean
 suspend fun getCommandNameAndIds(yde: YDE, applicationId: String): Map<Long, String> {
     return withContext(yde.coroutineDispatcher) {
         yde.restApiManager
             .get(EndPoint.ApplicationCommandsEndpoint.GET_GLOBAL_COMMANDS, applicationId)
-            .execute { execute(it) }
-            .await()
+            .execute { execute(it, yde) }
+            .mapBoth({ it }, { emptyMap() })
     }
 }
 
@@ -43,17 +43,13 @@ suspend fun getCurrentGuildCommandsNameAndIds(
             yde.restApiManager
                 .get(
                     EndPoint.ApplicationCommandsEndpoint.GET_GUILD_COMMANDS, applicationId, guildId)
-                .execute { execute(it) }
-                .await()
+                .execute { execute(it, yde) }
+                .mapBoth({ it }, { emptyMap() })
         }
     }
 }
 
-fun execute(it: CompletableFutureManager): Map<Long, String> {
-    val jsonBody = it.jsonBody
-    if (jsonBody == null) {
-        return@execute emptyMap()
-    } else {
-        return@execute jsonBody.associate { it["id"].asLong() to it["name"].asText() }
-    }
+suspend fun execute(it: HttpResponse, yde: YDE): Map<Long, String> {
+    val jsonBody = it.json(yde)
+    return jsonBody.associate { it["id"].asLong() to it["name"].asText() } ?: emptyMap()
 }

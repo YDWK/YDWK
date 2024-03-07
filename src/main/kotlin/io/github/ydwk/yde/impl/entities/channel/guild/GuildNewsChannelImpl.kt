@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.channel.guild.message.news.GuildNewsChannel
 
-class GuildNewsChannelImpl(
+internal class GuildNewsChannelImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,

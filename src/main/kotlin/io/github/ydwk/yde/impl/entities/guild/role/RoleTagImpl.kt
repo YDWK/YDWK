@@ -24,7 +24,7 @@ import io.github.ydwk.yde.entities.guild.role.RoleTag
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.util.GetterSnowFlake
 
-class RoleTagImpl(
+internal class RoleTagImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val botId: GetterSnowFlake?,

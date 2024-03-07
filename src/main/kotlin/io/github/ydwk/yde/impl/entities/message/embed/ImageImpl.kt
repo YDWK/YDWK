@@ -24,7 +24,7 @@ import io.github.ydwk.yde.entities.message.embed.Image
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import java.net.URL
 
-class ImageImpl(
+internal class ImageImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val url: URL,

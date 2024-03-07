@@ -24,7 +24,7 @@ import io.github.ydwk.yde.entities.channel.getter.guild.GuildMessageChannelGette
 import io.github.ydwk.yde.entities.channel.guild.message.GuildMessageChannel
 import io.github.ydwk.yde.entities.channel.guild.message.text.PermissionOverwrite
 
-open class GuildMessageChannelImpl(
+internal open class GuildMessageChannelImpl(
     yde: YDE,
     json: JsonNode,
     idAsLong: Long,

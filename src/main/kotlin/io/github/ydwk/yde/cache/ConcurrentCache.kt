@@ -94,7 +94,7 @@ open class ConcurrentCache(private val allowedCache: Set<CacheIds>, private val 
     }
 
     override fun triggerCacheTypesClear(
-        cacheIds: List<CacheIds>,
+        cacheIds: Set<CacheIds>,
         duration: Duration,
         repeat: Boolean
     ) {

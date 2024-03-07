@@ -24,7 +24,7 @@ import io.github.ydwk.yde.entities.guild.ws.WelcomeChannel
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.util.GetterSnowFlake
 
-class WelcomeChannelImpl(
+internal class WelcomeChannelImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val channelId: GetterSnowFlake,

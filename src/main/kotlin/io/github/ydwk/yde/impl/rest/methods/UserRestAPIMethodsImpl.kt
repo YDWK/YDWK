@@ -23,9 +23,10 @@ import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.channel.DmChannel
 import io.github.ydwk.yde.rest.EndPoint
+import io.github.ydwk.yde.rest.RestResult
+import io.github.ydwk.yde.rest.json
 import io.github.ydwk.yde.rest.methods.UserRestAPIMethods
-import io.github.ydwk.yde.rest.type.RestResult
-import io.github.ydwk.yde.rest.type.json
+import io.github.ydwk.yde.rest.toTextContent
 import io.ktor.http.*
 import io.ktor.http.content.*
 
@@ -35,12 +36,11 @@ class UserRestAPIMethodsImpl(val yde: YDE) : UserRestAPIMethods {
     override suspend fun createDm(id: Long): RestResult<DmChannel> {
         return restApiManager
             .post(
-                TextContent(
                 yde.objectMapper
                     .createObjectNode()
                     .put("recipient_id", id)
-                    .toString(),
-                    ContentType.Application.Json),
+                    .toString()
+                    .toTextContent(),
                 EndPoint.UserEndpoint.CREATE_DM)
             .execute { response ->
                 val jsonBody =

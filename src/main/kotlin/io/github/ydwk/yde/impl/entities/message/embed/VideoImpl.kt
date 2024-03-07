@@ -24,7 +24,7 @@ import io.github.ydwk.yde.entities.message.embed.Video
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import java.net.URL
 
-class VideoImpl(
+internal class VideoImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val url: URL?,

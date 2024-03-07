@@ -20,9 +20,9 @@ package io.github.ydwk.ydwk.evm.handler.handlers.guild.update
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.entities.Emoji
+import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.Sticker
 import io.github.ydwk.yde.entities.guild.enums.*
-import io.github.ydwk.yde.impl.entities.GuildImpl
 import io.github.ydwk.yde.util.GetterSnowFlake
 import io.github.ydwk.ydwk.evm.event.events.guild.update.*
 import io.github.ydwk.ydwk.evm.handler.handlers.guild.GuildUpdateHandler
@@ -33,7 +33,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     private val logger = LoggerFactory.getLogger(GuildUpdateHandlerExtended::class.java)
 
     fun onUpdate(
-        guild: GuildImpl,
+        guild: Guild,
         oldName: String,
         newName: String,
         oldIcon: String?,
@@ -258,26 +258,26 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
         }
     }
 
-    private fun onNameChange(guild: GuildImpl, oldName: String, newName: String) {
+    private fun onNameChange(guild: Guild, oldName: String, newName: String) {
         guild.name = newName
         ydwk.emitEvent(GuildNameUpdateEvent(ydwk, guild, oldName, newName))
         logger.debug("Guild name changed from $oldName to $newName")
     }
 
-    private fun onIconChange(guild: GuildImpl, oldIcon: String?, newIcon: String?) {
+    private fun onIconChange(guild: Guild, oldIcon: String?, newIcon: String?) {
         guild.icon = newIcon
         ydwk.emitEvent(GuildIconUpdateEvent(ydwk, guild, oldIcon, newIcon))
         logger.debug("Guild icon changed from $oldIcon to $newIcon")
     }
 
-    private fun onSplashChange(guild: GuildImpl, oldSplash: String?, newSplash: String?) {
+    private fun onSplashChange(guild: Guild, oldSplash: String?, newSplash: String?) {
         guild.splash = newSplash
         ydwk.emitEvent(GuildSplashUpdateEvent(ydwk, guild, oldSplash, newSplash))
         logger.debug("Guild splash changed from $oldSplash to $newSplash")
     }
 
     private fun onDiscoverySplashChange(
-        guild: GuildImpl,
+        guild: Guild,
         oldDiscoverySplash: String?,
         newDiscoverySplash: String?,
     ) {
@@ -288,14 +288,14 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
             "Guild discovery splash changed from $oldDiscoverySplash to $newDiscoverySplash")
     }
 
-    private fun onOwnerChange(guild: GuildImpl, oldOwnerId: Long, newOwnerId: Long) {
+    private fun onOwnerChange(guild: Guild, oldOwnerId: Long, newOwnerId: Long) {
         guild.ownerId = GetterSnowFlake.of(newOwnerId)
         ydwk.emitEvent(GuildOwnerUpdateEvent(ydwk, guild, oldOwnerId, newOwnerId))
         logger.debug("Guild owner changed from $oldOwnerId to $newOwnerId")
     }
 
     private fun onPermissionsChange(
-        guild: GuildImpl,
+        guild: Guild,
         oldPermissions: String?,
         newPermissions: String?,
     ) {
@@ -305,7 +305,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     }
 
     private fun onAfkChannelChange(
-        guild: GuildImpl,
+        guild: Guild,
         oldAfkChannelId: Long?,
         newAfkChannelId: Long?,
     ) {
@@ -314,14 +314,14 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
         logger.debug("Guild afk channel changed from $oldAfkChannelId to $newAfkChannelId")
     }
 
-    private fun onAfkTimeoutChange(guild: GuildImpl, oldAfkTimeout: Int, newAfkTimeout: Int) {
+    private fun onAfkTimeoutChange(guild: Guild, oldAfkTimeout: Int, newAfkTimeout: Int) {
         guild.afkTimeout = newAfkTimeout
         ydwk.emitEvent(GuildAfkTimeoutUpdateEvent(ydwk, guild, oldAfkTimeout, newAfkTimeout))
         logger.debug("Guild afk timeout changed from $oldAfkTimeout to $newAfkTimeout")
     }
 
     private fun onWidgetEnabledChange(
-        guild: GuildImpl,
+        guild: Guild,
         wasWidgetEnabled: Boolean?,
         isWidgetEnabled: Boolean?,
     ) {
@@ -332,7 +332,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     }
 
     private fun onWidgetChannelChange(
-        guild: GuildImpl,
+        guild: Guild,
         oldWidgetChannelId: Long?,
         newWidgetChannelId: Long?,
     ) {
@@ -343,7 +343,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     }
 
     private fun onVerificationLevelChange(
-        guild: GuildImpl,
+        guild: Guild,
         oldVerificationLevel: Int,
         newVerificationLevel: Int,
     ) {
@@ -359,7 +359,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     }
 
     private fun onDefaultMessageNotificationsChange(
-        guild: GuildImpl,
+        guild: Guild,
         oldDefaultMessageNotifications: Int,
         newDefaultMessageNotifications: Int,
     ) {
@@ -376,7 +376,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     }
 
     private fun onExplicitContentFilterChange(
-        guild: GuildImpl,
+        guild: Guild,
         oldExplicitContentFilter: Int,
         newExplicitContentFilter: Int,
     ) {
@@ -392,7 +392,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
             "Guild explicit content filter changed from $oldExplicitContentFilter to $newExplicitContentFilter")
     }
 
-    private fun onMfaLevelChange(guild: GuildImpl, oldMfaLevel: Int, newMfaLevel: Int) {
+    private fun onMfaLevelChange(guild: Guild, oldMfaLevel: Int, newMfaLevel: Int) {
         guild.mfaLevel = MFALevel.getValue(newMfaLevel)
         ydwk.emitEvent(
             GuildMfaLevelUpdateEvent(
@@ -401,7 +401,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     }
 
     private fun onApplicationIdChange(
-        guild: GuildImpl,
+        guild: Guild,
         oldApplicationId: Long?,
         newApplicationId: Long?,
     ) {
@@ -412,7 +412,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     }
 
     private fun onSystemChannelChange(
-        guild: GuildImpl,
+        guild: Guild,
         oldSystemChannelId: Long?,
         newSystemChannelId: Long?,
     ) {
@@ -423,7 +423,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     }
 
     private fun onSystemChannelFlagsChange(
-        guild: GuildImpl,
+        guild: Guild,
         oldSystemChannelFlags: Int,
         newSystemChannelFlags: Int,
     ) {
@@ -439,7 +439,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     }
 
     private fun onRulesChannelChange(
-        guild: GuildImpl,
+        guild: Guild,
         oldRulesChannelId: Long?,
         newRulesChannelId: Long?,
     ) {
@@ -450,7 +450,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     }
 
     private fun onMaxPresencesChange(
-        guild: GuildImpl,
+        guild: Guild,
         oldMaxPresences: Int?,
         newMaxPresences: Int?,
     ) {
@@ -459,14 +459,14 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
         logger.debug("Guild max presences changed from $oldMaxPresences to $newMaxPresences")
     }
 
-    private fun onMaxMembersChange(guild: GuildImpl, oldMaxMembers: Int, newMaxMembers: Int) {
+    private fun onMaxMembersChange(guild: Guild, oldMaxMembers: Int, newMaxMembers: Int) {
         guild.maxMembers = newMaxMembers
         ydwk.emitEvent(GuildMaxMembersUpdateEvent(ydwk, guild, oldMaxMembers, newMaxMembers))
         logger.debug("Guild max members changed from $oldMaxMembers to $newMaxMembers")
     }
 
     private fun onVanityUrlCodeChange(
-        guild: GuildImpl,
+        guild: Guild,
         oldVanityUrlCode: String?,
         newVanityUrlCode: String?,
     ) {
@@ -476,7 +476,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     }
 
     private fun onDescriptionChange(
-        guild: GuildImpl,
+        guild: Guild,
         oldDescription: String?,
         newDescription: String?,
     ) {
@@ -485,20 +485,20 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
         logger.debug("Guild description changed from $oldDescription to $newDescription")
     }
 
-    private fun onBannerChange(guild: GuildImpl, oldBanner: String?, newBanner: String?) {
+    private fun onBannerChange(guild: Guild, oldBanner: String?, newBanner: String?) {
         guild.banner = newBanner
         ydwk.emitEvent(GuildBannerUpdateEvent(ydwk, guild, oldBanner, newBanner))
         logger.debug("Guild banner changed from $oldBanner to $newBanner")
     }
 
-    private fun onPremiumTierChange(guild: GuildImpl, oldPremiumTier: Int, newPremiumTier: Int) {
+    private fun onPremiumTierChange(guild: Guild, oldPremiumTier: Int, newPremiumTier: Int) {
         guild.premiumTier = PremiumTier.getValue(newPremiumTier)
         ydwk.emitEvent(GuildPremiumTierUpdateEvent(ydwk, guild, oldPremiumTier, newPremiumTier))
         logger.debug("Guild premium tier changed from $oldPremiumTier to $newPremiumTier")
     }
 
     private fun onPremiumSubscriptionCountChange(
-        guild: GuildImpl,
+        guild: Guild,
         oldPremiumSubscriptionCount: Int,
         newPremiumSubscriptionCount: Int,
     ) {
@@ -511,7 +511,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     }
 
     private fun onPreferredLocaleChange(
-        guild: GuildImpl,
+        guild: Guild,
         oldPreferredLocale: String,
         newPreferredLocale: String,
     ) {
@@ -523,7 +523,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     }
 
     private fun onPublicUpdatesChannelChange(
-        guild: GuildImpl,
+        guild: Guild,
         oldPublicUpdatesChannelId: Long?,
         newPublicUpdatesChannelId: Long?,
     ) {
@@ -536,7 +536,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     }
 
     private fun onMaxVideoChannelUsersChange(
-        guild: GuildImpl,
+        guild: Guild,
         oldMaxVideoChannelUsers: Int?,
         newMaxVideoChannelUsers: Int?,
     ) {
@@ -549,7 +549,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     }
 
     private fun onApproximateMemberCountChange(
-        guild: GuildImpl,
+        guild: Guild,
         oldApproximateMemberCount: Int?,
         newApproximateMemberCount: Int?,
     ) {
@@ -562,7 +562,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     }
 
     private fun onApproximatePresenceCountChange(
-        guild: GuildImpl,
+        guild: Guild,
         oldApproximatePresenceCount: Int?,
         newApproximatePresenceCount: Int?,
     ) {
@@ -575,7 +575,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     }
 
     private fun onWelcomeScreenChange(
-        guild: GuildImpl,
+        guild: Guild,
         oldWelcomeScreen: JsonNode?,
         newWelcomeScreen: JsonNode?,
     ) {
@@ -591,7 +591,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
             "Guild welcome screen changed from {} to {}", oldWelcomeScreen, newWelcomeScreen)
     }
 
-    private fun onNSFWLevelChange(guild: GuildImpl, oldNSFWLevel: Int, newNSFWLevel: Int) {
+    private fun onNSFWLevelChange(guild: Guild, oldNSFWLevel: Int, newNSFWLevel: Int) {
         guild.nsfwLevel = NSFWLeveL.getValue(newNSFWLevel)
         ydwk.emitEvent(
             GuildNSFWLevelUpdateEvent(ydwk, guild, oldNSFWLevel, NSFWLeveL.getValue(newNSFWLevel)))
@@ -599,7 +599,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     }
 
     private fun onStickersChange(
-        guild: GuildImpl,
+        guild: Guild,
         oldStickers: List<Sticker>,
         newStickers: JsonNode?,
     ) {
@@ -617,7 +617,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     }
 
     private fun onBoostProgressBarEnabledChange(
-        guild: GuildImpl,
+        guild: Guild,
         oldBoostProgressBarEnabled: Boolean,
         newBoostProgressBarEnabled: Boolean,
     ) {
@@ -629,7 +629,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
             "Guild boost progress bar enabled changed from $oldBoostProgressBarEnabled to $newBoostProgressBarEnabled")
     }
 
-    private fun onEmojiChange(guild: GuildImpl, oldEmojis: List<Emoji>, newEmojis: JsonNode?) {
+    private fun onEmojiChange(guild: Guild, oldEmojis: List<Emoji>, newEmojis: JsonNode?) {
         guild.emojis =
             newEmojis?.let { it -> it.map { ydwk.entityInstanceBuilder.buildEmoji(it) } }
                 ?: emptyList() ?: emptyList()
@@ -644,7 +644,7 @@ class GuildUpdateHandlerExtended(ydwk: YDWKImpl, json: JsonNode) : GuildUpdateHa
     }
 
     private fun onFeaturesChange(
-        guild: GuildImpl,
+        guild: Guild,
         oldFeatures: Set<GuildFeature>,
         newFeatures: JsonNode?,
     ) {

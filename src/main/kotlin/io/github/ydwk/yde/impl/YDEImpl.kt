@@ -148,7 +148,7 @@ open class YDEImpl(
     }
 
     override fun triggerCacheTypeClear(
-        cacheIds: List<CacheIds>,
+        cacheIds: Set<CacheIds>,
         duration: Duration,
         repeat: Boolean
     ) {

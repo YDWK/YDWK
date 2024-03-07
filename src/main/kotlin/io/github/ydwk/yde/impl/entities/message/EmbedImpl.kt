@@ -27,7 +27,7 @@ import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import java.awt.Color
 import java.net.URL
 
-class EmbedImpl(
+internal class EmbedImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val title: String?,

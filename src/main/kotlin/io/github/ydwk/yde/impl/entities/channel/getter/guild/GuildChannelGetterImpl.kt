@@ -29,7 +29,7 @@ import io.github.ydwk.yde.entities.channel.guild.vc.GuildStageChannel
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.yde.impl.entities.channel.guild.*
 
-class GuildChannelGetterImpl(yde: YDE, json: JsonNode) :
+internal class GuildChannelGetterImpl(yde: YDE, json: JsonNode) :
     GuildChannelImpl(yde.entityInstanceBuilder.buildGuildChannel(json)), GuildChannelGetter {
     override fun asGuildMessageChannel(): GuildMessageChannel? {
         return if (type == ChannelType.TEXT || type == ChannelType.NEWS) {

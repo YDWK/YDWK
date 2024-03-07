@@ -21,4 +21,4 @@ package io.github.ydwk.yde.impl.entities
 import io.github.ydwk.yde.entities.Bot
 import io.github.ydwk.yde.entities.User
 
-class BotImpl(user: User, override var email: String) : UserImpl(user), Bot
+internal class BotImpl(user: User, override var email: String) : UserImpl(user), Bot

@@ -24,7 +24,7 @@ import io.github.ydwk.yde.entities.message.embed.Author
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import java.net.URL
 
-class AuthorImpl(
+internal class AuthorImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val name: String,

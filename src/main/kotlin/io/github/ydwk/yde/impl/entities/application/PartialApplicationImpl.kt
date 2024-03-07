@@ -23,7 +23,7 @@ import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.application.PartialApplication
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
-class PartialApplicationImpl(
+internal class PartialApplicationImpl(
     override val json: JsonNode,
     override val idAsLong: Long,
     override val yde: YDE,

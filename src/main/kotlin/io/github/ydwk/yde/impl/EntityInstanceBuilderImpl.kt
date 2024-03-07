@@ -82,10 +82,10 @@ import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenu
 import io.github.ydwk.yde.interaction.message.selectmenu.types.*
 import io.github.ydwk.yde.interaction.message.selectmenu.types.string.StringSelectMenuOption
 import io.github.ydwk.yde.interaction.message.textinput.TextInput
+import io.github.ydwk.yde.rest.error.RestAPIException
 import io.github.ydwk.yde.util.*
 import java.awt.Color
 import java.net.URL
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 /** Used to build entities */
 class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
@@ -358,11 +358,13 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             buildUser(json["user"]))
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    override fun buildGuildScheduledEvent(json: JsonNode): GuildScheduledEvent {
+    override suspend fun buildGuildScheduledEvent(json: JsonNode): GuildScheduledEvent {
+
         val guild =
             yde.getGuildById(json["guild_id"].asLong())
-                ?: yde.requestGuild(json["guild_id"].asLong()).getCompleted()
+                ?: yde.requestGuild(json["guild_id"].asLong()).getOrNull()
+                    ?: throw IllegalStateException("Guild is null")
+
         return GuildScheduledEventImpl(
             yde,
             json,
@@ -387,14 +389,14 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             json["name"].asText())
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    override fun buildInvite(json: JsonNode): Invite {
+    override suspend fun buildInvite(json: JsonNode): Invite {
         return InviteImpl(
             yde,
             json,
             json["code"].asText(),
             yde.getGuildById(json["guild_id"].asLong())
-                ?: yde.requestGuild(json["guild_id"].asLong()).getCompleted(),
+                ?: yde.requestGuild(json["guild_id"].asLong()).getOrNull()
+                    ?: throw RestAPIException("Guild is null"),
             yde.getGuildChannelById(json["channel_id"].asLong())
                 ?: throw IllegalStateException("Channel is null"),
             if (json.has("inviter")) buildUser(json["inviter"]) else null,
@@ -434,7 +436,6 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             yde,
             json,
             guild,
-            backUpUser,
             GuildPermission.getValues(getPermissions(guild, isOwner, roles, isTimedOut ?: false)),
             user ?: throw IllegalStateException("User is null"),
             nickName,

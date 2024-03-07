@@ -24,7 +24,7 @@ import io.github.ydwk.yde.entities.builder.guild.GuildBuilder
 import io.github.ydwk.yde.entities.builder.guild.GuildEntitiesBuilder
 import io.github.ydwk.yde.impl.entities.builder.guild.GuildEntitiesBuilderImpl
 
-class EntityBuilderImpl(val yde: YDE) : EntityBuilder {
+internal class EntityBuilderImpl(val yde: YDE) : EntityBuilder {
     override fun createGuild(name: String): GuildBuilder {
         return GuildBuilderImpl(yde, name)
     }

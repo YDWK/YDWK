@@ -27,11 +27,11 @@ import io.github.ydwk.yde.impl.interaction.message.ComponentImpl
 import io.github.ydwk.yde.interaction.application.sub.Reply
 import io.github.ydwk.yde.interaction.sub.InteractionCallbackType
 import io.github.ydwk.yde.rest.EndPoint
+import io.github.ydwk.yde.rest.RestResult
 import io.github.ydwk.yde.rest.result.NoResult
-import io.github.ydwk.yde.rest.type.RestResult
-import okhttp3.RequestBody.Companion.toRequestBody
+import io.github.ydwk.yde.rest.toTextContent
 
-class ReplyImpl(
+internal class ReplyImpl(
     val yde: YDE,
     val content: String?,
     val embed: Embed?,
@@ -108,7 +108,7 @@ class ReplyImpl(
 
         return yde.restApiManager
             .post(
-                mainBody.toString().toRequestBody(),
+                mainBody.toString().toTextContent(),
                 EndPoint.ApplicationCommandsEndpoint.REPLY_TO_SLASH_COMMAND,
                 id,
                 token)

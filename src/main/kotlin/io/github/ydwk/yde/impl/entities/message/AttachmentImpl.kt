@@ -25,7 +25,7 @@ import io.github.ydwk.yde.entities.message.AttachmentFlags
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import java.net.URL
 
-class AttachmentImpl(
+internal class AttachmentImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,

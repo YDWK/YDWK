@@ -160,7 +160,7 @@ interface EntityInstanceBuilder {
      * @param json the json
      * @return [GuildScheduledEvent] the guild scheduled event
      */
-    fun buildGuildScheduledEvent(json: JsonNode): GuildScheduledEvent
+    suspend fun buildGuildScheduledEvent(json: JsonNode): GuildScheduledEvent
 
     /**
      * Used to build an instance of [Invite]
@@ -168,7 +168,7 @@ interface EntityInstanceBuilder {
      * @param json the json
      * @return [Invite] the invite
      */
-    fun buildInvite(json: JsonNode): Invite
+    suspend fun buildInvite(json: JsonNode): Invite
 
     /**
      * Used to build an instance of [Member]

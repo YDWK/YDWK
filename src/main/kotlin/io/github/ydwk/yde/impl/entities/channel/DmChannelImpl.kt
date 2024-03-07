@@ -25,7 +25,7 @@ import io.github.ydwk.yde.entities.channel.DmChannel
 import io.github.ydwk.yde.impl.entities.ChannelImpl
 import io.github.ydwk.yde.util.GetterSnowFlake
 
-class DmChannelImpl(
+internal class DmChannelImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,

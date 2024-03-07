@@ -26,7 +26,7 @@ import io.github.ydwk.yde.entities.channel.guild.message.news.GuildNewsChannel
 import io.github.ydwk.yde.entities.channel.guild.message.text.GuildTextChannel
 import io.github.ydwk.yde.impl.entities.channel.guild.GuildMessageChannelImpl
 
-class GuildMessageChannelGetterImpl(
+internal class GuildMessageChannelGetterImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long

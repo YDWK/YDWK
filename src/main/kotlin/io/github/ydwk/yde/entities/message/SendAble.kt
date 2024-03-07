@@ -20,7 +20,7 @@ package io.github.ydwk.yde.entities.message
 
 import io.github.ydwk.yde.entities.Message
 import io.github.ydwk.yde.entities.message.build.MessageBuilder
-import kotlinx.coroutines.CompletableDeferred
+import io.github.ydwk.yde.rest.RestResult
 
 /** Represents an object that can be used to send a message to a discord text channel. */
 interface SendAble {
@@ -115,9 +115,9 @@ interface SendAble {
     /**
      * Sends the message.
      *
-     * @return The [CompletableDeferred] of the message.
+     * @return The [RestResult] of the message.
      */
-    suspend fun send(): CompletableDeferred<Message> {
+    suspend fun send(): RestResult<Message> {
         return messageBuilder.send(this)
     }
 

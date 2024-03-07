@@ -24,7 +24,7 @@ import io.github.ydwk.yde.entities.message.MessageActivity
 import io.github.ydwk.yde.entities.message.activity.MessageActivityType
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
-class MessageActivityImpl(
+internal class MessageActivityImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val type: MessageActivityType,

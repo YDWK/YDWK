@@ -25,7 +25,7 @@ import io.github.ydwk.yde.entities.audit.AuditLogEntry
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.interaction.application.type.SlashCommand
 
-class AuditLogImpl(
+internal class AuditLogImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val applicationCommands: List<SlashCommand>,

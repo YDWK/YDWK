@@ -24,13 +24,14 @@ import io.github.ydwk.yde.entities.builder.guild.RoleBuilder
 import io.github.ydwk.yde.entities.guild.Role
 import io.github.ydwk.yde.entities.guild.enums.GuildPermission
 import io.github.ydwk.yde.rest.EndPoint
+import io.github.ydwk.yde.rest.RestResult
+import io.github.ydwk.yde.rest.json
+import io.github.ydwk.yde.rest.toTextContent
 import io.github.ydwk.yde.util.Checks
 import java.awt.Color
 import java.util.*
-import kotlinx.coroutines.CompletableDeferred
-import okhttp3.RequestBody.Companion.toRequestBody
 
-class RoleBuilderImpl(val yde: YDE, val guildId: String?, val name: String) : RoleBuilder {
+internal class RoleBuilderImpl(val yde: YDE, val guildId: String?, val name: String) : RoleBuilder {
     private var color: Color? = null
     private var pinned: Boolean? = null
     private var iconHash: String? = null
@@ -103,20 +104,16 @@ class RoleBuilderImpl(val yde: YDE, val guildId: String?, val name: String) : Ro
             return json
         }
 
-    override fun create(): CompletableDeferred<Role> {
+    override suspend fun create(): RestResult<Role> {
         if (guildId == null) {
             throw IllegalStateException("Guild id is not set")
         }
 
         return yde.restApiManager
-            .post(json.toString().toRequestBody(), EndPoint.GuildEndpoint.CREATE_ROLE, guildId)
+            .post(json.toString().toTextContent(), EndPoint.GuildEndpoint.CREATE_ROLE, guildId)
             .execute {
-                val jsonBody = it.jsonBody
-                if (jsonBody == null) {
-                    throw IllegalStateException("json body is null")
-                } else {
-                    yde.entityInstanceBuilder.buildRole(jsonBody)
-                }
+                val jsonBody = it.json(yde)
+                yde.entityInstanceBuilder.buildRole(jsonBody)
             }
     }
 }

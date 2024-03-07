@@ -27,7 +27,7 @@ import io.github.ydwk.yde.util.EntityToStringBuilder
 import java.awt.Color
 import java.util.*
 
-class RoleImpl(
+internal class RoleImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,

@@ -24,36 +24,37 @@ import io.github.ydwk.yde.entities.Channel
 import io.github.ydwk.yde.entities.channel.GuildChannel
 import io.github.ydwk.yde.entities.channel.enums.ChannelType
 import io.github.ydwk.yde.rest.EndPoint
+import io.github.ydwk.yde.rest.RestResult
+import io.github.ydwk.yde.rest.json
 import io.github.ydwk.yde.rest.methods.ChannelRestAPIMethods
-import kotlinx.coroutines.CompletableDeferred
 
 class ChannelRestAPIMethodsImpl(val yde: YDE) : ChannelRestAPIMethods {
-    override fun requestChannel(channelId: Long): CompletableDeferred<Channel> {
+    override suspend fun requestChannel(channelId: Long): RestResult<Channel> {
         return yde.restApiManager
             .get(EndPoint.ChannelEndpoint.GET_CHANNEL, channelId.toString())
             .execute { response ->
-                val jsonBody = response.jsonBody ?: throw IllegalStateException("json body is null")
+                val jsonBody = response.json(yde)
                 buildChannelFromJson(jsonBody)
             }
     }
 
-    override fun requestGuildChannel(
+    override suspend fun requestGuildChannel(
         guildId: Long,
         channelId: Long
-    ): CompletableDeferred<GuildChannel> {
+    ): RestResult<GuildChannel> {
         return yde.restApiManager
             .get(EndPoint.ChannelEndpoint.GET_CHANNEL, channelId.toString())
             .execute { response ->
-                val jsonBody = response.jsonBody ?: throw IllegalStateException("json body is null")
+                val jsonBody = response.json(yde)
                 yde.entityInstanceBuilder.buildGuildChannel(jsonBody)
             }
     }
 
-    override fun requestGuildChannels(guildId: Long): CompletableDeferred<List<GuildChannel>> {
+    override suspend fun requestGuildChannels(guildId: Long): RestResult<List<GuildChannel>> {
         return yde.restApiManager
             .get(EndPoint.GuildEndpoint.GET_GUILD_CHANNELS, guildId.toString())
             .execute { response ->
-                val jsonBody = response.jsonBody ?: throw IllegalStateException("json body is null")
+                val jsonBody = response.json(yde)
                 buildGuildChannelsFromJson(jsonBody)
             }
     }

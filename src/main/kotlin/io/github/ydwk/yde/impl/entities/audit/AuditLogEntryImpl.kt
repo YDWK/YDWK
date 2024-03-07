@@ -26,7 +26,7 @@ import io.github.ydwk.yde.entities.audit.AuditLogEntry
 import io.github.ydwk.yde.entities.audit.AuditLogType
 import io.github.ydwk.yde.util.EntityToStringBuilder
 
-class AuditLogEntryImpl(
+internal class AuditLogEntryImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,

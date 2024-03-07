@@ -35,12 +35,11 @@ import io.github.ydwk.yde.entities.channel.getter.guild.GuildChannelGetter
 import io.github.ydwk.yde.entities.guild.Member
 import io.github.ydwk.yde.entities.message.embed.builder.EmbedBuilder
 import io.github.ydwk.yde.rest.RestApiManager
+import io.github.ydwk.yde.rest.RestResult
 import io.github.ydwk.yde.rest.methods.RestAPIMethodGetters
-import io.github.ydwk.yde.rest.type.RestResult
 import io.github.ydwk.yde.util.Incubating
 import io.github.ydwk.yde.util.ThreadFactory
 import java.time.Duration
-import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineDispatcher
 import org.jetbrains.annotations.BlockingExecutor
 
@@ -194,7 +193,7 @@ interface YDE {
      * @param id The id of the guild.
      * @return The [RestResult] object.
      */
-    fun requestGuild(guildId: Long): CompletableDeferred<Guild> =
+    suspend fun requestGuild(guildId: Long): RestResult<Guild> =
         restAPIMethodGetters.getGuildRestAPIMethods().requestedGuild(guildId)
 
     /**
@@ -203,14 +202,14 @@ interface YDE {
      * @param id The id of the guild.
      * @return The [RestResult] object.
      */
-    fun requestGuild(guildId: String): CompletableDeferred<Guild> = requestGuild(guildId.toLong())
+    suspend fun requestGuild(guildId: String): RestResult<Guild> = requestGuild(guildId.toLong())
 
     /**
      * Requests all the guilds the bot is in.
      *
      * @return The [RestResult] object.
      */
-    fun requestGuilds(): CompletableDeferred<List<Guild>> =
+    suspend fun requestGuilds(): RestResult<List<Guild>> =
         restAPIMethodGetters.getGuildRestAPIMethods().requestedGuilds()
 
     /**
@@ -308,7 +307,7 @@ interface YDE {
      * @param id The id of the channel.
      * @return The [RestResult] object.
      */
-    fun requestChannelById(id: Long): CompletableDeferred<Channel> =
+    suspend fun requestChannelById(id: Long): RestResult<Channel> =
         restAPIMethodGetters.getChannelRestAPIMethods().requestChannel(id)
 
     /**
@@ -317,7 +316,7 @@ interface YDE {
      * @param id The id of the channel.
      * @return The [RestResult] object.
      */
-    fun requestChannelById(id: String): CompletableDeferred<Channel> =
+    suspend fun requestChannelById(id: String): RestResult<Channel> =
         requestChannelById(id.toLong())
 
     /**
@@ -327,7 +326,7 @@ interface YDE {
      * @param guildId The id of the guild.
      * @return The [RestResult] object.
      */
-    fun requestGuildChannelById(id: Long, guildId: Long): CompletableDeferred<GuildChannel> =
+    suspend fun requestGuildChannelById(id: Long, guildId: Long): RestResult<GuildChannel> =
         restAPIMethodGetters.getChannelRestAPIMethods().requestGuildChannel(id, guildId)
 
     /**
@@ -337,7 +336,7 @@ interface YDE {
      * @param guildId The id of the guild.
      * @return The [RestResult] object.
      */
-    fun requestGuildChannelById(id: String, guildId: String): CompletableDeferred<GuildChannel> =
+    suspend fun requestGuildChannelById(id: String, guildId: String): RestResult<GuildChannel> =
         requestGuildChannelById(id.toLong(), guildId.toLong())
 
     /**
@@ -346,7 +345,7 @@ interface YDE {
      * @param guildId The id of the guild.
      * @return The [RestResult] object.
      */
-    fun requestGuildChannels(guildId: Long): CompletableDeferred<List<GuildChannel>> =
+    suspend fun requestGuildChannels(guildId: Long): RestResult<List<GuildChannel>> =
         restAPIMethodGetters.getChannelRestAPIMethods().requestGuildChannels(guildId)
 
     /**
@@ -355,7 +354,7 @@ interface YDE {
      * @param guildId The id of the guild.
      * @return The [RestResult] object.
      */
-    fun requestGuildChannels(guildId: String): CompletableDeferred<List<GuildChannel>> =
+    suspend fun requestGuildChannels(guildId: String): RestResult<List<GuildChannel>> =
         requestGuildChannels(guildId.toLong())
 
     /** Sets the guild ids for guild commands */

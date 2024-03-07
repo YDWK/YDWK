@@ -25,10 +25,11 @@ import io.github.ydwk.yde.entities.channel.enums.ChannelType
 import io.github.ydwk.yde.entities.channel.guild.message.GuildMessageChannel
 import io.github.ydwk.yde.entities.channel.guild.message.text.PermissionOverwrite
 import io.github.ydwk.yde.rest.EndPoint
-import kotlinx.coroutines.CompletableDeferred
-import okhttp3.RequestBody.Companion.toRequestBody
+import io.github.ydwk.yde.rest.RestResult
+import io.github.ydwk.yde.rest.json
+import io.github.ydwk.yde.rest.toTextContent
 
-class MessageChannelBuilderImpl(val yde: YDE, val guildId: String?, val name: String) :
+internal class MessageChannelBuilderImpl(val yde: YDE, val guildId: String?, val name: String) :
     MessageChannelBuilder {
     private var isTextChannel = true
     private var topic: String? = null
@@ -94,14 +95,14 @@ class MessageChannelBuilderImpl(val yde: YDE, val guildId: String?, val name: St
             return json
         }
 
-    override fun create(): CompletableDeferred<GuildMessageChannel> {
+    override suspend fun create(): RestResult<GuildMessageChannel> {
         requireNotNull(guildId) { "Guild id is not set" }
 
-        val requestBody = json.toString().toRequestBody()
+        val requestBody = json.toString().toTextContent()
         return yde.restApiManager
             .post(requestBody, EndPoint.GuildEndpoint.CREATE_CHANNEL, guildId)
             .execute { response ->
-                val jsonBody = response.jsonBody ?: throw IllegalStateException("json body is null")
+                val jsonBody = response.json(yde)
                 yde.entityInstanceBuilder.buildGuildMessageChannel(jsonBody)
             }
     }

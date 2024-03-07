@@ -23,7 +23,7 @@ import io.github.ydwk.yde.entities.builder.guild.ChannelBuilder
 import io.github.ydwk.yde.entities.builder.guild.GuildEntitiesBuilder
 import io.github.ydwk.yde.entities.builder.guild.RoleBuilder
 
-class GuildEntitiesBuilderImpl(val yde: YDE) : GuildEntitiesBuilder {
+internal class GuildEntitiesBuilderImpl(val yde: YDE) : GuildEntitiesBuilder {
     override fun createRole(name: String): RoleBuilder {
         return RoleBuilderImpl(yde, null, name)
     }

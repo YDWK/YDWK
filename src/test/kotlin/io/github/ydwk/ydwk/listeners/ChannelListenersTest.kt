@@ -32,11 +32,12 @@ class ChannelListenersTest : ChannelEventListener {
 
 suspend fun main() {
     val ydwk =
-        BotBuilder.createDefaultBot(
+        BotBuilder.buildBot(
                 JConfig.build().get("token")?.asText() ?: throw Exception("Token not found!"))
-            .setActivity(Activity.playing("YDWK"))
-            .setETFInsteadOfJson(true)
+            .activity(Activity.playing("YDWK"))
+            .etfInsteadOfJson(true)
             .build()
+            .buildYDWK()
 
     ydwk.awaitReady().addEventListeners(ChannelListenersTest())
 }

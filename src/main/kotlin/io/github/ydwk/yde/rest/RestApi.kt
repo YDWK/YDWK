@@ -16,14 +16,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.yde.rest.type
+package io.github.ydwk.yde.rest
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
+import io.github.ydwk.yde.rest.error.RestAPIException
 import io.github.ydwk.yde.rest.result.NoResult
 import io.ktor.client.call.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import io.ktor.http.content.*
 
 /** Interface for a REST API with similar functionality. */
 interface SimilarRestApi {
@@ -58,7 +60,7 @@ sealed class RestResult<out T> {
     data class Success<T>(val data: T) : RestResult<T>()
 
     /** Represents an error result with a message. */
-    data class Error(val message: String) : RestResult<Nothing>()
+    data class Error(val error: RestAPIException) : RestResult<Nothing>()
 
     /** Transforms the result data if it's a success. */
     fun <R> map(transform: (T) -> R): RestResult<R> {
@@ -80,17 +82,28 @@ sealed class RestResult<out T> {
      * Applies a function to the result data if it's a success, or to the error message if it's an
      * error.
      */
-    fun <R> mapBoth(onSuccess: (T) -> R, onError: (String) -> R): R {
+    fun <R> mapBoth(onSuccess: (T) -> R, onError: (RestAPIException) -> R): R {
         return when (this) {
             is Success -> onSuccess(data)
-            is Error -> onError(message)
+            is Error -> onError(error)
         }
     }
 }
 
 /** Extension function to parse the response body as JSON. */
 suspend fun HttpResponse.json(yde: YDE): JsonNode {
-    val body = this.body<String>() ?: ""
+    if (isNullOrEmpty()) {
+        return yde.objectMapper.createObjectNode()
+    }
 
-    return yde.objectMapper.readTree(body)
+    return yde.objectMapper.readTree(body<String>())
+}
+
+private fun HttpResponse.isNullOrEmpty(): Boolean {
+    return this.contentLength() == 0L
+}
+
+/** Extension function to convert a string to a [TextContent]. */
+fun String.toTextContent(): TextContent {
+    return TextContent(this, ContentType.Application.Json)
 }

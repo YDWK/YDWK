@@ -25,7 +25,7 @@ import io.github.ydwk.yde.entities.message.MessageReference
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.util.GetterSnowFlake
 
-class MessageReferenceImpl(
+internal class MessageReferenceImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val messageId: GetterSnowFlake,

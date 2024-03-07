@@ -19,13 +19,13 @@
 package io.github.ydwk.yde.rest.methods
 
 import io.github.ydwk.yde.entities.VoiceState
-import kotlinx.coroutines.CompletableDeferred
+import io.github.ydwk.yde.rest.RestResult
 
 interface VoiceRestAPIMethods {
     /**
      * Requests the voice region list from the Discord API.
      *
-     * @return A future containing the voice region list.
+     * @return A [RestResult] that will contain a list of [VoiceState.VoiceRegion]s.
      */
-    fun requestVoiceRegions(): CompletableDeferred<List<VoiceState.VoiceRegion>>
+    suspend fun requestVoiceRegions(): RestResult<List<VoiceState.VoiceRegion>>
 }

@@ -20,11 +20,11 @@ package io.github.ydwk.yde.impl.entities
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
-import io.github.ydwk.yde.entities.Emoji
-import io.github.ydwk.yde.entities.Guild
-import io.github.ydwk.yde.entities.Sticker
-import io.github.ydwk.yde.entities.VoiceState
+import io.github.ydwk.yde.entities.*
+import io.github.ydwk.yde.entities.audit.AuditLogType
+import io.github.ydwk.yde.entities.channel.DmChannel
 import io.github.ydwk.yde.entities.channel.GuildChannel
+import io.github.ydwk.yde.entities.guild.Ban
 import io.github.ydwk.yde.entities.guild.Member
 import io.github.ydwk.yde.entities.guild.Role
 import io.github.ydwk.yde.entities.guild.WelcomeScreen
@@ -32,11 +32,14 @@ import io.github.ydwk.yde.entities.guild.enums.*
 import io.github.ydwk.yde.impl.YDEImpl
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.rest.EndPoint
-import io.github.ydwk.yde.rest.type.handleApiResponse
+import io.github.ydwk.yde.rest.RestResult
+import io.github.ydwk.yde.rest.json
+import io.github.ydwk.yde.rest.result.NoResult
 import io.github.ydwk.yde.util.GetterSnowFlake
+import kotlin.time.Duration
 import kotlinx.coroutines.*
 
-class GuildImpl(
+internal class GuildImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,
@@ -91,17 +94,13 @@ class GuildImpl(
             yde.restApiManager
                 .get(EndPoint.GuildEndpoint.GET_MEMBER, id, botId)
                 .execute { response ->
-                    handleApiResponse(
-                        response,
-                        { jsonBody ->
-                            val member =
-                                yde.entityInstanceBuilder.buildMember(jsonBody, this@GuildImpl)
-                            (yde as YDEImpl).memberCache[id, jsonBody["user"]["id"].asText()] =
-                                member
-                            member
-                        })
+                    val jsonBody = response.json(yde)
+                    val member =
+                        yde.entityInstanceBuilder.buildMember(jsonBody, this@GuildImpl, null)
+                    (yde as YDEImpl).memberCache[id, jsonBody["user"]["id"].asText()] = member
+                    member
                 }
-                .await()
+                .mapBoth({ it }, { throw it })
         }
     }
 
@@ -113,13 +112,56 @@ class GuildImpl(
         }
     }
 
+    override suspend fun requestBans(): RestResult<List<Ban>> {
+        return yde.restAPIMethodGetters.getGuildRestAPIMethods().requestedBanList(idAsLong)
+    }
+
+    override suspend fun createDmChannel(userId: Long): RestResult<DmChannel> {
+        return yde.restAPIMethodGetters.getUserRestAPIMethods().createDm(userId)
+    }
+
     override suspend fun getBotAsMember(): Member {
         return CoroutineScope(yde.coroutineDispatcher)
             .async { getBotAsMember(id, yde.bot?.id ?: throw IllegalStateException("Bot is null")) }
             .await()
     }
 
+    override suspend fun banUser(
+        userId: Long,
+        deleteMessageDuration: Duration,
+        reason: String?
+    ): RestResult<NoResult> {
+        return yde.restAPIMethodGetters
+            .getGuildRestAPIMethods()
+            .banUser(idAsLong, userId, deleteMessageDuration, reason)
+    }
+
+    override suspend fun unbanUser(userId: Long, reason: String?): RestResult<NoResult> {
+        return yde.restAPIMethodGetters.getGuildRestAPIMethods().unbanUser(idAsLong, userId, reason)
+    }
+
+    override suspend fun kickMember(userId: Long, reason: String?): RestResult<NoResult> {
+        return yde.restAPIMethodGetters
+            .getGuildRestAPIMethods()
+            .kickMember(idAsLong, userId, reason)
+    }
+
+    override suspend fun requestedAuditLog(
+        userId: GetterSnowFlake?,
+        limit: Int,
+        before: GetterSnowFlake?,
+        actionType: AuditLogType?
+    ): RestResult<AuditLog> {
+        return yde.restAPIMethodGetters
+            .getGuildRestAPIMethods()
+            .requestedAuditLog(idAsLong, userId, limit, before, actionType)
+    }
+
     override fun getChannelById(channelId: Long): GuildChannel? {
         return getUnorderedChannels.firstOrNull { it.idAsLong == channelId }
+    }
+
+    override suspend fun retrieveMembers(): RestResult<List<Member>> {
+        return yde.restAPIMethodGetters.getGuildRestAPIMethods().requestedMembers(this)
     }
 }

@@ -113,7 +113,7 @@ interface Cache {
      * @param duration The duration to wait before clearing the cache
      * @param repeat whether to repeat the clearing of the cache
      */
-    fun triggerCacheTypesClear(cacheIds: List<CacheIds>, duration: Duration, repeat: Boolean = true)
+    fun triggerCacheTypesClear(cacheIds: Set<CacheIds>, duration: Duration, repeat: Boolean = true)
 
     /**
      * Triggers a thread to clear the entire cache after a certain amount of time

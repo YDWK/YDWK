@@ -23,8 +23,8 @@ import io.github.ydwk.yde.impl.YDEImpl
 import io.github.ydwk.yde.impl.builders.util.getCommandNameAndIds
 import io.github.ydwk.yde.impl.builders.util.getCurrentGuildCommandsNameAndIds
 import io.github.ydwk.yde.rest.EndPoint
+import io.github.ydwk.yde.rest.toTextContent
 import kotlinx.coroutines.*
-import okhttp3.RequestBody.Companion.toRequestBody
 
 class UserCommandSender(
     val yde: YDEImpl,
@@ -151,7 +151,7 @@ class UserCommandSender(
         }
     }
 
-    private fun deleteGlobalUserCommands(ids: List<Long>) {
+    private suspend fun deleteGlobalUserCommands(ids: List<Long>) {
         ids.forEach { id ->
             yde.logger.debug("Deleting global User command with id $id")
             yde.restApiManager
@@ -163,7 +163,7 @@ class UserCommandSender(
         }
     }
 
-    private fun deleteGuildUserCommands(ids: List<Long>) {
+    private suspend fun deleteGuildUserCommands(ids: List<Long>) {
         ids.forEach { id ->
             guildIds.forEach { guildId ->
                 yde.logger.debug("Deleting guild user command $id")
@@ -178,25 +178,25 @@ class UserCommandSender(
         }
     }
 
-    private fun createGlobalUserCommands(userCommands: List<UserCommandBuilder>) {
+    private suspend fun createGlobalUserCommands(userCommands: List<UserCommandBuilder>) {
         userCommands.forEach { user ->
             yde.logger.debug("Sending global User command ${user.name} to Discord")
             yde.restApiManager
                 .post(
-                    user.toJson().toString().toRequestBody(),
+                    user.toJson().toString().toTextContent(),
                     EndPoint.ApplicationCommandsEndpoint.CREATE_GLOBAL_COMMAND,
                     applicationId)
                 .executeWithNoResult()
         }
     }
 
-    private fun createGuildUserCommands(userCommands: List<UserCommandBuilder>) {
+    private suspend fun createGuildUserCommands(userCommands: List<UserCommandBuilder>) {
         userCommands.forEach { user ->
             guildIds.forEach { guildId ->
                 yde.logger.debug("Sending User command ${user.name} to guild $guildId")
                 yde.restApiManager
                     .post(
-                        user.toJson().toString().toRequestBody(),
+                        user.toJson().toString().toTextContent(),
                         EndPoint.ApplicationCommandsEndpoint.CREATE_GUILD_COMMAND,
                         applicationId,
                         guildId)

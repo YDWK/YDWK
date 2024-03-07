@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildVoiceChannel
 
-open class GuildVoiceChannelImpl(
+internal open class GuildVoiceChannelImpl(
     yde: YDE,
     json: JsonNode,
     idAsLong: Long,

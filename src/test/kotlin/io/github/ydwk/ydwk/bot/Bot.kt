@@ -33,7 +33,7 @@ import kotlinx.coroutines.withContext
 
 suspend fun main() {
     val ydwk =
-        buildBot(JConfig.build().get("token")?.asText() ?: throw Exception("Token not found!"))
+        buildBot(JConfig.build()["token"]?.asText() ?: throw Exception("Token not found!"))
             .activity(Activity.playing("YDWK"))
             .etfInsteadOfJson(true)
             .build()
@@ -62,8 +62,12 @@ suspend fun main() {
             "create_dm" -> {
                 withContext(ydwk.coroutineDispatcher) {
                     val member = it.slash.member
-                    member?.createDmChannel?.await()?.setContent("Hello!")?.send()?.await()
-                        ?: throw Exception("Member is null!")
+                    member
+                        ?.createDmChannel()
+                        ?.getOrNull()
+                        ?.setContent("Hello!")
+                        ?.send()
+                        ?.getOrNull()
                 }
             }
             "button" -> {
@@ -108,7 +112,7 @@ suspend fun main() {
                     it.button.reply("Success button clicked!").trigger()
                 }
                 "4" -> {
-                    it.button.message.delete().await()
+                    it.button.message.delete().mapBoth({ it }, { throw it })
                 }
             }
         }
@@ -118,7 +122,7 @@ suspend fun main() {
         withContext(ydwk.coroutineDispatcher) {
             it.selectMenu.reply("Role added!").trigger()
             for (role in it.selectMenu.selectedRoles) {
-                it.selectMenu.member?.addRole(role)?.await()
+                it.selectMenu.member?.addRole(role)?.mapBoth({ it }, { throw it })
             }
         }
     }

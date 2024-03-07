@@ -24,7 +24,7 @@ import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.guild.Ban
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
-class BanImpl(
+internal class BanImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val reason: String?,
