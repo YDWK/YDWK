@@ -115,7 +115,7 @@ private constructor(
         val minLength = 50 // Minimum length allowed for the JWT token
 
         when {
-            token.isNullOrEmpty() -> {
+            token.isEmpty() -> {
                 throw LoginException("Token cannot be null or empty")
             }
             token.contains("/n") -> {

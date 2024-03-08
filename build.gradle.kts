@@ -334,7 +334,7 @@ tasks.getByName("dokkaHtml", DokkaTask::class) {
         includes.from("Package.md")
         jdkVersion.set(21)
         sourceLink {
-            localDirectory.set(file("src/main/kotlin"))
+            localDirectory.set(file("ydwk/src/main/kotlin"))
             remoteUrl.set(URL("https://github.com/YDWK/YDWK/tree/master/src/main/kotlin"))
             remoteLineSuffix.set("#L")
         }

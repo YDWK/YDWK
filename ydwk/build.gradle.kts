@@ -12,7 +12,7 @@ apply(from = "gradle/tasks/checkEvents.gradle.kts")
 apply(from = "gradle/tasks/eventClassJavaDocChecker.gradle")
 
 dependencies {
-    implementation(project(":yde-impl"))
+    api(project(":yde-impl"))
 
     // config.json
     api("io.github.realyusufismail:jconfig:" + properties["jconfigVersion"])

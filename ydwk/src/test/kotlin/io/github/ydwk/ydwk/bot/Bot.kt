@@ -20,37 +20,29 @@ package io.github.ydwk.ydwk.bot
 
 import io.github.realyusufismail.jconfig.JConfig
 import io.github.ydwk.yde.builders.slash.SlashCommandBuilder
-import io.github.ydwk.yde.builders.slash.SlashSubCommand
-import io.github.ydwk.yde.interaction.message.ActionRow
-import io.github.ydwk.yde.interaction.message.button.Button
-import io.github.ydwk.yde.interaction.message.button.ButtonStyle
-import io.github.ydwk.yde.interaction.message.selectmenu.types.RoleSelectMenu
+import io.github.ydwk.yde.util.exception.LoginException
 import io.github.ydwk.ydwk.Activity
 import io.github.ydwk.ydwk.BotBuilder.Companion.buildBot
 import io.github.ydwk.ydwk.evm.event.events.interaction.slash.SlashCommandEvent
 import io.github.ydwk.ydwk.evm.listeners.InteractionEventListener
+import io.github.ydwk.ydwk.util.ydwk
 import kotlinx.coroutines.withContext
 
 suspend fun main() {
+    val jConfig = JConfig.build()
+
+    val tokenAsNode = jConfig["token"]
+
+    val token = tokenAsNode?.asText() ?: throw LoginException("Token not found!")
+
     val ydwk =
-        buildBot(JConfig.build()["token"]?.asText() ?: throw Exception("Token not found!"))
+        buildBot(token)
             .activity(Activity.playing("YDWK"))
             .etfInsteadOfJson(true)
             .build()
             .buildYDWK()
 
-    ydwk
-        .awaitReady()
-        .slashBuilder
-        .addSlashCommand(SlashCommandBuilder("create_dm", "Creates a dm channel"))
-        .addSlashCommand("button", "A button test")
-        .addSlashCommand("bot_info", "The bot info")
-        .addSlashCommand("add_roles", "Add roles")
-        .addSlashCommand(
-            SlashCommandBuilder("subcommand", "A subcommand test")
-                .addSubCommand(SlashSubCommand("subcommand", "A subcommand test"))
-                .addSubCommand(SlashSubCommand("subcommandtwo", "A subcommand test")))
-        .build()
+    ydwk.awaitReady().slashBuilder.addSlashCommand(SlashCommandBuilder("ping", "Pong!")).build()
 
     ydwk.awaitReady().addEventListeners(Test())
 
@@ -58,62 +50,8 @@ suspend fun main() {
         when (it.slash.name) {
             "ping" -> {
                 it.slash.reply("Pong!").trigger()
-            }
-            "create_dm" -> {
-                withContext(ydwk.coroutineDispatcher) {
-                    val member = it.slash.member
-                    member
-                        ?.createDmChannel()
-                        ?.getOrNull()
-                        ?.setContent("Hello!")
-                        ?.send()
-                        ?.getOrNull()
-                }
-            }
-            "button" -> {
-                withContext(ydwk.coroutineDispatcher) {
-                    it.slash
-                        .reply("This is a button test!")
-                        .addActionRow(
-                            ActionRow.invoke(
-                                Button.invoke(ButtonStyle.PRIMARY, "1", "Primary"),
-                                Button.invoke(ButtonStyle.SECONDARY, "2", "Secondary"),
-                                Button.invoke(ButtonStyle.SUCCESS, "3", "Success"),
-                                Button.invoke(ButtonStyle.DANGER, "4", "Danger"),
-                                Button.invoke("Link", "https://google.com")))
-                        .trigger()
-                }
-            }
-            "add_roles" -> {
-                withContext(ydwk.coroutineDispatcher) {
-                    it.slash
-                        .reply("Add your role by choose the roles through the select menu")
-                        .addActionRow(
-                            ActionRow(
-                                RoleSelectMenu("role_select")
-                                    .setPlaceholder("Select your role")
-                                    .create()))
-                        .trigger()
-                }
-            }
-        }
-    }
 
-    ydwk.eventListener.onButtonClickEvent {
-        withContext(ydwk.coroutineDispatcher) {
-            when (it.button.customId) {
-                "1" -> {
-                    it.button.reply("Primary button clicked!").trigger()
-                }
-                "2" -> {
-                    it.button.reply("Secondary button clicked!").trigger()
-                }
-                "3" -> {
-                    it.button.reply("Success button clicked!").trigger()
-                }
-                "4" -> {
-                    it.button.message.delete().mapBoth({ it }, { throw it })
-                }
+                it.slash.ydwk.requestGuilds().getOrElse(listOf())
             }
         }
     }
