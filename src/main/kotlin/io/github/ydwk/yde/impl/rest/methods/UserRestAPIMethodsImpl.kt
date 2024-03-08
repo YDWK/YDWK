@@ -27,8 +27,6 @@ import io.github.ydwk.yde.rest.RestResult
 import io.github.ydwk.yde.rest.json
 import io.github.ydwk.yde.rest.methods.UserRestAPIMethods
 import io.github.ydwk.yde.rest.toTextContent
-import io.ktor.http.*
-import io.ktor.http.content.*
 
 class UserRestAPIMethodsImpl(val yde: YDE) : UserRestAPIMethods {
     private val restApiManager = yde.restApiManager

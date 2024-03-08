@@ -66,6 +66,12 @@ import io.github.ydwk.yde.impl.entities.guild.schedule.EntityMetadataImpl
 import io.github.ydwk.yde.impl.entities.guild.ws.WelcomeChannelImpl
 import io.github.ydwk.yde.impl.entities.message.AttachmentImpl
 import io.github.ydwk.yde.impl.entities.message.EmbedImpl
+import io.github.ydwk.yde.impl.entities.message.embed.*
+import io.github.ydwk.yde.impl.entities.message.embed.AuthorImpl
+import io.github.ydwk.yde.impl.entities.message.embed.FieldImpl
+import io.github.ydwk.yde.impl.entities.message.embed.FooterImpl
+import io.github.ydwk.yde.impl.entities.message.embed.ImageImpl
+import io.github.ydwk.yde.impl.entities.message.embed.ProviderImpl
 import io.github.ydwk.yde.impl.interaction.message.ComponentImpl
 import io.github.ydwk.yde.interaction.ComponentInteraction
 import io.github.ydwk.yde.interaction.Interaction
@@ -680,31 +686,70 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     }
 
     override fun buildAuthor(json: JsonNode): Author {
-        TODO("Not yet implemented")
+       return AuthorImpl(
+           yde,
+           json,
+           json["name"].asText(),
+              if (json.has("url")) URL(json["url"].asText()) else null,
+                if (json.has("icon_url")) json["icon_url"].asText() else null,
+                if (json.has("proxy_icon_url")) json["proxy_icon_url"].asText() else null)
+
     }
 
     override fun buildField(json: JsonNode): Field {
-        TODO("Not yet implemented")
+        return FieldImpl(
+            yde,
+            json,
+            json["name"].asText(),
+            json["value"].asText(),
+            if (json.has("inline")) json["inline"].asBoolean() else false)
     }
 
     override fun buildFooter(json: JsonNode): Footer {
-        TODO("Not yet implemented")
+        return FooterImpl(
+            yde,
+            json,
+            json["text"].asText(),
+            if (json.has("icon_url")) json["icon_url"].asText() else null,
+            if (json.has("proxy_icon_url")) json["proxy_icon_url"].asText() else null)
     }
 
     override fun buildImage(json: JsonNode): Image {
-        TODO("Not yet implemented")
+        return ImageImpl(
+            yde,
+            json,
+            URL(json["url"].asText()),
+            if (json.has("proxy_url")) URL(json["proxy_url"].asText()) else null,
+            if (json.has("height")) json["height"].asInt() else null,
+            if (json.has("width")) json["width"].asInt() else null)
     }
 
     override fun buildProvider(json: JsonNode): Provider {
-        TODO("Not yet implemented")
+        return ProviderImpl(
+            yde,
+            json,
+            if (json.has("name")) json["name"].asText() else null,
+            if (json.has("url")) json["url"].asText() else null)
     }
 
     override fun buildThumbnail(json: JsonNode): Thumbnail {
-        TODO("Not yet implemented")
+        return ThumbnailImpl(
+            yde,
+            json,
+            URL(json["url"].asText()),
+            if (json.has("proxy_url")) json["proxy_url"].asText() else null,
+            if (json.has("height")) json["height"].asInt() else null,
+            if (json.has("width")) json["width"].asInt() else null)
     }
 
     override fun buildVideo(json: JsonNode): Video {
-        TODO("Not yet implemented")
+        return VideoImpl(
+            yde,
+            json,
+            URL(json["url"].asText()),
+            if (json.has("proxy_url")) json["proxy_url"].asText() else null,
+            if (json.has("height")) json["height"].asInt() else null,
+            if (json.has("width")) json["width"].asInt() else null)
     }
 
     override fun buildInteraction(json: JsonNode): Interaction {
