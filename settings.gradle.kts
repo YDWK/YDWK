@@ -21,3 +21,5 @@ pluginManagement {
         jacoco // code coverage reports
     }
 }
+
+include("yde-api", "yde-impl", "ydwk")
