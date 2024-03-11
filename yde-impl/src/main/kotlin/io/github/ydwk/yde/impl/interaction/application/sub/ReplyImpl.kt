@@ -23,8 +23,8 @@ import com.fasterxml.jackson.databind.node.ArrayNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.message.Embed
 import io.github.ydwk.yde.entities.message.MessageFlag
-import io.github.ydwk.yde.impl.interaction.message.ComponentImpl
 import io.github.ydwk.yde.interaction.application.sub.Reply
+import io.github.ydwk.yde.interaction.message.Component
 import io.github.ydwk.yde.interaction.sub.InteractionCallbackType
 import io.github.ydwk.yde.rest.EndPoint
 import io.github.ydwk.yde.rest.RestResult
@@ -40,7 +40,7 @@ internal class ReplyImpl(
 ) : Reply {
     private var isEphemeral: Boolean = false
     private var isTTS: Boolean = false
-    private var actionRows = mutableListOf<ComponentImpl.ComponentCreator>()
+    private var actionRows = mutableListOf<Component.ComponentCreator>()
     private var flags = mutableListOf<MessageFlag>()
 
     override fun setEphemeral(isEphemeral: Boolean): Reply {
@@ -63,7 +63,7 @@ internal class ReplyImpl(
         return this
     }
 
-    override fun addActionRow(actionRow: ComponentImpl.ComponentCreator): Reply {
+    override fun addActionRow(actionRow: Component.ComponentCreator): Reply {
         actionRows.add(actionRow)
         return this
     }

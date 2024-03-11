@@ -23,5 +23,6 @@ dependencies { api(project(":yde-api")) }
 
 tasks {
     val compileKotlinTask = named<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>("compileKotlin")
+
     compileKotlinTask.configure { dependsOn("generateRestAPIMethodGettersImpls") }
 }

@@ -22,7 +22,6 @@ import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.yde.entities.guild.Member
 import io.github.ydwk.yde.impl.YDEImpl
-import io.github.ydwk.yde.impl.entities.GuildImpl
 import io.github.ydwk.ydwk.entity.VoiceConnection
 import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
 import java.util.concurrent.CompletableFuture
@@ -50,7 +49,7 @@ fun GuildVoiceChannel.joinVc(muted: Boolean, deafen: Boolean): CompletableFuture
     future
         .completeAsync { createVoiceConnectionAsync(future, guild, this, muted, deafen) }
         .thenApply {
-            (guild as GuildImpl).setVoiceConnection(it as VoiceConnectionImpl)
+            (guild).setVoiceConnection(it as VoiceConnectionImpl)
             it
         }
         .exceptionally {

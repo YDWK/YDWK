@@ -21,7 +21,6 @@ package io.github.ydwk.ydwk.evm.handler.handlers.guild
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.cache.CacheIds
 import io.github.ydwk.yde.entities.Guild
-import io.github.ydwk.yde.impl.entities.GuildImpl
 import io.github.ydwk.ydwk.evm.event.events.guild.GuildDeleteEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
@@ -29,7 +28,7 @@ import io.github.ydwk.ydwk.impl.YDWKImpl
 class GuildDeleteHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override suspend fun start() {
         val unavailableGuild = ydwk.entityInstanceBuilder.buildUnavailableGuild(json)
-        val guild: Guild = ydwk.cache[unavailableGuild.id, CacheIds.GUILD] as GuildImpl
+        val guild: Guild = ydwk.cache[unavailableGuild.id, CacheIds.GUILD] as Guild
         guild.roles.forEach { role -> ydwk.cache.remove(role.id, CacheIds.ROLE) }
         guild.emojis.forEach { emoji ->
             run {

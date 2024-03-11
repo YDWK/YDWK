@@ -20,7 +20,6 @@ package io.github.ydwk.ydwk.evm.handler.handlers.role
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.cache.CacheIds
-import io.github.ydwk.yde.impl.entities.guild.RoleImpl
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
@@ -29,7 +28,7 @@ class GuildRoleDeleteHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, jso
         val guild = ydwk.getGuildById(json.get("guild_id").asLong())
         if (guild != null) {
             // TODO: broken
-            val role = ydwk.entityInstanceBuilder.buildRole(json) as RoleImpl
+            val role = ydwk.entityInstanceBuilder.buildRole(json)
             ydwk.cache.remove(json.get("role").get("id").asText(), CacheIds.ROLE)
             ydwk.emitEvent(
                 io.github.ydwk.ydwk.evm.event.events.role.GuildRoleDeleteEvent(ydwk, role))

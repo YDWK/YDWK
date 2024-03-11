@@ -19,7 +19,6 @@
 package io.github.ydwk.ydwk.evm.handler.handlers.voice
 
 import com.fasterxml.jackson.databind.JsonNode
-import io.github.ydwk.yde.impl.entities.GuildImpl
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.voice.getVoiceConnection
@@ -37,9 +36,7 @@ class VoiceServerUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, j
                 if (json.has("endpoint")) json.get("endpoint").asText() else null)
 
         ydwk.logger.debug("Setting voice server payload")
-        (guild as GuildImpl)
-            .getVoiceConnection()
-            ?.setVoiceServerUpdatePayload(voiceServerUpdatePayload)
+        (guild).getVoiceConnection()?.setVoiceServerUpdatePayload(voiceServerUpdatePayload)
 
         try {
             guild.getVoiceConnection()?.connect()

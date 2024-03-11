@@ -20,7 +20,6 @@ package io.github.ydwk.ydwk.evm.handler.handlers.role
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.cache.CacheIds
-import io.github.ydwk.yde.impl.entities.guild.RoleImpl
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
@@ -32,7 +31,7 @@ class GuildRoleUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, jso
                 ?.getRoleById(json.get("role").get("id").asLong())
         if (role == null) {
             ydwk.logger.info("Role not found in cache, creating new role")
-            val roleImpl = ydwk.entityInstanceBuilder.buildRole(json) as RoleImpl
+            val roleImpl = ydwk.entityInstanceBuilder.buildRole(json)
             ydwk.cache[roleImpl.id, roleImpl] = CacheIds.ROLE
         }
     }

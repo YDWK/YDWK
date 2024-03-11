@@ -20,8 +20,6 @@ package io.github.ydwk.ydwk.evm.handler.handlers.voice
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.entities.VoiceState
-import io.github.ydwk.yde.impl.entities.GuildImpl
-import io.github.ydwk.yde.impl.entities.guild.MemberImpl
 import io.github.ydwk.ydwk.evm.event.events.voice.VoiceStateEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
@@ -37,9 +35,11 @@ class VoiceStateUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, js
         if (member == null) {
             ydwk.logger.debug("Voice member is null")
         } else {
-            val botAsMember = voiceState.guild?.getBotAsMember() as MemberImpl
+            val botAsMember = voiceState.guild?.getBotAsMember()
 
-            if (member.idAsLong == botAsMember.idAsLong) {
+            if (botAsMember == null) {
+                ydwk.logger.debug("Bot as member is null")
+            } else if (member.idAsLong == botAsMember.idAsLong) {
                 botAsMember.voiceState = if (channel != null) voiceState else null
             } else {
                 val action = if (channel != null) "save" else "remove"
@@ -49,7 +49,7 @@ class VoiceStateUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, js
 
         ydwk.logger.debug("Setting voice state")
 
-        (voiceState.guild as GuildImpl).getVoiceConnection()?.setVoiceState(voiceState)
+        (voiceState.guild)?.getVoiceConnection()?.setVoiceState(voiceState)
 
         ydwk.emitEvent(VoiceStateEvent(ydwk, voiceState))
     }

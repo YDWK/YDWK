@@ -20,7 +20,6 @@ package io.github.ydwk.ydwk.evm.handler.handlers.role
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.cache.CacheIds
-import io.github.ydwk.yde.impl.entities.guild.RoleImpl
 import io.github.ydwk.ydwk.evm.event.events.role.GuildRoleCreateEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
@@ -30,7 +29,7 @@ class GuildRoleCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, jso
     override suspend fun start() {
         val guild = ydwk.getGuildById(json.get("guild_id").asLong())
         if (guild != null) {
-            val role = ydwk.entityInstanceBuilder.buildRole(json) as RoleImpl
+            val role = ydwk.entityInstanceBuilder.buildRole(json)
             ydwk.cache[json.get("role").get("id").asText(), role] = CacheIds.ROLE
             ydwk.emitEvent(GuildRoleCreateEvent(ydwk, role))
         } else {

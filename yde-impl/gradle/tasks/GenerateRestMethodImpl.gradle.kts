@@ -20,11 +20,12 @@ val formattedDateAndTime = formatter.format(currentDateAndTime)
  * io/ydwk/yde/api/rest/methods
  */
 fun generateRestAPIMethodGetters() {
-    val fileContainingAllRestAPIMethods =
-        File(projectDir, "src/main/kotlin/io/github/ydwk/yde/rest/methods")
+    val ydeApiProject = project(":yde-api")
+    val ydeCodeDr =
+        File(ydeApiProject.projectDir, "src/main/kotlin/io/github/ydwk/yde/rest/methods")
 
     val interfaceNames = mutableListOf<String>()
-    fileContainingAllRestAPIMethods.walk().forEach {
+    ydeCodeDr.walk().forEach {
         if (it.isFile && it.name.endsWith(".kt")) {
             val interfaceName = it.name.substring(0, it.name.length - 3)
             interfaceNames.add(interfaceName)

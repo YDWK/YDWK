@@ -21,7 +21,6 @@ package io.github.ydwk.ydwk.voice.impl
 import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.VoiceState
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildVoiceChannel
-import io.github.ydwk.yde.impl.entities.GuildImpl
 import io.github.ydwk.ydwk.entity.VoiceConnection
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.util.ydwk
@@ -44,6 +43,10 @@ import java.util.concurrent.CompletableFuture
  * @param muted Indicates whether the voice connection is muted or not.
  * @param deafen Indicates whether the voice connection is deafened or not.
  */
+
+// TODO: Rework the voice system so it can send and receive voice data
+// For example have a class for MP3 and it breaks it down into packets and sends it to the voice
+// server
 data class VoiceConnectionImpl(
     val connectFuture: CompletableFuture<VoiceConnection>,
     val guild: Guild,
@@ -264,7 +267,7 @@ data class VoiceConnectionImpl(
 
             ydwk.webSocketManager?.sendVoiceState(guild.idAsLong, null, false, false)
 
-            (guild as GuildImpl).removeVoiceConnection()
+            (guild).removeVoiceConnection()
 
             attemptingToConnectOrConnected = false
             disconnectFuture

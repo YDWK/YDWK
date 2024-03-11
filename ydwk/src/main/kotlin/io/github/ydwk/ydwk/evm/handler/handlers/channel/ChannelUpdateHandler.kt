@@ -109,7 +109,8 @@ class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json)
 
         if (channel == null) {
             ydwk.logger.info("Channel ${json["id"].asText()} is not cached, creating new one.")
-            ydwk.cache[json["id"].asText(), GuildNewsChannelImpl(ydwk, json, json["id"].asLong())] =
+            ydwk.cache[
+                    json["id"].asText(), ydwk.entityInstanceBuilder.buildGuildNewsChannel(json)] =
                 CacheIds.CHANNEL
             return
         }

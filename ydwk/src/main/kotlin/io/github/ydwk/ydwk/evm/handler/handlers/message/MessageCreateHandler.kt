@@ -20,14 +20,13 @@ package io.github.ydwk.ydwk.evm.handler.handlers.message
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.cache.CacheIds
-import io.github.ydwk.yde.impl.entities.MessageImpl
 import io.github.ydwk.ydwk.evm.event.events.message.MessageCreateEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class MessageCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override suspend fun start() {
-        val message = ydwk.entityInstanceBuilder.buildMessage(json) as MessageImpl
+        val message = ydwk.entityInstanceBuilder.buildMessage(json)
         ydwk.cache[json.get("id").asText(), message] = CacheIds.MESSAGE
         ydwk.emitEvent(MessageCreateEvent(ydwk, message))
     }
