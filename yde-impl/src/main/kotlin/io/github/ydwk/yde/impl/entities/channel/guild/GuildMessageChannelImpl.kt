@@ -20,21 +20,23 @@ package io.github.ydwk.yde.impl.entities.channel.guild
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
+import io.github.ydwk.yde.entities.channel.enums.ChannelType
 import io.github.ydwk.yde.entities.channel.getter.guild.GuildMessageChannelGetter
 import io.github.ydwk.yde.entities.channel.guild.message.GuildMessageChannel
 import io.github.ydwk.yde.entities.channel.guild.message.text.PermissionOverwrite
 
 internal open class GuildMessageChannelImpl(
-    yde: YDE,
-    json: JsonNode,
-    idAsLong: Long,
+    override val yde: YDE,
+    override val json: JsonNode,
+    override val idAsLong: Long,
     override var topic: String,
     override var nsfw: Boolean,
     override var defaultAutoArchiveDuration: Int,
     override var lastMessageId: String,
     override var lastPinTimestamp: String,
     override var permissionOverwrites: List<PermissionOverwrite>,
-    override val guildMessageChannelGetter: GuildMessageChannelGetter
+    override val guildMessageChannelGetter: GuildMessageChannelGetter,
+    override val type: ChannelType
 ) : GuildMessageChannel, GuildChannelImpl(yde.entityInstanceBuilder.buildGuildChannel(json)) {
     constructor(
         guildMessageChannel: GuildMessageChannel
@@ -48,5 +50,6 @@ internal open class GuildMessageChannelImpl(
         guildMessageChannel.lastMessageId,
         guildMessageChannel.lastPinTimestamp,
         guildMessageChannel.permissionOverwrites,
-        guildMessageChannel.guildMessageChannelGetter)
+        guildMessageChannel.guildMessageChannelGetter,
+        guildMessageChannel.type)
 }

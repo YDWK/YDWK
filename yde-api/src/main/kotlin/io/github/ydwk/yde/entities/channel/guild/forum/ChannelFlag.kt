@@ -38,8 +38,8 @@ enum class ChannelFlag(private val value: Long) {
          * @param value The value to get the [ChannelFlag] from.
          * @return The [ChannelFlag] from the provided [value].
          */
-        fun fromValue(value: Long): ChannelFlag {
-            return values().firstOrNull { it.value == value } ?: UNKNOWN
+        fun getValue(value: Long): ChannelFlag {
+            return entries.firstOrNull { it.value == value } ?: UNKNOWN
         }
     }
 

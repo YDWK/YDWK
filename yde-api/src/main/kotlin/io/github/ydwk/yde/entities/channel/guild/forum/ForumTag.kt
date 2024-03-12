@@ -42,9 +42,9 @@ interface ForumTag : SnowFlake, GenericEntity, NameAbleEntity {
     val emojiId: GetterSnowFlake?
 
     /**
-     * The emoji name of this tag.
+     * The emoji unicode characters of this tag.
      *
-     * @return the emoji name of this tag.
+     * @return the emoji unicode characters of this tag.
      */
     val emojiName: String?
 }

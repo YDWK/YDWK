@@ -28,9 +28,7 @@ import io.github.ydwk.yde.entities.channel.DmChannel
 import io.github.ydwk.yde.entities.channel.GuildChannel
 import io.github.ydwk.yde.entities.channel.enums.ChannelType
 import io.github.ydwk.yde.entities.channel.guild.GuildCategory
-import io.github.ydwk.yde.entities.channel.guild.forum.DefaultReactionEmoji
-import io.github.ydwk.yde.entities.channel.guild.forum.ForumTag
-import io.github.ydwk.yde.entities.channel.guild.forum.GuildForumChannel
+import io.github.ydwk.yde.entities.channel.guild.forum.*
 import io.github.ydwk.yde.entities.channel.guild.message.GuildMessageChannel
 import io.github.ydwk.yde.entities.channel.guild.message.news.GuildNewsChannel
 import io.github.ydwk.yde.entities.channel.guild.message.text.GuildTextChannel
@@ -58,8 +56,14 @@ import io.github.ydwk.yde.impl.entities.application.PartialApplicationImpl
 import io.github.ydwk.yde.impl.entities.channel.DmChannelImpl
 import io.github.ydwk.yde.impl.entities.channel.getter.ChannelGetterImpl
 import io.github.ydwk.yde.impl.entities.channel.getter.guild.GuildChannelGetterImpl
+import io.github.ydwk.yde.impl.entities.channel.getter.guild.GuildMessageChannelGetterImpl
+import io.github.ydwk.yde.impl.entities.channel.guild.*
 import io.github.ydwk.yde.impl.entities.channel.guild.GuildCategoryImpl
 import io.github.ydwk.yde.impl.entities.channel.guild.GuildChannelImpl
+import io.github.ydwk.yde.impl.entities.channel.guild.GuildForumChannelImpl
+import io.github.ydwk.yde.impl.entities.channel.guild.GuildMessageChannelImpl
+import io.github.ydwk.yde.impl.entities.channel.guild.forum.DefaultReactionEmojiImpl
+import io.github.ydwk.yde.impl.entities.channel.guild.forum.ForumTagImpl
 import io.github.ydwk.yde.impl.entities.guild.*
 import io.github.ydwk.yde.impl.entities.guild.role.RoleTagImpl
 import io.github.ydwk.yde.impl.entities.guild.schedule.EntityMetadataImpl
@@ -72,6 +76,9 @@ import io.github.ydwk.yde.impl.entities.message.embed.FieldImpl
 import io.github.ydwk.yde.impl.entities.message.embed.FooterImpl
 import io.github.ydwk.yde.impl.entities.message.embed.ImageImpl
 import io.github.ydwk.yde.impl.entities.message.embed.ProviderImpl
+import io.github.ydwk.yde.impl.interaction.application.type.MessageCommandImpl
+import io.github.ydwk.yde.impl.interaction.application.type.SlashCommandImpl
+import io.github.ydwk.yde.impl.interaction.application.type.UserCommandImpl
 import io.github.ydwk.yde.impl.interaction.message.ComponentImpl
 import io.github.ydwk.yde.impl.util.getAvatar
 import io.github.ydwk.yde.impl.util.getGuildAvatar
@@ -575,39 +582,102 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     }
 
     override fun buildGuildForumChannel(json: JsonNode): GuildForumChannel {
-        TODO("Not yet implemented")
+        return GuildForumChannelImpl(
+            yde,
+            json,
+            json["id"].asLong(),
+            if (json.has("topic")) json["topic"].asText() else null,
+            if (json.has("template")) json["template"].asText() else null,
+            if (json.has("rate_limit_per_user")) json["rate_limit_per_user"].asInt() else 0,
+            if (json.has("permission_overwrites"))
+                json["permission_overwrites"].map { buildPermissionOverwrite(it) }
+            else emptyList(),
+            json["nsfw"].asBoolean(),
+            if (json.has("last_message_id")) GetterSnowFlake.of(json["last_message_id"].asLong())
+            else null,
+            ChannelFlag.getValue(json["flags"].asLong()),
+            json["default_rate_limit_per_user"].asInt(),
+            if (json.has("default_sort_order")) json["default_sort_order"].asInt() else null,
+            if (json.has("default_reaction_emoji"))
+                buildDefaultReactionEmoji(json["default_reaction_emoji"])
+            else null,
+            if (json.has("available_forum_tags"))
+                json["available_forum_tags"].map { buildForumTag(it) }
+            else emptyList(),
+            if (json.has("available_forum_tags"))
+                json["available_forum_tags"].map { GetterSnowFlake.of(it["id"].asLong()) }
+            else emptyList(),
+            ForumLayoutType.getValue(json["layout_type"].asInt()))
     }
 
     override fun buildGuildMessageChannel(json: JsonNode): GuildMessageChannel {
-        TODO("Not yet implemented")
+        return GuildMessageChannelImpl(
+            yde,
+            json,
+            json["id"].asLong(),
+            json["topic"].asText(),
+            json["nsfw"].asBoolean(),
+            if (json.has("default_auto_archive_duration"))
+                json["default_auto_archive_duration"].asInt()
+            else 0,
+            json["last_message_id"].asText(),
+            json["last_pin_timestamp"].asText(),
+            json["permission_overwrites"].map { buildPermissionOverwrite(it) },
+            GuildMessageChannelGetterImpl(yde, json, json["id"].asLong()),
+            if (json["type"].asInt() == 0) ChannelType.TEXT else ChannelType.NEWS)
     }
 
     override fun buildGuildNewsChannel(json: JsonNode): GuildNewsChannel {
-        TODO("Not yet implemented")
+        return GuildNewsChannelImpl(yde, json, json["id"].asLong())
     }
 
     override fun buildGuildStageChannel(json: JsonNode): GuildStageChannel {
-        TODO("Not yet implemented")
+        return GuildStageChannelImpl(
+            yde, json, json["id"].asLong(), if (json.has("topic")) json["topic"].asText() else null)
     }
 
     override fun buildGuildTextChannel(json: JsonNode): GuildTextChannel {
-        TODO("Not yet implemented")
+        return GuildTextChannelImpl(
+            yde, json, json["id"].asLong(), json["rate_limit_per_user"].asInt())
     }
 
     override fun buildGuildVoiceChannel(json: JsonNode): GuildVoiceChannel {
-        TODO("Not yet implemented")
+        return GuildVoiceChannelImpl(
+            yde,
+            json,
+            json["id"].asLong(),
+            json["bitrate"].asInt(),
+            json["user_limit"].asInt(),
+            json["rate_limit_per_user"].asInt())
     }
 
     override fun buildPermissionOverwrite(json: JsonNode): PermissionOverwrite {
-        TODO("Not yet implemented")
+        return PermissionOverwriteImpl(
+            yde,
+            json,
+            json["id"].asLong(),
+            json["type"].asInt(),
+            json["allow"].asText(),
+            json["deny"].asText())
     }
 
     override fun buildForumTag(json: JsonNode): ForumTag {
-        TODO("Not yet implemented")
+        return ForumTagImpl(
+            yde,
+            json,
+            json["id"].asLong(),
+            json["moderated"].asBoolean(),
+            if (json.has("emoji_id")) GetterSnowFlake.of(json["emoji_id"].asLong()) else null,
+            if (json.has("emoji_name")) json["emoji_name"].asText() else null,
+            json["name"].asText())
     }
 
     override fun buildDefaultReactionEmoji(json: JsonNode): DefaultReactionEmoji {
-        TODO("Not yet implemented")
+        return DefaultReactionEmojiImpl(
+            yde,
+            json,
+            if (json.has("emoji_id")) GetterSnowFlake.of(json["emoji_id"].asLong()) else null,
+            json["name"].asText())
     }
 
     override fun buildAuditLogEntry(json: JsonNode): AuditLogEntry {
@@ -828,14 +898,29 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     }
 
     override fun buildUserCommand(json: JsonNode, interaction: Interaction?): UserCommand {
-        TODO("Not yet implemented")
+        val i = interaction ?: buildInteraction(json)
+        val user = buildUser(json["data"]["resolved"]["users"])
+
+        return UserCommandImpl(
+            yde,
+            json,
+            json["id"].asLong(),
+            i,
+            user,
+            buildMember(json["data"]["resolved"]["members"], i.guild!!, user))
     }
 
     override fun buildSlashCommand(json: JsonNode, interaction: Interaction?): SlashCommand {
-        TODO("Not yet implemented")
+        return SlashCommandImpl(
+            yde, json, json["id"].asLong(), interaction ?: buildInteraction(json))
     }
 
     override fun buildMessageCommand(json: JsonNode, interaction: Interaction?): MessageCommand {
-        TODO("Not yet implemented")
+        return MessageCommandImpl(
+            yde,
+            json,
+            json["id"].asLong(),
+            interaction ?: buildInteraction(json),
+            buildMessage(json["data"]["resolved"]["messages"]))
     }
 }

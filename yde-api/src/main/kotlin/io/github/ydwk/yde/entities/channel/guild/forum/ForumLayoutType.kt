@@ -38,8 +38,8 @@ enum class ForumLayoutType(private val value: Int) {
          * @param value The value to get the [ForumLayoutType] from.
          * @return The [ForumLayoutType] from the provided [value].
          */
-        fun fromValue(value: Int): ForumLayoutType {
-            return values().firstOrNull { it.value == value } ?: UNKNOWN
+        fun getValue(value: Int): ForumLayoutType {
+            return entries.firstOrNull { it.value == value } ?: UNKNOWN
         }
     }
 

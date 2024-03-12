@@ -23,9 +23,9 @@ import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildVoiceChannel
 
 internal open class GuildVoiceChannelImpl(
-    yde: YDE,
-    json: JsonNode,
-    idAsLong: Long,
+    override val yde: YDE,
+    override val json: JsonNode,
+    override val idAsLong: Long,
     override var bitrate: Int,
     override var userLimit: Int,
     override var rateLimitPerUser: Int

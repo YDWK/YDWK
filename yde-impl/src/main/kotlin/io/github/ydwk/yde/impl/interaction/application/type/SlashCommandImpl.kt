@@ -81,7 +81,7 @@ class SlashCommandImpl(yde: YDE, json: JsonNode, idAsLong: Long, interaction: In
                 it.fields().forEach { (id, node) ->
                     resolved["users"]?.let { users ->
                         val user = users[id]
-                        val member = yde.entityInstanceBuilder.buildMember(node, guild, user)
+                        val member = yde.entityInstanceBuilder.buildMember(node, guild!!, user)
                         val newMember = (yde as YDEImpl).memberCache.getOrPut(member)
                         map[id.toLong()] = newMember
                     }
