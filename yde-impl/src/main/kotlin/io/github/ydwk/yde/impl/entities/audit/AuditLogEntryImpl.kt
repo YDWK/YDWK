@@ -24,29 +24,15 @@ import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.audit.AuditLogChange
 import io.github.ydwk.yde.entities.audit.AuditLogEntry
 import io.github.ydwk.yde.entities.audit.AuditLogType
-import io.github.ydwk.yde.util.EntityToStringBuilder
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
 internal class AuditLogEntryImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,
-) : AuditLogEntry {
-    override val targetId: String?
-        get() = if (json.has("target_id")) json["target_id"].asText() else null
-
-    override val changes: List<AuditLogChange>
-        get() = json["changes"].map { AuditLogChangeImpl(yde, it) }
-
-    override val user: User?
-        get() = if (json.has("user_id")) yde.getUserById(json["user_id"].asLong()) else null
-
-    override val type: AuditLogType
-        get() = AuditLogType.fromInt(json["action_type"].asInt())
-
-    override val reason: String?
-        get() = if (json.has("reason")) json["reason"].asText() else null
-
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).toString()
-    }
-}
+    override val targetId: String?,
+    override val changes: List<AuditLogChange>,
+    override val user: User?,
+    override val type: AuditLogType,
+    override val reason: String?,
+) : AuditLogEntry, ToStringEntityImpl<AuditLogEntry>(yde, AuditLogEntry::class.java)

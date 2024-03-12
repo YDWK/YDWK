@@ -18,6 +18,7 @@
  */ 
 package io.github.ydwk.yde.impl.util
 
+import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.User
@@ -127,5 +128,16 @@ fun EntityInstanceBuilderImpl.getGuildAvatar(
         }
     } else {
         return null
+    }
+}
+
+fun EntityInstanceBuilderImpl.checkType(node: JsonNode): Any? {
+    return when {
+        node.isTextual -> node.asText()
+        node.isInt -> node.asInt()
+        node.isBoolean -> node.asBoolean()
+        node.isLong -> node.asLong()
+        node.isDouble or node.isFloat -> node.asDouble()
+        else -> null
     }
 }

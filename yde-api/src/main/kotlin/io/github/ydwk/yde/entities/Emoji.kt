@@ -18,8 +18,8 @@
  */ 
 package io.github.ydwk.yde.entities
 
-import io.github.ydwk.yde.entities.guild.Role
 import io.github.ydwk.yde.entities.util.GenericEntity
+import io.github.ydwk.yde.util.GetterSnowFlake
 import io.github.ydwk.yde.util.NameAbleEntity
 
 interface Emoji : NameAbleEntity, GenericEntity {
@@ -39,11 +39,11 @@ interface Emoji : NameAbleEntity, GenericEntity {
         get() = if (idLong == 0L) null else idLong.toString()
 
     /**
-     * The roles that are allowed to use this emoji.
+     * The role ids that are allowed to use this emoji.
      *
-     * @return The roles that are allowed to use this emoji.
+     * @return The role ids that are allowed to use this emoji.
      */
-    var roles: List<Role>
+    var roleIds: List<GetterSnowFlake>
 
     /**
      * The user that created this emoji.

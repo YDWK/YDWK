@@ -21,31 +21,12 @@ package io.github.ydwk.yde.impl.entities.audit
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.audit.AuditLogChange
-import io.github.ydwk.yde.util.EntityToStringBuilder
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
-internal class AuditLogChangeImpl(override val yde: YDE, override val json: JsonNode) :
-    AuditLogChange {
-    override val newValue: Any?
-        get() = if (json.has("new_value")) checkType(json["new_value"]) else null
-
-    override val oldValue: Any?
-        get() = if (json.has("old_value")) checkType(json["old_value"]) else null
-
-    private fun checkType(node: JsonNode): Any? {
-        return when {
-            node.isTextual -> node.asText()
-            node.isInt -> node.asInt()
-            node.isBoolean -> node.asBoolean()
-            node.isLong -> node.asLong()
-            node.isDouble or node.isFloat -> node.asDouble()
-            else -> null
-        }
-    }
-
+internal class AuditLogChangeImpl(
+    override val yde: YDE,
+    override val json: JsonNode,
+    override val newValue: Any?,
+    override val oldValue: Any?,
     override val key: String
-        get() = json["key"].asText()
-
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).toString()
-    }
-}
+) : AuditLogChange, ToStringEntityImpl<AuditLogChange>(yde, AuditLogChange::class.java)

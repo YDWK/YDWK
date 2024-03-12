@@ -24,6 +24,7 @@ import io.github.ydwk.yde.entities.*
 import io.github.ydwk.yde.entities.application.PartialApplication
 import io.github.ydwk.yde.entities.audit.AuditLogChange
 import io.github.ydwk.yde.entities.audit.AuditLogEntry
+import io.github.ydwk.yde.entities.audit.AuditLogType
 import io.github.ydwk.yde.entities.channel.DmChannel
 import io.github.ydwk.yde.entities.channel.GuildChannel
 import io.github.ydwk.yde.entities.channel.enums.ChannelType
@@ -53,6 +54,8 @@ import io.github.ydwk.yde.entities.sticker.StickerType
 import io.github.ydwk.yde.entities.user.Avatar
 import io.github.ydwk.yde.impl.entities.*
 import io.github.ydwk.yde.impl.entities.application.PartialApplicationImpl
+import io.github.ydwk.yde.impl.entities.audit.AuditLogChangeImpl
+import io.github.ydwk.yde.impl.entities.audit.AuditLogEntryImpl
 import io.github.ydwk.yde.impl.entities.channel.DmChannelImpl
 import io.github.ydwk.yde.impl.entities.channel.getter.ChannelGetterImpl
 import io.github.ydwk.yde.impl.entities.channel.getter.guild.GuildChannelGetterImpl
@@ -80,6 +83,7 @@ import io.github.ydwk.yde.impl.interaction.application.type.MessageCommandImpl
 import io.github.ydwk.yde.impl.interaction.application.type.SlashCommandImpl
 import io.github.ydwk.yde.impl.interaction.application.type.UserCommandImpl
 import io.github.ydwk.yde.impl.interaction.message.ComponentImpl
+import io.github.ydwk.yde.impl.util.checkType
 import io.github.ydwk.yde.impl.util.getAvatar
 import io.github.ydwk.yde.impl.util.getGuildAvatar
 import io.github.ydwk.yde.impl.util.getPermissions
@@ -681,11 +685,24 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     }
 
     override fun buildAuditLogEntry(json: JsonNode): AuditLogEntry {
-        TODO("Not yet implemented")
+        return AuditLogEntryImpl(
+            yde,
+            json,
+            json["id"].asLong(),
+            if (json.has("target_id")) json["target_id"].asText() else null,
+            json["changes"].map { buildAuditLogChange(it) },
+            if (json.has("user_id")) yde.getUserById(json["user_id"].asLong()) else null,
+            AuditLogType.getValue(json["type"].asInt()),
+            if (json.has("reason")) json["reason"].asText() else null)
     }
 
     override fun buildAuditLogChange(json: JsonNode): AuditLogChange {
-        TODO("Not yet implemented")
+        return AuditLogChangeImpl(
+            yde,
+            json,
+            if (json.has("new_value")) checkType(json["new_value"]) else null,
+            if (json.has("old_value")) checkType(json["old_value"]) else null,
+            json["key"].asText())
     }
 
     override fun buildPartialApplication(json: JsonNode): PartialApplication {
@@ -755,7 +772,18 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     }
 
     override fun buildEmoji(json: JsonNode): Emoji {
-        TODO("Not yet implemented")
+        return EmojiImpl(
+            yde,
+            json,
+            if (json.has("id")) json["id"].asLong() else null,
+            if (json.has("roles")) json["roles"].map { GetterSnowFlake.of(it.asLong()) }
+            else emptyList(),
+            if (json.has("user")) buildUser(json["user"]) else null,
+            if (json.has("require_colons")) json["require_colons"].asBoolean() else false,
+            if (json.has("managed")) json["managed"].asBoolean() else false,
+            if (json.has("animated")) json["animated"].asBoolean() else false,
+            if (json.has("available")) json["available"].asBoolean() else false,
+            json["name"].asText())
     }
 
     override fun buildAuthor(json: JsonNode): Author {

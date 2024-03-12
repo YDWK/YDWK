@@ -22,14 +22,14 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.Emoji
 import io.github.ydwk.yde.entities.User
-import io.github.ydwk.yde.entities.guild.Role
 import io.github.ydwk.yde.util.EntityToStringBuilder
+import io.github.ydwk.yde.util.GetterSnowFlake
 
 internal class EmojiImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idLong: Long?,
-    override var roles: List<Role>,
+    override var roleIds: List<GetterSnowFlake>,
     override var user: User?,
     override var requireColons: Boolean,
     override var isManaged: Boolean,
