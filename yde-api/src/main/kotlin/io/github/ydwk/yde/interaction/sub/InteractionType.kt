@@ -44,8 +44,8 @@ enum class InteractionType(private val value: Int) {
          * @param value The value to get the [InteractionType] from.
          * @return The [InteractionType] from the given [value].
          */
-        fun fromInt(value: Int): InteractionType {
-            return values().firstOrNull { it.value == value } ?: UNKNOWN
+        fun getValue(value: Int): InteractionType {
+            return entries.firstOrNull { it.value == value } ?: UNKNOWN
         }
     }
 

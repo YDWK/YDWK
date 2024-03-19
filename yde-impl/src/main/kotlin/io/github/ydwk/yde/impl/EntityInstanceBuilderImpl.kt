@@ -47,6 +47,7 @@ import io.github.ydwk.yde.entities.guild.schedule.PrivacyLevel
 import io.github.ydwk.yde.entities.guild.schedule.ScheduledEventStatus
 import io.github.ydwk.yde.entities.guild.ws.WelcomeChannel
 import io.github.ydwk.yde.entities.message.*
+import io.github.ydwk.yde.entities.message.activity.MessageActivityType
 import io.github.ydwk.yde.entities.message.embed.*
 import io.github.ydwk.yde.entities.sticker.StickerFormatType
 import io.github.ydwk.yde.entities.sticker.StickerItem
@@ -71,14 +72,20 @@ import io.github.ydwk.yde.impl.entities.guild.*
 import io.github.ydwk.yde.impl.entities.guild.role.RoleTagImpl
 import io.github.ydwk.yde.impl.entities.guild.schedule.EntityMetadataImpl
 import io.github.ydwk.yde.impl.entities.guild.ws.WelcomeChannelImpl
+import io.github.ydwk.yde.impl.entities.message.*
 import io.github.ydwk.yde.impl.entities.message.AttachmentImpl
 import io.github.ydwk.yde.impl.entities.message.EmbedImpl
+import io.github.ydwk.yde.impl.entities.message.MessageInteractionImpl
+import io.github.ydwk.yde.impl.entities.message.MessageReferenceImpl
+import io.github.ydwk.yde.impl.entities.message.ReactionImpl
 import io.github.ydwk.yde.impl.entities.message.embed.*
 import io.github.ydwk.yde.impl.entities.message.embed.AuthorImpl
 import io.github.ydwk.yde.impl.entities.message.embed.FieldImpl
 import io.github.ydwk.yde.impl.entities.message.embed.FooterImpl
 import io.github.ydwk.yde.impl.entities.message.embed.ImageImpl
 import io.github.ydwk.yde.impl.entities.message.embed.ProviderImpl
+import io.github.ydwk.yde.impl.entities.sticker.StickerItemImpl
+import io.github.ydwk.yde.impl.entities.user.AvatarImpl
 import io.github.ydwk.yde.impl.interaction.application.type.MessageCommandImpl
 import io.github.ydwk.yde.impl.interaction.application.type.SlashCommandImpl
 import io.github.ydwk.yde.impl.interaction.application.type.UserCommandImpl
@@ -102,6 +109,7 @@ import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenu
 import io.github.ydwk.yde.interaction.message.selectmenu.types.*
 import io.github.ydwk.yde.interaction.message.selectmenu.types.string.StringSelectMenuOption
 import io.github.ydwk.yde.interaction.message.textinput.TextInput
+import io.github.ydwk.yde.interaction.sub.InteractionType
 import io.github.ydwk.yde.rest.error.RestAPIException
 import io.github.ydwk.yde.util.*
 import java.awt.Color
@@ -710,27 +718,56 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     }
 
     override fun buildStickerItem(json: JsonNode): StickerItem {
-        TODO("Not yet implemented")
+        return StickerItemImpl(
+            yde,
+            json,
+            json["id"].asLong(),
+            json["name"].asText(),
+            StickerType.getValue(json["type"].asInt()))
     }
 
-    override fun buildAvatar(json: JsonNode): Avatar {
-        TODO("Not yet implemented")
+    override fun buildAvatar(url: URL): Avatar {
+        return AvatarImpl(yde, url)
     }
 
     override fun buildMessageReference(json: JsonNode): MessageReference {
-        TODO("Not yet implemented")
+        return MessageReferenceImpl(
+            yde,
+            json,
+            GetterSnowFlake.of(json["message_id"].asLong()),
+            GetterSnowFlake.of(json["channel_id"].asLong()),
+            GetterSnowFlake.of(json["guild_id"].asLong()),
+            yde.getGuildById(json["guild_id"].asLong())
+                ?: throw IllegalStateException("Guild is null"))
     }
 
     override fun buildReaction(json: JsonNode): Reaction {
-        TODO("Not yet implemented")
+        return ReactionImpl(
+            yde, json, json["count"].asInt(), json["me"].asBoolean(), buildEmoji(json["emoji"]))
     }
 
     override fun buildMessageInteraction(json: JsonNode): MessageInteraction {
-        TODO("Not yet implemented")
+        return MessageInteractionImpl(
+            yde,
+            json,
+            json["id"].asLong(),
+            InteractionType.getValue(json["type"].asInt()),
+            json["name"].asText(),
+            buildUser(json["user"]),
+            if (json.has("member"))
+                buildMember(
+                    json["member"],
+                    yde.getGuildById(json["guild_id"].asLong())!!,
+                    buildUser(json["user"]))
+            else null)
     }
 
     override fun buildMessageActivity(json: JsonNode): MessageActivity {
-        TODO("Not yet implemented")
+        return MessageActivityImpl(
+            yde,
+            json,
+            MessageActivityType.getValue(json["type"].asInt()),
+            if (json.has("party_id")) json["party_id"].asText() else null)
     }
 
     override fun buildEmbed(json: JsonNode): Embed {

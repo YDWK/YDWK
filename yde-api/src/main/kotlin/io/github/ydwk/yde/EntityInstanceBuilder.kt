@@ -59,6 +59,7 @@ import io.github.ydwk.yde.interaction.message.selectmenu.types.*
 import io.github.ydwk.yde.interaction.message.selectmenu.types.string.StringSelectMenuOption
 import io.github.ydwk.yde.interaction.message.textinput.TextInput
 import io.github.ydwk.yde.util.GetterSnowFlake
+import java.net.URL
 
 /** The [EntityInstanceBuilder] is used to build instances of entities. */
 interface EntityInstanceBuilder {
@@ -392,10 +393,10 @@ interface EntityInstanceBuilder {
     /**
      * Used to build an instance of [Avatar]
      *
-     * @param json the json
+     * @param url the url
      * @return [Avatar] the avatar
      */
-    fun buildAvatar(json: JsonNode): Avatar
+    fun buildAvatar(url: URL): Avatar
 
     // Message entities
 
