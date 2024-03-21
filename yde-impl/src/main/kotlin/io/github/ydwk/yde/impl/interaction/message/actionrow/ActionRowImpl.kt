@@ -25,4 +25,4 @@ import io.github.ydwk.yde.interaction.message.ActionRow
 import io.github.ydwk.yde.interaction.message.Component
 
 open class ActionRowImpl(yde: YDE, json: JsonNode, override val components: List<Component>) :
-    ActionRow, ComponentImpl(yde, json)
+    ActionRow, ComponentImpl(yde.entityInstanceBuilder.buildComponent(json))

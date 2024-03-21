@@ -13,7 +13,6 @@ pluginManagement {
         kotlin("plugin.allopen") version pluginAllOpenVersion
         id("com.diffplug.spotless") version spotlessVersion
         id("org.jetbrains.dokka") version dokkaVersion
-        // id("io.gitlab.arturbosch.detekt") version detektVersion
         id("com.github.ben-manes.versions") version benManesVersion
         application
         `maven-publish`

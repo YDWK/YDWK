@@ -20,7 +20,6 @@ package io.github.ydwk.yde.impl.interaction.message.selectmenu.types
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
-import io.github.ydwk.yde.impl.interaction.ComponentInteractionImpl
 import io.github.ydwk.yde.impl.interaction.message.selectmenu.SelectMenuImpl
 import io.github.ydwk.yde.interaction.message.selectmenu.types.StringSelectMenu
 import io.github.ydwk.yde.interaction.message.selectmenu.types.string.StringSelectMenuOption
@@ -30,20 +29,8 @@ class StringSelectMenuImpl(
     yde: YDE,
     json: JsonNode,
     interactionId: GetterSnowFlake,
+    override val options: List<StringSelectMenuOption>,
 ) :
     StringSelectMenu,
     SelectMenuImpl(
-        yde.entityInstanceBuilder.buildSelectMenu(json, interactionId) as SelectMenuImpl) {
-    constructor(
-        componentInteractionImpl: ComponentInteractionImpl,
-    ) : this(
-        componentInteractionImpl.yde,
-        componentInteractionImpl.json,
-        componentInteractionImpl.interactionId)
-
-    override val options: List<StringSelectMenuOption>
-        get() =
-            componentJson["options"].map {
-                yde.entityInstanceBuilder.buildStringSelectMenuOption(it)
-            }
-}
+        yde.entityInstanceBuilder.buildSelectMenu(json, interactionId) as SelectMenuImpl)

@@ -33,4 +33,17 @@ open class ComponentImpl(
     override val children: List<Component>,
     override val messageCompatible: Boolean = type.isMessageCompatible(),
     override val modalCompatible: Boolean = type.isModalCompatible(),
-) : Component, ToStringEntityImpl<Component>(yde, Component::class.java)
+) : Component, ToStringEntityImpl<Component>(yde, Component::class.java) {
+    constructor(
+        component: Component
+    ) : this(
+        component.yde,
+        component.json,
+        component.type,
+        component.disabled,
+        component.customId,
+        component.children,
+        component.messageCompatible,
+        component.modalCompatible,
+    )
+}
