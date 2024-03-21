@@ -44,7 +44,8 @@ class MessageComponentHandler(
                                     ButtonClickEvent(
                                         ydwk,
                                         ydwk.entityInstanceBuilder.buildButton(
-                                            interactionComponent.json)))
+                                            interactionComponent.json,
+                                            interactionComponent.interactionId)))
                             }
                         }
                         ComponentType.STRING_SELECT_MENU -> {
@@ -95,7 +96,8 @@ class MessageComponentHandler(
                                     TextInputEvent(
                                         ydwk,
                                         ydwk.entityInstanceBuilder.buildTextInput(
-                                            interactionComponent.json)))
+                                            interactionComponent.json,
+                                            interactionComponent.interactionId)))
                             }
                         }
                         ComponentType.UNKNOWN -> ydwk.logger.warn("New component type found: $type")
