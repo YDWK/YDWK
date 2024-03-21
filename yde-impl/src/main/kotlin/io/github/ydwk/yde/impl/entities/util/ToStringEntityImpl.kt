@@ -27,6 +27,7 @@ open class ToStringEntityImpl<T : Any>(
     private val clazz: Class<T>,
     private val fields: List<Any>? = null
 ) : ToStringEntity {
+
     override fun toString(): String {
         val entity = EntityToStringBuilder(yde, clazz)
 
@@ -36,8 +37,12 @@ open class ToStringEntityImpl<T : Any>(
             }
         }
 
-        // entity.autoAddFields()
+        return entity.toString()
+    }
 
+    fun buildString(builderAction: EntityToStringBuilder.() -> Unit): String {
+        val entity = EntityToStringBuilder(yde, clazz)
+        entity.builderAction()
         return entity.toString()
     }
 }

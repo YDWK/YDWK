@@ -20,31 +20,17 @@ package io.github.ydwk.yde.impl.interaction.message
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.interaction.message.Component
 import io.github.ydwk.yde.interaction.message.ComponentType
-import io.github.ydwk.yde.util.EntityToStringBuilder
 
-open class ComponentImpl(override val yde: YDE, override val json: JsonNode) : Component {
-
-    override val type: ComponentType
-        get() = ComponentType.fromInt(json["type"].asInt())
-
-    override val disabled: Boolean
-        get() = json["disabled"].asBoolean()
-
-    override val messageCompatible: Boolean
-        get() = type.isMessageCompatible()
-
-    override val modalCompatible: Boolean
-        get() = type.isModalCompatible()
-
-    override val customId: String?
-        get() = if (json.has("custom_id")) json["custom_id"].asText() else null
-
-    override val children: List<Component>
-        get() = json["components"].map { ComponentImpl(yde, it) }
-
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).toString()
-    }
-}
+open class ComponentImpl(
+    override val yde: YDE,
+    override val json: JsonNode,
+    override val type: ComponentType,
+    override val disabled: Boolean,
+    override val customId: String?,
+    override val children: List<Component>,
+    override val messageCompatible: Boolean = type.isMessageCompatible(),
+    override val modalCompatible: Boolean = type.isModalCompatible(),
+) : Component, ToStringEntityImpl<Component>(yde, Component::class.java)

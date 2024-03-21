@@ -569,7 +569,7 @@ interface EntityInstanceBuilder {
      * @param interactionId the interaction id
      * @return [TextInput] the text input
      */
-    fun buildTextInput(json: JsonNode,  interactionId: GetterSnowFlake): TextInput
+    fun buildTextInput(json: JsonNode, interactionId: GetterSnowFlake): TextInput
 
     /**
      * Used to build an instance of [SelectMenu]

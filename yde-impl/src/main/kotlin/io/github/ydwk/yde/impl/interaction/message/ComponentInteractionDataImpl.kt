@@ -21,9 +21,9 @@ package io.github.ydwk.yde.impl.interaction.message
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.Emoji
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.interaction.message.ComponentInteractionData
 import io.github.ydwk.yde.interaction.message.ComponentType
-import io.github.ydwk.yde.util.EntityToStringBuilder
 
 class ComponentInteractionDataImpl(
     override val yde: YDE,
@@ -31,11 +31,9 @@ class ComponentInteractionDataImpl(
     override val customId: String,
     override val componentType: ComponentType,
     override val values: List<ComponentInteractionData.SelectOptionValue>?
-) : ComponentInteractionData {
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).toString()
-    }
-
+) :
+    ComponentInteractionData,
+    ToStringEntityImpl<ComponentInteractionData>(yde, ComponentInteractionData::class.java) {
     class SelectOptionValueImpl(
         override val yde: YDE,
         override val json: JsonNode,
@@ -44,10 +42,8 @@ class ComponentInteractionDataImpl(
         override val description: String?,
         override val emoji: Emoji?,
         override val default: Boolean?
-    ) : ComponentInteractionData.SelectOptionValue {
-
-        override fun toString(): String {
-            return EntityToStringBuilder(yde, this).toString()
-        }
-    }
+    ) :
+        ComponentInteractionData.SelectOptionValue,
+        ToStringEntityImpl<ComponentInteractionData.SelectOptionValue>(
+            yde, ComponentInteractionData.SelectOptionValue::class.java)
 }

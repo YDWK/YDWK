@@ -25,11 +25,11 @@ import io.github.ydwk.yde.entities.Message
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.channel.TextChannel
 import io.github.ydwk.yde.entities.guild.Member
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.interaction.ComponentInteraction
 import io.github.ydwk.yde.interaction.message.Component
 import io.github.ydwk.yde.interaction.message.ComponentInteractionData
 import io.github.ydwk.yde.interaction.message.ComponentType
-import io.github.ydwk.yde.util.EntityToStringBuilder
 import io.github.ydwk.yde.util.GetterSnowFlake
 
 open class ComponentInteractionImpl(
@@ -46,7 +46,9 @@ open class ComponentInteractionImpl(
     override val applicationId: GetterSnowFlake?,
     override val components: List<Component>,
     override val data: ComponentInteractionData,
-) : ComponentInteraction {
+) :
+    ComponentInteraction,
+    ToStringEntityImpl<ComponentInteraction>(yde, ComponentInteraction::class.java) {
 
     constructor(
         componentInteractionImpl: ComponentInteractionImpl
@@ -64,8 +66,4 @@ open class ComponentInteractionImpl(
         componentInteractionImpl.applicationId,
         componentInteractionImpl.components,
         componentInteractionImpl.data)
-
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).toString()
-    }
 }

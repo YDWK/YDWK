@@ -58,8 +58,8 @@ enum class ComponentType(
          * @param value The value to get the [ComponentType] from.
          * @return The [ComponentType] from the given [value].
          */
-        fun fromInt(value: Int): ComponentType {
-            return values().firstOrNull { it.type == value } ?: UNKNOWN
+        fun getValue(value: Int): ComponentType {
+            return entries.firstOrNull { it.type == value } ?: UNKNOWN
         }
     }
 

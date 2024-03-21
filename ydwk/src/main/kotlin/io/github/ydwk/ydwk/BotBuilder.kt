@@ -39,10 +39,31 @@ private constructor(
     private val dispatcher: CoroutineDispatcher? = null
 ) {
     companion object {
-        fun buildBot(token: String) = Builder(token)
+        private const val MAX_LENGTH = 100 // Maximum length allowed for the JWT token
+        private const val MIN_LENGTH = 50 // Minimum length allowed for the JWT token
+
+        fun buildBot(token: String): Builder {
+            when {
+                token.isEmpty() -> {
+                    throw LoginException("Token cannot be null or empty")
+                }
+                token.contains("/n") -> {
+                    throw LoginException("Token cannot contain a new line")
+                }
+                token.length < MIN_LENGTH -> {
+                    throw LoginException("Token cannot be shorter than $MIN_LENGTH characters")
+                }
+                token.length > MAX_LENGTH -> {
+                    throw LoginException("Token cannot be longer than $MAX_LENGTH characters")
+                }
+                else -> {
+                    return Builder(token)
+                }
+            }
+        }
     }
 
-    class Builder(private val token: String) {
+    internal class Builder(private val token: String) {
         private var httpClient: HttpClient = HttpClient()
         private var intents: MutableList<GateWayIntent> = mutableListOf()
         private var allowedCache: MutableSet<CacheIds> = mutableSetOf()
@@ -111,30 +132,11 @@ private constructor(
 
     fun buildYDWK(): YDWK {
         val ydwk = YDWKImpl(httpClient)
-        val maxLength = 100 // Maximum length allowed for the JWT token
-        val minLength = 50 // Minimum length allowed for the JWT token
-
-        when {
-            token.isEmpty() -> {
-                throw LoginException("Token cannot be null or empty")
-            }
-            token.contains("/n") -> {
-                throw LoginException("Token cannot contain a new line")
-            }
-            token.length < minLength -> {
-                throw LoginException("Token cannot be shorter than $minLength characters")
-            }
-            token.length > maxLength -> {
-                throw LoginException("Token cannot be longer than $maxLength characters")
-            }
-            else -> {
-                ydwk.setWebSocketManager(token, intents, userStatus, activity, etfInsteadOfJson)
-                ydwk.setAllowedCache(allowedCache)
-                ydwk.setDisallowedCache(disallowedCache)
-                ydwk.enableShutDownHook()
-                dispatcher?.let { ydwk.coroutineDispatcher = it }
-                return ydwk
-            }
-        }
+        ydwk.setWebSocketManager(token, intents, userStatus, activity, etfInsteadOfJson)
+        ydwk.setAllowedCache(allowedCache)
+        ydwk.setDisallowedCache(disallowedCache)
+        ydwk.enableShutDownHook()
+        dispatcher?.let { ydwk.coroutineDispatcher = it }
+        return ydwk
     }
 }

@@ -86,11 +86,13 @@ import io.github.ydwk.yde.impl.entities.message.embed.ImageImpl
 import io.github.ydwk.yde.impl.entities.message.embed.ProviderImpl
 import io.github.ydwk.yde.impl.entities.sticker.StickerItemImpl
 import io.github.ydwk.yde.impl.entities.user.AvatarImpl
+import io.github.ydwk.yde.impl.interaction.ComponentInteractionImpl
 import io.github.ydwk.yde.impl.interaction.InteractionImpl
 import io.github.ydwk.yde.impl.interaction.application.type.MessageCommandImpl
 import io.github.ydwk.yde.impl.interaction.application.type.SlashCommandImpl
 import io.github.ydwk.yde.impl.interaction.application.type.UserCommandImpl
 import io.github.ydwk.yde.impl.interaction.message.ComponentImpl
+import io.github.ydwk.yde.impl.interaction.message.ComponentInteractionDataImpl
 import io.github.ydwk.yde.impl.interaction.message.actionrow.ActionRowImpl
 import io.github.ydwk.yde.impl.interaction.message.button.ButtonImpl
 import io.github.ydwk.yde.impl.interaction.message.selectmenu.SelectMenuImpl
@@ -106,6 +108,7 @@ import io.github.ydwk.yde.interaction.application.type.UserCommand
 import io.github.ydwk.yde.interaction.message.ActionRow
 import io.github.ydwk.yde.interaction.message.Component
 import io.github.ydwk.yde.interaction.message.ComponentInteractionData
+import io.github.ydwk.yde.interaction.message.ComponentType
 import io.github.ydwk.yde.interaction.message.button.Button
 import io.github.ydwk.yde.interaction.message.button.ButtonStyle
 import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenu
@@ -118,11 +121,13 @@ import io.github.ydwk.yde.util.*
 import java.awt.Color
 import java.net.URL
 
-//TODO: Where it says yde.getGuildById remove this and just give the id. The user should be able to get the guild by id themselves
-//TODO: Check every entity whith the discord documentation to see if there are any missing fields or any corrections that need to be made
-//TODO: Rewrite the hall interaction system
-//TODO: For YDWK rewrite the voice system with the new voice system
-//TODO: Add support for locale
+// TODO: Where it says yde.getGuildById remove this and just give the id. The user should be able to
+// get the guild by id themselves
+// TODO: Check every entity whith the discord documentation to see if there are any missing fields
+// or any corrections that need to be made
+// TODO: Rewrite the hall interaction system
+// TODO: For YDWK rewrite the voice system with the new voice system
+// TODO: Add support for locale
 
 /** Used to build entities */
 class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
@@ -286,7 +291,7 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             if (json.has("referenced_message")) buildMessage(json["referenced_message"]) else null,
             if (json.has("interaction")) buildMessageInteraction(json["interaction"]) else null,
             thread,
-            json["components"].map { ComponentImpl(yde, it) },
+            json["components"].map { buildComponent(it) },
             json["sticker_items"].map { buildStickerItem(it) },
             if (json.has("position")) json["position"].asLong() else null,
         )
@@ -898,47 +903,89 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             if (json.has("width")) json["width"].asInt() else null)
     }
 
-
     override fun buildInteraction(json: JsonNode): Interaction {
-       return InteractionImpl(
-           yde,
-           json,
-           json["id"].asLong(),
-           GetterSnowFlake.of(json["application_id"].asLong()),
-           InteractionType.getValue(json["type"].asInt()),
-           if (json.has("guild_id")) yde.getGuildById(json["guild_id"].asLong()) else null,
-           if (json.has("channel_id")) yde.getChannelById(json["channel_id"].asLong()) else null,
-           if (json.has("member")) buildMember(json["member"], yde.getGuildById(json["guild_id"].asLong())!!, null)
-           else null,
-           if (json.has("user")) buildUser(json["user"]) else if (json.has("member")) buildUser(json["member"]["user"]) else throw IllegalStateException("User is null"),
-           json["token"].asText(),
-           json["version"].asInt(),
-           if (json.has("message")) buildMessage(json["message"]) else null,
-           if (json.has("permissions")) json["permissions"].asLong() else null,
-           if (json.has("locale")) json["locale"].asText() else null,
-           if (json.has("guild_locale")) json["guild_locale"].asText() else null,
-       )
+        return InteractionImpl(
+            yde,
+            json,
+            json["id"].asLong(),
+            GetterSnowFlake.of(json["application_id"].asLong()),
+            InteractionType.getValue(json["type"].asInt()),
+            if (json.has("guild_id")) yde.getGuildById(json["guild_id"].asLong()) else null,
+            if (json.has("channel_id")) yde.getChannelById(json["channel_id"].asLong()) else null,
+            if (json.has("member"))
+                buildMember(json["member"], yde.getGuildById(json["guild_id"].asLong())!!, null)
+            else null,
+            if (json.has("user")) buildUser(json["user"])
+            else if (json.has("member")) buildUser(json["member"]["user"])
+            else throw IllegalStateException("User is null"),
+            json["token"].asText(),
+            json["version"].asInt(),
+            if (json.has("message")) buildMessage(json["message"]) else null,
+            if (json.has("permissions")) json["permissions"].asLong() else null,
+            if (json.has("locale")) json["locale"].asText() else null,
+            if (json.has("guild_locale")) json["guild_locale"].asText() else null,
+        )
     }
 
     override fun buildComponentInteraction(
         json: JsonNode,
         interactionId: GetterSnowFlake
     ): ComponentInteraction {
-        TODO("Not yet implemented")
+        val message = buildMessage(json["message"])
+        val guild = if (json.has("guild_id")) yde.getGuildById(json["guild_id"].asLong()) else null
+        return ComponentInteractionImpl(
+            yde,
+            json,
+            interactionId,
+            ComponentType.getValue(json["component_type"].asInt()),
+            json["token"].asText(),
+            message,
+            if (json.has("member")) buildMember(json["member"], guild!!, null) else null,
+            if (json.has("user")) buildUser(json["user"]) else null,
+            guild,
+            if (json.has("channel_id"))
+                yde.getGuildChannelById(json["channel_id"].asLong())
+                    ?.guildChannelGetter
+                    ?.asGuildMessageChannel()
+            else null,
+            if (json.has("application_id")) GetterSnowFlake.of(json["application_id"].asLong())
+            else null,
+            message.components,
+            buildComponentInteractionData(json),
+        )
     }
 
     override fun buildComponent(json: JsonNode): Component {
-        TODO("Not yet implemented")
+        return ComponentImpl(
+            yde,
+            json,
+            ComponentType.getValue(json["type"].asInt()),
+            json["disabled"].asBoolean(),
+            if (json.has("custom_id")) json["custom_id"].asText() else null,
+            json["components"].map { buildComponent(it) })
     }
 
     override fun buildComponentInteractionData(json: JsonNode): ComponentInteractionData {
-        TODO("Not yet implemented")
+        return ComponentInteractionDataImpl(
+            yde,
+            json,
+            json["custom_id"].asText(),
+            ComponentType.getValue(json["component_type"].asInt()),
+            if (json.has("values")) json["values"].map { buildSelectOptionValue(it) }
+            else emptyList())
     }
 
     override fun buildSelectOptionValue(
         json: JsonNode
     ): ComponentInteractionData.SelectOptionValue {
-        TODO("Not yet implemented")
+        return ComponentInteractionDataImpl.SelectOptionValueImpl(
+            yde,
+            json,
+            json["name"].asText(),
+            json["value"].asText(),
+            if (json.has("description")) json["description"].asText() else null,
+            if (json.has("emoji")) buildEmoji(json["emoji"]) else null,
+            if (json.has("default")) json["default"].asBoolean() else false)
     }
 
     override fun buildTextInput(json: JsonNode, interactionId: GetterSnowFlake): TextInput {

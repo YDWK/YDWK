@@ -21,7 +21,6 @@ package io.github.ydwk.ydwk
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.Application
 import io.github.ydwk.yde.entities.application.PartialApplication
-import io.github.ydwk.yde.util.Incubating
 import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
 import io.github.ydwk.ydwk.evm.event.EventListeners
 import io.github.ydwk.ydwk.ws.WebSocketManager
@@ -87,7 +86,7 @@ interface YDWK : YDE {
     fun emitEvent(event: GenericEvent)
 
     /** Shuts down the websocket manager */
-    @Incubating fun shutdownAPI()
+    fun shutdownAPI()
 
     /**
      * The bot's uptime.

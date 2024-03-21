@@ -51,7 +51,11 @@ suspend fun main() {
             "ping" -> {
                 it.slash.reply("Pong!").trigger()
 
-                it.slash.ydwk.requestGuilds().getOrElse(listOf())
+                val guilds = it.slash.ydwk.requestGuilds().getOrNull()
+
+                if (guilds != null) {
+                    it.slash.reply("Guilds: ${guilds.size}").trigger()
+                }
             }
         }
     }
