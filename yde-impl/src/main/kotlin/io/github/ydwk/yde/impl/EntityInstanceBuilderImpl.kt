@@ -86,14 +86,16 @@ import io.github.ydwk.yde.impl.entities.message.embed.ImageImpl
 import io.github.ydwk.yde.impl.entities.message.embed.ProviderImpl
 import io.github.ydwk.yde.impl.entities.sticker.StickerItemImpl
 import io.github.ydwk.yde.impl.entities.user.AvatarImpl
+import io.github.ydwk.yde.impl.interaction.InteractionImpl
 import io.github.ydwk.yde.impl.interaction.application.type.MessageCommandImpl
 import io.github.ydwk.yde.impl.interaction.application.type.SlashCommandImpl
 import io.github.ydwk.yde.impl.interaction.application.type.UserCommandImpl
 import io.github.ydwk.yde.impl.interaction.message.ComponentImpl
-import io.github.ydwk.yde.impl.util.checkType
-import io.github.ydwk.yde.impl.util.getAvatar
-import io.github.ydwk.yde.impl.util.getGuildAvatar
-import io.github.ydwk.yde.impl.util.getPermissions
+import io.github.ydwk.yde.impl.interaction.message.actionrow.ActionRowImpl
+import io.github.ydwk.yde.impl.interaction.message.button.ButtonImpl
+import io.github.ydwk.yde.impl.interaction.message.selectmenu.SelectMenuImpl
+import io.github.ydwk.yde.impl.interaction.message.textinput.TextInputImpl
+import io.github.ydwk.yde.impl.util.*
 import io.github.ydwk.yde.interaction.ComponentInteraction
 import io.github.ydwk.yde.interaction.Interaction
 import io.github.ydwk.yde.interaction.application.ApplicationCommand
@@ -105,6 +107,7 @@ import io.github.ydwk.yde.interaction.message.ActionRow
 import io.github.ydwk.yde.interaction.message.Component
 import io.github.ydwk.yde.interaction.message.ComponentInteractionData
 import io.github.ydwk.yde.interaction.message.button.Button
+import io.github.ydwk.yde.interaction.message.button.ButtonStyle
 import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenu
 import io.github.ydwk.yde.interaction.message.selectmenu.types.*
 import io.github.ydwk.yde.interaction.message.selectmenu.types.string.StringSelectMenuOption
@@ -114,6 +117,12 @@ import io.github.ydwk.yde.rest.error.RestAPIException
 import io.github.ydwk.yde.util.*
 import java.awt.Color
 import java.net.URL
+
+//TODO: Where it says yde.getGuildById remove this and just give the id. The user should be able to get the guild by id themselves
+//TODO: Check every entity whith the discord documentation to see if there are any missing fields or any corrections that need to be made
+//TODO: Rewrite the hall interaction system
+//TODO: For YDWK rewrite the voice system with the new voice system
+//TODO: Add support for locale
 
 /** Used to build entities */
 class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
@@ -889,8 +898,26 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             if (json.has("width")) json["width"].asInt() else null)
     }
 
+
     override fun buildInteraction(json: JsonNode): Interaction {
-        TODO("Not yet implemented")
+       return InteractionImpl(
+           yde,
+           json,
+           json["id"].asLong(),
+           GetterSnowFlake.of(json["application_id"].asLong()),
+           InteractionType.getValue(json["type"].asInt()),
+           if (json.has("guild_id")) yde.getGuildById(json["guild_id"].asLong()) else null,
+           if (json.has("channel_id")) yde.getChannelById(json["channel_id"].asLong()) else null,
+           if (json.has("member")) buildMember(json["member"], yde.getGuildById(json["guild_id"].asLong())!!, null)
+           else null,
+           if (json.has("user")) buildUser(json["user"]) else if (json.has("member")) buildUser(json["member"]["user"]) else throw IllegalStateException("User is null"),
+           json["token"].asText(),
+           json["version"].asInt(),
+           if (json.has("message")) buildMessage(json["message"]) else null,
+           if (json.has("permissions")) json["permissions"].asLong() else null,
+           if (json.has("locale")) json["locale"].asText() else null,
+           if (json.has("guild_locale")) json["guild_locale"].asText() else null,
+       )
     }
 
     override fun buildComponentInteraction(
@@ -914,20 +941,56 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
         TODO("Not yet implemented")
     }
 
-    override fun buildTextInput(json: JsonNode): TextInput {
-        TODO("Not yet implemented")
+    override fun buildTextInput(json: JsonNode, interactionId: GetterSnowFlake): TextInput {
+        return TextInputImpl(
+            yde,
+            json,
+            interactionId,
+            json["custom_id"].asText(),
+            TextInput.TextInputStyle.getValue(json["style"].asInt()),
+            json["label"].asText(),
+            if (json.has("min_length")) json["min_length"].asInt() else null,
+            if (json.has("max_length")) json["max_length"].asInt() else null,
+            if (json.has("required")) json["required"].asBoolean() else false,
+            if (json.has("initial_value")) json["initial_value"].asText() else null,
+            if (json.has("placeholder")) json["placeholder"].asText() else null,
+        )
     }
 
     override fun buildSelectMenu(json: JsonNode, interactionId: GetterSnowFlake): SelectMenu {
-        TODO("Not yet implemented")
+        val customId = json["data"]["custom_id"].asText()
+        val componentJson = getComponentJson(json, customId)
+
+        return SelectMenuImpl(
+            yde,
+            json,
+            interactionId,
+            if (componentJson.has("placeholder")) componentJson["placeholder"].asText() else null,
+            componentJson["min_values"].asInt(),
+            componentJson["max_values"].asInt(),
+            json["data"]["values"].map { it.asText() },
+            componentJson["disabled"].asBoolean(),
+            customId)
     }
 
-    override fun buildButton(json: JsonNode): Button {
-        TODO("Not yet implemented")
+    override fun buildButton(json: JsonNode, interactionId: GetterSnowFlake): Button {
+        val customId = json["data"]["custom_id"].asText()
+        val componentJson = getComponentJson(json, customId)
+
+        return ButtonImpl(
+            yde,
+            json,
+            interactionId,
+            ButtonStyle.getValue(componentJson["style"].asInt()),
+            componentJson["label"].asText(),
+            customId,
+            if (componentJson.has("emoji")) buildEmoji(componentJson["emoji"]) else null,
+            if (componentJson.has("url")) URL(componentJson["url"].asText()) else null,
+            componentJson["disabled"].asBoolean())
     }
 
     override fun buildActionRow(json: JsonNode): ActionRow {
-        TODO("Not yet implemented")
+        return ActionRowImpl(yde, json, json["components"].map { buildComponent(it) })
     }
 
     override fun buildUserSelectMenu(json: JsonNode): UserSelectMenu {

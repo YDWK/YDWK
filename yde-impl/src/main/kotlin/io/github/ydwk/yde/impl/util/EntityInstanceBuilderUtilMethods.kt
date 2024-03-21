@@ -131,7 +131,7 @@ fun EntityInstanceBuilderImpl.getGuildAvatar(
     }
 }
 
-fun EntityInstanceBuilderImpl.checkType(node: JsonNode): Any? {
+fun checkType(node: JsonNode): Any? {
     return when {
         node.isTextual -> node.asText()
         node.isInt -> node.asInt()
@@ -140,4 +140,17 @@ fun EntityInstanceBuilderImpl.checkType(node: JsonNode): Any? {
         node.isDouble or node.isFloat -> node.asDouble()
         else -> null
     }
+}
+
+fun getComponentJson(json: JsonNode, customId: String): JsonNode {
+    val message = json["message"]
+    val mainComponents = message["components"]
+    for (mainComponent in mainComponents) {
+        val components = mainComponent["components"]
+        val component = components.find { it["custom_id"].asText() == customId }
+        if (component != null) {
+            return component
+        }
+    }
+    throw IllegalStateException("Component not found")
 }

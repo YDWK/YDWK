@@ -566,9 +566,10 @@ interface EntityInstanceBuilder {
      * Used to build an instance of [TextInput]
      *
      * @param json the json
+     * @param interactionId the interaction id
      * @return [TextInput] the text input
      */
-    fun buildTextInput(json: JsonNode): TextInput
+    fun buildTextInput(json: JsonNode,  interactionId: GetterSnowFlake): TextInput
 
     /**
      * Used to build an instance of [SelectMenu]
@@ -583,9 +584,10 @@ interface EntityInstanceBuilder {
      * Used to build an instance of [Button]
      *
      * @param json the json
+     * @param interactionId the interaction id
      * @return [Button] the button
      */
-    fun buildButton(json: JsonNode): Button
+    fun buildButton(json: JsonNode, interactionId: GetterSnowFlake): Button
 
     /**
      * Used to build an instance of [ActionRow]

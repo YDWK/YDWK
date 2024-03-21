@@ -41,43 +41,12 @@ open class ButtonImpl(
     override val emoji: Emoji?,
     override val url: URL?,
     override val disabled: Boolean,
+    override val type: ComponentType = ComponentType.BUTTON
 ) :
     Button,
     ComponentInteractionImpl(
         yde.entityInstanceBuilder.buildComponentInteraction(json, interactionId)
             as ComponentInteractionImpl) {
-
-    constructor(
-        componentInteractionImpl: ComponentInteractionImpl,
-        style: ButtonStyle,
-        label: String?,
-        customId: String?,
-        emoji: Emoji?,
-        url: URL?,
-        disabled: Boolean,
-    ) : this(
-        componentInteractionImpl.yde,
-        componentInteractionImpl.json,
-        componentInteractionImpl.interactionId,
-        style,
-        label,
-        customId,
-        emoji,
-        url,
-        disabled)
-
-    private val componentJson: JsonNode = run {
-        val message = yde.entityInstanceBuilder.buildMessage(json["message"]).json
-        val mainComponents = message["components"]
-        for (mainComponent in mainComponents) {
-            val components = mainComponent["components"]
-            val component = components.find { it["custom_id"].asText() == customId }
-            if (component != null) {
-                return@run component
-            }
-        }
-        throw IllegalStateException("Component not found")
-    }
 
     override fun reply(content: String): Reply {
         return ReplyImpl(yde, content, null, interactionId.asString, interactionToken)
@@ -86,7 +55,4 @@ open class ButtonImpl(
     override fun reply(embed: Embed): Reply {
         return ReplyImpl(yde, null, embed, interactionId.asString, interactionToken)
     }
-
-    override val type: ComponentType
-        get() = ComponentType.BUTTON
 }

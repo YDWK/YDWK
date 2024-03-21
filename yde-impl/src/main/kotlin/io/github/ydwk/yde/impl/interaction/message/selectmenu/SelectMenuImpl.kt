@@ -37,27 +37,12 @@ open class SelectMenuImpl(
     override val maxValues: Int,
     override val values: List<String>,
     override val isDisabled: Boolean,
+    override val customId: String,
 ) :
     SelectMenu,
     ComponentInteractionImpl(
         yde.entityInstanceBuilder.buildComponentInteraction(json, interactionId)
             as ComponentInteractionImpl) {
-    constructor(
-        componentInteractionImpl: ComponentInteractionImpl,
-        placeholder: String?,
-        minValues: Int,
-        maxValues: Int,
-        values: List<String>,
-        isDisabled: Boolean
-    ) : this(
-        componentInteractionImpl.yde,
-        componentInteractionImpl.json,
-        componentInteractionImpl.interactionId,
-        placeholder,
-        minValues,
-        maxValues,
-        values,
-        isDisabled)
 
     constructor(
         selectMenu: SelectMenu,
@@ -69,23 +54,8 @@ open class SelectMenuImpl(
         selectMenu.minValues,
         selectMenu.maxValues,
         selectMenu.values,
-        selectMenu.isDisabled)
-
-    override val customId: String
-        get() = json["data"]["custom_id"].asText()
-
-    protected val componentJson: JsonNode = run {
-        val message = yde.entityInstanceBuilder.buildMessage(json).json
-        val mainComponents = message["components"]
-        for (mainComponent in mainComponents) {
-            val components = mainComponent["components"]
-            val component = components.find { it["custom_id"].asText() == customId }
-            if (component != null) {
-                return@run component
-            }
-        }
-        throw IllegalStateException("Component not found")
-    }
+        selectMenu.isDisabled,
+        selectMenu.customId)
 
     override fun reply(content: String): Reply {
         return ReplyImpl(yde, content, null, interactionId.asString, interactionToken)
