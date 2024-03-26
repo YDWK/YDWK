@@ -16,19 +16,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.evm.event.events.interaction.button
+package io.github.ydwk.yde.entities.interaction.selectmenu.creator.types
 
-import io.github.ydwk.yde.entities.interaction.button.Button
-import io.github.ydwk.yde.interaction.message.button.ButtonInteraction
-import io.github.ydwk.ydwk.YDWK
-import io.github.ydwk.ydwk.evm.annotations.InteractionEvent
-import io.github.ydwk.ydwk.evm.event.Event
+import io.github.ydwk.yde.entities.interaction.selectmenu.creator.SelectMenuCreator
 
-/**
- * This event is triggered when a button is clicked.
- *
- * @param ydwk The [YDWK] instance.
- * @param button The [Button] that was clicked.
- */
-@InteractionEvent
-data class ButtonClickEvent(override val ydwk: YDWK, val button: ButtonInteraction) : Event(ydwk)
+interface RoleSelectMenuCreator : SelectMenuCreator

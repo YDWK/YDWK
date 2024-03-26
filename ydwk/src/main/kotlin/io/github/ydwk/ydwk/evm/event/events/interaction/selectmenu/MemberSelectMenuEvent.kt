@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.evm.event.events.interaction.selectmenu
 
-import io.github.ydwk.yde.interaction.message.selectmenu.types.MemberSelectMenu
+import io.github.ydwk.yde.interaction.message.selectmenu.interaction.type.MemberSelectMenuInteraction
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.evm.annotations.InteractionEvent
 import io.github.ydwk.ydwk.evm.event.Event
@@ -30,5 +30,5 @@ import io.github.ydwk.ydwk.evm.event.Event
  * @param selectMenu the [MemberSelectMenu] that is selected
  */
 @InteractionEvent
-data class MemberSelectMenuEvent(override val ydwk: YDWK, val selectMenu: MemberSelectMenu) :
+data class MemberSelectMenuEvent(override val ydwk: YDWK, val selectMenu: MemberSelectMenuInteraction) :
     Event(ydwk)

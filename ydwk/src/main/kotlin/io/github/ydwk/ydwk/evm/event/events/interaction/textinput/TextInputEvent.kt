@@ -18,7 +18,8 @@
  */ 
 package io.github.ydwk.ydwk.evm.event.events.interaction.textinput
 
-import io.github.ydwk.yde.interaction.message.textinput.TextInput
+import io.github.ydwk.yde.entities.interaction.textinput.TextInput
+import io.github.ydwk.yde.interaction.message.textinput.TextInputInteraction
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.evm.annotations.InteractionEvent
 import io.github.ydwk.ydwk.evm.event.Event
@@ -30,4 +31,4 @@ import io.github.ydwk.ydwk.evm.event.Event
  * @param textInput the [TextInput] that is submitted
  */
 @InteractionEvent
-data class TextInputEvent(override val ydwk: YDWK, val textInput: TextInput) : Event(ydwk)
+data class TextInputEvent(override val ydwk: YDWK, val textInput: TextInputInteraction) : Event(ydwk)

@@ -53,11 +53,11 @@ import io.github.ydwk.yde.interaction.application.type.UserCommand
 import io.github.ydwk.yde.interaction.message.ActionRow
 import io.github.ydwk.yde.interaction.message.Component
 import io.github.ydwk.yde.interaction.message.ComponentInteractionData
-import io.github.ydwk.yde.interaction.message.button.Button
-import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenu
-import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenuDefaultValues
-import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenuOption
-import io.github.ydwk.yde.interaction.message.textinput.TextInput
+import io.github.ydwk.yde.entities.interaction.button.Button
+import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenu
+import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenuDefaultValues
+import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenuOption
+import io.github.ydwk.yde.entities.interaction.textinput.TextInput
 import io.github.ydwk.yde.util.GetterSnowFlake
 import java.net.URL
 

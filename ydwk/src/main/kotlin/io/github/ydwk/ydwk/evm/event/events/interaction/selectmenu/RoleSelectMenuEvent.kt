@@ -18,7 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.evm.event.events.interaction.selectmenu
 
-import io.github.ydwk.yde.interaction.message.selectmenu.types.RoleSelectMenu
+import io.github.ydwk.yde.interaction.message.selectmenu.interaction.type.RoleSelectMenuInteraction
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.evm.annotations.InteractionEvent
 import io.github.ydwk.ydwk.evm.event.Event
@@ -30,5 +30,5 @@ import io.github.ydwk.ydwk.evm.event.Event
  * @param selectMenu the [RoleSelectMenu] that is selected
  */
 @InteractionEvent
-data class RoleSelectMenuEvent(override val ydwk: YDWK, val selectMenu: RoleSelectMenu) :
+data class RoleSelectMenuEvent(override val ydwk: YDWK, val selectMenu: RoleSelectMenuInteraction) :
     Event(ydwk)

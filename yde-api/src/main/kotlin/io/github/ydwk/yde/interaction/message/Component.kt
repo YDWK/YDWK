@@ -23,7 +23,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.util.GenericEntity
-import io.github.ydwk.yde.interaction.message.button.ButtonStyle
+import io.github.ydwk.yde.entities.interaction.ButtonStyle
 import io.github.ydwk.yde.util.Checks
 
 interface Component : GenericEntity {
@@ -69,20 +69,10 @@ interface Component : GenericEntity {
      */
     val children: List<Component>
 
-    interface ComponentCreator {
-        val yde: YDE
-
-        val objectNode: ObjectNode
-            get() = yde.objectNode
-
-        val arrayNode: ArrayNode
-            get() = yde.objectNode.arrayNode()
-    }
-
     data class ActionRowCreator(
-        val components: MutableList<ComponentCreator>,
-        override val yde: YDE,
-    ) : ComponentCreator {
+        val components: MutableList<ActionRowCreator>,
+        val yde: YDE,
+    )  {
         init {
             Checks.customCheck(
                 components.size <= 5, "Action row cannot have more than 5 components")
@@ -102,12 +92,12 @@ interface Component : GenericEntity {
     }
 
     data class ButtonCreator(
-        override val yde: YDE,
+        val yde: YDE,
         val style: ButtonStyle,
         val customId: String? = null,
         val label: String?,
         val url: String? = null
-    ) : ComponentCreator {
+    )  {
 
         init {
             if (style == ButtonStyle.LINK && url == null) {
