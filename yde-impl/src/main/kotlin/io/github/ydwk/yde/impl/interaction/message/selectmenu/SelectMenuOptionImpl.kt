@@ -16,15 +16,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.yde.impl.interaction.message.selectmenu.types.string
+package io.github.ydwk.yde.impl.interaction.message.selectmenu
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.Emoji
-import io.github.ydwk.yde.interaction.message.selectmenu.types.string.StringSelectMenuOption
-import io.github.ydwk.yde.util.EntityToStringBuilder
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
+import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenuOption
 
-class StringSelectMenuOptionImpl(
+class SelectMenuOptionImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val label: String,
@@ -32,8 +32,4 @@ class StringSelectMenuOptionImpl(
     override val description: String?,
     override val emoji: Emoji?,
     override val default: Boolean
-) : StringSelectMenuOption {
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).toString()
-    }
-}
+) : SelectMenuOption, ToStringEntityImpl<SelectMenuOption>(yde, SelectMenuOption::class.java)

@@ -16,12 +16,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.yde.interaction.message.selectmenu.types.string
+package io.github.ydwk.yde.interaction.message.selectmenu
 
+import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.Emoji
 import io.github.ydwk.yde.entities.util.GenericEntity
+import io.github.ydwk.yde.interaction.message.selectmenu.creator.builder.SelectMenuOptionCreatorBuilder
 
-interface StringSelectMenuOption : GenericEntity {
+interface SelectMenuOption : GenericEntity {
     /**
      * The label of the option. Max 100 characters
      *
@@ -59,22 +61,36 @@ interface StringSelectMenuOption : GenericEntity {
 
     companion object {
         /**
-         * Creates a new [StringSelectMenuOption] with the given [label] and [value].
+         * Creates a new select menu option.
          *
-         * @param label the label of the option
-         * @param value the value of the option
-         * @param description the description of the option
-         * @param emoji the emoji of the option
-         * @param default whether the option is default
-         * @return the created [StringSelectMenuOption]
+         * @param label The label of the option. Max 100 characters
+         * @param value The value of the option. Max 100 characters
+         * @param description The description of the option. Max 100 characters
+         * @param emoji The emoji of the option
+         * @param default Whether the option is default
+         * @return A new select menu option
          */
+        fun create(
+            yde: YDE,
+            label: String,
+            value: String,
+            description: String? = null,
+            emoji: Emoji? = null,
+            default: Boolean = false
+        ): SelectMenuOption {
+            val builder = SelectMenuOptionCreatorBuilder(yde)
 
-        // Disabled until rewrite is complete
-        // TODO: Re-enable once rewrite is complete
-        /**
-         * fun invoke( label: String, value: String, description: String? = null, emoji: Emoji? =
-         * null, default: Boolean = false ): StringSelectMenuOptionCreator { return
-         * StringSelectMenuOptionCreator( label, value, description, emoji, default) }
-         */
+            builder.setLabel(label)
+            builder.setValue(value)
+            if (description != null) {
+                builder.setDescription(description)
+            }
+            if (emoji != null) {
+                builder.setEmoji(emoji)
+            }
+            builder.setDefault(default)
+
+            return builder.create()
+        }
     }
 }

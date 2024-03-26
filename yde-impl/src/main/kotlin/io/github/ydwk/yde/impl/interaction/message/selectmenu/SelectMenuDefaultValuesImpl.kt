@@ -16,21 +16,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.yde.impl.interaction.message.selectmenu.types
+package io.github.ydwk.yde.impl.interaction.message.selectmenu
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
-import io.github.ydwk.yde.impl.interaction.message.selectmenu.SelectMenuImpl
-import io.github.ydwk.yde.interaction.message.selectmenu.types.StringSelectMenu
-import io.github.ydwk.yde.interaction.message.selectmenu.types.string.StringSelectMenuOption
-import io.github.ydwk.yde.util.GetterSnowFlake
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
+import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenuDefaultValues
 
-class StringSelectMenuImpl(
-    yde: YDE,
-    json: JsonNode,
-    interactionId: GetterSnowFlake,
-    override val options: List<StringSelectMenuOption>,
+class SelectMenuDefaultValuesImpl(
+    override val yde: YDE,
+    override val json: JsonNode,
+    override val type: SelectMenuDefaultValues.Type
 ) :
-    StringSelectMenu,
-    SelectMenuImpl(
-        yde.entityInstanceBuilder.buildSelectMenu(json, interactionId) as SelectMenuImpl)
+    SelectMenuDefaultValues,
+    ToStringEntityImpl<SelectMenuDefaultValues>(yde, SelectMenuDefaultValues::class.java)

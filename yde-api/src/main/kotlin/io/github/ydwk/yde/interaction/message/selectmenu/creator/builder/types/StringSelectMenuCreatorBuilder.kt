@@ -18,9 +18,29 @@
  */ 
 package io.github.ydwk.yde.interaction.message.selectmenu.creator.builder.types
 
-/**
- * data class StringSelectMenuCreatorBuilder( override val customId: String, val options:
- * List<StringSelectMenuOptionCreator>, ) : StringSelectMenuCreator,
- * SelectMenuCreatorBuilder(customId, ComponentType.STRING_SELECT_MENU) { init {
- * json.putArray("options").addAll(options.map { it.json }) } }
- */
+import com.fasterxml.jackson.databind.JsonNode
+import io.github.ydwk.yde.YDE
+import io.github.ydwk.yde.interaction.message.ComponentType
+import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenuOption
+import io.github.ydwk.yde.interaction.message.selectmenu.creator.builder.SelectMenuCreatorBuilder
+import io.github.ydwk.yde.interaction.message.selectmenu.creator.types.StringSelectMenuCreator
+
+data class StringSelectMenuCreatorBuilder(
+    override val yde: YDE,
+    override val customId: String,
+    val options: List<SelectMenuOption>
+) :
+    StringSelectMenuCreator,
+    SelectMenuCreatorBuilder(customId, ComponentType.STRING_SELECT_MENU, yde) {
+    init {
+        for (option in options) {
+            objectNode.putArray("options").addObject().apply {
+                put("label", option.label)
+                put("value", option.value)
+                put("description", option.description)
+                set<JsonNode>("emoji", option.emoji?.json)
+                put("default", option.default)
+            }
+        }
+    }
+}

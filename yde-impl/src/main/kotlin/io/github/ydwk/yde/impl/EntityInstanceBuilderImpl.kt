@@ -95,7 +95,9 @@ import io.github.ydwk.yde.impl.interaction.message.ComponentImpl
 import io.github.ydwk.yde.impl.interaction.message.ComponentInteractionDataImpl
 import io.github.ydwk.yde.impl.interaction.message.actionrow.ActionRowImpl
 import io.github.ydwk.yde.impl.interaction.message.button.ButtonImpl
+import io.github.ydwk.yde.impl.interaction.message.selectmenu.SelectMenuDefaultValuesImpl
 import io.github.ydwk.yde.impl.interaction.message.selectmenu.SelectMenuImpl
+import io.github.ydwk.yde.impl.interaction.message.selectmenu.SelectMenuOptionImpl
 import io.github.ydwk.yde.impl.interaction.message.textinput.TextInputImpl
 import io.github.ydwk.yde.impl.util.*
 import io.github.ydwk.yde.interaction.ComponentInteraction
@@ -112,8 +114,8 @@ import io.github.ydwk.yde.interaction.message.ComponentType
 import io.github.ydwk.yde.interaction.message.button.Button
 import io.github.ydwk.yde.interaction.message.button.ButtonStyle
 import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenu
-import io.github.ydwk.yde.interaction.message.selectmenu.types.*
-import io.github.ydwk.yde.interaction.message.selectmenu.types.string.StringSelectMenuOption
+import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenuDefaultValues
+import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenuOption
 import io.github.ydwk.yde.interaction.message.textinput.TextInput
 import io.github.ydwk.yde.interaction.sub.InteractionType
 import io.github.ydwk.yde.rest.error.RestAPIException
@@ -128,6 +130,7 @@ import java.net.URL
 // TODO: Rewrite the hall interaction system
 // TODO: For YDWK rewrite the voice system with the new voice system
 // TODO: Add support for locale
+// TODO: When having a list of enums make sure to use EnumSet instead of a list
 
 /** Used to build entities */
 class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
@@ -1008,16 +1011,25 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
         val customId = json["data"]["custom_id"].asText()
         val componentJson = getComponentJson(json, customId)
 
+        // TODO: make these optional
         return SelectMenuImpl(
             yde,
             json,
             interactionId,
             if (componentJson.has("placeholder")) componentJson["placeholder"].asText() else null,
-            componentJson["min_values"].asInt(),
-            componentJson["max_values"].asInt(),
-            json["data"]["values"].map { it.asText() },
-            componentJson["disabled"].asBoolean(),
-            customId)
+            if (componentJson.has("min_values")) componentJson["min_values"].asInt() else null,
+            if (componentJson.has("max_values")) componentJson["max_values"].asInt() else null,
+            if (componentJson.has("disabled")) componentJson["disabled"].asBoolean() else null,
+            customId,
+            if (componentJson.has("options"))
+                componentJson["options"].map { buildSelectMenuOption(it) }
+            else null,
+            if (componentJson.has("default_values"))
+                componentJson["default_values"].map { buildSelectMenuDefaultValues(it) }
+            else null,
+            if (componentJson.has("channel_types"))
+                componentJson["channel_types"].map { ChannelType.getValue(it.asInt()) }.toSet()
+            else null)
     }
 
     override fun buildButton(json: JsonNode, interactionId: GetterSnowFlake): Button {
@@ -1040,28 +1052,20 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
         return ActionRowImpl(yde, json, json["components"].map { buildComponent(it) })
     }
 
-    override fun buildUserSelectMenu(json: JsonNode): UserSelectMenu {
-        TODO("Not yet implemented")
+    override fun buildSelectMenuOption(json: JsonNode): SelectMenuOption {
+        return SelectMenuOptionImpl(
+            yde,
+            json,
+            json["label"].asText(),
+            json["value"].asText(),
+            if (json.has("description")) json["description"].asText() else null,
+            if (json.has("emoji")) buildEmoji(json["emoji"]) else null,
+            if (json.has("default")) json["default"].asBoolean() else false)
     }
 
-    override fun buildStringSelectMenu(json: JsonNode): StringSelectMenu {
-        TODO("Not yet implemented")
-    }
-
-    override fun buildRoleSelectMenu(json: JsonNode): RoleSelectMenu {
-        TODO("Not yet implemented")
-    }
-
-    override fun buildMemberSelectMenu(json: JsonNode): MemberSelectMenu {
-        TODO("Not yet implemented")
-    }
-
-    override fun buildChannelSelectMenu(json: JsonNode): ChannelSelectMenu {
-        TODO("Not yet implemented")
-    }
-
-    override fun buildStringSelectMenuOption(json: JsonNode): StringSelectMenuOption {
-        TODO("Not yet implemented")
+    override fun buildSelectMenuDefaultValues(json: JsonNode): SelectMenuDefaultValues {
+        return SelectMenuDefaultValuesImpl(
+            yde, json, SelectMenuDefaultValues.Type.getValue(json["type"].asText()))
     }
 
     override fun buildApplicationCommand(json: JsonNode): ApplicationCommand {

@@ -20,42 +20,35 @@ package io.github.ydwk.yde.impl.interaction.message.selectmenu
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
+import io.github.ydwk.yde.entities.channel.enums.ChannelType
 import io.github.ydwk.yde.entities.message.Embed
 import io.github.ydwk.yde.impl.interaction.ComponentInteractionImpl
 import io.github.ydwk.yde.impl.interaction.application.sub.ReplyImpl
 import io.github.ydwk.yde.interaction.application.sub.Reply
 import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenu
+import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenuDefaultValues
+import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenuOption
 import io.github.ydwk.yde.interaction.message.selectmenu.creator.types.*
 import io.github.ydwk.yde.util.GetterSnowFlake
+import java.util.*
 
 open class SelectMenuImpl(
     yde: YDE,
     json: JsonNode,
     interactionId: GetterSnowFlake,
     override val placeholder: String?,
-    override val minValues: Int,
-    override val maxValues: Int,
-    override val values: List<String>,
-    override val isDisabled: Boolean,
+    override val minValues: Int?,
+    override val maxValues: Int?,
+    override val isDisabled: Boolean?,
     override val customId: String,
+    override val options: List<SelectMenuOption>?,
+    override val defaultValues: List<SelectMenuDefaultValues>?,
+    override val channelTypes: Set<ChannelType>?,
 ) :
     SelectMenu,
     ComponentInteractionImpl(
         yde.entityInstanceBuilder.buildComponentInteraction(json, interactionId)
             as ComponentInteractionImpl) {
-
-    constructor(
-        selectMenu: SelectMenu,
-    ) : this(
-        selectMenu.yde,
-        selectMenu.json,
-        selectMenu.interactionId,
-        selectMenu.placeholder,
-        selectMenu.minValues,
-        selectMenu.maxValues,
-        selectMenu.values,
-        selectMenu.isDisabled,
-        selectMenu.customId)
 
     override fun reply(content: String): Reply {
         return ReplyImpl(yde, content, null, interactionId.asString, interactionToken)

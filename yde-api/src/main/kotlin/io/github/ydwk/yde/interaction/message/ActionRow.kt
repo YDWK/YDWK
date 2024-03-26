@@ -18,6 +18,7 @@
  */ 
 package io.github.ydwk.yde.interaction.message
 
+import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.util.Checks
 
 interface ActionRow : Component {
@@ -45,13 +46,14 @@ interface ActionRow : Component {
          * ```
          *
          * @param components The components to add to the action row.
-         * @return [ComponentImpl.ComponentCreator] which contains the json representation of the
-         *   action row.
+         * @return [Component.ComponentCreator] which contains the json representation of the action
+         *   row.
          */
         operator fun invoke(
+            yde: YDE,
             vararg components: Component.ComponentCreator
         ): Component.ComponentCreator {
-            return invoke(components.toList())
+            return invoke(yde, components.toList())
         }
 
         /**
@@ -69,14 +71,15 @@ interface ActionRow : Component {
          * ```
          *
          * @param components The components to add to the action row.
-         * @return [ComponentImpl.ComponentCreator] which contains the json representation of the
-         *   action row.
+         * @return [Component.ComponentCreator] which contains the json representation of the action
+         *   row.
          */
         operator fun invoke(
+            yde: YDE,
             components: List<Component.ComponentCreator>
         ): Component.ComponentCreator {
             Checks.customCheck(components.size <= 5, "Action row can only have 5 components.")
-            return Component.ActionRowCreator(components.toMutableList())
+            return Component.ActionRowCreator(components.toMutableList(), yde)
         }
     }
 }

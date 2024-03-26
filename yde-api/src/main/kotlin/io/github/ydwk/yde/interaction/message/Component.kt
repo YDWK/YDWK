@@ -18,10 +18,10 @@
  */ 
 package io.github.ydwk.yde.interaction.message
 
-import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
+import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.util.GenericEntity
 import io.github.ydwk.yde.interaction.message.button.ButtonStyle
 import io.github.ydwk.yde.util.Checks
@@ -70,35 +70,43 @@ interface Component : GenericEntity {
     val children: List<Component>
 
     interface ComponentCreator {
-        val json: JsonNode
+        val yde: YDE
+
+        val objectNode: ObjectNode
+            get() = yde.objectNode
+
+        val arrayNode: ArrayNode
+            get() = yde.objectNode.arrayNode()
     }
 
     data class ActionRowCreator(
         val components: MutableList<ComponentCreator>,
-        override val json: ArrayNode = JsonNodeFactory.instance.arrayNode(),
+        override val yde: YDE,
     ) : ComponentCreator {
         init {
             Checks.customCheck(
                 components.size <= 5, "Action row cannot have more than 5 components")
 
-            json.add(
+            val actionRowJson =
                 JsonNodeFactory.instance
                     .objectNode()
                     .put("type", 1)
-                    .set(
+                    .set<ObjectNode>(
                         "components",
                         JsonNodeFactory.instance.arrayNode().apply {
-                            components.forEach { add(it.json) }
-                        }) as JsonNode)
+                            components.forEach { add(it.objectNode) }
+                        })
+
+            arrayNode.add(actionRowJson)
         }
     }
 
     data class ButtonCreator(
+        override val yde: YDE,
         val style: ButtonStyle,
         val customId: String? = null,
         val label: String?,
-        val url: String? = null,
-        override val json: ObjectNode = JsonNodeFactory.instance.objectNode(),
+        val url: String? = null
     ) : ComponentCreator {
 
         init {
@@ -108,13 +116,13 @@ interface Component : GenericEntity {
                 throw IllegalArgumentException("Non-url button must not have a url")
             }
 
-            json.put("type", ComponentType.BUTTON.getType())
-            json.put("style", style.getType())
-            json.put("label", label)
+            objectNode.put("type", ComponentType.BUTTON.getType())
+            objectNode.put("style", style.getType())
+            objectNode.put("label", label)
             if (url != null) {
-                json.put("url", url)
+                objectNode.put("url", url)
             }
-            json.put("custom_id", customId)
+            objectNode.put("custom_id", customId)
         }
     }
 }

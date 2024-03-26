@@ -18,8 +18,7 @@
  */ 
 package io.github.ydwk.yde.interaction.message.textinput.creator.builder
 
-import com.fasterxml.jackson.databind.node.JsonNodeFactory
-import com.fasterxml.jackson.databind.node.ObjectNode
+import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.interaction.message.Component
 import io.github.ydwk.yde.interaction.message.ComponentType
 import io.github.ydwk.yde.interaction.message.textinput.TextInput
@@ -30,7 +29,7 @@ data class TextInputCreatorBuilder(
     val customId: String,
     val style: TextInput.TextInputStyle,
     val label: String,
-    override val json: ObjectNode = JsonNodeFactory.instance.objectNode(),
+    override val yde: YDE,
 ) : TextInputCreator, Component.ComponentCreator {
     private var minLength: Int? = null
     private var maxLength: Int? = null
@@ -68,15 +67,15 @@ data class TextInputCreatorBuilder(
     }
 
     override fun create(): Component.ComponentCreator {
-        json.put("type", ComponentType.TEXT_INPUT.getType())
-        json.put("custom_id", customId)
-        json.put("label", label)
-        json.put("style", style.getValue())
-        minLength?.let { json.put("min_length", it) }
-        maxLength?.let { json.put("max_length", it) }
-        required?.let { json.put("required", it) }
-        initialValue?.let { json.put("initial_value", it) }
-        placeholder?.let { json.put("placeholder", it) }
+        objectNode.put("type", ComponentType.TEXT_INPUT.getType())
+        objectNode.put("custom_id", customId)
+        objectNode.put("label", label)
+        objectNode.put("style", style.getValue())
+        minLength?.let { objectNode.put("min_length", it) }
+        maxLength?.let { objectNode.put("max_length", it) }
+        required?.let { objectNode.put("required", it) }
+        initialValue?.let { objectNode.put("initial_value", it) }
+        placeholder?.let { objectNode.put("placeholder", it) }
         return this
     }
 }

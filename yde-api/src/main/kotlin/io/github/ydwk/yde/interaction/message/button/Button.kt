@@ -18,6 +18,7 @@
  */ 
 package io.github.ydwk.yde.interaction.message.button
 
+import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.Emoji
 import io.github.ydwk.yde.interaction.ComponentInteraction
 import io.github.ydwk.yde.interaction.message.Component
@@ -80,6 +81,7 @@ interface Button : ComponentInteraction, Repliable {
          *   button.
          */
         operator fun invoke(
+            yde: YDE,
             style: ButtonStyle,
             customId: String,
             label: String?
@@ -87,7 +89,7 @@ interface Button : ComponentInteraction, Repliable {
             Checks.customCheck(
                 label != null && label.length <= 80,
                 "Label must be between 1 and 80 characters long.")
-            return Component.ButtonCreator(style, customId, label)
+            return Component.ButtonCreator(yde, style, customId, label)
         }
 
         /**
@@ -100,7 +102,7 @@ interface Button : ComponentInteraction, Repliable {
          * @throws IllegalArgumentException if the label is null or longer than 80 characters, or if
          *   the URL is not a valid HTTPS URL.
          */
-        operator fun invoke(label: String?, url: String): Component.ComponentCreator {
+        operator fun invoke(yde: YDE, label: String?, url: String): Component.ComponentCreator {
             // Check label length
             requireNotNull(label) { "Label must not be null" }
             require(label.length in 1..80) { "Label must be between 1 and 80 characters long." }
@@ -108,7 +110,7 @@ interface Button : ComponentInteraction, Repliable {
             // Check if URL is a valid HTTPS URL
             require(url.startsWith("https://")) { "URL must start with 'https://'." }
 
-            return Component.ButtonCreator(ButtonStyle.LINK, null, label, url)
+            return Component.ButtonCreator(yde, ButtonStyle.LINK, null, label, url)
         }
     }
 }

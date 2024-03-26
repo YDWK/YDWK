@@ -25,10 +25,10 @@ import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.Message
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.guild.Member
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.interaction.Interaction
 import io.github.ydwk.yde.interaction.application.ApplicationCommand
 import io.github.ydwk.yde.interaction.sub.InteractionType
-import io.github.ydwk.yde.util.EntityToStringBuilder
 import io.github.ydwk.yde.util.GetterSnowFlake
 
 abstract class ApplicationCommandImpl(
@@ -36,44 +36,19 @@ abstract class ApplicationCommandImpl(
     override val json: JsonNode,
     override val idAsLong: Long,
     val interaction: Interaction,
-) : ApplicationCommand {
-
-    override val name: String
-        get() = json["name"].asText()
-
-    override val description: String
-        get() = json["description"].asText()
-
-    override val isDmPermissions: Boolean?
-        get() = if (json.has("dm_permission")) json["dm_permission"].asBoolean() else null
-
-    override val isNsfw: Boolean?
-        get() = if (json.has("nsfw")) json["nsfw"].asBoolean() else null
-
-    override val guild: Guild? = interaction.guild
-
-    override val targetId: GetterSnowFlake?
-        get() = if (json.has("target_id")) GetterSnowFlake.of(json["target_id"].asLong()) else null
-
-    override val user: User = interaction.user
-
-    override val member: Member? = interaction.member
-
-    override val applicationId: GetterSnowFlake = interaction.applicationId
-
-    override val interactionType: InteractionType = interaction.type
-
-    override val channel: Channel? = interaction.channel
-
-    override val token: String = interaction.token
-
-    override val version: Int = interaction.version
-
-    override val message: Message? = interaction.message
-
-    override val permissions: Long? = interaction.permissions
-
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).name(this.name).toString()
-    }
-}
+    override val applicationId: GetterSnowFlake,
+    override val guild: Guild?,
+    override val name: String,
+    override val description: String,
+    override val isDmPermissions: Boolean?,
+    override val isNsfw: Boolean?,
+    override val version: Int,
+    override val targetId: GetterSnowFlake?,
+    override val user: User,
+    override val member: Member?,
+    override val interactionType: InteractionType,
+    override val channel: Channel?,
+    override val token: String,
+    override val message: Message?,
+    override val permissions: Long?,
+) : ApplicationCommand, ToStringEntityImpl<ApplicationCommand>(yde, ApplicationCommand::class.java)

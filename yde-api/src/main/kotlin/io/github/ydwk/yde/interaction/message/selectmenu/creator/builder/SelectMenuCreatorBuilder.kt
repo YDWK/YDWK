@@ -18,8 +18,7 @@
  */ 
 package io.github.ydwk.yde.interaction.message.selectmenu.creator.builder
 
-import com.fasterxml.jackson.databind.node.JsonNodeFactory
-import com.fasterxml.jackson.databind.node.ObjectNode
+import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.interaction.message.ComponentType
 import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenu
 import io.github.ydwk.yde.interaction.message.selectmenu.creator.SelectMenuCreator
@@ -27,7 +26,7 @@ import io.github.ydwk.yde.interaction.message.selectmenu.creator.SelectMenuCreat
 open class SelectMenuCreatorBuilder(
     open val customId: String,
     private val componentType: ComponentType,
-    override val json: ObjectNode = JsonNodeFactory.instance.objectNode(),
+    override val yde: YDE
 ) : SelectMenu.ISelectMenuCreator, SelectMenuCreator {
     private var placeholder: String? = null
     private var minValues: Int? = null
@@ -55,12 +54,12 @@ open class SelectMenuCreatorBuilder(
     }
 
     override fun create(): SelectMenu.ISelectMenuCreator {
-        json.put("type", componentType.getType())
-        json.put("custom_id", customId)
-        if (placeholder != null) json.put("placeholder", placeholder)
-        if (minValues != null) json.put("min_values", minValues)
-        if (maxValues != null) json.put("max_values", maxValues)
-        json.put("disabled", disabled)
+        objectNode.put("type", componentType.getType())
+        objectNode.put("custom_id", customId)
+        if (placeholder != null) objectNode.put("placeholder", placeholder)
+        if (minValues != null) objectNode.put("min_values", minValues)
+        if (maxValues != null) objectNode.put("max_values", maxValues)
+        objectNode.put("disabled", disabled)
         return this
     }
 }

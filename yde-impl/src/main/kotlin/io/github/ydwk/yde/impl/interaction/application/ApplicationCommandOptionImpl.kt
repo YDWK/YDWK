@@ -21,24 +21,17 @@ package io.github.ydwk.yde.impl.interaction.application
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.builders.slash.SlashOptionType
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.interaction.application.ApplicationCommandOption
-import io.github.ydwk.yde.util.EntityToStringBuilder
 
-class ApplicationCommandOptionImpl(override val yde: YDE, override val json: JsonNode) :
-    ApplicationCommandOption {
-    override var name: String = json["name"].asText()
-
-    override val type: SlashOptionType = SlashOptionType.fromInt(json["type"].asInt())
-
-    override val value: JsonNode = json["value"]
-
-    override val options: List<ApplicationCommandOption> =
-        if (json.has("options")) json["options"].map { ApplicationCommandOptionImpl(yde, it) }
-        else emptyList()
-
-    override val focused: Boolean? = if (json.has("focused")) json["focused"].asBoolean() else null
-
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).name(this.name).toString()
-    }
-}
+class ApplicationCommandOptionImpl(
+    override val yde: YDE,
+    override val json: JsonNode,
+    override var name: String,
+    override val type: SlashOptionType,
+    override val value: JsonNode,
+    override val options: List<ApplicationCommandOption>,
+    override val focused: Boolean?
+) :
+    ApplicationCommandOption,
+    ToStringEntityImpl<ApplicationCommandOption>(yde, ApplicationCommandOption::class.java)

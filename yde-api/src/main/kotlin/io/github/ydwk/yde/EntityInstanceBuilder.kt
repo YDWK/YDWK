@@ -55,8 +55,8 @@ import io.github.ydwk.yde.interaction.message.Component
 import io.github.ydwk.yde.interaction.message.ComponentInteractionData
 import io.github.ydwk.yde.interaction.message.button.Button
 import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenu
-import io.github.ydwk.yde.interaction.message.selectmenu.types.*
-import io.github.ydwk.yde.interaction.message.selectmenu.types.string.StringSelectMenuOption
+import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenuDefaultValues
+import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenuOption
 import io.github.ydwk.yde.interaction.message.textinput.TextInput
 import io.github.ydwk.yde.util.GetterSnowFlake
 import java.net.URL
@@ -597,55 +597,21 @@ interface EntityInstanceBuilder {
      */
     fun buildActionRow(json: JsonNode): ActionRow
 
-    // SelectMenu entities
-
     /**
-     * Used to build an instance of [UserSelectMenu]
+     * Used to build an instance of [SelectMenuOption]
      *
      * @param json the json
-     * @return [UserSelectMenu] the user select menu
+     * @return [SelectMenuOption] the string select menu option
      */
-    fun buildUserSelectMenu(json: JsonNode): UserSelectMenu
+    fun buildSelectMenuOption(json: JsonNode): SelectMenuOption
 
     /**
-     * Used to build an instance of [StringSelectMenu]
+     * Used to build an instance of [SelectMenuDefaultValues]
      *
      * @param json the json
-     * @return [StringSelectMenu] the string select menu
+     * @return [SelectMenuDefaultValues] the select menu default values
      */
-    fun buildStringSelectMenu(json: JsonNode): StringSelectMenu
-
-    /**
-     * Used to build an instance of [RoleSelectMenu]
-     *
-     * @param json the json
-     * @return [RoleSelectMenu] the role select menu
-     */
-    fun buildRoleSelectMenu(json: JsonNode): RoleSelectMenu
-
-    /**
-     * Used to build an instance of [MemberSelectMenu]
-     *
-     * @param json the json
-     * @return [MemberSelectMenu] the member select menu
-     */
-    fun buildMemberSelectMenu(json: JsonNode): MemberSelectMenu
-
-    /**
-     * Used to build an instance of [ChannelSelectMenu]
-     *
-     * @param json the json
-     * @return [ChannelSelectMenu] the channel select menu
-     */
-    fun buildChannelSelectMenu(json: JsonNode): ChannelSelectMenu
-
-    /**
-     * Used to build an instance of [StringSelectMenuOption]
-     *
-     * @param json the json
-     * @return [StringSelectMenuOption] the string select menu option
-     */
-    fun buildStringSelectMenuOption(json: JsonNode): StringSelectMenuOption
+    fun buildSelectMenuDefaultValues(json: JsonNode): SelectMenuDefaultValues
 
     // Application Command entities
 

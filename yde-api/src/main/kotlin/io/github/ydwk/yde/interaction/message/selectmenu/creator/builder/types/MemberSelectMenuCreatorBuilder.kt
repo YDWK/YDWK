@@ -18,12 +18,14 @@
  */ 
 package io.github.ydwk.yde.interaction.message.selectmenu.creator.builder.types
 
+import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.interaction.message.ComponentType
 import io.github.ydwk.yde.interaction.message.selectmenu.creator.builder.SelectMenuCreatorBuilder
 import io.github.ydwk.yde.interaction.message.selectmenu.creator.types.MemberSelectMenuCreator
 
 data class MemberSelectMenuCreatorBuilder(
+    override val yde: YDE,
     override val customId: String,
 ) :
     MemberSelectMenuCreator,
-    SelectMenuCreatorBuilder(customId, ComponentType.MENTIONABLE_SELECT_MENU)
+    SelectMenuCreatorBuilder(customId, ComponentType.MENTIONABLE_SELECT_MENU, yde)
