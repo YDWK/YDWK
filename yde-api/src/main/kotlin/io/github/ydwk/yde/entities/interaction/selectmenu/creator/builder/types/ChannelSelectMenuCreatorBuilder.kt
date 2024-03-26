@@ -33,7 +33,7 @@ data class ChannelSelectMenuCreatorBuilder(
     SelectMenuCreatorBuilder(customId, ComponentType.CHANNEL_SELECT_MENU, yde) {
     init {
         for (channelType in channelTypes) {
-            objectNode.putArray("channel_types").add(channelType.getId())
+            json.putArray("channel_types").add(channelType.getId())
         }
     }
 }

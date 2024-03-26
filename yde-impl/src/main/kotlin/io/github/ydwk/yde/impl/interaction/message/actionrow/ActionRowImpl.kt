@@ -21,8 +21,8 @@ package io.github.ydwk.yde.impl.interaction.message.actionrow
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.impl.interaction.message.ComponentImpl
-import io.github.ydwk.yde.interaction.message.ActionRow
-import io.github.ydwk.yde.interaction.message.Component
+import io.github.ydwk.yde.entities.interaction.actionrow.ActionRow
+import io.github.ydwk.yde.entities.interaction.Component
 
 open class ActionRowImpl(yde: YDE, json: JsonNode, override val components: List<Component>) :
     ActionRow, ComponentImpl(yde.entityInstanceBuilder.buildComponent(json))

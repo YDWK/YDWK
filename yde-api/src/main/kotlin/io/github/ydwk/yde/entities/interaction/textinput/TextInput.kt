@@ -19,12 +19,13 @@
 package io.github.ydwk.yde.entities.interaction.textinput
 
 import io.github.ydwk.yde.YDE
+import io.github.ydwk.yde.entities.interaction.Component
 import io.github.ydwk.yde.interaction.ComponentInteraction
 import io.github.ydwk.yde.entities.interaction.textinput.creator.TextInputCreator
 import io.github.ydwk.yde.entities.interaction.textinput.builder.TextInputCreatorBuilder
 import io.github.ydwk.yde.interaction.reply.Repliable
 
-interface TextInput {
+interface TextInput : Component {
     /**
      * The custom id of the select menu.
      *
@@ -114,7 +115,7 @@ interface TextInput {
          * @param label the label of the text input
          * @return [TextInputCreator] to construct the text input
          */
-        operator fun invoke(
+        fun createTextInput(
             yde: YDE,
             customId: String,
             style: TextInputStyle,

@@ -19,7 +19,6 @@
 package io.github.ydwk.yde.entities.interaction.textinput.builder
 
 import io.github.ydwk.yde.YDE
-import io.github.ydwk.yde.interaction.message.Component
 import io.github.ydwk.yde.interaction.message.ComponentType
 import io.github.ydwk.yde.entities.interaction.textinput.TextInput
 import io.github.ydwk.yde.entities.interaction.textinput.creator.TextInputCreator
@@ -29,8 +28,8 @@ data class TextInputCreatorBuilder(
     val customId: String,
     val style: TextInput.TextInputStyle,
     val label: String,
-    override val yde: YDE,
-) : TextInputCreator, Component.ComponentCreator {
+    val yde: YDE,
+) : TextInputCreator {
     private var minLength: Int? = null
     private var maxLength: Int? = null
     private var required: Boolean? = null
@@ -66,7 +65,8 @@ data class TextInputCreatorBuilder(
         return this
     }
 
-    override fun create(): Component.ComponentCreator {
+    override fun create(): TextInput {
+        val objectNode = yde.objectMapper.createObjectNode()
         objectNode.put("type", ComponentType.TEXT_INPUT.getType())
         objectNode.put("custom_id", customId)
         objectNode.put("label", label)
@@ -76,6 +76,6 @@ data class TextInputCreatorBuilder(
         required?.let { objectNode.put("required", it) }
         initialValue?.let { objectNode.put("initial_value", it) }
         placeholder?.let { objectNode.put("placeholder", it) }
-        return this
+        return yde.entityInstanceBuilder.buildTextInput(objectNode)
     }
 }

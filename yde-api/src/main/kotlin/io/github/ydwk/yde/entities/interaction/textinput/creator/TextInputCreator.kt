@@ -19,7 +19,6 @@
 package io.github.ydwk.yde.entities.interaction.textinput.creator
 
 import io.github.ydwk.yde.entities.interaction.textinput.TextInput
-import io.github.ydwk.yde.interaction.message.Component
 
 interface TextInputCreator {
 

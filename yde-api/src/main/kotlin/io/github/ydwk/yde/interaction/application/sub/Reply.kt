@@ -19,8 +19,8 @@
 package io.github.ydwk.yde.interaction.application.sub
 
 import io.github.ydwk.yde.entities.message.MessageFlag
-import io.github.ydwk.yde.interaction.message.ActionRow
-import io.github.ydwk.yde.interaction.message.Component
+import io.github.ydwk.yde.entities.interaction.actionrow.ActionRow
+import io.github.ydwk.yde.entities.interaction.Component
 import io.github.ydwk.yde.rest.RestResult
 import io.github.ydwk.yde.rest.result.NoResult
 

@@ -20,10 +20,9 @@ package io.github.ydwk.yde.entities.interaction.button
 
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.Emoji
-import io.github.ydwk.yde.interaction.message.Component
 import io.github.ydwk.yde.entities.interaction.ButtonStyle
-import io.github.ydwk.yde.interaction.reply.Repliable
-import io.github.ydwk.yde.util.Checks
+import io.github.ydwk.yde.entities.interaction.button.creator.ButtonCreator
+import io.github.ydwk.yde.entities.interaction.button.creator.builder.ButtonCreatorBuilder
 import java.net.URL
 
 interface Button {
@@ -72,45 +71,16 @@ interface Button {
 
     companion object {
         /**
-         * Creates a new [Button] with the specified [style], [customId] and [label].
+         * Creates a [ButtonCreator] for a button with the given [style].
          *
          * @param style The style of the button.
-         * @param customId The custom id of the button.
-         * @param label The label of the button. (Max 80 characters)
-         * @return [ComponentImpl.ComponentCreator] which contains the json representation of the
-         *   button.
+         * @return The [ButtonCreator] for chaining.
          */
-        operator fun invoke(
+        fun createButton(
             yde: YDE,
             style: ButtonStyle,
-            customId: String,
-            label: String?
-        ): Component.ComponentCreator {
-            Checks.customCheck(
-                label != null && label.length <= 80,
-                "Label must be between 1 and 80 characters long.")
-            return Component.ButtonCreator(yde, style, customId, label)
-        }
-
-        /**
-         * Creates a new [Button] with the specified [label] and [url] (for [ButtonStyle.LINK]).
-         *
-         * @param label The label of the button. (Max 80 characters)
-         * @param url The URL of the button.
-         * @return [ComponentImpl.ComponentCreator] which contains the JSON representation of the
-         *   button.
-         * @throws IllegalArgumentException if the label is null or longer than 80 characters, or if
-         *   the URL is not a valid HTTPS URL.
-         */
-        operator fun invoke(yde: YDE, label: String?, url: String): Component.ComponentCreator {
-            // Check label length
-            requireNotNull(label) { "Label must not be null" }
-            require(label.length in 1..80) { "Label must be between 1 and 80 characters long." }
-
-            // Check if URL is a valid HTTPS URL
-            require(url.startsWith("https://")) { "URL must start with 'https://'." }
-
-            return Component.ButtonCreator(yde, ButtonStyle.LINK, null, label, url)
+        ): ButtonCreator {
+            return ButtonCreatorBuilder(style, yde)
         }
     }
 }

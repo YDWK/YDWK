@@ -21,7 +21,7 @@ package io.github.ydwk.yde.impl.interaction.message
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
-import io.github.ydwk.yde.interaction.message.Component
+import io.github.ydwk.yde.entities.interaction.Component
 import io.github.ydwk.yde.interaction.message.ComponentType
 
 open class ComponentImpl(

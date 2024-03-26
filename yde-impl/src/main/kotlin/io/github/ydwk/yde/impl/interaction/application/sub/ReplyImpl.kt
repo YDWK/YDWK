@@ -24,7 +24,7 @@ import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.message.Embed
 import io.github.ydwk.yde.entities.message.MessageFlag
 import io.github.ydwk.yde.interaction.application.sub.Reply
-import io.github.ydwk.yde.interaction.message.Component
+import io.github.ydwk.yde.entities.interaction.Component
 import io.github.ydwk.yde.interaction.sub.InteractionCallbackType
 import io.github.ydwk.yde.rest.EndPoint
 import io.github.ydwk.yde.rest.RestResult

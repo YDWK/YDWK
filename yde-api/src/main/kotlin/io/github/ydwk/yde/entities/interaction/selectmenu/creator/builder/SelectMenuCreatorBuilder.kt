@@ -18,6 +18,7 @@
  */ 
 package io.github.ydwk.yde.entities.interaction.selectmenu.creator.builder
 
+import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.interaction.message.ComponentType
 import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenu
@@ -26,7 +27,8 @@ import io.github.ydwk.yde.entities.interaction.selectmenu.creator.SelectMenuCrea
 open class SelectMenuCreatorBuilder(
     open val customId: String,
     private val componentType: ComponentType,
-    val yde: YDE
+    open val yde: YDE,
+    val json: ObjectNode = yde.objectNode
 ) : SelectMenuCreator {
     private var placeholder: String? = null
     private var minValues: Int? = null
@@ -54,8 +56,6 @@ open class SelectMenuCreatorBuilder(
     }
 
     override fun create(): SelectMenu {
-        val json = yde.objectNode
-
         json.put("type", componentType.getType())
         json.put("custom_id", customId)
         if (placeholder != null) json.put("placeholder", placeholder)

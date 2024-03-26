@@ -34,7 +34,7 @@ data class StringSelectMenuCreatorBuilder(
     SelectMenuCreatorBuilder(customId, ComponentType.STRING_SELECT_MENU, yde) {
     init {
         for (option in options) {
-            objectNode.putArray("options").addObject().apply {
+            json.putArray("options").addObject().apply {
                 put("label", option.label)
                 put("value", option.value)
                 put("description", option.description)

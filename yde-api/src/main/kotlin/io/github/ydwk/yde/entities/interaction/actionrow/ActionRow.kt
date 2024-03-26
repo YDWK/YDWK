@@ -16,9 +16,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.yde.interaction.message
+package io.github.ydwk.yde.entities.interaction.actionrow
 
 import io.github.ydwk.yde.YDE
+import io.github.ydwk.yde.entities.interaction.Component
+import io.github.ydwk.yde.entities.interaction.actionrow.creator.ActionRowCreator
+import io.github.ydwk.yde.entities.interaction.actionrow.creator.builder.ActionRowCreatorBuilder
 import io.github.ydwk.yde.util.Checks
 
 interface ActionRow : Component {
@@ -37,7 +40,7 @@ interface ActionRow : Component {
          * Example:
          * ```
          *
-         * val actionRow = ActionRow.invoke(Button.invoke(ButtonStyle.PRIMARY, "1", "Primary"))
+         * val actionRow = ActionRow.createActionRow(Button.createButton(ButtonStyle.PRIMARY, "1", "Primary"))
          *
          * it.slash
          *        .reply("This is a button test!")
@@ -46,40 +49,21 @@ interface ActionRow : Component {
          * ```
          *
          * @param components The components to add to the action row.
-         * @return [Component.ComponentCreator] which contains the json representation of the action
-         *   row.
+         * @return [ActionRowCreator] used to create the action row.
          */
-        operator fun invoke(
+        fun createActionRow(
             yde: YDE,
-            vararg components: Component.ComponentCreator
-        ): Component.ComponentCreator {
-            return invoke(yde, components.toList())
+            vararg components: Component
+        ): ActionRowCreator {
+            return createActionRow(yde, components.toList())
         }
 
-        /**
-         * Creates a new action row with the given components. max 5 components per action row.
-         *
-         * Example:
-         * ```
-         *
-         * val actionRow = ActionRow.invoke(Button.invoke(ButtonStyle.PRIMARY, "1", "Primary"))
-         *
-         * it.slash
-         *        .reply("This is a button test!")
-         *        .addActionRow(actionRow)
-         *        .reply()
-         * ```
-         *
-         * @param components The components to add to the action row.
-         * @return [Component.ComponentCreator] which contains the json representation of the action
-         *   row.
-         */
-        operator fun invoke(
+        fun createActionRow(
             yde: YDE,
-            components: List<Component.ComponentCreator>
-        ): Component.ComponentCreator {
+            components: List<Component>
+        ): ActionRowCreator {
             Checks.customCheck(components.size <= 5, "Action row can only have 5 components.")
-            return Component.ActionRowCreator(components.toMutableList(), yde)
+            return ActionRowCreatorBuilder(yde, components)
         }
     }
 }

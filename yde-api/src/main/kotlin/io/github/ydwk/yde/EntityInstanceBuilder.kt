@@ -50,14 +50,17 @@ import io.github.ydwk.yde.interaction.application.ApplicationCommandOption
 import io.github.ydwk.yde.interaction.application.type.MessageCommand
 import io.github.ydwk.yde.interaction.application.type.SlashCommand
 import io.github.ydwk.yde.interaction.application.type.UserCommand
-import io.github.ydwk.yde.interaction.message.ActionRow
-import io.github.ydwk.yde.interaction.message.Component
+import io.github.ydwk.yde.entities.interaction.actionrow.ActionRow
+import io.github.ydwk.yde.entities.interaction.Component
 import io.github.ydwk.yde.interaction.message.ComponentInteractionData
 import io.github.ydwk.yde.entities.interaction.button.Button
 import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenu
 import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenuDefaultValues
 import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenuOption
 import io.github.ydwk.yde.entities.interaction.textinput.TextInput
+import io.github.ydwk.yde.interaction.message.button.ButtonInteraction
+import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenuInteraction
+import io.github.ydwk.yde.interaction.message.selectmenu.interaction.type.*
 import io.github.ydwk.yde.util.GetterSnowFlake
 import java.net.URL
 
@@ -569,7 +572,7 @@ interface EntityInstanceBuilder {
      * @param interactionId the interaction id
      * @return [TextInput] the text input
      */
-    fun buildTextInput(json: JsonNode, interactionId: GetterSnowFlake): TextInput
+    fun buildTextInput(json: JsonNode): TextInput
 
     /**
      * Used to build an instance of [SelectMenu]
@@ -578,7 +581,7 @@ interface EntityInstanceBuilder {
      * @param interactionId the interaction id
      * @return [SelectMenu] the select menu
      */
-    fun buildSelectMenu(json: JsonNode, interactionId: GetterSnowFlake): SelectMenu
+    fun buildSelectMenu(json: JsonNode): SelectMenu
 
     /**
      * Used to build an instance of [Button]
@@ -587,7 +590,7 @@ interface EntityInstanceBuilder {
      * @param interactionId the interaction id
      * @return [Button] the button
      */
-    fun buildButton(json: JsonNode, interactionId: GetterSnowFlake): Button
+    fun buildButton(json: JsonNode): Button
 
     /**
      * Used to build an instance of [ActionRow]
@@ -612,6 +615,73 @@ interface EntityInstanceBuilder {
      * @return [SelectMenuDefaultValues] the select menu default values
      */
     fun buildSelectMenuDefaultValues(json: JsonNode): SelectMenuDefaultValues
+
+    // Interactions
+
+    /**
+     * Used to build an instance of [SelectMenuInteraction]
+     *
+     * @param json the json
+     * @param interactionId the interaction id
+     * @return [SelectMenuInteraction] the select menu interaction
+     */
+    fun buildSelectMenuInteraction(json: JsonNode, interactionId: GetterSnowFlake): SelectMenuInteraction
+
+    /**
+     * Used to build an instance of [ButtonInteraction]
+     *
+     * @param json the json
+     * @param interactionId the interaction id
+     * @return [ButtonInteraction] the button interaction
+     */
+    fun buildButtonInteraction(json: JsonNode, interactionId: GetterSnowFlake): ButtonInteraction
+
+    // Select Menu Interactions
+
+    /**
+     * Used to build an instance of [UserSelectMenuInteraction]
+     *
+     * @param json the json
+     * @param interactionId the interaction id
+     * @return [UserSelectMenuInteraction] the user select menu interaction
+     */
+    fun buildUserSelectMenuInteraction(json: JsonNode, interactionId: GetterSnowFlake): UserSelectMenuInteraction
+
+    /**
+     * Used to build an instance of [StringSelectMenuInteraction]
+     *
+     * @param json the json
+     * @param interactionId the interaction id
+     * @return [StringSelectMenuInteraction] the string select menu interaction
+     */
+    fun buildStringSelectMenuInteraction(json: JsonNode, interactionId: GetterSnowFlake): StringSelectMenuInteraction
+
+    /**
+     * Used to build an instance of [RoleSelectMenuInteraction]
+     *
+     * @param json the json
+     * @param interactionId the interaction id
+     * @return [RoleSelectMenuInteraction] the role select menu interaction
+     */
+    fun buildRoleSelectMenuInteraction(json: JsonNode, interactionId: GetterSnowFlake): RoleSelectMenuInteraction
+
+    /**
+     * Used to build an instance of [MemberSelectMenuInteraction]
+     *
+     * @param json the json
+     * @param interactionId the interaction id
+     * @return [MemberSelectMenuInteraction] the member select menu interaction
+     */
+    fun buildMemberSelectMenuInteraction(json: JsonNode, interactionId: GetterSnowFlake): MemberSelectMenuInteraction
+
+    /**
+     * Used to build an instance of [ChannelSelectMenuInteraction]
+     *
+     * @param json the json
+     * @param interactionId the interaction id
+     * @return [ChannelSelectMenuInteraction] the channel select menu interaction
+     */
+    fun buildChannelSelectMenuInteraction(json: JsonNode, interactionId: GetterSnowFlake): ChannelSelectMenuInteraction
 
     // Application Command entities
 

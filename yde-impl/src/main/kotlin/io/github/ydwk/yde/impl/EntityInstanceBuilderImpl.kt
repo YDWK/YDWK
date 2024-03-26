@@ -94,11 +94,6 @@ import io.github.ydwk.yde.impl.interaction.application.type.UserCommandImpl
 import io.github.ydwk.yde.impl.interaction.message.ComponentImpl
 import io.github.ydwk.yde.impl.interaction.message.ComponentInteractionDataImpl
 import io.github.ydwk.yde.impl.interaction.message.actionrow.ActionRowImpl
-import io.github.ydwk.yde.impl.interaction.message.button.ButtonImpl
-import io.github.ydwk.yde.impl.interaction.message.selectmenu.SelectMenuDefaultValuesImpl
-import io.github.ydwk.yde.impl.interaction.message.selectmenu.SelectMenuImpl
-import io.github.ydwk.yde.impl.interaction.message.selectmenu.SelectMenuOptionImpl
-import io.github.ydwk.yde.impl.interaction.message.textinput.TextInputImpl
 import io.github.ydwk.yde.impl.util.*
 import io.github.ydwk.yde.interaction.ComponentInteraction
 import io.github.ydwk.yde.interaction.Interaction
@@ -107,8 +102,8 @@ import io.github.ydwk.yde.interaction.application.ApplicationCommandOption
 import io.github.ydwk.yde.interaction.application.type.MessageCommand
 import io.github.ydwk.yde.interaction.application.type.SlashCommand
 import io.github.ydwk.yde.interaction.application.type.UserCommand
-import io.github.ydwk.yde.interaction.message.ActionRow
-import io.github.ydwk.yde.interaction.message.Component
+import io.github.ydwk.yde.entities.interaction.actionrow.ActionRow
+import io.github.ydwk.yde.entities.interaction.Component
 import io.github.ydwk.yde.interaction.message.ComponentInteractionData
 import io.github.ydwk.yde.interaction.message.ComponentType
 import io.github.ydwk.yde.entities.interaction.button.Button

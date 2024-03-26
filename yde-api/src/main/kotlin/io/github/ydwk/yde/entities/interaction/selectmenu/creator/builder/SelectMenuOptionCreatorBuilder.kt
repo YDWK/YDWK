@@ -66,6 +66,6 @@ class SelectMenuOptionCreatorBuilder(val yde: YDE) : SelectMenuOptionCreator {
         }
         json.put("default", default)
 
-        return yde.entityInstanceBuilder.buildStringSelectMenuOption(json)
+        return yde.entityInstanceBuilder.buildSelectMenuOption(json)
     }
 }

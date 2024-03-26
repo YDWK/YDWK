@@ -20,6 +20,7 @@ package io.github.ydwk.yde.entities.interaction.selectmenu
 
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.channel.enums.ChannelType
+import io.github.ydwk.yde.entities.interaction.Component
 import io.github.ydwk.yde.entities.interaction.selectmenu.creator.builder.types.*
 import io.github.ydwk.yde.entities.interaction.selectmenu.creator.types.*
 import io.github.ydwk.yde.interaction.message.ComponentType
@@ -27,7 +28,7 @@ import io.github.ydwk.yde.interaction.reply.Repliable
 import io.github.ydwk.yde.util.Checks
 import java.util.EnumSet
 
-interface SelectMenu {
+interface SelectMenu : Component {
     /**
      * The select menu types. [ComponentType.STRING_SELECT_MENU], [ComponentType.USER_SELECT_MENU],
      * [ComponentType.ROLE_SELECT_MENU], [ComponentType.MENTIONABLE_SELECT_MENU],
