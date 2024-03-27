@@ -5,18 +5,19 @@ import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.Emoji
 import io.github.ydwk.yde.entities.interaction.ButtonStyle
 import io.github.ydwk.yde.entities.interaction.button.Button
+import io.github.ydwk.yde.entities.interaction.button.PartialEmoji
 import io.github.ydwk.yde.entities.interaction.button.creator.ButtonCreator
 import io.github.ydwk.yde.interaction.message.ComponentType
 import io.github.ydwk.yde.util.Checks
 
 class ButtonCreatorBuilder(
-    val style: ButtonStyle,
+    private val style: ButtonStyle,
     val yde: YDE,
     val json: ObjectNode = yde.objectNode
 ) : ButtonCreator {
     private var customId: String? = null
     private var label: String? = null
-    private var emoji: Emoji? = null
+    private var emoji: PartialEmoji? = null
     private var url: String? = null
 
     override fun setCustomId(customId: String): ButtonCreator {
@@ -33,7 +34,7 @@ class ButtonCreatorBuilder(
         return this
     }
 
-    override fun setEmoji(emoji: Emoji): ButtonCreator {
+    override fun setEmoji(emoji: PartialEmoji): ButtonCreator {
         this.emoji = emoji
         return this
     }
@@ -55,9 +56,15 @@ class ButtonCreatorBuilder(
         json.put("type", ComponentType.BUTTON.getType())
         json.put("style", style.getType())
         json.put("label", label)
+
         if (url != null) {
             json.put("url", url)
         }
+
+        if (emoji != null) {
+            json.set<ObjectNode>("emoji", emoji!!.json)
+        }
+
         json.put("custom_id", customId)
 
         return yde.entityInstanceBuilder.buildButton(json)

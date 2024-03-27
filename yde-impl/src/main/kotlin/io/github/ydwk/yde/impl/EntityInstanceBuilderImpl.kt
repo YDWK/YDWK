@@ -107,6 +107,7 @@ import io.github.ydwk.yde.interaction.message.ComponentInteractionData
 import io.github.ydwk.yde.interaction.message.ComponentType
 import io.github.ydwk.yde.entities.interaction.button.Button
 import io.github.ydwk.yde.entities.interaction.ButtonStyle
+import io.github.ydwk.yde.entities.interaction.button.PartialEmoji
 import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenu
 import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenuDefaultValues
 import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenuOption
@@ -839,6 +840,10 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             if (json.has("animated")) json["animated"].asBoolean() else false,
             if (json.has("available")) json["available"].asBoolean() else false,
             json["name"].asText())
+    }
+
+    override fun buildPartialEmoji(json: JsonNode): PartialEmoji {
+        return TODO()
     }
 
     override fun buildAuthor(json: JsonNode): Author {

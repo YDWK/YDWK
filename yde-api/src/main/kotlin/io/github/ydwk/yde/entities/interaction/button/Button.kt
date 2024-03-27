@@ -50,11 +50,11 @@ interface Button : Component {
     val customId: String?
 
     /**
-     * The emoji of this button.
+     * The partial emoji of this button (name, id, and animated).
      *
      * @return The emoji of this button.
      */
-    val emoji: Emoji?
+    val emoji: PartialEmoji?
 
     /**
      * The url of this button if it is a link button.

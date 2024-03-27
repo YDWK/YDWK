@@ -54,6 +54,7 @@ import io.github.ydwk.yde.entities.interaction.actionrow.ActionRow
 import io.github.ydwk.yde.entities.interaction.Component
 import io.github.ydwk.yde.interaction.message.ComponentInteractionData
 import io.github.ydwk.yde.entities.interaction.button.Button
+import io.github.ydwk.yde.entities.interaction.button.PartialEmoji
 import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenu
 import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenuDefaultValues
 import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenuOption
@@ -459,6 +460,14 @@ interface EntityInstanceBuilder {
      * @return [Emoji] the emoji
      */
     fun buildEmoji(json: JsonNode): Emoji
+
+    /**
+     * Used to build an instance of [PartialEmoji]
+     *
+     * @param json the json
+     * @return [PartialEmoji] the partial emoji
+     */
+    fun buildPartialEmoji(json: JsonNode): PartialEmoji
 
     // Embed entities
 

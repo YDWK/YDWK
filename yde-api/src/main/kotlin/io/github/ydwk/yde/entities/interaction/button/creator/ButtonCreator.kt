@@ -2,6 +2,7 @@ package io.github.ydwk.yde.entities.interaction.button.creator
 
 import io.github.ydwk.yde.entities.Emoji
 import io.github.ydwk.yde.entities.interaction.button.Button
+import io.github.ydwk.yde.entities.interaction.button.PartialEmoji
 
 interface ButtonCreator {
     /**
@@ -26,7 +27,7 @@ interface ButtonCreator {
      * @param emoji The emoji of the button.
      * @return This [ButtonCreator] for chaining.
      */
-    fun setEmoji(emoji: Emoji): ButtonCreator
+    fun setEmoji(emoji: PartialEmoji): ButtonCreator
 
     /**
      * Sets the url of the button.
