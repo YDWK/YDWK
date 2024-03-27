@@ -91,9 +91,8 @@ import io.github.ydwk.yde.impl.interaction.InteractionImpl
 import io.github.ydwk.yde.impl.interaction.application.type.MessageCommandImpl
 import io.github.ydwk.yde.impl.interaction.application.type.SlashCommandImpl
 import io.github.ydwk.yde.impl.interaction.application.type.UserCommandImpl
-import io.github.ydwk.yde.impl.interaction.message.ComponentImpl
+import io.github.ydwk.yde.impl.entities.interaction.ComponentImpl
 import io.github.ydwk.yde.impl.interaction.message.ComponentInteractionDataImpl
-import io.github.ydwk.yde.impl.interaction.message.actionrow.ActionRowImpl
 import io.github.ydwk.yde.impl.util.*
 import io.github.ydwk.yde.interaction.ComponentInteraction
 import io.github.ydwk.yde.interaction.Interaction
@@ -112,6 +111,13 @@ import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenu
 import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenuDefaultValues
 import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenuOption
 import io.github.ydwk.yde.entities.interaction.textinput.TextInput
+import io.github.ydwk.yde.impl.entities.interaction.actionrow.ActionRowImpl
+import io.github.ydwk.yde.impl.entities.interaction.selectmenu.SelectMenuDefaultValuesImpl
+import io.github.ydwk.yde.impl.entities.interaction.selectmenu.SelectMenuOptionImpl
+import io.github.ydwk.yde.interaction.message.actionrow.ActionRowInteraction
+import io.github.ydwk.yde.interaction.message.button.ButtonInteraction
+import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenuInteraction
+import io.github.ydwk.yde.interaction.message.selectmenu.interaction.type.*
 import io.github.ydwk.yde.interaction.sub.InteractionType
 import io.github.ydwk.yde.rest.error.RestAPIException
 import io.github.ydwk.yde.util.*
@@ -957,10 +963,7 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
         return ComponentImpl(
             yde,
             json,
-            ComponentType.getValue(json["type"].asInt()),
-            json["disabled"].asBoolean(),
-            if (json.has("custom_id")) json["custom_id"].asText() else null,
-            json["components"].map { buildComponent(it) })
+            ComponentType.getValue(json["type"].asInt()))
     }
 
     override fun buildComponentInteractionData(json: JsonNode): ComponentInteractionData {
@@ -986,61 +989,16 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             if (json.has("default")) json["default"].asBoolean() else false)
     }
 
-    override fun buildTextInput(json: JsonNode, interactionId: GetterSnowFlake): TextInput {
-        return TextInputImpl(
-            yde,
-            json,
-            interactionId,
-            json["custom_id"].asText(),
-            TextInput.TextInputStyle.getValue(json["style"].asInt()),
-            json["label"].asText(),
-            if (json.has("min_length")) json["min_length"].asInt() else null,
-            if (json.has("max_length")) json["max_length"].asInt() else null,
-            if (json.has("required")) json["required"].asBoolean() else false,
-            if (json.has("initial_value")) json["initial_value"].asText() else null,
-            if (json.has("placeholder")) json["placeholder"].asText() else null,
-        )
+    override fun buildTextInput(json: JsonNode): TextInput {
+        TODO("Not yet implemented")
     }
 
-    override fun buildSelectMenu(json: JsonNode, interactionId: GetterSnowFlake): SelectMenu {
-        val customId = json["data"]["custom_id"].asText()
-        val componentJson = getComponentJson(json, customId)
-
-        // TODO: make these optional
-        return SelectMenuImpl(
-            yde,
-            json,
-            interactionId,
-            if (componentJson.has("placeholder")) componentJson["placeholder"].asText() else null,
-            if (componentJson.has("min_values")) componentJson["min_values"].asInt() else null,
-            if (componentJson.has("max_values")) componentJson["max_values"].asInt() else null,
-            if (componentJson.has("disabled")) componentJson["disabled"].asBoolean() else null,
-            customId,
-            if (componentJson.has("options"))
-                componentJson["options"].map { buildSelectMenuOption(it) }
-            else null,
-            if (componentJson.has("default_values"))
-                componentJson["default_values"].map { buildSelectMenuDefaultValues(it) }
-            else null,
-            if (componentJson.has("channel_types"))
-                componentJson["channel_types"].map { ChannelType.getValue(it.asInt()) }.toSet()
-            else null)
+    override fun buildSelectMenu(json: JsonNode): SelectMenu {
+        TODO("Not yet implemented")
     }
 
-    override fun buildButton(json: JsonNode, interactionId: GetterSnowFlake): Button {
-        val customId = json["data"]["custom_id"].asText()
-        val componentJson = getComponentJson(json, customId)
-
-        return ButtonImpl(
-            yde,
-            json,
-            interactionId,
-            ButtonStyle.getValue(componentJson["style"].asInt()),
-            componentJson["label"].asText(),
-            customId,
-            if (componentJson.has("emoji")) buildEmoji(componentJson["emoji"]) else null,
-            if (componentJson.has("url")) URL(componentJson["url"].asText()) else null,
-            componentJson["disabled"].asBoolean())
+    override fun buildButton(json: JsonNode): Button {
+        TODO("Not yet implemented")
     }
 
     override fun buildActionRow(json: JsonNode): ActionRow {
@@ -1061,6 +1019,53 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     override fun buildSelectMenuDefaultValues(json: JsonNode): SelectMenuDefaultValues {
         return SelectMenuDefaultValuesImpl(
             yde, json, SelectMenuDefaultValues.Type.getValue(json["type"].asText()))
+    }
+
+    override fun buildActionRowInteraction(json: JsonNode, interactionId: GetterSnowFlake): ActionRowInteraction {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildSelectMenuInteraction(json: JsonNode, interactionId: GetterSnowFlake): SelectMenuInteraction {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildButtonInteraction(json: JsonNode, interactionId: GetterSnowFlake): ButtonInteraction {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildUserSelectMenuInteraction(
+        json: JsonNode,
+        interactionId: GetterSnowFlake
+    ): UserSelectMenuInteraction {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildStringSelectMenuInteraction(
+        json: JsonNode,
+        interactionId: GetterSnowFlake
+    ): StringSelectMenuInteraction {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildRoleSelectMenuInteraction(
+        json: JsonNode,
+        interactionId: GetterSnowFlake
+    ): RoleSelectMenuInteraction {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildMemberSelectMenuInteraction(
+        json: JsonNode,
+        interactionId: GetterSnowFlake
+    ): MemberSelectMenuInteraction {
+        TODO("Not yet implemented")
+    }
+
+    override fun buildChannelSelectMenuInteraction(
+        json: JsonNode,
+        interactionId: GetterSnowFlake
+    ): ChannelSelectMenuInteraction {
+        TODO("Not yet implemented")
     }
 
     override fun buildApplicationCommand(json: JsonNode): ApplicationCommand {

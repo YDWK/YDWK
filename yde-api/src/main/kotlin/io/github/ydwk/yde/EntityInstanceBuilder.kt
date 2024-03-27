@@ -58,6 +58,7 @@ import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenu
 import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenuDefaultValues
 import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenuOption
 import io.github.ydwk.yde.entities.interaction.textinput.TextInput
+import io.github.ydwk.yde.interaction.message.actionrow.ActionRowInteraction
 import io.github.ydwk.yde.interaction.message.button.ButtonInteraction
 import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenuInteraction
 import io.github.ydwk.yde.interaction.message.selectmenu.interaction.type.*
@@ -617,6 +618,15 @@ interface EntityInstanceBuilder {
     fun buildSelectMenuDefaultValues(json: JsonNode): SelectMenuDefaultValues
 
     // Interactions
+
+    /**
+     * Used to build an instance of [ActionRowInteraction]
+     *
+     * @param json the json
+     * @param interactionId the interaction id
+     * @return [ActionRowInteraction] the action row interaction
+     */
+    fun buildActionRowInteraction(json: JsonNode, interactionId: GetterSnowFlake): ActionRowInteraction
 
     /**
      * Used to build an instance of [SelectMenuInteraction]

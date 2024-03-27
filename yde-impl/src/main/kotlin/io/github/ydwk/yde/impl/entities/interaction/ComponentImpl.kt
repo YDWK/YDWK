@@ -16,13 +16,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.yde.impl.interaction.message.actionrow
+package io.github.ydwk.yde.impl.entities.interaction
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
-import io.github.ydwk.yde.impl.interaction.message.ComponentImpl
-import io.github.ydwk.yde.entities.interaction.actionrow.ActionRow
+import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.entities.interaction.Component
+import io.github.ydwk.yde.interaction.message.ComponentType
 
-open class ActionRowImpl(yde: YDE, json: JsonNode, override val components: List<Component>) :
-    ActionRow, ComponentImpl(yde.entityInstanceBuilder.buildComponent(json))
+open class ComponentImpl(
+    override val yde: YDE,
+    override val json: JsonNode,
+    override val type: ComponentType,
+    override val messageCompatible: Boolean = type.isMessageCompatible(),
+    override val modalCompatible: Boolean = type.isModalCompatible(),
+) : Component, ToStringEntityImpl<Component>(yde, Component::class.java) {
+    constructor(
+        component: Component
+    ) : this(
+        component.yde,
+        component.json,
+        component.type,
+        component.messageCompatible,
+        component.modalCompatible,
+    )
+}

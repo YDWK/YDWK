@@ -21,11 +21,12 @@ package io.github.ydwk.yde.entities.interaction.button
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.Emoji
 import io.github.ydwk.yde.entities.interaction.ButtonStyle
+import io.github.ydwk.yde.entities.interaction.Component
 import io.github.ydwk.yde.entities.interaction.button.creator.ButtonCreator
 import io.github.ydwk.yde.entities.interaction.button.creator.builder.ButtonCreatorBuilder
 import java.net.URL
 
-interface Button {
+interface Button : Component {
 
     /**
      * The button style of this button.
