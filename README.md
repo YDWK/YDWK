@@ -6,10 +6,6 @@
 [![ydwk](https://img.shields.io/badge/YDWK--Version-v1.8.0-blue)](https://github.com/YDWK/YDWK/releases/tag/v1.8.0)
 [![ydwk-docs](https://img.shields.io/badge/YDWK-Docs-blue.svg)](https://www.ydwk.org)
 
-
-# Very important note
-Don't update to 1.22.0 it was a mistaken release caused by a bug in the code, use the latest version found above.
-
 # YDWK
 
 YDWK is a discord wrapper made in Kotlin that aims to be as simple and as fast as possible while still being easy to use and understand. It is built to be similar to libaries like discord.js but is different in its own way. It tries to adhere to the [discord Api](https://discord.com/developers/docs/intro) as much as possible.
