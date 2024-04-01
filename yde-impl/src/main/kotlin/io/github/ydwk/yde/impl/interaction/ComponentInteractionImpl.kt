@@ -51,7 +51,7 @@ open class ComponentInteractionImpl(
     ToStringEntityImpl<ComponentInteraction>(yde, ComponentInteraction::class.java) {
 
     constructor(
-        componentInteractionImpl: ComponentInteractionImpl
+        componentInteractionImpl: ComponentInteraction
     ) : this(
         componentInteractionImpl.yde,
         componentInteractionImpl.json,

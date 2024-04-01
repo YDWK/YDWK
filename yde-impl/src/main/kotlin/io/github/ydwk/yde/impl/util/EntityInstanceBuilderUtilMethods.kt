@@ -115,7 +115,7 @@ fun EntityInstanceBuilderImpl.getGuildAvatar(
             .append("/")
             .append("avatars/")
             .append(guildAvatarHash)
-            .append(if (guildAvatarHash!!.startsWith("a_")) ".gif" else ".png")
+            .append(if (guildAvatarHash.startsWith("a_")) ".gif" else ".png")
             .append("?size=")
             .append(size)
 

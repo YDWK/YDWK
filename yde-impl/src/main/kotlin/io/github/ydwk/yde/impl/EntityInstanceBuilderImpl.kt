@@ -115,6 +115,8 @@ import io.github.ydwk.yde.entities.interaction.textinput.TextInput
 import io.github.ydwk.yde.impl.entities.interaction.actionrow.ActionRowImpl
 import io.github.ydwk.yde.impl.entities.interaction.selectmenu.SelectMenuDefaultValuesImpl
 import io.github.ydwk.yde.impl.entities.interaction.selectmenu.SelectMenuOptionImpl
+import io.github.ydwk.yde.impl.entities.interaction.textinput.TextInputImpl
+import io.github.ydwk.yde.impl.interaction.message.actionrow.ActionRowInteractionImpl
 import io.github.ydwk.yde.interaction.message.actionrow.ActionRowInteraction
 import io.github.ydwk.yde.interaction.message.button.ButtonInteraction
 import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenuInteraction
@@ -995,7 +997,17 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     }
 
     override fun buildTextInput(json: JsonNode): TextInput {
-        TODO("Not yet implemented")
+        return TextInputImpl(
+            yde,
+            json,
+            json["custom_id"].asText(),
+            TextInput.TextInputStyle.getValue(json["style"].asInt()),
+            json["label"].asText(),
+            if (json.has("min_length")) json["min_length"].asInt() else null,
+            if (json.has("max_length")) json["max_length"].asInt() else null,
+            if (json.has("required")) json["required"].asBoolean() else false,
+            if (json.has("initial_value")) json["initial_value"].asText() else null,
+            if (json.has("placeholder")) json["placeholder"].asText() else null)
     }
 
     override fun buildSelectMenu(json: JsonNode): SelectMenu {
@@ -1027,7 +1039,11 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     }
 
     override fun buildActionRowInteraction(json: JsonNode, interactionId: GetterSnowFlake): ActionRowInteraction {
-        TODO("Not yet implemented")
+        return ActionRowInteractionImpl(
+            yde,
+            json,
+            interactionId
+        )
     }
 
     override fun buildSelectMenuInteraction(json: JsonNode, interactionId: GetterSnowFlake): SelectMenuInteraction {
@@ -1107,4 +1123,10 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             interaction ?: buildInteraction(json),
             buildMessage(json["data"]["resolved"]["messages"]))
     }
+
+   // infix fun Int.test(bitCount: Int): Long {
+     //   return this.toLong() shl bitCount
+   // }
+
+   // val permissions = 5 test 0
 }
