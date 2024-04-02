@@ -350,7 +350,8 @@ open class WebSocketManager(
         d.set<ObjectNode>("presence", presence)
 
         val json: JsonNode = ydwk.objectNode.put("op", IDENTIFY.code).set("d", d)
-        webSocket?.sendText(json.toString())
+
+        webSocket sendText json.toString()
         ydwk.setLoggedIn(LoggedInImpl(false).setLoggedInTime())
         identifyTime = System.currentTimeMillis()
         identifyRateLimit = true
@@ -361,7 +362,7 @@ open class WebSocketManager(
 
         val identify: ObjectNode = ydwk.objectNode.put("op", RESUME.code).set("d", json)
 
-        webSocket?.sendText(identify.toString())
+        webSocket sendText identify.toString()
         attemptedToResume = true
         ydwk.setLoggedIn(LoggedInImpl(false).setLoggedInTime())
     }
@@ -446,7 +447,8 @@ open class WebSocketManager(
             .put("self_mute", deafen)
 
         voiceJson.set<JsonNode>("d", dataObjectNode)
-        webSocket?.sendText(voiceJson.toString())
+
+        webSocket sendText voiceJson.toString()
     }
 
     private fun onEventType(eventType: String, d: JsonNode) {
@@ -543,5 +545,10 @@ open class WebSocketManager(
                 }
             }
         }
+    }
+
+
+    infix fun WebSocket?.sendText(text: String) {
+        sendText(text)
     }
 }

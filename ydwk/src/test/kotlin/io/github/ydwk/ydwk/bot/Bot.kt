@@ -23,6 +23,8 @@ import io.github.ydwk.yde.builders.slash.SlashCommandBuilder
 import io.github.ydwk.yde.util.exception.LoginException
 import io.github.ydwk.ydwk.Activity
 import io.github.ydwk.ydwk.BotBuilder.Companion.buildBot
+import io.github.ydwk.ydwk.evm.event.EventListeners.Companion.onRoleSelectMenuEvent
+import io.github.ydwk.ydwk.evm.event.EventListeners.Companion.onSlashCommandEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.slash.SlashCommandEvent
 import io.github.ydwk.ydwk.evm.listeners.InteractionEventListener
 import io.github.ydwk.ydwk.util.ydwk
@@ -46,7 +48,7 @@ suspend fun main() {
 
     ydwk.awaitReady().addEventListeners(Test())
 
-    ydwk.eventListener.onSlashCommandEvent {
+    ydwk onSlashCommandEvent {
         when (it.slash.name) {
             "ping" -> {
                 it.slash.reply("Pong!").trigger()
@@ -60,7 +62,7 @@ suspend fun main() {
         }
     }
 
-    ydwk.eventListener.onRoleSelectMenuEvent {
+    ydwk onRoleSelectMenuEvent {
         withContext(ydwk.coroutineDispatcher) {
             it.selectMenu.reply("Role added!").trigger()
             for (role in it.selectMenu.selectedRoles) {

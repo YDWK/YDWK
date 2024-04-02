@@ -7,9 +7,8 @@ buildscript {
     dependencies { classpath("com.squareup:kotlinpoet:" + properties["kotlinPoetVersion"]) }
 }
 
-fun addFunction(isFirstFunc: Boolean): FunSpec.Builder {
-    val onFunction =
-        FunSpec.builder("on")
+fun addFunction(): FunSpec.Builder {
+    return FunSpec.builder("on")
             .addKdoc(
                 """
                     Listens for events of type [T].
@@ -41,23 +40,7 @@ fun addFunction(isFirstFunc: Boolean): FunSpec.Builder {
             }
             """
                     .trimIndent())
-
-    if (isFirstFunc) {
-        // add @Deprecated("Switch to new event listener",
-        // ReplaceWith("ydwk.eventListener.on<T>(consumer)"), DeprecationLevel.WARNING)
-        onFunction.addAnnotation(
-            AnnotationSpec.builder(Deprecated::class)
-                .addMember("\"Switch to event listener\"")
-                .addMember("ReplaceWith(\"ydwk.eventListener.on<T>(consumer)\")")
-                .addMember("DeprecationLevel.WARNING")
-                .build())
-
-        onFunction.addCode(".also { this.addEventListeners(it) }")
-    } else {
-        onFunction.addCode(".also { ydwk.addEventListeners(it) }")
-    }
-
-    return onFunction
+            .addCode(".also { ydwk.addEventListeners(it) }")
 }
 
 fun addEventSpecification(name: String): FunSpec {
@@ -84,6 +67,34 @@ fun addEventSpecification(name: String): FunSpec {
             """
                            return on<${name}>(consumer)
                         """
+                .trimIndent())
+        .build()
+}
+
+fun addEventSpecificationInflux(name: String): FunSpec {
+    return FunSpec.builder("on${name}")
+        .addKdoc(
+            """
+            Listens for [${name}].
+
+            @param consumer The consumer function to handle the ${name}.
+            @return The [${name}] listener.
+        """.trimIndent())
+        .addParameter(
+            "consumer",
+            LambdaTypeName.get(
+                receiver = ClassName("io.github.ydwk.ydwk.evm.event", "GenericEvent"),
+                parameters = listOf(ParameterSpec.builder("", TypeVariableName(name)).build()),
+                returnType = UNIT)
+                .copy(suspending = true),
+            KModifier.CROSSINLINE)
+        .addModifiers(KModifier.PUBLIC, KModifier.INLINE, KModifier.INFIX)
+        .receiver(ClassName("io.github.ydwk.ydwk", "YDWK")) // Add receiver parameter
+        .returns(ClassName("io.github.ydwk.ydwk.evm.event", "CoroutineEventListener"))
+        .addCode(
+            """
+            return this.eventListener.on<${name}>(consumer)
+        """
                 .trimIndent())
         .build()
 }
@@ -143,7 +154,7 @@ fun generateEventFile() {
                         .initializer("ydwk")
                         .build()))
             .addModifiers(KModifier.PUBLIC)
-            .addFunction(addFunction(false).build())
+            .addFunction(addFunction().build())
 
     for ((name, _) in channelEvents) {
         // do public inline fun on{name}Event { return  on<name>Event> }
@@ -175,17 +186,46 @@ fun generateEventFile() {
         eventClass.addFunction(addEventSpecification(name))
     }
 
+    //companion object
+
+    val eventClassCompanionObject = TypeSpec.companionObjectBuilder()
+
+    for ((name, _) in channelEvents) {
+        eventClassCompanionObject.addFunction(addEventSpecificationInflux(name))
+    }
+
+    for ((name, _) in gatewayEvents) {
+        eventClassCompanionObject.addFunction(addEventSpecificationInflux(name))
+    }
+
+    for ((name, _) in guildEvents) {
+        eventClassCompanionObject.addFunction(addEventSpecificationInflux(name))
+    }
+
+    for ((name, _) in guildModerationEvents) {
+        eventClassCompanionObject.addFunction(addEventSpecificationInflux(name))
+    }
+
+    for ((name, _) in interactionEvents) {
+        eventClassCompanionObject.addFunction(addEventSpecificationInflux(name))
+    }
+
+    for ((name, _) in userEvents) {
+        eventClassCompanionObject.addFunction(addEventSpecificationInflux(name))
+    }
+
+    for ((name, _) in voiceEvents) {
+        eventClassCompanionObject.addFunction(addEventSpecificationInflux(name))
+    }
+
+    eventClass.addType(eventClassCompanionObject.build())
+
     val eventFile =
         FileSpec.builder("io.github.ydwk.ydwk.evm.event", "EventListeners")
             .addImport("io.github.ydwk.ydwk", "YDWK")
             .addImport("io.github.ydwk.ydwk.evm.backend.event", "GenericEvent")
             .addImport("io.github.ydwk.ydwk.evm.backend.event", "CoroutineEventListener")
             .addType(eventClass.build())
-            .addFunction(
-                addFunction(true)
-                    .addModifiers(KModifier.PUBLIC)
-                    .receiver(ClassName("io.github.ydwk.ydwk.evm.event", "YDWK"))
-                    .build())
 
     for ((name, path) in channelEvents) {
         eventFile.addImport(
