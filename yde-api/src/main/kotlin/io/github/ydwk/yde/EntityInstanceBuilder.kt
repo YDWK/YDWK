@@ -39,6 +39,14 @@ import io.github.ydwk.yde.entities.guild.*
 import io.github.ydwk.yde.entities.guild.role.RoleTag
 import io.github.ydwk.yde.entities.guild.schedule.EntityMetadata
 import io.github.ydwk.yde.entities.guild.ws.WelcomeChannel
+import io.github.ydwk.yde.entities.interaction.Component
+import io.github.ydwk.yde.entities.interaction.actionrow.ActionRow
+import io.github.ydwk.yde.entities.interaction.button.Button
+import io.github.ydwk.yde.entities.interaction.button.PartialEmoji
+import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenu
+import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenuDefaultValues
+import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenuOption
+import io.github.ydwk.yde.entities.interaction.textinput.TextInput
 import io.github.ydwk.yde.entities.message.*
 import io.github.ydwk.yde.entities.message.embed.*
 import io.github.ydwk.yde.entities.sticker.StickerItem
@@ -50,15 +58,7 @@ import io.github.ydwk.yde.interaction.application.ApplicationCommandOption
 import io.github.ydwk.yde.interaction.application.type.MessageCommand
 import io.github.ydwk.yde.interaction.application.type.SlashCommand
 import io.github.ydwk.yde.interaction.application.type.UserCommand
-import io.github.ydwk.yde.entities.interaction.actionrow.ActionRow
-import io.github.ydwk.yde.entities.interaction.Component
 import io.github.ydwk.yde.interaction.message.ComponentInteractionData
-import io.github.ydwk.yde.entities.interaction.button.Button
-import io.github.ydwk.yde.entities.interaction.button.PartialEmoji
-import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenu
-import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenuDefaultValues
-import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenuOption
-import io.github.ydwk.yde.entities.interaction.textinput.TextInput
 import io.github.ydwk.yde.interaction.message.actionrow.ActionRowInteraction
 import io.github.ydwk.yde.interaction.message.button.ButtonInteraction
 import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenuInteraction
@@ -635,7 +635,10 @@ interface EntityInstanceBuilder {
      * @param interactionId the interaction id
      * @return [ActionRowInteraction] the action row interaction
      */
-    fun buildActionRowInteraction(json: JsonNode, interactionId: GetterSnowFlake): ActionRowInteraction
+    fun buildActionRowInteraction(
+        json: JsonNode,
+        interactionId: GetterSnowFlake
+    ): ActionRowInteraction
 
     /**
      * Used to build an instance of [SelectMenuInteraction]
@@ -644,7 +647,10 @@ interface EntityInstanceBuilder {
      * @param interactionId the interaction id
      * @return [SelectMenuInteraction] the select menu interaction
      */
-    fun buildSelectMenuInteraction(json: JsonNode, interactionId: GetterSnowFlake): SelectMenuInteraction
+    fun buildSelectMenuInteraction(
+        json: JsonNode,
+        interactionId: GetterSnowFlake
+    ): SelectMenuInteraction
 
     /**
      * Used to build an instance of [ButtonInteraction]
@@ -664,7 +670,10 @@ interface EntityInstanceBuilder {
      * @param interactionId the interaction id
      * @return [UserSelectMenuInteraction] the user select menu interaction
      */
-    fun buildUserSelectMenuInteraction(json: JsonNode, interactionId: GetterSnowFlake): UserSelectMenuInteraction
+    fun buildUserSelectMenuInteraction(
+        json: JsonNode,
+        interactionId: GetterSnowFlake
+    ): UserSelectMenuInteraction
 
     /**
      * Used to build an instance of [StringSelectMenuInteraction]
@@ -673,7 +682,10 @@ interface EntityInstanceBuilder {
      * @param interactionId the interaction id
      * @return [StringSelectMenuInteraction] the string select menu interaction
      */
-    fun buildStringSelectMenuInteraction(json: JsonNode, interactionId: GetterSnowFlake): StringSelectMenuInteraction
+    fun buildStringSelectMenuInteraction(
+        json: JsonNode,
+        interactionId: GetterSnowFlake
+    ): StringSelectMenuInteraction
 
     /**
      * Used to build an instance of [RoleSelectMenuInteraction]
@@ -682,7 +694,10 @@ interface EntityInstanceBuilder {
      * @param interactionId the interaction id
      * @return [RoleSelectMenuInteraction] the role select menu interaction
      */
-    fun buildRoleSelectMenuInteraction(json: JsonNode, interactionId: GetterSnowFlake): RoleSelectMenuInteraction
+    fun buildRoleSelectMenuInteraction(
+        json: JsonNode,
+        interactionId: GetterSnowFlake
+    ): RoleSelectMenuInteraction
 
     /**
      * Used to build an instance of [MemberSelectMenuInteraction]
@@ -691,7 +706,10 @@ interface EntityInstanceBuilder {
      * @param interactionId the interaction id
      * @return [MemberSelectMenuInteraction] the member select menu interaction
      */
-    fun buildMemberSelectMenuInteraction(json: JsonNode, interactionId: GetterSnowFlake): MemberSelectMenuInteraction
+    fun buildMemberSelectMenuInteraction(
+        json: JsonNode,
+        interactionId: GetterSnowFlake
+    ): MemberSelectMenuInteraction
 
     /**
      * Used to build an instance of [ChannelSelectMenuInteraction]
@@ -700,7 +718,10 @@ interface EntityInstanceBuilder {
      * @param interactionId the interaction id
      * @return [ChannelSelectMenuInteraction] the channel select menu interaction
      */
-    fun buildChannelSelectMenuInteraction(json: JsonNode, interactionId: GetterSnowFlake): ChannelSelectMenuInteraction
+    fun buildChannelSelectMenuInteraction(
+        json: JsonNode,
+        interactionId: GetterSnowFlake
+    ): ChannelSelectMenuInteraction
 
     // Application Command entities
 

@@ -19,7 +19,6 @@
 package io.github.ydwk.yde.entities.interaction.button
 
 import io.github.ydwk.yde.YDE
-import io.github.ydwk.yde.entities.Emoji
 import io.github.ydwk.yde.entities.interaction.ButtonStyle
 import io.github.ydwk.yde.entities.interaction.Component
 import io.github.ydwk.yde.entities.interaction.button.creator.ButtonCreator

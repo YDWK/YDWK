@@ -19,9 +19,9 @@
 package io.github.ydwk.yde.entities.interaction.selectmenu.creator.builder.types
 
 import io.github.ydwk.yde.YDE
-import io.github.ydwk.yde.interaction.message.ComponentType
 import io.github.ydwk.yde.entities.interaction.selectmenu.creator.builder.SelectMenuCreatorBuilder
 import io.github.ydwk.yde.entities.interaction.selectmenu.creator.types.RoleSelectMenuCreator
+import io.github.ydwk.yde.interaction.message.ComponentType
 
 data class RoleSelectMenuCreatorBuilder(override val yde: YDE, override val customId: String) :
     RoleSelectMenuCreator, SelectMenuCreatorBuilder(customId, ComponentType.ROLE_SELECT_MENU, yde)

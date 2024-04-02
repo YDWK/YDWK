@@ -20,10 +20,8 @@ package io.github.ydwk.yde.entities.interaction.textinput
 
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.interaction.Component
-import io.github.ydwk.yde.interaction.ComponentInteraction
-import io.github.ydwk.yde.entities.interaction.textinput.creator.TextInputCreator
 import io.github.ydwk.yde.entities.interaction.textinput.builder.TextInputCreatorBuilder
-import io.github.ydwk.yde.interaction.reply.Repliable
+import io.github.ydwk.yde.entities.interaction.textinput.creator.TextInputCreator
 
 interface TextInput : Component {
     /**

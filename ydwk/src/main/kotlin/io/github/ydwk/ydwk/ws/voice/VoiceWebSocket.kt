@@ -26,7 +26,7 @@ import io.github.ydwk.ydwk.YDWKInfo
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
 import io.github.ydwk.ydwk.voice.leaveVC
-import io.github.ydwk.ydwk.ws.logging.WebsocketLogging
+import io.github.ydwk.ydwk.ws.WebSocketManager
 import io.github.ydwk.ydwk.ws.util.HeartBeat
 import io.github.ydwk.ydwk.ws.voice.payload.VoiceReadyPayload
 import io.github.ydwk.ydwk.ws.voice.payload.VoiceServerUpdatePayload
@@ -135,19 +135,7 @@ class VoiceWebSocket(
         }
 
         try {
-            val webSocketFactory = WebSocketFactory()
-            if (webSocketFactory.socketTimeout > 0)
-                webSocketFactory.socketTimeout = 1000.coerceAtLeast(webSocketFactory.socketTimeout)
-            else webSocketFactory.socketTimeout = 10000
-
-            webSocket =
-                webSocketFactory
-                    .createSocket(wssUrl)
-                    .addHeader("Accept-Encoding", "gzip")
-                    .setDirectTextMessage(etfInsteadOfJson)
-                    .addListener(this)
-                    .addListener(WebsocketLogging(logger))
-                    .connect()
+            webSocket = WebSocketManager.getWS(url, etfInsteadOfJson, this, logger)
         } catch (e: IOException) {
             logger.error("Failed to connect to voice gateway, will try again in 10 seconds", e)
             if (timesTriedToConnect > 3) {

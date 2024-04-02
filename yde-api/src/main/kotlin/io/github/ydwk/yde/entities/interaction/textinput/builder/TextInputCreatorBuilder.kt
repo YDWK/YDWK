@@ -19,9 +19,9 @@
 package io.github.ydwk.yde.entities.interaction.textinput.builder
 
 import io.github.ydwk.yde.YDE
-import io.github.ydwk.yde.interaction.message.ComponentType
 import io.github.ydwk.yde.entities.interaction.textinput.TextInput
 import io.github.ydwk.yde.entities.interaction.textinput.creator.TextInputCreator
+import io.github.ydwk.yde.interaction.message.ComponentType
 import io.github.ydwk.yde.util.Checks
 
 data class TextInputCreatorBuilder(

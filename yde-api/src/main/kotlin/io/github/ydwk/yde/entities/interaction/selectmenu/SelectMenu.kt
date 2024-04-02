@@ -24,7 +24,6 @@ import io.github.ydwk.yde.entities.interaction.Component
 import io.github.ydwk.yde.entities.interaction.selectmenu.creator.builder.types.*
 import io.github.ydwk.yde.entities.interaction.selectmenu.creator.types.*
 import io.github.ydwk.yde.interaction.message.ComponentType
-import io.github.ydwk.yde.interaction.reply.Repliable
 import io.github.ydwk.yde.util.Checks
 import java.util.EnumSet
 

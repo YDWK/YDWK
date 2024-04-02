@@ -19,9 +19,9 @@
 package io.github.ydwk.yde.entities.interaction.selectmenu.creator.builder.types
 
 import io.github.ydwk.yde.YDE
-import io.github.ydwk.yde.interaction.message.ComponentType
 import io.github.ydwk.yde.entities.interaction.selectmenu.creator.builder.SelectMenuCreatorBuilder
 import io.github.ydwk.yde.entities.interaction.selectmenu.creator.types.UserSelectMenuCreator
+import io.github.ydwk.yde.interaction.message.ComponentType
 
 data class UserSelectMenuCreatorBuilder(
     override val yde: YDE,

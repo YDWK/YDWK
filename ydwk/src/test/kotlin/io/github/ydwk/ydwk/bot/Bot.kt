@@ -48,28 +48,30 @@ suspend fun main() {
 
     ydwk.awaitReady().addEventListeners(Test())
 
-    ydwk onSlashCommandEvent {
-        when (it.slash.name) {
-            "ping" -> {
-                it.slash.reply("Pong!").trigger()
+    ydwk onSlashCommandEvent
+        {
+            when (it.slash.name) {
+                "ping" -> {
+                    it.slash.reply("Pong!").trigger()
 
-                val guilds = it.slash.ydwk.requestGuilds().getOrNull()
+                    val guilds = it.slash.ydwk.requestGuilds().getOrNull()
 
-                if (guilds != null) {
-                    it.slash.reply("Guilds: ${guilds.size}").trigger()
+                    if (guilds != null) {
+                        it.slash.reply("Guilds: ${guilds.size}").trigger()
+                    }
                 }
             }
         }
-    }
 
-    ydwk onRoleSelectMenuEvent {
-        withContext(ydwk.coroutineDispatcher) {
-            it.selectMenu.reply("Role added!").trigger()
-            for (role in it.selectMenu.selectedRoles) {
-                it.selectMenu.member?.addRole(role)?.mapBoth({ it }, { throw it })
+    ydwk onRoleSelectMenuEvent
+        {
+            withContext(ydwk.coroutineDispatcher) {
+                it.selectMenu.reply("Role added!").trigger()
+                for (role in it.selectMenu.selectedRoles) {
+                    it.selectMenu.member?.addRole(role)?.mapBoth({ it }, { throw it })
+                }
             }
         }
-    }
 }
 
 class Test : InteractionEventListener {

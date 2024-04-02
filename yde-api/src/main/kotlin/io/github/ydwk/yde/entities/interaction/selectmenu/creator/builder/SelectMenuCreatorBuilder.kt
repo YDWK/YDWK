@@ -20,9 +20,9 @@ package io.github.ydwk.yde.entities.interaction.selectmenu.creator.builder
 
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.ydwk.yde.YDE
-import io.github.ydwk.yde.interaction.message.ComponentType
 import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenu
 import io.github.ydwk.yde.entities.interaction.selectmenu.creator.SelectMenuCreator
+import io.github.ydwk.yde.interaction.message.ComponentType
 
 open class SelectMenuCreatorBuilder(
     open val customId: String,

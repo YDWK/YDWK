@@ -81,6 +81,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
+import net.sf.fmj.utility.LoggerSingleton.logger
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -119,19 +120,7 @@ open class WebSocketManager(
                 YDWKInfo.JSON_ENCODING.getUrl()
 
         try {
-            val webSocketFactory = WebSocketFactory()
-            if (webSocketFactory.socketTimeout > 0)
-                webSocketFactory.socketTimeout = 1000.coerceAtLeast(webSocketFactory.socketTimeout)
-            else webSocketFactory.socketTimeout = 10000
-
-            webSocket =
-                webSocketFactory
-                    .createSocket(url)
-                    .addHeader("Accept-Encoding", "gzip")
-                    .setDirectTextMessage(etfInsteadOfJson)
-                    .addListener(this)
-                    .addListener(WebsocketLogging(logger))
-                    .connect()
+            webSocket = getWS(url, etfInsteadOfJson, this, logger)
         } catch (e: IOException) {
             resumeUrl = null
             sessionId = null
@@ -547,8 +536,29 @@ open class WebSocketManager(
         }
     }
 
-
-    infix fun WebSocket?.sendText(text: String) {
+    private infix fun WebSocket?.sendText(text: String) {
         sendText(text)
+    }
+
+    companion object {
+        fun getWS(
+            url: String,
+            etfInsteadOfJson: Boolean,
+            webSocketListener: WebSocketListener,
+            logger: Logger
+        ): WebSocket {
+            val webSocketFactory = WebSocketFactory()
+            if (webSocketFactory.socketTimeout > 0)
+                webSocketFactory.socketTimeout = 1000.coerceAtLeast(webSocketFactory.socketTimeout)
+            else webSocketFactory.socketTimeout = 10000
+
+            return webSocketFactory
+                .createSocket(url)
+                .addHeader("Accept-Encoding", "gzip")
+                .setDirectTextMessage(etfInsteadOfJson)
+                .addListener(webSocketListener)
+                .addListener(WebsocketLogging(logger))
+                .connect()
+        }
     }
 }

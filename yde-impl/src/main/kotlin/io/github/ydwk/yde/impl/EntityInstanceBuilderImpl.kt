@@ -46,6 +46,14 @@ import io.github.ydwk.yde.entities.guild.schedule.EntityType
 import io.github.ydwk.yde.entities.guild.schedule.PrivacyLevel
 import io.github.ydwk.yde.entities.guild.schedule.ScheduledEventStatus
 import io.github.ydwk.yde.entities.guild.ws.WelcomeChannel
+import io.github.ydwk.yde.entities.interaction.Component
+import io.github.ydwk.yde.entities.interaction.actionrow.ActionRow
+import io.github.ydwk.yde.entities.interaction.button.Button
+import io.github.ydwk.yde.entities.interaction.button.PartialEmoji
+import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenu
+import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenuDefaultValues
+import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenuOption
+import io.github.ydwk.yde.entities.interaction.textinput.TextInput
 import io.github.ydwk.yde.entities.message.*
 import io.github.ydwk.yde.entities.message.activity.MessageActivityType
 import io.github.ydwk.yde.entities.message.embed.*
@@ -72,6 +80,11 @@ import io.github.ydwk.yde.impl.entities.guild.*
 import io.github.ydwk.yde.impl.entities.guild.role.RoleTagImpl
 import io.github.ydwk.yde.impl.entities.guild.schedule.EntityMetadataImpl
 import io.github.ydwk.yde.impl.entities.guild.ws.WelcomeChannelImpl
+import io.github.ydwk.yde.impl.entities.interaction.ComponentImpl
+import io.github.ydwk.yde.impl.entities.interaction.actionrow.ActionRowImpl
+import io.github.ydwk.yde.impl.entities.interaction.selectmenu.SelectMenuDefaultValuesImpl
+import io.github.ydwk.yde.impl.entities.interaction.selectmenu.SelectMenuOptionImpl
+import io.github.ydwk.yde.impl.entities.interaction.textinput.TextInputImpl
 import io.github.ydwk.yde.impl.entities.message.*
 import io.github.ydwk.yde.impl.entities.message.AttachmentImpl
 import io.github.ydwk.yde.impl.entities.message.EmbedImpl
@@ -91,8 +104,8 @@ import io.github.ydwk.yde.impl.interaction.InteractionImpl
 import io.github.ydwk.yde.impl.interaction.application.type.MessageCommandImpl
 import io.github.ydwk.yde.impl.interaction.application.type.SlashCommandImpl
 import io.github.ydwk.yde.impl.interaction.application.type.UserCommandImpl
-import io.github.ydwk.yde.impl.entities.interaction.ComponentImpl
 import io.github.ydwk.yde.impl.interaction.message.ComponentInteractionDataImpl
+import io.github.ydwk.yde.impl.interaction.message.actionrow.ActionRowInteractionImpl
 import io.github.ydwk.yde.impl.util.*
 import io.github.ydwk.yde.interaction.ComponentInteraction
 import io.github.ydwk.yde.interaction.Interaction
@@ -101,22 +114,8 @@ import io.github.ydwk.yde.interaction.application.ApplicationCommandOption
 import io.github.ydwk.yde.interaction.application.type.MessageCommand
 import io.github.ydwk.yde.interaction.application.type.SlashCommand
 import io.github.ydwk.yde.interaction.application.type.UserCommand
-import io.github.ydwk.yde.entities.interaction.actionrow.ActionRow
-import io.github.ydwk.yde.entities.interaction.Component
 import io.github.ydwk.yde.interaction.message.ComponentInteractionData
 import io.github.ydwk.yde.interaction.message.ComponentType
-import io.github.ydwk.yde.entities.interaction.button.Button
-import io.github.ydwk.yde.entities.interaction.ButtonStyle
-import io.github.ydwk.yde.entities.interaction.button.PartialEmoji
-import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenu
-import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenuDefaultValues
-import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenuOption
-import io.github.ydwk.yde.entities.interaction.textinput.TextInput
-import io.github.ydwk.yde.impl.entities.interaction.actionrow.ActionRowImpl
-import io.github.ydwk.yde.impl.entities.interaction.selectmenu.SelectMenuDefaultValuesImpl
-import io.github.ydwk.yde.impl.entities.interaction.selectmenu.SelectMenuOptionImpl
-import io.github.ydwk.yde.impl.entities.interaction.textinput.TextInputImpl
-import io.github.ydwk.yde.impl.interaction.message.actionrow.ActionRowInteractionImpl
 import io.github.ydwk.yde.interaction.message.actionrow.ActionRowInteraction
 import io.github.ydwk.yde.interaction.message.button.ButtonInteraction
 import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenuInteraction
@@ -967,10 +966,7 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     }
 
     override fun buildComponent(json: JsonNode): Component {
-        return ComponentImpl(
-            yde,
-            json,
-            ComponentType.getValue(json["type"].asInt()))
+        return ComponentImpl(yde, json, ComponentType.getValue(json["type"].asInt()))
     }
 
     override fun buildComponentInteractionData(json: JsonNode): ComponentInteractionData {
@@ -1038,19 +1034,24 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             yde, json, SelectMenuDefaultValues.Type.getValue(json["type"].asText()))
     }
 
-    override fun buildActionRowInteraction(json: JsonNode, interactionId: GetterSnowFlake): ActionRowInteraction {
-        return ActionRowInteractionImpl(
-            yde,
-            json,
-            interactionId
-        )
+    override fun buildActionRowInteraction(
+        json: JsonNode,
+        interactionId: GetterSnowFlake
+    ): ActionRowInteraction {
+        return ActionRowInteractionImpl(yde, json, interactionId)
     }
 
-    override fun buildSelectMenuInteraction(json: JsonNode, interactionId: GetterSnowFlake): SelectMenuInteraction {
+    override fun buildSelectMenuInteraction(
+        json: JsonNode,
+        interactionId: GetterSnowFlake
+    ): SelectMenuInteraction {
         TODO("Not yet implemented")
     }
 
-    override fun buildButtonInteraction(json: JsonNode, interactionId: GetterSnowFlake): ButtonInteraction {
+    override fun buildButtonInteraction(
+        json: JsonNode,
+        interactionId: GetterSnowFlake
+    ): ButtonInteraction {
         TODO("Not yet implemented")
     }
 
@@ -1124,9 +1125,9 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             buildMessage(json["data"]["resolved"]["messages"]))
     }
 
-   // infix fun Int.test(bitCount: Int): Long {
-     //   return this.toLong() shl bitCount
-   // }
+    // infix fun Int.test(bitCount: Int): Long {
+    //   return this.toLong() shl bitCount
+    // }
 
-   // val permissions = 5 test 0
+    // val permissions = 5 test 0
 }

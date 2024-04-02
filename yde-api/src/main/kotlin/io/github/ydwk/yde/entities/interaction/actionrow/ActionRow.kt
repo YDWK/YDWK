@@ -51,17 +51,11 @@ interface ActionRow : Component {
          * @param components The components to add to the action row.
          * @return [ActionRowCreator] used to create the action row.
          */
-        fun createActionRow(
-            yde: YDE,
-            vararg components: Component
-        ): ActionRowCreator {
+        fun createActionRow(yde: YDE, vararg components: Component): ActionRowCreator {
             return createActionRow(yde, components.toList())
         }
 
-        fun createActionRow(
-            yde: YDE,
-            components: List<Component>
-        ): ActionRowCreator {
+        fun createActionRow(yde: YDE, components: List<Component>): ActionRowCreator {
             Checks.customCheck(components.size <= 5, "Action row can only have 5 components.")
             return ActionRowCreatorBuilder(yde, components)
         }

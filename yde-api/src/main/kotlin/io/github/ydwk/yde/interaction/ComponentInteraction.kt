@@ -23,8 +23,8 @@ import io.github.ydwk.yde.entities.Message
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.channel.TextChannel
 import io.github.ydwk.yde.entities.guild.Member
-import io.github.ydwk.yde.entities.util.GenericEntity
 import io.github.ydwk.yde.entities.interaction.Component
+import io.github.ydwk.yde.entities.util.GenericEntity
 import io.github.ydwk.yde.interaction.message.ComponentInteractionData
 import io.github.ydwk.yde.interaction.message.ComponentType
 import io.github.ydwk.yde.interaction.sub.InteractionType

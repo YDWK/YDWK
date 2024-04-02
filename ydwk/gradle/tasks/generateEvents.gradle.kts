@@ -9,28 +9,27 @@ buildscript {
 
 fun addFunction(): FunSpec.Builder {
     return FunSpec.builder("on")
-            .addKdoc(
-                """
+        .addKdoc(
+            """
                     Listens for events of type [T].
 
                     @param consumer The consumer function to handle the event.
                     @return The [T] event listener.
                 """
-                    .trimIndent())
-            .addModifiers(KModifier.INLINE)
-            .addTypeVariable(TypeVariableName("reified T : GenericEvent"))
-            .addParameter(
-                "consumer",
-                LambdaTypeName.get(
-                        receiver = ClassName("io.github.ydwk.ydwk.evm.event", "GenericEvent"),
-                        parameters =
-                            listOf(ParameterSpec.builder("", TypeVariableName("T")).build()),
-                        returnType = UNIT)
-                    .copy(suspending = true),
-                KModifier.CROSSINLINE)
-            .returns(ClassName("io.github.ydwk.ydwk.evm.event", "CoroutineEventListener"))
-            .addCode(
-                """
+                .trimIndent())
+        .addModifiers(KModifier.INLINE)
+        .addTypeVariable(TypeVariableName("reified T : GenericEvent"))
+        .addParameter(
+            "consumer",
+            LambdaTypeName.get(
+                    receiver = ClassName("io.github.ydwk.ydwk.evm.event", "GenericEvent"),
+                    parameters = listOf(ParameterSpec.builder("", TypeVariableName("T")).build()),
+                    returnType = UNIT)
+                .copy(suspending = true),
+            KModifier.CROSSINLINE)
+        .returns(ClassName("io.github.ydwk.ydwk.evm.event", "CoroutineEventListener"))
+        .addCode(
+            """
             return object : CoroutineEventListener {
                 override suspend fun onEvent(event: GenericEvent) {
                     if (event is T) {
@@ -39,8 +38,8 @@ fun addFunction(): FunSpec.Builder {
                 }
             }
             """
-                    .trimIndent())
-            .addCode(".also { ydwk.addEventListeners(it) }")
+                .trimIndent())
+        .addCode(".also { ydwk.addEventListeners(it) }")
 }
 
 fun addEventSpecification(name: String): FunSpec {
@@ -79,13 +78,14 @@ fun addEventSpecificationInflux(name: String): FunSpec {
 
             @param consumer The consumer function to handle the ${name}.
             @return The [${name}] listener.
-        """.trimIndent())
+        """
+                .trimIndent())
         .addParameter(
             "consumer",
             LambdaTypeName.get(
-                receiver = ClassName("io.github.ydwk.ydwk.evm.event", "GenericEvent"),
-                parameters = listOf(ParameterSpec.builder("", TypeVariableName(name)).build()),
-                returnType = UNIT)
+                    receiver = ClassName("io.github.ydwk.ydwk.evm.event", "GenericEvent"),
+                    parameters = listOf(ParameterSpec.builder("", TypeVariableName(name)).build()),
+                    returnType = UNIT)
                 .copy(suspending = true),
             KModifier.CROSSINLINE)
         .addModifiers(KModifier.PUBLIC, KModifier.INLINE, KModifier.INFIX)
@@ -186,7 +186,7 @@ fun generateEventFile() {
         eventClass.addFunction(addEventSpecification(name))
     }
 
-    //companion object
+    // companion object
 
     val eventClassCompanionObject = TypeSpec.companionObjectBuilder()
 

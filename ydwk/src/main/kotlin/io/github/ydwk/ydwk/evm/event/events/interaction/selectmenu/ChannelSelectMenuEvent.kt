@@ -30,5 +30,7 @@ import io.github.ydwk.ydwk.evm.event.Event
  * @param selectMenu the [ChannelSelectMenu] that is selected
  */
 @InteractionEvent
-data class ChannelSelectMenuEvent(override val ydwk: YDWK, val selectMenu: ChannelSelectMenuInteraction) :
-    Event(ydwk)
+data class ChannelSelectMenuEvent(
+    override val ydwk: YDWK,
+    val selectMenu: ChannelSelectMenuInteraction
+) : Event(ydwk)

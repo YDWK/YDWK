@@ -20,8 +20,8 @@ package io.github.ydwk.yde.entities.interaction.selectmenu
 
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.Emoji
-import io.github.ydwk.yde.entities.util.GenericEntity
 import io.github.ydwk.yde.entities.interaction.selectmenu.creator.builder.SelectMenuOptionCreatorBuilder
+import io.github.ydwk.yde.entities.util.GenericEntity
 
 interface SelectMenuOption : GenericEntity {
     /**

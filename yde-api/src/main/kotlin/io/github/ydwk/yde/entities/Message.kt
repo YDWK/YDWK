@@ -20,10 +20,10 @@ package io.github.ydwk.yde.entities
 
 import io.github.ydwk.yde.entities.application.PartialApplication
 import io.github.ydwk.yde.entities.guild.Role
+import io.github.ydwk.yde.entities.interaction.Component
 import io.github.ydwk.yde.entities.message.*
 import io.github.ydwk.yde.entities.sticker.StickerItem
 import io.github.ydwk.yde.entities.util.GenericEntity
-import io.github.ydwk.yde.entities.interaction.Component
 import io.github.ydwk.yde.rest.RestResult
 import io.github.ydwk.yde.rest.result.NoResult
 import io.github.ydwk.yde.util.GetterSnowFlake

@@ -20,10 +20,10 @@ package io.github.ydwk.yde.entities.interaction.selectmenu.creator.builder.types
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
-import io.github.ydwk.yde.interaction.message.ComponentType
 import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenuOption
 import io.github.ydwk.yde.entities.interaction.selectmenu.creator.builder.SelectMenuCreatorBuilder
 import io.github.ydwk.yde.entities.interaction.selectmenu.creator.types.StringSelectMenuCreator
+import io.github.ydwk.yde.interaction.message.ComponentType
 
 data class StringSelectMenuCreatorBuilder(
     override val yde: YDE,
