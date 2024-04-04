@@ -39,8 +39,8 @@ enum class SlashOptionType(private val value: Int) {
          * @param value The value to get the [SlashOptionType] from.
          * @return The [SlashOptionType] from the given [value].
          */
-        fun fromInt(value: Int): SlashOptionType {
-            return values().firstOrNull { it.value == value } ?: UNKNOWN
+        fun getValue(value: Int): SlashOptionType {
+            return entries.firstOrNull { it.value == value } ?: UNKNOWN
         }
     }
 

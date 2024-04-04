@@ -48,8 +48,8 @@ enum class ActivityType(private val activity: Int) {
          * @param id The id of the activity.
          * @return The activity.
          */
-        fun fromInt(id: Int): ActivityType {
-            for (activity in values()) {
+        fun getValue(id: Int): ActivityType {
+            for (activity in entries) {
                 if (activity.activity == id) {
                     return activity
                 }

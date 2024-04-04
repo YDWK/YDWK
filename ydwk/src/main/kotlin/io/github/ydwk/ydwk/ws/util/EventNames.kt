@@ -80,8 +80,8 @@ enum class EventNames(private val eventName: String) {
          * @param eventName The event name.
          * @return The [EventNames] with the event name.
          */
-        fun fromString(eventName: String): EventNames {
-            return values().firstOrNull { it.eventName == eventName } ?: UNKNOWN
+        fun getValue(eventName: String): EventNames {
+            return entries.firstOrNull { it.eventName == eventName } ?: UNKNOWN
         }
     }
 

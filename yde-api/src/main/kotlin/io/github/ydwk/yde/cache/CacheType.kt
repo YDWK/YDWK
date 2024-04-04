@@ -33,7 +33,7 @@ enum class CacheType(private val ids: CacheIds) {
 
     companion object {
         fun fromCacheIds(ids: CacheIds): CacheType {
-            return values().firstOrNull { it.ids == ids } ?: UNKNOWN
+            return entries.firstOrNull { it.ids == ids } ?: UNKNOWN
         }
     }
 

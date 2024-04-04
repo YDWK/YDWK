@@ -273,8 +273,8 @@ enum class JsonErrorCode(private val code: Int, private val meaning: String) {
          * @param code The code to get the [JsonErrorCode] from.
          * @return The [JsonErrorCode] from the given [code].
          */
-        fun fromInt(code: Int): JsonErrorCode {
-            return values().firstOrNull { it.code == code } ?: UNKNOWN
+        fun getValue(code: Int): JsonErrorCode {
+            return entries.firstOrNull { it.code == code } ?: UNKNOWN
         }
     }
 

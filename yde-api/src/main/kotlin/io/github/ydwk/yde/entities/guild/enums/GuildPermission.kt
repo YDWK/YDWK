@@ -115,7 +115,7 @@ enum class GuildPermission(
     NONE(0, "No permissions");
 
     companion object {
-        val ALL_PERMS: Long = values().map { it.value }.reduce { acc, l -> acc or l }
+        val ALL_PERMS: Long = entries.map { it.value }.reduce { acc, l -> acc or l }
 
         /**
          * Returns the [GuildPermission] with the given [value]. If no [GuildPermission] is found,

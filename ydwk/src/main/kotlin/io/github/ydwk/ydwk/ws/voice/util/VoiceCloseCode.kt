@@ -44,7 +44,7 @@ enum class VoiceCloseCode(val code: Int, val reason: String, val isReconnect: Bo
 
     companion object {
         fun fromCode(code: Int): VoiceCloseCode {
-            for (value in values()) {
+            for (value in entries) {
                 if (value.code == code) {
                     return value
                 }

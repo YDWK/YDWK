@@ -38,8 +38,8 @@ enum class ApplicationCommandType(private val value: Int) {
          * @param value The value to get the [ApplicationCommandType] from.
          * @return The [ApplicationCommandType] from the given [value].
          */
-        fun fromInt(value: Int): ApplicationCommandType {
-            return values().firstOrNull { it.value == value } ?: UNKNOWN
+        fun getValue(value: Int): ApplicationCommandType {
+            return entries.firstOrNull { it.value == value } ?: UNKNOWN
         }
     }
 

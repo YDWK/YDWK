@@ -41,8 +41,8 @@ enum class HttpResponseCode(private val code: Int, private val message: String) 
          * @param code The code to get the [HttpResponseCode] from.
          * @return The [HttpResponseCode] from the given [code].
          */
-        fun fromInt(code: Int): HttpResponseCode {
-            return values().firstOrNull { it.code == code } ?: UNKNOWN
+        fun getValue(code: Int): HttpResponseCode {
+            return entries.firstOrNull { it.code == code } ?: UNKNOWN
         }
     }
 

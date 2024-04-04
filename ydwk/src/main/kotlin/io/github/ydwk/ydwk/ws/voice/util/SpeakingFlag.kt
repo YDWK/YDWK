@@ -39,8 +39,8 @@ enum class SpeakingFlag(private val value: Long) {
          * @param value The value to get the speaking flag from.
          * @return The speaking flag.
          */
-        fun fromValue(value: Long): SpeakingFlag {
-            return values().first { it.value == value }
+        fun getValue(value: Long): SpeakingFlag {
+            return entries.first { it.value == value }
         }
     }
 }

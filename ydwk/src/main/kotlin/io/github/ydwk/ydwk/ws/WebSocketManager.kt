@@ -442,7 +442,7 @@ open class WebSocketManager(
 
     private fun onEventType(eventType: String, d: JsonNode) {
         CoroutineScope(ydwk.coroutineDispatcher).launch {
-            when (EventNames.fromString(eventType)) {
+            when (EventNames.getValue(eventType)) {
                 EventNames.HELLO -> {
                     // do nothing
                 }
