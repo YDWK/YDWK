@@ -85,7 +85,15 @@ subprojects {
     apply(plugin = "jacoco")
     apply(plugin = "com.diffplug.spotless")
 
-    tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "21" }
+    kotlin {
+        compilerOptions {
+            apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0)
+            languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0)
+
+            java.targetCompatibility = JavaVersion.VERSION_21
+            java.sourceCompatibility = JavaVersion.VERSION_21
+        }
+    }
 
     java {
         withJavadocJar()

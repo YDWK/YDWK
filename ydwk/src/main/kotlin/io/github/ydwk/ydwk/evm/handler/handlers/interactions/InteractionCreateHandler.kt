@@ -39,7 +39,7 @@ class InteractionCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, j
         when (interaction.type) {
             InteractionType.APPLICATION_COMMAND -> {
                 val dataJson = json["data"]
-                when (ApplicationCommandType.fromInt(dataJson["type"].asInt())) {
+                when (ApplicationCommandType.getValue(dataJson["type"].asInt())) {
                     ApplicationCommandType.CHAT_INPUT -> {
                         val slashCommand =
                             ydwk.entityInstanceBuilder.buildSlashCommand(json, interaction)

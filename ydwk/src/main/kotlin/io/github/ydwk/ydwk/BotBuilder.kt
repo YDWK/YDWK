@@ -25,7 +25,7 @@ import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
 import kotlinx.coroutines.CoroutineDispatcher
 
-internal class BotBuilder
+class BotBuilder
 private constructor(
     private val token: String,
     private val httpClient: HttpClient = HttpClient(OkHttp),
@@ -64,7 +64,7 @@ private constructor(
         }
     }
 
-    internal class Builder(private val token: String) {
+    class Builder(private val token: String) {
         private var httpClient: HttpClient = HttpClient()
         private var intents: MutableList<GateWayIntent> = mutableListOf()
         private var allowedCache: MutableSet<CacheIds> = mutableSetOf()

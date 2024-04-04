@@ -54,7 +54,7 @@ class InteractionImpl(
         when (type) {
             InteractionType.APPLICATION_COMMAND -> {
                 // get type
-                when (ApplicationCommandType.fromInt(json["data"]["type"].asInt())) {
+                when (ApplicationCommandType.getValue(json["data"]["type"].asInt())) {
                     ApplicationCommandType.CHAT_INPUT ->
                         yde.entityInstanceBuilder.buildSlashCommand(json["data"], this)
                     ApplicationCommandType.USER ->
