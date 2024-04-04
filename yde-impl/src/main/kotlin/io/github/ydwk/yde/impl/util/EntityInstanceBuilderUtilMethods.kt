@@ -64,7 +64,7 @@ fun getAvatar(
     }
 
     try {
-        return AvatarImpl(yde, URL(url.toString()))
+        return AvatarImpl(yde, @Suppress("DEPRECATION") URL(url.toString()))
     } catch (urlError: MalformedURLException) {
         throw RuntimeException(
             "An issue occurred while creating the avatar URL, either update to the latest version of the library or report this issue to the developer.",
@@ -120,7 +120,7 @@ fun EntityInstanceBuilderImpl.getGuildAvatar(
             .append(size)
 
         try {
-            return AvatarImpl(yde, URL(url.toString()))
+            return AvatarImpl(yde, @Suppress("DEPRECATION") URL(url.toString()))
         } catch (urlError: MalformedURLException) {
             throw RuntimeException(
                 "An issue occurred while creating the avatar URL, either update to the latest version of the library or report this issue to the developer.",

@@ -48,11 +48,14 @@ class EmbedTest {
             EmbedBuilderImpl(ydwk)
                 .setTitle("test")
                 .setDescription("test")
-                .setUrl(URL("https://www.google.com"))
+                .setUrl(@Suppress("DEPRECATION") URL("https://www.google.com"))
                 .setTimestamp(Instant.now())
-                .setImage(EmbedImageBuilder(URL("https://www.google.com")))
-                .setAuthor("test", URL("https://www.google.com"), URL("https://www.google.com"))
-                .setFooter("test", URL("https://www.google.com"))
+                .setImage(EmbedImageBuilder(@Suppress("DEPRECATION") URL("https://www.google.com")))
+                .setAuthor(
+                    "test",
+                    @Suppress("DEPRECATION") URL("https://www.google.com"),
+                    @Suppress("DEPRECATION") URL("https://www.google.com"))
+                .setFooter("test", @Suppress("DEPRECATION") URL("https://www.google.com"))
                 .addField("test", "test", true)
                 .build()
 
