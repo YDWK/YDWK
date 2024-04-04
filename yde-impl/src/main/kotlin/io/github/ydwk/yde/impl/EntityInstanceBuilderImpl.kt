@@ -66,9 +66,6 @@ import io.github.ydwk.yde.impl.entities.application.PartialApplicationImpl
 import io.github.ydwk.yde.impl.entities.audit.AuditLogChangeImpl
 import io.github.ydwk.yde.impl.entities.audit.AuditLogEntryImpl
 import io.github.ydwk.yde.impl.entities.channel.DmChannelImpl
-import io.github.ydwk.yde.impl.entities.channel.getter.ChannelGetterImpl
-import io.github.ydwk.yde.impl.entities.channel.getter.guild.GuildChannelGetterImpl
-import io.github.ydwk.yde.impl.entities.channel.getter.guild.GuildMessageChannelGetterImpl
 import io.github.ydwk.yde.impl.entities.channel.guild.*
 import io.github.ydwk.yde.impl.entities.channel.guild.GuildCategoryImpl
 import io.github.ydwk.yde.impl.entities.channel.guild.GuildChannelImpl
@@ -122,7 +119,6 @@ import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenuInteraction
 import io.github.ydwk.yde.interaction.message.selectmenu.interaction.type.*
 import io.github.ydwk.yde.interaction.message.textinput.TextInputInteraction
 import io.github.ydwk.yde.interaction.sub.InteractionType
-import io.github.ydwk.yde.rest.error.RestAPIException
 import io.github.ydwk.yde.util.*
 import java.awt.Color
 import java.net.URL
@@ -245,17 +241,6 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     }
 
     override fun buildMessage(json: JsonNode): Message {
-        val channels = mutableListOf<Channel>()
-
-        json["mention_channels"].map {
-            val channelType = ChannelType.getValue(it["type"].asInt())
-            if (ChannelType.isGuildChannel(channelType)) {
-                channels.add(buildGuildChannel(it))
-            } else {
-                channels.add(buildDMChannel(it))
-            }
-        }
-
         val thread: Channel? =
             if (json.has("thread")) {
                 val newThreadJson = json.get("thread")
@@ -271,8 +256,7 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             yde,
             json,
             json["id"].asLong(),
-            yde.getChannelById(json["channel_id"].asLong())
-                ?: throw IllegalStateException("Channel is null"),
+            GetterSnowFlake.of(json["channel_id"].asLong()),
             buildUser(json["author"]),
             json["content"].asText(),
             formatZonedDateTime(json["timestamp"].asText()),
@@ -281,11 +265,13 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             json["tts"].asBoolean(),
             json["mention_everyone"].asBoolean(),
             json["mentions"].map { buildUser(it) },
-            json["mention_roles"].map { buildRole(it) },
-            channels,
+            json["mention_roles"].map { GetterSnowFlake.of(it.asLong()) },
+            if (json.has("mention_channels"))
+                json["mention_channels"].map { buildMentionedChannel(it) }
+            else emptyList(),
             json["attachments"].map { buildAttachment(it) },
             json["embeds"].map { buildEmbed(it) },
-            json["reactions"].map { buildReaction(it) },
+            if (json.has("reactions")) json["reactions"].map { buildReaction(it) } else emptyList(),
             if (json.has("nonce")) json["nonce"].asText() else null,
             json["pinned"].asBoolean(),
             if (json.has("webhook_id")) GetterSnowFlake.of(json["webhook_id"].asLong()) else null,
@@ -295,11 +281,13 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             if (json.has("message_reference")) buildMessageReference(json["message_reference"])
             else null,
             if (json.has("flags")) MessageFlag.getValue(json["flags"].asLong()) else null,
-            if (json.has("referenced_message")) buildMessage(json["referenced_message"]) else null,
+            if (json.hasNonNull("referenced_message")) buildMessage(json["referenced_message"])
+            else null,
             if (json.has("interaction")) buildMessageInteraction(json["interaction"]) else null,
             thread,
             json["components"].map { buildComponent(it) },
-            json["sticker_items"].map { buildStickerItem(it) },
+            if (json.has("sticker_items")) json["sticker_items"].map { buildStickerItem(it) }
+            else emptyList(),
             if (json.has("position")) json["position"].asLong() else null,
         )
     }
@@ -318,6 +306,16 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             if (json.has("guild_id")) yde.getGuildById(json["guild_id"].asLong()) else null,
             if (json.has("user")) buildUser(json["user"]) else null,
             if (json.has("sort_value")) json["sort_value"].asInt() else null,
+            json["name"].asText())
+    }
+
+    override fun buildMentionedChannel(json: JsonNode): MentionedChannel {
+        return MentionedChannelImpl(
+            yde,
+            json,
+            json["id"].asLong(),
+            GetterSnowFlake.of(json["guild_id"].asLong()),
+            ChannelType.getValue(json["type"].asInt()),
             json["name"].asText())
     }
 
@@ -446,9 +444,7 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             yde,
             json,
             json["code"].asText(),
-            yde.getGuildById(json["guild_id"].asLong())
-                ?: yde.requestGuild(json["guild_id"].asLong()).getOrNull()
-                    ?: throw RestAPIException("Guild is null"),
+            GetterSnowFlake.of(json["guild_id"].asLong()),
             yde.getGuildChannelById(json["channel_id"].asLong())
                 ?: throw IllegalStateException("Channel is null"),
             if (json.has("inviter")) buildUser(json["inviter"]) else null,
@@ -561,13 +557,7 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     ): Channel {
         val id = json["id"].asLong()
         return ChannelImpl(
-            yde,
-            json,
-            id,
-            isGuildChannel,
-            isDmChannel,
-            ChannelType.getValue(json["type"].asInt()),
-            ChannelGetterImpl(yde, json, id, isGuildChannel, isDmChannel))
+            yde, json, id, isGuildChannel, isDmChannel, ChannelType.getValue(json["type"].asInt()))
     }
 
     override fun buildDMChannel(json: JsonNode): DmChannel {
@@ -596,14 +586,9 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             yde,
             json,
             json["id"].asLong(),
-            yde.getGuildById(json["guild_id"].asLong())!!,
+            GetterSnowFlake.of(json["guild_id"].asLong()),
             json["position"].asInt(),
-            if (json.has("parent_id"))
-                yde.getGuildChannelById(json["parent_id"].asLong())
-                    ?.guildChannelGetter
-                    ?.asGuildCategory()
-            else null,
-            GuildChannelGetterImpl(yde, json),
+            if (json.has("parent_id")) GetterSnowFlake.of(json["parent_id"].asLong()) else null,
             InviteCreator(yde, json["id"].asText()),
             json["name"].asText())
     }
@@ -657,9 +642,8 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
                 json["default_auto_archive_duration"].asInt()
             else 0,
             json["last_message_id"].asText(),
-            json["last_pin_timestamp"].asText(),
+            if (json.has("last_pin_timestamp")) json["last_pin_timestamp"].asText() else null,
             json["permission_overwrites"].map { buildPermissionOverwrite(it) },
-            GuildMessageChannelGetterImpl(yde, json, json["id"].asLong()),
             if (json["type"].asInt() == 0) ChannelType.TEXT else ChannelType.NEWS)
     }
 

@@ -1,0 +1,32 @@
+{
+  "id" : "1225471954883186688",
+  "type" : 0,
+  "content" : "Ready!",
+  "channel_id" : "938122131949097055",
+  "author" : {
+    "id" : "1083467693899915337",
+    "username" : "The Islamic Bot",
+    "avatar" : "74286a2de649bf753bdcc96fe7c024bc",
+    "discriminator" : "1951",
+    "public_flags" : 0,
+    "flags" : 0,
+    "bot" : true,
+    "banner" : null,
+    "accent_color" : null,
+    "global_name" : null,
+    "avatar_decoration_data" : null,
+    "banner_color" : null
+  },
+  "attachments" : [ ],
+  "embeds" : [ ],
+  "mentions" : [ ],
+  "mention_roles" : [ ],
+  "pinned" : false,
+  "mention_everyone" : false,
+  "tts" : false,
+  "timestamp" : "2024-04-04T15:48:02.212000+00:00",
+  "edited_timestamp" : null,
+  "flags" : 0,
+  "components" : [ ],
+  "referenced_message" : null
+}

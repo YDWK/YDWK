@@ -19,19 +19,18 @@
 package io.github.ydwk.yde.entities.channel
 
 import io.github.ydwk.yde.entities.Channel
-import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.channel.getter.guild.GuildChannelGetter
-import io.github.ydwk.yde.entities.channel.guild.GuildCategory
 import io.github.ydwk.yde.entities.guild.invite.InviteCreator
+import io.github.ydwk.yde.util.GetterSnowFlake
 import io.github.ydwk.yde.util.NameAbleEntity
 
 interface GuildChannel : Channel, NameAbleEntity {
     /**
-     * The guild of this channel.
+     * The guild id of this channel.
      *
-     * @return the guild of this channel.
+     * @return the guild id of this channel.
      */
-    val guild: Guild
+    val guildId: GetterSnowFlake
 
     /**
      * The position of this channel.
@@ -41,11 +40,11 @@ interface GuildChannel : Channel, NameAbleEntity {
     var position: Int
 
     /**
-     * The parent of this channel.
+     * The parent id of this channel.
      *
-     * @return the parent of this channel.
+     * @return the parent id of this channel.
      */
-    var parent: GuildCategory?
+    var parentId: GetterSnowFlake?
 
     /**
      * The channel getter which gives access to the channels of this guild.

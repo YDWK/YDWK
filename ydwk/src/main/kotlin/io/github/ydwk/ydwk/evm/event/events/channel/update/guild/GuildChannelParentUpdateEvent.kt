@@ -20,7 +20,7 @@ package io.github.ydwk.ydwk.evm.event.events.channel.update.guild
 
 import io.github.ydwk.yde.entities.channel.GuildChannel
 import io.github.ydwk.yde.entities.channel.enums.ChannelType
-import io.github.ydwk.yde.entities.channel.guild.GuildCategory
+import io.github.ydwk.yde.util.GetterSnowFlake
 import io.github.ydwk.ydwk.YDWK
 import io.github.ydwk.ydwk.evm.annotations.ChannelEvent
 import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
@@ -30,14 +30,14 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
  *
  * @param ydwk The [YDWK] instance.
  * @param entity The [GuildChannel] that was updated.
- * @param oldParent The old parent.
- * @param newParent The new parent.
+ * @param oldParentId The id of the old parent.
+ * @param newParentId The id of the new parent.
  */
 @ChannelEvent
 data class GuildChannelParentUpdateEvent(
     override val ydwk: YDWK,
     override val entity: GuildChannel,
     val type: ChannelType,
-    val oldParent: GuildCategory?,
-    val newParent: GuildCategory?,
-) : GenericChannelUpdateEvent<GuildCategory?>(ydwk, entity, oldParent, newParent)
+    val oldParentId: GetterSnowFlake?,
+    val newParentId: GetterSnowFlake?,
+) : GenericChannelUpdateEvent<GetterSnowFlake?>(ydwk, entity, oldParentId, newParentId)

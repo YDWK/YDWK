@@ -21,19 +21,19 @@ package io.github.ydwk.yde.impl.entities.guild
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.Application
-import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.channel.GuildChannel
 import io.github.ydwk.yde.entities.guild.GuildScheduledEvent
 import io.github.ydwk.yde.entities.guild.Invite
 import io.github.ydwk.yde.entities.guild.invite.TargetType
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
+import io.github.ydwk.yde.util.GetterSnowFlake
 
 internal class InviteImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val code: String,
-    override val guild: Guild,
+    override val guildId: GetterSnowFlake,
     override val channel: GuildChannel,
     override val inviter: User?,
     override val targetType: TargetType,

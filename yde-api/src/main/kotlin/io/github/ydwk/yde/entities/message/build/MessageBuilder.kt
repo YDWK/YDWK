@@ -166,7 +166,12 @@ class MessageBuilder {
                 channel.id)
             .execute { response ->
                 val json = response.json(channel.yde)
-                channel.yde.entityInstanceBuilder.buildMessage(json)
+
+                try {
+                    channel.yde.entityInstanceBuilder.buildMessage(json)
+                } catch (e: Exception) {
+                    throw RestAPIException("Could not build message", e)
+                }
             }
     }
 

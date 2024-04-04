@@ -66,7 +66,7 @@ enum class OpCode(
          * @param code The code to get the [OpCode] from.
          * @return The [OpCode] from the given [code].
          */
-        fun fromInt(code: Int): OpCode {
+        fun getValue(code: Int): OpCode {
             for (opCode in entries) {
                 if (opCode.code == code) {
                     return opCode

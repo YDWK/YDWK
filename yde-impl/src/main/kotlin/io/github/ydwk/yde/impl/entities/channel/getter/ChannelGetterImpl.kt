@@ -18,22 +18,13 @@
  */ 
 package io.github.ydwk.yde.impl.entities.channel.getter
 
-import com.fasterxml.jackson.databind.JsonNode
-import io.github.ydwk.yde.YDE
+import io.github.ydwk.yde.entities.Channel
 import io.github.ydwk.yde.entities.channel.DmChannel
 import io.github.ydwk.yde.entities.channel.GuildChannel
 import io.github.ydwk.yde.entities.channel.getter.ChannelGetter
 import io.github.ydwk.yde.impl.entities.ChannelImpl
 
-internal class ChannelGetterImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val idAsLong: Long,
-    override val isGuildChannel: Boolean,
-    override val isDmChannel: Boolean,
-) :
-    ChannelImpl(yde.entityInstanceBuilder.buildChannel(json, isGuildChannel, isDmChannel)),
-    ChannelGetter {
+internal class ChannelGetterImpl(channel: Channel) : ChannelImpl(channel), ChannelGetter {
     override fun asGuildChannel(): GuildChannel? {
         return isGuildChannel.let {
             if (it) {

@@ -32,6 +32,7 @@ import io.github.ydwk.ydwk.evm.event.events.interaction.slash.SlashCommandEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.user.UserCommandEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.util.emitEvent
 
 class InteractionCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override suspend fun start() {
@@ -44,19 +45,17 @@ class InteractionCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, j
                         val slashCommand =
                             ydwk.entityInstanceBuilder.buildSlashCommand(json, interaction)
                         val event = SlashCommandEvent(ydwk, slashCommand)
-                        ydwk.emitEvent(event)
+                        event.emitEvent()
                     }
                     ApplicationCommandType.USER -> {
                         val userCommand =
                             ydwk.entityInstanceBuilder.buildUserCommand(json, interaction)
-                        val event = UserCommandEvent(ydwk, userCommand)
-                        ydwk.emitEvent(event)
+                        UserCommandEvent(ydwk, userCommand).emitEvent()
                     }
                     ApplicationCommandType.MESSAGE -> {
                         val messageCommand =
                             ydwk.entityInstanceBuilder.buildMessageCommand(json, interaction)
-                        val event = MessageCommandEvent(ydwk, messageCommand)
-                        ydwk.emitEvent(event)
+                        MessageCommandEvent(ydwk, messageCommand).emitEvent()
                     }
                     else -> throw IllegalArgumentException("Unknown command type")
                 }
@@ -71,13 +70,13 @@ class InteractionCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, j
                 MessageComponentHandler(type, customId, interactionComponent, ydwk).handle()
             }
             InteractionType.APPLICATION_COMMAND_AUTOCOMPLETE -> {
-                ydwk.emitEvent(AutoCompleteSlashCommandEvent(ydwk, interaction))
+                AutoCompleteSlashCommandEvent(ydwk, interaction).emitEvent()
             }
             InteractionType.MODAL_SUBMIT -> {
-                ydwk.emitEvent(ModelEvent(ydwk, interaction))
+                ModelEvent(ydwk, interaction).emitEvent()
             }
             InteractionType.PING -> {
-                ydwk.emitEvent(PingEvent(ydwk, interaction))
+                PingEvent(ydwk, interaction).emitEvent()
             }
             InteractionType.UNKNOWN -> {
                 ydwk.logger.warn("Unknown interaction type: ${json["type"].asInt()}")

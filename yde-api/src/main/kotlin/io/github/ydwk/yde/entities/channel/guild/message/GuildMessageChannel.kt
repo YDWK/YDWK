@@ -57,7 +57,7 @@ interface GuildMessageChannel : TextChannel, GuildChannel {
      *
      * @return the last pinned message id of this channel.
      */
-    var lastPinTimestamp: String
+    var lastPinTimestamp: String?
 
     /**
      * The permission overwrites of this channel.

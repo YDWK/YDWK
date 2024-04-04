@@ -25,100 +25,23 @@ import io.github.ydwk.yde.rest.RestResult
 /** Represents an object that can be used to send a message to a discord text channel. */
 interface SendAble {
     /**
-     * Sets the content of the message.
+     * Sends a message.
      *
      * @param message The content of the message.
-     * @return The current instance in order to chain call methods.
-     */
-    fun setContent(message: String): SendAble {
-        messageBuilder.setContent(message)
-        return this
-    }
-
-    /**
-     * Whether the message should be sent with text-to-speech.
-     *
-     * @param tts Whether the message should be sent with text-to-speech.
-     * @return The current instance in order to chain call methods.
-     */
-    fun setTts(tts: Boolean): SendAble {
-        messageBuilder.setTts(tts)
-        return this
-    }
-
-    /**
-     * Sets the embed of the message.
-     *
-     * @param embed The embed of the message.
-     * @return The current instance in order to chain call methods.
-     */
-    fun setEmbed(embed: Embed): SendAble {
-        messageBuilder.setEmbed(embed)
-        return this
-    }
-
-    /**
-     * Sets the embeds of the message.
-     *
-     * @param embeds The embeds of the message.
-     * @return The current instance in order to chain call methods.
-     */
-    fun setEmbeds(vararg embeds: Embed): SendAble {
-        messageBuilder.setEmbeds(embeds)
-        return this
-    }
-
-    /**
-     * Sets the embeds of the message.
-     *
-     * @param embeds The embeds of the message.
-     * @return The current instance in order to chain call methods.
-     */
-    fun setEmbeds(embeds: List<Embed>): SendAble {
-        messageBuilder.setEmbeds(embeds)
-        return this
-    }
-
-    /**
-     * Set a message flag.
-     *
-     * @param flag The flag to set.
-     * @return The current instance in order to chain call methods.
-     */
-    fun setFlag(flag: MessageFlag): SendAble {
-        messageBuilder.setFlag(flag)
-        return this
-    }
-
-    /**
-     * Sets the message flags.
-     *
-     * @param flags The flags to set.
-     * @return The current instance in order to chain call methods.
-     */
-    fun setFlags(vararg flags: MessageFlag): SendAble {
-        messageBuilder.setFlags(flags)
-        return this
-    }
-
-    /**
-     * Sets the message flags.
-     *
-     * @param flags The flags to set.
-     * @return The current instance in order to chain call methods.
-     */
-    fun setFlags(flags: List<MessageFlag>): SendAble {
-        messageBuilder.setFlags(flags)
-        return this
-    }
-
-    /**
-     * Sends the message.
-     *
      * @return The [RestResult] of the message.
      */
-    suspend fun send(): RestResult<Message> {
-        return messageBuilder.send(this)
+    suspend fun sendMessage(message: String): RestResult<Message> {
+        return messageBuilder.setContent(message).send(this)
+    }
+
+    /**
+     * Sends an embed message.
+     *
+     * @param embed The embed message.
+     * @return The [RestResult] of the message.
+     */
+    suspend fun sendEmbed(embed: Embed): RestResult<Message> {
+        return messageBuilder.setEmbed(embed).send(this)
     }
 
     /**

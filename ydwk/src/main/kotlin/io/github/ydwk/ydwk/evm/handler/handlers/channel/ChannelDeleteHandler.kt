@@ -24,6 +24,7 @@ import io.github.ydwk.yde.entities.channel.enums.ChannelType
 import io.github.ydwk.ydwk.evm.event.events.channel.ChannelDeleteEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.util.emitEvent
 
 class ChannelDeleteHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override suspend fun start() {
@@ -37,7 +38,7 @@ class ChannelDeleteHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json)
             channelType.isNonGuildChannel -> {
                 val channel = ydwk.entityInstanceBuilder.buildChannel(json, false, true)
                 ydwk.cache.remove(json.get("id").asText(), CacheIds.CHANNEL)
-                ydwk.emitEvent(ChannelDeleteEvent(ydwk, channel))
+                ChannelDeleteEvent(ydwk, channel).emitEvent()
             }
         }
     }

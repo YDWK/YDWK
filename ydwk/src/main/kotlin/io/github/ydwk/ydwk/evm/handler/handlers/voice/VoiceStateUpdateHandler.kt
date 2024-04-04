@@ -23,6 +23,7 @@ import io.github.ydwk.yde.entities.VoiceState
 import io.github.ydwk.ydwk.evm.event.events.voice.VoiceStateEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.util.emitEvent
 import io.github.ydwk.ydwk.voice.getVoiceConnection
 
 class VoiceStateUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
@@ -51,6 +52,6 @@ class VoiceStateUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, js
 
         (voiceState.guild)?.getVoiceConnection()?.setVoiceState(voiceState)
 
-        ydwk.emitEvent(VoiceStateEvent(ydwk, voiceState))
+        VoiceStateEvent(ydwk, voiceState).emitEvent()
     }
 }

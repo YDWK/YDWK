@@ -26,6 +26,7 @@ import io.github.ydwk.yde.entities.channel.GuildChannel
 import io.github.ydwk.ydwk.evm.event.events.gateway.ReadyEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.util.emitEvent
 
 class ReadyHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override suspend fun start() {
@@ -78,7 +79,7 @@ class ReadyHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
         }
 
         guildChannels.forEach { ydwk.cache[it.id, it] = CacheIds.CHANNEL }
-        ydwk.emitEvent(ReadyEvent(ydwk, availableGuildsAmount, unAvailableGuildsAmount))
+        ReadyEvent(ydwk, availableGuildsAmount, unAvailableGuildsAmount).emitEvent()
     }
 
     private suspend fun requestGuild(guildId: Long): Guild {

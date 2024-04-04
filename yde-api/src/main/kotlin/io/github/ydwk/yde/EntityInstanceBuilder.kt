@@ -111,6 +111,14 @@ interface EntityInstanceBuilder {
     fun buildSticker(json: JsonNode): Sticker
 
     /**
+     * Used to build an instance of [MentionedChannel]
+     *
+     * @param json the json
+     * @return [MentionedChannel] the mentioned channel
+     */
+    fun buildMentionedChannel(json: JsonNode): MentionedChannel
+
+    /**
      * Used to build an instance of [UnavailableGuild]
      *
      * @param json the json

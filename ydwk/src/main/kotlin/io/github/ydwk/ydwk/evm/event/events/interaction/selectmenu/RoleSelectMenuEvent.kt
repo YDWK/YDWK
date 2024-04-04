@@ -27,7 +27,7 @@ import io.github.ydwk.ydwk.evm.event.Event
  * The event that is triggered when a user selects a role select menu.
  *
  * @param ydwk the [YDWK] instance
- * @param selectMenu the [RoleSelectMenu] that is selected
+ * @param selectMenu the [RoleSelectMenuInteraction] that is selected
  */
 @InteractionEvent
 data class RoleSelectMenuEvent(override val ydwk: YDWK, val selectMenu: RoleSelectMenuInteraction) :

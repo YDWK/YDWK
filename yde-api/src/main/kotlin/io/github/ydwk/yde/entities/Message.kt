@@ -19,7 +19,6 @@
 package io.github.ydwk.yde.entities
 
 import io.github.ydwk.yde.entities.application.PartialApplication
-import io.github.ydwk.yde.entities.guild.Role
 import io.github.ydwk.yde.entities.interaction.Component
 import io.github.ydwk.yde.entities.message.*
 import io.github.ydwk.yde.entities.sticker.StickerItem
@@ -31,11 +30,11 @@ import io.github.ydwk.yde.util.SnowFlake
 
 interface Message : SnowFlake, GenericEntity {
     /**
-     * The channel where this message was sent.
+     * The id of the channel where this message was sent.
      *
-     * @return The channel where this message was sent.
+     * @return The id of the channel where this message was sent.
      */
-    val channel: Channel
+    val channelId: GetterSnowFlake
 
     /**
      * The author of this message.
@@ -87,18 +86,18 @@ interface Message : SnowFlake, GenericEntity {
     val mentionedUsers: List<User>
 
     /**
-     * The mentioned roles.
+     * The mentioned roles ids.
      *
-     * @return The mentioned roles.
+     * @return The mentioned roles ids.
      */
-    val mentionedRoles: List<Role>
+    val mentionedRoleIds: List<GetterSnowFlake>
 
     /**
      * The mentioned channels.
      *
      * @return The mentioned channels.
      */
-    val mentionedChannels: List<Channel>
+    val mentionedChannels: List<MentionedChannel>
 
     /**
      * The attachments.
@@ -227,4 +226,12 @@ interface Message : SnowFlake, GenericEntity {
      * @return A [RestResult] that will contain the result of the operation.
      */
     suspend fun delete(): RestResult<NoResult>
+
+    /**
+     * Deletes this message after a certain amount of time.
+     *
+     * @param time The time to wait before deleting the message (in milliseconds).
+     * @return A [RestResult] that will contain the result of the operation.
+     */
+    suspend fun deleteAfter(time: Long): RestResult<NoResult>
 }

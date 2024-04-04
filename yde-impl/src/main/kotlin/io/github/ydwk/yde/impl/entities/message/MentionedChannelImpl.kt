@@ -16,35 +16,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.yde.impl.entities
+package io.github.ydwk.yde.impl.entities.message
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
-import io.github.ydwk.yde.entities.Channel
 import io.github.ydwk.yde.entities.channel.enums.ChannelType
-import io.github.ydwk.yde.entities.channel.getter.ChannelGetter
-import io.github.ydwk.yde.impl.entities.channel.getter.ChannelGetterImpl
+import io.github.ydwk.yde.entities.message.MentionedChannel
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
+import io.github.ydwk.yde.util.GetterSnowFlake
 
-internal open class ChannelImpl(
+class MentionedChannelImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,
-    override val isGuildChannel: Boolean,
-    override val isDmChannel: Boolean,
+    override val guildId: GetterSnowFlake,
     override val type: ChannelType,
-) : Channel, ToStringEntityImpl<Channel>(yde, Channel::class.java) {
-    constructor(
-        channel: Channel
-    ) : this(
-        channel.yde,
-        channel.json,
-        channel.idAsLong,
-        channel.isGuildChannel,
-        channel.isDmChannel,
-        channel.type,
-    )
-
-    override val channelGetter: ChannelGetter
-        get() = ChannelGetterImpl(this)
-}
+    override var name: String
+) : MentionedChannel, ToStringEntityImpl<MentionedChannel>(yde, MentionedChannel::class.java)

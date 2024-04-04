@@ -24,7 +24,6 @@ import io.github.ydwk.yde.entities.Channel
 import io.github.ydwk.yde.entities.Message
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.application.PartialApplication
-import io.github.ydwk.yde.entities.guild.Role
 import io.github.ydwk.yde.entities.interaction.Component
 import io.github.ydwk.yde.entities.message.*
 import io.github.ydwk.yde.entities.sticker.StickerItem
@@ -32,12 +31,14 @@ import io.github.ydwk.yde.rest.RestResult
 import io.github.ydwk.yde.rest.result.NoResult
 import io.github.ydwk.yde.util.EntityToStringBuilder
 import io.github.ydwk.yde.util.GetterSnowFlake
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 
 internal class MessageImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,
-    override val channel: Channel,
+    override val channelId: GetterSnowFlake,
     override val author: User,
     override val content: String,
     override val time: String,
@@ -45,8 +46,8 @@ internal class MessageImpl(
     override val tts: Boolean,
     override val mentionEveryone: Boolean,
     override val mentionedUsers: List<User>,
-    override val mentionedRoles: List<Role>,
-    override val mentionedChannels: List<Channel>,
+    override val mentionedRoleIds: List<GetterSnowFlake>,
+    override val mentionedChannels: List<MentionedChannel>,
     override val attachments: List<Attachment>,
     override val embeds: List<Embed>,
     override val reactions: List<Reaction>,
@@ -68,7 +69,14 @@ internal class MessageImpl(
     override suspend fun delete(): RestResult<NoResult> {
         return yde.restAPIMethodGetters
             .getMessageRestAPIMethods()
-            .deleteMessage(channel.idAsLong, idAsLong)
+            .deleteMessage(channelId.asLong, idAsLong)
+    }
+
+    override suspend fun deleteAfter(time: Long): RestResult<NoResult> {
+        return withContext(yde.coroutineDispatcher) {
+            delay(time)
+            delete()
+        }
     }
 
     override fun toString(): String {

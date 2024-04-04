@@ -18,21 +18,15 @@
  */ 
 package io.github.ydwk.yde.impl.entities.channel.getter.guild
 
-import com.fasterxml.jackson.databind.JsonNode
-import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.channel.enums.ChannelType
 import io.github.ydwk.yde.entities.channel.getter.guild.GuildMessageChannelGetter
+import io.github.ydwk.yde.entities.channel.guild.message.GuildMessageChannel
 import io.github.ydwk.yde.entities.channel.guild.message.news.GuildNewsChannel
 import io.github.ydwk.yde.entities.channel.guild.message.text.GuildTextChannel
 import io.github.ydwk.yde.impl.entities.channel.guild.GuildMessageChannelImpl
 
-internal class GuildMessageChannelGetterImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val idAsLong: Long
-) :
-    GuildMessageChannelImpl(yde.entityInstanceBuilder.buildGuildMessageChannel(json)),
-    GuildMessageChannelGetter {
+internal class GuildMessageChannelGetterImpl(guildMessageChannel: GuildMessageChannel) :
+    GuildMessageChannelImpl(guildMessageChannel), GuildMessageChannelGetter {
 
     override fun asGuildTextChannel(): GuildTextChannel? {
         return if (type == ChannelType.TEXT) {

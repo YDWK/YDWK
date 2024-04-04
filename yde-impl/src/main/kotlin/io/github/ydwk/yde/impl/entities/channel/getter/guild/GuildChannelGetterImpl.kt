@@ -18,8 +18,7 @@
  */ 
 package io.github.ydwk.yde.impl.entities.channel.getter.guild
 
-import com.fasterxml.jackson.databind.JsonNode
-import io.github.ydwk.yde.YDE
+import io.github.ydwk.yde.entities.channel.GuildChannel
 import io.github.ydwk.yde.entities.channel.enums.ChannelType
 import io.github.ydwk.yde.entities.channel.getter.guild.GuildChannelGetter
 import io.github.ydwk.yde.entities.channel.guild.GuildCategory
@@ -29,8 +28,8 @@ import io.github.ydwk.yde.entities.channel.guild.vc.GuildStageChannel
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.yde.impl.entities.channel.guild.*
 
-internal class GuildChannelGetterImpl(yde: YDE, json: JsonNode) :
-    GuildChannelImpl(yde.entityInstanceBuilder.buildGuildChannel(json)), GuildChannelGetter {
+internal class GuildChannelGetterImpl(guildChannel: GuildChannel) :
+    GuildChannelImpl(guildChannel), GuildChannelGetter {
     override fun asGuildMessageChannel(): GuildMessageChannel? {
         return if (type == ChannelType.TEXT || type == ChannelType.NEWS) {
             yde.entityInstanceBuilder.buildGuildMessageChannel(json)

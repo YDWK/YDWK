@@ -47,9 +47,12 @@ fun GuildVoiceChannel.joinVc(muted: Boolean, deafen: Boolean): CompletableFuture
     }
 
     future
-        .completeAsync { createVoiceConnectionAsync(future, guild, this, muted, deafen) }
+        .completeAsync {
+            createVoiceConnectionAsync(
+                future, yde.getGuildById(guildId.asLong)!!, this, muted, deafen)
+        }
         .thenApply {
-            (guild).setVoiceConnection(it as VoiceConnectionImpl)
+            (yde.getGuildById(guildId.asLong)!!).setVoiceConnection(it as VoiceConnectionImpl)
             it
         }
         .exceptionally {

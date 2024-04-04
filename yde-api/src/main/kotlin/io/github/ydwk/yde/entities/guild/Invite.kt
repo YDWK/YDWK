@@ -19,11 +19,11 @@
 package io.github.ydwk.yde.entities.guild
 
 import io.github.ydwk.yde.entities.Application
-import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.channel.GuildChannel
 import io.github.ydwk.yde.entities.guild.invite.TargetType
 import io.github.ydwk.yde.entities.util.GenericEntity
+import io.github.ydwk.yde.util.GetterSnowFlake
 
 interface Invite : GenericEntity {
 
@@ -35,11 +35,11 @@ interface Invite : GenericEntity {
     val code: String
 
     /**
-     * The guild this invite is for.
+     * The guildId this invite is for.
      *
-     * @return the guild.
+     * @return the guild id.
      */
-    val guild: Guild
+    val guildId: GetterSnowFlake
 
     /**
      * The channel this invite is for.

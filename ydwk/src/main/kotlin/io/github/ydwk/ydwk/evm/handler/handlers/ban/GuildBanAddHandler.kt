@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.evm.event.events.ban.GuildBanAddEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.util.emitEvent
 
 class GuildBanAddHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override suspend fun start() {
@@ -29,10 +30,10 @@ class GuildBanAddHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
         val user = json.get("user")
         val cachedMember = ydwk.getGuildById(guildId)?.getMemberById(user.get("id").asLong())
         if (cachedMember != null) {
-            ydwk.emitEvent(GuildBanAddEvent(ydwk, ydwk.getGuildById(guildId)!!, cachedMember))
+            GuildBanAddEvent(ydwk, ydwk.getGuildById(guildId)!!, cachedMember).emitEvent()
             ydwk.memberCache.remove(guildId.toString(), cachedMember.id)
         } else {
-            ydwk.emitEvent(GuildBanAddEvent(ydwk, ydwk.getGuildById(guildId)!!, null))
+            GuildBanAddEvent(ydwk, ydwk.getGuildById(guildId)!!, null).emitEvent()
         }
     }
 }

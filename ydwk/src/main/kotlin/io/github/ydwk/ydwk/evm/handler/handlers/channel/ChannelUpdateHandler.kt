@@ -45,6 +45,7 @@ import io.github.ydwk.ydwk.evm.event.events.channel.update.voice.VoiceChannelRat
 import io.github.ydwk.ydwk.evm.event.events.channel.update.voice.VoiceChannelUserLimitUpdateEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.util.ydwk
 import java.util.*
 
 class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
@@ -166,7 +167,7 @@ class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json)
         }
 
         val oldLastPinTimestamp = channel.lastPinTimestamp
-        val newLastPinTimestamp = json["last_pin_timestamp"].asText()
+        val newLastPinTimestamp = json["last_pin_timestamp"].asText() ?: null
         if (!Objects.deepEquals(oldLastPinTimestamp, newLastPinTimestamp)) {
             channel.lastPinTimestamp = newLastPinTimestamp
             ydwk.emitEvent(
@@ -222,15 +223,13 @@ class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json)
                     ydwk, channel, channel.type, oldPosition, newPosition))
         }
 
-        val oldParent: GuildCategory? = channel.parent
-        val newParent =
-            json["parent_id"]?.asText()?.let {
-                ydwk.getGuildChannelById(json["id"].asText())?.guildChannelGetter?.asGuildCategory()
-            }
-        if (!Objects.deepEquals(oldParent, newParent)) {
-            channel.parent = newParent
+        val oldParentId: GetterSnowFlake? = channel.parentId
+        val newParentId = json["parent_id"]?.asText()?.let { GetterSnowFlake.of(it.toLong()) }
+        if (!Objects.deepEquals(oldParentId, newParentId)) {
+            channel.parentId = newParentId
             ydwk.emitEvent(
-                GuildChannelParentUpdateEvent(ydwk, channel, channel.type, oldParent, newParent))
+                GuildChannelParentUpdateEvent(
+                    ydwk, channel, channel.type, oldParentId, newParentId))
         }
     }
 

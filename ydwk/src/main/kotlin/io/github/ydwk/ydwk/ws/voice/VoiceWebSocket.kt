@@ -178,7 +178,7 @@ class VoiceWebSocket(
         identifyPayload.put("op", VoiceOpcode.IDENTIFY.code)
 
         val identifyData = ydwk.objectNode
-        identifyData.put("server_id", voiceConnection.voiceChannel.guild.idAsLong)
+        identifyData.put("server_id", voiceConnection.voiceChannel.guildId.asLong)
         identifyData.put("user_id", voiceState.user!!.idAsLong)
         identifyData.put("session_id", voiceState.sessionId)
         identifyData.put("token", voiceServerUpdatePayload.token)
@@ -196,7 +196,7 @@ class VoiceWebSocket(
         resumePayload.put("op", VoiceOpcode.RESUME.code)
 
         val resumeData = ydwk.objectNode
-        resumeData.put("server_id", voiceConnection.voiceChannel.guild.idAsLong)
+        resumeData.put("server_id", voiceConnection.voiceChannel.guildId.asLong)
         resumeData.put("session_id", voiceState.sessionId)
         resumeData.put("token", voiceServerUpdatePayload.token)
 

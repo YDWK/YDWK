@@ -23,10 +23,12 @@ import io.github.ydwk.yde.builders.slash.SlashCommandBuilder
 import io.github.ydwk.yde.util.exception.LoginException
 import io.github.ydwk.ydwk.Activity
 import io.github.ydwk.ydwk.BotBuilder.Companion.buildBot
+import io.github.ydwk.ydwk.evm.event.EventListeners.Companion.onReadyEvent
 import io.github.ydwk.ydwk.evm.event.EventListeners.Companion.onSlashCommandEvent
 import io.github.ydwk.ydwk.util.ydwk
+import kotlinx.coroutines.runBlocking
 
-suspend fun main() {
+fun main() {
     val jConfig = JConfig.build()
 
     val tokenAsNode = jConfig["token"]
@@ -40,7 +42,9 @@ suspend fun main() {
             .build()
             .buildYDWK()
 
-    ydwk.awaitReady().slashBuilder.addSlashCommand(SlashCommandBuilder("ping", "Pong!")).build()
+    runBlocking {
+        ydwk.awaitReady().slashBuilder.addSlashCommand(SlashCommandBuilder("ping", "Pong!")).build()
+    }
 
     ydwk onSlashCommandEvent
         {
@@ -55,5 +59,20 @@ suspend fun main() {
                     }
                 }
             }
+        }
+
+    ydwk onReadyEvent
+        { it ->
+            println("Ready! ${it.ydwk.bot?.name}")
+
+            it.ydwk
+                .requestChannelById("938122131949097055")
+                .getOrNull()
+                ?.channelGetter
+                ?.asGuildChannel()
+                ?.guildChannelGetter
+                ?.asGuildMessageChannel()
+                ?.sendMessage("Ready!")
+                ?.mapBoth({ println("Sent!") }, { println("Failed! ${it.message}") })
         }
 }

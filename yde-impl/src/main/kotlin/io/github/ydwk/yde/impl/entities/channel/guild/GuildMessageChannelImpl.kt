@@ -24,6 +24,7 @@ import io.github.ydwk.yde.entities.channel.enums.ChannelType
 import io.github.ydwk.yde.entities.channel.getter.guild.GuildMessageChannelGetter
 import io.github.ydwk.yde.entities.channel.guild.message.GuildMessageChannel
 import io.github.ydwk.yde.entities.channel.guild.message.text.PermissionOverwrite
+import io.github.ydwk.yde.impl.entities.channel.getter.guild.GuildMessageChannelGetterImpl
 
 internal open class GuildMessageChannelImpl(
     override val yde: YDE,
@@ -33,9 +34,8 @@ internal open class GuildMessageChannelImpl(
     override var nsfw: Boolean,
     override var defaultAutoArchiveDuration: Int,
     override var lastMessageId: String,
-    override var lastPinTimestamp: String,
+    override var lastPinTimestamp: String?,
     override var permissionOverwrites: List<PermissionOverwrite>,
-    override val guildMessageChannelGetter: GuildMessageChannelGetter,
     override val type: ChannelType
 ) : GuildMessageChannel, GuildChannelImpl(yde.entityInstanceBuilder.buildGuildChannel(json)) {
     constructor(
@@ -50,6 +50,8 @@ internal open class GuildMessageChannelImpl(
         guildMessageChannel.lastMessageId,
         guildMessageChannel.lastPinTimestamp,
         guildMessageChannel.permissionOverwrites,
-        guildMessageChannel.guildMessageChannelGetter,
         guildMessageChannel.type)
+
+    override val guildMessageChannelGetter: GuildMessageChannelGetter
+        get() = GuildMessageChannelGetterImpl(this)
 }

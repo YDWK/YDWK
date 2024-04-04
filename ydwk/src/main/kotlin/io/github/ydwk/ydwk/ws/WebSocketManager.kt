@@ -81,7 +81,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
-import net.sf.fmj.utility.LoggerSingleton.logger
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -274,7 +273,7 @@ open class WebSocketManager(
 
     private fun checkForAnyBotsInVC() {
         CoroutineScope(ydwk.coroutineDispatcher).launch {
-            ydwk.getGuilds().forEach { it ->
+            ydwk.getGuilds().forEach {
                 val botAsMember = it.getBotAsMember()
                 if (botAsMember.voiceState != null) {
                     botAsMember.leaveVC()
@@ -284,7 +283,7 @@ open class WebSocketManager(
     }
 
     fun triggerShutdown() {
-        logger.info("API has requested to be sut down")
+        logger.info("API has been shutdown, invalidating websocket and other resources")
         invalidate()
         webSocket!!.disconnect()
     }
@@ -340,7 +339,7 @@ open class WebSocketManager(
 
         val json: JsonNode = ydwk.objectNode.put("op", IDENTIFY.code).set("d", d)
 
-        webSocket sendText json.toString()
+        webSocket?.sendText(json.toString())
         ydwk.setLoggedIn(LoggedInImpl(false).setLoggedInTime())
         identifyTime = System.currentTimeMillis()
         identifyRateLimit = true
@@ -351,7 +350,7 @@ open class WebSocketManager(
 
         val identify: ObjectNode = ydwk.objectNode.put("op", RESUME.code).set("d", json)
 
-        webSocket sendText identify.toString()
+        webSocket?.sendText(identify.toString())
         attemptedToResume = true
         ydwk.setLoggedIn(LoggedInImpl(false).setLoggedInTime())
     }
@@ -370,8 +369,10 @@ open class WebSocketManager(
     }
 
     private fun onOpCode(opCode: Int, d: JsonNode, rawJson: JsonNode) {
-        when (OpCode.fromInt(opCode)) {
+        when (OpCode.getValue(opCode)) {
             DISPATCH -> {
+
+                // TODO: This is not being called for some reason
                 val event: String = rawJson.get("t").asText()
                 onEventType(event, d)
             }
@@ -437,7 +438,7 @@ open class WebSocketManager(
 
         voiceJson.set<JsonNode>("d", dataObjectNode)
 
-        webSocket sendText voiceJson.toString()
+        webSocket?.sendText(voiceJson.toString())
     }
 
     private fun onEventType(eventType: String, d: JsonNode) {
@@ -534,10 +535,6 @@ open class WebSocketManager(
                 }
             }
         }
-    }
-
-    private infix fun WebSocket?.sendText(text: String) {
-        sendText(text)
     }
 
     companion object {
