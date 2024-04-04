@@ -63,6 +63,7 @@ import io.github.ydwk.yde.interaction.message.actionrow.ActionRowInteraction
 import io.github.ydwk.yde.interaction.message.button.ButtonInteraction
 import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenuInteraction
 import io.github.ydwk.yde.interaction.message.selectmenu.interaction.type.*
+import io.github.ydwk.yde.interaction.message.textinput.TextInputInteraction
 import io.github.ydwk.yde.util.GetterSnowFlake
 import java.net.URL
 
@@ -722,6 +723,18 @@ interface EntityInstanceBuilder {
         json: JsonNode,
         interactionId: GetterSnowFlake
     ): ChannelSelectMenuInteraction
+
+    /**
+     * Used to build an instance of [TextInputInteraction]
+     *
+     * @param json the json
+     * @param interactionId the interaction id
+     * @return [TextInputInteraction] the text input interaction
+     */
+    fun buildTextInputInteraction(
+        json: JsonNode,
+        interactionId: GetterSnowFlake
+    ): TextInputInteraction
 
     // Application Command entities
 

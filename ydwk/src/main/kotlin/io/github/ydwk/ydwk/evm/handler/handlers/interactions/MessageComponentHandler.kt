@@ -19,13 +19,13 @@
 package io.github.ydwk.ydwk.evm.handler.handlers.interactions
 
 import io.github.ydwk.yde.impl.interaction.ComponentInteractionImpl
-import io.github.ydwk.yde.impl.interaction.message.selectmenu.types.*
 import io.github.ydwk.yde.interaction.message.ComponentType
 import io.github.ydwk.ydwk.evm.event.events.interaction.button.ButtonClickEvent
 import io.github.ydwk.ydwk.evm.event.events.interaction.selectmenu.*
 import io.github.ydwk.ydwk.evm.event.events.interaction.textinput.TextInputEvent
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
+// TODO: Rewrite this class to mirror the new changes
 class MessageComponentHandler(
     val type: ComponentType,
     private val customId: String,
@@ -36,78 +36,62 @@ class MessageComponentHandler(
         for (component in interactionComponent.components) {
             // filter through and find the component that matches the customId and type
             if (component.type == ComponentType.ACTION_ROW) {
-                for (children in component.children) {
-                    when (type) {
-                        ComponentType.BUTTON -> {
-                            if (customId == children.customId) {
-                                ydwk.emitEvent(
-                                    ButtonClickEvent(
-                                        ydwk,
-                                        ydwk.entityInstanceBuilder.buildButton(
-                                            interactionComponent.json,
-                                            interactionComponent.interactionId)))
-                            }
-                        }
-                        ComponentType.STRING_SELECT_MENU -> {
-                            if (customId == children.customId) {
-                                ydwk.emitEvent(
-                                    StringSelectMenuEvent(
-                                        ydwk,
-                                        ydwk.entityInstanceBuilder.buildStringSelectMenu(
-                                            interactionComponent.json)))
-                            }
-                        }
-                        ComponentType.USER_SELECT_MENU -> {
-                            if (customId == children.customId) {
-                                ydwk.emitEvent(
-                                    UserSelectMenuEvent(
-                                        ydwk,
-                                        ydwk.entityInstanceBuilder.buildUserSelectMenu(
-                                            interactionComponent.json)))
-                            }
-                        }
-                        ComponentType.ROLE_SELECT_MENU -> {
-                            if (customId == children.customId) {
-                                ydwk.emitEvent(
-                                    RoleSelectMenuEvent(
-                                        ydwk,
-                                        ydwk.entityInstanceBuilder.buildRoleSelectMenu(
-                                            interactionComponent.json)))
-                            }
-                        }
-                        ComponentType.MENTIONABLE_SELECT_MENU ->
-                            if (customId == children.customId) {
-                                ydwk.emitEvent(
-                                    MemberSelectMenuEvent(
-                                        ydwk,
-                                        ydwk.entityInstanceBuilder.buildMemberSelectMenu(
-                                            interactionComponent.json)))
-                            }
-                        ComponentType.CHANNEL_SELECT_MENU -> {
-                            if (customId == children.customId) {
-                                ydwk.emitEvent(
-                                    ChannelSelectMenuEvent(
-                                        ydwk, ChannelSelectMenuImpl(interactionComponent)))
-                            }
-                        }
-                        ComponentType.TEXT_INPUT -> {
-                            if (customId == children.customId) {
-                                ydwk.emitEvent(
-                                    TextInputEvent(
-                                        ydwk,
-                                        ydwk.entityInstanceBuilder.buildTextInput(
-                                            interactionComponent.json,
-                                            interactionComponent.interactionId)))
-                            }
-                        }
-                        ComponentType.UNKNOWN -> ydwk.logger.warn("New component type found: $type")
-                        else -> {
-                            // if action row, do nothing else warn
-                            if (children.type != ComponentType.ACTION_ROW) {
-                                ydwk.logger.warn("Unknown component type: ${children.type}")
-                            }
-                        }
+                when (type) {
+                    ComponentType.BUTTON -> {
+                        ydwk.emitEvent(
+                            ButtonClickEvent(
+                                ydwk,
+                                ydwk.entityInstanceBuilder.buildButtonInteraction(
+                                    interactionComponent.json, interactionComponent.interactionId)))
                     }
+                    ComponentType.STRING_SELECT_MENU -> {
+                        ydwk.emitEvent(
+                            StringSelectMenuEvent(
+                                ydwk,
+                                ydwk.entityInstanceBuilder.buildStringSelectMenuInteraction(
+                                    interactionComponent.json, interactionComponent.interactionId)))
+                    }
+                    ComponentType.USER_SELECT_MENU -> {
+                        ydwk.emitEvent(
+                            UserSelectMenuEvent(
+                                ydwk,
+                                ydwk.entityInstanceBuilder.buildUserSelectMenuInteraction(
+                                    interactionComponent.json, interactionComponent.interactionId)))
+                    }
+                    ComponentType.ROLE_SELECT_MENU -> {
+                        ydwk.emitEvent(
+                            RoleSelectMenuEvent(
+                                ydwk,
+                                ydwk.entityInstanceBuilder.buildRoleSelectMenuInteraction(
+                                    interactionComponent.json, interactionComponent.interactionId)))
+                    }
+                    ComponentType.MENTIONABLE_SELECT_MENU ->
+                        ydwk.emitEvent(
+                            MemberSelectMenuEvent(
+                                ydwk,
+                                ydwk.entityInstanceBuilder.buildMemberSelectMenuInteraction(
+                                    interactionComponent.json, interactionComponent.interactionId)))
+                    ComponentType.CHANNEL_SELECT_MENU ->
+                        ydwk.emitEvent(
+                            ChannelSelectMenuEvent(
+                                ydwk,
+                                ydwk.entityInstanceBuilder.buildChannelSelectMenuInteraction(
+                                    interactionComponent.json, interactionComponent.interactionId)))
+                    ComponentType.TEXT_INPUT -> {
+                        ydwk.emitEvent(
+                            TextInputEvent(
+                                ydwk,
+                                ydwk.entityInstanceBuilder.buildTextInputInteraction(
+                                    interactionComponent.json, interactionComponent.interactionId)))
+                    }
+                    // else -> {
+                    // if action row, do nothing else warn
+                    ///  if (children.type != ComponentType.ACTION_ROW) {
+                    //   ydwk.logger.warn("Unknown component type: ${children.type}")
+                    // }
+                    // }
+                    ComponentType.ACTION_ROW -> TODO()
+                    ComponentType.UNKNOWN -> ydwk.logger.warn("New component type found: $type")
                 }
             } else {
                 // do nothing

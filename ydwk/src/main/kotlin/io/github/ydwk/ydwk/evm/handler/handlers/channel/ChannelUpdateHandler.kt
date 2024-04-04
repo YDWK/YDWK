@@ -379,13 +379,13 @@ class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json)
         val oldChannelFlags = channel.channelFlags.getValue()
         val newChannelFlags = json["channel_flags"].asLong()
         if (oldChannelFlags != newChannelFlags) {
-            channel.channelFlags = ChannelFlag.fromValue(newChannelFlags)
+            channel.channelFlags = ChannelFlag.getValue(newChannelFlags)
             ydwk.emitEvent(
                 ForumChannelChannelFlagsUpdateEvent(
                     ydwk,
                     channel,
-                    ChannelFlag.fromValue(oldChannelFlags),
-                    ChannelFlag.fromValue(newChannelFlags)))
+                    ChannelFlag.getValue(oldChannelFlags),
+                    ChannelFlag.getValue(newChannelFlags)))
         }
 
         val oldDefaultSortOrder = channel.defaultSortOrder
@@ -432,7 +432,7 @@ class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json)
 
         val oldDefaultForumLayoutView = channel.defaultForumLayoutView
         val newDefaultForumLayoutView =
-            ForumLayoutType.fromValue(json["default_forum_layout"].asInt())
+            ForumLayoutType.getValue(json["default_forum_layout"].asInt())
         if (oldDefaultForumLayoutView.getValue() != newDefaultForumLayoutView.getValue()) {
             channel.defaultForumLayoutView = newDefaultForumLayoutView
             ydwk.emitEvent(

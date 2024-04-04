@@ -22,12 +22,13 @@ import io.github.ydwk.yde.cache.CacheIds
 import io.github.ydwk.yde.util.exception.LoginException
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.ktor.client.*
+import io.ktor.client.engine.okhttp.*
 import kotlinx.coroutines.CoroutineDispatcher
 
 internal class BotBuilder
 private constructor(
     private val token: String,
-    private val httpClient: HttpClient = HttpClient(),
+    private val httpClient: HttpClient = HttpClient(OkHttp),
     private val intents: List<GateWayIntent> = GateWayIntent.getDefaultIntents(),
     private val allowedCache: Set<CacheIds> = CacheIds.getDefaultCache(),
     private val disallowedCache: Set<CacheIds> = emptySet(),
@@ -135,7 +136,9 @@ private constructor(
         ydwk.setWebSocketManager(token, intents, userStatus, activity, etfInsteadOfJson)
         ydwk.setAllowedCache(allowedCache)
         ydwk.setDisallowedCache(disallowedCache)
-        ydwk.enableShutDownHook()
+        if (enableShutDownHook) {
+            ydwk.enableShutDownHook()
+        }
         dispatcher?.let { ydwk.coroutineDispatcher = it }
         return ydwk
     }

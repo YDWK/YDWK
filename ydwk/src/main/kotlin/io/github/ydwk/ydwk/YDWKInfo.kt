@@ -24,19 +24,7 @@ enum class YDWKInfo(private val url: String) {
     JSON_ENCODING("&encoding=json"),
     VOICE_GATEWAY_VERSION("/?v=4"),
     GITHUB_URL("https://github.com/ydwk/ydwk"),
-    YDWK_VERSION("2.0.0");
-
-    companion object {
-        /**
-         * Get the full discord gateway url.
-         *
-         * @param info The [YDWKInfo] to get the full url from.
-         * @return The full discord gateway url.
-         */
-        fun fromString(info: YDWKInfo): String {
-            return info.url
-        }
-    }
+    YDWK_VERSION("2.0.0.alpha.1");
 
     /**
      * The url of the [YDWKInfo].

@@ -32,11 +32,12 @@ import io.github.ydwk.yde.interaction.application.type.UserCommand
 class UserCommandImpl(
     yde: YDE,
     json: JsonNode,
-    idAsLong: Long,
     interaction: Interaction,
     override val targetUser: User,
     override val targetMember: Member
-) : ApplicationCommandImpl(yde, json, idAsLong, interaction), UserCommand {
+) :
+    ApplicationCommandImpl(yde.entityInstanceBuilder.buildApplicationCommand(json), interaction),
+    UserCommand {
     override fun reply(content: String): Reply {
         return ReplyImpl(yde, content, null, interaction.id, token)
     }

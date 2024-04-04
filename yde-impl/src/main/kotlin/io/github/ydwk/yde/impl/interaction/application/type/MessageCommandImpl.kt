@@ -31,10 +31,11 @@ import io.github.ydwk.yde.interaction.application.type.MessageCommand
 class MessageCommandImpl(
     yde: YDE,
     json: JsonNode,
-    idAsLong: Long,
     interaction: Interaction,
     override val targetMessage: Message
-) : ApplicationCommandImpl(yde, json, idAsLong, interaction), MessageCommand {
+) :
+    ApplicationCommandImpl(yde.entityInstanceBuilder.buildApplicationCommand(json), interaction),
+    MessageCommand {
     override fun reply(content: String): Reply {
         return ReplyImpl(yde, content, null, interaction.id, token)
     }

@@ -27,15 +27,16 @@ import io.github.ydwk.yde.entities.message.Embed
 import io.github.ydwk.yde.entities.util.GenericEntity
 import io.github.ydwk.yde.impl.YDEImpl
 import io.github.ydwk.yde.impl.interaction.application.ApplicationCommandImpl
-import io.github.ydwk.yde.impl.interaction.application.ApplicationCommandOptionImpl
 import io.github.ydwk.yde.impl.interaction.application.sub.ReplyImpl
 import io.github.ydwk.yde.interaction.Interaction
 import io.github.ydwk.yde.interaction.application.sub.Reply
 import io.github.ydwk.yde.interaction.application.type.SlashCommand
 import io.github.ydwk.yde.util.EntityToStringBuilder
 
-class SlashCommandImpl(yde: YDE, json: JsonNode, idAsLong: Long, interaction: Interaction) :
-    ApplicationCommandImpl(yde, json, idAsLong, interaction), SlashCommand {
+/** TODO: have a look at the [SlashCommandImpl] to see if it is possible to refactor the code */
+class SlashCommandImpl(yde: YDE, json: JsonNode, interaction: Interaction) :
+    ApplicationCommandImpl(yde.entityInstanceBuilder.buildApplicationCommand(json), interaction),
+    SlashCommand {
 
     override val locale: String? = interaction.locale
 
@@ -116,7 +117,7 @@ class SlashCommandImpl(yde: YDE, json: JsonNode, idAsLong: Long, interaction: In
         val list: MutableList<SlashOptionGetter> = mutableListOf()
 
         options?.forEach { node ->
-            val option = ApplicationCommandOptionImpl(yde, node)
+            val option = yde.entityInstanceBuilder.buildApplicationCommandOption(node)
             list.add(SlashOptionGetterImpl(option, map))
         }
             ?: return emptyList()

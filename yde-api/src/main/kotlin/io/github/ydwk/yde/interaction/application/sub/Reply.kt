@@ -18,8 +18,8 @@
  */ 
 package io.github.ydwk.yde.interaction.application.sub
 
-import io.github.ydwk.yde.entities.interaction.Component
 import io.github.ydwk.yde.entities.interaction.actionrow.ActionRow
+import io.github.ydwk.yde.entities.interaction.actionrow.creator.ActionRowCreator
 import io.github.ydwk.yde.entities.message.MessageFlag
 import io.github.ydwk.yde.rest.RestResult
 import io.github.ydwk.yde.rest.result.NoResult
@@ -60,12 +60,12 @@ interface Reply {
     fun addFlags(flags: List<MessageFlag>): Reply
 
     /**
-     * Adds an [ActionRow] to the reply.
+     * Adds an [ActionRow] to the reply. Use [ActionRowCreator] to create an [ActionRow].
      *
      * @param actionRow The [ActionRow] to add.
      * @return The [Reply] instance.
      */
-    fun addActionRow(actionRow: Component.ComponentCreator): Reply
+    fun addActionRow(actionRow: ActionRow): Reply
 
     /**
      * Triggers the reply.

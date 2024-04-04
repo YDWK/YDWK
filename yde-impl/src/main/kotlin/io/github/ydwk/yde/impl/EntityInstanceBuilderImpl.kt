@@ -120,6 +120,7 @@ import io.github.ydwk.yde.interaction.message.actionrow.ActionRowInteraction
 import io.github.ydwk.yde.interaction.message.button.ButtonInteraction
 import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenuInteraction
 import io.github.ydwk.yde.interaction.message.selectmenu.interaction.type.*
+import io.github.ydwk.yde.interaction.message.textinput.TextInputInteraction
 import io.github.ydwk.yde.interaction.sub.InteractionType
 import io.github.ydwk.yde.rest.error.RestAPIException
 import io.github.ydwk.yde.util.*
@@ -384,9 +385,12 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             else null,
             json["bot_public"].asBoolean(),
             json["bot_require_code_grant"].asBoolean(),
-            if (json.has("terms_of_service_url")) URL(json["terms_of_service_url"].asText())
+            if (json.has("terms_of_service_url"))
+                @Suppress("DEPRECATION") URL(json["terms_of_service_url"].asText())
             else null,
-            if (json.has("privacy_policy_url")) URL(json["privacy_policy_url"].asText()) else null,
+            if (json.has("privacy_policy_url"))
+                @Suppress("DEPRECATION") URL(json["privacy_policy_url"].asText())
+            else null,
             if (json.has("owner")) buildUser(json["owner"]) else null,
             if (json.has("verify_key")) json["verify_key"].asText() else null,
             if (json.has("guild_id")) yde.getGuildById(json["guild_id"].asLong()) else null,
@@ -797,7 +801,7 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             if (json.has("title")) json["title"].asText() else null,
             if (json.has("type")) EmbedType.getValue(json["type"].asText()) else null,
             if (json.has("description")) json["description"].asText() else null,
-            if (json.has("url")) URL(json["url"].asText()) else null,
+            if (json.has("url")) @Suppress("DEPRECATION") URL(json["url"].asText()) else null,
             if (json.has("timestamp")) json["timestamp"].asText() else null,
             if (json.has("color")) Color(json["color"].asInt()) else null,
             if (json.has("footer")) buildFooter(json["footer"]) else null,
@@ -816,8 +820,8 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             json["id"].asLong(),
             if (json.has("description")) json["description"].asText() else null,
             if (json.has("media_type")) json["media_type"].asText() else null,
-            URL(json["url"].asText()),
-            URL(json["proxy_url"].asText()),
+            @Suppress("DEPRECATION") URL(json["url"].asText()),
+            @Suppress("DEPRECATION") URL(json["proxy_url"].asText()),
             json["size"].asInt(),
             if (json.has("height")) json["height"].asInt() else null,
             if (json.has("width")) json["width"].asInt() else null,
@@ -844,7 +848,7 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     }
 
     override fun buildPartialEmoji(json: JsonNode): PartialEmoji {
-        return TODO()
+        TODO("Not yet implemented")
     }
 
     override fun buildAuthor(json: JsonNode): Author {
@@ -852,7 +856,7 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             yde,
             json,
             json["name"].asText(),
-            if (json.has("url")) URL(json["url"].asText()) else null,
+            if (json.has("url")) @Suppress("DEPRECATION") URL(json["url"].asText()) else null,
             if (json.has("icon_url")) json["icon_url"].asText() else null,
             if (json.has("proxy_icon_url")) json["proxy_icon_url"].asText() else null)
     }
@@ -879,8 +883,9 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
         return ImageImpl(
             yde,
             json,
-            URL(json["url"].asText()),
-            if (json.has("proxy_url")) URL(json["proxy_url"].asText()) else null,
+            @Suppress("DEPRECATION") URL(json["url"].asText()),
+            if (json.has("proxy_url")) @Suppress("DEPRECATION") URL(json["proxy_url"].asText())
+            else null,
             if (json.has("height")) json["height"].asInt() else null,
             if (json.has("width")) json["width"].asInt() else null)
     }
@@ -897,7 +902,7 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
         return ThumbnailImpl(
             yde,
             json,
-            URL(json["url"].asText()),
+            @Suppress("DEPRECATION") URL(json["url"].asText()),
             if (json.has("proxy_url")) json["proxy_url"].asText() else null,
             if (json.has("height")) json["height"].asInt() else null,
             if (json.has("width")) json["width"].asInt() else null)
@@ -907,7 +912,7 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
         return VideoImpl(
             yde,
             json,
-            URL(json["url"].asText()),
+            @Suppress("DEPRECATION") URL(json["url"].asText()),
             if (json.has("proxy_url")) json["proxy_url"].asText() else null,
             if (json.has("height")) json["height"].asInt() else null,
             if (json.has("width")) json["width"].asInt() else null)
@@ -1090,6 +1095,13 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
         TODO("Not yet implemented")
     }
 
+    override fun buildTextInputInteraction(
+        json: JsonNode,
+        interactionId: GetterSnowFlake
+    ): TextInputInteraction {
+        TODO("Not yet implemented")
+    }
+
     override fun buildApplicationCommand(json: JsonNode): ApplicationCommand {
         TODO("Not yet implemented")
     }
@@ -1103,31 +1115,18 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
         val user = buildUser(json["data"]["resolved"]["users"])
 
         return UserCommandImpl(
-            yde,
-            json,
-            json["id"].asLong(),
-            i,
-            user,
-            buildMember(json["data"]["resolved"]["members"], i.guild!!, user))
+            yde, json, i, user, buildMember(json["data"]["resolved"]["members"], i.guild!!, user))
     }
 
     override fun buildSlashCommand(json: JsonNode, interaction: Interaction?): SlashCommand {
-        return SlashCommandImpl(
-            yde, json, json["id"].asLong(), interaction ?: buildInteraction(json))
+        return SlashCommandImpl(yde, json, interaction ?: buildInteraction(json))
     }
 
     override fun buildMessageCommand(json: JsonNode, interaction: Interaction?): MessageCommand {
         return MessageCommandImpl(
             yde,
             json,
-            json["id"].asLong(),
             interaction ?: buildInteraction(json),
             buildMessage(json["data"]["resolved"]["messages"]))
     }
-
-    // infix fun Int.test(bitCount: Int): Long {
-    //   return this.toLong() shl bitCount
-    // }
-
-    // val permissions = 5 test 0
 }

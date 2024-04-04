@@ -18,7 +18,8 @@ dependencies {
     api("uk.org.lidalia:sysout-over-slf4j:" + properties["sysoutOverSlf4jVersion"])
 
     // Http
-    api("io.ktor:ktor-client-core-jvm:" + properties["ktorClientCoreJvmVersion"])
+    api("io.ktor:ktor-client-core-jvm:" + properties["ktorClientVersion"])
+    api("io.ktor:ktor-client-okhttp:" + properties["ktorClientVersion"])
 
     // kotlin
     api(

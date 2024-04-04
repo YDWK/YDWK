@@ -51,4 +51,30 @@ abstract class ApplicationCommandImpl(
     override val token: String,
     override val message: Message?,
     override val permissions: Long?,
-) : ApplicationCommand, ToStringEntityImpl<ApplicationCommand>(yde, ApplicationCommand::class.java)
+) :
+    ApplicationCommand,
+    ToStringEntityImpl<ApplicationCommand>(yde, ApplicationCommand::class.java) {
+    constructor(
+        applicationCommand: ApplicationCommand,
+        interaction: Interaction
+    ) : this(
+        applicationCommand.yde,
+        applicationCommand.json,
+        applicationCommand.idAsLong,
+        interaction,
+        applicationCommand.applicationId,
+        applicationCommand.guild,
+        applicationCommand.name,
+        applicationCommand.description,
+        applicationCommand.isDmPermissions,
+        applicationCommand.isNsfw,
+        applicationCommand.version,
+        applicationCommand.targetId,
+        applicationCommand.user,
+        applicationCommand.member,
+        applicationCommand.interactionType,
+        applicationCommand.channel,
+        applicationCommand.token,
+        applicationCommand.message,
+        applicationCommand.permissions)
+}
