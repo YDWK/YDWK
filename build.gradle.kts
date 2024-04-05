@@ -87,8 +87,8 @@ subprojects {
 
     kotlin {
         compilerOptions {
-            apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0)
-            languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0)
+            apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.DEFAULT)
+            languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.DEFAULT)
 
             java.targetCompatibility = JavaVersion.VERSION_21
             java.sourceCompatibility = JavaVersion.VERSION_21
