@@ -21,8 +21,12 @@ dependencies {
     api("com.neovisionaries:nv-websocket-client:" + properties["nvWebsocketClientVersion"])
     api("com.codahale:xsalsa20poly1305:" + properties["xsalsa20poly1305Version"])
 
-    // decode Opus
-    api("org.jitsi:libjitsi:" + properties["libjitsiVersion"])
+    // decode Opus + voice support
+    api("club.minnced:opus-java-api:" + properties["opus-java-api"])
+    // TODO: fix the version issue
+    api("net.java.dev.jna:jna:5.14.0")
+    implementation("org.apache.tika:tika-core:2.9.2")
+    implementation("org.apache.tika:tika-parsers:2.9.2")
 
     // files to bytes
     api("commons-io:commons-io:" + properties["commonsIoVersion"])

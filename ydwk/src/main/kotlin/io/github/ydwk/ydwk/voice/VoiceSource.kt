@@ -18,19 +18,24 @@
  */ 
 package io.github.ydwk.ydwk.voice
 
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileInputStream
+import java.nio.ByteBuffer
 
 /** Represents a source of voice data. */
 interface VoiceSource {
 
     /**
-     * Retrieves the audio data.
+     * Gets the original audio data as a byte buffer.
      *
-     * @return the audio data as a byte array.
+     * @return the audio data as a byte buffer.
      */
-    fun getAudioData(): ByteArray
+    fun getOriginalAudio(): ByteBuffer
+
+    /**
+     * Retrieves the next chunk of audio data.
+     *
+     * @return the audio data as a byte array, representing a chunk of audio.
+     */
+    fun getNextAudioChunk(): ByteArray
 
     /**
      * Indicates whether the audio has finished playing.
@@ -40,47 +45,9 @@ interface VoiceSource {
     val isFinished: Boolean
 
     /**
-     * Builds a VoiceSource object.
+     * Whether the voice source is already encoded with Opus. (false by default)
      *
-     * @return a VoiceSource object representing the built voice source.
+     * @return true if the voice source is already encoded with Opus, false otherwise.
      */
-    fun build(): VoiceSource
-
-    class ConvertVoiceSource(val file: File) : VoiceSource {
-
-        private val outputStream = ByteArrayOutputStream()
-        private val inputStream = FileInputStream(file)
-
-        private lateinit var audioData: ByteArray
-
-        override fun getAudioData(): ByteArray {
-            val data = outputStream.toByteArray()
-            outputStream.reset() // Clear output stream
-
-            return data
-        }
-
-        override val isFinished: Boolean
-            get() =
-                with(inputStream) {
-                    if (available() == 0) {
-                        close()
-                        true
-                    } else {
-                        false
-                    }
-                }
-
-        override fun build(): VoiceSource {
-            val buffer = ByteArray(1024)
-            var bytesRead: Int
-            while (inputStream.read(buffer).also { bytesRead = it } != -1) {
-                outputStream.write(buffer, 0, bytesRead)
-            }
-
-            audioData = outputStream.toByteArray()
-
-            return this
-        }
-    }
+    val isOpusEncoded: Boolean get() = false
 }

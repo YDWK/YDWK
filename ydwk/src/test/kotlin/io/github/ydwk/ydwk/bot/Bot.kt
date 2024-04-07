@@ -23,10 +23,12 @@ import io.github.ydwk.yde.builders.slash.SlashCommandBuilder
 import io.github.ydwk.yde.util.exception.LoginException
 import io.github.ydwk.ydwk.Activity
 import io.github.ydwk.ydwk.BotBuilder.Companion.buildBot
-import io.github.ydwk.ydwk.evm.event.EventListeners.Companion.onReadyEvent
 import io.github.ydwk.ydwk.evm.event.EventListeners.Companion.onSlashCommandEvent
 import io.github.ydwk.ydwk.util.ydwk
+import io.github.ydwk.ydwk.voice.example.MP3VoiceSource
+import io.github.ydwk.ydwk.voice.joinVc
 import kotlinx.coroutines.runBlocking
+import java.io.File
 
 fun main() {
     val jConfig = JConfig.build()
@@ -58,21 +60,24 @@ fun main() {
                         it.slash.reply("Guilds: ${guilds.size}").trigger()
                     }
                 }
+
+                "join_vc" -> {
+                    val voice =
+                        it.slash.ydwk
+                            .getGuildChannelById("938122131949097056")!!
+                            .guildChannelGetter
+                            .asGuildVoiceChannel()
+
+                    if (voice == null) {
+                        it.slash.reply("Error").trigger()
+                    }
+
+                    val vc = voice!!.joinVc(false, false)
+                        .join()
+
+                    vc.setSource(MP3VoiceSource(File("mp3-sample.mp3")))
+                        .getOrNull()
+                }
             }
-        }
-
-    ydwk onReadyEvent
-        { it ->
-            println("Ready! ${it.ydwk.bot?.name}")
-
-            it.ydwk
-                .requestChannelById("938122131949097055")
-                .getOrNull()
-                ?.channelGetter
-                ?.asGuildChannel()
-                ?.guildChannelGetter
-                ?.asGuildMessageChannel()
-                ?.sendMessage("Ready!")
-                ?.mapBoth({ println("Sent!") }, { println("Failed! ${it.message}") })
         }
 }
