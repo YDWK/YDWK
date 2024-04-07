@@ -75,14 +75,12 @@ interface VoiceConnection {
      * @param source The [VoiceSource] to use.
      * @return The [VoiceConnection] object.
      */
-    fun setSource(source: VoiceSource): RestResult<VoiceConnection>
+    fun setSource(source: VoiceSource): CompletableFuture<VoiceConnection>
 
     /**
      * Disconnects from the voice channel.
      *
      * @return A CompletableFuture that represents the asynchronous operation.
      */
-
-    //TODO: change to RestResult<Void>
     fun disconnect(): CompletableFuture<Void>
 }

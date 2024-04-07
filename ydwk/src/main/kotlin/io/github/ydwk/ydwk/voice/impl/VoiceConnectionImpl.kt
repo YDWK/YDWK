@@ -214,9 +214,9 @@ data class VoiceConnectionImpl(
      * @param source the voice source to set
      * @return the updated voice connection object
      */
-    override fun setSource(source: VoiceSource): RestResult<VoiceConnection> {
+    override fun setSource(source: VoiceSource): CompletableFuture<VoiceConnection> {
         this.voiceSource = source
-        return this
+        return CompletableFuture.completedFuture(this)
     }
 
     /**
