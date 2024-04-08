@@ -18,7 +18,6 @@
  */ 
 package io.github.ydwk.ydwk.entity
 
-import io.github.ydwk.yde.rest.RestResult
 import io.github.ydwk.ydwk.voice.VoiceSource
 import java.util.concurrent.CompletableFuture
 

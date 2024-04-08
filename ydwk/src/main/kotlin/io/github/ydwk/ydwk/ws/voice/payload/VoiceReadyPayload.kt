@@ -18,6 +18,8 @@
  */ 
 package io.github.ydwk.ydwk.ws.voice.payload
 
+import io.github.ydwk.ydwk.ws.voice.util.VoiceEncryption
+
 /**
  * Represents the payload for voice ready event.
  *
@@ -26,4 +28,9 @@ package io.github.ydwk.ydwk.ws.voice.payload
  * @property port The port number of the voice server.
  * @property modes The list of supported voice modes.
  */
-data class VoiceReadyPayload(val ssrc: Int, val ip: String, val port: Int, val modes: List<String>)
+data class VoiceReadyPayload(
+    val ssrc: Int,
+    val ip: String,
+    val port: Int,
+    val modes: List<VoiceEncryption>
+)

@@ -18,17 +18,13 @@
  */ 
 package io.github.ydwk.ydwk.ws.voice.util
 
-import com.sun.jna.ptr.PointerByReference
 import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
-import io.github.ydwk.ydwk.voice.packet.opus.OpusEncoder
 import io.github.ydwk.ydwk.ws.voice.payload.VoiceReadyPayload
-import tomp2p.opuswrapper.Opus
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.net.InetSocketAddress
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
-import java.nio.IntBuffer
 
 class UpdHandler(
     private val voiceConnection: VoiceConnectionImpl,
@@ -36,9 +32,7 @@ class UpdHandler(
     private val inetSocketAddress: InetSocketAddress,
     private val socket: DatagramSocket = DatagramSocket()
 ) {
-    // TODO: In separate pr incorporate the speaking part
     var secretKey: ByteArray? = null
-    var opusEncoder: PointerByReference? = null
 
     fun findIp(): InetSocketAddress {
         var responseData = ByteArray(74)
@@ -74,19 +68,4 @@ class UpdHandler(
         // Return the InetSocketAddress
         return InetSocketAddress(externalIP, externalPort)
     }
-
-    fun encodeAudio(audio : ByteBuffer) : ByteBuffer {
-        if (opusEncoder == null) {
-            // TODO : Add to chekc if the opus library is loaded
-
-            val error = IntBuffer.allocate(1)
-            opusEncoder = Opus.INSTANCE.opus_encoder_create(48000, 2, Opus.OPUS_APPLICATION_VOIP, error)
-            if (error.get() != Opus.OPUS_OK) {
-                throw IllegalStateException("Could not create Opus encoder: ${Opus.INSTANCE.opus_strerror(error.get())}")
-            }
-        }
-
-        return OpusEncoder().encode(audio) ?: throw IllegalStateException("Could not encode audio")
-    }
-
 }

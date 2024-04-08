@@ -1,15 +1,34 @@
+/*
+ * Copyright 2024 YDWK inc.
+ *
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ *
+ * you may not use this file except in compliance with the License.
+ *
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */ 
 package io.github.ydwk.ydwk.voice.packet
 
-import org.bouncycastle.asn1.x500.style.RFC4519Style.c
+import com.iwebpp.crypto.TweetNaclFast
 import java.nio.ByteBuffer
+import java.sql.Types.TIMESTAMP
+import jdk.jfr.internal.consumer.ChunkHeader.HEADER_SIZE
 
 class VoicePacket {
-    private var type : Byte? = null
-    private var sequence : Char? = null
-    private var ssrc : Int? = null
-    private var timestamp : Int? = null
-    private var data : ByteArray? = null
-
+    private var type: Byte? = null
+    private var sequence: Char? = null
+    private var ssrc: Int? = null
+    private var timestamp: Int? = null
+    private var data: ByteArray? = null
 
     /**
      * Used to decode a voice packet from Discord. (Currently not implemented)
@@ -17,7 +36,7 @@ class VoicePacket {
      * @param data The raw data from Discord.
      * @throws IllegalArgumentException If the data is not a valid voice packet.
      */
-    constructor(data: ByteArray){
+    constructor(data: ByteArray) {
         this.data = data
 
         val buffer = ByteBuffer.wrap(data)
@@ -26,7 +45,7 @@ class VoicePacket {
         timestamp = buffer.getInt(TIMESTAMP)
         ssrc = buffer.getInt(SSRC)
 
-       throw UnsupportedOperationException("Not implemented")
+        throw UnsupportedOperationException("Not implemented")
     }
 
     /**
@@ -47,10 +66,16 @@ class VoicePacket {
         this.data = getVoicePacket(audio, sequence, timestamp, ssrc, buffer)
     }
 
-    private fun getVoicePacket(audio: ByteBuffer, sequence: Char, timestamp: Int, ssrc: Int, buffer: ByteBuffer?): ByteArray {
+    private fun getVoicePacket(
+        audio: ByteBuffer,
+        sequence: Char,
+        timestamp: Int,
+        ssrc: Int,
+        buffer: ByteBuffer?
+    ): ByteArray {
         var buffer = buffer
         if (buffer == null) {
-           buffer = ByteBuffer.allocate(HEADER_SIZE + audio.remaining())
+            buffer = ByteBuffer.allocate(HEADER_SIZE + audio.remaining())
         }
 
         buffer?.put(VERSION_VALUE)
@@ -63,11 +88,29 @@ class VoicePacket {
         return buffer?.array() ?: byteArrayOf()
     }
 
+    fun getEncryptedVoicePacket(
+        box: TweetNaclFast.SecretBox,
+        nonce: ByteArray,
+        nonceLength: Int,
+        nonceBuffer: ByteBuffer
+    ): ByteBuffer {
+        // Discord uses RTP header which is a different lengh in comparsion to Xsalsa20 nonce use 24
+        // bytes
+
+        var extendedNonce = nonce
+        if (nonceLength == 0) {
+            extendedNonce = ByteArray(24)
+            System.arraycopy(nonce, 0, extendedNonce, 0, nonce.size)
+        }
+
+        val encryptedData = box.box(data, extendedNonce)
+        return TODO()
+    }
 
     companion object {
         // Discord voice packet structure is as follows:
 
-        //Single byte value of 0x78
+        // Single byte value of 0x78
         private const val PAYLOAD_TYPE = 1
         private const val SEQUENCE_NUMBER = 2
         private const val TIMESTAMP = 4

@@ -23,10 +23,8 @@ dependencies {
 
     // decode Opus + voice support
     api("club.minnced:opus-java-api:" + properties["opus-java-api"])
-    // TODO: fix the version issue
-    api("net.java.dev.jna:jna:5.14.0")
-    implementation("org.apache.tika:tika-core:2.9.2")
-    implementation("org.apache.tika:tika-parsers:2.9.2")
+    api("net.java.dev.jna:jna:" + properties["jnaVersion"])
+    api("org.purejava:tweetnacl-java:" + properties["tweetnaclJavaVersion"])
 
     // files to bytes
     api("commons-io:commons-io:" + properties["commonsIoVersion"])

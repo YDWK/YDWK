@@ -27,8 +27,8 @@ import io.github.ydwk.ydwk.evm.event.EventListeners.Companion.onSlashCommandEven
 import io.github.ydwk.ydwk.util.ydwk
 import io.github.ydwk.ydwk.voice.example.MP3VoiceSource
 import io.github.ydwk.ydwk.voice.joinVc
-import kotlinx.coroutines.runBlocking
 import java.io.File
+import kotlinx.coroutines.runBlocking
 
 fun main() {
     val jConfig = JConfig.build()
@@ -60,7 +60,6 @@ fun main() {
                         it.slash.reply("Guilds: ${guilds.size}").trigger()
                     }
                 }
-
                 "join_vc" -> {
                     val voice =
                         it.slash.ydwk
@@ -72,11 +71,9 @@ fun main() {
                         it.slash.reply("Error").trigger()
                     }
 
-                    val vc = voice!!.joinVc(false, false)
-                        .join()
+                    val vc = voice!!.joinVc(false, false).join()
 
-                    vc.setSource(MP3VoiceSource(File("mp3-sample.mp3")))
-                        .getOrNull()
+                    vc.setSource(MP3VoiceSource(File("mp3-sample.mp3"))).getOrNull()
                 }
             }
         }

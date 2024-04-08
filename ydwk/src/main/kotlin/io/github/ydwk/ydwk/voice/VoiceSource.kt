@@ -49,5 +49,6 @@ interface VoiceSource {
      *
      * @return true if the voice source is already encoded with Opus, false otherwise.
      */
-    val isOpusEncoded: Boolean get() = false
+    val isOpusEncoded: Boolean
+        get() = false
 }

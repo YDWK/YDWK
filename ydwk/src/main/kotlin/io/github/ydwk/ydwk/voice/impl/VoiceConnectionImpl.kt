@@ -21,7 +21,6 @@ package io.github.ydwk.ydwk.voice.impl
 import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.VoiceState
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildVoiceChannel
-import io.github.ydwk.yde.rest.RestResult
 import io.github.ydwk.ydwk.entity.VoiceConnection
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.util.ydwk

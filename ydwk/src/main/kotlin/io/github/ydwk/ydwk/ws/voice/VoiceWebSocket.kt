@@ -237,9 +237,9 @@ class VoiceWebSocket(
                 val ssrc = dataObject.get("ssrc").asInt()
                 val ip = dataObject.get("ip").asText()
                 val port = dataObject.get("port").asInt()
-                val modes: MutableList<String> = mutableListOf()
+                val modes: MutableList<VoiceEncryption> = mutableListOf()
                 for (jsonMode in dataObject.get("modes")) {
-                    modes.add(jsonMode.asText())
+                    modes.add(VoiceEncryption.getValue(jsonMode.asText()))
                 }
 
                 voiceReadyPayload = VoiceReadyPayload(ssrc, ip, port, modes)
@@ -318,7 +318,7 @@ class VoiceWebSocket(
      *
      * Here, `"address"` is the discovered external IP and `"port"` is the corresponding UDP port.
      */
-    private fun handleProtocol(modes: MutableList<String>) {
+    private fun handleProtocol(modes: MutableList<VoiceEncryption>) {
         try {
             if (updHandler == null) {
                 throw IllegalStateException("Upd handler is null")
