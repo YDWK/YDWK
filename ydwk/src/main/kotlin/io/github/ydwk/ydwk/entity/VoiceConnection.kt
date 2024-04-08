@@ -66,7 +66,7 @@ interface VoiceConnection {
      * @param speaking Whether the bot should be speaking.
      * @return The [VoiceConnection] object.
      */
-    fun setSpeaking(speaking: Boolean): VoiceConnection
+    fun setSpeaking(speaking: Boolean): CompletableFuture<VoiceConnection>
 
     /**
      * Sets the VoiceSource for the bot to use.

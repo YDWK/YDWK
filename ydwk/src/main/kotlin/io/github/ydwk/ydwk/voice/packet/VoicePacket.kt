@@ -20,14 +20,18 @@ package io.github.ydwk.ydwk.voice.packet
 
 import com.iwebpp.crypto.TweetNaclFast
 import java.nio.ByteBuffer
-import java.sql.Types.TIMESTAMP
 import jdk.jfr.internal.consumer.ChunkHeader.HEADER_SIZE
 
+/**
+ * Heavily inspired by the JDA library.
+ * (https://github.com/discord-jda/JDA/blob/master/src/main/java/net/dv8tion/jda/internal/audio/AudioPacket.java#L165)
+ */
 class VoicePacket {
     private var type: Byte? = null
     private var sequence: Char? = null
     private var ssrc: Int? = null
     private var timestamp: Int? = null
+    private var audio: ByteBuffer? = null
     private var data: ByteArray? = null
 
     /**
@@ -38,13 +42,6 @@ class VoicePacket {
      */
     constructor(data: ByteArray) {
         this.data = data
-
-        val buffer = ByteBuffer.wrap(data)
-        type = buffer.get(PAYLOAD_TYPE)
-        sequence = buffer.getChar(SEQUENCE_NUMBER)
-        timestamp = buffer.getInt(TIMESTAMP)
-        ssrc = buffer.getInt(SSRC)
-
         throw UnsupportedOperationException("Not implemented")
     }
 
@@ -62,6 +59,7 @@ class VoicePacket {
         this.sequence = sequence
         this.timestamp = timestamp
         this.ssrc = ssrc
+        this.audio = audio
 
         this.data = getVoicePacket(audio, sequence, timestamp, ssrc, buffer)
     }
@@ -96,15 +94,31 @@ class VoicePacket {
     ): ByteBuffer {
         // Discord uses RTP header which is a different lengh in comparsion to Xsalsa20 nonce use 24
         // bytes
-
+        var newNonceBuffer = nonceBuffer
         var extendedNonce = nonce
         if (nonceLength == 0) {
-            extendedNonce = ByteArray(24)
-            System.arraycopy(nonce, 0, extendedNonce, 0, nonce.size)
+            val tempNonce = ByteArray(TweetNaclFast.SecretBox.nonceLength)
+            System.arraycopy(nonce, 0, tempNonce, 0, nonceLength)
+            extendedNonce = tempNonce
         }
 
-        val encryptedData = box.box(data, extendedNonce)
-        return TODO()
+        val audioArray = audio?.array() ?: byteArrayOf()
+        val arrayOffset = (audio?.arrayOffset() ?: 0) + (audio?.position() ?: 0)
+        val arrayLength = audio?.remaining() ?: 0
+        val encryptedData = box.box(audioArray, arrayOffset, arrayLength, extendedNonce)
+
+        newNonceBuffer.clear()
+        val length = 12 + encryptedData.size + nonceLength
+        if (length > newNonceBuffer.capacity()) {
+            newNonceBuffer = ByteBuffer.allocate(length)
+        }
+        getVoicePacket(
+            ByteBuffer.wrap(encryptedData), sequence!!, timestamp!!, ssrc!!, newNonceBuffer)
+        if (nonceLength > 0) {
+            newNonceBuffer.put(encryptedData, 0, nonceLength)
+        }
+        newNonceBuffer.flip()
+        return newNonceBuffer
     }
 
     companion object {

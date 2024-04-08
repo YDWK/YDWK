@@ -18,6 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.voice.impl
 
+import com.iwebpp.crypto.TweetNaclFast
 import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.VoiceState
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildVoiceChannel
@@ -25,11 +26,13 @@ import io.github.ydwk.ydwk.entity.VoiceConnection
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.util.ydwk
 import io.github.ydwk.ydwk.voice.VoiceSource
+import io.github.ydwk.ydwk.voice.packet.VoiceHandler
 import io.github.ydwk.ydwk.voice.removeVoiceConnection
 import io.github.ydwk.ydwk.ws.voice.VoiceWebSocket
 import io.github.ydwk.ydwk.ws.voice.payload.VoiceReadyPayload
 import io.github.ydwk.ydwk.ws.voice.payload.VoiceServerUpdatePayload
 import io.github.ydwk.ydwk.ws.voice.util.SpeakingFlag
+import java.net.InetSocketAddress
 import java.util.*
 import java.util.concurrent.CompletableFuture
 
@@ -63,6 +66,8 @@ data class VoiceConnectionImpl(
     private var attemptingToConnectOrConnected = false
     private var voiceReadyPayload: VoiceReadyPayload? = null
     private var voiceSource: VoiceSource? = null
+    private var secretKey: ByteArray? = null
+    private var address: InetSocketAddress? = null
     private val speakingFlags: EnumSet<SpeakingFlag> = EnumSet.noneOf(SpeakingFlag::class.java)
 
     init {
@@ -192,19 +197,29 @@ data class VoiceConnectionImpl(
      *   speaking, `false` otherwise.
      * @return The updated VoiceConnection with the speaking state set.
      */
-    override fun setSpeaking(speaking: Boolean): VoiceConnection {
+    override fun setSpeaking(speaking: Boolean): CompletableFuture<VoiceConnection> {
+        if (voiceWebSocket == null) {
+            return CompletableFuture.failedFuture(
+                IllegalStateException("Voice connection is not connected"))
+        }
+
+        // Update speaking flags
         val newSpeakingFlags = speakingFlags.clone()
+        speakingFlags.toMutableSet()
         if (speaking) {
             newSpeakingFlags.add(SpeakingFlag.MICROPHONE)
         } else {
             newSpeakingFlags.remove(SpeakingFlag.MICROPHONE)
         }
         speakingFlags.addAll(newSpeakingFlags)
-        return this
-    }
 
-    fun getVoiceSource(): VoiceSource? {
-        return voiceSource
+        // Call voiceWebSocket.handleSpeaking() and handle potential errors
+        return try {
+            voiceWebSocket!!.handleSpeaking()
+            CompletableFuture.completedFuture(this)
+        } catch (ex: Exception) {
+            CompletableFuture.failedFuture(ex)
+        }
     }
 
     /**
@@ -215,7 +230,43 @@ data class VoiceConnectionImpl(
      */
     override fun setSource(source: VoiceSource): CompletableFuture<VoiceConnection> {
         this.voiceSource = source
-        return CompletableFuture.completedFuture(this)
+
+        return try {
+            setSpeaking(true)
+
+            val voiceHandler = VoiceHandler(this, TweetNaclFast.SecretBox(secretKey))
+
+            CompletableFuture.completedFuture(this)
+        } catch (ex: Exception) {
+            CompletableFuture.failedFuture(ex)
+        }
+    }
+
+    /**
+     * Sets the secret key for the voice connection.
+     *
+     * @param secretKey the secret key to set
+     */
+    fun setSecretKey(secretKey: ByteArray) {
+        this.secretKey = secretKey
+    }
+
+    /**
+     * Sets the address for the voice connection.
+     *
+     * @param address the address to set
+     */
+    fun setAddress(address: InetSocketAddress) {
+        this.address = address
+    }
+
+    /**
+     * Gets the address for the voice connection.
+     *
+     * @return the address for the voice connection
+     */
+    fun getAddress(): InetSocketAddress? {
+        return address
     }
 
     /**

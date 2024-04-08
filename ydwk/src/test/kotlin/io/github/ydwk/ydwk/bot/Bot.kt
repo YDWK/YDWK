@@ -73,7 +73,7 @@ fun main() {
 
                     val vc = voice!!.joinVc(false, false).join()
 
-                    vc.setSource(MP3VoiceSource(File("mp3-sample.mp3"))).getOrNull()
+                    vc.setSource(MP3VoiceSource(File("mp3-sample.mp3"))).join()
                 }
             }
         }

@@ -18,7 +18,6 @@
  */ 
 package io.github.ydwk.ydwk.ws.voice.util
 
-import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
 import io.github.ydwk.ydwk.ws.voice.payload.VoiceReadyPayload
 import java.net.DatagramPacket
 import java.net.DatagramSocket
@@ -27,7 +26,6 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
 class UpdHandler(
-    private val voiceConnection: VoiceConnectionImpl,
     private val voiceReadyPayload: VoiceReadyPayload,
     private val inetSocketAddress: InetSocketAddress,
     private val socket: DatagramSocket = DatagramSocket()

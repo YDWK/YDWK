@@ -22,8 +22,10 @@ import club.minnced.opus.util.OpusLibrary
 import com.iwebpp.crypto.TweetNaclFast
 import com.sun.jna.ptr.PointerByReference
 import io.github.ydwk.ydwk.impl.YDWKImpl
+import io.github.ydwk.ydwk.voice.VoiceSource
 import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
 import io.github.ydwk.ydwk.ws.voice.util.VoiceEncryption
+import java.net.DatagramPacket
 import java.nio.Buffer
 import java.nio.ByteBuffer
 import java.nio.IntBuffer
@@ -46,6 +48,8 @@ class VoiceHandler(
     private var nonce: Long = 0 // Nonce for encryption
     private var maxNonce = 4294967295L // Maximum nonce value 32 bit
     private var nonceBuffer = ByteArray(TweetNaclFast.SecretBox.nonceLength)
+
+    private var voiceSource: VoiceSource? = null
 
     init {
         val error = IntBuffer.allocate(1)
@@ -80,7 +84,7 @@ class VoiceHandler(
         return encodedData
     }
 
-    fun encodeAudio(audio: ByteBuffer): ByteBuffer? {
+    private fun encodeAudio(audio: ByteBuffer): ByteBuffer? {
         if (opusEncoder == null) {
             if (!checkOpusLibrary()) {
                 (voiceConnectionImpl.ydwk as YDWKImpl)
@@ -99,6 +103,47 @@ class VoiceHandler(
         }
 
         return encode(audio)
+    }
+
+    fun getNextFrame(): DatagramPacket? {
+        val nextFrameRaw = getNextFrameRaw() ?: return null
+        return if (buffer != null) {
+            val data = nextFrameRaw.array()
+            val offset = nextFrameRaw.arrayOffset() + nextFrameRaw.position()
+            val length = nextFrameRaw.remaining()
+            DatagramPacket(data, offset, length, voiceConnectionImpl.getAddress())
+        } else {
+            null
+        }
+    }
+
+    private fun getNextFrameRaw(): ByteBuffer? {
+        var nextFrame: ByteBuffer? = null
+
+        try {
+            if (voiceSource != null) {
+                var audio = voiceSource!!.getOriginalAudio()
+                if (!voiceSource!!.isOpusEncoded) {
+                    audio = encodeAudio(audio) ?: return null
+                }
+
+                nextFrame = encryptAudio(audio)
+
+                if (sequence + 1 > Character.MAX_VALUE) {
+                    sequence = 0.toChar()
+                } else {
+                    sequence++
+                }
+            }
+        } catch (e: Exception) {
+            (voiceConnectionImpl.ydwk as YDWKImpl).logger.error("Failed to get next frame", e)
+        }
+
+        if (nextFrame != null) {
+            timestamp += 960
+        }
+
+        return nextFrame
     }
 
     @Synchronized
