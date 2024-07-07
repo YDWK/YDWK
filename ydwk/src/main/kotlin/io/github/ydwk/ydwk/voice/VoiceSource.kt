@@ -35,7 +35,7 @@ interface VoiceSource {
      *
      * @return the audio data as a byte array, representing a chunk of audio.
      */
-    fun getNextAudioChunk(): ByteArray
+    fun getNext20MSAudioChunk(): ByteArray
 
     /**
      * Indicates whether the audio has finished playing.

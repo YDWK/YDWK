@@ -46,7 +46,7 @@ class MP3VoiceSource(private val audioFilePath: File) : VoiceSource {
         }
     }
 
-    override fun getNextAudioChunk(): ByteArray {
+    override fun getNext20MSAudioChunk(): ByteArray {
         getOriginalAudio().let { buffer ->
             return buffer.array().copyOf(buffer.remaining())
         }
