@@ -18,24 +18,19 @@
  */ 
 package io.github.ydwk.ydwk.voice
 
-import java.nio.ByteBuffer
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileInputStream
 
 /** Represents a source of voice data. */
 interface VoiceSource {
 
     /**
-     * Gets the original audio data as a byte buffer.
+     * Retrieves the audio data.
      *
-     * @return the audio data as a byte buffer.
+     * @return the audio data as a byte array.
      */
-    fun getOriginalAudio(): ByteBuffer
-
-    /**
-     * Retrieves the next chunk of audio data.
-     *
-     * @return the audio data as a byte array, representing a chunk of audio.
-     */
-    fun getNext20MSAudioChunk(): ByteArray
+    fun getAudioData(): ByteArray
 
     /**
      * Indicates whether the audio has finished playing.
@@ -45,10 +40,47 @@ interface VoiceSource {
     val isFinished: Boolean
 
     /**
-     * Whether the voice source is already encoded with Opus. (false by default)
+     * Builds a VoiceSource object.
      *
-     * @return true if the voice source is already encoded with Opus, false otherwise.
+     * @return a VoiceSource object representing the built voice source.
      */
-    val isOpusEncoded: Boolean
-        get() = false
+    fun build(): VoiceSource
+
+    class ConvertVoiceSource(val file: File) : VoiceSource {
+
+        private val outputStream = ByteArrayOutputStream()
+        private val inputStream = FileInputStream(file)
+
+        private lateinit var audioData: ByteArray
+
+        override fun getAudioData(): ByteArray {
+            val data = outputStream.toByteArray()
+            outputStream.reset() // Clear output stream
+
+            return data
+        }
+
+        override val isFinished: Boolean
+            get() =
+                with(inputStream) {
+                    if (available() == 0) {
+                        close()
+                        true
+                    } else {
+                        false
+                    }
+                }
+
+        override fun build(): VoiceSource {
+            val buffer = ByteArray(1024)
+            var bytesRead: Int
+            while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+                outputStream.write(buffer, 0, bytesRead)
+            }
+
+            audioData = outputStream.toByteArray()
+
+            return this
+        }
+    }
 }

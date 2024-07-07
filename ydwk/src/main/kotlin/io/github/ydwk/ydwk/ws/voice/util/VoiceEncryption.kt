@@ -37,40 +37,25 @@ enum class VoiceEncryption {
          *
          * @return The preferred encryption method for the current platform.
          */
-        fun getPreferred(modes: List<VoiceEncryption>): VoiceEncryption {
+        fun getPreferred(modes: List<String>): VoiceEncryption {
             var encryption: VoiceEncryption? = null
             for (a in modes) {
                 when (a) {
-                    XSALSA20_POLY1305_LITE -> {
+                    "xsalsa20_poly1305_lite" -> {
                         encryption = XSALSA20_POLY1305_LITE
                         break
                     }
-                    XSALSA20_POLY1305_SUFFIX -> {
+                    "xsalsa20_poly1305_suffix" -> {
                         encryption = XSALSA20_POLY1305_SUFFIX
                         break
                     }
-                    XSALSA20_POLY1305 -> {
+                    "xsalsa20_poly1305" -> {
                         encryption = XSALSA20_POLY1305
                         break
                     }
                 }
             }
             return encryption!!
-        }
-
-        /**
-         * Gets the encryption method from the string.
-         *
-         * @param mode The string to get the encryption method from.
-         * @return The encryption method from the string.
-         */
-        fun getValue(mode: String): VoiceEncryption {
-            return when (mode) {
-                "xsalsa20_poly1305_lite" -> XSALSA20_POLY1305_LITE
-                "xsalsa20_poly1305_suffix" -> XSALSA20_POLY1305_SUFFIX
-                "xsalsa20_poly1305" -> XSALSA20_POLY1305
-                else -> throw IllegalArgumentException("Unknown voice encryption mode: $mode")
-            }
         }
     }
 }

@@ -16,14 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package io.github.ydwk.ydwk.ws.voice.payload
+package io.github.ydwk.ydwk.voice.opus
 
-/**
- * Represents the payload for voice ready event.
- *
- * @property ssrc The synchronization source identifier.
- * @property ip The IP address of the voice server.
- * @property port The port number of the voice server.
- * @property modes The list of supported voice modes.
- */
-data class VoiceReadyPayload(val ssrc: Int, val ip: String, val port: Int, val modes: List<String>)
+class VoiceOpusHandler {}

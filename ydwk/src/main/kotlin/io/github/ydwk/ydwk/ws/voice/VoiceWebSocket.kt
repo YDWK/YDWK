@@ -237,16 +237,17 @@ class VoiceWebSocket(
                 val ssrc = dataObject.get("ssrc").asInt()
                 val ip = dataObject.get("ip").asText()
                 val port = dataObject.get("port").asInt()
-                val modes: MutableList<VoiceEncryption> = mutableListOf()
+                val modes: MutableList<String> = mutableListOf()
                 for (jsonMode in dataObject.get("modes")) {
-                    modes.add(VoiceEncryption.getValue(jsonMode.asText()))
+                    modes.add(jsonMode.asText())
                 }
 
                 voiceReadyPayload = VoiceReadyPayload(ssrc, ip, port, modes)
                 voiceConnection.setVoiceReadyPayload(voiceReadyPayload!!)
 
                 // Open a UDP connection
-                updHandler = UpdHandler(voiceReadyPayload!!, InetSocketAddress(ip, port))
+                updHandler =
+                    UpdHandler(voiceConnection, voiceReadyPayload!!, InetSocketAddress(ip, port))
                 handleProtocol(modes)
             }
             VoiceOpcode.SESSION_DESCRIPTION -> {
@@ -268,7 +269,6 @@ class VoiceWebSocket(
                         }
                     }
 
-                voiceConnection.setSecretKey(secretKey)
                 updHandler!!.secretKey = secretKey
                 // updHandler!!.sendVoiceData()
                 ready = true
@@ -318,14 +318,13 @@ class VoiceWebSocket(
      *
      * Here, `"address"` is the discovered external IP and `"port"` is the corresponding UDP port.
      */
-    private fun handleProtocol(modes: MutableList<VoiceEncryption>) {
+    private fun handleProtocol(modes: MutableList<String>) {
         try {
             if (updHandler == null) {
                 throw IllegalStateException("Upd handler is null")
             }
 
             val address = updHandler!!.findIp()
-            voiceConnection.setAddress(address)
             val selectProtocolJson = ydwk.objectNode
             selectProtocolJson.put("op", VoiceOpcode.SELECT_PROTOCOL.code)
 
@@ -354,7 +353,7 @@ class VoiceWebSocket(
             return originalHostString.replace("\u0000", "")
         }
 
-    fun handleSpeaking() {
+    private fun handleSpeaking() {
         val speakingPayload = ydwk.objectNode
         speakingPayload.put("op", VoiceOpcode.SPEAKING.code)
         val speakingData = ydwk.objectNode

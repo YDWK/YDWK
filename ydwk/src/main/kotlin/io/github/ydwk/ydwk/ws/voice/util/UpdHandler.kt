@@ -18,6 +18,7 @@
  */ 
 package io.github.ydwk.ydwk.ws.voice.util
 
+import io.github.ydwk.ydwk.voice.impl.VoiceConnectionImpl
 import io.github.ydwk.ydwk.ws.voice.payload.VoiceReadyPayload
 import java.net.DatagramPacket
 import java.net.DatagramSocket
@@ -26,10 +27,15 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
 class UpdHandler(
+    private val voiceConnection: VoiceConnectionImpl,
     private val voiceReadyPayload: VoiceReadyPayload,
     private val inetSocketAddress: InetSocketAddress,
     private val socket: DatagramSocket = DatagramSocket()
 ) {
+    // TODO: In separate pr incorporate the speaking part
+    private val threadName: String =
+        "Voice CConnection Thread for guild: ${voiceConnection.guild.name}"
+
     var secretKey: ByteArray? = null
 
     fun findIp(): InetSocketAddress {
