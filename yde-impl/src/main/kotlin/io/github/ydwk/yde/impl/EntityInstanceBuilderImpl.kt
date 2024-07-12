@@ -73,6 +73,7 @@ import io.github.ydwk.yde.impl.entities.channel.guild.GuildForumChannelImpl
 import io.github.ydwk.yde.impl.entities.channel.guild.GuildMessageChannelImpl
 import io.github.ydwk.yde.impl.entities.channel.guild.forum.DefaultReactionEmojiImpl
 import io.github.ydwk.yde.impl.entities.channel.guild.forum.ForumTagImpl
+import io.github.ydwk.yde.impl.entities.emoji.PartialEmojiImpl
 import io.github.ydwk.yde.impl.entities.guild.*
 import io.github.ydwk.yde.impl.entities.guild.role.RoleTagImpl
 import io.github.ydwk.yde.impl.entities.guild.schedule.EntityMetadataImpl
@@ -98,6 +99,7 @@ import io.github.ydwk.yde.impl.entities.sticker.StickerItemImpl
 import io.github.ydwk.yde.impl.entities.user.AvatarImpl
 import io.github.ydwk.yde.impl.interaction.ComponentInteractionImpl
 import io.github.ydwk.yde.impl.interaction.InteractionImpl
+import io.github.ydwk.yde.impl.interaction.application.ApplicationCommandImpl
 import io.github.ydwk.yde.impl.interaction.application.type.MessageCommandImpl
 import io.github.ydwk.yde.impl.interaction.application.type.SlashCommandImpl
 import io.github.ydwk.yde.impl.interaction.application.type.UserCommandImpl
@@ -128,7 +130,7 @@ import java.net.URL
 // TODO: Check every entity whith the discord documentation to see if there are any missing fields
 // or any corrections that need to be made
 // TODO: Rewrite the hall interaction system
-// TODO: For YDWK rewrite the voice system with the new voice system
+// TODO: For YDWK rewrite the voice system with the new voice system - seperate pr
 // TODO: Add support for locale
 // TODO: When having a list of enums make sure to use EnumSet instead of a list
 
@@ -832,7 +834,8 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     }
 
     override fun buildPartialEmoji(json: JsonNode): PartialEmoji {
-        TODO("Not yet implemented")
+        return PartialEmojiImpl(
+            yde, json, json["id"].asLong(), json["name"].asText(), json["animated"].asBoolean())
     }
 
     override fun buildAuthor(json: JsonNode): Author {
@@ -1087,7 +1090,16 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     }
 
     override fun buildApplicationCommand(json: JsonNode): ApplicationCommand {
-        TODO("Not yet implemented")
+        val interaction = buildInteraction(json)
+        return ApplicationCommandImpl(
+            yde,
+            json,
+            json["id"].asLong(),
+            json["description"].asText(),
+            interaction,
+            interaction.applicationId,
+            interaction.guild,
+        )
     }
 
     override fun buildApplicationCommandOption(json: JsonNode): ApplicationCommandOption {

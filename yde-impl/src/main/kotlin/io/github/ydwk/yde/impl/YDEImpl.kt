@@ -153,17 +153,13 @@ open class YDEImpl(
         cacheIds: Set<CacheIds>,
         duration: Duration,
         repeat: Boolean
-    ) {
-        cache.triggerCacheTypesClear(cacheIds, duration, repeat)
-    }
+    ) = cache.triggerCacheTypesClear(cacheIds, duration, repeat)
 
-    override fun triggerCacheClear(duration: Duration, repeat: Boolean) {
+    override fun triggerCacheClear(duration: Duration, repeat: Boolean) =
         cache.triggerCacheClear(duration, repeat)
-    }
 
-    override fun setGuildIds(vararg guildIds: String) {
+    override fun setGuildIds(vararg guildIds: String) =
         guildIds.forEach { this.guildIdList.add(it) }
-    }
 
     override fun setAllowedCache(vararg cacheIds: CacheIds) {
         allowedCache.addAll(cacheIds.toSet())
@@ -187,7 +183,6 @@ open class YDEImpl(
 
     override val entityInstanceBuilder: EntityInstanceBuilder = EntityInstanceBuilderImpl(this)
 
-    override fun toString(): String {
-        return EntityToStringBuilder(this, this).add("applicationId", applicationId).toString()
-    }
+    override fun toString(): String =
+        EntityToStringBuilder(this, this).add("applicationId", applicationId).toString()
 }
