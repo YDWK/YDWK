@@ -33,14 +33,14 @@ import io.github.ydwk.yde.util.NameAbleEntity
 import io.github.ydwk.yde.util.SnowFlake
 
 /** This class is used to represent a discord guild member entity. */
-interface Member : NameAbleEntity, GenericEntity, SendAble, SnowFlake, PermissionEntity {
+interface Member : NameAbleEntity, GenericEntity, SendAble, SnowFlake {
 
     /**
      * Gets thw member's Guild.
      *
      * @return The member's Guild.
      */
-    val guild: Guild
+    val guildId: GetterSnowFlake
 
     /**
      * The user this guild member represents.
@@ -76,13 +76,6 @@ interface Member : NameAbleEntity, GenericEntity, SendAble, SnowFlake, Permissio
      * @return The ids of the roles this member is assigned.
      */
     val roleIds: List<GetterSnowFlake>
-
-    /**
-     * The roles of this member.
-     *
-     * @return The roles of this member.
-     */
-    val roles: List<Role?>
 
     /**
      * The time this member joined the guild.
@@ -139,7 +132,16 @@ interface Member : NameAbleEntity, GenericEntity, SendAble, SnowFlake, Permissio
      *
      * @return Whether the member is the owner of the guild.
      */
-    val isOwner: Boolean
+    fun isOwner(guild: Guild): Boolean
+
+    /**
+     * The permission entity of the member.
+     *
+     * @param guild The guild the member is in.
+     * @param roles The roles the member has.
+     * @return The permission entity of the member.
+     */
+    fun permissionEntity(guild: Guild, roles: List<Role>): PermissionEntity
 
     /**
      * Creates a direct message channel with this member.

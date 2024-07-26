@@ -20,14 +20,15 @@ package io.github.ydwk.yde.impl.entities.guild
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.entities.Guild
+import io.github.ydwk.yde.entities.PermissionEntity
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.VoiceState
 import io.github.ydwk.yde.entities.channel.DmChannel
 import io.github.ydwk.yde.entities.guild.Member
 import io.github.ydwk.yde.entities.guild.Role
-import io.github.ydwk.yde.entities.guild.enums.GuildPermission
 import io.github.ydwk.yde.entities.user.Avatar
 import io.github.ydwk.yde.impl.YDEImpl
+import io.github.ydwk.yde.impl.entities.PermissionEntityImpl
 import io.github.ydwk.yde.rest.RestResult
 import io.github.ydwk.yde.rest.result.NoResult
 import io.github.ydwk.yde.util.EntityToStringBuilder
@@ -37,31 +38,28 @@ import java.util.*
 internal class MemberImpl(
     override val yde: YDEImpl,
     override val json: JsonNode,
-    override val guild: Guild,
-    override val permissions: EnumSet<GuildPermission>,
+    override val guildId: GetterSnowFlake,
     override var user: User,
     override var nick: String?,
     override var guildAvatarHash: String?,
     override val guildAvatar: Avatar?,
     override val roleIds: List<GetterSnowFlake>,
-    override val roles: List<Role?>,
     override var joinedAt: String?,
     override var premiumSince: String?,
     override var deaf: Boolean,
     override var mute: Boolean,
     override var pending: Boolean,
     override var timedOutUntil: String?,
-    override val isOwner: Boolean,
     override var voiceState: VoiceState?,
     override var name: String,
-    override val idAsLong: Long = guild.idAsLong + user.idAsLong
+    override val idAsLong: Long = guildId.asLong + user.idAsLong
 ) : Member {
-    override fun hasPermission(vararg permission: GuildPermission): Boolean {
-        return permissions.containsAll(permission.toList())
+    override fun isOwner(guild: Guild): Boolean {
+        return guild.ownerId.asString == user.id
     }
 
-    override fun hasPermission(permission: Collection<GuildPermission>): Boolean {
-        return permissions.containsAll(permission)
+    override fun permissionEntity(guild: Guild, roles: List<Role>): PermissionEntity {
+        return PermissionEntityImpl(guild, isOwner(guild), roles, isTimedOut)
     }
 
     override suspend fun createDmChannel(): RestResult<DmChannel> {
@@ -71,7 +69,7 @@ internal class MemberImpl(
     override suspend fun addRole(role: Role): RestResult<NoResult> {
         return yde.restAPIMethodGetters
             .getMemberRestAPIMethods()
-            .addRoleToMember(guild.idAsLong, idAsLong, role.idAsLong)
+            .addRoleToMember(guildId.asLong, idAsLong, role.idAsLong)
     }
 
     override suspend fun addRoles(roles: List<Role>): List<RestResult<NoResult>> {
@@ -81,7 +79,7 @@ internal class MemberImpl(
     override suspend fun removeRole(role: Role): RestResult<NoResult> {
         return yde.restAPIMethodGetters
             .getMemberRestAPIMethods()
-            .removeRoleFromMember(guild.idAsLong, idAsLong, role.idAsLong)
+            .removeRoleFromMember(guildId.asLong, idAsLong, role.idAsLong)
     }
 
     override suspend fun removeRoles(roles: List<Role>): List<RestResult<NoResult>> {

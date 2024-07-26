@@ -26,6 +26,7 @@ import io.github.ydwk.yde.entities.message.Embed
 import io.github.ydwk.yde.impl.interaction.application.ApplicationCommandImpl
 import io.github.ydwk.yde.impl.interaction.application.sub.ReplyImpl
 import io.github.ydwk.yde.interaction.Interaction
+import io.github.ydwk.yde.interaction.application.ApplicationCommandType
 import io.github.ydwk.yde.interaction.application.sub.Reply
 import io.github.ydwk.yde.interaction.application.type.UserCommand
 
@@ -36,7 +37,10 @@ class UserCommandImpl(
     override val targetUser: User,
     override val targetMember: Member
 ) :
-    ApplicationCommandImpl(yde.entityInstanceBuilder.buildApplicationCommand(json), interaction),
+    ApplicationCommandImpl(
+        yde.entityInstanceBuilder.buildApplicationCommand(
+            json, ApplicationCommandType.USER, interaction),
+        interaction),
     UserCommand {
     override fun reply(content: String): Reply {
         return ReplyImpl(yde, content, null, interaction.id, token)

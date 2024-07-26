@@ -28,6 +28,7 @@ import io.github.ydwk.yde.entities.channel.GuildChannel
 import io.github.ydwk.yde.entities.channel.enums.ChannelType
 import io.github.ydwk.yde.entities.guild.Member
 import io.github.ydwk.yde.entities.guild.Role
+import io.github.ydwk.yde.util.GetterSnowFlake
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 import java.util.*
@@ -46,7 +47,8 @@ class GuildCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
 
         val members: ArrayList<Member> = ArrayList()
         json["members"].forEach { member ->
-            members.add(ydwk.entityInstanceBuilder.buildMember(member, guild))
+            members.add(
+                ydwk.entityInstanceBuilder.buildMember(member, GetterSnowFlake.of(guild.idAsLong)))
         }
 
         members.forEach { member -> member.user.let { ydwk.memberCache[guild.id, it.id] = member } }

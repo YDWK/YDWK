@@ -29,13 +29,18 @@ import io.github.ydwk.yde.impl.YDEImpl
 import io.github.ydwk.yde.impl.interaction.application.ApplicationCommandImpl
 import io.github.ydwk.yde.impl.interaction.application.sub.ReplyImpl
 import io.github.ydwk.yde.interaction.Interaction
+import io.github.ydwk.yde.interaction.application.ApplicationCommandType
 import io.github.ydwk.yde.interaction.application.sub.Reply
 import io.github.ydwk.yde.interaction.application.type.SlashCommand
 import io.github.ydwk.yde.util.EntityToStringBuilder
+import io.github.ydwk.yde.util.GetterSnowFlake
 
 /** TODO: have a look at the [SlashCommandImpl] to see if it is possible to refactor the code */
 class SlashCommandImpl(yde: YDE, json: JsonNode, interaction: Interaction) :
-    ApplicationCommandImpl(yde.entityInstanceBuilder.buildApplicationCommand(json), interaction),
+    ApplicationCommandImpl(
+        yde.entityInstanceBuilder.buildApplicationCommand(
+            json, ApplicationCommandType.CHAT_INPUT, interaction),
+        interaction),
     SlashCommand {
 
     override val locale: String? = interaction.locale
@@ -82,7 +87,9 @@ class SlashCommandImpl(yde: YDE, json: JsonNode, interaction: Interaction) :
                 it.fields().forEach { (id, node) ->
                     resolved["users"]?.let { users ->
                         val user = users[id]
-                        val member = yde.entityInstanceBuilder.buildMember(node, guild!!, user)
+                        val member =
+                            yde.entityInstanceBuilder.buildMember(
+                                node, GetterSnowFlake.of(guild!!.id), user)
                         val newMember = (yde as YDEImpl).memberCache.getOrPut(member)
                         map[id.toLong()] = newMember
                     }

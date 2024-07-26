@@ -74,7 +74,7 @@ open class EndPoint {
         GET_AUDIT_LOGS("/guilds/%s/audit-logs"),
         GET_MEMBERS("/guilds/%s/members"),
         GET_GUILD("/guilds/%s"),
-        GET_GUILDS("/guilds"),
+        GET_GUILDS("/users/@me/guilds"),
         GET_GUILD_CHANNELS("/guilds/%s/channels"),
         GET_MEMBER("/guilds/%s/members/%s"),
         CREATE_GUILD("/guilds"),

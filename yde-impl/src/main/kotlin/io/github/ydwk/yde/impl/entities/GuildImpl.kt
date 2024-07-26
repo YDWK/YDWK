@@ -96,7 +96,8 @@ internal class GuildImpl(
                 .execute { response ->
                     val jsonBody = response.json(yde)
                     val member =
-                        yde.entityInstanceBuilder.buildMember(jsonBody, this@GuildImpl, null)
+                        yde.entityInstanceBuilder.buildMember(
+                            jsonBody, GetterSnowFlake.of(idAsLong), null)
                     (yde as YDEImpl).memberCache[id, jsonBody["user"]["id"].asText()] = member
                     member
                 }
@@ -162,6 +163,6 @@ internal class GuildImpl(
     }
 
     override suspend fun retrieveMembers(): RestResult<List<Member>> {
-        return yde.restAPIMethodGetters.getGuildRestAPIMethods().requestedMembers(this)
+        return yde.restAPIMethodGetters.getGuildRestAPIMethods().requestedMembers(idAsLong)
     }
 }

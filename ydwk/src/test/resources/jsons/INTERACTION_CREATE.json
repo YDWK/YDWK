@@ -1,0 +1,88 @@
+{
+  "t": "INTERACTION_CREATE",
+  "s": 2,
+  "op": 0,
+  "d": {
+    "version": 1,
+    "type": 2,
+    "token": "",
+    "member": {
+      "user": {
+        "username": "yusuf.i",
+        "public_flags": 4194368,
+        "id": "422708001976221697",
+        "global_name": "Yusuf",
+        "discriminator": "0",
+        "clan": null,
+        "avatar_decoration_data": {
+          "sku_id": "1144059132517826601",
+          "expires_at": null,
+          "asset": "a_10b9f886b513b77ccdd67c8784f1a496"
+        },
+        "avatar": "8b31f7427bb8f398f7ba50d926c749b8"
+      },
+      "unusual_dm_activity_until": null,
+      "roles": [
+        "947211155812790314"
+      ],
+      "premium_since": null,
+      "permissions": "2251799813685247",
+      "pending": false,
+      "nick": null,
+      "mute": false,
+      "joined_at": "2022-02-01T17:22:25.752000+00:00",
+      "flags": 0,
+      "deaf": false,
+      "communication_disabled_until": null,
+      "banner": null,
+      "avatar": null
+    },
+    "locale": "en-GB",
+    "id": "1266461318836387942",
+    "guild_locale": "en-US",
+    "guild_id": "938122131949097052",
+    "guild": {
+      "locale": "en-US",
+      "id": "938122131949097052",
+      "features": [
+        "CHANNEL_ICON_EMOJIS_GENERATED",
+        "NEWS",
+        "COMMUNITY"
+      ]
+    },
+    "entitlements": [],
+    "entitlement_sku_ids": [],
+    "data": {
+      "type": 1,
+      "name": "ping",
+      "id": "1225458437907808266"
+    },
+    "context": 0,
+    "channel_id": "938122131949097055",
+    "channel": {
+      "type": 0,
+      "topic": null,
+      "theme_color": null,
+      "rate_limit_per_user": 0,
+      "position": 3,
+      "permissions": "2251799813685247",
+      "parent_id": "938122131949097053",
+      "nsfw": false,
+      "name": "general1",
+      "last_message_id": "1266461209264390267",
+      "id": "938122131949097055",
+      "icon_emoji": {
+        "name": "🌐",
+        "id": null
+      },
+      "guild_id": "938122131949097052",
+      "flags": 0,
+      "default_thread_rate_limit_per_user": 0
+    },
+    "authorizing_integration_owners": {
+      "0": "938122131949097052"
+    },
+    "application_id": "1083467693899915337",
+    "app_permissions": "2251799813685247"
+  }
+}

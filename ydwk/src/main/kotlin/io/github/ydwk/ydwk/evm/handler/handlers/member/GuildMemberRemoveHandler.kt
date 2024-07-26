@@ -19,6 +19,7 @@
 package io.github.ydwk.ydwk.evm.handler.handlers.member
 
 import com.fasterxml.jackson.databind.JsonNode
+import io.github.ydwk.yde.util.GetterSnowFlake
 import io.github.ydwk.ydwk.evm.event.events.member.GuildMemberRemoveEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
@@ -27,7 +28,8 @@ class GuildMemberRemoveHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, j
     override suspend fun start() {
         val guild = ydwk.getGuildById(json.get("guild_id").asLong())
         if (guild != null) {
-            val member = ydwk.entityInstanceBuilder.buildMember(json, guild)
+            val member =
+                ydwk.entityInstanceBuilder.buildMember(json, GetterSnowFlake.of(guild.idAsLong))
             ydwk.memberCache.remove(guild.id, json.get("user").get("id").asText())
             ydwk.emitEvent(GuildMemberRemoveEvent(ydwk, member))
         } else {

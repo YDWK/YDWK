@@ -55,6 +55,7 @@ import io.github.ydwk.yde.interaction.ComponentInteraction
 import io.github.ydwk.yde.interaction.Interaction
 import io.github.ydwk.yde.interaction.application.ApplicationCommand
 import io.github.ydwk.yde.interaction.application.ApplicationCommandOption
+import io.github.ydwk.yde.interaction.application.ApplicationCommandType
 import io.github.ydwk.yde.interaction.application.type.MessageCommand
 import io.github.ydwk.yde.interaction.application.type.SlashCommand
 import io.github.ydwk.yde.interaction.application.type.UserCommand
@@ -93,6 +94,14 @@ interface EntityInstanceBuilder {
      * @return [Guild] the guild
      */
     fun buildGuild(json: JsonNode): Guild
+
+    /**
+     * Used to build an instance of [PartialGuild]
+     *
+     * @param json the json
+     * @return [PartialGuild] the partial guild
+     */
+    fun buildPartialGuild(json: JsonNode): PartialGuild
 
     /**
      * Used to build an instance of [Message]
@@ -189,22 +198,22 @@ interface EntityInstanceBuilder {
      * Used to build an instance of [Member]
      *
      * @param json the json
-     * @param guild the guild
+     * @param guildId the guild id
      * @param backUpUser the back up user
      * @return [Member] the member
      */
-    fun buildMember(json: JsonNode, guild: Guild, backUpUser: User? = null): Member
+    fun buildMember(json: JsonNode, guildId: GetterSnowFlake, backUpUser: User? = null): Member
 
     /**
      * Used to build an instance of [Member]
      *
      * @param json the json
-     * @param guild the guild
+     * @param guildId the guild id
      * @param backUpUser the back up user json
      * @return [Member] the member
      */
-    fun buildMember(json: JsonNode, guild: Guild, backUpUser: JsonNode): Member {
-        return buildMember(json, guild, buildUser(backUpUser))
+    fun buildMember(json: JsonNode, guildId: GetterSnowFlake, backUpUser: JsonNode): Member {
+        return buildMember(json, guildId, buildUser(backUpUser))
     }
 
     /**
@@ -750,9 +759,15 @@ interface EntityInstanceBuilder {
      * Used to build an instance of [ApplicationCommand]
      *
      * @param json the json
+     * @param type the application command type
+     * @param interaction the interaction
      * @return [ApplicationCommand] the application command
      */
-    fun buildApplicationCommand(json: JsonNode): ApplicationCommand
+    fun buildApplicationCommand(
+        json: JsonNode,
+        type: ApplicationCommandType,
+        interaction: Interaction
+    ): ApplicationCommand
 
     /**
      * Used to build an instance of [ApplicationCommandOption]

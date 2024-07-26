@@ -50,13 +50,14 @@ fun main() {
         {
             when (it.slash.name) {
                 "ping" -> {
-                    it.slash.reply("Pong!").trigger()
-
-                    val guilds = it.slash.ydwk.requestGuilds().getOrNull()
+                    val string = "Pong!"
+                    val guilds = it.slash.ydwk.requestPartialGuilds().getOrNull()
 
                     if (guilds != null) {
-                        it.slash.reply("Guilds: ${guilds.size}").trigger()
+                        string + " " + guilds.size
                     }
+
+                    it.slash.reply(string).setEphemeral(true).trigger()
                 }
             }
         }

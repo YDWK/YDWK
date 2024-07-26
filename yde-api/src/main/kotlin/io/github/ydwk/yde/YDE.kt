@@ -24,10 +24,7 @@ import io.github.ydwk.yde.builders.message.IMessageCommandBuilder
 import io.github.ydwk.yde.builders.slash.ISlashCommandBuilder
 import io.github.ydwk.yde.builders.user.IUserCommandBuilder
 import io.github.ydwk.yde.cache.CacheIds
-import io.github.ydwk.yde.entities.Bot
-import io.github.ydwk.yde.entities.Channel
-import io.github.ydwk.yde.entities.Guild
-import io.github.ydwk.yde.entities.User
+import io.github.ydwk.yde.entities.*
 import io.github.ydwk.yde.entities.builder.EntityBuilder
 import io.github.ydwk.yde.entities.channel.DmChannel
 import io.github.ydwk.yde.entities.channel.GuildChannel
@@ -182,16 +179,17 @@ interface YDE {
     /**
      * Requests a guild using its id.
      *
-     * @param id The id of the guild.
+     * @param guildId The id of the guild.
      * @return The [RestResult] object.
      */
+    // TODO: Check out the endpoints
     suspend fun requestGuild(guildId: Long): RestResult<Guild> =
         restAPIMethodGetters.getGuildRestAPIMethods().requestedGuild(guildId)
 
     /**
      * Requests a guild using its id.
      *
-     * @param id The id of the guild.
+     * @param guildId The id of the guild.
      * @return The [RestResult] object.
      */
     suspend fun requestGuild(guildId: String): RestResult<Guild> = requestGuild(guildId.toLong())
@@ -201,8 +199,20 @@ interface YDE {
      *
      * @return The [RestResult] object.
      */
+    @Deprecated(
+        "Use requestParitalGuilds instead",
+        ReplaceWith("requestPartialGuilds()"),
+        DeprecationLevel.ERROR)
     suspend fun requestGuilds(): RestResult<List<Guild>> =
         restAPIMethodGetters.getGuildRestAPIMethods().requestedGuilds()
+
+    /**
+     * Requests all the guilds the bot is in.
+     *
+     * @return The [RestResult] object.
+     */
+    suspend fun requestPartialGuilds(): RestResult<List<PartialGuild>> =
+        restAPIMethodGetters.getGuildRestAPIMethods().requestedPartialGuilds()
 
     /**
      * Gets a guild by its id.

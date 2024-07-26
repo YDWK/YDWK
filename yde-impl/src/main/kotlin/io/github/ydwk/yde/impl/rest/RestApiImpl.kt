@@ -18,6 +18,7 @@
  */ 
 package io.github.ydwk.yde.impl.rest
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.ydwk.yde.rest.RestResult
 import io.github.ydwk.yde.rest.SimilarRestApi
 import io.github.ydwk.yde.rest.error.HttpResponseCode
@@ -25,6 +26,7 @@ import io.github.ydwk.yde.rest.error.RestAPIException
 import io.github.ydwk.yde.rest.result.NoResult
 import io.github.ydwk.yde.rest.type.RequestType
 import io.ktor.client.*
+import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -81,10 +83,9 @@ open class RestApiImpl(
     }
 
     override suspend fun <T : Any> execute(function: suspend (HttpResponse) -> T): RestResult<T> {
+        val response = executeRequest(builder)
+
         return try {
-
-            val response = executeRequest(builder)
-
             checkRateLimit(response).let {
                 if (it) {
                     handleRateLimitForResult(response, function)
@@ -93,8 +94,12 @@ open class RestApiImpl(
                 }
             }
         } catch (e: Exception) {
-            logger.error("Error while executing request", e)
-            RestResult.Error(RestAPIException("Error while executing request: ${e.message}"))
+            // discord error is encoded in the response body
+            val error = ObjectMapper().readTree(response.body<String>())
+            logger.error("Error while executing request, discord error: $error", e)
+            RestResult.Error(
+                RestAPIException(
+                    "Error while executing request: ${e.message} - discord error: $error"))
         }
     }
 

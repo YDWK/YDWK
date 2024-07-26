@@ -56,11 +56,11 @@ class InteractionImpl(
                 // get type
                 when (ApplicationCommandType.getValue(json["data"]["type"].asInt())) {
                     ApplicationCommandType.CHAT_INPUT ->
-                        yde.entityInstanceBuilder.buildSlashCommand(json["data"], this)
+                        yde.entityInstanceBuilder.buildSlashCommand(json, this)
                     ApplicationCommandType.USER ->
-                        yde.entityInstanceBuilder.buildUserCommand(json["data"], this)
+                        yde.entityInstanceBuilder.buildUserCommand(json, this)
                     ApplicationCommandType.MESSAGE ->
-                        yde.entityInstanceBuilder.buildMessageCommand(json["data"], this)
+                        yde.entityInstanceBuilder.buildMessageCommand(json, this)
                     else ->
                         throw IllegalStateException(
                             "Unknown ApplicationCommandType ${json["data"]["type"].asInt()}")

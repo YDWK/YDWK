@@ -21,18 +21,9 @@ package io.github.ydwk.yde.interaction.application.type
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.guild.Member
 import io.github.ydwk.yde.interaction.application.ApplicationCommand
-import io.github.ydwk.yde.interaction.application.ApplicationCommandType
 import io.github.ydwk.yde.interaction.reply.Repliable
 
 interface UserCommand : ApplicationCommand, Repliable {
-    /**
-     * The type of the command.
-     *
-     * @return The type of the command.
-     */
-    override val type: ApplicationCommandType
-        get() = ApplicationCommandType.USER
-
     /**
      * The user who the app command was invoked for.
      *

@@ -110,6 +110,7 @@ import io.github.ydwk.yde.interaction.ComponentInteraction
 import io.github.ydwk.yde.interaction.Interaction
 import io.github.ydwk.yde.interaction.application.ApplicationCommand
 import io.github.ydwk.yde.interaction.application.ApplicationCommandOption
+import io.github.ydwk.yde.interaction.application.ApplicationCommandType
 import io.github.ydwk.yde.interaction.application.type.MessageCommand
 import io.github.ydwk.yde.interaction.application.type.SlashCommand
 import io.github.ydwk.yde.interaction.application.type.UserCommand
@@ -152,7 +153,7 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             avatarHash,
             getAvatar(yde, discriminator, avatarHash, null, id),
             json["avatar"].isNull,
-            json["bot"].asBoolean(),
+            if (json.hasNonNull("bot")) json["bot"].asBoolean() else null,
             if (json.hasNonNull("system")) json["system"].asBoolean() else null,
             if (json.hasNonNull("mfa_enabled")) json["mfa_enabled"].asBoolean() else null,
             if (json.hasNonNull("banner")) json["banner"].asText() else null,
@@ -169,6 +170,7 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     }
 
     override fun buildGuild(json: JsonNode): Guild {
+
         val voiceStates =
             if (json.hasNonNull("voice_states")) json["voice_states"].map { buildVoiceState(it) }
             else emptyList()
@@ -240,6 +242,22 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             voiceStates,
             yde.getGuildChannels().filter { it.idAsLong == id },
             json["name"].asText())
+    }
+
+    override fun buildPartialGuild(json: JsonNode): PartialGuild {
+        return PartialGuildImpl(
+            yde,
+            json,
+            json["id"].asLong(),
+            if (json.has("icon")) json["icon"].asText() else "",
+            if (json.has("banner")) json["banner"].asText() else "",
+            json["owner"].asBoolean(),
+            json["permissions"].asText(),
+            json["features"].map { GuildFeature.getValue(it.asText()) }.toSet(),
+            if (json.has("approximate_member_count")) json["approximate_member_count"].asInt()
+            else 0,
+            if (json.has("approximate_presence_count")) json["approximate_presence_count"].asInt()
+            else 0)
     }
 
     override fun buildMessage(json: JsonNode): Message {
@@ -334,6 +352,7 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
                         .asGuildVoiceChannel()
                 else null
             } else null
+
         val guild =
             if (yde.getGuildById(json["guild_id"].asLong()) != null)
                 yde.getGuildById(json["guild_id"].asLong())
@@ -347,7 +366,9 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             guild,
             channel,
             user,
-            if (json.has("member")) buildMember(json["member"], guild!!, user) else null,
+            if (json.has("member"))
+                buildMember(json["member"], GetterSnowFlake.of(json["guild_id"].asLong()), user)
+            else null,
             json["session_id"].asText(),
             json["deaf"].asBoolean(),
             json["mute"].asBoolean(),
@@ -461,38 +482,20 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             else throw IllegalStateException("Scheduled event is null"))
     }
 
-    override fun buildMember(json: JsonNode, guild: Guild, backUpUser: User?): Member {
-        val roleIds = json["roles"].map { GetterSnowFlake.of(it.asLong()) }
-
-        val roles =
-            roleIds.map {
-                if (guild.getRoleById(it.asLong) != null) guild.getRoleById(it.asLong) else null
-            }
-
+    override fun buildMember(json: JsonNode, guildId: GetterSnowFlake, backUpUser: User?): Member {
         val user = if (json.has("user")) buildUser(json["user"]) else backUpUser
-
-        val isOwner = guild.ownerId.asString == user?.id
-
-        val isTimedOut =
-            if (json.has("communication_disabled_until"))
-                json["communication_disabled_until"].asBoolean()
-            else null
-
         val guildAvatarHash = if (json.has("avatar")) json["avatar"].asText() else null
-
         val nickName = if (json.has("nick")) json["nick"].asText() else null
 
         return MemberImpl(
             yde,
             json,
-            guild,
-            GuildPermission.getValues(getPermissions(guild, isOwner, roles, isTimedOut ?: false)),
+            guildId,
             user ?: throw IllegalStateException("User is null"),
             nickName,
             guildAvatarHash,
-            getGuildAvatar(1024, guildAvatarHash, guild, user),
-            roleIds,
-            roles,
+            getGuildAvatar(1024, guildAvatarHash, guildId.asLong, user),
+            json["roles"].map { GetterSnowFlake.of(it.asLong()) },
             if (json.has("joined_at")) formatZonedDateTime(json["joined_at"].asText()) else null,
             if (json.has("premium_since")) formatZonedDateTime(json["premium_since"].asText())
             else null,
@@ -502,7 +505,6 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             if (json.has("communication_disabled_until"))
                 formatZonedDateTime(json["communication_disabled_until"].asText())
             else null,
-            isOwner,
             null,
             nickName ?: user.name)
     }
@@ -579,7 +581,8 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             json,
             GetterSnowFlake.of(json["scheduled_event_id"].asLong()),
             buildUser(json["user"]),
-            if (json.has("member")) buildMember(json["member"], guild, buildUser(json["user"]))
+            if (json.has("member"))
+                buildMember(json["member"], GetterSnowFlake.of(guild.id), buildUser(json["user"]))
             else null)
     }
 
@@ -767,7 +770,7 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             if (json.has("member"))
                 buildMember(
                     json["member"],
-                    yde.getGuildById(json["guild_id"].asLong())!!,
+                    GetterSnowFlake.of(json["guild_id"].asLong()),
                     buildUser(json["user"]))
             else null)
     }
@@ -915,7 +918,7 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             if (json.has("guild_id")) yde.getGuildById(json["guild_id"].asLong()) else null,
             if (json.has("channel_id")) yde.getChannelById(json["channel_id"].asLong()) else null,
             if (json.has("member"))
-                buildMember(json["member"], yde.getGuildById(json["guild_id"].asLong())!!, null)
+                buildMember(json["member"], GetterSnowFlake.of(json["guild_id"].asLong()), null)
             else null,
             if (json.has("user")) buildUser(json["user"])
             else if (json.has("member")) buildUser(json["member"]["user"])
@@ -942,7 +945,9 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             ComponentType.getValue(json["component_type"].asInt()),
             json["token"].asText(),
             message,
-            if (json.has("member")) buildMember(json["member"], guild!!, null) else null,
+            if (json.has("member"))
+                buildMember(json["member"], GetterSnowFlake.of(json["guild_id"].asLong()), null)
+            else null,
             if (json.has("user")) buildUser(json["user"]) else null,
             guild,
             if (json.has("channel_id"))
@@ -1089,16 +1094,22 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
         TODO("Not yet implemented")
     }
 
-    override fun buildApplicationCommand(json: JsonNode): ApplicationCommand {
-        val interaction = buildInteraction(json)
+    override fun buildApplicationCommand(
+        json: JsonNode,
+        type: ApplicationCommandType,
+        interaction: Interaction
+    ): ApplicationCommand {
         return ApplicationCommandImpl(
             yde,
             json,
             json["id"].asLong(),
-            json["description"].asText(),
+            if (json.has("description")) json["description"].asText() else "null",
+            if (json.has("nsfw")) json["nsfw"].asBoolean() else false,
+            if (json.has("dm_permission")) json["dm_permission"].asBoolean() else false,
+            if (json.has("target_id")) GetterSnowFlake.of(json["target_id"].asLong()) else null,
+            json["name"].asText(),
+            type,
             interaction,
-            interaction.applicationId,
-            interaction.guild,
         )
     }
 
@@ -1111,17 +1122,22 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
         val user = buildUser(json["data"]["resolved"]["users"])
 
         return UserCommandImpl(
-            yde, json, i, user, buildMember(json["data"]["resolved"]["members"], i.guild!!, user))
+            yde,
+            json["data"],
+            i,
+            user,
+            buildMember(
+                json["data"]["resolved"]["members"], GetterSnowFlake.of(i.guild!!.id), user))
     }
 
     override fun buildSlashCommand(json: JsonNode, interaction: Interaction?): SlashCommand {
-        return SlashCommandImpl(yde, json, interaction ?: buildInteraction(json))
+        return SlashCommandImpl(yde, json["data"], interaction ?: buildInteraction(json))
     }
 
     override fun buildMessageCommand(json: JsonNode, interaction: Interaction?): MessageCommand {
         return MessageCommandImpl(
             yde,
-            json,
+            json["data"],
             interaction ?: buildInteraction(json),
             buildMessage(json["data"]["resolved"]["messages"]))
     }

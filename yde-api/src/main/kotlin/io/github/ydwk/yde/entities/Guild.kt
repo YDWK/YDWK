@@ -683,7 +683,7 @@ interface Guild : SnowFlake, NameAbleEntity, GenericEntity {
      * @return The members.
      */
     suspend fun retrieveMembers(limit: Int): RestResult<List<Member>> {
-        return yde.restAPIMethodGetters.getGuildRestAPIMethods().requestedMembers(this, limit)
+        return yde.restAPIMethodGetters.getGuildRestAPIMethods().requestedMembers(idAsLong, limit)
     }
 
     /**

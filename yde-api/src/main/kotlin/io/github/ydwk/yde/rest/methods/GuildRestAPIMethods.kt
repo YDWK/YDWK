@@ -20,6 +20,7 @@ package io.github.ydwk.yde.rest.methods
 
 import io.github.ydwk.yde.entities.AuditLog
 import io.github.ydwk.yde.entities.Guild
+import io.github.ydwk.yde.entities.PartialGuild
 import io.github.ydwk.yde.entities.audit.AuditLogType
 import io.github.ydwk.yde.entities.guild.Ban
 import io.github.ydwk.yde.entities.guild.Member
@@ -105,10 +106,11 @@ interface GuildRestAPIMethods {
     /**
      * Request to get all the members within the guild.
      *
+     * @param guildId The id of the guild.
      * @return A [RestResult] that will contain a list of [Member]s.
      */
-    suspend fun requestedMembers(guild: Guild): RestResult<List<Member>> =
-        requestedMembers(guild, null)
+    suspend fun requestedMembers(guildId: Long): RestResult<List<Member>> =
+        requestedMembers(guildId, null)
 
     /**
      * Request to get the amount of members specified by the limit.
@@ -116,7 +118,7 @@ interface GuildRestAPIMethods {
      * @param limit The amount of members to retrieve.
      * @return A [RestResult] that will contain a list of [Member]s.
      */
-    suspend fun requestedMembers(guild: Guild, limit: Int?): RestResult<List<Member>>
+    suspend fun requestedMembers(guildId: Long, limit: Int?): RestResult<List<Member>>
 
     /**
      * Request to get a guild by its id.
@@ -131,5 +133,25 @@ interface GuildRestAPIMethods {
      *
      * @return A [RestResult] that will contain a list of [Guild]s.
      */
+    @Deprecated(
+        "Use requestedPartialGuilds instead",
+        ReplaceWith("requestedPartialGuilds()"),
+        level = DeprecationLevel.WARNING)
     suspend fun requestedGuilds(): RestResult<List<Guild>>
+
+    /**
+     * Request to get the guilds the bot is in.
+     *
+     * @param limit The amount of guilds to retrieve.
+     * @return A [RestResult] that will contain a list of [PartialGuild]s.
+     */
+    suspend fun requestedPartialGuilds(limit: Int): RestResult<List<PartialGuild>>
+
+    /**
+     * Request to get the guilds the bot is in.
+     *
+     * @return A [RestResult] that will contain a list of [PartialGuild]s.
+     */
+    suspend fun requestedPartialGuilds(): RestResult<List<PartialGuild>> =
+        requestedPartialGuilds(200)
 }

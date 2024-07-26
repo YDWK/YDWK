@@ -102,13 +102,13 @@ fun getPermissions(guild: Guild, isOwner: Boolean, roles: List<Role?>, isTimedOu
 fun EntityInstanceBuilderImpl.getGuildAvatar(
     size: Int,
     guildAvatarHash: String?,
-    guild: Guild,
+    guildId: Long,
     user: User
 ): Avatar? {
     if (guildAvatarHash != null) {
         val url = StringBuilder(("https://" + "cdn.discordapp.com") + "/")
         url.append("guilds/")
-            .append(guild.id)
+            .append(guildId)
             .append("/")
             .append("users/")
             .append(user.id)

@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.AuditLog
 import io.github.ydwk.yde.entities.Guild
+import io.github.ydwk.yde.entities.PartialGuild
 import io.github.ydwk.yde.entities.audit.AuditLogType
 import io.github.ydwk.yde.entities.guild.Ban
 import io.github.ydwk.yde.entities.guild.Member
@@ -116,16 +117,17 @@ class GuildRestAPIMethodsImpl(val yde: YDE) : GuildRestAPIMethods {
             }
     }
 
-    override suspend fun requestedMembers(guild: Guild, limit: Int?): RestResult<List<Member>> {
+    override suspend fun requestedMembers(guildId: Long, limit: Int?): RestResult<List<Member>> {
         return yde.restApiManager
             .addQueryParameter("limit", limit.toString())
-            .get(EndPoint.GuildEndpoint.GET_MEMBERS, guild.id.toString())
+            .get(EndPoint.GuildEndpoint.GET_MEMBERS, guildId.toString())
             .execute {
                 val jsonBody = it.json(yde)
                 val members: ArrayNode = jsonBody as ArrayNode
                 val memberList = mutableListOf<Member>()
                 for (member in members) {
-                    memberList.add(yde.entityInstanceBuilder.buildMember(member, guild))
+                    memberList.add(
+                        yde.entityInstanceBuilder.buildMember(member, GetterSnowFlake.of(guildId)))
                 }
                 memberList
             }
@@ -140,10 +142,24 @@ class GuildRestAPIMethodsImpl(val yde: YDE) : GuildRestAPIMethods {
             }
     }
 
+    @Deprecated(
+        "Use requestedPartialGuilds instead",
+        replaceWith = ReplaceWith("requestedPartialGuilds()"),
+        level = DeprecationLevel.WARNING)
     override suspend fun requestedGuilds(): RestResult<List<Guild>> {
-        return this.yde.restApiManager.get(EndPoint.GuildEndpoint.GET_GUILDS).execute() { it ->
+        return this.yde.restApiManager.get(EndPoint.GuildEndpoint.GET_GUILDS).execute { it ->
             val jsonBody = it.json(yde)
             jsonBody.map { yde.entityInstanceBuilder.buildGuild(it) }
         }
+    }
+
+    override suspend fun requestedPartialGuilds(limit: Int): RestResult<List<PartialGuild>> {
+        return this.yde.restApiManager
+            .addQueryParameter("limit", limit.toString())
+            .get(EndPoint.GuildEndpoint.GET_GUILDS)
+            .execute { it ->
+                val jsonBody = it.json(yde)
+                jsonBody.map { yde.entityInstanceBuilder.buildPartialGuild(it) }
+            }
     }
 }

@@ -28,10 +28,11 @@ import io.github.ydwk.yde.entities.guild.Member
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.interaction.Interaction
 import io.github.ydwk.yde.interaction.application.ApplicationCommand
+import io.github.ydwk.yde.interaction.application.ApplicationCommandType
 import io.github.ydwk.yde.interaction.sub.InteractionType
 import io.github.ydwk.yde.util.GetterSnowFlake
 
-abstract class ApplicationCommandImpl(
+open class ApplicationCommandImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,
@@ -39,40 +40,45 @@ abstract class ApplicationCommandImpl(
     override val isNsfw: Boolean?,
     override val isDmPermissions: Boolean?,
     override val targetId: GetterSnowFlake?,
+    override val name: String,
+    override val type: ApplicationCommandType,
     val interaction: Interaction,
-    override val applicationId: GetterSnowFlake,
-    override val guild: Guild?,
-    override val version: Int,
-    override val user: User,
-    override val member: Member?,
-    override val interactionType: InteractionType,
-    override val channel: Channel?,
-    override val token: String,
-    override val message: Message?,
-    override val permissions: Long?,
+    override val applicationId: GetterSnowFlake = interaction.applicationId,
+    override val guild: Guild? = interaction.guild,
+    override val version: Int = interaction.version,
+    override val user: User = interaction.user,
+    override val member: Member? = interaction.member,
+    override val interactionType: InteractionType = interaction.type,
+    override val channel: Channel? = interaction.channel,
+    override val token: String = interaction.token,
+    override val message: Message? = interaction.message,
+    override val permissions: Long? = interaction.permissions,
 ) :
     ApplicationCommand,
     ToStringEntityImpl<ApplicationCommand>(yde, ApplicationCommand::class.java) {
     constructor(
         applicationCommand: ApplicationCommand,
-        interaction: Interaction
+        interaction: Interaction,
     ) : this(
         applicationCommand.yde,
         applicationCommand.json,
         applicationCommand.idAsLong,
+        applicationCommand.description,
+        applicationCommand.isNsfw,
+        applicationCommand.isDmPermissions,
+        applicationCommand.targetId,
+        applicationCommand.name,
+        applicationCommand.type,
         interaction,
         applicationCommand.applicationId,
         applicationCommand.guild,
-        applicationCommand.description,
-        applicationCommand.isDmPermissions,
-        applicationCommand.isNsfw,
         applicationCommand.version,
-        applicationCommand.targetId,
         applicationCommand.user,
         applicationCommand.member,
         applicationCommand.interactionType,
         applicationCommand.channel,
         applicationCommand.token,
         applicationCommand.message,
-        applicationCommand.permissions)
+        applicationCommand.permissions,
+    )
 }
