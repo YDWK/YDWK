@@ -20,8 +20,6 @@ package io.github.ydwk.yde.impl.interaction
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
-import io.github.ydwk.yde.entities.Channel
-import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.Message
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.guild.Member
@@ -38,8 +36,8 @@ class InteractionImpl(
     override val idAsLong: Long,
     override val applicationId: GetterSnowFlake,
     override val type: InteractionType,
-    override val guild: Guild?,
-    override val channel: Channel?,
+    override val guildId: GetterSnowFlake?,
+    override val channelId: GetterSnowFlake?,
     override val member: Member?,
     override val user: User,
     override val token: String,

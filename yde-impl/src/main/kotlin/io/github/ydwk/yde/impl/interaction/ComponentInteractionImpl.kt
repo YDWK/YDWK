@@ -20,7 +20,6 @@ package io.github.ydwk.yde.impl.interaction
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
-import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.Message
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.channel.TextChannel
@@ -41,7 +40,7 @@ open class ComponentInteractionImpl(
     override val message: Message,
     override val member: Member?,
     override val user: User?,
-    override val guild: Guild?,
+    override val guildId: GetterSnowFlake?,
     override val channel: TextChannel?,
     override val applicationId: GetterSnowFlake?,
     override val components: List<Component>,
@@ -61,7 +60,7 @@ open class ComponentInteractionImpl(
         componentInteractionImpl.message,
         componentInteractionImpl.member,
         componentInteractionImpl.user,
-        componentInteractionImpl.guild,
+        componentInteractionImpl.guildId,
         componentInteractionImpl.channel,
         componentInteractionImpl.applicationId,
         componentInteractionImpl.components,

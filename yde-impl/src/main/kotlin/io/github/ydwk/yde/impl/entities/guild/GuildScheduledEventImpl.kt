@@ -20,7 +20,6 @@ package io.github.ydwk.yde.impl.entities.guild
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
-import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.channel.GuildChannel
 import io.github.ydwk.yde.entities.guild.GuildScheduledEvent
@@ -35,7 +34,7 @@ internal class GuildScheduledEventImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,
-    override val guild: Guild,
+    override val guildId: GetterSnowFlake,
     override val channel: GuildChannel?,
     override val creator: User?,
     override val description: String?,

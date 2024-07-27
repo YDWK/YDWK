@@ -20,7 +20,6 @@ package io.github.ydwk.yde.impl.entities
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
-import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.Sticker
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.sticker.StickerFormatType
@@ -38,7 +37,7 @@ internal class StickerImpl(
     override var type: StickerType,
     override var formatType: StickerFormatType,
     override var available: Boolean,
-    override val guild: Guild?,
+    override val guildId: GetterSnowFlake?,
     override var user: User?,
     override var sortvarue: Int?,
     override var name: String,

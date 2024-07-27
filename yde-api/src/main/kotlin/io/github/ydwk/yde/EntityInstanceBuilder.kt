@@ -276,10 +276,10 @@ interface EntityInstanceBuilder {
      * Used to build an instance of [EntityMetadata]
      *
      * @param json the json
-     * @param guild the guild
+     * @param guildId the guild id
      * @return [EntityMetadata] the entity metadata
      */
-    fun buildEntityMetadata(json: JsonNode, guild: Guild): EntityMetadata
+    fun buildEntityMetadata(json: JsonNode, guildId: GetterSnowFlake): EntityMetadata
 
     // Guild channel entities
 

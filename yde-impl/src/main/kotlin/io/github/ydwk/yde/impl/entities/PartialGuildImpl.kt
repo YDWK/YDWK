@@ -24,7 +24,7 @@ import io.github.ydwk.yde.entities.PartialGuild
 import io.github.ydwk.yde.entities.guild.enums.GuildFeature
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
-class PartialGuildImpl(
+internal class PartialGuildImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,

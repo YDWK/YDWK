@@ -57,7 +57,7 @@ fun main() {
                         string + " " + guilds.size
                     }
 
-                    it.slash.reply(string).setEphemeral(true).trigger()
+                    it.slash.reply(string).setEphemeral(true).send()
                 }
             }
         }

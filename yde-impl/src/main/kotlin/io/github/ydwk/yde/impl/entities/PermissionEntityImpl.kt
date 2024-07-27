@@ -25,7 +25,7 @@ import io.github.ydwk.yde.entities.guild.enums.GuildPermission
 import io.github.ydwk.yde.impl.util.getPermissions
 import java.util.*
 
-class PermissionEntityImpl(
+internal class PermissionEntityImpl(
     private val guild: Guild,
     private val isOwner: Boolean,
     private val roles: List<Role>,

@@ -18,7 +18,6 @@
  */ 
 package io.github.ydwk.yde.interaction
 
-import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.Message
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.channel.TextChannel
@@ -83,11 +82,11 @@ interface ComponentInteraction : GenericEntity {
     val user: User?
 
     /**
-     * The guild of this component.
+     * The guild id of this component.
      *
-     * @return The guild of this component.
+     * @return The guild id of this component.
      */
-    val guild: Guild?
+    val guildId: GetterSnowFlake?
 
     /**
      * The channel were this component was triggered.

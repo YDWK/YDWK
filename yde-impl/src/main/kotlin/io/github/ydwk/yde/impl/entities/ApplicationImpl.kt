@@ -21,7 +21,6 @@ package io.github.ydwk.yde.impl.entities
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.Application
-import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.util.GetterSnowFlake
@@ -40,7 +39,7 @@ internal open class ApplicationImpl(
     override var botPrivacyPolicy: URL?,
     override var botOwner: User?,
     override var verifyKey: String?,
-    override var guild: Guild?,
+    override var guildId: GetterSnowFlake?,
     override var gameSdkId: GetterSnowFlake?,
     override var slug: String?,
     override var coverImage: String?,

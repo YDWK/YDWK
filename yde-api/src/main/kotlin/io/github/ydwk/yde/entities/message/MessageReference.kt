@@ -18,7 +18,6 @@
  */ 
 package io.github.ydwk.yde.entities.message
 
-import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.util.GenericEntity
 import io.github.ydwk.yde.util.GetterSnowFlake
 
@@ -43,11 +42,4 @@ interface MessageReference : GenericEntity {
      * @return The id of the guild.
      */
     val guildId: GetterSnowFlake
-
-    /**
-     * The guild of the message.
-     *
-     * @return The guild of the message.
-     */
-    val guild: Guild?
 }

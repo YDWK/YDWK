@@ -68,7 +68,15 @@ internal class ReplyImpl(
         return this
     }
 
+    @Deprecated(
+        "Use sendWithFuture instead",
+        replaceWith = ReplaceWith("sendWithFuture()"),
+        level = DeprecationLevel.WARNING)
     override suspend fun triggerWithFuture(): RestResult<NoResult> {
+        return sendWithFuture()
+    }
+
+    override suspend fun sendWithFuture(): RestResult<NoResult> {
         val mainBody =
             yde.objectNode.put(
                 "type", InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE.getType())

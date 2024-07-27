@@ -90,11 +90,11 @@ interface Application : SnowFlake, NameAbleEntity, GenericEntity {
     var verifyKey: String?
 
     /**
-     * Gets the guild this application is for.
+     * Gets the guild id this application is for.
      *
-     * @return the guild this application is for.
+     * @return the guild id this application is for.
      */
-    var guild: Guild?
+    var guildId: GetterSnowFlake?
 
     /**
      * The game sdk id of the application.

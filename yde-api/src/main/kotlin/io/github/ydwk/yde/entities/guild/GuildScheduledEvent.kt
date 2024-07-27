@@ -18,7 +18,6 @@
  */ 
 package io.github.ydwk.yde.entities.guild
 
-import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.channel.GuildChannel
 import io.github.ydwk.yde.entities.guild.schedule.EntityMetadata
@@ -32,11 +31,11 @@ import io.github.ydwk.yde.util.SnowFlake
 
 interface GuildScheduledEvent : SnowFlake, GenericEntity, NameAbleEntity {
     /**
-     * The guild which the scheduled event belongs to.
+     * The guild id which the scheduled event belongs to.
      *
-     * @return the guild which the scheduled event belongs to.
+     * @return the guild id which the scheduled event belongs to.
      */
-    val guild: Guild
+    val guildId: GetterSnowFlake
 
     /**
      * The channel which the scheduled event belongs to.

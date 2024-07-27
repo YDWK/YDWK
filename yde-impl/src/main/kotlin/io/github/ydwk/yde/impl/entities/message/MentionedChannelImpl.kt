@@ -25,7 +25,7 @@ import io.github.ydwk.yde.entities.message.MentionedChannel
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.util.GetterSnowFlake
 
-class MentionedChannelImpl(
+internal class MentionedChannelImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val idAsLong: Long,

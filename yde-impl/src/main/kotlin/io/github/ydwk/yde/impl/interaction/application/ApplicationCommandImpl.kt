@@ -20,8 +20,6 @@ package io.github.ydwk.yde.impl.interaction.application
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
-import io.github.ydwk.yde.entities.Channel
-import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.Message
 import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.entities.guild.Member
@@ -44,12 +42,12 @@ open class ApplicationCommandImpl(
     override val type: ApplicationCommandType,
     val interaction: Interaction,
     override val applicationId: GetterSnowFlake = interaction.applicationId,
-    override val guild: Guild? = interaction.guild,
+    override val guildId: GetterSnowFlake? = interaction.guildId,
     override val version: Int = interaction.version,
     override val user: User = interaction.user,
     override val member: Member? = interaction.member,
     override val interactionType: InteractionType = interaction.type,
-    override val channel: Channel? = interaction.channel,
+    override val channelId: GetterSnowFlake? = interaction.channelId,
     override val token: String = interaction.token,
     override val message: Message? = interaction.message,
     override val permissions: Long? = interaction.permissions,
@@ -71,12 +69,12 @@ open class ApplicationCommandImpl(
         applicationCommand.type,
         interaction,
         applicationCommand.applicationId,
-        applicationCommand.guild,
+        applicationCommand.guildId,
         applicationCommand.version,
         applicationCommand.user,
         applicationCommand.member,
         applicationCommand.interactionType,
-        applicationCommand.channel,
+        applicationCommand.channelId,
         applicationCommand.token,
         applicationCommand.message,
         applicationCommand.permissions,

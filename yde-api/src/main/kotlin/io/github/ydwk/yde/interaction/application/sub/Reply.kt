@@ -72,15 +72,35 @@ interface Reply {
      *
      * @return The [NoResult] instance.
      */
+    @Deprecated("Use send instead", ReplaceWith("send()"), DeprecationLevel.WARNING)
     suspend fun trigger(): NoResult {
         return triggerWithFuture().mapBoth({ it }, { throw it })
     }
 
     /**
-     * Replies and return a [CompletableDeferred<NoResult>] that will be completed when the reply is
-     * sent.
+     * Replies and returns a `CompletableDeferred<NoResult>` that will be completed when the reply
+     * is triggered.
      *
-     * @return The [CompletableDeferred<NoResult>] instance.
+     * @return The `CompletableDeferred<NoResult>` instance.
      */
+    @Deprecated(
+        "Use sendWithFuture instead", ReplaceWith("sendWithFuture()"), DeprecationLevel.WARNING)
     suspend fun triggerWithFuture(): RestResult<NoResult>
+
+    /**
+     * Sends the reply.
+     *
+     * @return The [NoResult] instance.
+     */
+    suspend fun send(): NoResult {
+        return sendWithFuture().mapBoth(onSuccess = { it }, onError = { throw it })
+    }
+
+    /**
+     * Replies and returns a `CompletableDeferred<NoResult>` that will be completed when the reply
+     * is sent.
+     *
+     * @return The `CompletableDeferred<NoResult>` instance.
+     */
+    suspend fun sendWithFuture(): RestResult<NoResult>
 }

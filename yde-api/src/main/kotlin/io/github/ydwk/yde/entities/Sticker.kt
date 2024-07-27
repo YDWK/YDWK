@@ -70,11 +70,11 @@ interface Sticker : GenericEntity, SnowFlake, NameAbleEntity {
     var available: Boolean
 
     /**
-     * The guild that owns this sticker.
+     * The guild id that owns this sticker.
      *
-     * @return The guild that owns this sticker.
+     * @return The guild id that owns this sticker.
      */
-    val guild: Guild?
+    val guildId: GetterSnowFlake?
 
     /**
      * The user that uploaded the sticker.

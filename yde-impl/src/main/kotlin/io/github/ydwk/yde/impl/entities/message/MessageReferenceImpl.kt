@@ -20,7 +20,6 @@ package io.github.ydwk.yde.impl.entities.message
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.YDE
-import io.github.ydwk.yde.entities.Guild
 import io.github.ydwk.yde.entities.message.MessageReference
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.util.GetterSnowFlake
@@ -30,6 +29,5 @@ internal class MessageReferenceImpl(
     override val json: JsonNode,
     override val messageId: GetterSnowFlake,
     override val channelId: GetterSnowFlake,
-    override val guildId: GetterSnowFlake,
-    override val guild: Guild?
+    override val guildId: GetterSnowFlake
 ) : MessageReference, ToStringEntityImpl<MessageReference>(yde, MessageReference::class.java)
