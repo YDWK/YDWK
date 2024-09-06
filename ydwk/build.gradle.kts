@@ -29,7 +29,7 @@ dependencies {
 
     // guava
     api("com.google.guava:guava:" + properties["guavaVersion"])
-    implementation("io.ktor:ktor-client-okhttp-jvm:3.0.0-beta-1")
+    implementation("io.ktor:ktor-client-okhttp-jvm:3.0.0-beta-2")
 
     // test
     testImplementation("org.jetbrains.kotlin:kotlin-test:" + properties["kotlinTestVersion"])
