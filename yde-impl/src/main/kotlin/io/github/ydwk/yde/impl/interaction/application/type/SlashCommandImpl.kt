@@ -33,7 +33,6 @@ import io.github.ydwk.yde.interaction.application.ApplicationCommandType
 import io.github.ydwk.yde.interaction.application.sub.Reply
 import io.github.ydwk.yde.interaction.application.type.SlashCommand
 import io.github.ydwk.yde.util.EntityToStringBuilder
-import io.github.ydwk.yde.util.GetterSnowFlake
 
 /** TODO: have a look at the [SlashCommandImpl] to see if it is possible to refactor the code */
 class SlashCommandImpl(yde: YDE, json: JsonNode, interaction: Interaction) :
@@ -82,14 +81,12 @@ class SlashCommandImpl(yde: YDE, json: JsonNode, interaction: Interaction) :
             }
         }
 
-        if (guild != null) {
+        if (guildId != null) {
             resolved["members"]?.let {
                 it.fields().forEach { (id, node) ->
                     resolved["users"]?.let { users ->
                         val user = users[id]
-                        val member =
-                            yde.entityInstanceBuilder.buildMember(
-                                node, GetterSnowFlake.of(guild!!.id), user)
+                        val member = yde.entityInstanceBuilder.buildMember(node, guildId!!, user)
                         val newMember = (yde as YDEImpl).memberCache.getOrPut(member)
                         map[id.toLong()] = newMember
                     }
