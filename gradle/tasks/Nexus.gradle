@@ -1,6 +1,8 @@
+import java.time.Duration
+
 nexusStaging {
     packageGroup = 'io.github.realyusufismail'
     serverUrl = "https://s01.oss.sonatype.org/service/local"
-    username = project.hasProperty('MAVEN_USERNAME') ? project.property('MAVEN_USERNAME') : 'username'
-    password = project.hasProperty('MAVEN_PASSWORD') ? project.property('MAVEN_PASSWORD') : 'password'
+    username = project.hasProperty('mavenUsername') ? project.property('mavenUsername') : 'username'
+    password = project.hasProperty('mavenToken') ? project.property('mavenToken') : 'password'
 }

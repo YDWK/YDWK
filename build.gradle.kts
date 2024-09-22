@@ -9,7 +9,7 @@ buildscript {
     repositories { mavenCentral() }
 
     dependencies {
-        classpath("org.jetbrains.dokka:dokka-base:1.8.10")
+        classpath("org.jetbrains.dokka:dokka-base:1.9.10")
         classpath("io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.30.0")
         classpath("com.squareup:kotlinpoet:" + properties["kotlinPoetVersion"])
     }
@@ -20,7 +20,6 @@ plugins {
     kotlin("plugin.allopen")
     id("com.diffplug.spotless")
     id("org.jetbrains.dokka")
-    id("io.gitlab.arturbosch.detekt")
     id("com.github.ben-manes.versions")
     application
     `maven-publish`
@@ -28,98 +27,30 @@ plugins {
     jacoco // code coverage reports
 }
 
-apply(plugin = "io.codearte.nexus-staging")
-
-extra.apply {
-    set("name", "YDWK")
-    set("description", "YDWK (Yusuf's Discord Wrapper Kotlin) My own Discord Wrapper in Kotlin")
-    set("dev_id", "yusuf")
-    set("dev_name", "Yusuf Ismail")
-    set("dev_email", "yusufgamer222@gmail.com")
-    set("dev_organization", "YDWK")
-    set("dev_organization_url", "https://github.com/YDWK")
-    set("gpl_name", "Apache-2.0 license")
-    set("gpl_url", "https://github.com/YDWK/YDWK/blob/master/LICENSE")
-}
-
 group = "io.github.realyusufismail" // used for publishing. DON'T CHANGE
 
 val releaseVersion by extra(!version.toString().endsWith("-SNAPSHOT"))
 
+apply(plugin = "io.codearte.nexus-staging")
 apply(from = "gradle/tasks/incrementVersion.gradle.kts")
-
-apply(from = "gradle/tasks/checkEvents.gradle.kts")
-
-apply(from = "gradle/tasks/eventClassJavaDocChecker.gradle")
-
 apply(from = "gradle/tasks/Nexus.gradle")
 
-apply(from = "gradle/tasks/generateEvents.gradle.kts")
-
-repositories { mavenCentral() }
-
-dependencies {
-    // json
-    api(
-        "com.fasterxml.jackson.module:jackson-module-kotlin:" +
-            properties["jacksonModuleKotlinVersion"])
-
-    // config.json
-    api("io.github.realyusufismail:jconfig:" + properties["jconfigVersion"])
-
-    // logger
-    api("ch.qos.logback:logback-classic:" + properties["logBackClassicVersion"])
-    api("ch.qos.logback:logback-core:" + properties["logBackCoreVersion"])
-    api("uk.org.lidalia:sysout-over-slf4j:" + properties["sysoutOverSlf4jVersion"])
-
-    // ws and https
-    api("com.squareup.okhttp3:okhttp:" + properties["okhttp3Version"])
-    api("com.neovisionaries:nv-websocket-client:" + properties["nvWebsocketClientVersion"])
-    api("com.codahale:xsalsa20poly1305:" + properties["xsalsa20poly1305Version"])
-
-    // YDE Entities
-    api("io.github.realyusufismail:yde:" + properties["ydeVersion"])
-
-    // kotlin
-    api(
-        "org.jetbrains.kotlinx:kotlinx-coroutines-core:" +
-            properties["kotlinxCoroutinesCoreVersion"])
-
-    // annotations
-    implementation("com.google.code.findbugs:jsr305:" + properties["jsr305Version"])
-
-    // decode Opus
-    api("org.jitsi:libjitsi:" + properties["libjitsiVersion"])
-
-    // files to bytes
-    api("commons-io:commons-io:" + properties["commonsIoVersion"])
-
-    // test
-    testImplementation("org.jetbrains.kotlin:kotlin-test:" + properties["kotlinTestVersion"])
+allprojects {
+    repositories { mavenCentral() }
 }
 
 tasks.test {
-    useJUnitPlatform()
     finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
-}
-
-tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "11" }
-
-tasks {
-    val compileKotlinTask = named<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>("compileKotlin")
-    compileKotlinTask.configure { dependsOn("generateEvents") }
+    jvmArgs("--enable-preview")
 }
 
 tasks.build {
-    // dependsOn on custom tasks
-    dependsOn(tasks.getByName("checkEvents")) // check if events are valid
-    dependsOn(tasks.getByName("eventClassJavaDocChecker")) // check if event classes have javadoc
     dependsOn(tasks.test) // run tests before building
 
     // check if version is not snapshot
     if (releaseVersion) {
         // check if MAVEN_PASSWORD is set
-        if (System.getenv("MAVEN_PASSWORD") != null) {
+        if (System.getenv("mavenToken") != null) {
             // run publishYdwkPublicationToMavenCentralRepository
             dependsOn(tasks.getByName("publishYdwkPublicationToMavenCentralRepository"))
             // then increment version
@@ -142,15 +73,47 @@ tasks.jacocoTestReport {
 
 configurations { all { exclude(group = "org.slf4j", module = "slf4j-log4j12") } }
 
-spotless {
-    kotlin {
-        // Excludes build folder since it contains generated java classes.
-        targetExclude("build/**")
-        ktfmt("0.42").dropboxStyle()
+subprojects {
+    apply(plugin = "java")
+    apply(plugin = "kotlin")
+    apply(plugin = "maven-publish")
+    apply(plugin = "signing")
+    apply(plugin = "jacoco")
+    apply(plugin = "com.diffplug.spotless")
 
-        licenseHeader(
-            """/*
- * Copyright 2022 YDWK inc.
+    group = "io.github.realyusufismail" // used for publishing. DON'T CHANGE
+
+    kotlin {
+        compilerOptions {
+            apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.DEFAULT)
+            languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.DEFAULT)
+
+            java.targetCompatibility = JavaVersion.VERSION_21
+            java.sourceCompatibility = JavaVersion.VERSION_21
+        }
+    }
+
+    java {
+        withJavadocJar()
+        withSourcesJar()
+
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
+    }
+
+    tasks.withType<JavaCompile> { options.compilerArgs.add("--enable-preview") }
+
+    tasks.withType<JavaExec> { jvmArgs("--enable-preview") }
+
+    spotless {
+        kotlin {
+            // Excludes build folder since it contains generated java classes.
+            targetExclude("build/**")
+            ktfmt("0.42").dropboxStyle()
+
+            licenseHeader(
+                """/*
+ * Copyright 2024 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -167,63 +130,120 @@ spotless {
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ """)
+        }
+
+        kotlinGradle {
+            target("**/*.gradle.kts")
+            ktfmt("0.42").dropboxStyle()
+            trimTrailingWhitespace()
+            indentWithSpaces()
+            endWithNewline()
+        }
     }
 
-    kotlinGradle {
-        target("**/*.gradle.kts")
-        ktfmt("0.42").dropboxStyle()
-        trimTrailingWhitespace()
-        indentWithSpaces()
-        endWithNewline()
+    tasks.jar {
+        manifest {
+            attributes(
+                "Implementation-Title" to project.name,
+                "Implementation-Version" to project.version,
+                "Implementation-Vendor" to project.extra.properties["dev_organization"],
+                "Implementation-Vendor-Id" to project.extra.properties["dev_id"],
+                "Implementation-Vendor-Name" to project.extra.properties["dev_name"],
+                "Implementation-Vendor-Email" to project.extra.properties["dev_email"],
+                "Implementation-Vendor-Organization" to project.extra.properties["dev_organization"],
+                "Implementation-Vendor-Organization-Url" to project.extra.properties["dev_organization_url"],
+                "Implementation-License" to project.extra.properties["gpl_name"],
+                "Implementation-License-Url" to project.extra.properties["gpl_url"],
+            )
+        }
     }
-}
 
-detekt {
-    // only check javadoc in io/github/ydwk/ydwk/entities and io/github/ydwk/ydwk/evm/event/events
-    source = files("src/main/kotlin/io/github/ydwk/ydwk/evm/event/events")
-    config = files("gradle/config/detekt.yml")
-    baseline = file("gradle/config/detekt-baseline.xml")
-    allRules = false
-}
-
-tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
-    reports {
-        xml.required.set(true)
-        html.required.set(true)
+    tasks.javadoc {
+        if (JavaVersion.current().isJava9Compatible) {
+            (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
+        }
     }
-}
 
-application { mainClass.set("MainKt") }
 
-java {
-    withJavadocJar()
-    withSourcesJar()
+    publishing {
+        val isReleaseVersion = !version.toString().endsWith("SNAPSHOT")
+        publications {
+            create<MavenPublication>(project.name) {
+                val developerInfo = DeveloperInfo(
+                    id = project.extra["dev_id"] as String,
+                    name = project.extra["dev_name"] as String,
+                    email = project.extra["dev_email"] as String,
+                    organization = project.extra["dev_organization"] as String,
+                    organizationUrl = project.extra["dev_organization_url"] as String
+                )
 
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
-}
+                val licenseInfo = LicenseInfo(
+                    name = project.extra["gpl_name"] as String,
+                    url = project.extra["gpl_url"] as String
+                )
 
-tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach { jvmTarget = "11" }
+                val ciInfo = "GitHub Actions"
+                val issueManagementInfo = IssueManagementInfo(system = "GitHub", url = "https://github.com/YDWK/YDWK/issues")
 
-tasks.withType<io.gitlab.arturbosch.detekt.DetektCreateBaselineTask>().configureEach {
-    jvmTarget = "11"
-}
+                from(components["java"])
+                version = project.version.toString()
 
-tasks.jar {
-    manifest {
-        attributes(
-            "Implementation-Title" to project.name,
-            "Implementation-Version" to project.version,
-            "Implementation-Vendor" to project.extra["dev_organization"],
-            "Implementation-Vendor-Id" to project.extra["dev_id"],
-            "Implementation-Vendor-Name" to project.extra["dev_name"],
-            "Implementation-Vendor-Email" to project.extra["dev_email"],
-            "Implementation-Vendor-Organization" to project.extra["dev_organization"],
-            "Implementation-Vendor-Organization-Url" to project.extra["dev_organization_url"],
-            "Implementation-License" to project.extra["gpl_name"],
-            "Implementation-License-Url" to project.extra["gpl_url"],
-        )
+                setupDeveloperInfo(developerInfo)
+                setupLicenseInfo(licenseInfo)
+                setupCiManagement(ciInfo)
+                setupIssueManagement(issueManagementInfo)
+
+                pom {
+                    name.set(project.name)
+                    description.set(project.description ?: "No description provided")
+                    url.set("https://github.com/YDWK/YDWK")
+                    scm {
+                        connection.set("https://github.com/YDWK/YDWK.git")
+                        developerConnection.set("scm:git:ssh://git@github.com/YDWK/YDWK.git")
+                        url.set("https://github.com/YDWK/YDWK/")
+                    }
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                name = "ossrh"
+                val releaseRepo = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+                val snapshotRepo = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+                url = uri(if (isReleaseVersion) releaseRepo else snapshotRepo)
+
+                // Using new token system
+                credentials {
+                    username = project.findProperty("mavenUsername") as String? ?: run {
+                        println("mavenUsername not found, publishing will fail")
+                        null
+                    }
+
+                    password = project.findProperty("mavenToken") as String? ?: run {
+                        println("mavenToken not found, publishing will fail")
+                        null
+                    }
+                }
+            }
+        }
     }
+
+
+    signing {
+        afterEvaluate {
+            // println "sign: " + isReleaseVersion
+            val isRequired =
+                releaseVersion &&
+                        (tasks.withType<PublishToMavenRepository>().find { gradle.taskGraph.hasTask(it) } !=
+                                null)
+            setRequired(isRequired)
+            sign(publishing.publications[project.name])
+        }
+    }
+
+
+    sourceSets { main { kotlin { srcDirs("src/main/kotlin", "build/generated/kotlin") } } }
 }
 
 tasks.named<DependencyUpdatesTask>("dependencyUpdates").configure {
@@ -236,128 +256,72 @@ tasks.named<DependencyUpdatesTask>("dependencyUpdates").configure {
     reportfileName = "report"
 }
 
-tasks.javadoc {
-    if (JavaVersion.current().isJava9Compatible) {
-        (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
-    }
-}
-
-publishing {
-    val isReleaseVersion = !version.toString().endsWith("SNAPSHOT")
-    publications {
-        create<MavenPublication>("ydwk") {
-            from(components["java"])
-            // artifactId = project.artifactId // or maybe archiveBaseName?
-            pom {
-                name.set(extra["name"] as String)
-                description.set(extra["description"] as String)
-                url.set("https://www.ydwk.org")
-                issueManagement {
-                    system.set("GitHub")
-                    url.set("https://github.com/YDWK/YDWK/issues")
-                }
-                licenses {
-                    license {
-                        name.set(extra["gpl_name"] as String)
-                        url.set(extra["gpl_url"] as String)
-                    }
-                }
-                ciManagement { system.set("GitHub Actions") }
-                inceptionYear.set("2023")
-                developers {
-                    developer {
-                        id.set(extra["dev_id"] as String)
-                        name.set(extra["dev_name"] as String)
-                        email.set(extra["dev_email"] as String)
-                        organization.set(extra["dev_organization"] as String)
-                        organizationUrl.set(extra["dev_organization_url"] as String)
-                    }
-                }
-                scm {
-                    connection.set("https://github.com/YDWK/YDWK.git")
-                    developerConnection.set("scm:git:ssh://git@github.com/YDWK/YDWK.git")
-                    url.set("github.com/YDWK/YDWK")
-                }
-            }
-        }
-    }
-    repositories {
-        maven {
-            name = "MavenCentral"
-            val releaseRepo = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-            val snapshotRepo = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
-            url = uri((if (isReleaseVersion) releaseRepo else snapshotRepo))
-            credentials {
-                // try to get it from system gradle.properties
-                logger.debug("Trying to get credentials from system gradle.properties")
-                username =
-                    when {
-                        systemHasEnvVar("MAVEN_USERNAME") -> {
-                            logger.debug("Found username in system gradle.properties")
-                            System.getenv("MAVEN_USERNAME")
-                        }
-                        project.hasProperty("MAVEN_USERNAME") -> {
-                            logger.debug("MAVEN_USERNAME found in gradle.properties")
-                            project.property("MAVEN_USERNAME") as String
-                        }
-                        else -> {
-                            logger.debug(
-                                "MAVEN_USERNAME not found in system properties, meaning if you are trying to publish to maven central, it will fail")
-                            null
-                        }
-                    }
-
-                password =
-                    when {
-                        systemHasEnvVar("MAVEN_PASSWORD") -> {
-                            logger.debug("Found password in system gradle.properties")
-                            System.getenv("MAVEN_PASSWORD")
-                        }
-                        project.hasProperty("MAVEN_PASSWORD") -> {
-                            logger.debug("MAVEN_PASSWORD found in gradle.properties")
-                            project.property("MAVEN_PASSWORD") as String
-                        }
-                        else -> {
-                            logger.debug(
-                                "MAVEN_PASSWORD not found in system properties, meaning if you are trying to publish to maven central, it will fail")
-                            null
-                        }
-                    }
-            }
-        }
-    }
-}
-
-fun systemHasEnvVar(varName: String): Boolean {
-    return System.getenv(varName) != null
-}
-
-signing {
-    afterEvaluate {
-        // println "sign: " + isReleaseVersion
-        val isRequired =
-            releaseVersion &&
-                (tasks.withType<PublishToMavenRepository>().find { gradle.taskGraph.hasTask(it) } !=
-                    null)
-        setRequired(isRequired)
-        sign(publishing.publications["ydwk"])
-    }
-}
-
 tasks.getByName("dokkaHtml", DokkaTask::class) {
     dokkaSourceSets.configureEach {
         includes.from("Package.md")
-        jdkVersion.set(11)
+        jdkVersion.set(21)
         sourceLink {
-            localDirectory.set(file("src/main/kotlin"))
+            localDirectory.set(file("ydwk/src/main/kotlin"))
             remoteUrl.set(URL("https://github.com/YDWK/YDWK/tree/master/src/main/kotlin"))
             remoteLineSuffix.set("#L")
         }
 
         pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
-            footerMessage = "Copyright © 2023 YDWK inc."
+            footerMessage = "Copyright © 2024 YDWK inc."
         }
     }
 }
 
-sourceSets { main { kotlin { srcDirs("src/main/kotlin", "build/generated/kotlin") } } }
+fun MavenPublication.setupDeveloperInfo(developerInfo: DeveloperInfo) {
+    pom {
+        developers {
+            developer {
+                id.set(developerInfo.id)
+                name.set(developerInfo.name)
+                email.set(developerInfo.email)
+                organization.set(developerInfo.organization)
+                organizationUrl.set(developerInfo.organizationUrl)
+            }
+        }
+    }
+}
+
+fun MavenPublication.setupLicenseInfo(licenseInfo: LicenseInfo) {
+    pom {
+        licenses {
+            license {
+                name.set(licenseInfo.name)
+                url.set(licenseInfo.url)
+            }
+        }
+    }
+}
+
+fun MavenPublication.setupCiManagement(ciInfo: String) {
+    pom { ciManagement { system.set(ciInfo) } }
+}
+
+fun MavenPublication.setupIssueManagement(issueManagementInfo: IssueManagementInfo) {
+    pom {
+        issueManagement {
+            system.set(issueManagementInfo.system)
+            url.set(issueManagementInfo.url)
+        }
+    }
+}
+
+data class DeveloperInfo(
+    val id: String,
+    val name: String,
+    val email: String,
+    val organization: String,
+    val organizationUrl: String
+)
+
+data class LicenseInfo(val name: String, val url: String)
+
+data class IssueManagementInfo(val system: String, val url: String)
+
+fun systemHasEnvVar(varName: String): Boolean {
+    return System.getenv(varName) != null
+}

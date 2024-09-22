@@ -22,7 +22,7 @@ jobs:
       - name: Run maven snapshot
         if: ${{ endsWith(steps.read-version.outputs.version, 'SNAPSHOT') }}
         run: |
-          ./gradlew publishYdwkPublicationToMavenCentralRepository
+          ./gradlew publishAllPublicationsToMavenCentralRepository
         env:
           MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
