@@ -50,7 +50,7 @@ tasks.build {
     // check if version is not snapshot
     if (releaseVersion) {
         // check if MAVEN_PASSWORD is set
-        if (System.getenv("MAVEN_PASSWORD") != null) {
+        if (System.getenv("mavenToken") != null) {
             // run publishYdwkPublicationToMavenCentralRepository
             dependsOn(tasks.getByName("publishYdwkPublicationToMavenCentralRepository"))
             // then increment version
@@ -80,6 +80,8 @@ subprojects {
     apply(plugin = "signing")
     apply(plugin = "jacoco")
     apply(plugin = "com.diffplug.spotless")
+
+    group = "io.github.realyusufismail" // used for publishing. DON'T CHANGE
 
     kotlin {
         compilerOptions {
@@ -167,38 +169,37 @@ subprojects {
         val isReleaseVersion = !version.toString().endsWith("SNAPSHOT")
         publications {
             create<MavenPublication>(project.name) {
-                project.extra.properties.forEach { (k, v) -> logger.debug("{}: {}", k, v) }
+                val developerInfo = DeveloperInfo(
+                    id = project.extra["dev_id"] as String,
+                    name = project.extra["dev_name"] as String,
+                    email = project.extra["dev_email"] as String,
+                    organization = project.extra["dev_organization"] as String,
+                    organizationUrl = project.extra["dev_organization_url"] as String
+                )
 
-                val developerInfo =
-                    DeveloperInfo(
-                        id =  project.extra.properties["dev_id"] as String,
-                        name = project.extra.properties["dev_name"] as String,
-                        email = project.extra.properties["dev_email"] as String,
-                        organization = project.extra.properties["dev_organization"] as String,
-                        organizationUrl = project.extra.properties["dev_organization_url"] as String)
-
-                val licenseInfo = LicenseInfo(name = project.extra.properties["gpl_name"] as String, url = project.extra.properties["gpl_url"] as String)
+                val licenseInfo = LicenseInfo(
+                    name = project.extra["gpl_name"] as String,
+                    url = project.extra["gpl_url"] as String
+                )
 
                 val ciInfo = "GitHub Actions"
-
-                val issueManagementInfo =
-                    IssueManagementInfo(system = "GitHub", url = "https://github.com/YDWK/YDWK/issues")
-
+                val issueManagementInfo = IssueManagementInfo(system = "GitHub", url = "https://github.com/YDWK/YDWK/issues")
 
                 from(components["java"])
                 version = project.version.toString()
+
                 setupDeveloperInfo(developerInfo)
                 setupLicenseInfo(licenseInfo)
                 setupCiManagement(ciInfo)
                 setupIssueManagement(issueManagementInfo)
+
                 pom {
                     name.set(project.name)
-                    description.set(project.description)
-
+                    description.set(project.description ?: "No description provided")
                     scm {
                         connection.set("https://github.com/YDWK/YDWK.git")
                         developerConnection.set("scm:git:ssh://git@github.com/YDWK/YDWK.git")
-                        url.set("github.com/YDWK/YDWK/")
+                        url.set("https://github.com/YDWK/YDWK/")
                     }
                 }
             }
@@ -206,35 +207,22 @@ subprojects {
 
         repositories {
             maven {
-                name = "MavenCentral"
+                name = "ossrh"
                 val releaseRepo = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
                 val snapshotRepo = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
-                url = uri((if (isReleaseVersion) releaseRepo else snapshotRepo))
+                url = uri(if (isReleaseVersion) releaseRepo else snapshotRepo)
+
+                // Using new token system
                 credentials {
-                    // try to get it from system gradle.properties
-                    logger.debug("Trying to get credentials from system gradle.properties")
-                    username = when {
-                        project.hasProperty("mavenUsername") -> {
-                            project.property("mavenUsername") as String
-                        }
-                        else -> {
-                            logger.debug(
-                                "mavenUsername not found in system properties, meaning if you are trying to publish to maven central, it will fail")
-                            null
-                        }
+                    username = project.findProperty("mavenUsername") as String? ?: run {
+                        println("mavenUsername not found, publishing will fail")
+                        null
                     }
 
-                    password =
-                        when {
-                            project.hasProperty("mavenToken") -> {
-                                project.property("mavenToken") as String
-                            }
-                            else -> {
-                                logger.debug(
-                                    "mavenToken not found in system properties, meaning if you are trying to publish to maven central, it will fail")
-                                null
-                            }
-                        }
+                    password = project.findProperty("mavenToken") as String? ?: run {
+                        println("mavenToken not found, publishing will fail")
+                        null
+                    }
                 }
             }
         }
@@ -257,18 +245,31 @@ subprojects {
     sourceSets { main { kotlin { srcDirs("src/main/kotlin", "build/generated/kotlin") } } }
 }
 
-data class DeveloperInfo(
-    val id: String,
-    val name: String,
-    val email: String,
-    val organization: String,
-    val organizationUrl: String
-)
+tasks.named<DependencyUpdatesTask>("dependencyUpdates").configure {
+    group = "dependency updates"
 
-data class LicenseInfo(val name: String, val url: String)
+    // optional parameters
+    checkForGradleUpdate = true
+    outputFormatter = "plain"
+    outputDir = "build/dependencyUpdates"
+    reportfileName = "report"
+}
 
-data class IssueManagementInfo(val system: String, val url: String)
+tasks.getByName("dokkaHtml", DokkaTask::class) {
+    dokkaSourceSets.configureEach {
+        includes.from("Package.md")
+        jdkVersion.set(21)
+        sourceLink {
+            localDirectory.set(file("ydwk/src/main/kotlin"))
+            remoteUrl.set(URL("https://github.com/YDWK/YDWK/tree/master/src/main/kotlin"))
+            remoteLineSuffix.set("#L")
+        }
 
+        pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
+            footerMessage = "Copyright © 2024 YDWK inc."
+        }
+    }
+}
 
 fun MavenPublication.setupDeveloperInfo(developerInfo: DeveloperInfo) {
     pom {
@@ -308,34 +309,18 @@ fun MavenPublication.setupIssueManagement(issueManagementInfo: IssueManagementIn
     }
 }
 
+data class DeveloperInfo(
+    val id: String,
+    val name: String,
+    val email: String,
+    val organization: String,
+    val organizationUrl: String
+)
+
+data class LicenseInfo(val name: String, val url: String)
+
+data class IssueManagementInfo(val system: String, val url: String)
+
 fun systemHasEnvVar(varName: String): Boolean {
     return System.getenv(varName) != null
 }
-
-
-tasks.named<DependencyUpdatesTask>("dependencyUpdates").configure {
-    group = "dependency updates"
-
-    // optional parameters
-    checkForGradleUpdate = true
-    outputFormatter = "plain"
-    outputDir = "build/dependencyUpdates"
-    reportfileName = "report"
-}
-
-tasks.getByName("dokkaHtml", DokkaTask::class) {
-    dokkaSourceSets.configureEach {
-        includes.from("Package.md")
-        jdkVersion.set(21)
-        sourceLink {
-            localDirectory.set(file("ydwk/src/main/kotlin"))
-            remoteUrl.set(URL("https://github.com/YDWK/YDWK/tree/master/src/main/kotlin"))
-            remoteLineSuffix.set("#L")
-        }
-
-        pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
-            footerMessage = "Copyright © 2024 YDWK inc."
-        }
-    }
-}
-
