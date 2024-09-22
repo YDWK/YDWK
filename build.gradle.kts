@@ -10,7 +10,6 @@ buildscript {
 
     dependencies {
         classpath("org.jetbrains.dokka:dokka-base:1.9.10")
-        classpath("io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.30.0")
         classpath("com.squareup:kotlinpoet:" + properties["kotlinPoetVersion"])
     }
 }
@@ -20,16 +19,13 @@ plugins {
     kotlin("plugin.allopen")
     id("com.diffplug.spotless")
     id("org.jetbrains.dokka")
-    // id("io.gitlab.arturbosch.detekt")
     id("com.github.ben-manes.versions")
+    id("io.github.gradle-nexus.publish-plugin")
     application
     `maven-publish`
     signing
     jacoco // code coverage reports
 }
-
-apply(plugin = "io.codearte.nexus-staging")
-
 
 group = "io.github.realyusufismail" // used for publishing. DON'T CHANGE
 
@@ -217,36 +213,25 @@ subprojects {
                 credentials {
                     // try to get it from system gradle.properties
                     logger.debug("Trying to get credentials from system gradle.properties")
-                    username =
-                        when {
-                            systemHasEnvVar("MAVEN_USERNAME") -> {
-                                logger.debug("Found username in system gradle.properties")
-                                System.getenv("MAVEN_USERNAME")
-                            }
-                            project.hasProperty("MAVEN_USERNAME") -> {
-                                logger.debug("MAVEN_USERNAME found in gradle.properties")
-                                project.property("MAVEN_USERNAME") as String
-                            }
-                            else -> {
-                                logger.debug(
-                                    "MAVEN_USERNAME not found in system properties, meaning if you are trying to publish to maven central, it will fail")
-                                null
-                            }
+                    username = when {
+                        project.hasProperty("mavenUsername") -> {
+                            project.property("mavenUsername") as String
                         }
+                        else -> {
+                            logger.debug(
+                                "mavenUsername not found in system properties, meaning if you are trying to publish to maven central, it will fail")
+                            null
+                        }
+                    }
 
                     password =
                         when {
-                            systemHasEnvVar("MAVEN_PASSWORD") -> {
-                                logger.debug("Found password in system gradle.properties")
-                                System.getenv("MAVEN_PASSWORD")
-                            }
-                            project.hasProperty("MAVEN_PASSWORD") -> {
-                                logger.debug("MAVEN_PASSWORD found in gradle.properties")
-                                project.property("MAVEN_PASSWORD") as String
+                            project.hasProperty("mavenToken") -> {
+                                project.property("mavenToken") as String
                             }
                             else -> {
                                 logger.debug(
-                                    "MAVEN_PASSWORD not found in system properties, meaning if you are trying to publish to maven central, it will fail")
+                                    "mavenToken not found in system properties, meaning if you are trying to publish to maven central, it will fail")
                                 null
                             }
                         }
@@ -271,6 +256,7 @@ subprojects {
 
     sourceSets { main { kotlin { srcDirs("src/main/kotlin", "build/generated/kotlin") } } }
 }
+
 data class DeveloperInfo(
     val id: String,
     val name: String,

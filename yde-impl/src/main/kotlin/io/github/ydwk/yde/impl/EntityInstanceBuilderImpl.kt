@@ -128,14 +128,11 @@ import io.github.ydwk.yde.util.*
 import java.awt.Color
 import java.net.URL
 
-// TODO: Where it says yde.getGuildById remove this and just give the id. The user should be able to
-// get the guild by id themselves
 // TODO: Check every entity whith the discord documentation to see if there are any missing fields
 // or any corrections that need to be made
 // TODO: Rewrite the hall interaction system
 // TODO: For YDWK rewrite the voice system with the new voice system - seperate pr
 // TODO: Add support for locale
-// TODO: When having a list of enums make sure to use EnumSet instead of a list
 
 /** Used to build entities */
 class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
