@@ -6,7 +6,6 @@ pluginManagement {
     val spotlessVersion: String by settings
     val dokkaVersion: String by settings
     val benManesVersion: String by settings
-    val nexusPublishVersion: String by settings
 
     plugins {
         kotlin("jvm") version jvmVersion
@@ -14,7 +13,6 @@ pluginManagement {
         id("com.diffplug.spotless") version spotlessVersion
         id("org.jetbrains.dokka") version dokkaVersion
         id("com.github.ben-manes.versions") version benManesVersion
-        id("io.github.gradle-nexus.publish-plugin") version nexusPublishVersion
         application
         `maven-publish`
         signing

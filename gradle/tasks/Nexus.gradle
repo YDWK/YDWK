@@ -1,19 +1,8 @@
 import java.time.Duration
 
-nexusPublishing {
+nexusStaging {
     packageGroup = 'io.github.realyusufismail'
-    repositories {
-        sonatype {
-            username = project.hasProperty('MAVEN_USERNAME') ? project.property('MAVEN_USERNAME') : 'username'
-            password = project.hasProperty('MAVEN_PASSWORD') ? project.property('MAVEN_PASSWORD') : 'password'
-        }
-    }
-
-    clientTimeout = Duration.ofSeconds(300)
-    connectTimeout = Duration.ofSeconds(60)
-
-    transitionCheckOptions {
-        maxRetries.set(40)
-        delayBetween.set(Duration.ofMillis(3000))
-    }
+    serverUrl = "https://s01.oss.sonatype.org/service/local"
+    username = project.hasProperty('mavenUsername') ? project.property('mavenUsername') : 'username'
+    password = project.hasProperty('mavenToken') ? project.property('mavenToken') : 'password'
 }

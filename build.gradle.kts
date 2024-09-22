@@ -10,6 +10,7 @@ buildscript {
 
     dependencies {
         classpath("org.jetbrains.dokka:dokka-base:1.9.10")
+        classpath("io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.30.0")
         classpath("com.squareup:kotlinpoet:" + properties["kotlinPoetVersion"])
     }
 }
@@ -20,7 +21,6 @@ plugins {
     id("com.diffplug.spotless")
     id("org.jetbrains.dokka")
     id("com.github.ben-manes.versions")
-    id("io.github.gradle-nexus.publish-plugin")
     application
     `maven-publish`
     signing
@@ -31,8 +31,8 @@ group = "io.github.realyusufismail" // used for publishing. DON'T CHANGE
 
 val releaseVersion by extra(!version.toString().endsWith("-SNAPSHOT"))
 
+apply(plugin = "io.codearte.nexus-staging")
 apply(from = "gradle/tasks/incrementVersion.gradle.kts")
-
 apply(from = "gradle/tasks/Nexus.gradle")
 
 allprojects {
@@ -196,6 +196,7 @@ subprojects {
                 pom {
                     name.set(project.name)
                     description.set(project.description ?: "No description provided")
+                    url.set("https://github.com/YDWK/YDWK")
                     scm {
                         connection.set("https://github.com/YDWK/YDWK.git")
                         developerConnection.set("scm:git:ssh://git@github.com/YDWK/YDWK.git")
