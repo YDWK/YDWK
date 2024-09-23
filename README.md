@@ -1,9 +1,9 @@
 ![](https://github.com/YDWK/YDWK/blob/master/ydwk-s.png)
 <br>
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Kotlin](https://img.shields.io/badge/kotlin-1.9.0-blue.svg?logo=kotlin)](http://kotlinlang.org)
+[![Kotlin](https://img.shields.io/badge/kotlin-2.0.0-blue.svg?logo=kotlin)](http://kotlinlang.org)
 [![codecov](https://codecov.io/gh/YDWK/YDWK/branch/master/graph/badge.svg?token=LKIA8T6N6J)](https://codecov.io/gh/YDWK/YDWK)
-[![ydwk](https://img.shields.io/badge/YDWK--Version-v1.8.0-blue)](https://github.com/YDWK/YDWK/releases/tag/v1.8.0)
+[![ydwk](https://img.shields.io/badge/YDWK--Version-v2.0.0.alpha.1-blue)](https://github.com/YDWK/YDWK/releases/tag/v2.0.0.alpha.1)
 [![ydwk-docs](https://img.shields.io/badge/YDWK-Docs-blue.svg)](https://www.ydwk.org)
 
 # YDWK
@@ -67,6 +67,8 @@ API, it will be named `requestEntity`.
 
 ### Future Features
 
+- [ ] Implement full voice system
+
 ### Implemented
 
 - [x] Handle Rest API
@@ -83,8 +85,8 @@ API, it will be named `requestEntity`.
 - [x] Handle rate limiting in Websocket
 - [x] Handle rate limiting in rest
 - [x] Support for channels
-- [x] Create entities - in progress
-- [x] Handle events - In progress
+- [x] Create entities
+- [x] Handle events
 
 ## For more information
 
