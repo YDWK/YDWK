@@ -63,6 +63,7 @@ class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json)
             ChannelType.STAGE_VOICE -> updateStageChannel()
             ChannelType.DIRECTORY -> ydwk.logger.debug("DIRECTORY channels are not supported.")
             ChannelType.FORUM -> updateForumChannel()
+            ChannelType.MEDIA -> updateForumChannel()
             ChannelType.UNKNOWN -> ydwk.logger.warn("Unknown channel type ${json["type"].asInt()}")
         }
     }

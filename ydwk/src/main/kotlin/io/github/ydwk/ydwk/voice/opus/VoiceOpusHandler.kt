@@ -36,8 +36,6 @@ class VoiceOpusHandler {
         const val PCM_FRAME_BYTES = FRAME_SIZE * CHANNELS * 2  // 3840 bytes
         const val MAX_OPUS_PACKET_SIZE = 1275   // max per RFC 6716 §3.1.2
 
-        private val OPUS_SET_BITRATE_REQUEST = 4002
-
         private val logger = LoggerFactory.getLogger(VoiceOpusHandler::class.java)
     }
 
@@ -50,7 +48,7 @@ class VoiceOpusHandler {
         if (isInitialized) return true
         return try {
             encoder = Opus.encoder_create(SAMPLE_RATE, CHANNELS)
-            Opus.encoder_ctl(encoder, OPUS_SET_BITRATE_REQUEST, 64000)
+            Opus.encoder_set_bitrate(encoder, 64000)
             isInitialized = true
             true
         } catch (t: Throwable) {

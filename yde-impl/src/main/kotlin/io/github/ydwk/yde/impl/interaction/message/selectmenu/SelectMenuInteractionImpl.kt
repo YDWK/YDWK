@@ -27,7 +27,7 @@ import io.github.ydwk.yde.interaction.application.sub.Reply
 import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenuInteraction
 import io.github.ydwk.yde.util.GetterSnowFlake
 
-class SelectMenuInteractionImpl(
+open class SelectMenuInteractionImpl(
     override val yde: YDE,
     override val json: JsonNode,
     override val interactionId: GetterSnowFlake,

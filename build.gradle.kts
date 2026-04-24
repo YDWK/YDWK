@@ -1,4 +1,5 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 buildscript {
     repositories { mavenCentral() }
@@ -78,6 +79,7 @@ subprojects {
         compilerOptions {
             apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.DEFAULT)
             languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.DEFAULT)
+            jvmTarget.set(JvmTarget.JVM_21)
 
             java.targetCompatibility = JavaVersion.VERSION_21
             java.sourceCompatibility = JavaVersion.VERSION_21

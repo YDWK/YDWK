@@ -31,6 +31,7 @@ import io.github.ydwk.yde.entities.channel.GuildChannel
 import io.github.ydwk.yde.entities.channel.enums.ChannelType
 import io.github.ydwk.yde.entities.channel.guild.GuildCategory
 import io.github.ydwk.yde.entities.channel.guild.forum.*
+import io.github.ydwk.yde.entities.channel.guild.thread.GuildThreadChannel
 import io.github.ydwk.yde.entities.channel.guild.message.GuildMessageChannel
 import io.github.ydwk.yde.entities.channel.guild.message.news.GuildNewsChannel
 import io.github.ydwk.yde.entities.channel.guild.message.text.GuildTextChannel

@@ -29,7 +29,7 @@ class PresenceUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json
         val guildId = GetterSnowFlake.of(json.get("guild_id").asLong())
         val userId = GetterSnowFlake.of(json.get("user").get("id").asLong())
         val status = json.get("status").asText()
-        val user = ydwk.getUserById(userId.asLong())
+        val user = ydwk.getUserById(userId.asLong)
         ydwk.emitEvent(PresenceUpdateEvent(ydwk, guildId, userId, status, user))
     }
 }
