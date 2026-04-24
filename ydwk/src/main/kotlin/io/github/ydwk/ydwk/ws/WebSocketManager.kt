@@ -377,9 +377,9 @@ open class WebSocketManager(
     private fun onOpCode(opCode: Int, d: JsonNode, rawJson: JsonNode) {
         when (OpCode.getValue(opCode)) {
             DISPATCH -> {
-
-                // TODO: This is not being called for some reason
+                logger.trace("Received DISPATCH (op=0)")
                 val event: String = rawJson.get("t").asText()
+                logger.trace("Dispatch event type={}", event)
                 onEventType(event, d)
             }
             RECONNECT -> {

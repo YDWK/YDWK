@@ -22,15 +22,15 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import io.github.ydwk.yde.interaction.sub.InteractionCallbackType
-import kotlin.test.assertEquals
-import org.junit.jupiter.api.Order
+import io.github.ydwk.ydwk.testkit.assertJsonEquals
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
 class JsonTest {
 
     @Test
-    @Order(1)
-    fun test() {
+    @DisplayName("builds a component action row JSON payload")
+    fun builds_component_action_row_json_payload() {
         val mainComponent = JsonNodeFactory.instance.arrayNode()
 
         mainComponent.add(
@@ -47,13 +47,14 @@ class JsonTest {
                                 .put("label", "test"))
                     }) as JsonNode)
 
-        assertEquals(
-            """[{"type":1,"components":[{"type":2,"label":"test"}]}]""", mainComponent.toString())
+        assertJsonEquals(
+            """[{"type":1,"components":[{"type":2,"label":"test"}]}]""",
+            mainComponent.toString())
     }
 
     @Test
-    @Order(2)
-    fun test2() {
+    @DisplayName("builds a component array without explicit row type")
+    fun builds_component_array_without_explicit_row_type() {
         val mainComponent = JsonNodeFactory.instance.arrayNode()
 
         mainComponent.add(
@@ -69,12 +70,12 @@ class JsonTest {
                                 .put("label", "test"))
                     }) as JsonNode)
 
-        assertEquals("""[{"components":[{"type":2,"label":"test"}]}]""", mainComponent.toString())
+        assertJsonEquals("""[{"components":[{"type":2,"label":"test"}]}]""", mainComponent.toString())
     }
 
     @Test
-    @Order(3)
-    fun fullTest() {
+    @DisplayName("builds a full interaction callback body with components")
+    fun builds_full_interaction_callback_body_with_components() {
         val mainBody =
             JsonNodeFactory.instance
                 .objectNode()
@@ -99,7 +100,7 @@ class JsonTest {
 
         mainBody.set<JsonNode>("data", secondBody)
 
-        assertEquals(
+        assertJsonEquals(
             """{"type":4,"data":{"components":[{"components":[{"type":2,"label":"test"}]}]}}""",
             mainBody.toString())
     }

@@ -42,12 +42,18 @@ dependencies {
 
     // test
     testImplementation("org.jetbrains.kotlin:kotlin-test:" + properties["kotlinTestVersion"])
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.13.4")
     testImplementation("org.mockito:mockito-core:" + properties["mockitoCoreVersion"])
 }
 
 tasks.test {
     useJUnitPlatform()
     jvmArgs("--enable-preview")
+
+    testLogging {
+        events("passed", "skipped", "failed")
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+    }
 }
 
 tasks {
