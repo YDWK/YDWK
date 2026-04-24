@@ -38,4 +38,4 @@ jobs:
           ./gradlew publishAllPublicationsToMavenCentralRepository
         env:
           ORG_GRADLE_PROJECT_mavenUsername: ${{ secrets.MAVEN_USERNAME }}
-          ORG_GRADLE_PROJECT_mavenToken: ${{ secrets.MAVEN_TOKEN }}
+          ORG_GRADLE_PROJECT_mavenToken: ${{ secrets.MAVEN_TOKEN || secrets.MAVEN_PASSWORD }}
