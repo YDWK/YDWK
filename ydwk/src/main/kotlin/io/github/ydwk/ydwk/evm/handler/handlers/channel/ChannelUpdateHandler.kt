@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2025 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -57,13 +57,11 @@ class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json)
             ChannelType.GROUP_DM -> ydwk.logger.warn("Group DMs are not supported.")
             ChannelType.CATEGORY -> updateCategory()
             ChannelType.NEWS -> updateNewsChannel()
-            // TODO: Add support for thread channels
-            ChannelType.NEWS_THREAD -> ydwk.logger.warn("News threads are not supported yet.")
-            ChannelType.PUBLIC_THREAD -> ydwk.logger.warn("Public threads are not supported yet.")
-            ChannelType.PRIVATE_THREAD -> ydwk.logger.warn("Private threads are not supported yet.")
+            ChannelType.NEWS_THREAD,
+            ChannelType.PUBLIC_THREAD,
+            ChannelType.PRIVATE_THREAD -> updateThreadChannel()
             ChannelType.STAGE_VOICE -> updateStageChannel()
-            // TODO: Add support for DIRECTORY
-            ChannelType.DIRECTORY -> ydwk.logger.warn("Directories are not supported.")
+            ChannelType.DIRECTORY -> ydwk.logger.debug("DIRECTORY channels are not supported.")
             ChannelType.FORUM -> updateForumChannel()
             ChannelType.UNKNOWN -> ydwk.logger.warn("Unknown channel type ${json["type"].asInt()}")
         }
@@ -300,6 +298,12 @@ class ChannelUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json)
         }
 
         updateGuildChannel(channel)
+    }
+
+    private fun updateThreadChannel() {
+        val id = json["id"].asText()
+        val updated = ydwk.entityInstanceBuilder.buildGuildThreadChannel(json)
+        ydwk.cache[id, updated] = CacheIds.CHANNEL
     }
 
     private fun updateForumChannel() {

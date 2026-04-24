@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2025 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,11 +19,20 @@
 package io.github.ydwk.ydwk.evm.handler.handlers.thread
 
 import com.fasterxml.jackson.databind.JsonNode
+import io.github.ydwk.yde.cache.CacheIds
+import io.github.ydwk.yde.entities.channel.guild.thread.GuildThreadChannel
+import io.github.ydwk.yde.util.GetterSnowFlake
+import io.github.ydwk.ydwk.evm.event.events.thread.ThreadDeleteEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class ThreadDeleteHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override suspend fun start() {
-        TODO("Not yet implemented")
+        val threadId = GetterSnowFlake.of(json.get("id").asLong())
+        val guildId = GetterSnowFlake.of(json.get("guild_id").asLong())
+        val parentId = if (json.has("parent_id")) GetterSnowFlake.of(json.get("parent_id").asLong()) else null
+        val cached = ydwk.cache[threadId.asString, CacheIds.CHANNEL] as? GuildThreadChannel
+        ydwk.cache.remove(threadId.asString, CacheIds.CHANNEL)
+        ydwk.emitEvent(ThreadDeleteEvent(ydwk, threadId, guildId, parentId, cached))
     }
 }

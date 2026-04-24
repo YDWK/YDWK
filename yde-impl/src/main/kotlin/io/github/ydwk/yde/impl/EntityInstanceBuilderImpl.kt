@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2025 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,6 +38,10 @@ import io.github.ydwk.yde.entities.channel.guild.message.text.PermissionOverwrit
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildStageChannel
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.yde.entities.guild.*
+import io.github.ydwk.yde.entities.guild.automod.AutoModerationAction
+import io.github.ydwk.yde.entities.guild.automod.AutoModerationEventType
+import io.github.ydwk.yde.entities.guild.automod.AutoModerationRule
+import io.github.ydwk.yde.entities.guild.automod.AutoModerationTriggerType
 import io.github.ydwk.yde.entities.guild.enums.*
 import io.github.ydwk.yde.entities.guild.invite.InviteCreator
 import io.github.ydwk.yde.entities.guild.invite.TargetType
@@ -70,12 +74,15 @@ import io.github.ydwk.yde.impl.entities.channel.DmChannelImpl
 import io.github.ydwk.yde.impl.entities.channel.guild.*
 import io.github.ydwk.yde.impl.entities.channel.guild.GuildCategoryImpl
 import io.github.ydwk.yde.impl.entities.channel.guild.GuildChannelImpl
+import io.github.ydwk.yde.impl.entities.channel.guild.GuildThreadChannelImpl
 import io.github.ydwk.yde.impl.entities.channel.guild.GuildForumChannelImpl
 import io.github.ydwk.yde.impl.entities.channel.guild.GuildMessageChannelImpl
 import io.github.ydwk.yde.impl.entities.channel.guild.forum.DefaultReactionEmojiImpl
 import io.github.ydwk.yde.impl.entities.channel.guild.forum.ForumTagImpl
 import io.github.ydwk.yde.impl.entities.emoji.PartialEmojiImpl
 import io.github.ydwk.yde.impl.entities.guild.*
+import io.github.ydwk.yde.impl.entities.guild.automod.AutoModerationActionImpl
+import io.github.ydwk.yde.impl.entities.guild.automod.AutoModerationRuleImpl
 import io.github.ydwk.yde.impl.entities.guild.role.RoleTagImpl
 import io.github.ydwk.yde.impl.entities.guild.schedule.EntityMetadataImpl
 import io.github.ydwk.yde.impl.entities.guild.ws.WelcomeChannelImpl
@@ -106,7 +113,18 @@ import io.github.ydwk.yde.impl.interaction.application.type.MessageCommandImpl
 import io.github.ydwk.yde.impl.interaction.application.type.SlashCommandImpl
 import io.github.ydwk.yde.impl.interaction.application.type.UserCommandImpl
 import io.github.ydwk.yde.impl.interaction.message.ComponentInteractionDataImpl
+import io.github.ydwk.yde.entities.interaction.ButtonStyle
+import io.github.ydwk.yde.impl.entities.interaction.button.ButtonImpl
+import io.github.ydwk.yde.impl.entities.interaction.selectmenu.SelectMenuImpl
 import io.github.ydwk.yde.impl.interaction.message.actionrow.ActionRowInteractionImpl
+import io.github.ydwk.yde.impl.interaction.message.button.ButtonInteractionImpl
+import io.github.ydwk.yde.impl.interaction.message.selectmenu.SelectMenuInteractionImpl
+import io.github.ydwk.yde.impl.interaction.message.selectmenu.type.ChannelSelectMenuInteractionImpl
+import io.github.ydwk.yde.impl.interaction.message.selectmenu.type.MemberSelectMenuInteractionImpl
+import io.github.ydwk.yde.impl.interaction.message.selectmenu.type.RoleSelectMenuInteractionImpl
+import io.github.ydwk.yde.impl.interaction.message.selectmenu.type.StringSelectMenuInteractionImpl
+import io.github.ydwk.yde.impl.interaction.message.selectmenu.type.UserSelectMenuInteractionImpl
+import io.github.ydwk.yde.impl.interaction.message.textinput.TextInputInteractionImpl
 import io.github.ydwk.yde.impl.util.*
 import io.github.ydwk.yde.interaction.ComponentInteraction
 import io.github.ydwk.yde.interaction.Interaction
@@ -592,6 +610,18 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             json["name"].asText())
     }
 
+    override fun buildGuildThreadChannel(json: JsonNode): GuildThreadChannel {
+        return GuildThreadChannelImpl(
+            yde,
+            json,
+            json["id"].asLong(),
+            GetterSnowFlake.of(json["guild_id"].asLong()),
+            if (json.has("position")) json["position"].asInt() else 0,
+            if (json.has("parent_id")) GetterSnowFlake.of(json["parent_id"].asLong()) else null,
+            InviteCreator(yde, json["id"].asText()),
+            if (json.has("name")) json["name"].asText() else "")
+    }
+
     override fun buildGuildCategory(json: JsonNode): GuildCategory {
         return GuildCategoryImpl(
             yde,
@@ -933,7 +963,7 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             yde,
             json,
             interactionId,
-            ComponentType.getValue(json["component_type"].asInt()),
+            ComponentType.getValue(json["data"]["component_type"].asInt()),
             json["token"].asText(),
             message,
             if (json.has("member"))
@@ -949,7 +979,7 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             if (json.has("application_id")) GetterSnowFlake.of(json["application_id"].asLong())
             else null,
             message.components,
-            buildComponentInteractionData(json),
+            buildComponentInteractionData(json["data"]),
         )
     }
 
@@ -995,11 +1025,29 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
     }
 
     override fun buildSelectMenu(json: JsonNode): SelectMenu {
-        TODO("Not yet implemented")
+        return SelectMenuImpl(
+            yde, json,
+            json["custom_id"].asText(),
+            if (json.has("placeholder")) json["placeholder"].asText() else null,
+            if (json.has("min_values")) json["min_values"].asInt() else null,
+            if (json.has("max_values")) json["max_values"].asInt() else null,
+            if (json.has("disabled")) json["disabled"].asBoolean() else null,
+            if (json.has("options")) json["options"].map { buildSelectMenuOption(it) } else null,
+            if (json.has("default_values")) json["default_values"].map { buildSelectMenuDefaultValues(it) } else null,
+            if (json.has("channel_types")) json["channel_types"].map { ChannelType.getValue(it.asInt()) }.toSet() else null,
+        )
     }
 
     override fun buildButton(json: JsonNode): Button {
-        TODO("Not yet implemented")
+        return ButtonImpl(
+            yde, json,
+            ButtonStyle.getValue(json["style"].asInt()),
+            if (json.has("label")) json["label"].asText() else null,
+            if (json.has("custom_id")) json["custom_id"].asText() else null,
+            if (json.has("emoji")) buildPartialEmoji(json["emoji"]) else null,
+            if (json.has("url")) URL(json["url"].asText()) else null,
+            if (json.has("disabled")) json["disabled"].asBoolean() else false,
+        )
     }
 
     override fun buildActionRow(json: JsonNode): ActionRow {
@@ -1033,56 +1081,93 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
         json: JsonNode,
         interactionId: GetterSnowFlake
     ): SelectMenuInteraction {
-        TODO("Not yet implemented")
+        val data = json["data"]
+        return SelectMenuInteractionImpl(yde, json, interactionId,
+            data["custom_id"].asText(), "", 0, 1)
     }
 
     override fun buildButtonInteraction(
         json: JsonNode,
         interactionId: GetterSnowFlake
     ): ButtonInteraction {
-        TODO("Not yet implemented")
+        val data = json["data"]
+        return ButtonInteractionImpl(yde, json, interactionId,
+            data["custom_id"].asText(),
+            if (data.has("label")) data["label"].asText() else null)
     }
 
     override fun buildUserSelectMenuInteraction(
         json: JsonNode,
         interactionId: GetterSnowFlake
     ): UserSelectMenuInteraction {
-        TODO("Not yet implemented")
+        val data = json["data"]
+        val selectedUsers = if (data.has("resolved") && data["resolved"].has("users"))
+            data["resolved"]["users"].map { buildUser(it) } else emptyList()
+        return UserSelectMenuInteractionImpl(yde, json, interactionId,
+            data["custom_id"].asText(), selectedUsers)
     }
 
     override fun buildStringSelectMenuInteraction(
         json: JsonNode,
         interactionId: GetterSnowFlake
     ): StringSelectMenuInteraction {
-        TODO("Not yet implemented")
+        val data = json["data"]
+        val selectedOptions = if (data.has("values")) data["values"].map { node ->
+            val value = node.asText()
+            val optNode = yde.objectMapper.createObjectNode().put("label", value).put("value", value)
+            SelectMenuOptionImpl(yde, optNode, value, value, null, null, false)
+        } else emptyList()
+        return StringSelectMenuInteractionImpl(yde, json, interactionId,
+            data["custom_id"].asText(), selectedOptions, selectedOptions)
     }
 
     override fun buildRoleSelectMenuInteraction(
         json: JsonNode,
         interactionId: GetterSnowFlake
     ): RoleSelectMenuInteraction {
-        TODO("Not yet implemented")
+        val data = json["data"]
+        val selectedRoles = if (data.has("resolved") && data["resolved"].has("roles"))
+            data["resolved"]["roles"].map { buildRole(it) } else emptyList()
+        return RoleSelectMenuInteractionImpl(yde, json, interactionId,
+            data["custom_id"].asText(), selectedRoles)
     }
 
     override fun buildMemberSelectMenuInteraction(
         json: JsonNode,
         interactionId: GetterSnowFlake
     ): MemberSelectMenuInteraction {
-        TODO("Not yet implemented")
+        val data = json["data"]
+        val guildId = if (json.has("guild_id")) GetterSnowFlake.of(json["guild_id"].asLong())
+            else GetterSnowFlake.of(0L)
+        val selectedMembers = if (data.has("resolved") && data["resolved"].has("members"))
+            data["resolved"]["members"].map { buildMember(it, guildId, null) } else emptyList()
+        return MemberSelectMenuInteractionImpl(yde, json, interactionId,
+            data["custom_id"].asText(), selectedMembers)
     }
 
     override fun buildChannelSelectMenuInteraction(
         json: JsonNode,
         interactionId: GetterSnowFlake
     ): ChannelSelectMenuInteraction {
-        TODO("Not yet implemented")
+        val data = json["data"]
+        val selectedChannels = if (data.has("resolved") && data["resolved"].has("channels"))
+            data["resolved"]["channels"].map { buildGuildChannel(it) } else emptyList()
+        return ChannelSelectMenuInteractionImpl(yde, json, interactionId,
+            data["custom_id"].asText(), selectedChannels)
     }
 
     override fun buildTextInputInteraction(
         json: JsonNode,
         interactionId: GetterSnowFlake
     ): TextInputInteraction {
-        TODO("Not yet implemented")
+        val data = json["data"]
+        val values = if (data.has("components")) data["components"].flatMap { row ->
+            if (row.has("components")) row["components"].mapNotNull { comp ->
+                if (comp.has("value")) comp["value"].asText() else null
+            } else emptyList()
+        } else emptyList()
+        return TextInputInteractionImpl(yde, json, interactionId,
+            data["custom_id"].asText(), values)
     }
 
     override fun buildApplicationCommand(
@@ -1138,5 +1223,40 @@ class EntityInstanceBuilderImpl(val yde: YDEImpl) : EntityInstanceBuilder {
             json["data"],
             interaction ?: buildInteraction(json),
             buildMessage(json["data"]["resolved"]["messages"]))
+    }
+
+    override fun buildAutoModerationRule(json: JsonNode): AutoModerationRule {
+        val triggerMetadata = json["trigger_metadata"]
+        return AutoModerationRuleImpl(
+            yde,
+            json,
+            json["id"].asLong(),
+            GetterSnowFlake.of(json["guild_id"].asLong()),
+            GetterSnowFlake.of(json["creator_id"].asLong()),
+            json["name"].asText(),
+            AutoModerationEventType.fromValue(json["event_type"].asInt()),
+            AutoModerationTriggerType.fromValue(json["trigger_type"].asInt()),
+            json["actions"].map { AutoModerationActionImpl(it) as AutoModerationAction },
+            json["enabled"].asBoolean(),
+            json["exempt_roles"].map { GetterSnowFlake.of(it.asLong()) },
+            json["exempt_channels"].map { GetterSnowFlake.of(it.asLong()) },
+            if (triggerMetadata.has("keyword_filter"))
+                triggerMetadata["keyword_filter"].map { it.asText() }
+            else emptyList(),
+            if (triggerMetadata.has("regex_patterns"))
+                triggerMetadata["regex_patterns"].map { it.asText() }
+            else emptyList(),
+            if (triggerMetadata.has("presets")) triggerMetadata["presets"].map { it.asInt() }
+            else emptyList(),
+            if (triggerMetadata.has("allow_list"))
+                triggerMetadata["allow_list"].map { it.asText() }
+            else emptyList(),
+            if (triggerMetadata.has("mention_total_limit"))
+                triggerMetadata["mention_total_limit"].asInt()
+            else null,
+            if (triggerMetadata.has("mention_raid_protection_enabled"))
+                triggerMetadata["mention_raid_protection_enabled"].asBoolean()
+            else false,
+        )
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2025 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -76,6 +76,7 @@ class VoiceWebSocket(
     private var heartBeat: HeartBeat? = null
     @get:Synchronized @set:Synchronized var connected = false
     private var updHandler: UpdHandler? = null
+    private var selectedEncryption: VoiceEncryption = VoiceEncryption.AEAD_AES256_GCM_RTPSIZE
 
     internal val ydwk = (voiceConnection.ydwk as YDWKImpl)
     private val webSocketManager =
@@ -245,9 +246,11 @@ class VoiceWebSocket(
                 voiceReadyPayload = VoiceReadyPayload(ssrc, ip, port, modes)
                 voiceConnection.setVoiceReadyPayload(voiceReadyPayload!!)
 
-                // Open a UDP connection
+                selectedEncryption = VoiceEncryption.getPreferred(modes)
                 updHandler =
-                    UpdHandler(voiceConnection, voiceReadyPayload!!, InetSocketAddress(ip, port))
+                    UpdHandler(voiceConnection, voiceReadyPayload!!, InetSocketAddress(ip, port)).also {
+                        it.encryption = selectedEncryption
+                    }
                 handleProtocol(modes)
             }
             VoiceOpcode.SESSION_DESCRIPTION -> {
@@ -270,7 +273,8 @@ class VoiceWebSocket(
                     }
 
                 updHandler!!.secretKey = secretKey
-                // updHandler!!.sendVoiceData()
+                updHandler!!.encryption = VoiceEncryption.fromMode(dataObject.get("mode").asText())
+                updHandler!!.startSending()
                 ready = true
 
                 voiceConnection.connectFuture.complete(voiceConnection)
@@ -357,9 +361,9 @@ class VoiceWebSocket(
         val speakingPayload = ydwk.objectNode
         speakingPayload.put("op", VoiceOpcode.SPEAKING.code)
         val speakingData = ydwk.objectNode
-        val speakFlags: Long = 0
+        var speakFlags: Long = 0
         for (speakFlag in voiceConnection.getSpeakingFlags()) {
-            speakFlags.or(speakFlag.getValue())
+            speakFlags = speakFlags or speakFlag.getValue()
         }
 
         speakingData.put("speaking", speakFlags)
@@ -410,10 +414,12 @@ class VoiceWebSocket(
 
     fun triggerDisconnect() {
         logger.info("Closing voice connection")
+        updHandler?.stopSending()
         webSocket!!.sendClose(VoiceCloseCode.DISCONNECTED.code)
     }
 
     private fun invalidate() {
+        updHandler?.stopSending()
         CoroutineScope(ydwk.coroutineDispatcher).launch {
             if (voiceConnection.guild.getBotAsMember().voiceState != null) {
                 voiceConnection.guild.getBotAsMember().leaveVC()

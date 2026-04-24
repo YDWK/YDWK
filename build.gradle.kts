@@ -9,7 +9,7 @@ buildscript {
     repositories { mavenCentral() }
 
     dependencies {
-        classpath("org.jetbrains.dokka:dokka-base:1.9.10")
+        classpath("org.jetbrains.dokka:dokka-base:2.2.0")
         classpath("io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.30.0")
         classpath("com.squareup:kotlinpoet:" + properties["kotlinPoetVersion"])
     }
@@ -109,11 +109,11 @@ subprojects {
         kotlin {
             // Excludes build folder since it contains generated java classes.
             targetExclude("build/**")
-            ktfmt("0.42").dropboxStyle()
+            ktfmt("0.52").dropboxStyle()
 
             licenseHeader(
                 """/*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2025 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -134,7 +134,7 @@ subprojects {
 
         kotlinGradle {
             target("**/*.gradle.kts")
-            ktfmt("0.42").dropboxStyle()
+            ktfmt("0.52").dropboxStyle()
             trimTrailingWhitespace()
             indentWithSpaces()
             endWithNewline()
@@ -267,7 +267,7 @@ tasks.getByName("dokkaHtml", DokkaTask::class) {
         }
 
         pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
-            footerMessage = "Copyright © 2024 YDWK inc."
+            footerMessage = "Copyright © 2024-2025 YDWK inc."
         }
     }
 }

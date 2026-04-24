@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2025 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,11 +19,13 @@
 package io.github.ydwk.ydwk.evm.handler.handlers.schedule
 
 import com.fasterxml.jackson.databind.JsonNode
+import io.github.ydwk.ydwk.evm.event.events.schedule.GuildScheduledEventCreateEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class GuildScheduledEventCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override suspend fun start() {
-        TODO("Not yet implemented")
+        val scheduledEvent = ydwk.entityInstanceBuilder.buildGuildScheduledEvent(json)
+        ydwk.emitEvent(GuildScheduledEventCreateEvent(ydwk, scheduledEvent))
     }
 }

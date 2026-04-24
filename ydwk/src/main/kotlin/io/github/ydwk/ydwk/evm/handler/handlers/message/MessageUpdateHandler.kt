@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2025 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,11 +19,17 @@
 package io.github.ydwk.ydwk.evm.handler.handlers.message
 
 import com.fasterxml.jackson.databind.JsonNode
+import io.github.ydwk.yde.cache.CacheIds
+import io.github.ydwk.ydwk.evm.event.events.message.MessageUpdateEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class MessageUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override suspend fun start() {
-        TODO("Not yet implemented")
+        val messageId = json.get("id").asText()
+        val oldMessage = ydwk.cache[messageId, CacheIds.MESSAGE] as? io.github.ydwk.yde.entities.Message
+        val newMessage = ydwk.entityInstanceBuilder.buildMessage(json)
+        ydwk.cache[messageId, newMessage] = CacheIds.MESSAGE
+        ydwk.emitEvent(MessageUpdateEvent(ydwk, oldMessage, newMessage))
     }
 }

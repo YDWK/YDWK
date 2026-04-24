@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2025 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,11 +19,17 @@
 package io.github.ydwk.ydwk.evm.handler.handlers.invite
 
 import com.fasterxml.jackson.databind.JsonNode
+import io.github.ydwk.yde.util.GetterSnowFlake
+import io.github.ydwk.ydwk.evm.event.events.invite.InviteDeleteEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class InviteDeleteHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override suspend fun start() {
-        TODO("Not yet implemented")
+        val code = json.get("code").asText()
+        val guildId = GetterSnowFlake.of(json.get("guild_id").asLong())
+        val channelId = json.get("channel_id").asText()
+        val channel = ydwk.getGuildChannelById(channelId)
+        ydwk.emitEvent(InviteDeleteEvent(ydwk, code, guildId, channel))
     }
 }

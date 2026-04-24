@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2025 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,7 +33,12 @@ import io.github.ydwk.ydwk.evm.handler.handlers.channel.ChannelCreateHandler
 import io.github.ydwk.ydwk.evm.handler.handlers.channel.ChannelDeleteHandler
 import io.github.ydwk.ydwk.evm.handler.handlers.channel.ChannelPinsUpdateHandler
 import io.github.ydwk.ydwk.evm.handler.handlers.channel.ChannelUpdateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.automod.AutoModerationActionExecutionHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.automod.AutoModerationRuleCreateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.automod.AutoModerationRuleDeleteHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.automod.AutoModerationRuleUpdateHandler
 import io.github.ydwk.ydwk.evm.handler.handlers.emoji.GuildEmojisUpdateHandler
+import io.github.ydwk.ydwk.evm.handler.handlers.sticker.GuildStickersUpdateHandler
 import io.github.ydwk.ydwk.evm.handler.handlers.guild.GuildCreateHandler
 import io.github.ydwk.ydwk.evm.handler.handlers.guild.GuildDeleteHandler
 import io.github.ydwk.ydwk.evm.handler.handlers.guild.GuildUpdateHandler
@@ -48,6 +53,7 @@ import io.github.ydwk.ydwk.evm.handler.handlers.member.GuildMemberAddHandler
 import io.github.ydwk.ydwk.evm.handler.handlers.member.GuildMemberRemoveHandler
 import io.github.ydwk.ydwk.evm.handler.handlers.member.GuildMemberUpdateHandler
 import io.github.ydwk.ydwk.evm.handler.handlers.message.*
+import io.github.ydwk.ydwk.evm.handler.handlers.message.MessageReactionRemoveEmojiHandler
 import io.github.ydwk.ydwk.evm.handler.handlers.presence.PresenceUpdateHandler
 import io.github.ydwk.ydwk.evm.handler.handlers.role.GuildRoleCreateHandler
 import io.github.ydwk.ydwk.evm.handler.handlers.role.GuildRoleDeleteHandler
@@ -476,7 +482,7 @@ open class WebSocketManager(
                     sessionId = null
                     resumeUrl = null
                 }
-                EventNames.APPLICATION_COMMAND_PERMISSIONS_UPDATE -> TODO()
+                EventNames.APPLICATION_COMMAND_PERMISSIONS_UPDATE -> ydwk.logger.debug("APPLICATION_COMMAND_PERMISSIONS_UPDATE not yet handled")
                 EventNames.CHANNEL_CREATE -> ChannelCreateHandler(ydwk, d).start()
                 EventNames.CHANNEL_UPDATE -> ChannelUpdateHandler(ydwk, d).start()
                 EventNames.CHANNEL_DELETE -> ChannelDeleteHandler(ydwk, d).start()
@@ -492,6 +498,15 @@ open class WebSocketManager(
                 EventNames.GUILD_BAN_ADD -> GuildBanAddHandler(ydwk, d).start()
                 EventNames.GUILD_BAN_REMOVE -> GuildBanRemoveHandler(ydwk, d).start()
                 EventNames.GUILD_EMOJIS_UPDATE -> GuildEmojisUpdateHandler(ydwk, d).start()
+                EventNames.GUILD_STICKERS_UPDATE -> GuildStickersUpdateHandler(ydwk, d).start()
+                EventNames.AUTO_MODERATION_RULE_CREATE ->
+                    AutoModerationRuleCreateHandler(ydwk, d).start()
+                EventNames.AUTO_MODERATION_RULE_UPDATE ->
+                    AutoModerationRuleUpdateHandler(ydwk, d).start()
+                EventNames.AUTO_MODERATION_RULE_DELETE ->
+                    AutoModerationRuleDeleteHandler(ydwk, d).start()
+                EventNames.AUTO_MODERATION_ACTION_EXECUTION ->
+                    AutoModerationActionExecutionHandler(ydwk, d).start()
                 EventNames.GUILD_INTEGRATIONS_UPDATE ->
                     GuildIntegrationsUpdateHandler(ydwk, d).start()
                 EventNames.GUILD_MEMBER_ADD -> GuildMemberAddHandler(ydwk, d).start()
@@ -524,6 +539,8 @@ open class WebSocketManager(
                 EventNames.MESSAGE_REACTION_REMOVE -> MessageReactionRemoveHandler(ydwk, d).start()
                 EventNames.MESSAGE_REACTION_REMOVE_ALL ->
                     MessageReactionRemoveAllHandler(ydwk, d).start()
+                EventNames.MESSAGE_REACTION_REMOVE_EMOJI ->
+                    MessageReactionRemoveEmojiHandler(ydwk, d).start()
                 EventNames.PRESENCE_UPDATE -> PresenceUpdateHandler(ydwk, d).start()
                 EventNames.TYPING_START -> logger.debug("This event is not supported")
                 EventNames.USER_UPDATE -> UserUpdateHandler(ydwk, d).start()

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2025 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,11 +19,17 @@
 package io.github.ydwk.ydwk.evm.handler.handlers.presence
 
 import com.fasterxml.jackson.databind.JsonNode
+import io.github.ydwk.yde.util.GetterSnowFlake
+import io.github.ydwk.ydwk.evm.event.events.presence.PresenceUpdateEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class PresenceUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override suspend fun start() {
-        TODO("Not yet implemented")
+        val guildId = GetterSnowFlake.of(json.get("guild_id").asLong())
+        val userId = GetterSnowFlake.of(json.get("user").get("id").asLong())
+        val status = json.get("status").asText()
+        val user = ydwk.getUserById(userId.asLong())
+        ydwk.emitEvent(PresenceUpdateEvent(ydwk, guildId, userId, status, user))
     }
 }

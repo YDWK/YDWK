@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2025 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,18 +22,19 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.evm.event.events.ban.GuildBanAddEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
-import io.github.ydwk.ydwk.util.emitEvent
 
 class GuildBanAddHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override suspend fun start() {
-        val guildId: Long = json.get("id").asLong()
-        val user = json.get("user")
-        val cachedMember = ydwk.getGuildById(guildId)?.getMemberById(user.get("id").asLong())
+        val guildId = json.get("guild_id").asLong()
+        val guild = ydwk.getGuildById(guildId) ?: run {
+            ydwk.logger.warn("GuildBanAdd: guild $guildId not in cache")
+            return
+        }
+        val userId = json.get("user").get("id").asLong()
+        val cachedMember = guild.getMemberById(userId)
+        ydwk.emitEvent(GuildBanAddEvent(ydwk, guild, cachedMember))
         if (cachedMember != null) {
-            GuildBanAddEvent(ydwk, ydwk.getGuildById(guildId)!!, cachedMember).emitEvent()
             ydwk.memberCache.remove(guildId.toString(), cachedMember.id)
-        } else {
-            GuildBanAddEvent(ydwk, ydwk.getGuildById(guildId)!!, null).emitEvent()
         }
     }
 }

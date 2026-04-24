@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2025 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,11 +19,18 @@
 package io.github.ydwk.ydwk.evm.handler.handlers.thread
 
 import com.fasterxml.jackson.databind.JsonNode
+import io.github.ydwk.yde.cache.CacheIds
+import io.github.ydwk.yde.entities.channel.guild.thread.GuildThreadChannel
+import io.github.ydwk.ydwk.evm.event.events.thread.ThreadUpdateEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class ThreadUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override suspend fun start() {
-        TODO("Not yet implemented")
+        val threadId = json.get("id").asText()
+        val oldThread = ydwk.cache[threadId, CacheIds.CHANNEL] as? GuildThreadChannel
+        val newThread = ydwk.entityInstanceBuilder.buildGuildThreadChannel(json)
+        ydwk.cache[threadId, newThread] = CacheIds.CHANNEL
+        ydwk.emitEvent(ThreadUpdateEvent(ydwk, oldThread, newThread))
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2025 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,6 +26,7 @@ import io.github.ydwk.yde.entities.audit.AuditLogEntry
 import io.github.ydwk.yde.entities.channel.DmChannel
 import io.github.ydwk.yde.entities.channel.GuildChannel
 import io.github.ydwk.yde.entities.channel.guild.GuildCategory
+import io.github.ydwk.yde.entities.channel.guild.thread.GuildThreadChannel
 import io.github.ydwk.yde.entities.channel.guild.forum.DefaultReactionEmoji
 import io.github.ydwk.yde.entities.channel.guild.forum.ForumTag
 import io.github.ydwk.yde.entities.channel.guild.forum.GuildForumChannel
@@ -36,6 +37,7 @@ import io.github.ydwk.yde.entities.channel.guild.message.text.PermissionOverwrit
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildStageChannel
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.yde.entities.guild.*
+import io.github.ydwk.yde.entities.guild.automod.AutoModerationRule
 import io.github.ydwk.yde.entities.guild.role.RoleTag
 import io.github.ydwk.yde.entities.guild.schedule.EntityMetadata
 import io.github.ydwk.yde.entities.guild.ws.WelcomeChannel
@@ -290,6 +292,14 @@ interface EntityInstanceBuilder {
      * @return [GuildChannel] the guild channel
      */
     fun buildGuildChannel(json: JsonNode): GuildChannel
+
+    /**
+     * Used to build an instance of [GuildThreadChannel]
+     *
+     * @param json the json
+     * @return [GuildThreadChannel] the guild thread channel
+     */
+    fun buildGuildThreadChannel(json: JsonNode): GuildThreadChannel
 
     /**
      * Used to build an instance of [GuildCategory]
@@ -805,4 +815,14 @@ interface EntityInstanceBuilder {
      * @return [MessageCommand] the message command
      */
     fun buildMessageCommand(json: JsonNode, interaction: Interaction? = null): MessageCommand
+
+    // Auto Moderation entities
+
+    /**
+     * Used to build an instance of [AutoModerationRule]
+     *
+     * @param json the json
+     * @return [AutoModerationRule] the auto moderation rule
+     */
+    fun buildAutoModerationRule(json: JsonNode): AutoModerationRule
 }

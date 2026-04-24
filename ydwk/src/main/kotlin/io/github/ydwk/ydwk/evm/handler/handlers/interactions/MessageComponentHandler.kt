@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2025 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -90,7 +90,7 @@ class MessageComponentHandler(
                     //   ydwk.logger.warn("Unknown component type: ${children.type}")
                     // }
                     // }
-                    ComponentType.ACTION_ROW -> TODO()
+                    ComponentType.ACTION_ROW -> { /* ACTION_ROW is a container, not an interactable component */ }
                     ComponentType.UNKNOWN -> ydwk.logger.warn("New component type found: $type")
                 }
             } else {

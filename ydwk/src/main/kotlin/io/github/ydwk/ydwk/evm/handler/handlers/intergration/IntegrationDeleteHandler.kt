@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2025 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,11 +19,21 @@
 package io.github.ydwk.ydwk.evm.handler.handlers.intergration
 
 import com.fasterxml.jackson.databind.JsonNode
+import io.github.ydwk.yde.util.GetterSnowFlake
+import io.github.ydwk.ydwk.evm.event.events.integration.IntegrationDeleteEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class IntegrationDeleteHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override suspend fun start() {
-        TODO("Not yet implemented")
+        val guildId = json.get("guild_id").asLong()
+        val guild = ydwk.getGuildById(guildId) ?: run {
+            ydwk.logger.warn("IntegrationDelete: guild $guildId not in cache")
+            return
+        }
+        val integrationId = GetterSnowFlake.of(json.get("id").asLong())
+        val applicationId = if (json.has("application_id"))
+            GetterSnowFlake.of(json.get("application_id").asLong()) else null
+        ydwk.emitEvent(IntegrationDeleteEvent(ydwk, guild, integrationId, applicationId))
     }
 }

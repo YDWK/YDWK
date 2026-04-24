@@ -21,6 +21,10 @@ dependencies {
     api("com.neovisionaries:nv-websocket-client:" + properties["nvWebsocketClientVersion"])
     api("com.codahale:xsalsa20poly1305:" + properties["xsalsa20poly1305Version"])
 
+    // New voice encryption (Discord Nov 2024+)
+    api("com.github.terl:lazysodium-java:" + properties["lazysodiumVersion"])
+    api("net.java.dev.jna:jna:" + properties["jnaVersion"])
+
     // decode Opus
     api("org.jitsi:libjitsi:" + properties["libjitsiVersion"])
 
@@ -29,7 +33,7 @@ dependencies {
 
     // guava
     api("com.google.guava:guava:" + properties["guavaVersion"])
-    implementation("io.ktor:ktor-client-okhttp-jvm:3.0.0-beta-1")
+    implementation("io.ktor:ktor-client-okhttp-jvm:" + properties["ktorClientVersion"])
 
     // test
     testImplementation("org.jetbrains.kotlin:kotlin-test:" + properties["kotlinTestVersion"])

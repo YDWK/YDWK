@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2025 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,11 +19,23 @@
 package io.github.ydwk.ydwk.evm.handler.handlers.thread
 
 import com.fasterxml.jackson.databind.JsonNode
+import io.github.ydwk.yde.cache.CacheIds
+import io.github.ydwk.yde.util.GetterSnowFlake
+import io.github.ydwk.ydwk.evm.event.events.thread.ThreadListSyncEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class ThreadListSyncHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
     override suspend fun start() {
-        TODO("Not yet implemented")
+        val guildId = GetterSnowFlake.of(json.get("guild_id").asLong())
+        val channelIds = if (json.has("channel_ids"))
+            json.get("channel_ids").map { GetterSnowFlake.of(it.asLong()) }
+        else emptyList()
+        val threads = json.get("threads").map { threadJson ->
+            ydwk.entityInstanceBuilder.buildGuildThreadChannel(threadJson).also {
+                ydwk.cache[it.id, it] = CacheIds.CHANNEL
+            }
+        }
+        ydwk.emitEvent(ThreadListSyncEvent(ydwk, guildId, channelIds, threads))
     }
 }
