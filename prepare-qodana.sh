@@ -2,7 +2,8 @@
 set -eu
 
 # Qodana sometimes fails Gradle import when IDE Gradle JVM points to an unavailable SDK.
-# Force project-level Gradle settings to use Java 21, which is required by Gradle 9.x.
+# Force project-level Gradle settings to use JAVA_HOME (JDK 21 in CI), required by Gradle 9.x.
+rm -rf .idea
 mkdir -p .idea
 cat > .idea/gradle.xml <<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -10,8 +11,14 @@ cat > .idea/gradle.xml <<'XML'
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleJvm" value="21" />
+        <option name="gradleJvm" value="#JAVA_HOME" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+          </set>
+        </option>
       </GradleProjectSettings>
     </option>
   </component>
@@ -25,5 +32,5 @@ cat > .idea/misc.xml <<'XML'
 </project>
 XML
 
-echo "Prepared Qodana IDE config with Gradle JVM=21"
+echo "Prepared Qodana IDE config with Gradle JVM=#JAVA_HOME"
 
