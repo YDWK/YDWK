@@ -72,6 +72,7 @@ subprojects {
     apply(plugin = "signing")
     apply(plugin = "jacoco")
     apply(plugin = "com.diffplug.spotless")
+    apply(plugin = "org.jetbrains.dokka")
 
     group = "io.github.realyusufismail" // used for publishing. DON'T CHANGE
 
@@ -248,6 +249,12 @@ tasks.named<DependencyUpdatesTask>("dependencyUpdates").configure {
     outputFormatter = "plain"
     outputDir = "build/dependencyUpdates"
     reportfileName = "report"
+}
+
+dependencies {
+    dokka(project(":yde-api"))
+    dokka(project(":yde-impl"))
+    dokka(project(":ydwk"))
 }
 
 dokka {
