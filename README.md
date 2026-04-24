@@ -1,93 +1,84 @@
-![](https://github.com/YDWK/YDWK/blob/master/ydwk-s.png)
-<br>
+![YDWK](https://github.com/YDWK/YDWK/blob/master/ydwk-s.png)
+
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Kotlin](https://img.shields.io/badge/kotlin-2.0.0-blue.svg?logo=kotlin)](http://kotlinlang.org)
+[![Kotlin](https://img.shields.io/badge/kotlin-2.3.21-blue.svg?logo=kotlin)](https://kotlinlang.org)
 [![codecov](https://codecov.io/gh/YDWK/YDWK/branch/master/graph/badge.svg?token=LKIA8T6N6J)](https://codecov.io/gh/YDWK/YDWK)
-[![ydwk](https://img.shields.io/badge/YDWK--Version-v2.0.0.alpha.1-blue)](https://github.com/YDWK/YDWK/releases/tag/v2.0.0.alpha.1)
-[![ydwk-docs](https://img.shields.io/badge/YDWK-Docs-blue.svg)](https://www.ydwk.org)
+[![Latest Release](https://img.shields.io/github/v/release/YDWK/YDWK)](https://github.com/YDWK/YDWK/releases)
+[![Docs](https://img.shields.io/badge/YDWK-Docs-blue.svg)](https://www.ydwk.org)
 
 # YDWK
 
-YDWK is a discord wrapper made in Kotlin that aims to be as simple and as fast as possible while still being easy to use and understand. It is built to be similar to libaries like discord.js but is different in its own way. It tries to adhere to the [discord Api](https://discord.com/developers/docs/intro) as much as possible.
+YDWK is a Kotlin Discord wrapper focused on being simple, fast, and close to the [Discord API](https://discord.com/developers/docs/intro).
 
-## Getting started
+## Installation
 
-## :package: Installation
+Use the latest published version from [GitHub Releases](https://github.com/YDWK/YDWK/releases).
 
-### Grovy DLS gradle
+### Gradle (Groovy DSL)
+
 ```groovy
 repositories {
     mavenCentral()
 }
+
 dependencies {
-    implementation "io.github.realyusufismail:ydwk:${project.version}"
+    implementation "io.github.realyusufismail:ydwk:<version>"
 }
 ```
 
-### Kotlin DLS gradle
+### Gradle (Kotlin DSL)
+
 ```kotlin
 repositories {
     mavenCentral()
 }
+
 dependencies {
-    implementation("io.github.realyusufismail:ydwk:${project.version}")
+    implementation("io.github.realyusufismail:ydwk:<version>")
 }
 ```
 
 ### Maven
+
 ```xml
 <dependency>
-    <groupId>io.github.realyusufismail</groupId>
-    <artifactId>ydwk</artifactId>
-    <version>${project.version}</version>
+  <groupId>io.github.realyusufismail</groupId>
+  <artifactId>ydwk</artifactId>
+  <version><!-- latest --></version>
 </dependency>
 ```
 
-
-Now to create a default bot, add the following to your main class:
+## Quick start
 
 ```kotlin
+import io.github.ydwk.ydwk.BotBuilder.Companion.buildBot
+
 fun main() {
-    createDefaultBot("TOKEN").build()
+    buildBot("TOKEN")
+        .build()
+        .buildYDWK()
 }
 ```
 
-A default bot has all the recommended gateway intents.
+`buildBot("TOKEN")` uses the recommended default gateway intents.
 
-For more details see the [creating a basic bot](https://www.ydwk.org/docs/tutorial/basicbot.html)
+## Entity access pattern
 
-## Getting cached entities and getting entities through the rest api
+- Cached entities use `get...` methods.
+- REST-backed lookups use `request...` methods.
 
-When you want to get a cached entity, it will be named `getEntity` and when you want to get an entity through the Rest
-API, it will be named `requestEntity`.
+Example: `getGuildById(...)` vs `requestGuildById(...)`.
 
-## Features : 
+## Status
 
-### In progress and to be done
+- Gateway connection and reconnect/resume support
+- REST API support
+- Slash commands and interaction replies
+- Message and embed support
+- Cache system
+- Rate limit handling (gateway + REST)
+- Voice support is actively evolving
 
-### Future Features
+## Documentation
 
-- [ ] Implement full voice system
-
-### Implemented
-
-- [x] Handle Rest API
-- [x] Connect to gateway
-- [x] Parse Json
-- [x] Handle all op codes
-- [x] Caching
-- [x] Handle reconnect and resuming
-- [x] Support for intents
-- [x] Handle slash commands
-- [x] Reply system for slash commands
-- [x] Embed builder
-- [x] Support for messages
-- [x] Handle rate limiting in Websocket
-- [x] Handle rate limiting in rest
-- [x] Support for channels
-- [x] Create entities
-- [x] Handle events
-
-## For more information
-
-Check out the [docs](https://www.ydwk.org/) for more information.
+See the full docs at [ydwk.org](https://www.ydwk.org/).
