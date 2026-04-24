@@ -34,6 +34,9 @@ jobs:
       - name: Generate documentation directory
         run: ./gradlew dokkaGeneratePublicationHtml --no-daemon
 
+      - name: List generated dokka output
+        run: find build/dokka -type f | head -30 || echo "build/dokka not found"
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
