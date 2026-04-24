@@ -5,6 +5,14 @@ plugins {
     `maven-publish`
 }
 
+repositories {
+    mavenCentral()
+    maven("https://jitpack.io")
+    // Jitsi Maven repository for libjitsi
+    maven("https://github.com/jitsi/jitsi-maven-repository/raw/master/releases/")
+    maven("https://github.com/jitsi/jitsi-maven-repository/raw/master/snapshots/")
+}
+
 apply(from = "gradle/tasks/generateEvents.gradle.kts")
 
 apply(from = "gradle/tasks/checkEvents.gradle.kts")

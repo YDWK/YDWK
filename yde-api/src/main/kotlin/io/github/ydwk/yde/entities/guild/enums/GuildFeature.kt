@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,6 +25,12 @@ enum class GuildFeature(private val feature: String) {
     /** Guild has access to set an animated guild icon. */
     ANIMATED_ICON("ANIMATED_ICON"),
 
+    /**
+     * Guild has application command permissions v2 enabled, disabling the old behavior of
+     * granting default permissions on all commands.
+     */
+    APPLICATION_COMMAND_PERMISSIONS_V2("APPLICATION_COMMAND_PERMISSIONS_V2"),
+
     /** Guild has set up auto moderation rules. */
     AUTO_MODERATION("AUTO_MODERATION"),
 
@@ -37,11 +43,29 @@ enum class GuildFeature(private val feature: String) {
      */
     COMMUNITY("COMMUNITY"),
 
+    /** Guild has enabled monetization and is provisionally monetizable. */
+    CREATOR_MONETIZABLE_PROVISIONAL("CREATOR_MONETIZABLE_PROVISIONAL"),
+
+    /** Guild has a creator store page. */
+    CREATOR_STORE_PAGE("CREATOR_STORE_PAGE"),
+
+    /** Guild is a developer support server. */
+    DEVELOPER_SUPPORT_SERVER("DEVELOPER_SUPPORT_SERVER"),
+
     /** Guild is able to be discovered in the directory. */
     DISCOVERABLE("DISCOVERABLE"),
 
+    /** Guild has enhanced role colors. */
+    ENHANCED_ROLE_COLORS("ENHANCED_ROLE_COLORS"),
+
     /** Guild is able to be featured in the directory. */
     FEATURABLE("FEATURABLE"),
+
+    /** Guild has guests enabled (temporary access via voice channels). */
+    GUESTS_ENABLED("GUESTS_ENABLED"),
+
+    /** Guild has guild tags. */
+    GUILD_TAGS("GUILD_TAGS"),
 
     /** Guild has paused invites, preventing new users from joining. */
     INVITES_DISABLED("INVITES_DISABLED"),
@@ -54,6 +78,9 @@ enum class GuildFeature(private val feature: String) {
 
     /** Guild has enabled monetization. */
     MONETIZATION_ENABLED("MONETIZATION_ENABLED"),
+
+    /** Guild has increased custom soundboard slots. */
+    MORE_SOUNDBOARD("MORE_SOUNDBOARD"),
 
     /** Guild has increased custom sticker slots. */
     MORE_STICKERS("MORE_STICKERS"),
@@ -70,8 +97,20 @@ enum class GuildFeature(private val feature: String) {
     /** Guild has access to create private threads. */
     PRIVATE_THREADS("PRIVATE_THREADS"),
 
+    /** Guild has raid alerts disabled. */
+    RAID_ALERTS_DISABLED("RAID_ALERTS_DISABLED"),
+
     /** Guild is able to set role icons. */
     ROLE_ICONS("ROLE_ICONS"),
+
+    /** Guild has role subscriptions available for purchase. */
+    ROLE_SUBSCRIPTIONS_AVAILABLE_FOR_PURCHASE("ROLE_SUBSCRIPTIONS_AVAILABLE_FOR_PURCHASE"),
+
+    /** Guild has role subscriptions enabled. */
+    ROLE_SUBSCRIPTIONS_ENABLED("ROLE_SUBSCRIPTIONS_ENABLED"),
+
+    /** Guild has the soundboard feature enabled. */
+    SOUNDBOARD("SOUNDBOARD"),
 
     /** Guild has enabled the ticketed events feature. */
     TICKETED_EVENTS_ENABLED("TICKETED_EVENTS_ENABLED"),

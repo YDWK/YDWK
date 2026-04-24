@@ -331,7 +331,7 @@ fun generateEventListenersInterfaces(listenerName: String, listenerEvents: Map<S
     }
 }
 
-tasks.create("generateEvents") {
+tasks.register("generateEvents") {
     group = "generate"
 
     doLast { generateEventFile() }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -136,7 +136,7 @@ class VoiceWebSocket(
         }
 
         try {
-            webSocket = WebSocketManager.getWS(url, etfInsteadOfJson, this, logger)
+            webSocket = WebSocketManager.getWS(wssUrl!!, etfInsteadOfJson, this, logger)
         } catch (e: IOException) {
             logger.error("Failed to connect to voice gateway, will try again in 10 seconds", e)
             if (timesTriedToConnect > 3) {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -440,7 +440,7 @@ open class WebSocketManager(
             .put("guild_id", guildId)
             .put("channel_id", channelId)
             .put("self_mute", muted)
-            .put("self_mute", deafen)
+            .put("self_deaf", deafen)
 
         voiceJson.set<JsonNode>("d", dataObjectNode)
 
@@ -542,11 +542,29 @@ open class WebSocketManager(
                 EventNames.MESSAGE_REACTION_REMOVE_EMOJI ->
                     MessageReactionRemoveEmojiHandler(ydwk, d).start()
                 EventNames.PRESENCE_UPDATE -> PresenceUpdateHandler(ydwk, d).start()
-                EventNames.TYPING_START -> logger.debug("This event is not supported")
+                EventNames.STAGE_INSTANCE_CREATE,
+                EventNames.STAGE_INSTANCE_UPDATE,
+                EventNames.STAGE_INSTANCE_DELETE ->
+                    logger.debug("Stage instance event received but not yet handled: $eventType")
+                EventNames.TYPING_START -> logger.debug("TYPING_START is not handled")
                 EventNames.USER_UPDATE -> UserUpdateHandler(ydwk, d).start()
                 EventNames.VOICE_STATE_UPDATE -> VoiceStateUpdateHandler(ydwk, d).start()
                 EventNames.VOICE_SERVER_UPDATE -> VoiceServerUpdateHandler(ydwk, d).start()
                 EventNames.WEBHOOKS_UPDATE -> WebhooksUpdateHandler(ydwk, d).start()
+                EventNames.GUILD_AUDIT_LOG_ENTRY_CREATE ->
+                    logger.debug("GUILD_AUDIT_LOG_ENTRY_CREATE received but not yet handled")
+                EventNames.GUILD_SOUNDBOARD_SOUND_CREATE,
+                EventNames.GUILD_SOUNDBOARD_SOUND_UPDATE,
+                EventNames.GUILD_SOUNDBOARD_SOUND_DELETE,
+                EventNames.GUILD_SOUNDBOARD_SOUNDS_UPDATE ->
+                    logger.debug("Soundboard event received but not yet handled: $eventType")
+                EventNames.MESSAGE_POLL_VOTE_ADD,
+                EventNames.MESSAGE_POLL_VOTE_REMOVE ->
+                    logger.debug("Poll vote event received but not yet handled: $eventType")
+                EventNames.ENTITLEMENT_CREATE,
+                EventNames.ENTITLEMENT_UPDATE,
+                EventNames.ENTITLEMENT_DELETE ->
+                    logger.debug("Entitlement event received but not yet handled: $eventType")
                 EventNames.UNKNOWN -> {
                     logger.error("Unknown event type: $eventType")
                 }

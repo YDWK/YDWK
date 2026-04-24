@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -45,6 +45,45 @@ enum class MessageType(private val type: Int, private val isDeletable: Boolean) 
 
     /** Can only be deleted by members with MANAGE_MESSAGES permission. */
     AUTO_MODERATION_ACTION(24, true),
+
+    /** Sent when a user purchases or renews a role subscription. */
+    ROLE_SUBSCRIPTION_PURCHASE(25, true),
+
+    /** Sent when a user is shown a premium upsell for an interaction. */
+    INTERACTION_PREMIUM_UPSELL(26, true),
+
+    /** Sent when a stage channel starts. */
+    STAGE_START(27, true),
+
+    /** Sent when a stage channel ends. */
+    STAGE_END(28, true),
+
+    /** Sent when a speaker is added to a stage channel. */
+    STAGE_SPEAKER(29, true),
+
+    /** Sent when the topic of a stage channel is changed. */
+    STAGE_TOPIC(31, true),
+
+    /** Sent when a guild application is premium subscribed. */
+    GUILD_APPLICATION_PREMIUM_SUBSCRIPTION(32, true),
+
+    /** Sent when guild incident alert mode is enabled. */
+    GUILD_INCIDENT_ALERT_MODE_ENABLED(36, true),
+
+    /** Sent when guild incident alert mode is disabled. */
+    GUILD_INCIDENT_ALERT_MODE_DISABLED(37, true),
+
+    /** Sent when a guild incident raid is reported. */
+    GUILD_INCIDENT_REPORT_RAID(38, true),
+
+    /** Sent when a guild incident false alarm is reported. */
+    GUILD_INCIDENT_REPORT_FALSE_ALARM(39, true),
+
+    /** Sent when a purchase notification occurs. */
+    PURCHASE_NOTIFICATION(44, false),
+
+    /** Sent to display the results of a poll. */
+    POLL_RESULT(46, true),
 
     /** An Unknown Message Type. */
     UNKNOWN(-1, false);

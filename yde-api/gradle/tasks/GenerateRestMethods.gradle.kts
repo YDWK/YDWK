@@ -60,7 +60,7 @@ fun generateRestAPIMethodGetters() {
     }
 }
 
-task("generateRestAPIMethodGetters") {
+tasks.register("generateRestAPIMethodGetters") {
     group = "generate"
-    generateRestAPIMethodGetters()
+    doLast { generateRestAPIMethodGetters() }
 }

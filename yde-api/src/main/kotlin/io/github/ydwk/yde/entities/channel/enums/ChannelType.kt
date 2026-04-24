@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -57,6 +57,9 @@ enum class ChannelType(private val id: Int) {
 
     /** A channel that can only contain threads. */
     FORUM(15),
+
+    /** A channel that can only contain threads, similar to FORUM but for media content. */
+    MEDIA(16),
 
     /** An unknown channel type. */
     UNKNOWN(-1);
