@@ -24,61 +24,61 @@ import io.github.ydwk.yde.entities.channel.guild.message.text.PermissionOverwrit
 
 interface MessageChannelBuilder : GenericEntityBuilder<GuildMessageChannel> {
 
-    /**
-     * Weather this channel is a text or news channel.
-     *
-     * @return true if this channel is a news channel, false if this channel is a text channel
-     * @see MessageChannelBuilder
-     */
-    fun isNewsChannel(): MessageChannelBuilder
+  /**
+   * Weather this channel is a text or news channel.
+   *
+   * @return true if this channel is a news channel, false if this channel is a text channel
+   * @see MessageChannelBuilder
+   */
+  fun isNewsChannel(): MessageChannelBuilder
 
-    /**
-     * Sets the topic of the channel.
-     *
-     * @param topic the topic of the channel
-     * @return this builder
-     */
-    fun setTopic(topic: String): MessageChannelBuilder
+  /**
+   * Sets the topic of the channel.
+   *
+   * @param topic the topic of the channel
+   * @return this builder
+   */
+  fun setTopic(topic: String): MessageChannelBuilder
 
-    /**
-     * Sets the rate limit per user of the channel.
-     *
-     * @param rateLimitPerUser the rate limit per user of the channel
-     * @return this builder
-     */
-    fun setRateLimitPerUser(rateLimitPerUser: Int): MessageChannelBuilder
+  /**
+   * Sets the rate limit per user of the channel.
+   *
+   * @param rateLimitPerUser the rate limit per user of the channel
+   * @return this builder
+   */
+  fun setRateLimitPerUser(rateLimitPerUser: Int): MessageChannelBuilder
 
-    /**
-     * Sets the position of the channel.
-     *
-     * @param position the position of the channel
-     * @return this builder
-     */
-    fun setPosition(position: Int): MessageChannelBuilder
+  /**
+   * Sets the position of the channel.
+   *
+   * @param position the position of the channel
+   * @return this builder
+   */
+  fun setPosition(position: Int): MessageChannelBuilder
 
-    /**
-     * Sets the permission overwrites of the channel.
-     *
-     * @param permissionOverwrites the permission overwrites of the channel
-     * @return this builder
-     */
-    fun setPermissionOverwrites(
-        permissionOverwrites: List<PermissionOverwrite>,
-    ): MessageChannelBuilder
+  /**
+   * Sets the permission overwrites of the channel.
+   *
+   * @param permissionOverwrites the permission overwrites of the channel
+   * @return this builder
+   */
+  fun setPermissionOverwrites(
+    permissionOverwrites: List<PermissionOverwrite>
+  ): MessageChannelBuilder
 
-    /**
-     * Sets the parent id of the channel.
-     *
-     * @param parentId the parent id of the channel
-     * @return this builder
-     */
-    fun setParentId(parentId: String): MessageChannelBuilder
+  /**
+   * Sets the parent id of the channel.
+   *
+   * @param parentId the parent id of the channel
+   * @return this builder
+   */
+  fun setParentId(parentId: String): MessageChannelBuilder
 
-    /**
-     * Sets the nsfw flag of the channel.
-     *
-     * @param nsfw the nsfw flag of the channel
-     * @return this builder
-     */
-    fun setNsfw(nsfw: Boolean): MessageChannelBuilder
+  /**
+   * Sets the nsfw flag of the channel.
+   *
+   * @param nsfw the nsfw flag of the channel
+   * @return this builder
+   */
+  fun setNsfw(nsfw: Boolean): MessageChannelBuilder
 }

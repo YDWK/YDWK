@@ -32,8 +32,8 @@ import io.github.ydwk.ydwk.evm.annotations.UserEvent
  */
 @UserEvent
 data class UserSystemUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: User,
-    val oldSystem: Boolean,
-    val newSystem: Boolean,
+  override val ydwk: YDWK,
+  override val entity: User,
+  val oldSystem: Boolean,
+  val newSystem: Boolean,
 ) : GenericUserUpdateEvent<Boolean>(ydwk, entity, oldSystem, newSystem)

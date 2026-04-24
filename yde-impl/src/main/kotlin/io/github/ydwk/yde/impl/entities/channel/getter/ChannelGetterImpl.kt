@@ -25,23 +25,23 @@ import io.github.ydwk.yde.entities.channel.getter.ChannelGetter
 import io.github.ydwk.yde.impl.entities.ChannelImpl
 
 internal class ChannelGetterImpl(channel: Channel) : ChannelImpl(channel), ChannelGetter {
-    override fun asGuildChannel(): GuildChannel? {
-        return isGuildChannel.let {
-            if (it) {
-                yde.entityInstanceBuilder.buildGuildChannel(json)
-            } else {
-                null
-            }
-        }
+  override fun asGuildChannel(): GuildChannel? {
+    return isGuildChannel.let {
+      if (it) {
+        yde.entityInstanceBuilder.buildGuildChannel(json)
+      } else {
+        null
+      }
     }
+  }
 
-    override fun asDmChannel(): DmChannel? {
-        return isDmChannel.let {
-            if (it) {
-                yde.entityInstanceBuilder.buildDMChannel(json)
-            } else {
-                null
-            }
-        }
+  override fun asDmChannel(): DmChannel? {
+    return isDmChannel.let {
+      if (it) {
+        yde.entityInstanceBuilder.buildDMChannel(json)
+      } else {
+        null
+      }
     }
+  }
 }

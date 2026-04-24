@@ -25,15 +25,15 @@ import io.github.ydwk.yde.entities.interaction.selectmenu.creator.types.ChannelS
 import io.github.ydwk.yde.interaction.message.ComponentType
 
 data class ChannelSelectMenuCreatorBuilder(
-    override val yde: YDE,
-    override val customId: String,
-    val channelTypes: List<ChannelType>,
+  override val yde: YDE,
+  override val customId: String,
+  val channelTypes: List<ChannelType>,
 ) :
-    ChannelSelectMenuCreator,
-    SelectMenuCreatorBuilder(customId, ComponentType.CHANNEL_SELECT_MENU, yde) {
-    init {
-        for (channelType in channelTypes) {
-            json.putArray("channel_types").add(channelType.getId())
-        }
+  ChannelSelectMenuCreator,
+  SelectMenuCreatorBuilder(customId, ComponentType.CHANNEL_SELECT_MENU, yde) {
+  init {
+    for (channelType in channelTypes) {
+      json.putArray("channel_types").add(channelType.getId())
     }
+  }
 }

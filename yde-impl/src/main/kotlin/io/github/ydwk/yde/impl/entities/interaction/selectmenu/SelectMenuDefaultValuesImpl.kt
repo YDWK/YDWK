@@ -24,9 +24,9 @@ import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenuDefaultValue
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
 class SelectMenuDefaultValuesImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val type: SelectMenuDefaultValues.Type
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val type: SelectMenuDefaultValues.Type,
 ) :
-    SelectMenuDefaultValues,
-    ToStringEntityImpl<SelectMenuDefaultValues>(yde, SelectMenuDefaultValues::class.java)
+  SelectMenuDefaultValues,
+  ToStringEntityImpl<SelectMenuDefaultValues>(yde, SelectMenuDefaultValues::class.java)

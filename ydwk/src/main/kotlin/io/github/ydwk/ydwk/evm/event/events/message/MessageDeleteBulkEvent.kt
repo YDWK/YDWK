@@ -29,4 +29,4 @@ import io.github.ydwk.ydwk.evm.event.Event
  * @param messages The messages that were deleted.
  */
 data class MessageDeleteBulkEvent(override val ydwk: YDWK, val message: List<Message>) :
-    Event(ydwk)
+  Event(ydwk)

@@ -22,13 +22,13 @@ import java.util.*
 
 /** An entity that has a name. */
 interface NameAbleEntity {
-    var name: String
+  var name: String
 
-    /**
-     * Formats the name of the Discord entity. Default format returns the name enclosed in backticks
-     * for Discord code formatting.
-     */
-    fun format(format: String = "`%s`"): String {
-        return format.format(name)
-    }
+  /**
+   * Formats the name of the Discord entity. Default format returns the name enclosed in backticks
+   * for Discord code formatting.
+   */
+  fun format(format: String = "`%s`"): String {
+    return format.format(name)
+  }
 }

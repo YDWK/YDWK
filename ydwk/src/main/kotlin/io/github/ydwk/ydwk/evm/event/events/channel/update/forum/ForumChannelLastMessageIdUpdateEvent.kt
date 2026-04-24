@@ -33,8 +33,8 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
  */
 @ChannelEvent
 data class ForumChannelLastMessageIdUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: GuildForumChannel,
-    val oldLastMessageId: String?,
-    val newLastMessageId: String?,
+  override val ydwk: YDWK,
+  override val entity: GuildForumChannel,
+  val oldLastMessageId: String?,
+  val newLastMessageId: String?,
 ) : GenericChannelUpdateEvent<String?>(ydwk, entity, oldLastMessageId, newLastMessageId)

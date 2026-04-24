@@ -19,102 +19,102 @@
 package io.github.ydwk.yde.entities.message
 
 enum class MessageType(private val type: Int, private val isDeletable: Boolean) {
-    DEFAULT(0, true),
-    RECIPIENT_ADD(1, false),
-    RECIPIENT_REMOVE(2, false),
-    CALL(3, false),
-    CHANNEL_NAME_CHANGE(4, false),
-    CHANNEL_ICON_CHANGE(5, false),
-    CHANNEL_PINNED_MESSAGE(6, true),
-    USER_JOIN(7, true),
-    GUILD_BOOST(8, true),
-    GUILD_BOOST_TIER_1(9, true),
-    GUILD_BOOST_TIER_2(10, true),
-    GUILD_BOOST_TIER_3(11, true),
-    CHANNEL_FOLLOW_ADD(12, true),
-    GUILD_DISCOVERY_DISQUALIFIED(14, false),
-    GUILD_DISCOVERY_REQUALIFIED(15, false),
-    GUILD_DISCOVERY_GRACE_PERIOD_INITIAL_WARNING(16, false),
-    GUILD_DISCOVERY_GRACE_PERIOD_FINAL_WARNING(17, false),
-    THREAD_CREATED(18, true),
-    REPLY(19, true),
-    CHAT_INPUT_COMMAND(20, true),
-    THREAD_STARTER_MESSAGE(21, false),
-    GUILD_INVITE_REMINDER(22, true),
-    CONTEXT_MENU_COMMAND(23, true),
+  DEFAULT(0, true),
+  RECIPIENT_ADD(1, false),
+  RECIPIENT_REMOVE(2, false),
+  CALL(3, false),
+  CHANNEL_NAME_CHANGE(4, false),
+  CHANNEL_ICON_CHANGE(5, false),
+  CHANNEL_PINNED_MESSAGE(6, true),
+  USER_JOIN(7, true),
+  GUILD_BOOST(8, true),
+  GUILD_BOOST_TIER_1(9, true),
+  GUILD_BOOST_TIER_2(10, true),
+  GUILD_BOOST_TIER_3(11, true),
+  CHANNEL_FOLLOW_ADD(12, true),
+  GUILD_DISCOVERY_DISQUALIFIED(14, false),
+  GUILD_DISCOVERY_REQUALIFIED(15, false),
+  GUILD_DISCOVERY_GRACE_PERIOD_INITIAL_WARNING(16, false),
+  GUILD_DISCOVERY_GRACE_PERIOD_FINAL_WARNING(17, false),
+  THREAD_CREATED(18, true),
+  REPLY(19, true),
+  CHAT_INPUT_COMMAND(20, true),
+  THREAD_STARTER_MESSAGE(21, false),
+  GUILD_INVITE_REMINDER(22, true),
+  CONTEXT_MENU_COMMAND(23, true),
 
-    /** Can only be deleted by members with MANAGE_MESSAGES permission. */
-    AUTO_MODERATION_ACTION(24, true),
+  /** Can only be deleted by members with MANAGE_MESSAGES permission. */
+  AUTO_MODERATION_ACTION(24, true),
 
-    /** Sent when a user purchases or renews a role subscription. */
-    ROLE_SUBSCRIPTION_PURCHASE(25, true),
+  /** Sent when a user purchases or renews a role subscription. */
+  ROLE_SUBSCRIPTION_PURCHASE(25, true),
 
-    /** Sent when a user is shown a premium upsell for an interaction. */
-    INTERACTION_PREMIUM_UPSELL(26, true),
+  /** Sent when a user is shown a premium upsell for an interaction. */
+  INTERACTION_PREMIUM_UPSELL(26, true),
 
-    /** Sent when a stage channel starts. */
-    STAGE_START(27, true),
+  /** Sent when a stage channel starts. */
+  STAGE_START(27, true),
 
-    /** Sent when a stage channel ends. */
-    STAGE_END(28, true),
+  /** Sent when a stage channel ends. */
+  STAGE_END(28, true),
 
-    /** Sent when a speaker is added to a stage channel. */
-    STAGE_SPEAKER(29, true),
+  /** Sent when a speaker is added to a stage channel. */
+  STAGE_SPEAKER(29, true),
 
-    /** Sent when the topic of a stage channel is changed. */
-    STAGE_TOPIC(31, true),
+  /** Sent when the topic of a stage channel is changed. */
+  STAGE_TOPIC(31, true),
 
-    /** Sent when a guild application is premium subscribed. */
-    GUILD_APPLICATION_PREMIUM_SUBSCRIPTION(32, true),
+  /** Sent when a guild application is premium subscribed. */
+  GUILD_APPLICATION_PREMIUM_SUBSCRIPTION(32, true),
 
-    /** Sent when guild incident alert mode is enabled. */
-    GUILD_INCIDENT_ALERT_MODE_ENABLED(36, true),
+  /** Sent when guild incident alert mode is enabled. */
+  GUILD_INCIDENT_ALERT_MODE_ENABLED(36, true),
 
-    /** Sent when guild incident alert mode is disabled. */
-    GUILD_INCIDENT_ALERT_MODE_DISABLED(37, true),
+  /** Sent when guild incident alert mode is disabled. */
+  GUILD_INCIDENT_ALERT_MODE_DISABLED(37, true),
 
-    /** Sent when a guild incident raid is reported. */
-    GUILD_INCIDENT_REPORT_RAID(38, true),
+  /** Sent when a guild incident raid is reported. */
+  GUILD_INCIDENT_REPORT_RAID(38, true),
 
-    /** Sent when a guild incident false alarm is reported. */
-    GUILD_INCIDENT_REPORT_FALSE_ALARM(39, true),
+  /** Sent when a guild incident false alarm is reported. */
+  GUILD_INCIDENT_REPORT_FALSE_ALARM(39, true),
 
-    /** Sent when a purchase notification occurs. */
-    PURCHASE_NOTIFICATION(44, false),
+  /** Sent when a purchase notification occurs. */
+  PURCHASE_NOTIFICATION(44, false),
 
-    /** Sent to display the results of a poll. */
-    POLL_RESULT(46, true),
+  /** Sent to display the results of a poll. */
+  POLL_RESULT(46, true),
 
-    /** An Unknown Message Type. */
-    UNKNOWN(-1, false);
+  /** An Unknown Message Type. */
+  UNKNOWN(-1, false);
 
-    companion object {
-        /**
-         * The [MessageType] of the provided [type].
-         *
-         * @param type The type to get the [MessageType] of.
-         * @return The [MessageType] of the provided [type].
-         */
-        fun getValue(type: Int): MessageType {
-            return entries.firstOrNull { it.type == type } ?: UNKNOWN
-        }
-    }
-
+  companion object {
     /**
-     * Weather or not the message type is deletable.
+     * The [MessageType] of the provided [type].
      *
-     * @return Weather or not the message type is deletable.
+     * @param type The type to get the [MessageType] of.
+     * @return The [MessageType] of the provided [type].
      */
-    fun isDeletable(): Boolean {
-        return isDeletable
+    fun getValue(type: Int): MessageType {
+      return entries.firstOrNull { it.type == type } ?: UNKNOWN
     }
+  }
 
-    /**
-     * The type of the message.
-     *
-     * @return The type of the message.
-     */
-    fun getType(): Int {
-        return type
-    }
+  /**
+   * Weather or not the message type is deletable.
+   *
+   * @return Weather or not the message type is deletable.
+   */
+  fun isDeletable(): Boolean {
+    return isDeletable
+  }
+
+  /**
+   * The type of the message.
+   *
+   * @return The type of the message.
+   */
+  fun getType(): Int {
+    return type
+  }
 }

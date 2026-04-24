@@ -19,36 +19,36 @@
 package io.github.ydwk.yde.entities.channel.guild.forum
 
 enum class ChannelFlag(private val value: Long) {
-    /** This thread is pinned to the top of its parent GUILD_FORUM channel. */
-    PINNED(1 shl 1),
+  /** This thread is pinned to the top of its parent GUILD_FORUM channel. */
+  PINNED(1 shl 1),
 
+  /**
+   * Whether a tag is required to be specified when creating a thread in a GUILD_FORUM channel. Tags
+   * are specified in the applied_tags field.
+   */
+  REQUIRE_TAG(1 shl 4),
+
+  /** An unknown flag. */
+  UNKNOWN(-1);
+
+  companion object {
     /**
-     * Whether a tag is required to be specified when creating a thread in a GUILD_FORUM channel.
-     * Tags are specified in the applied_tags field.
-     */
-    REQUIRE_TAG(1 shl 4),
-
-    /** An unknown flag. */
-    UNKNOWN(-1);
-
-    companion object {
-        /**
-         * Gets the [ChannelFlag] from the provided [value].
-         *
-         * @param value The value to get the [ChannelFlag] from.
-         * @return The [ChannelFlag] from the provided [value].
-         */
-        fun getValue(value: Long): ChannelFlag {
-            return entries.firstOrNull { it.value == value } ?: UNKNOWN
-        }
-    }
-
-    /**
-     * The value of this [ChannelFlag].
+     * Gets the [ChannelFlag] from the provided [value].
      *
-     * @return The value of this [ChannelFlag].
+     * @param value The value to get the [ChannelFlag] from.
+     * @return The [ChannelFlag] from the provided [value].
      */
-    fun getValue(): Long {
-        return value
+    fun getValue(value: Long): ChannelFlag {
+      return entries.firstOrNull { it.value == value } ?: UNKNOWN
     }
+  }
+
+  /**
+   * The value of this [ChannelFlag].
+   *
+   * @return The value of this [ChannelFlag].
+   */
+  fun getValue(): Long {
+    return value
+  }
 }

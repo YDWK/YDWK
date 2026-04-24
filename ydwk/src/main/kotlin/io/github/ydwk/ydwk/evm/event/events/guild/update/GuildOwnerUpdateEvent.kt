@@ -33,8 +33,8 @@ import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
  */
 @GuildEvent
 data class GuildOwnerUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: Guild,
-    val oldOwner: Long,
-    val newOwner: Long,
+  override val ydwk: YDWK,
+  override val entity: Guild,
+  val oldOwner: Long,
+  val newOwner: Long,
 ) : GenericGuildUpdateEvent<Long>(ydwk, entity, oldOwner, newOwner)

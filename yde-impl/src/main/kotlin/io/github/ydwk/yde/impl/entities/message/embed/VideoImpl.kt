@@ -25,10 +25,10 @@ import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import java.net.URL
 
 internal class VideoImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val url: URL?,
-    override val proxyUrl: String?,
-    override val height: Int?,
-    override val width: Int?
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val url: URL?,
+  override val proxyUrl: String?,
+  override val height: Int?,
+  override val width: Int?,
 ) : Video, ToStringEntityImpl<Video>(yde, Video::class.java)

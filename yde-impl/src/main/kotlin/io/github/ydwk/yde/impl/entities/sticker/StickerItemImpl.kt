@@ -25,13 +25,13 @@ import io.github.ydwk.yde.entities.sticker.StickerType
 import io.github.ydwk.yde.util.EntityToStringBuilder
 
 internal class StickerItemImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val idAsLong: Long,
-    override val name: String,
-    override val type: StickerType,
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val idAsLong: Long,
+  override val name: String,
+  override val type: StickerType,
 ) : StickerItem {
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).name(this.name).toString()
-    }
+  override fun toString(): String {
+    return EntityToStringBuilder(yde, this).name(this.name).toString()
+  }
 }

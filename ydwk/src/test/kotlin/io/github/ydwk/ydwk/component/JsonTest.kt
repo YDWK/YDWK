@@ -28,80 +28,76 @@ import org.junit.jupiter.api.Test
 
 class JsonTest {
 
-    @Test
-    @DisplayName("builds a component action row JSON payload")
-    fun builds_component_action_row_json_payload() {
-        val mainComponent = JsonNodeFactory.instance.arrayNode()
+  @Test
+  @DisplayName("builds a component action row JSON payload")
+  fun builds_component_action_row_json_payload() {
+    val mainComponent = JsonNodeFactory.instance.arrayNode()
 
-        mainComponent.add(
-            JsonNodeFactory.instance
-                .objectNode()
-                .put("type", 1)
-                .set(
-                    "components",
-                    JsonNodeFactory.instance.arrayNode().apply {
-                        add(
-                            JsonNodeFactory.instance
-                                .objectNode()
-                                .put("type", 2)
-                                .put("label", "test"))
-                    }) as JsonNode)
+    mainComponent.add(
+      JsonNodeFactory.instance
+        .objectNode()
+        .put("type", 1)
+        .set(
+          "components",
+          JsonNodeFactory.instance.arrayNode().apply {
+            add(JsonNodeFactory.instance.objectNode().put("type", 2).put("label", "test"))
+          },
+        ) as JsonNode
+    )
 
-        assertJsonEquals(
-            """[{"type":1,"components":[{"type":2,"label":"test"}]}]""",
-            mainComponent.toString())
-    }
+    assertJsonEquals(
+      """[{"type":1,"components":[{"type":2,"label":"test"}]}]""",
+      mainComponent.toString(),
+    )
+  }
 
-    @Test
-    @DisplayName("builds a component array without explicit row type")
-    fun builds_component_array_without_explicit_row_type() {
-        val mainComponent = JsonNodeFactory.instance.arrayNode()
+  @Test
+  @DisplayName("builds a component array without explicit row type")
+  fun builds_component_array_without_explicit_row_type() {
+    val mainComponent = JsonNodeFactory.instance.arrayNode()
 
-        mainComponent.add(
-            JsonNodeFactory.instance
-                .objectNode()
-                .set(
-                    "components",
-                    JsonNodeFactory.instance.arrayNode().apply {
-                        add(
-                            JsonNodeFactory.instance
-                                .objectNode()
-                                .put("type", 2)
-                                .put("label", "test"))
-                    }) as JsonNode)
+    mainComponent.add(
+      JsonNodeFactory.instance
+        .objectNode()
+        .set(
+          "components",
+          JsonNodeFactory.instance.arrayNode().apply {
+            add(JsonNodeFactory.instance.objectNode().put("type", 2).put("label", "test"))
+          },
+        ) as JsonNode
+    )
 
-        assertJsonEquals("""[{"components":[{"type":2,"label":"test"}]}]""", mainComponent.toString())
-    }
+    assertJsonEquals("""[{"components":[{"type":2,"label":"test"}]}]""", mainComponent.toString())
+  }
 
-    @Test
-    @DisplayName("builds a full interaction callback body with components")
-    fun builds_full_interaction_callback_body_with_components() {
-        val mainBody =
-            JsonNodeFactory.instance
-                .objectNode()
-                .put("type", InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE.getType())
-        val secondBody = JsonNodeFactory.instance.objectNode()
-        val mainComponent = JsonNodeFactory.instance.arrayNode()
+  @Test
+  @DisplayName("builds a full interaction callback body with components")
+  fun builds_full_interaction_callback_body_with_components() {
+    val mainBody =
+      JsonNodeFactory.instance
+        .objectNode()
+        .put("type", InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE.getType())
+    val secondBody = JsonNodeFactory.instance.objectNode()
+    val mainComponent = JsonNodeFactory.instance.arrayNode()
 
-        mainComponent.add(
-            JsonNodeFactory.instance
-                .objectNode()
-                .set(
-                    "components",
-                    JsonNodeFactory.instance.arrayNode().apply {
-                        add(
-                            JsonNodeFactory.instance
-                                .objectNode()
-                                .put("type", 2)
-                                .put("label", "test"))
-                    }) as JsonNode)
+    mainComponent.add(
+      JsonNodeFactory.instance
+        .objectNode()
+        .set(
+          "components",
+          JsonNodeFactory.instance.arrayNode().apply {
+            add(JsonNodeFactory.instance.objectNode().put("type", 2).put("label", "test"))
+          },
+        ) as JsonNode
+    )
 
-        secondBody.set<ArrayNode>("components", mainComponent)
+    secondBody.set<ArrayNode>("components", mainComponent)
 
-        mainBody.set<JsonNode>("data", secondBody)
+    mainBody.set<JsonNode>("data", secondBody)
 
-        assertJsonEquals(
-            """{"type":4,"data":{"components":[{"components":[{"type":2,"label":"test"}]}]}}""",
-            mainBody.toString())
-    }
+    assertJsonEquals(
+      """{"type":4,"data":{"components":[{"components":[{"type":2,"label":"test"}]}]}}""",
+      mainBody.toString(),
+    )
+  }
 }

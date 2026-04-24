@@ -33,8 +33,8 @@ import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
  */
 @GuildEvent
 data class GuildVanityUrlUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: Guild,
-    val oldVanityUrl: String?,
-    val newVanityUrl: String?,
+  override val ydwk: YDWK,
+  override val entity: Guild,
+  val oldVanityUrl: String?,
+  val newVanityUrl: String?,
 ) : GenericGuildUpdateEvent<String?>(ydwk, entity, oldVanityUrl, newVanityUrl)

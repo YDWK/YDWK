@@ -26,10 +26,10 @@ import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.util.GetterSnowFlake
 
 internal class MentionedChannelImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val idAsLong: Long,
-    override val guildId: GetterSnowFlake,
-    override val type: ChannelType,
-    override var name: String
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val idAsLong: Long,
+  override val guildId: GetterSnowFlake,
+  override val type: ChannelType,
+  override var name: String,
 ) : MentionedChannel, ToStringEntityImpl<MentionedChannel>(yde, MentionedChannel::class.java)

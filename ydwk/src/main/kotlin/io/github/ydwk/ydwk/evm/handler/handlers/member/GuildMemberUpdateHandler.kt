@@ -25,16 +25,18 @@ import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class GuildMemberUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override suspend fun start() {
-        val guildId = json.get("guild_id").asLong()
-        val guild = ydwk.getGuildById(guildId) ?: run {
-            ydwk.logger.warn("GuildMemberUpdate: guild $guildId not in cache")
-            return
+  override suspend fun start() {
+    val guildId = json.get("guild_id").asLong()
+    val guild =
+      ydwk.getGuildById(guildId)
+        ?: run {
+          ydwk.logger.warn("GuildMemberUpdate: guild $guildId not in cache")
+          return
         }
-        val userId = json.get("user").get("id").asLong()
-        val oldMember = guild.getMemberById(userId)
-        val newMember = ydwk.entityInstanceBuilder.buildMember(json, GetterSnowFlake.of(guildId))
-        ydwk.memberCache[guildId.toString(), newMember.id] = newMember
-        ydwk.emitEvent(GuildMemberUpdateEvent(ydwk, oldMember, newMember))
-    }
+    val userId = json.get("user").get("id").asLong()
+    val oldMember = guild.getMemberById(userId)
+    val newMember = ydwk.entityInstanceBuilder.buildMember(json, GetterSnowFlake.of(guildId))
+    ydwk.memberCache[guildId.toString(), newMember.id] = newMember
+    ydwk.emitEvent(GuildMemberUpdateEvent(ydwk, oldMember, newMember))
+  }
 }

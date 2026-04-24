@@ -25,10 +25,10 @@ import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.util.GetterSnowFlake
 
 internal class DefaultReactionEmojiImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val emojiId: GetterSnowFlake?,
-    override var name: String
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val emojiId: GetterSnowFlake?,
+  override var name: String,
 ) :
-    DefaultReactionEmoji,
-    ToStringEntityImpl<DefaultReactionEmoji>(yde, DefaultReactionEmoji::class.java)
+  DefaultReactionEmoji,
+  ToStringEntityImpl<DefaultReactionEmoji>(yde, DefaultReactionEmoji::class.java)

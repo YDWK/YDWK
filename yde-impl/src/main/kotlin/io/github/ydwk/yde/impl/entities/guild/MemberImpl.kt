@@ -36,57 +36,57 @@ import io.github.ydwk.yde.util.GetterSnowFlake
 import java.util.*
 
 internal class MemberImpl(
-    override val yde: YDEImpl,
-    override val json: JsonNode,
-    override val guildId: GetterSnowFlake,
-    override var user: User,
-    override var nick: String?,
-    override var guildAvatarHash: String?,
-    override val guildAvatar: Avatar?,
-    override val roleIds: List<GetterSnowFlake>,
-    override var joinedAt: String?,
-    override var premiumSince: String?,
-    override var deaf: Boolean,
-    override var mute: Boolean,
-    override var pending: Boolean,
-    override var timedOutUntil: String?,
-    override var voiceState: VoiceState?,
-    override var name: String,
-    override val idAsLong: Long = guildId.asLong + user.idAsLong
+  override val yde: YDEImpl,
+  override val json: JsonNode,
+  override val guildId: GetterSnowFlake,
+  override var user: User,
+  override var nick: String?,
+  override var guildAvatarHash: String?,
+  override val guildAvatar: Avatar?,
+  override val roleIds: List<GetterSnowFlake>,
+  override var joinedAt: String?,
+  override var premiumSince: String?,
+  override var deaf: Boolean,
+  override var mute: Boolean,
+  override var pending: Boolean,
+  override var timedOutUntil: String?,
+  override var voiceState: VoiceState?,
+  override var name: String,
+  override val idAsLong: Long = guildId.asLong + user.idAsLong,
 ) : Member {
-    override fun isOwner(guild: Guild): Boolean {
-        return guild.ownerId.asString == user.id
-    }
+  override fun isOwner(guild: Guild): Boolean {
+    return guild.ownerId.asString == user.id
+  }
 
-    override fun permissionEntity(guild: Guild, roles: List<Role>): PermissionEntity {
-        return PermissionEntityImpl(guild, isOwner(guild), roles, isTimedOut)
-    }
+  override fun permissionEntity(guild: Guild, roles: List<Role>): PermissionEntity {
+    return PermissionEntityImpl(guild, isOwner(guild), roles, isTimedOut)
+  }
 
-    override suspend fun createDmChannel(): RestResult<DmChannel> {
-        return user.createDmChannel()
-    }
+  override suspend fun createDmChannel(): RestResult<DmChannel> {
+    return user.createDmChannel()
+  }
 
-    override suspend fun addRole(role: Role): RestResult<NoResult> {
-        return yde.restAPIMethodGetters
-            .getMemberRestAPIMethods()
-            .addRoleToMember(guildId.asLong, idAsLong, role.idAsLong)
-    }
+  override suspend fun addRole(role: Role): RestResult<NoResult> {
+    return yde.restAPIMethodGetters
+      .getMemberRestAPIMethods()
+      .addRoleToMember(guildId.asLong, idAsLong, role.idAsLong)
+  }
 
-    override suspend fun addRoles(roles: List<Role>): List<RestResult<NoResult>> {
-        return roles.map { addRole(it) }
-    }
+  override suspend fun addRoles(roles: List<Role>): List<RestResult<NoResult>> {
+    return roles.map { addRole(it) }
+  }
 
-    override suspend fun removeRole(role: Role): RestResult<NoResult> {
-        return yde.restAPIMethodGetters
-            .getMemberRestAPIMethods()
-            .removeRoleFromMember(guildId.asLong, idAsLong, role.idAsLong)
-    }
+  override suspend fun removeRole(role: Role): RestResult<NoResult> {
+    return yde.restAPIMethodGetters
+      .getMemberRestAPIMethods()
+      .removeRoleFromMember(guildId.asLong, idAsLong, role.idAsLong)
+  }
 
-    override suspend fun removeRoles(roles: List<Role>): List<RestResult<NoResult>> {
-        return roles.map { removeRole(it) }
-    }
+  override suspend fun removeRoles(roles: List<Role>): List<RestResult<NoResult>> {
+    return roles.map { removeRole(it) }
+  }
 
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).name(this.name).toString()
-    }
+  override fun toString(): String {
+    return EntityToStringBuilder(yde, this).name(this.name).toString()
+  }
 }

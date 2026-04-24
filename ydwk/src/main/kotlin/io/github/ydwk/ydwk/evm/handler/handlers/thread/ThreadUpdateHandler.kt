@@ -26,11 +26,11 @@ import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class ThreadUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override suspend fun start() {
-        val threadId = json.get("id").asText()
-        val oldThread = ydwk.cache[threadId, CacheIds.CHANNEL] as? GuildThreadChannel
-        val newThread = ydwk.entityInstanceBuilder.buildGuildThreadChannel(json)
-        ydwk.cache[threadId, newThread] = CacheIds.CHANNEL
-        ydwk.emitEvent(ThreadUpdateEvent(ydwk, oldThread, newThread))
-    }
+  override suspend fun start() {
+    val threadId = json.get("id").asText()
+    val oldThread = ydwk.cache[threadId, CacheIds.CHANNEL] as? GuildThreadChannel
+    val newThread = ydwk.entityInstanceBuilder.buildGuildThreadChannel(json)
+    ydwk.cache[threadId, newThread] = CacheIds.CHANNEL
+    ydwk.emitEvent(ThreadUpdateEvent(ydwk, oldThread, newThread))
+  }
 }

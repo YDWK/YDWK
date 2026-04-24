@@ -34,8 +34,8 @@ import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
  */
 @GuildEvent
 data class GuildWelcomeScreenUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: Guild,
-    val oldWelcomeScreen: WelcomeScreen?,
-    val newWelcomeScreen: WelcomeScreen?,
+  override val ydwk: YDWK,
+  override val entity: Guild,
+  val oldWelcomeScreen: WelcomeScreen?,
+  val newWelcomeScreen: WelcomeScreen?,
 ) : GenericGuildUpdateEvent<WelcomeScreen?>(ydwk, entity, oldWelcomeScreen, newWelcomeScreen)

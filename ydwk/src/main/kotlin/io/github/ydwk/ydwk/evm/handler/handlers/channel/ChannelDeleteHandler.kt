@@ -27,19 +27,19 @@ import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.util.emitEvent
 
 class ChannelDeleteHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override suspend fun start() {
-        val channelType = ChannelType.getValue(json.get("type").asInt())
-        when {
-            channelType.isGuildChannel -> {
-                val channel = ydwk.entityInstanceBuilder.buildGuildChannel(json)
-                ydwk.cache.remove(json.get("id").asText(), CacheIds.CHANNEL)
-                ydwk.emitEvent(ChannelDeleteEvent(ydwk, channel))
-            }
-            channelType.isNonGuildChannel -> {
-                val channel = ydwk.entityInstanceBuilder.buildChannel(json, false, true)
-                ydwk.cache.remove(json.get("id").asText(), CacheIds.CHANNEL)
-                ChannelDeleteEvent(ydwk, channel).emitEvent()
-            }
-        }
+  override suspend fun start() {
+    val channelType = ChannelType.getValue(json.get("type").asInt())
+    when {
+      channelType.isGuildChannel -> {
+        val channel = ydwk.entityInstanceBuilder.buildGuildChannel(json)
+        ydwk.cache.remove(json.get("id").asText(), CacheIds.CHANNEL)
+        ydwk.emitEvent(ChannelDeleteEvent(ydwk, channel))
+      }
+      channelType.isNonGuildChannel -> {
+        val channel = ydwk.entityInstanceBuilder.buildChannel(json, false, true)
+        ydwk.cache.remove(json.get("id").asText(), CacheIds.CHANNEL)
+        ChannelDeleteEvent(ydwk, channel).emitEvent()
+      }
     }
+  }
 }

@@ -33,8 +33,8 @@ import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
  */
 @GuildEvent
 data class GuildAfkTimeoutUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: Guild,
-    val oldAfkTimeout: Int,
-    val newAfkTimeout: Int,
+  override val ydwk: YDWK,
+  override val entity: Guild,
+  val oldAfkTimeout: Int,
+  val newAfkTimeout: Int,
 ) : GenericGuildUpdateEvent<Int>(ydwk, entity, oldAfkTimeout, newAfkTimeout)

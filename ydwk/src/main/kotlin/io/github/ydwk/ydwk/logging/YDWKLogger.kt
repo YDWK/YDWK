@@ -19,14 +19,14 @@
 package io.github.ydwk.ydwk.logging
 
 interface YDWKLogger {
-    /**
-     * Sets the [YDWKLoggerSeverity] to be used.
-     *
-     * @param severity The [YDWKLoggerSeverity] to be used.
-     * @return The [YDWKLogger] instance.
-     */
-    fun setSeverity(severity: YDWKLoggerSeverity): YDWKLogger
+  /**
+   * Sets the [YDWKLoggerSeverity] to be used.
+   *
+   * @param severity The [YDWKLoggerSeverity] to be used.
+   * @return The [YDWKLogger] instance.
+   */
+  fun setSeverity(severity: YDWKLoggerSeverity): YDWKLogger
 
-    /** Logs the message. */
-    fun log()
+  /** Logs the message. */
+  fun log()
 }

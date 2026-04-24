@@ -24,9 +24,9 @@ import io.github.ydwk.yde.entities.audit.AuditLogChange
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
 internal class AuditLogChangeImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val newValue: Any?,
-    override val oldValue: Any?,
-    override val key: String
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val newValue: Any?,
+  override val oldValue: Any?,
+  override val key: String,
 ) : AuditLogChange, ToStringEntityImpl<AuditLogChange>(yde, AuditLogChange::class.java)

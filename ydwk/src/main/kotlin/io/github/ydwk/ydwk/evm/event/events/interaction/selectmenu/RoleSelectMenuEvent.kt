@@ -31,4 +31,4 @@ import io.github.ydwk.ydwk.evm.event.Event
  */
 @InteractionEvent
 data class RoleSelectMenuEvent(override val ydwk: YDWK, val selectMenu: RoleSelectMenuInteraction) :
-    Event(ydwk)
+  Event(ydwk)

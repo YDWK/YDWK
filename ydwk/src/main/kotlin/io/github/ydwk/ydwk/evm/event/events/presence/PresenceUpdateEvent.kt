@@ -15,7 +15,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */ 
 package io.github.ydwk.ydwk.evm.event.events.presence
 
 import io.github.ydwk.yde.entities.User
@@ -35,9 +35,9 @@ import io.github.ydwk.ydwk.evm.event.Event
  */
 @GuildEvent
 data class PresenceUpdateEvent(
-    override val ydwk: YDWK,
-    val guildId: GetterSnowFlake,
-    val userId: GetterSnowFlake,
-    val status: String,
-    val user: User?,
+  override val ydwk: YDWK,
+  val guildId: GetterSnowFlake,
+  val userId: GetterSnowFlake,
+  val status: String,
+  val user: User?,
 ) : Event(ydwk)

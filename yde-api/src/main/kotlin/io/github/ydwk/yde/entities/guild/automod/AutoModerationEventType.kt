@@ -15,18 +15,18 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */ 
 package io.github.ydwk.yde.entities.guild.automod
 
 enum class AutoModerationEventType(private val value: Int) {
-    MESSAGE_SEND(1),
-    MEMBER_UPDATE(2),
-    UNKNOWN(-1);
+  MESSAGE_SEND(1),
+  MEMBER_UPDATE(2),
+  UNKNOWN(-1);
 
-    fun getValue(): Int = value
+  fun getValue(): Int = value
 
-    companion object {
-        fun fromValue(value: Int): AutoModerationEventType =
-            entries.firstOrNull { it.value == value } ?: UNKNOWN
-    }
+  companion object {
+    fun fromValue(value: Int): AutoModerationEventType =
+      entries.firstOrNull { it.value == value } ?: UNKNOWN
+  }
 }

@@ -23,28 +23,28 @@ import io.github.ydwk.yde.entities.channel.GuildChannel
 import io.github.ydwk.yde.rest.RestResult
 
 interface ChannelRestAPIMethods {
-    /**
-     * Request to get a channel by its id.
-     *
-     * @param channelId the id of the channel
-     * @return a [RestResult] that will contain the channel
-     */
-    suspend fun requestChannel(channelId: Long): RestResult<Channel>
+  /**
+   * Request to get a channel by its id.
+   *
+   * @param channelId the id of the channel
+   * @return a [RestResult] that will contain the channel
+   */
+  suspend fun requestChannel(channelId: Long): RestResult<Channel>
 
-    /**
-     * Request to get a guild channel by its id.
-     *
-     * @param guildId the id of the guild
-     * @param channelId the id of the channel
-     * @return a [RestResult] that will contain the channel
-     */
-    suspend fun requestGuildChannel(guildId: Long, channelId: Long): RestResult<GuildChannel>
+  /**
+   * Request to get a guild channel by its id.
+   *
+   * @param guildId the id of the guild
+   * @param channelId the id of the channel
+   * @return a [RestResult] that will contain the channel
+   */
+  suspend fun requestGuildChannel(guildId: Long, channelId: Long): RestResult<GuildChannel>
 
-    /**
-     * Request to get a list of guild channels.
-     *
-     * @param guildId the id of the guild
-     * @return a [RestResult] that will contain the list of channels
-     */
-    suspend fun requestGuildChannels(guildId: Long): RestResult<List<GuildChannel>>
+  /**
+   * Request to get a list of guild channels.
+   *
+   * @param guildId the id of the guild
+   * @return a [RestResult] that will contain the list of channels
+   */
+  suspend fun requestGuildChannels(guildId: Long): RestResult<List<GuildChannel>>
 }

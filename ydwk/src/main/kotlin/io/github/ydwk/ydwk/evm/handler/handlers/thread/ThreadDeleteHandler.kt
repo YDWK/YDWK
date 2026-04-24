@@ -27,12 +27,13 @@ import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class ThreadDeleteHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override suspend fun start() {
-        val threadId = GetterSnowFlake.of(json.get("id").asLong())
-        val guildId = GetterSnowFlake.of(json.get("guild_id").asLong())
-        val parentId = if (json.has("parent_id")) GetterSnowFlake.of(json.get("parent_id").asLong()) else null
-        val cached = ydwk.cache[threadId.asString, CacheIds.CHANNEL] as? GuildThreadChannel
-        ydwk.cache.remove(threadId.asString, CacheIds.CHANNEL)
-        ydwk.emitEvent(ThreadDeleteEvent(ydwk, threadId, guildId, parentId, cached))
-    }
+  override suspend fun start() {
+    val threadId = GetterSnowFlake.of(json.get("id").asLong())
+    val guildId = GetterSnowFlake.of(json.get("guild_id").asLong())
+    val parentId =
+      if (json.has("parent_id")) GetterSnowFlake.of(json.get("parent_id").asLong()) else null
+    val cached = ydwk.cache[threadId.asString, CacheIds.CHANNEL] as? GuildThreadChannel
+    ydwk.cache.remove(threadId.asString, CacheIds.CHANNEL)
+    ydwk.emitEvent(ThreadDeleteEvent(ydwk, threadId, guildId, parentId, cached))
+  }
 }

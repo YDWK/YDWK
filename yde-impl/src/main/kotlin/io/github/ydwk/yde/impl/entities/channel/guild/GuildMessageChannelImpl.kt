@@ -27,31 +27,32 @@ import io.github.ydwk.yde.entities.channel.guild.message.text.PermissionOverwrit
 import io.github.ydwk.yde.impl.entities.channel.getter.guild.GuildMessageChannelGetterImpl
 
 internal open class GuildMessageChannelImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val idAsLong: Long,
-    override var topic: String,
-    override var nsfw: Boolean,
-    override var defaultAutoArchiveDuration: Int,
-    override var lastMessageId: String,
-    override var lastPinTimestamp: String?,
-    override var permissionOverwrites: List<PermissionOverwrite>,
-    override val type: ChannelType
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val idAsLong: Long,
+  override var topic: String,
+  override var nsfw: Boolean,
+  override var defaultAutoArchiveDuration: Int,
+  override var lastMessageId: String,
+  override var lastPinTimestamp: String?,
+  override var permissionOverwrites: List<PermissionOverwrite>,
+  override val type: ChannelType,
 ) : GuildMessageChannel, GuildChannelImpl(yde.entityInstanceBuilder.buildGuildChannel(json)) {
-    constructor(
-        guildMessageChannel: GuildMessageChannel
-    ) : this(
-        guildMessageChannel.yde,
-        guildMessageChannel.json,
-        guildMessageChannel.idAsLong,
-        guildMessageChannel.topic,
-        guildMessageChannel.nsfw,
-        guildMessageChannel.defaultAutoArchiveDuration,
-        guildMessageChannel.lastMessageId,
-        guildMessageChannel.lastPinTimestamp,
-        guildMessageChannel.permissionOverwrites,
-        guildMessageChannel.type)
+  constructor(
+    guildMessageChannel: GuildMessageChannel
+  ) : this(
+    guildMessageChannel.yde,
+    guildMessageChannel.json,
+    guildMessageChannel.idAsLong,
+    guildMessageChannel.topic,
+    guildMessageChannel.nsfw,
+    guildMessageChannel.defaultAutoArchiveDuration,
+    guildMessageChannel.lastMessageId,
+    guildMessageChannel.lastPinTimestamp,
+    guildMessageChannel.permissionOverwrites,
+    guildMessageChannel.type,
+  )
 
-    override val guildMessageChannelGetter: GuildMessageChannelGetter
-        get() = GuildMessageChannelGetterImpl(this)
+  override val guildMessageChannelGetter: GuildMessageChannelGetter
+    get() = GuildMessageChannelGetterImpl(this)
 }

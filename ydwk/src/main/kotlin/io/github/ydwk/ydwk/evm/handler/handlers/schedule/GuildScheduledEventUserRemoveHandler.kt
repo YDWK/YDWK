@@ -25,11 +25,11 @@ import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class GuildScheduledEventUserRemoveHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override suspend fun start() {
-        val scheduledEventId = GetterSnowFlake.of(json.get("guild_scheduled_event_id").asLong())
-        val guildId = GetterSnowFlake.of(json.get("guild_id").asLong())
-        val userId = json.get("user_id").asLong()
-        val user = ydwk.getUserById(userId)
-        ydwk.emitEvent(GuildScheduledEventUserRemoveEvent(ydwk, scheduledEventId, guildId, user, null))
-    }
+  override suspend fun start() {
+    val scheduledEventId = GetterSnowFlake.of(json.get("guild_scheduled_event_id").asLong())
+    val guildId = GetterSnowFlake.of(json.get("guild_id").asLong())
+    val userId = json.get("user_id").asLong()
+    val user = ydwk.getUserById(userId)
+    ydwk.emitEvent(GuildScheduledEventUserRemoveEvent(ydwk, scheduledEventId, guildId, user, null))
+  }
 }

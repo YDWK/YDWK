@@ -33,8 +33,8 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
  */
 @ChannelEvent
 data class VoiceChannelBitrateUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: GuildVoiceChannel,
-    val oldBitrate: Int,
-    val newBitrate: Int,
+  override val ydwk: YDWK,
+  override val entity: GuildVoiceChannel,
+  val oldBitrate: Int,
+  val newBitrate: Int,
 ) : GenericChannelUpdateEvent<Int>(ydwk, entity, oldBitrate, newBitrate)

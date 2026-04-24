@@ -33,8 +33,8 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
  */
 @ChannelEvent
 data class ForumChannelTemplateUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: GuildForumChannel,
-    val oldTemplate: String?,
-    val newTemplate: String?,
+  override val ydwk: YDWK,
+  override val entity: GuildForumChannel,
+  val oldTemplate: String?,
+  val newTemplate: String?,
 ) : GenericChannelUpdateEvent<String?>(ydwk, entity, oldTemplate, newTemplate)

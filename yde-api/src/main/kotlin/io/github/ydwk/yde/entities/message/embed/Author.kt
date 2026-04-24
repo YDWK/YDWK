@@ -22,31 +22,31 @@ import io.github.ydwk.yde.entities.util.GenericEntity
 import java.net.URL
 
 interface Author : GenericEntity {
-    /**
-     * The name of this author.
-     *
-     * @return The name of this author.
-     */
-    val name: String
+  /**
+   * The name of this author.
+   *
+   * @return The name of this author.
+   */
+  val name: String
 
-    /**
-     * The url of this author.
-     *
-     * @return The url of this author.
-     */
-    val url: URL?
+  /**
+   * The url of this author.
+   *
+   * @return The url of this author.
+   */
+  val url: URL?
 
-    /**
-     * The icon url of this author.
-     *
-     * @return The icon url of this author.
-     */
-    val iconUrl: String?
+  /**
+   * The icon url of this author.
+   *
+   * @return The icon url of this author.
+   */
+  val iconUrl: String?
 
-    /**
-     * The proxy icon url of this author.
-     *
-     * @return The proxy icon url of this author.
-     */
-    val proxyIconUrl: String?
+  /**
+   * The proxy icon url of this author.
+   *
+   * @return The proxy icon url of this author.
+   */
+  val proxyIconUrl: String?
 }

@@ -21,71 +21,76 @@ package io.github.ydwk.ydwk.logging
 import java.time.Instant
 
 class YDWKLoggerImpl(
-    private val manager: YDWKLogManager,
-    val message: String,
-    private val classToLog: String? = null,
+  private val manager: YDWKLogManager,
+  val message: String,
+  private val classToLog: String? = null,
 ) : YDWKLogger {
-    private var currentLoggerSeverity: YDWKLoggerSeverity = YDWKLoggerSeverity.INFO
+  private var currentLoggerSeverity: YDWKLoggerSeverity = YDWKLoggerSeverity.INFO
 
-    override fun setSeverity(severity: YDWKLoggerSeverity): YDWKLogger {
-        this.currentLoggerSeverity = severity
-        return this
-    }
+  override fun setSeverity(severity: YDWKLoggerSeverity): YDWKLogger {
+    this.currentLoggerSeverity = severity
+    return this
+  }
 
-    override fun log() {
-        val enabledLoggerStatus = manager.getEnabledLoggerStatus()
+  override fun log() {
+    val enabledLoggerStatus = manager.getEnabledLoggerStatus()
 
-        when (currentLoggerSeverity) {
-            YDWKLoggerSeverity.INFO -> {
-                if (enabledLoggerStatus.contains(YDWKLoggerStatus.INFO)) {
-                    manager.print(
-                        message,
-                        currentLoggerSeverity.getColour(),
-                        Instant.now(),
-                        currentLoggerSeverity.getSeverity(),
-                        classToLog)
-                }
-            }
-            YDWKLoggerSeverity.WARN -> {
-                if (enabledLoggerStatus.contains(YDWKLoggerStatus.WARN)) {
-                    manager.print(
-                        message,
-                        currentLoggerSeverity.getColour(),
-                        Instant.now(),
-                        currentLoggerSeverity.getSeverity(),
-                        classToLog)
-                }
-            }
-            YDWKLoggerSeverity.ERROR -> {
-                if (enabledLoggerStatus.contains(YDWKLoggerStatus.ERROR)) {
-                    manager.print(
-                        message,
-                        currentLoggerSeverity.getColour(),
-                        Instant.now(),
-                        currentLoggerSeverity.getSeverity(),
-                        classToLog)
-                }
-            }
-            YDWKLoggerSeverity.DEBUG -> {
-                if (enabledLoggerStatus.contains(YDWKLoggerStatus.DEBUG)) {
-                    manager.print(
-                        message,
-                        currentLoggerSeverity.getColour(),
-                        Instant.now(),
-                        currentLoggerSeverity.getSeverity(),
-                        classToLog)
-                }
-            }
-            YDWKLoggerSeverity.FATAL -> {
-                if (enabledLoggerStatus.contains(YDWKLoggerStatus.ERROR)) {
-                    manager.print(
-                        message,
-                        currentLoggerSeverity.getColour(),
-                        Instant.now(),
-                        currentLoggerSeverity.getSeverity(),
-                        classToLog)
-                }
-            }
+    when (currentLoggerSeverity) {
+      YDWKLoggerSeverity.INFO -> {
+        if (enabledLoggerStatus.contains(YDWKLoggerStatus.INFO)) {
+          manager.print(
+            message,
+            currentLoggerSeverity.getColour(),
+            Instant.now(),
+            currentLoggerSeverity.getSeverity(),
+            classToLog,
+          )
         }
+      }
+      YDWKLoggerSeverity.WARN -> {
+        if (enabledLoggerStatus.contains(YDWKLoggerStatus.WARN)) {
+          manager.print(
+            message,
+            currentLoggerSeverity.getColour(),
+            Instant.now(),
+            currentLoggerSeverity.getSeverity(),
+            classToLog,
+          )
+        }
+      }
+      YDWKLoggerSeverity.ERROR -> {
+        if (enabledLoggerStatus.contains(YDWKLoggerStatus.ERROR)) {
+          manager.print(
+            message,
+            currentLoggerSeverity.getColour(),
+            Instant.now(),
+            currentLoggerSeverity.getSeverity(),
+            classToLog,
+          )
+        }
+      }
+      YDWKLoggerSeverity.DEBUG -> {
+        if (enabledLoggerStatus.contains(YDWKLoggerStatus.DEBUG)) {
+          manager.print(
+            message,
+            currentLoggerSeverity.getColour(),
+            Instant.now(),
+            currentLoggerSeverity.getSeverity(),
+            classToLog,
+          )
+        }
+      }
+      YDWKLoggerSeverity.FATAL -> {
+        if (enabledLoggerStatus.contains(YDWKLoggerStatus.ERROR)) {
+          manager.print(
+            message,
+            currentLoggerSeverity.getColour(),
+            Instant.now(),
+            currentLoggerSeverity.getSeverity(),
+            classToLog,
+          )
+        }
+      }
     }
+  }
 }

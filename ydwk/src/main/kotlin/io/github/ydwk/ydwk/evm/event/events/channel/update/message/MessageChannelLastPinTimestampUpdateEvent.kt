@@ -33,8 +33,8 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
  */
 @ChannelEvent
 data class MessageChannelLastPinTimestampUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: GuildMessageChannel,
-    val oldLastPinTimestamp: String?,
-    val newLastPinTimestamp: String?,
+  override val ydwk: YDWK,
+  override val entity: GuildMessageChannel,
+  val oldLastPinTimestamp: String?,
+  val newLastPinTimestamp: String?,
 ) : GenericChannelUpdateEvent<String?>(ydwk, entity, oldLastPinTimestamp, newLastPinTimestamp)

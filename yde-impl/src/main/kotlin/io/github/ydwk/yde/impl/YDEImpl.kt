@@ -58,131 +58,132 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 open class YDEImpl(
-    protected open var token: String? = null,
-    open var applicationId: String? = null,
-    protected open val client: HttpClient,
-    protected open var guildIdList: MutableList<String> = mutableListOf(),
-    override val githubRepositoryUrl: String,
-    override val wrapperVersion: String,
-    override var coroutineDispatcher: CoroutineDispatcher =
-        Executors.newVirtualThreadPerTaskExecutor().asCoroutineDispatcher()
+  protected open var token: String? = null,
+  open var applicationId: String? = null,
+  protected open val client: HttpClient,
+  protected open var guildIdList: MutableList<String> = mutableListOf(),
+  override val githubRepositoryUrl: String,
+  override val wrapperVersion: String,
+  override var coroutineDispatcher: CoroutineDispatcher =
+    Executors.newVirtualThreadPerTaskExecutor().asCoroutineDispatcher(),
 ) : YDE {
-    val logger: Logger = LoggerFactory.getLogger(YDEImpl::class.java)
+  val logger: Logger = LoggerFactory.getLogger(YDEImpl::class.java)
 
-    private val allowedCache: MutableSet<CacheIds> = mutableSetOf()
+  private val allowedCache: MutableSet<CacheIds> = mutableSetOf()
 
-    val cache: Cache
-        get() = ConcurrentCache(allowedCache, this)
+  val cache: Cache
+    get() = ConcurrentCache(allowedCache, this)
 
-    val memberCache: MemberCache
-        get() = MemberCacheImpl(allowedCache, this)
+  val memberCache: MemberCache
+    get() = MemberCacheImpl(allowedCache, this)
 
-    override val objectNode: ObjectNode
-        get() = JsonNodeFactory.instance.objectNode()
+  override val objectNode: ObjectNode
+    get() = JsonNodeFactory.instance.objectNode()
 
-    override val objectMapper: ObjectMapper
-        get() = ObjectMapper()
+  override val objectMapper: ObjectMapper
+    get() = ObjectMapper()
 
-    override val restApiManager: RestApiManager
-        get() {
-            val botToken = token ?: throw IllegalStateException("Bot token is not set")
-            return RestApiManagerImpl(botToken, this, client)
+  override val restApiManager: RestApiManager
+    get() {
+      val botToken = token ?: throw IllegalStateException("Bot token is not set")
+      return RestApiManagerImpl(botToken, this, client)
+    }
+
+  override val restAPIMethodGetters: RestAPIMethodGetters
+    get() = RestAPIMethodGetterImpl(this)
+
+  override fun getMemberById(guildId: Long, userId: Long): Member? {
+    return memberCache[guildId.toString(), userId.toString()]
+  }
+
+  override fun getMembers(): List<Member> {
+    return memberCache.values().map { it }
+  }
+
+  override fun getUserById(id: Long): User? {
+    return cache[id.toString(), CacheIds.USER].let { it as User? }
+  }
+
+  override fun getUsers(): List<User> {
+    return cache.values(CacheIds.USER).map { it as User }
+  }
+
+  override fun getGuildById(id: String): Guild? {
+    return cache[id, CacheIds.GUILD].let { it as Guild? }
+  }
+
+  override fun getGuilds(): List<Guild> {
+    return cache.values(CacheIds.GUILD).map { it as Guild }
+  }
+
+  override fun getChannelById(id: Long): Channel? {
+    return cache[id.toString(), CacheIds.CHANNEL].let { it as Channel? }
+  }
+
+  override fun getChannels(): List<Channel> {
+    return cache.values(CacheIds.CHANNEL).map { it as Channel }
+  }
+
+  override val entityBuilder: EntityBuilder
+    get() = EntityBuilderImpl(this)
+
+  override val slashBuilder: ISlashCommandBuilder
+    get() =
+      SlashBuilderImpl(this, guildIdList, applicationId ?: throw ApplicationIdNotSetException())
+
+  override val userCommandBuilder: IUserCommandBuilder
+    get() =
+      IUserCommandBuilderImpl(
+        this,
+        guildIdList,
+        applicationId ?: throw ApplicationIdNotSetException(),
+      )
+
+  override val messageCommandBuilder: IMessageCommandBuilder
+    get() =
+      IMessageCommandBuilderImpl(
+        this,
+        guildIdList,
+        applicationId ?: throw ApplicationIdNotSetException(),
+      )
+
+  override val embedBuilder: EmbedBuilder
+    get() = EmbedBuilderImpl(this)
+
+  override fun triggerCacheTypeClear(cacheId: CacheIds, duration: Duration, repeat: Boolean) {
+    cache.triggerCacheTypeClear(cacheId, duration, repeat)
+  }
+
+  override fun triggerCacheTypeClear(cacheIds: Set<CacheIds>, duration: Duration, repeat: Boolean) =
+    cache.triggerCacheTypesClear(cacheIds, duration, repeat)
+
+  override fun triggerCacheClear(duration: Duration, repeat: Boolean) =
+    cache.triggerCacheClear(duration, repeat)
+
+  override fun setGuildIds(vararg guildIds: String) = guildIds.forEach { this.guildIdList.add(it) }
+
+  override fun setAllowedCache(vararg cacheIds: CacheIds) {
+    allowedCache.addAll(cacheIds.toSet())
+  }
+
+  override fun setDisallowedCache(vararg cacheIds: CacheIds) {
+    allowedCache.removeAll(cacheIds.toSet())
+  }
+
+  override val bot: Bot? = null
+    get() {
+      while (field == null) {
+        try {
+          Thread.sleep(1000)
+        } catch (e: InterruptedException) {
+          e.printStackTrace()
         }
-
-    override val restAPIMethodGetters: RestAPIMethodGetters
-        get() = RestAPIMethodGetterImpl(this)
-
-    override fun getMemberById(guildId: Long, userId: Long): Member? {
-        return memberCache[guildId.toString(), userId.toString()]
+      } // wait for bot to be set
+      return field
     }
 
-    override fun getMembers(): List<Member> {
-        return memberCache.values().map { it }
-    }
+  override val entityInstanceBuilder: EntityInstanceBuilder = EntityInstanceBuilderImpl(this)
 
-    override fun getUserById(id: Long): User? {
-        return cache[id.toString(), CacheIds.USER].let { it as User? }
-    }
-
-    override fun getUsers(): List<User> {
-        return cache.values(CacheIds.USER).map { it as User }
-    }
-
-    override fun getGuildById(id: String): Guild? {
-        return cache[id, CacheIds.GUILD].let { it as Guild? }
-    }
-
-    override fun getGuilds(): List<Guild> {
-        return cache.values(CacheIds.GUILD).map { it as Guild }
-    }
-
-    override fun getChannelById(id: Long): Channel? {
-        return cache[id.toString(), CacheIds.CHANNEL].let { it as Channel? }
-    }
-
-    override fun getChannels(): List<Channel> {
-        return cache.values(CacheIds.CHANNEL).map { it as Channel }
-    }
-
-    override val entityBuilder: EntityBuilder
-        get() = EntityBuilderImpl(this)
-
-    override val slashBuilder: ISlashCommandBuilder
-        get() =
-            SlashBuilderImpl(
-                this, guildIdList, applicationId ?: throw ApplicationIdNotSetException())
-
-    override val userCommandBuilder: IUserCommandBuilder
-        get() =
-            IUserCommandBuilderImpl(
-                this, guildIdList, applicationId ?: throw ApplicationIdNotSetException())
-
-    override val messageCommandBuilder: IMessageCommandBuilder
-        get() =
-            IMessageCommandBuilderImpl(
-                this, guildIdList, applicationId ?: throw ApplicationIdNotSetException())
-
-    override val embedBuilder: EmbedBuilder
-        get() = EmbedBuilderImpl(this)
-
-    override fun triggerCacheTypeClear(cacheId: CacheIds, duration: Duration, repeat: Boolean) {
-        cache.triggerCacheTypeClear(cacheId, duration, repeat)
-    }
-
-    override fun triggerCacheTypeClear(
-        cacheIds: Set<CacheIds>,
-        duration: Duration,
-        repeat: Boolean
-    ) = cache.triggerCacheTypesClear(cacheIds, duration, repeat)
-
-    override fun triggerCacheClear(duration: Duration, repeat: Boolean) =
-        cache.triggerCacheClear(duration, repeat)
-
-    override fun setGuildIds(vararg guildIds: String) =
-        guildIds.forEach { this.guildIdList.add(it) }
-
-    override fun setAllowedCache(vararg cacheIds: CacheIds) {
-        allowedCache.addAll(cacheIds.toSet())
-    }
-
-    override fun setDisallowedCache(vararg cacheIds: CacheIds) {
-        allowedCache.removeAll(cacheIds.toSet())
-    }
-
-    override val bot: Bot? = null
-        get() {
-            while (field == null) {
-                try {
-                    Thread.sleep(1000)
-                } catch (e: InterruptedException) {
-                    e.printStackTrace()
-                }
-            } // wait for bot to be set
-            return field
-        }
-
-    override val entityInstanceBuilder: EntityInstanceBuilder = EntityInstanceBuilderImpl(this)
-
-    override fun toString(): String =
-        EntityToStringBuilder(this, this).add("applicationId", applicationId).toString()
+  override fun toString(): String =
+    EntityToStringBuilder(this, this).add("applicationId", applicationId).toString()
 }

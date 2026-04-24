@@ -32,8 +32,8 @@ import io.github.ydwk.ydwk.evm.annotations.UserEvent
  */
 @UserEvent
 data class UserFlagsUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: User,
-    val oldFlags: Int?,
-    val newFlags: Int?,
+  override val ydwk: YDWK,
+  override val entity: User,
+  val oldFlags: Int?,
+  val newFlags: Int?,
 ) : GenericUserUpdateEvent<Int?>(ydwk, entity, oldFlags, newFlags)

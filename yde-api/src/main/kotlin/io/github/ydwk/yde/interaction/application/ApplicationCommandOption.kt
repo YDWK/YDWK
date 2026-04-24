@@ -23,38 +23,38 @@ import io.github.ydwk.yde.builders.slash.SlashOptionType
 import io.github.ydwk.yde.entities.util.GenericEntity
 
 interface ApplicationCommandOption : GenericEntity {
-    /**
-     * The name of the option.
-     *
-     * @return The name of the option.
-     */
-    var name: String
+  /**
+   * The name of the option.
+   *
+   * @return The name of the option.
+   */
+  var name: String
 
-    /**
-     * The type of the option.
-     *
-     * @return The type of the option.
-     */
-    val type: SlashOptionType
+  /**
+   * The type of the option.
+   *
+   * @return The type of the option.
+   */
+  val type: SlashOptionType
 
-    /**
-     * The value as Any.
-     *
-     * @return The value as Any.
-     */
-    val value: JsonNode
+  /**
+   * The value as Any.
+   *
+   * @return The value as Any.
+   */
+  val value: JsonNode
 
-    /**
-     * The options of the option.
-     *
-     * @return The options of the option.
-     */
-    val options: List<ApplicationCommandOption>
+  /**
+   * The options of the option.
+   *
+   * @return The options of the option.
+   */
+  val options: List<ApplicationCommandOption>
 
-    /**
-     * Gets weather this option is the currently focused option for autocomplete.
-     *
-     * @return Weather this option is the currently focused option for autocomplete.
-     */
-    val focused: Boolean?
+  /**
+   * Gets weather this option is the currently focused option for autocomplete.
+   *
+   * @return Weather this option is the currently focused option for autocomplete.
+   */
+  val focused: Boolean?
 }

@@ -24,9 +24,9 @@ import io.github.ydwk.yde.YDE
 /** A generic entity that can be used to represent any discord entity. */
 interface GenericEntity : ToStringEntity {
 
-    /** The main YDE instance. */
-    val yde: YDE
+  /** The main YDE instance. */
+  val yde: YDE
 
-    /** The json representation of this entity. */
-    val json: JsonNode
+  /** The json representation of this entity. */
+  val json: JsonNode
 }

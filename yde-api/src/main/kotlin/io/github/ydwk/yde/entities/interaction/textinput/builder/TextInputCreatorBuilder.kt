@@ -25,57 +25,57 @@ import io.github.ydwk.yde.interaction.message.ComponentType
 import io.github.ydwk.yde.util.Checks
 
 data class TextInputCreatorBuilder(
-    val customId: String,
-    val style: TextInput.TextInputStyle,
-    val label: String,
-    val yde: YDE,
+  val customId: String,
+  val style: TextInput.TextInputStyle,
+  val label: String,
+  val yde: YDE,
 ) : TextInputCreator {
-    private var minLength: Int? = null
-    private var maxLength: Int? = null
-    private var required: Boolean? = null
-    private var initialValue: String? = null
-    private var placeholder: String? = null
+  private var minLength: Int? = null
+  private var maxLength: Int? = null
+  private var required: Boolean? = null
+  private var initialValue: String? = null
+  private var placeholder: String? = null
 
-    override fun setMinLength(min: Int): TextInputCreator {
-        Checks.checkLength(min.toString(), 0, 4000, "min")
-        minLength = min
-        return this
-    }
+  override fun setMinLength(min: Int): TextInputCreator {
+    Checks.checkLength(min.toString(), 0, 4000, "min")
+    minLength = min
+    return this
+  }
 
-    override fun setMaxLength(max: Int): TextInputCreator {
-        Checks.checkLength(max.toString(), 1, 4000, "max")
-        maxLength = max
-        return this
-    }
+  override fun setMaxLength(max: Int): TextInputCreator {
+    Checks.checkLength(max.toString(), 1, 4000, "max")
+    maxLength = max
+    return this
+  }
 
-    override fun setRequired(required: Boolean): TextInputCreator {
-        this.required = required
-        return this
-    }
+  override fun setRequired(required: Boolean): TextInputCreator {
+    this.required = required
+    return this
+  }
 
-    override fun setInitialValue(value: String): TextInputCreator {
-        Checks.checkLength(value, 1, 4000, "value")
-        initialValue = value
-        return this
-    }
+  override fun setInitialValue(value: String): TextInputCreator {
+    Checks.checkLength(value, 1, 4000, "value")
+    initialValue = value
+    return this
+  }
 
-    override fun setPlaceholder(placeholder: String): TextInputCreator {
-        Checks.checkLength(placeholder, 1, 100, "placeholder")
-        this.placeholder = placeholder
-        return this
-    }
+  override fun setPlaceholder(placeholder: String): TextInputCreator {
+    Checks.checkLength(placeholder, 1, 100, "placeholder")
+    this.placeholder = placeholder
+    return this
+  }
 
-    override fun create(): TextInput {
-        val objectNode = yde.objectMapper.createObjectNode()
-        objectNode.put("type", ComponentType.TEXT_INPUT.getType())
-        objectNode.put("custom_id", customId)
-        objectNode.put("label", label)
-        objectNode.put("style", style.getValue())
-        minLength?.let { objectNode.put("min_length", it) }
-        maxLength?.let { objectNode.put("max_length", it) }
-        required?.let { objectNode.put("required", it) }
-        initialValue?.let { objectNode.put("initial_value", it) }
-        placeholder?.let { objectNode.put("placeholder", it) }
-        return yde.entityInstanceBuilder.buildTextInput(objectNode)
-    }
+  override fun create(): TextInput {
+    val objectNode = yde.objectMapper.createObjectNode()
+    objectNode.put("type", ComponentType.TEXT_INPUT.getType())
+    objectNode.put("custom_id", customId)
+    objectNode.put("label", label)
+    objectNode.put("style", style.getValue())
+    minLength?.let { objectNode.put("min_length", it) }
+    maxLength?.let { objectNode.put("max_length", it) }
+    required?.let { objectNode.put("required", it) }
+    initialValue?.let { objectNode.put("initial_value", it) }
+    placeholder?.let { objectNode.put("placeholder", it) }
+    return yde.entityInstanceBuilder.buildTextInput(objectNode)
+  }
 }

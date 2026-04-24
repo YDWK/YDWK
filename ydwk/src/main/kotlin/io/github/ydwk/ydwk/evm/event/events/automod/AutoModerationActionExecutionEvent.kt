@@ -15,7 +15,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */ 
 package io.github.ydwk.ydwk.evm.event.events.automod
 
 import io.github.ydwk.yde.entities.guild.automod.AutoModerationAction
@@ -41,16 +41,16 @@ import io.github.ydwk.ydwk.evm.event.Event
  * @param matchedContent The content that matched the keyword (null if not applicable).
  */
 data class AutoModerationActionExecutionEvent(
-    override val ydwk: YDWK,
-    val guildId: GetterSnowFlake,
-    val action: AutoModerationAction,
-    val ruleId: GetterSnowFlake,
-    val ruleTriggerType: AutoModerationTriggerType,
-    val userId: GetterSnowFlake,
-    val channelId: GetterSnowFlake?,
-    val messageId: GetterSnowFlake?,
-    val alertSystemMessageId: GetterSnowFlake?,
-    val content: String,
-    val matchedKeyword: String?,
-    val matchedContent: String?,
+  override val ydwk: YDWK,
+  val guildId: GetterSnowFlake,
+  val action: AutoModerationAction,
+  val ruleId: GetterSnowFlake,
+  val ruleTriggerType: AutoModerationTriggerType,
+  val userId: GetterSnowFlake,
+  val channelId: GetterSnowFlake?,
+  val messageId: GetterSnowFlake?,
+  val alertSystemMessageId: GetterSnowFlake?,
+  val content: String,
+  val matchedKeyword: String?,
+  val matchedContent: String?,
 ) : Event(ydwk)

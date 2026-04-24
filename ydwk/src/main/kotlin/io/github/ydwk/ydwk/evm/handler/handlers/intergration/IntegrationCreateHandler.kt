@@ -25,15 +25,19 @@ import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class IntegrationCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override suspend fun start() {
-        val guildId = json.get("guild_id").asLong()
-        val guild = ydwk.getGuildById(guildId) ?: run {
-            ydwk.logger.warn("IntegrationCreate: guild $guildId not in cache")
-            return
+  override suspend fun start() {
+    val guildId = json.get("guild_id").asLong()
+    val guild =
+      ydwk.getGuildById(guildId)
+        ?: run {
+          ydwk.logger.warn("IntegrationCreate: guild $guildId not in cache")
+          return
         }
-        val integrationId = GetterSnowFlake.of(json.get("id").asLong())
-        val integrationType = json.get("type").asText()
-        val integrationName = json.get("name").asText()
-        ydwk.emitEvent(IntegrationCreateEvent(ydwk, guild, integrationId, integrationType, integrationName))
-    }
+    val integrationId = GetterSnowFlake.of(json.get("id").asLong())
+    val integrationType = json.get("type").asText()
+    val integrationName = json.get("name").asText()
+    ydwk.emitEvent(
+      IntegrationCreateEvent(ydwk, guild, integrationId, integrationType, integrationName)
+    )
+  }
 }

@@ -22,10 +22,10 @@ import io.github.ydwk.yde.entities.util.GenericEntity
 
 interface Bot : User, GenericEntity {
 
-    /**
-     * The user's email.
-     *
-     * @return the user's email.
-     */
-    var email: String
+  /**
+   * The user's email.
+   *
+   * @return the user's email.
+   */
+  var email: String
 }

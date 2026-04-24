@@ -34,10 +34,14 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
  */
 @ChannelEvent
 data class ForumChannelDefaultReactionEmojiUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: GuildForumChannel,
-    val oldDefaultReactionEmoji: DefaultReactionEmoji?,
-    val newDefaultReactionEmoji: DefaultReactionEmoji?,
+  override val ydwk: YDWK,
+  override val entity: GuildForumChannel,
+  val oldDefaultReactionEmoji: DefaultReactionEmoji?,
+  val newDefaultReactionEmoji: DefaultReactionEmoji?,
 ) :
-    GenericChannelUpdateEvent<DefaultReactionEmoji?>(
-        ydwk, entity, oldDefaultReactionEmoji, newDefaultReactionEmoji)
+  GenericChannelUpdateEvent<DefaultReactionEmoji?>(
+    ydwk,
+    entity,
+    oldDefaultReactionEmoji,
+    newDefaultReactionEmoji,
+  )

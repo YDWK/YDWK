@@ -30,94 +30,94 @@ import io.github.ydwk.yde.util.NameAbleEntity
 import io.github.ydwk.yde.util.SnowFlake
 
 interface GuildScheduledEvent : SnowFlake, GenericEntity, NameAbleEntity {
-    /**
-     * The guild id which the scheduled event belongs to.
-     *
-     * @return the guild id which the scheduled event belongs to.
-     */
-    val guildId: GetterSnowFlake
+  /**
+   * The guild id which the scheduled event belongs to.
+   *
+   * @return the guild id which the scheduled event belongs to.
+   */
+  val guildId: GetterSnowFlake
 
-    /**
-     * The channel which the scheduled event belongs to.
-     *
-     * @return the channel which the scheduled event belongs to.
-     */
-    val channel: GuildChannel?
+  /**
+   * The channel which the scheduled event belongs to.
+   *
+   * @return the channel which the scheduled event belongs to.
+   */
+  val channel: GuildChannel?
 
-    /**
-     * The user which created the scheduled event.
-     *
-     * @return the user which created the scheduled event.
-     */
-    val creator: User?
+  /**
+   * The user which created the scheduled event.
+   *
+   * @return the user which created the scheduled event.
+   */
+  val creator: User?
 
-    /**
-     * The description of the scheduled event.
-     *
-     * @return the description of the scheduled event.
-     */
-    val description: String?
+  /**
+   * The description of the scheduled event.
+   *
+   * @return the description of the scheduled event.
+   */
+  val description: String?
 
-    /**
-     * The Scheduled start time of the scheduled event.
-     *
-     * @return the Scheduled start time of the scheduled event.
-     */
-    val scheduledStart: String
+  /**
+   * The Scheduled start time of the scheduled event.
+   *
+   * @return the Scheduled start time of the scheduled event.
+   */
+  val scheduledStart: String
 
-    /**
-     * The Scheduled end time of the scheduled event.
-     *
-     * @return the Scheduled end time of the scheduled event.
-     */
-    val scheduledEnd: String?
+  /**
+   * The Scheduled end time of the scheduled event.
+   *
+   * @return the Scheduled end time of the scheduled event.
+   */
+  val scheduledEnd: String?
 
-    /**
-     * The privacy level of the scheduled event.
-     *
-     * @return the privacy level of the scheduled event.
-     */
-    val privacyLevel: PrivacyLevel
+  /**
+   * The privacy level of the scheduled event.
+   *
+   * @return the privacy level of the scheduled event.
+   */
+  val privacyLevel: PrivacyLevel
 
-    /**
-     * The status of the scheduled event.
-     *
-     * @return the status of the scheduled event.
-     */
-    val status: ScheduledEventStatus
+  /**
+   * The status of the scheduled event.
+   *
+   * @return the status of the scheduled event.
+   */
+  val status: ScheduledEventStatus
 
-    /**
-     * The entity type of the scheduled event.
-     *
-     * @return the entity type of the scheduled event.
-     */
-    val entityType: EntityType
+  /**
+   * The entity type of the scheduled event.
+   *
+   * @return the entity type of the scheduled event.
+   */
+  val entityType: EntityType
 
-    /**
-     * The entity id of the scheduled event.
-     *
-     * @return the entity id of the scheduled event.
-     */
-    val entityId: GetterSnowFlake?
+  /**
+   * The entity id of the scheduled event.
+   *
+   * @return the entity id of the scheduled event.
+   */
+  val entityId: GetterSnowFlake?
 
-    /**
-     * The entity metadata of the scheduled event.
-     *
-     * @return the entity metadata of the scheduled event.
-     */
-    val entityMetadata: EntityMetadata?
+  /**
+   * The entity metadata of the scheduled event.
+   *
+   * @return the entity metadata of the scheduled event.
+   */
+  val entityMetadata: EntityMetadata?
 
-    /**
-     * The number of users subscribed to the scheduled event.
-     *
-     * @return the number of users subscribed to the scheduled event.
-     */
-    val subscriberCount: Int
+  /**
+   * The number of users subscribed to the scheduled event.
+   *
+   * @return the number of users subscribed to the scheduled event.
+   */
+  val subscriberCount: Int
 
-    /**
-     * The cover image hash of the scheduled event.
-     *
-     * @return the cover image hash of the scheduled event.
-     */
-    val coverImage: String?
+  /**
+   * The cover image hash of the scheduled event.
+   *
+   * @return the cover image hash of the scheduled event.
+   */
+  val coverImage: String?
 }

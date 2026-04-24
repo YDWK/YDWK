@@ -34,9 +34,9 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
  */
 @ChannelEvent
 data class VoiceChannelNameUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: GuildVoiceChannel,
-    val channelType: ChannelType,
-    val oldName: String,
-    val newName: String,
+  override val ydwk: YDWK,
+  override val entity: GuildVoiceChannel,
+  val channelType: ChannelType,
+  val oldName: String,
+  val newName: String,
 ) : GenericChannelUpdateEvent<String>(ydwk, entity, oldName, newName)

@@ -24,8 +24,8 @@ import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class InviteCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override suspend fun start() {
-        val invite = ydwk.entityInstanceBuilder.buildInvite(json)
-        ydwk.emitEvent(InviteCreateEvent(ydwk, invite))
-    }
+  override suspend fun start() {
+    val invite = ydwk.entityInstanceBuilder.buildInvite(json)
+    ydwk.emitEvent(InviteCreateEvent(ydwk, invite))
+  }
 }

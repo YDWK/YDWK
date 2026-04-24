@@ -33,8 +33,8 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
  */
 @ChannelEvent
 data class ForumChannelDefaultSortOrderUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: GuildForumChannel,
-    val oldDefaultSortOrder: Int?,
-    val newDefaultSortOrder: Int?,
+  override val ydwk: YDWK,
+  override val entity: GuildForumChannel,
+  val oldDefaultSortOrder: Int?,
+  val newDefaultSortOrder: Int?,
 ) : GenericChannelUpdateEvent<Int?>(ydwk, entity, oldDefaultSortOrder, newDefaultSortOrder)

@@ -19,32 +19,32 @@
 package io.github.ydwk.yde.interaction.application
 
 enum class ApplicationCommandType(private val value: Int) {
-    /** A slash command; a text-based command that shows up when a user types */
-    CHAT_INPUT(1),
+  /** A slash command; a text-based command that shows up when a user types */
+  CHAT_INPUT(1),
 
-    /** A UI-based command that shows up when you right-click or tap on a user */
-    USER(2),
+  /** A UI-based command that shows up when you right-click or tap on a user */
+  USER(2),
 
-    /** A UI-based command that shows up when you right-click or tap on a message */
-    MESSAGE(3),
+  /** A UI-based command that shows up when you right-click or tap on a message */
+  MESSAGE(3),
 
-    /** Unknown command type */
-    UNKNOWN(-1);
+  /** Unknown command type */
+  UNKNOWN(-1);
 
-    companion object {
-        /**
-         * Get the [ApplicationCommandType] from the value
-         *
-         * @param value The value to get the [ApplicationCommandType] from.
-         * @return The [ApplicationCommandType] from the given [value].
-         */
-        fun getValue(value: Int): ApplicationCommandType {
-            return entries.firstOrNull { it.value == value } ?: UNKNOWN
-        }
+  companion object {
+    /**
+     * Get the [ApplicationCommandType] from the value
+     *
+     * @param value The value to get the [ApplicationCommandType] from.
+     * @return The [ApplicationCommandType] from the given [value].
+     */
+    fun getValue(value: Int): ApplicationCommandType {
+      return entries.firstOrNull { it.value == value } ?: UNKNOWN
     }
+  }
 
-    /** Get the value of the [ApplicationCommandType] */
-    fun toInt(): Int {
-        return value
-    }
+  /** Get the value of the [ApplicationCommandType] */
+  fun toInt(): Int {
+    return value
+  }
 }

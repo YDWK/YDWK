@@ -102,7 +102,7 @@ subprojects {
         kotlin {
             // Excludes build folder since it contains generated java classes.
             targetExclude("build/**")
-            ktfmt("0.52").dropboxStyle()
+            ktfmt("0.52").googleStyle()
 
             licenseHeader(
                 """/*
@@ -127,7 +127,7 @@ subprojects {
 
         kotlinGradle {
             target("**/*.gradle.kts")
-            ktfmt("0.52").dropboxStyle()
+            ktfmt("0.52").googleStyle()
             trimTrailingWhitespace()
             endWithNewline()
         }

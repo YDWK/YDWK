@@ -15,7 +15,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */ 
 package io.github.ydwk.ydwk.evm.event.events.integration
 
 import io.github.ydwk.yde.entities.Guild
@@ -35,9 +35,9 @@ import io.github.ydwk.ydwk.evm.event.Event
  */
 @GuildEvent
 data class IntegrationCreateEvent(
-    override val ydwk: YDWK,
-    val guild: Guild,
-    val integrationId: GetterSnowFlake,
-    val integrationType: String,
-    val integrationName: String,
+  override val ydwk: YDWK,
+  val guild: Guild,
+  val integrationId: GetterSnowFlake,
+  val integrationType: String,
+  val integrationName: String,
 ) : Event(ydwk)

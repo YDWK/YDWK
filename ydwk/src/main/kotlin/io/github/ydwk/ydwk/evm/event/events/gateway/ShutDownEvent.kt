@@ -33,4 +33,4 @@ import java.time.Instant
  */
 @GatewayEvent
 data class ShutDownEvent(override val ydwk: YDWK, val closeCode: CloseCode, val instant: Instant) :
-    Event(ydwk)
+  Event(ydwk)

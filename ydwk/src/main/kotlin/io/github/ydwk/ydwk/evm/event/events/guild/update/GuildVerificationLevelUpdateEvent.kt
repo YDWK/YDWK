@@ -34,10 +34,9 @@ import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
  */
 @GuildEvent
 data class GuildVerificationLevelUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: Guild,
-    val oldVerificationLevel: Int,
-    val newVerificationLevel: VerificationLevel,
+  override val ydwk: YDWK,
+  override val entity: Guild,
+  val oldVerificationLevel: Int,
+  val newVerificationLevel: VerificationLevel,
 ) :
-    GenericGuildUpdateEvent<Int>(
-        ydwk, entity, oldVerificationLevel, newVerificationLevel.getLevel())
+  GenericGuildUpdateEvent<Int>(ydwk, entity, oldVerificationLevel, newVerificationLevel.getLevel())

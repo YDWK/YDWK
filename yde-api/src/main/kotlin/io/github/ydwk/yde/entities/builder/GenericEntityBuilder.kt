@@ -23,17 +23,17 @@ import io.github.ydwk.yde.rest.RestResult
 
 interface GenericEntityBuilder<T> {
 
-    /**
-     * The json that will be sent to the discord api.
-     *
-     * @return The json that will be sent to the discord api.
-     */
-    val json: JsonNode
+  /**
+   * The json that will be sent to the discord api.
+   *
+   * @return The json that will be sent to the discord api.
+   */
+  val json: JsonNode
 
-    /**
-     * Creates the new entity.
-     *
-     * @return A completable future that completes with the created entity.
-     */
-    suspend fun create(): RestResult<T>
+  /**
+   * Creates the new entity.
+   *
+   * @return A completable future that completes with the created entity.
+   */
+  suspend fun create(): RestResult<T>
 }

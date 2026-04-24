@@ -23,10 +23,10 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.ydwk.yde.interaction.application.ApplicationCommandType
 
 class MessageCommandBuilder(val name: String, val specificGuildOnly: Boolean = false) {
-    fun toJson(): JsonNode {
-        val json = ObjectMapper().createObjectNode()
-        json.put("name", name)
-        json.put("type", ApplicationCommandType.MESSAGE.toInt())
-        return json
-    }
+  fun toJson(): JsonNode {
+    val json = ObjectMapper().createObjectNode()
+    json.put("name", name)
+    json.put("type", ApplicationCommandType.MESSAGE.toInt())
+    return json
+  }
 }

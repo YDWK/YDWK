@@ -33,8 +33,8 @@ import java.time.Instant
  */
 @GatewayEvent
 data class DisconnectEvent(
-    override val ydwk: YDWK,
-    val closeCode: String,
-    val closeCodeReason: String,
-    val instant: Instant,
+  override val ydwk: YDWK,
+  val closeCode: String,
+  val closeCodeReason: String,
+  val instant: Instant,
 ) : Event(ydwk)

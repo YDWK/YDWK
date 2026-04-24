@@ -15,7 +15,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */ 
 package io.github.ydwk.ydwk.testkit
 
 import com.fasterxml.jackson.databind.JsonNode
@@ -25,10 +25,9 @@ import kotlin.test.assertEquals
 private val jsonMapper = ObjectMapper()
 
 fun assertJsonEquals(expected: String, actual: String) {
-    assertEquals(jsonMapper.readTree(expected), jsonMapper.readTree(actual))
+  assertEquals(jsonMapper.readTree(expected), jsonMapper.readTree(actual))
 }
 
 fun assertJsonEquals(expected: JsonNode, actual: JsonNode) {
-    assertEquals(expected, actual)
+  assertEquals(expected, actual)
 }
-

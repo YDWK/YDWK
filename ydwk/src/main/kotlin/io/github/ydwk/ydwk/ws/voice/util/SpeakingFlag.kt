@@ -19,28 +19,28 @@
 package io.github.ydwk.ydwk.ws.voice.util
 
 enum class SpeakingFlag(private val value: Long) {
-    /** Normal transmission of voice audio. */
-    MICROPHONE(1 shl 0),
+  /** Normal transmission of voice audio. */
+  MICROPHONE(1 shl 0),
 
-    /** Transmission of context audio for video, no speaking indicator. */
-    SOUND_SHARE(1 shl 1),
+  /** Transmission of context audio for video, no speaking indicator. */
+  SOUND_SHARE(1 shl 1),
 
-    /** Priority speaker, lowering audio of other speakers. */
-    PRIORITY(1 shl 2);
+  /** Priority speaker, lowering audio of other speakers. */
+  PRIORITY(1 shl 2);
 
-    fun getValue(): Long {
-        return value
+  fun getValue(): Long {
+    return value
+  }
+
+  companion object {
+    /**
+     * The speaking flag from the given value.
+     *
+     * @param value The value to get the speaking flag from.
+     * @return The speaking flag.
+     */
+    fun getValue(value: Long): SpeakingFlag {
+      return entries.first { it.value == value }
     }
-
-    companion object {
-        /**
-         * The speaking flag from the given value.
-         *
-         * @param value The value to get the speaking flag from.
-         * @return The speaking flag.
-         */
-        fun getValue(value: Long): SpeakingFlag {
-            return entries.first { it.value == value }
-        }
-    }
+  }
 }

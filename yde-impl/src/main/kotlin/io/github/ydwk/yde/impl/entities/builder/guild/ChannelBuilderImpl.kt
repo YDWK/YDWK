@@ -26,12 +26,12 @@ import io.github.ydwk.yde.impl.entities.builder.guild.channel.MessageChannelBuil
 import io.github.ydwk.yde.impl.entities.builder.guild.channel.VoiceChannelBuilderImpl
 
 internal class ChannelBuilderImpl(val yde: YDE, val guildId: String?, val name: String) :
-    ChannelBuilder {
-    override fun createMessageChannel(): MessageChannelBuilder {
-        return MessageChannelBuilderImpl(yde, guildId, name)
-    }
+  ChannelBuilder {
+  override fun createMessageChannel(): MessageChannelBuilder {
+    return MessageChannelBuilderImpl(yde, guildId, name)
+  }
 
-    override fun createVoiceChannel(): VoiceChannelBuilder {
-        return VoiceChannelBuilderImpl(yde, guildId, name)
-    }
+  override fun createVoiceChannel(): VoiceChannelBuilder {
+    return VoiceChannelBuilderImpl(yde, guildId, name)
+  }
 }

@@ -24,73 +24,73 @@ import io.github.ydwk.yde.entities.interaction.selectmenu.creator.builder.Select
 import io.github.ydwk.yde.entities.util.GenericEntity
 
 interface SelectMenuOption : GenericEntity {
+  /**
+   * The label of the option. Max 100 characters
+   *
+   * @return the label of the option
+   */
+  val label: String
+
+  /**
+   * The value of the option. Max 100 characters
+   *
+   * @return the value of the option
+   */
+  val value: String
+
+  /**
+   * The description of the option. Max 100 characters
+   *
+   * @return the description of the option
+   */
+  val description: String?
+
+  /**
+   * The emoji of the option.
+   *
+   * @return the emoji of the option
+   */
+  val emoji: Emoji?
+
+  /**
+   * Whether the option is default.
+   *
+   * @return whether the option is default
+   */
+  val default: Boolean
+
+  companion object {
     /**
-     * The label of the option. Max 100 characters
+     * Creates a new select menu option.
      *
-     * @return the label of the option
+     * @param label The label of the option. Max 100 characters
+     * @param value The value of the option. Max 100 characters
+     * @param description The description of the option. Max 100 characters
+     * @param emoji The emoji of the option
+     * @param default Whether the option is default
+     * @return A new select menu option
      */
-    val label: String
+    fun create(
+      yde: YDE,
+      label: String,
+      value: String,
+      description: String? = null,
+      emoji: Emoji? = null,
+      default: Boolean = false,
+    ): SelectMenuOption {
+      val builder = SelectMenuOptionCreatorBuilder(yde)
 
-    /**
-     * The value of the option. Max 100 characters
-     *
-     * @return the value of the option
-     */
-    val value: String
+      builder.setLabel(label)
+      builder.setValue(value)
+      if (description != null) {
+        builder.setDescription(description)
+      }
+      if (emoji != null) {
+        builder.setEmoji(emoji)
+      }
+      builder.setDefault(default)
 
-    /**
-     * The description of the option. Max 100 characters
-     *
-     * @return the description of the option
-     */
-    val description: String?
-
-    /**
-     * The emoji of the option.
-     *
-     * @return the emoji of the option
-     */
-    val emoji: Emoji?
-
-    /**
-     * Whether the option is default.
-     *
-     * @return whether the option is default
-     */
-    val default: Boolean
-
-    companion object {
-        /**
-         * Creates a new select menu option.
-         *
-         * @param label The label of the option. Max 100 characters
-         * @param value The value of the option. Max 100 characters
-         * @param description The description of the option. Max 100 characters
-         * @param emoji The emoji of the option
-         * @param default Whether the option is default
-         * @return A new select menu option
-         */
-        fun create(
-            yde: YDE,
-            label: String,
-            value: String,
-            description: String? = null,
-            emoji: Emoji? = null,
-            default: Boolean = false
-        ): SelectMenuOption {
-            val builder = SelectMenuOptionCreatorBuilder(yde)
-
-            builder.setLabel(label)
-            builder.setValue(value)
-            if (description != null) {
-                builder.setDescription(description)
-            }
-            if (emoji != null) {
-                builder.setEmoji(emoji)
-            }
-            builder.setDefault(default)
-
-            return builder.create()
-        }
+      return builder.create()
     }
+  }
 }

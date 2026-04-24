@@ -28,25 +28,26 @@ import io.github.ydwk.yde.interaction.message.textinput.TextInputInteraction
 import io.github.ydwk.yde.util.GetterSnowFlake
 
 class TextInputInteractionImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val interactionId: GetterSnowFlake,
-    override val customId: String,
-    override val values: List<String>
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val interactionId: GetterSnowFlake,
+  override val customId: String,
+  override val values: List<String>,
 ) :
-    TextInputInteraction,
-    ComponentInteractionImpl(
-        yde.entityInstanceBuilder.buildComponentInteraction(json, interactionId)) {
+  TextInputInteraction,
+  ComponentInteractionImpl(
+    yde.entityInstanceBuilder.buildComponentInteraction(json, interactionId)
+  ) {
 
-    override fun getValue(customId: String): String? {
-        return values.find { it == customId }
-    }
+  override fun getValue(customId: String): String? {
+    return values.find { it == customId }
+  }
 
-    override fun reply(content: String): Reply {
-        return ReplyImpl(yde, content, null, interactionId.asString, interactionToken)
-    }
+  override fun reply(content: String): Reply {
+    return ReplyImpl(yde, content, null, interactionId.asString, interactionToken)
+  }
 
-    override fun reply(embed: Embed): Reply {
-        return ReplyImpl(yde, null, embed, interactionId.asString, interactionToken)
-    }
+  override fun reply(embed: Embed): Reply {
+    return ReplyImpl(yde, null, embed, interactionId.asString, interactionToken)
+  }
 }

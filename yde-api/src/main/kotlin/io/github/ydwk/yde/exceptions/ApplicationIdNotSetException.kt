@@ -19,4 +19,4 @@
 package io.github.ydwk.yde.exceptions
 
 class ApplicationIdNotSetException :
-    RuntimeException("Application Id is null, please re run the application")
+  RuntimeException("Application Id is null, please re run the application")

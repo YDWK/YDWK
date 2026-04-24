@@ -25,11 +25,11 @@ import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class PresenceUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override suspend fun start() {
-        val guildId = GetterSnowFlake.of(json.get("guild_id").asLong())
-        val userId = GetterSnowFlake.of(json.get("user").get("id").asLong())
-        val status = json.get("status").asText()
-        val user = ydwk.getUserById(userId.asLong)
-        ydwk.emitEvent(PresenceUpdateEvent(ydwk, guildId, userId, status, user))
-    }
+  override suspend fun start() {
+    val guildId = GetterSnowFlake.of(json.get("guild_id").asLong())
+    val userId = GetterSnowFlake.of(json.get("user").get("id").asLong())
+    val status = json.get("status").asText()
+    val user = ydwk.getUserById(userId.asLong)
+    ydwk.emitEvent(PresenceUpdateEvent(ydwk, guildId, userId, status, user))
+  }
 }

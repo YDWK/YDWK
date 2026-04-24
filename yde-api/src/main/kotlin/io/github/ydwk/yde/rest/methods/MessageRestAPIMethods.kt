@@ -23,12 +23,12 @@ import io.github.ydwk.yde.rest.result.NoResult
 
 interface MessageRestAPIMethods {
 
-    /**
-     * Delete a message.
-     *
-     * @param messageId The id of the message to delete.
-     * @param channelId The id of the channel the message is in.
-     * @return A [RestResult] that will contain the result of the request.
-     */
-    suspend fun deleteMessage(messageId: Long, channelId: Long): RestResult<NoResult>
+  /**
+   * Delete a message.
+   *
+   * @param messageId The id of the message to delete.
+   * @param channelId The id of the channel the message is in.
+   * @return A [RestResult] that will contain the result of the request.
+   */
+  suspend fun deleteMessage(messageId: Long, channelId: Long): RestResult<NoResult>
 }

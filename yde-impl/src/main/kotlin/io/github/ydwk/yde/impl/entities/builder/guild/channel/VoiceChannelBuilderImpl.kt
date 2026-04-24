@@ -30,73 +30,74 @@ import io.github.ydwk.yde.rest.json
 import io.github.ydwk.yde.rest.toTextContent
 
 internal class VoiceChannelBuilderImpl(val yde: YDE, val guildId: String?, val name: String) :
-    VoiceChannelBuilder {
-    private var isVoiceChannel: Boolean = true
-    private var bitrate: Int? = null
-    private var userLimit: Int? = null
-    private var position: Int? = null
-    private var permissionOverwrites: MutableList<PermissionOverwrite> = mutableListOf()
-    private var parentId: String? = null
+  VoiceChannelBuilder {
+  private var isVoiceChannel: Boolean = true
+  private var bitrate: Int? = null
+  private var userLimit: Int? = null
+  private var position: Int? = null
+  private var permissionOverwrites: MutableList<PermissionOverwrite> = mutableListOf()
+  private var parentId: String? = null
 
-    override fun isStageChannel(): VoiceChannelBuilder {
-        this.isVoiceChannel = false
-        return this
+  override fun isStageChannel(): VoiceChannelBuilder {
+    this.isVoiceChannel = false
+    return this
+  }
+
+  override fun setBitrate(bitrate: Int): VoiceChannelBuilder {
+    this.bitrate = bitrate
+    return this
+  }
+
+  override fun setUserLimit(userLimit: Int): VoiceChannelBuilder {
+    this.userLimit = userLimit
+    return this
+  }
+
+  override fun setPosition(position: Int): VoiceChannelBuilder {
+    this.position = position
+    return this
+  }
+
+  override fun setPermissionOverwrites(
+    permissionOverwrites: List<PermissionOverwrite>
+  ): VoiceChannelBuilder {
+    this.permissionOverwrites.addAll(permissionOverwrites)
+    return this
+  }
+
+  override fun setParentId(parentId: String): VoiceChannelBuilder {
+    this.parentId = parentId
+    return this
+  }
+
+  override val json: JsonNode
+    get() {
+      val json = yde.objectMapper.createObjectNode()
+
+      json.put("name", name)
+      json.put(
+        "type",
+        if (isVoiceChannel) ChannelType.VOICE.getId() else ChannelType.STAGE_VOICE.getId(),
+      )
+      if (bitrate != null) json.put("bitrate", bitrate)
+      if (userLimit != null) json.put("user_limit", userLimit)
+      if (position != null) json.put("position", position)
+      // if (permissionOverwrites != null) json.put("permission_overwrites",
+      // yde.objectMapper.valueToTree(permissionOverwrites))
+      if (parentId != null) json.put("parent_id", parentId)
+
+      return json
     }
 
-    override fun setBitrate(bitrate: Int): VoiceChannelBuilder {
-        this.bitrate = bitrate
-        return this
-    }
+  override suspend fun create(): RestResult<GuildVoiceChannel> {
+    requireNotNull(guildId) { "Guild id is not set" }
 
-    override fun setUserLimit(userLimit: Int): VoiceChannelBuilder {
-        this.userLimit = userLimit
-        return this
-    }
-
-    override fun setPosition(position: Int): VoiceChannelBuilder {
-        this.position = position
-        return this
-    }
-
-    override fun setPermissionOverwrites(
-        permissionOverwrites: List<PermissionOverwrite>,
-    ): VoiceChannelBuilder {
-        this.permissionOverwrites.addAll(permissionOverwrites)
-        return this
-    }
-
-    override fun setParentId(parentId: String): VoiceChannelBuilder {
-        this.parentId = parentId
-        return this
-    }
-
-    override val json: JsonNode
-        get() {
-            val json = yde.objectMapper.createObjectNode()
-
-            json.put("name", name)
-            json.put(
-                "type",
-                if (isVoiceChannel) ChannelType.VOICE.getId() else ChannelType.STAGE_VOICE.getId())
-            if (bitrate != null) json.put("bitrate", bitrate)
-            if (userLimit != null) json.put("user_limit", userLimit)
-            if (position != null) json.put("position", position)
-            // if (permissionOverwrites != null) json.put("permission_overwrites",
-            // yde.objectMapper.valueToTree(permissionOverwrites))
-            if (parentId != null) json.put("parent_id", parentId)
-
-            return json
-        }
-
-    override suspend fun create(): RestResult<GuildVoiceChannel> {
-        requireNotNull(guildId) { "Guild id is not set" }
-
-        val requestBody = json.toString().toTextContent()
-        return yde.restApiManager
-            .post(requestBody, EndPoint.GuildEndpoint.CREATE_CHANNEL, guildId)
-            .execute { response ->
-                val jsonBody = response.json(yde)
-                yde.entityInstanceBuilder.buildGuildVoiceChannel(jsonBody)
-            }
-    }
+    val requestBody = json.toString().toTextContent()
+    return yde.restApiManager
+      .post(requestBody, EndPoint.GuildEndpoint.CREATE_CHANNEL, guildId)
+      .execute { response ->
+        val jsonBody = response.json(yde)
+        yde.entityInstanceBuilder.buildGuildVoiceChannel(jsonBody)
+      }
+  }
 }

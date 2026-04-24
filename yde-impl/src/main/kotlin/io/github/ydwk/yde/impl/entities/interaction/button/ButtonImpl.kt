@@ -15,7 +15,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */ 
 package io.github.ydwk.yde.impl.entities.interaction.button
 
 import com.fasterxml.jackson.databind.JsonNode
@@ -27,12 +27,12 @@ import io.github.ydwk.yde.impl.entities.interaction.ComponentImpl
 import java.net.URL
 
 class ButtonImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val style: ButtonStyle,
-    override val label: String?,
-    override val customId: String?,
-    override val emoji: PartialEmoji?,
-    override val url: URL?,
-    override val disabled: Boolean,
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val style: ButtonStyle,
+  override val label: String?,
+  override val customId: String?,
+  override val emoji: PartialEmoji?,
+  override val url: URL?,
+  override val disabled: Boolean,
 ) : Button, ComponentImpl(yde.entityInstanceBuilder.buildComponent(json))

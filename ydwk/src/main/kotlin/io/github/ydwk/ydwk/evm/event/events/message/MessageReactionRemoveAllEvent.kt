@@ -15,7 +15,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */ 
 package io.github.ydwk.ydwk.evm.event.events.message
 
 import io.github.ydwk.yde.entities.Message
@@ -33,9 +33,9 @@ import io.github.ydwk.ydwk.evm.event.Event
  * @param message The cached message (null if not cached).
  */
 data class MessageReactionRemoveAllEvent(
-    override val ydwk: YDWK,
-    val channelId: GetterSnowFlake,
-    val messageId: GetterSnowFlake,
-    val guildId: GetterSnowFlake?,
-    val message: Message?,
+  override val ydwk: YDWK,
+  val channelId: GetterSnowFlake,
+  val messageId: GetterSnowFlake,
+  val guildId: GetterSnowFlake?,
+  val message: Message?,
 ) : Event(ydwk)

@@ -24,8 +24,8 @@ import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class GuildScheduledEventDeleteHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override suspend fun start() {
-        val scheduledEvent = ydwk.entityInstanceBuilder.buildGuildScheduledEvent(json)
-        ydwk.emitEvent(GuildScheduledEventDeleteEvent(ydwk, scheduledEvent))
-    }
+  override suspend fun start() {
+    val scheduledEvent = ydwk.entityInstanceBuilder.buildGuildScheduledEvent(json)
+    ydwk.emitEvent(GuildScheduledEventDeleteEvent(ydwk, scheduledEvent))
+  }
 }

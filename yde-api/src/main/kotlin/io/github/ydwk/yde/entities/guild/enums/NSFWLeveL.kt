@@ -19,39 +19,39 @@
 package io.github.ydwk.yde.entities.guild.enums
 
 enum class NSFWLeveL(private val level: Int) {
-    /** No NSFW content is allowed. */
-    DEFAULT(0),
+  /** No NSFW content is allowed. */
+  DEFAULT(0),
 
-    /** NSFW content is allowed, but must be marked as such. */
-    EXPLICIT(1),
+  /** NSFW content is allowed, but must be marked as such. */
+  EXPLICIT(1),
 
-    /** NSFW content is allowed without any special marking. */
-    SAFE(2),
+  /** NSFW content is allowed without any special marking. */
+  SAFE(2),
 
-    /** NSFW content is not allowed. */
-    AGE_RESTRICTED(3),
+  /** NSFW content is not allowed. */
+  AGE_RESTRICTED(3),
 
-    /** An unknown NSFW level. */
-    UNKNOWN(-1);
+  /** An unknown NSFW level. */
+  UNKNOWN(-1);
 
-    companion object {
-        /**
-         * The [NSFWLeveL] for the provided [level].
-         *
-         * @param level The level to get the [NSFWLeveL] for.
-         * @return The [NSFWLeveL] for the provided [level].
-         */
-        fun getValue(level: Int): NSFWLeveL {
-            return entries.firstOrNull { it.level == level } ?: UNKNOWN
-        }
-    }
-
+  companion object {
     /**
-     * The level of the [NSFWLeveL].
+     * The [NSFWLeveL] for the provided [level].
      *
-     * @return The level of the [NSFWLeveL].
+     * @param level The level to get the [NSFWLeveL] for.
+     * @return The [NSFWLeveL] for the provided [level].
      */
-    fun getLevel(): Int {
-        return level
+    fun getValue(level: Int): NSFWLeveL {
+      return entries.firstOrNull { it.level == level } ?: UNKNOWN
     }
+  }
+
+  /**
+   * The level of the [NSFWLeveL].
+   *
+   * @return The level of the [NSFWLeveL].
+   */
+  fun getLevel(): Int {
+    return level
+  }
 }

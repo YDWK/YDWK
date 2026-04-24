@@ -34,10 +34,14 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
  */
 @ChannelEvent
 data class ForumChannelAvailableForumTagsIdsUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: GuildForumChannel,
-    val oldAvailableForumTagsIds: List<GetterSnowFlake>,
-    val newAvailableForumTagsIds: List<GetterSnowFlake>,
+  override val ydwk: YDWK,
+  override val entity: GuildForumChannel,
+  val oldAvailableForumTagsIds: List<GetterSnowFlake>,
+  val newAvailableForumTagsIds: List<GetterSnowFlake>,
 ) :
-    GenericChannelUpdateEvent<List<GetterSnowFlake>>(
-        ydwk, entity, oldAvailableForumTagsIds, newAvailableForumTagsIds)
+  GenericChannelUpdateEvent<List<GetterSnowFlake>>(
+    ydwk,
+    entity,
+    oldAvailableForumTagsIds,
+    newAvailableForumTagsIds,
+  )

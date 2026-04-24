@@ -22,24 +22,24 @@ import io.github.ydwk.yde.entities.Emoji
 import io.github.ydwk.yde.entities.util.GenericEntity
 
 interface Reaction : GenericEntity {
-    /**
-     * The amount of times this reaction was used.
-     *
-     * @return The count of this reaction.
-     */
-    val count: Int
+  /**
+   * The amount of times this reaction was used.
+   *
+   * @return The count of this reaction.
+   */
+  val count: Int
 
-    /**
-     * Gets whether the current user reacted with this emoji.
-     *
-     * @return Whether the current user reacted with this emoji.
-     */
-    val me: Boolean
+  /**
+   * Gets whether the current user reacted with this emoji.
+   *
+   * @return Whether the current user reacted with this emoji.
+   */
+  val me: Boolean
 
-    /**
-     * The emoji of this reaction.
-     *
-     * @return The emoji of this reaction.
-     */
-    val emoji: Emoji
+  /**
+   * The emoji of this reaction.
+   *
+   * @return The emoji of this reaction.
+   */
+  val emoji: Emoji
 }

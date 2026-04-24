@@ -26,18 +26,18 @@ import io.github.ydwk.yde.util.EntityToStringBuilder
 import io.github.ydwk.yde.util.GetterSnowFlake
 
 internal class EmojiImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val idLong: Long?,
-    override var roleIds: List<GetterSnowFlake>,
-    override var user: User?,
-    override var requireColons: Boolean,
-    override var isManaged: Boolean,
-    override var isAnimated: Boolean,
-    override var isAvailable: Boolean,
-    override var name: String
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val idLong: Long?,
+  override var roleIds: List<GetterSnowFlake>,
+  override var user: User?,
+  override var requireColons: Boolean,
+  override var isManaged: Boolean,
+  override var isAnimated: Boolean,
+  override var isAvailable: Boolean,
+  override var name: String,
 ) : Emoji {
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).name(this.name).toString()
-    }
+  override fun toString(): String {
+    return EntityToStringBuilder(yde, this).name(this.name).toString()
+  }
 }

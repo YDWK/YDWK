@@ -33,8 +33,8 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
  */
 @ChannelEvent
 data class StateChannelTopicUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: GuildVoiceChannel,
-    val oldTopic: String?,
-    val newTopic: String?,
+  override val ydwk: YDWK,
+  override val entity: GuildVoiceChannel,
+  val oldTopic: String?,
+  val newTopic: String?,
 ) : GenericChannelUpdateEvent<String?>(ydwk, entity, oldTopic, newTopic)

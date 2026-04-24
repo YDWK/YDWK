@@ -28,60 +28,60 @@ import io.github.ydwk.yde.interaction.message.ComponentType
 import io.github.ydwk.yde.util.Checks
 
 class ButtonCreatorBuilder(
-    private val style: ButtonStyle,
-    val yde: YDE,
-    val json: ObjectNode = yde.objectNode
+  private val style: ButtonStyle,
+  val yde: YDE,
+  val json: ObjectNode = yde.objectNode,
 ) : ButtonCreator {
-    private var customId: String? = null
-    private var label: String? = null
-    private var emoji: PartialEmoji? = null
-    private var url: String? = null
+  private var customId: String? = null
+  private var label: String? = null
+  private var emoji: PartialEmoji? = null
+  private var url: String? = null
 
-    override fun setCustomId(customId: String): ButtonCreator {
-        this.customId = customId
-        return this
+  override fun setCustomId(customId: String): ButtonCreator {
+    this.customId = customId
+    return this
+  }
+
+  override fun setLabel(label: String): ButtonCreator {
+    Checks.customCheck(label.length <= 80, "Label must be between 1 and 80 characters long.")
+
+    this.label = label
+    return this
+  }
+
+  override fun setEmoji(emoji: PartialEmoji): ButtonCreator {
+    this.emoji = emoji
+    return this
+  }
+
+  override fun setUrl(url: String): ButtonCreator {
+    require(url.startsWith("https://")) { "URL must start with 'https://'." }
+
+    this.url = url
+    return this
+  }
+
+  override fun create(): Button {
+    if (style == ButtonStyle.LINK && url == null) {
+      throw IllegalArgumentException("Url button must have a url")
+    } else if (style != ButtonStyle.LINK && url != null) {
+      throw IllegalArgumentException("Non-url button must not have a url")
     }
 
-    override fun setLabel(label: String): ButtonCreator {
-        Checks.customCheck(label.length <= 80, "Label must be between 1 and 80 characters long.")
+    json.put("type", ComponentType.BUTTON.getType())
+    json.put("style", style.getType())
+    json.put("label", label)
 
-        this.label = label
-        return this
+    if (url != null) {
+      json.put("url", url)
     }
 
-    override fun setEmoji(emoji: PartialEmoji): ButtonCreator {
-        this.emoji = emoji
-        return this
+    if (emoji != null) {
+      json.set<ObjectNode>("emoji", emoji!!.json)
     }
 
-    override fun setUrl(url: String): ButtonCreator {
-        require(url.startsWith("https://")) { "URL must start with 'https://'." }
+    json.put("custom_id", customId)
 
-        this.url = url
-        return this
-    }
-
-    override fun create(): Button {
-        if (style == ButtonStyle.LINK && url == null) {
-            throw IllegalArgumentException("Url button must have a url")
-        } else if (style != ButtonStyle.LINK && url != null) {
-            throw IllegalArgumentException("Non-url button must not have a url")
-        }
-
-        json.put("type", ComponentType.BUTTON.getType())
-        json.put("style", style.getType())
-        json.put("label", label)
-
-        if (url != null) {
-            json.put("url", url)
-        }
-
-        if (emoji != null) {
-            json.set<ObjectNode>("emoji", emoji!!.json)
-        }
-
-        json.put("custom_id", customId)
-
-        return yde.entityInstanceBuilder.buildButton(json)
-    }
+    return yde.entityInstanceBuilder.buildButton(json)
+  }
 }

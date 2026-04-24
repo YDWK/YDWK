@@ -33,8 +33,8 @@ import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
  */
 @GuildEvent
 data class GuildDiscoverySplashUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: Guild,
-    val oldDiscoverySplash: String?,
-    val newDiscoverySplash: String?,
+  override val ydwk: YDWK,
+  override val entity: Guild,
+  val oldDiscoverySplash: String?,
+  val newDiscoverySplash: String?,
 ) : GenericGuildUpdateEvent<String?>(ydwk, entity, oldDiscoverySplash, newDiscoverySplash)

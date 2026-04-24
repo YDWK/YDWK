@@ -24,52 +24,52 @@ import io.github.ydwk.yde.entities.channel.getter.guild.GuildMessageChannelGette
 import io.github.ydwk.yde.entities.channel.guild.message.text.PermissionOverwrite
 
 interface GuildMessageChannel : TextChannel, GuildChannel {
-    /**
-     * The topic of this channel.
-     *
-     * @return the topic of this channel.
-     */
-    var topic: String
+  /**
+   * The topic of this channel.
+   *
+   * @return the topic of this channel.
+   */
+  var topic: String
 
-    /**
-     * The nsfw flag of this channel.
-     *
-     * @return the nsfw flag of this channel.
-     */
-    var nsfw: Boolean
+  /**
+   * The nsfw flag of this channel.
+   *
+   * @return the nsfw flag of this channel.
+   */
+  var nsfw: Boolean
 
-    /**
-     * Get the default auto archive duration of this channel.
-     *
-     * @return the default auto archive duration of this channel.
-     */
-    var defaultAutoArchiveDuration: Int
+  /**
+   * Get the default auto archive duration of this channel.
+   *
+   * @return the default auto archive duration of this channel.
+   */
+  var defaultAutoArchiveDuration: Int
 
-    /**
-     * The last message id of this channel.
-     *
-     * @return the last message id of this channel.
-     */
-    var lastMessageId: String
+  /**
+   * The last message id of this channel.
+   *
+   * @return the last message id of this channel.
+   */
+  var lastMessageId: String
 
-    /**
-     * The last pinned message id of this channel.
-     *
-     * @return the last pinned message id of this channel.
-     */
-    var lastPinTimestamp: String?
+  /**
+   * The last pinned message id of this channel.
+   *
+   * @return the last pinned message id of this channel.
+   */
+  var lastPinTimestamp: String?
 
-    /**
-     * The permission overwrites of this channel.
-     *
-     * @return the permission overwrites of this channel.
-     */
-    var permissionOverwrites: List<PermissionOverwrite>
+  /**
+   * The permission overwrites of this channel.
+   *
+   * @return the permission overwrites of this channel.
+   */
+  var permissionOverwrites: List<PermissionOverwrite>
 
-    /**
-     * The guild message channel getter.
-     *
-     * @return the guild message channel getter.
-     */
-    val guildMessageChannelGetter: GuildMessageChannelGetter
+  /**
+   * The guild message channel getter.
+   *
+   * @return the guild message channel getter.
+   */
+  val guildMessageChannelGetter: GuildMessageChannelGetter
 }

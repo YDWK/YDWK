@@ -25,31 +25,30 @@ import io.ktor.client.statement.*
 import kotlinx.coroutines.withContext
 
 suspend fun getCommandNameAndIds(yde: YDE, applicationId: String): Map<Long, String> {
-    return withContext(yde.coroutineDispatcher) {
-        yde.restApiManager
-            .get(EndPoint.ApplicationCommandsEndpoint.GET_GLOBAL_COMMANDS, applicationId)
-            .execute { execute(it, yde) }
-            .mapBoth({ it }, { emptyMap() })
-    }
+  return withContext(yde.coroutineDispatcher) {
+    yde.restApiManager
+      .get(EndPoint.ApplicationCommandsEndpoint.GET_GLOBAL_COMMANDS, applicationId)
+      .execute { execute(it, yde) }
+      .mapBoth({ it }, { emptyMap() })
+  }
 }
 
 suspend fun getCurrentGuildCommandsNameAndIds(
-    yde: YDE,
-    guildIds: List<String>,
-    applicationId: String
+  yde: YDE,
+  guildIds: List<String>,
+  applicationId: String,
 ): Map<String, Map<Long, String>> {
-    return withContext(yde.coroutineDispatcher) {
-        guildIds.associateWith { guildId ->
-            yde.restApiManager
-                .get(
-                    EndPoint.ApplicationCommandsEndpoint.GET_GUILD_COMMANDS, applicationId, guildId)
-                .execute { execute(it, yde) }
-                .mapBoth({ it }, { emptyMap() })
-        }
+  return withContext(yde.coroutineDispatcher) {
+    guildIds.associateWith { guildId ->
+      yde.restApiManager
+        .get(EndPoint.ApplicationCommandsEndpoint.GET_GUILD_COMMANDS, applicationId, guildId)
+        .execute { execute(it, yde) }
+        .mapBoth({ it }, { emptyMap() })
     }
+  }
 }
 
 suspend fun execute(it: HttpResponse, yde: YDE): Map<Long, String> {
-    val jsonBody = it.json(yde)
-    return jsonBody.associate { it["id"].asLong() to it["name"].asText() } ?: emptyMap()
+  val jsonBody = it.json(yde)
+  return jsonBody.associate { it["id"].asLong() to it["name"].asText() } ?: emptyMap()
 }

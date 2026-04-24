@@ -34,10 +34,14 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
  */
 @ChannelEvent
 data class ForumChannelDefaultForumLayoutViewUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: GuildForumChannel,
-    val oldDefaultForumLayoutView: ForumLayoutType,
-    val newDefaultForumLayoutView: ForumLayoutType,
+  override val ydwk: YDWK,
+  override val entity: GuildForumChannel,
+  val oldDefaultForumLayoutView: ForumLayoutType,
+  val newDefaultForumLayoutView: ForumLayoutType,
 ) :
-    GenericChannelUpdateEvent<ForumLayoutType?>(
-        ydwk, entity, oldDefaultForumLayoutView, newDefaultForumLayoutView)
+  GenericChannelUpdateEvent<ForumLayoutType?>(
+    ydwk,
+    entity,
+    oldDefaultForumLayoutView,
+    newDefaultForumLayoutView,
+  )

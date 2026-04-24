@@ -23,10 +23,9 @@ import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildStageChannel
 
 internal class GuildStageChannelImpl(
-    yde: YDE,
-    override val json: JsonNode,
-    idAsLong: Long,
-    override var topic: String?
+  yde: YDE,
+  override val json: JsonNode,
+  idAsLong: Long,
+  override var topic: String?,
 ) :
-    GuildStageChannel,
-    GuildVoiceChannelImpl(yde.entityInstanceBuilder.buildGuildVoiceChannel(json))
+  GuildStageChannel, GuildVoiceChannelImpl(yde.entityInstanceBuilder.buildGuildVoiceChannel(json))

@@ -33,8 +33,8 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
  */
 @ChannelEvent
 data class VoiceChannelRateLimitPerUserUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: GuildVoiceChannel,
-    val oldRateLimitPerUser: Int,
-    val newRateLimitPerUser: Int,
+  override val ydwk: YDWK,
+  override val entity: GuildVoiceChannel,
+  val oldRateLimitPerUser: Int,
+  val newRateLimitPerUser: Int,
 ) : GenericChannelUpdateEvent<Int>(ydwk, entity, oldRateLimitPerUser, newRateLimitPerUser)

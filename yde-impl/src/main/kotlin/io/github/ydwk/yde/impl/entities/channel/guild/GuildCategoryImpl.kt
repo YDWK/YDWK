@@ -24,9 +24,9 @@ import io.github.ydwk.yde.entities.channel.GuildChannel
 import io.github.ydwk.yde.entities.channel.guild.GuildCategory
 
 internal class GuildCategoryImpl(
-    yde: YDE,
-    json: JsonNode,
-    idAsLong: Long,
-    override val channels: List<GuildChannel>,
-    override val nsfw: Boolean
+  yde: YDE,
+  json: JsonNode,
+  idAsLong: Long,
+  override val channels: List<GuildChannel>,
+  override val nsfw: Boolean,
 ) : GuildCategory, GuildChannelImpl(yde.entityInstanceBuilder.buildGuildChannel(json))

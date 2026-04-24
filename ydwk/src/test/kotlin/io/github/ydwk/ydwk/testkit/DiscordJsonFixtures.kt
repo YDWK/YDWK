@@ -15,7 +15,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */ 
 package io.github.ydwk.ydwk.testkit
 
 import com.fasterxml.jackson.databind.JsonNode
@@ -23,19 +23,18 @@ import com.fasterxml.jackson.databind.ObjectMapper
 
 /** Centralized fixture loading for Discord gateway payload tests. */
 object DiscordJsonFixtures {
-    private val mapper = ObjectMapper()
+  private val mapper = ObjectMapper()
 
-    fun gatewayEvent(fileName: String): JsonNode {
-        return readJson("jsons/$fileName")
-    }
+  fun gatewayEvent(fileName: String): JsonNode {
+    return readJson("jsons/$fileName")
+  }
 
-    fun readJson(resourcePath: String): JsonNode {
-        val stream =
-            requireNotNull(javaClass.classLoader.getResourceAsStream(resourcePath)) {
-                "Resource not found: $resourcePath"
-            }
+  fun readJson(resourcePath: String): JsonNode {
+    val stream =
+      requireNotNull(javaClass.classLoader.getResourceAsStream(resourcePath)) {
+        "Resource not found: $resourcePath"
+      }
 
-        return stream.use { mapper.readTree(it) }
-    }
+    return stream.use { mapper.readTree(it) }
+  }
 }
-

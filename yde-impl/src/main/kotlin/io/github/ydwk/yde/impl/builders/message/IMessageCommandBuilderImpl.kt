@@ -23,72 +23,70 @@ import io.github.ydwk.yde.builders.message.MessageCommandBuilder
 import io.github.ydwk.yde.impl.YDEImpl
 
 class IMessageCommandBuilderImpl(
-    private val yde: YDEImpl,
-    private val guildIds: MutableList<String>,
-    private val applicationId: String
+  private val yde: YDEImpl,
+  private val guildIds: MutableList<String>,
+  private val applicationId: String,
 ) : IMessageCommandBuilder {
-    private val messageCommands: MutableList<MessageCommandBuilder> = mutableListOf()
+  private val messageCommands: MutableList<MessageCommandBuilder> = mutableListOf()
 
-    override fun addMessageCommand(name: String): IMessageCommandBuilder {
-        messageCommands.add(MessageCommandBuilder(name))
-        return this
-    }
+  override fun addMessageCommand(name: String): IMessageCommandBuilder {
+    messageCommands.add(MessageCommandBuilder(name))
+    return this
+  }
 
-    override fun addMessageCommand(messageCommand: MessageCommandBuilder): IMessageCommandBuilder {
-        messageCommands.add(messageCommand)
-        return this
-    }
+  override fun addMessageCommand(messageCommand: MessageCommandBuilder): IMessageCommandBuilder {
+    messageCommands.add(messageCommand)
+    return this
+  }
 
-    override fun addMessageCommands(
-        messageCommands: List<MessageCommandBuilder>
-    ): IMessageCommandBuilder {
-        this.messageCommands.addAll(messageCommands)
-        return this
-    }
+  override fun addMessageCommands(
+    messageCommands: List<MessageCommandBuilder>
+  ): IMessageCommandBuilder {
+    this.messageCommands.addAll(messageCommands)
+    return this
+  }
 
-    override fun addMessageCommands(
-        vararg messageCommands: MessageCommandBuilder
-    ): IMessageCommandBuilder {
-        this.messageCommands.addAll(messageCommands)
-        return this
-    }
+  override fun addMessageCommands(
+    vararg messageCommands: MessageCommandBuilder
+  ): IMessageCommandBuilder {
+    this.messageCommands.addAll(messageCommands)
+    return this
+  }
 
-    override fun getMessageCommands(): List<MessageCommandBuilder> {
-        return messageCommands
-    }
+  override fun getMessageCommands(): List<MessageCommandBuilder> {
+    return messageCommands
+  }
 
-    override fun removeMessageCommand(name: String): IMessageCommandBuilder {
-        messageCommands.removeIf { it.name == name }
-        return this
-    }
+  override fun removeMessageCommand(name: String): IMessageCommandBuilder {
+    messageCommands.removeIf { it.name == name }
+    return this
+  }
 
-    override fun removeMessageCommand(
-        messageCommand: MessageCommandBuilder
-    ): IMessageCommandBuilder {
-        messageCommands.remove(messageCommand)
-        return this
-    }
+  override fun removeMessageCommand(messageCommand: MessageCommandBuilder): IMessageCommandBuilder {
+    messageCommands.remove(messageCommand)
+    return this
+  }
 
-    override fun removeMessageCommands(
-        messageCommands: List<MessageCommandBuilder>
-    ): IMessageCommandBuilder {
-        this.messageCommands.removeAll(messageCommands)
-        return this
-    }
+  override fun removeMessageCommands(
+    messageCommands: List<MessageCommandBuilder>
+  ): IMessageCommandBuilder {
+    this.messageCommands.removeAll(messageCommands)
+    return this
+  }
 
-    override fun removeMessageCommands(
-        vararg messageCommands: MessageCommandBuilder
-    ): IMessageCommandBuilder {
-        this.messageCommands.removeAll(messageCommands)
-        return this
-    }
+  override fun removeMessageCommands(
+    vararg messageCommands: MessageCommandBuilder
+  ): IMessageCommandBuilder {
+    this.messageCommands.removeAll(messageCommands)
+    return this
+  }
 
-    override fun removeAllMessageCommands(): IMessageCommandBuilder {
-        messageCommands.clear()
-        return this
-    }
+  override fun removeAllMessageCommands(): IMessageCommandBuilder {
+    messageCommands.clear()
+    return this
+  }
 
-    override fun build() {
-        MessageCommandSender(yde, guildIds, applicationId, messageCommands)
-    }
+  override fun build() {
+    MessageCommandSender(yde, guildIds, applicationId, messageCommands)
+  }
 }

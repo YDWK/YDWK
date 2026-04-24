@@ -29,36 +29,36 @@ import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.rest.RestResult
 
 internal class VoiceStateImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    private val backupGuild: Guild? = null,
-    override val guild: Guild?,
-    override val channel: GuildVoiceChannel?,
-    override val user: User?,
-    override val member: Member?,
-    override val sessionId: String,
-    override val isDeafened: Boolean,
-    override val isMuted: Boolean,
-    override val isSelfDeafened: Boolean,
-    override val isSelfMuted: Boolean,
-    override val isStreaming: Boolean,
-    override val isSuppressed: Boolean,
-    override val requestToSpeakTimestamp: String?,
+  override val yde: YDE,
+  override val json: JsonNode,
+  private val backupGuild: Guild? = null,
+  override val guild: Guild?,
+  override val channel: GuildVoiceChannel?,
+  override val user: User?,
+  override val member: Member?,
+  override val sessionId: String,
+  override val isDeafened: Boolean,
+  override val isMuted: Boolean,
+  override val isSelfDeafened: Boolean,
+  override val isSelfMuted: Boolean,
+  override val isStreaming: Boolean,
+  override val isSuppressed: Boolean,
+  override val requestToSpeakTimestamp: String?,
 ) : VoiceState, ToStringEntityImpl<VoiceState>(yde, VoiceState::class.java) {
 
-    class VoiceRegionImpl(
-        override val yde: YDE,
-        override val json: JsonNode,
-        override val idAsLong: Long,
-        override val isOptimal: Boolean,
-        override val isDeprecated: Boolean,
-        override val isCustom: Boolean,
-        override var name: String,
-    ) :
-        VoiceState.VoiceRegion,
-        ToStringEntityImpl<VoiceState.VoiceRegion>(yde, VoiceState.VoiceRegion::class.java)
+  class VoiceRegionImpl(
+    override val yde: YDE,
+    override val json: JsonNode,
+    override val idAsLong: Long,
+    override val isOptimal: Boolean,
+    override val isDeprecated: Boolean,
+    override val isCustom: Boolean,
+    override var name: String,
+  ) :
+    VoiceState.VoiceRegion,
+    ToStringEntityImpl<VoiceState.VoiceRegion>(yde, VoiceState.VoiceRegion::class.java)
 
-    override suspend fun requestVoiceRegion(): RestResult<List<VoiceState.VoiceRegion>> {
-        return yde.restAPIMethodGetters.getVoiceRestAPIMethods().requestVoiceRegions()
-    }
+  override suspend fun requestVoiceRegion(): RestResult<List<VoiceState.VoiceRegion>> {
+    return yde.restAPIMethodGetters.getVoiceRestAPIMethods().requestVoiceRegions()
+  }
 }

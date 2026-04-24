@@ -28,16 +28,16 @@ import javax.imageio.ImageIO
 
 internal class AvatarImpl(val yde: YDE, override val url: URL) : Avatar {
 
-    override val asByteArray: ByteArray
-        get() = url.readBytes()
+  override val asByteArray: ByteArray
+    get() = url.readBytes()
 
-    override val asBase64: String
-        get() = Base64.getEncoder().encodeToString(asByteArray)
+  override val asBase64: String
+    get() = Base64.getEncoder().encodeToString(asByteArray)
 
-    override val asBufferedImage: BufferedImage
-        get() = ImageIO.read(url)
+  override val asBufferedImage: BufferedImage
+    get() = ImageIO.read(url)
 
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).add("url", url).toString()
-    }
+  override fun toString(): String {
+    return EntityToStringBuilder(yde, this).add("url", url).toString()
+  }
 }

@@ -26,21 +26,21 @@ import io.github.ydwk.yde.entities.channel.guild.message.text.GuildTextChannel
 import io.github.ydwk.yde.impl.entities.channel.guild.GuildMessageChannelImpl
 
 internal class GuildMessageChannelGetterImpl(guildMessageChannel: GuildMessageChannel) :
-    GuildMessageChannelImpl(guildMessageChannel), GuildMessageChannelGetter {
+  GuildMessageChannelImpl(guildMessageChannel), GuildMessageChannelGetter {
 
-    override fun asGuildTextChannel(): GuildTextChannel? {
-        return if (type == ChannelType.TEXT) {
-            yde.entityInstanceBuilder.buildGuildTextChannel(json)
-        } else {
-            null
-        }
+  override fun asGuildTextChannel(): GuildTextChannel? {
+    return if (type == ChannelType.TEXT) {
+      yde.entityInstanceBuilder.buildGuildTextChannel(json)
+    } else {
+      null
     }
+  }
 
-    override fun asGuildNewsChannel(): GuildNewsChannel? {
-        return if (type == ChannelType.NEWS) {
-            yde.entityInstanceBuilder.buildGuildNewsChannel(json)
-        } else {
-            null
-        }
+  override fun asGuildNewsChannel(): GuildNewsChannel? {
+    return if (type == ChannelType.NEWS) {
+      yde.entityInstanceBuilder.buildGuildNewsChannel(json)
+    } else {
+      null
     }
+  }
 }

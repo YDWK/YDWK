@@ -19,7 +19,7 @@
 package io.github.ydwk.yde.impl.cache.exception
 
 class CacheException(override val message: String) : RuntimeException(message) {
-    constructor(message: String, cause: Throwable) : this(message) {
-        initCause(cause)
-    }
+  constructor(message: String, cause: Throwable) : this(message) {
+    initCause(cause)
+  }
 }

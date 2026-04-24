@@ -19,39 +19,39 @@
 package io.github.ydwk.yde.entities.guild.enums
 
 enum class PremiumTier(private val value: Int) {
-    /** Guild has not unlocked any Server Boost perks. */
-    NONE(0),
+  /** Guild has not unlocked any Server Boost perks. */
+  NONE(0),
 
-    /** Guild has unlocked Server Boost level 1 perks. */
-    TIER_1(1),
+  /** Guild has unlocked Server Boost level 1 perks. */
+  TIER_1(1),
 
-    /** Guild has unlocked Server Boost level 2 perks. */
-    TIER_2(2),
+  /** Guild has unlocked Server Boost level 2 perks. */
+  TIER_2(2),
 
-    /** Guild has unlocked Server Boost level 3 perks. */
-    TIER_3(3),
+  /** Guild has unlocked Server Boost level 3 perks. */
+  TIER_3(3),
 
-    /** An unknown premium tier. */
-    UNKNOWN(-1);
+  /** An unknown premium tier. */
+  UNKNOWN(-1);
 
-    companion object {
-        /**
-         * The [PremiumTier] by its [value].
-         *
-         * @param value The value to get the [PremiumTier] by.
-         * @return The [PremiumTier] by the given [value].
-         */
-        fun getValue(value: Int): PremiumTier {
-            return entries.firstOrNull { it.value == value } ?: UNKNOWN
-        }
-    }
-
+  companion object {
     /**
-     * The value of the [PremiumTier].
+     * The [PremiumTier] by its [value].
      *
-     * @return The value of the [PremiumTier].
+     * @param value The value to get the [PremiumTier] by.
+     * @return The [PremiumTier] by the given [value].
      */
-    fun getValue(): Int {
-        return value
+    fun getValue(value: Int): PremiumTier {
+      return entries.firstOrNull { it.value == value } ?: UNKNOWN
     }
+  }
+
+  /**
+   * The value of the [PremiumTier].
+   *
+   * @return The value of the [PremiumTier].
+   */
+  fun getValue(): Int {
+    return value
+  }
 }

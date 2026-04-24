@@ -32,4 +32,4 @@ import io.github.ydwk.ydwk.evm.event.Event
  */
 @InteractionEvent
 data class TextInputEvent(override val ydwk: YDWK, val textInput: TextInputInteraction) :
-    Event(ydwk)
+  Event(ydwk)

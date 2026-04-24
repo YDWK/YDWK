@@ -25,10 +25,10 @@ import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import java.net.URL
 
 internal class AuthorImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val name: String,
-    override val url: URL?,
-    override val iconUrl: String?,
-    override val proxyIconUrl: String?
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val name: String,
+  override val url: URL?,
+  override val iconUrl: String?,
+  override val proxyIconUrl: String?,
 ) : Author, ToStringEntityImpl<Author>(yde, Author::class.java)

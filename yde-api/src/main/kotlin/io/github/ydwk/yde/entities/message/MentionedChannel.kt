@@ -26,17 +26,17 @@ import io.github.ydwk.yde.util.SnowFlake
 
 interface MentionedChannel : GenericEntity, SnowFlake, NameAbleEntity {
 
-    /**
-     * The guild id of the channel.
-     *
-     * @return The guild id of the channel.
-     */
-    val guildId: GetterSnowFlake
+  /**
+   * The guild id of the channel.
+   *
+   * @return The guild id of the channel.
+   */
+  val guildId: GetterSnowFlake
 
-    /**
-     * The channel type.
-     *
-     * @return The channel type.
-     */
-    val type: ChannelType
+  /**
+   * The channel type.
+   *
+   * @return The channel type.
+   */
+  val type: ChannelType
 }

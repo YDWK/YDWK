@@ -34,8 +34,8 @@ import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
  */
 @GuildEvent
 data class GuildNSFWLevelUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: Guild,
-    val oldNSFWLevel: Int,
-    val newNSFWLevel: NSFWLeveL,
+  override val ydwk: YDWK,
+  override val entity: Guild,
+  val oldNSFWLevel: Int,
+  val newNSFWLevel: NSFWLeveL,
 ) : GenericGuildUpdateEvent<Int>(ydwk, entity, oldNSFWLevel, newNSFWLevel.getLevel())

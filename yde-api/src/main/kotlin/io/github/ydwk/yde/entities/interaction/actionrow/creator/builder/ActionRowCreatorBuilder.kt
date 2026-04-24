@@ -25,17 +25,17 @@ import io.github.ydwk.yde.entities.interaction.actionrow.ActionRow
 import io.github.ydwk.yde.entities.interaction.actionrow.creator.ActionRowCreator
 
 class ActionRowCreatorBuilder(private val yde: YDE, private val components: List<Component>) :
-    ActionRowCreator {
-    override fun create(): ActionRow {
+  ActionRowCreator {
+  override fun create(): ActionRow {
 
-        val json = yde.objectNode
-        val arrayNode = yde.objectMapper.createArrayNode()
+    val json = yde.objectNode
+    val arrayNode = yde.objectMapper.createArrayNode()
 
-        arrayNode.addAll(components.map { it.json })
+    arrayNode.addAll(components.map { it.json })
 
-        json.put("type", 1)
-        json.set<ArrayNode>("components", arrayNode)
+    json.put("type", 1)
+    json.set<ArrayNode>("components", arrayNode)
 
-        return yde.entityInstanceBuilder.buildActionRow(json)
-    }
+    return yde.entityInstanceBuilder.buildActionRow(json)
+  }
 }

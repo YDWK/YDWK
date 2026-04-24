@@ -23,7 +23,5 @@ import io.github.ydwk.yde.entities.interaction.selectmenu.creator.builder.Select
 import io.github.ydwk.yde.entities.interaction.selectmenu.creator.types.UserSelectMenuCreator
 import io.github.ydwk.yde.interaction.message.ComponentType
 
-data class UserSelectMenuCreatorBuilder(
-    override val yde: YDE,
-    override val customId: String,
-) : UserSelectMenuCreator, SelectMenuCreatorBuilder(customId, ComponentType.USER_SELECT_MENU, yde)
+data class UserSelectMenuCreatorBuilder(override val yde: YDE, override val customId: String) :
+  UserSelectMenuCreator, SelectMenuCreatorBuilder(customId, ComponentType.USER_SELECT_MENU, yde)

@@ -22,13 +22,14 @@ package io.github.ydwk.yde.util
 @MustBeDocumented
 @Retention(AnnotationRetention.RUNTIME)
 @Target(
-    AnnotationTarget.CLASS,
-    AnnotationTarget.FIELD,
-    AnnotationTarget.FUNCTION,
-    AnnotationTarget.PROPERTY_GETTER,
-    AnnotationTarget.PROPERTY_SETTER,
-    AnnotationTarget.VALUE_PARAMETER,
-    AnnotationTarget.CONSTRUCTOR,
-    AnnotationTarget.ANNOTATION_CLASS,
-    AnnotationTarget.FILE)
+  AnnotationTarget.CLASS,
+  AnnotationTarget.FIELD,
+  AnnotationTarget.FUNCTION,
+  AnnotationTarget.PROPERTY_GETTER,
+  AnnotationTarget.PROPERTY_SETTER,
+  AnnotationTarget.VALUE_PARAMETER,
+  AnnotationTarget.CONSTRUCTOR,
+  AnnotationTarget.ANNOTATION_CLASS,
+  AnnotationTarget.FILE,
+)
 annotation class Incubating

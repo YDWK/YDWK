@@ -32,8 +32,8 @@ import io.github.ydwk.ydwk.evm.annotations.UserEvent
  */
 @UserEvent
 data class UserMfaEnabledUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: User,
-    val oldMfaEnabled: Boolean,
-    val newMfaEnabled: Boolean,
+  override val ydwk: YDWK,
+  override val entity: User,
+  val oldMfaEnabled: Boolean,
+  val newMfaEnabled: Boolean,
 ) : GenericUserUpdateEvent<Boolean>(ydwk, entity, oldMfaEnabled, newMfaEnabled)

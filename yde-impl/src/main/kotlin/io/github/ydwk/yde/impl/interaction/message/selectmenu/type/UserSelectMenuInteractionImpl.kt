@@ -15,7 +15,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */ 
 package io.github.ydwk.yde.impl.interaction.message.selectmenu.type
 
 import com.fasterxml.jackson.databind.JsonNode
@@ -26,11 +26,11 @@ import io.github.ydwk.yde.interaction.message.selectmenu.interaction.type.UserSe
 import io.github.ydwk.yde.util.GetterSnowFlake
 
 class UserSelectMenuInteractionImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val interactionId: GetterSnowFlake,
-    override val customId: String,
-    override val selectedUsers: List<User>,
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val interactionId: GetterSnowFlake,
+  override val customId: String,
+  override val selectedUsers: List<User>,
 ) :
-    UserSelectMenuInteraction,
-    SelectMenuInteractionImpl(yde, json, interactionId, customId, "", 0, 1)
+  UserSelectMenuInteraction,
+  SelectMenuInteractionImpl(yde, json, interactionId, customId, "", 0, 1)

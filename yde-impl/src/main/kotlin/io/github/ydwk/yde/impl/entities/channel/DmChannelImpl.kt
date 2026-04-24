@@ -26,13 +26,14 @@ import io.github.ydwk.yde.impl.entities.ChannelImpl
 import io.github.ydwk.yde.util.GetterSnowFlake
 
 internal class DmChannelImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val idAsLong: Long,
-    override var lastMessageId: GetterSnowFlake?,
-    override var recipients: List<User>,
-    override var name: String
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val idAsLong: Long,
+  override var lastMessageId: GetterSnowFlake?,
+  override var recipients: List<User>,
+  override var name: String,
 ) :
-    ChannelImpl(
-        yde.entityInstanceBuilder.buildChannel(json, isGuildChannel = false, isDmChannel = true)),
-    DmChannel
+  ChannelImpl(
+    yde.entityInstanceBuilder.buildChannel(json, isGuildChannel = false, isDmChannel = true)
+  ),
+  DmChannel

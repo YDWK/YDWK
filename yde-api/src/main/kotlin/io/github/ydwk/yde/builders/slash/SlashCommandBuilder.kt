@@ -33,99 +33,102 @@ import io.github.ydwk.yde.util.Checks
  * @param specificGuildOnly Whether the slash command can only be used in a specific guild/s.
  */
 class SlashCommandBuilder(
-    val name: String,
-    val description: String,
-    private val guildOnly: Boolean = false,
-    val specificGuildOnly: Boolean = false
+  val name: String,
+  val description: String,
+  private val guildOnly: Boolean = false,
+  val specificGuildOnly: Boolean = false,
 ) {
-    private var options: MutableList<SlashOption> = mutableListOf()
-    private var subCommandGroups: MutableList<SlashSubCommandGroup> = mutableListOf()
-    private var subCommands: MutableList<SlashSubCommand> = mutableListOf()
+  private var options: MutableList<SlashOption> = mutableListOf()
+  private var subCommandGroups: MutableList<SlashSubCommandGroup> = mutableListOf()
+  private var subCommands: MutableList<SlashSubCommand> = mutableListOf()
 
-    fun addOption(option: SlashOption): SlashCommandBuilder {
-        options.add(option)
-        return this
+  fun addOption(option: SlashOption): SlashCommandBuilder {
+    options.add(option)
+    return this
+  }
+
+  fun addOptions(options: List<SlashOption>): SlashCommandBuilder {
+    this.options.addAll(options)
+    return this
+  }
+
+  fun addOptions(vararg options: SlashOption): SlashCommandBuilder {
+    this.options.addAll(options)
+    return this
+  }
+
+  fun addSubCommand(subCommand: SlashSubCommand): SlashCommandBuilder {
+    subCommands.add(subCommand)
+    return this
+  }
+
+  fun addSubCommands(subCommands: List<SlashSubCommand>): SlashCommandBuilder {
+    this.subCommands.addAll(subCommands)
+    return this
+  }
+
+  fun addSubCommands(vararg subCommands: SlashSubCommand): SlashCommandBuilder {
+    this.subCommands.addAll(subCommands)
+    return this
+  }
+
+  fun addSubCommandGroup(subCommandGroup: SlashSubCommandGroup): SlashCommandBuilder {
+    subCommandGroups.add(subCommandGroup)
+    return this
+  }
+
+  fun addSubCommandGroups(subCommandGroups: List<SlashSubCommandGroup>): SlashCommandBuilder {
+    this.subCommandGroups.addAll(subCommandGroups)
+    return this
+  }
+
+  fun addSubCommandGroups(vararg subCommandGroups: SlashSubCommandGroup): SlashCommandBuilder {
+    this.subCommandGroups.addAll(subCommandGroups)
+    return this
+  }
+
+  fun toJson(): JsonNode {
+    val json = ObjectMapper().createObjectNode()
+    json.put("name", name)
+    json.put("description", description)
+    json.put("type", ApplicationCommandType.CHAT_INPUT.toInt())
+    if (guildOnly) {
+      json.put("dm_permission", false)
     }
 
-    fun addOptions(options: List<SlashOption>): SlashCommandBuilder {
-        this.options.addAll(options)
-        return this
+    val options: ArrayNode = ObjectMapper().createArrayNode()
+
+    this.options.forEach { it ->
+      Checks.checkLength(it.name, 32, "Option command name can not be longer than 32 characters")
+      Checks.checkLength(
+        it.description,
+        100,
+        "Option command description can not be longer than 100 characters",
+      )
+      options.add(it.toJson())
     }
 
-    fun addOptions(vararg options: SlashOption): SlashCommandBuilder {
-        this.options.addAll(options)
-        return this
+    this.subCommands.forEach { it ->
+      Checks.checkLength(it.name, 32, "Subcommand name can not be longer than 32 characters")
+      Checks.checkLength(
+        it.description,
+        100,
+        "Subcommand description can not be longer than 100 characters",
+      )
+      options.add(it.toJson())
     }
 
-    fun addSubCommand(subCommand: SlashSubCommand): SlashCommandBuilder {
-        subCommands.add(subCommand)
-        return this
+    this.subCommandGroups.forEach { it ->
+      Checks.checkLength(it.name, 32, "Subcommand group name can not be longer than 32 characters")
+      Checks.checkLength(
+        it.description,
+        100,
+        "Subcommand group description can not be longer than 100 characters",
+      )
+      options.add(it.toJson())
     }
 
-    fun addSubCommands(subCommands: List<SlashSubCommand>): SlashCommandBuilder {
-        this.subCommands.addAll(subCommands)
-        return this
-    }
-
-    fun addSubCommands(vararg subCommands: SlashSubCommand): SlashCommandBuilder {
-        this.subCommands.addAll(subCommands)
-        return this
-    }
-
-    fun addSubCommandGroup(subCommandGroup: SlashSubCommandGroup): SlashCommandBuilder {
-        subCommandGroups.add(subCommandGroup)
-        return this
-    }
-
-    fun addSubCommandGroups(subCommandGroups: List<SlashSubCommandGroup>): SlashCommandBuilder {
-        this.subCommandGroups.addAll(subCommandGroups)
-        return this
-    }
-
-    fun addSubCommandGroups(vararg subCommandGroups: SlashSubCommandGroup): SlashCommandBuilder {
-        this.subCommandGroups.addAll(subCommandGroups)
-        return this
-    }
-
-    fun toJson(): JsonNode {
-        val json = ObjectMapper().createObjectNode()
-        json.put("name", name)
-        json.put("description", description)
-        json.put("type", ApplicationCommandType.CHAT_INPUT.toInt())
-        if (guildOnly) {
-            json.put("dm_permission", false)
-        }
-
-        val options: ArrayNode = ObjectMapper().createArrayNode()
-
-        this.options.forEach { it ->
-            Checks.checkLength(
-                it.name, 32, "Option command name can not be longer than 32 characters")
-            Checks.checkLength(
-                it.description,
-                100,
-                "Option command description can not be longer than 100 characters")
-            options.add(it.toJson())
-        }
-
-        this.subCommands.forEach { it ->
-            Checks.checkLength(it.name, 32, "Subcommand name can not be longer than 32 characters")
-            Checks.checkLength(
-                it.description, 100, "Subcommand description can not be longer than 100 characters")
-            options.add(it.toJson())
-        }
-
-        this.subCommandGroups.forEach { it ->
-            Checks.checkLength(
-                it.name, 32, "Subcommand group name can not be longer than 32 characters")
-            Checks.checkLength(
-                it.description,
-                100,
-                "Subcommand group description can not be longer than 100 characters")
-            options.add(it.toJson())
-        }
-
-        json.set<ArrayNode>("options", options)
-        return json
-    }
+    json.set<ArrayNode>("options", options)
+    return json
+  }
 }

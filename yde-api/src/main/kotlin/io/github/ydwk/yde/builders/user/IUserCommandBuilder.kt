@@ -22,67 +22,66 @@ import org.slf4j.helpers.CheckReturnValue
 
 interface IUserCommandBuilder {
 
-    /**
-     * Adds a user command to the builder
-     *
-     * @param name The name of the user command
-     * @return The [IUserCommandBuilder] object that was added
-     */
-    @CheckReturnValue fun addUserCommand(name: String): IUserCommandBuilder
+  /**
+   * Adds a user command to the builder
+   *
+   * @param name The name of the user command
+   * @return The [IUserCommandBuilder] object that was added
+   */
+  @CheckReturnValue fun addUserCommand(name: String): IUserCommandBuilder
 
-    /**
-     * Adds a new User Command to the builder
-     *
-     * @param userCommand The User Command to add
-     */
-    @CheckReturnValue fun addUserCommand(userCommand: UserCommandBuilder): IUserCommandBuilder
+  /**
+   * Adds a new User Command to the builder
+   *
+   * @param userCommand The User Command to add
+   */
+  @CheckReturnValue fun addUserCommand(userCommand: UserCommandBuilder): IUserCommandBuilder
 
-    /**
-     * Lists of User Commands to the builder
-     *
-     * @param userCommands The list of User Commands to add
-     */
-    @CheckReturnValue
-    fun addUserCommands(userCommands: List<UserCommandBuilder>): IUserCommandBuilder
+  /**
+   * Lists of User Commands to the builder
+   *
+   * @param userCommands The list of User Commands to add
+   */
+  @CheckReturnValue fun addUserCommands(userCommands: List<UserCommandBuilder>): IUserCommandBuilder
 
-    /**
-     * Lists of User Commands to the builder
-     *
-     * @param userCommands The list of User Commands to add
-     */
-    @CheckReturnValue
-    fun addUserCommands(vararg userCommands: UserCommandBuilder): IUserCommandBuilder
+  /**
+   * Lists of User Commands to the builder
+   *
+   * @param userCommands The list of User Commands to add
+   */
+  @CheckReturnValue
+  fun addUserCommands(vararg userCommands: UserCommandBuilder): IUserCommandBuilder
 
-    /**
-     * All the User Commands in the builder
-     *
-     * @return The list of User Commands in the builder
-     */
-    @CheckReturnValue fun getUserCommands(): List<UserCommandBuilder>
+  /**
+   * All the User Commands in the builder
+   *
+   * @return The list of User Commands in the builder
+   */
+  @CheckReturnValue fun getUserCommands(): List<UserCommandBuilder>
 
-    /**
-     * Removes a User Command from the builder
-     *
-     * @param userCommand The User Command to remove
-     */
-    @CheckReturnValue fun removeUserCommand(userCommand: UserCommandBuilder): IUserCommandBuilder
+  /**
+   * Removes a User Command from the builder
+   *
+   * @param userCommand The User Command to remove
+   */
+  @CheckReturnValue fun removeUserCommand(userCommand: UserCommandBuilder): IUserCommandBuilder
 
-    /**
-     * Removes a List of User Commands from the builder
-     *
-     * @param userCommands The List of User Commands to remove
-     */
-    @CheckReturnValue
-    fun removeUserCommands(userCommands: List<UserCommandBuilder>): IUserCommandBuilder
+  /**
+   * Removes a List of User Commands from the builder
+   *
+   * @param userCommands The List of User Commands to remove
+   */
+  @CheckReturnValue
+  fun removeUserCommands(userCommands: List<UserCommandBuilder>): IUserCommandBuilder
 
-    /**
-     * Removes a List of User Commands from the builder
-     *
-     * @param userCommands The List of User Commands to remove
-     */
-    @CheckReturnValue
-    fun removeUserCommands(vararg userCommands: UserCommandBuilder): IUserCommandBuilder
+  /**
+   * Removes a List of User Commands from the builder
+   *
+   * @param userCommands The List of User Commands to remove
+   */
+  @CheckReturnValue
+  fun removeUserCommands(vararg userCommands: UserCommandBuilder): IUserCommandBuilder
 
-    /** Builds the User Commands */
-    fun build()
+  /** Builds the User Commands */
+  fun build()
 }

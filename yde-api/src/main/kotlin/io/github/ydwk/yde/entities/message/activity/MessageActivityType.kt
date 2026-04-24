@@ -19,29 +19,29 @@
 package io.github.ydwk.yde.entities.message.activity
 
 enum class MessageActivityType(private val value: Int) {
-    JOIN(1),
-    SPECTATE(2),
-    LISTEN(3),
-    JOIN_REQUEST(5);
+  JOIN(1),
+  SPECTATE(2),
+  LISTEN(3),
+  JOIN_REQUEST(5);
 
-    companion object {
-        /**
-         * The [MessageActivityType] from the provided [value].
-         *
-         * @param value The value of the [MessageActivityType].
-         * @return The [MessageActivityType] corresponding to the provided [value].
-         */
-        fun getValue(value: Int): MessageActivityType {
-            return entries.first { it.value == value }
-        }
-    }
-
+  companion object {
     /**
-     * The value of the [MessageActivityType].
+     * The [MessageActivityType] from the provided [value].
      *
-     * @return The value of the [MessageActivityType].
+     * @param value The value of the [MessageActivityType].
+     * @return The [MessageActivityType] corresponding to the provided [value].
      */
-    fun getValue(): Int {
-        return value
+    fun getValue(value: Int): MessageActivityType {
+      return entries.first { it.value == value }
     }
+  }
+
+  /**
+   * The value of the [MessageActivityType].
+   *
+   * @return The value of the [MessageActivityType].
+   */
+  fun getValue(): Int {
+    return value
+  }
 }

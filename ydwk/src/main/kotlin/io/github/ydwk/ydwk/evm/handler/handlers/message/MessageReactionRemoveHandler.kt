@@ -27,14 +27,17 @@ import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class MessageReactionRemoveHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override suspend fun start() {
-        val userId = GetterSnowFlake.of(json.get("user_id").asLong())
-        val channelId = GetterSnowFlake.of(json.get("channel_id").asLong())
-        val messageId = GetterSnowFlake.of(json.get("message_id").asLong())
-        val guildId = if (json.has("guild_id")) GetterSnowFlake.of(json.get("guild_id").asLong()) else null
-        val emoji = ydwk.entityInstanceBuilder.buildEmoji(json.get("emoji"))
-        val message = ydwk.cache[messageId.asString, CacheIds.MESSAGE] as? Message
-        val user = ydwk.getUserById(userId.asLong)
-        ydwk.emitEvent(MessageReactionRemoveEvent(ydwk, userId, channelId, messageId, guildId, emoji, message, user))
-    }
+  override suspend fun start() {
+    val userId = GetterSnowFlake.of(json.get("user_id").asLong())
+    val channelId = GetterSnowFlake.of(json.get("channel_id").asLong())
+    val messageId = GetterSnowFlake.of(json.get("message_id").asLong())
+    val guildId =
+      if (json.has("guild_id")) GetterSnowFlake.of(json.get("guild_id").asLong()) else null
+    val emoji = ydwk.entityInstanceBuilder.buildEmoji(json.get("emoji"))
+    val message = ydwk.cache[messageId.asString, CacheIds.MESSAGE] as? Message
+    val user = ydwk.getUserById(userId.asLong)
+    ydwk.emitEvent(
+      MessageReactionRemoveEvent(ydwk, userId, channelId, messageId, guildId, emoji, message, user)
+    )
+  }
 }

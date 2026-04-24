@@ -22,50 +22,50 @@ import io.github.ydwk.yde.entities.interaction.textinput.TextInput
 
 interface TextInputCreator {
 
-    /**
-     * Sets the minimum length of the text input.
-     *
-     * @param min The minimum length of the text input. max 4000
-     * @return The current [TextInputCreator] instance.
-     */
-    fun setMinLength(min: Int): TextInputCreator
+  /**
+   * Sets the minimum length of the text input.
+   *
+   * @param min The minimum length of the text input. max 4000
+   * @return The current [TextInputCreator] instance.
+   */
+  fun setMinLength(min: Int): TextInputCreator
 
-    /**
-     * Sets the maximum length of the text input. max 4000
-     *
-     * @param max The maximum length of the text input.
-     * @return The current [TextInputCreator] instance.
-     */
-    fun setMaxLength(max: Int): TextInputCreator
+  /**
+   * Sets the maximum length of the text input. max 4000
+   *
+   * @param max The maximum length of the text input.
+   * @return The current [TextInputCreator] instance.
+   */
+  fun setMaxLength(max: Int): TextInputCreator
 
-    /**
-     * Sets weather the text input is required.
-     *
-     * @param required Whether the text input is required.
-     * @return The current [TextInputCreator] instance.
-     */
-    fun setRequired(required: Boolean): TextInputCreator
+  /**
+   * Sets weather the text input is required.
+   *
+   * @param required Whether the text input is required.
+   * @return The current [TextInputCreator] instance.
+   */
+  fun setRequired(required: Boolean): TextInputCreator
 
-    /**
-     * Sets the pre-filled value for this component; max 4000 characters
-     *
-     * @param value The pre-filled value for this component.
-     * @return The current [TextInputCreator] instance.
-     */
-    fun setInitialValue(value: String): TextInputCreator
+  /**
+   * Sets the pre-filled value for this component; max 4000 characters
+   *
+   * @param value The pre-filled value for this component.
+   * @return The current [TextInputCreator] instance.
+   */
+  fun setInitialValue(value: String): TextInputCreator
 
-    /**
-     * Sets the placeholder for this component; max 4000 characters
-     *
-     * @param placeholder The placeholder for this component.
-     * @return The current [TextInputCreator] instance.
-     */
-    fun setPlaceholder(placeholder: String): TextInputCreator
+  /**
+   * Sets the placeholder for this component; max 4000 characters
+   *
+   * @param placeholder The placeholder for this component.
+   * @return The current [TextInputCreator] instance.
+   */
+  fun setPlaceholder(placeholder: String): TextInputCreator
 
-    /**
-     * Creates the text input.
-     *
-     * @return The text input.
-     */
-    fun create(): TextInput
+  /**
+   * Creates the text input.
+   *
+   * @return The text input.
+   */
+  fun create(): TextInput
 }

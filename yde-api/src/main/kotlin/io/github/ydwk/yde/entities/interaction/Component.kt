@@ -22,24 +22,24 @@ import io.github.ydwk.yde.entities.util.GenericEntity
 import io.github.ydwk.yde.interaction.message.ComponentType
 
 interface Component : GenericEntity {
-    /**
-     * The type of this component.
-     *
-     * @return The type of this component.
-     */
-    val type: ComponentType
+  /**
+   * The type of this component.
+   *
+   * @return The type of this component.
+   */
+  val type: ComponentType
 
-    /**
-     * Weather this component is compatible with a message.
-     *
-     * @return Weather this component is compatible with a message.
-     */
-    val messageCompatible: Boolean
+  /**
+   * Weather this component is compatible with a message.
+   *
+   * @return Weather this component is compatible with a message.
+   */
+  val messageCompatible: Boolean
 
-    /**
-     * Weather this component is compatible with a modal.
-     *
-     * @return Weather this component is compatible with a modal.
-     */
-    val modalCompatible: Boolean
+  /**
+   * Weather this component is compatible with a modal.
+   *
+   * @return Weather this component is compatible with a modal.
+   */
+  val modalCompatible: Boolean
 }

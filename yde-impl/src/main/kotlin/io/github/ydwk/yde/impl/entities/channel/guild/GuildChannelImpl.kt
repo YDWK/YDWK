@@ -28,30 +28,32 @@ import io.github.ydwk.yde.impl.entities.channel.getter.guild.GuildChannelGetterI
 import io.github.ydwk.yde.util.GetterSnowFlake
 
 internal open class GuildChannelImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val idAsLong: Long,
-    override val guildId: GetterSnowFlake,
-    override var position: Int,
-    override var parentId: GetterSnowFlake?,
-    override val inviteCreator: InviteCreator,
-    override var name: String,
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val idAsLong: Long,
+  override val guildId: GetterSnowFlake,
+  override var position: Int,
+  override var parentId: GetterSnowFlake?,
+  override val inviteCreator: InviteCreator,
+  override var name: String,
 ) :
-    ChannelImpl(
-        yde.entityInstanceBuilder.buildChannel(json, isGuildChannel = true, isDmChannel = false)),
-    GuildChannel {
-    constructor(
-        guildChannel: GuildChannel
-    ) : this(
-        guildChannel.yde,
-        guildChannel.json,
-        guildChannel.idAsLong,
-        guildChannel.guildId,
-        guildChannel.position,
-        guildChannel.parentId,
-        guildChannel.inviteCreator,
-        guildChannel.name)
+  ChannelImpl(
+    yde.entityInstanceBuilder.buildChannel(json, isGuildChannel = true, isDmChannel = false)
+  ),
+  GuildChannel {
+  constructor(
+    guildChannel: GuildChannel
+  ) : this(
+    guildChannel.yde,
+    guildChannel.json,
+    guildChannel.idAsLong,
+    guildChannel.guildId,
+    guildChannel.position,
+    guildChannel.parentId,
+    guildChannel.inviteCreator,
+    guildChannel.name,
+  )
 
-    override val guildChannelGetter: GuildChannelGetter
-        get() = GuildChannelGetterImpl(this)
+  override val guildChannelGetter: GuildChannelGetter
+    get() = GuildChannelGetterImpl(this)
 }

@@ -31,4 +31,4 @@ import io.github.ydwk.ydwk.evm.event.Event
  */
 @InteractionEvent
 data class AutoCompleteSlashCommandEvent(override val ydwk: YDWK, val interaction: Interaction) :
-    Event(ydwk)
+  Event(ydwk)

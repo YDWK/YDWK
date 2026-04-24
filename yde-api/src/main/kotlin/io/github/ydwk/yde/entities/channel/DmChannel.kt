@@ -22,17 +22,17 @@ import io.github.ydwk.yde.entities.User
 import io.github.ydwk.yde.util.GetterSnowFlake
 
 interface DmChannel : TextChannel {
-    /**
-     * The channel's last message id.
-     *
-     * @return the channel's last message id.
-     */
-    var lastMessageId: GetterSnowFlake?
+  /**
+   * The channel's last message id.
+   *
+   * @return the channel's last message id.
+   */
+  var lastMessageId: GetterSnowFlake?
 
-    /**
-     * The recipients in the dm.
-     *
-     * @return the recipients in the dm.
-     */
-    var recipients: List<User>
+  /**
+   * The recipients in the dm.
+   *
+   * @return the recipients in the dm.
+   */
+  var recipients: List<User>
 }

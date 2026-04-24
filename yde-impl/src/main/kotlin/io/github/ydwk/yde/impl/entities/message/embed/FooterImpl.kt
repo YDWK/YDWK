@@ -24,9 +24,9 @@ import io.github.ydwk.yde.entities.message.embed.Footer
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
 internal class FooterImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val text: String,
-    override val iconUrl: String?,
-    override val proxyIconUrl: String?
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val text: String,
+  override val iconUrl: String?,
+  override val proxyIconUrl: String?,
 ) : Footer, ToStringEntityImpl<Footer>(yde, Footer::class.java)

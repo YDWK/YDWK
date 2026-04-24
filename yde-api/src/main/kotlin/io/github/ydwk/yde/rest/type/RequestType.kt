@@ -19,9 +19,9 @@
 package io.github.ydwk.yde.rest.type
 
 enum class RequestType {
-    GET,
-    POST,
-    PUT,
-    DELETE,
-    PATCH
+  GET,
+  POST,
+  PUT,
+  DELETE,
+  PATCH,
 }

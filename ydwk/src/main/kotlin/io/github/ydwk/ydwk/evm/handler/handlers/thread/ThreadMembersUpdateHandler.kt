@@ -25,16 +25,27 @@ import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class ThreadMembersUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override suspend fun start() {
-        val threadId = GetterSnowFlake.of(json.get("id").asLong())
-        val guildId = GetterSnowFlake.of(json.get("guild_id").asLong())
-        val memberCount = json.get("member_count").asInt()
-        val addedMemberIds = if (json.has("added_members"))
-            json.get("added_members").map { GetterSnowFlake.of(it.get("user_id").asLong()) }
-        else emptyList()
-        val removedMemberIds = if (json.has("removed_member_ids"))
-            json.get("removed_member_ids").map { GetterSnowFlake.of(it.asLong()) }
-        else emptyList()
-        ydwk.emitEvent(ThreadMembersUpdateEvent(ydwk, threadId, guildId, memberCount, addedMemberIds, removedMemberIds))
-    }
+  override suspend fun start() {
+    val threadId = GetterSnowFlake.of(json.get("id").asLong())
+    val guildId = GetterSnowFlake.of(json.get("guild_id").asLong())
+    val memberCount = json.get("member_count").asInt()
+    val addedMemberIds =
+      if (json.has("added_members"))
+        json.get("added_members").map { GetterSnowFlake.of(it.get("user_id").asLong()) }
+      else emptyList()
+    val removedMemberIds =
+      if (json.has("removed_member_ids"))
+        json.get("removed_member_ids").map { GetterSnowFlake.of(it.asLong()) }
+      else emptyList()
+    ydwk.emitEvent(
+      ThreadMembersUpdateEvent(
+        ydwk,
+        threadId,
+        guildId,
+        memberCount,
+        addedMemberIds,
+        removedMemberIds,
+      )
+    )
+  }
 }

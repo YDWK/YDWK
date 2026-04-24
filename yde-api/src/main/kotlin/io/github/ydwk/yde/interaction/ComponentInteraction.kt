@@ -31,88 +31,88 @@ import io.github.ydwk.yde.util.GetterSnowFlake
 
 interface ComponentInteraction : GenericEntity {
 
-    /**
-     * The type of component interaction.
-     *
-     * @return The type of component interaction.
-     */
-    val type: ComponentType
+  /**
+   * The type of component interaction.
+   *
+   * @return The type of component interaction.
+   */
+  val type: ComponentType
 
-    /**
-     * The interaction token.
-     *
-     * @return The interaction token.
-     */
-    val interactionToken: String
+  /**
+   * The interaction token.
+   *
+   * @return The interaction token.
+   */
+  val interactionToken: String
 
-    /**
-     * The interaction id.
-     *
-     * @return the interaction id
-     */
-    val interactionId: GetterSnowFlake
+  /**
+   * The interaction id.
+   *
+   * @return the interaction id
+   */
+  val interactionId: GetterSnowFlake
 
-    /**
-     * The interaction type of this component.
-     *
-     * @return the interaction type of this component
-     */
-    val interactionType: InteractionType
-        get() = InteractionType.MESSAGE_COMPONENT
+  /**
+   * The interaction type of this component.
+   *
+   * @return the interaction type of this component
+   */
+  val interactionType: InteractionType
+    get() = InteractionType.MESSAGE_COMPONENT
 
-    /**
-     * The message corresponding to this component.
-     *
-     * @return The message corresponding to this component.
-     */
-    val message: Message
+  /**
+   * The message corresponding to this component.
+   *
+   * @return The message corresponding to this component.
+   */
+  val message: Message
 
-    /**
-     * The member who triggered this component.
-     *
-     * @return The member who triggered this component.
-     */
-    val member: Member?
+  /**
+   * The member who triggered this component.
+   *
+   * @return The member who triggered this component.
+   */
+  val member: Member?
 
-    /**
-     * The user who triggered this component.
-     *
-     * @return The user who triggered this component.
-     */
-    val user: User?
+  /**
+   * The user who triggered this component.
+   *
+   * @return The user who triggered this component.
+   */
+  val user: User?
 
-    /**
-     * The guild id of this component.
-     *
-     * @return The guild id of this component.
-     */
-    val guildId: GetterSnowFlake?
+  /**
+   * The guild id of this component.
+   *
+   * @return The guild id of this component.
+   */
+  val guildId: GetterSnowFlake?
 
-    /**
-     * The channel were this component was triggered.
-     *
-     * @return The channel were this component was triggered.
-     */
-    val channel: TextChannel?
+  /**
+   * The channel were this component was triggered.
+   *
+   * @return The channel were this component was triggered.
+   */
+  val channel: TextChannel?
 
-    /**
-     * The application id of this component.
-     *
-     * @return The application id of this component.
-     */
-    val applicationId: GetterSnowFlake?
+  /**
+   * The application id of this component.
+   *
+   * @return The application id of this component.
+   */
+  val applicationId: GetterSnowFlake?
 
-    /**
-     * Gets a list of [Component]s that were sent with this component.
-     *
-     * @return A list of [Component]s that were sent with this component.
-     */
-    val components: List<Component>
+  /**
+   * Gets a list of [Component]s that were sent with this component.
+   *
+   * @return A list of [Component]s that were sent with this component.
+   */
+  val components: List<Component>
 
-    /**
-     * Gets extra data sent with this component.
-     *
-     * @return Extra data sent with this component.
-     */
-    val data: ComponentInteractionData
+  /**
+   * Gets extra data sent with this component.
+   *
+   * @return Extra data sent with this component.
+   */
+  val data: ComponentInteractionData
 }

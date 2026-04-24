@@ -22,17 +22,17 @@ import io.github.ydwk.yde.entities.util.GenericEntity
 import io.github.ydwk.yde.util.SnowFlake
 
 interface StickerItem : SnowFlake, GenericEntity {
-    /**
-     * The name of this sticker.
-     *
-     * @return The name of this sticker.
-     */
-    val name: String
+  /**
+   * The name of this sticker.
+   *
+   * @return The name of this sticker.
+   */
+  val name: String
 
-    /**
-     * The type of this sticker.
-     *
-     * @return The type of this sticker.
-     */
-    val type: StickerType
+  /**
+   * The type of this sticker.
+   *
+   * @return The type of this sticker.
+   */
+  val type: StickerType
 }

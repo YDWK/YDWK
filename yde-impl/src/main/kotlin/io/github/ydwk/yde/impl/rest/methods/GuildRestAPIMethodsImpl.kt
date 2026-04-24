@@ -36,130 +36,130 @@ import io.github.ydwk.yde.util.GetterSnowFlake
 import kotlin.time.Duration
 
 class GuildRestAPIMethodsImpl(val yde: YDE) : GuildRestAPIMethods {
-    override suspend fun banUser(
-        guildId: Long,
-        userId: Long,
-        deleteMessageDuration: Duration,
-        reason: String?
-    ): RestResult<NoResult> {
-        return yde.restApiManager
-            .put(
-                yde.objectMapper
-                    .createObjectNode()
-                    .put("delete_message_seconds", deleteMessageDuration.inWholeSeconds)
-                    .toString()
-                    .toTextContent(),
-                EndPoint.GuildEndpoint.BAN,
-                guildId.toString(),
-                userId.toString())
-            .addReason(reason)
-            .executeWithNoResult()
+  override suspend fun banUser(
+    guildId: Long,
+    userId: Long,
+    deleteMessageDuration: Duration,
+    reason: String?,
+  ): RestResult<NoResult> {
+    return yde.restApiManager
+      .put(
+        yde.objectMapper
+          .createObjectNode()
+          .put("delete_message_seconds", deleteMessageDuration.inWholeSeconds)
+          .toString()
+          .toTextContent(),
+        EndPoint.GuildEndpoint.BAN,
+        guildId.toString(),
+        userId.toString(),
+      )
+      .addReason(reason)
+      .executeWithNoResult()
+  }
+
+  override suspend fun unbanUser(
+    guildId: Long,
+    userId: Long,
+    reason: String?,
+  ): RestResult<NoResult> {
+    return yde.restApiManager
+      .delete(EndPoint.GuildEndpoint.BAN, guildId.toString(), userId.toString())
+      .addReason(reason)
+      .executeWithNoResult()
+  }
+
+  override suspend fun kickMember(
+    guildId: Long,
+    userId: Long,
+    reason: String?,
+  ): RestResult<NoResult> {
+    return yde.restApiManager
+      .delete(EndPoint.GuildEndpoint.KICK, guildId.toString(), userId.toString())
+      .addReason(reason)
+      .executeWithNoResult()
+  }
+
+  override suspend fun requestedBanList(guildId: Long): RestResult<List<Ban>> {
+    return yde.restApiManager.get(EndPoint.GuildEndpoint.GET_BANS, guildId.toString()).execute { it
+      ->
+      val jsonBody = it.json(yde)
+      jsonBody.map { yde.entityInstanceBuilder.buildBan(it) }
+    }
+  }
+
+  override suspend fun requestedAuditLog(
+    guildId: Long,
+    userId: GetterSnowFlake?,
+    limit: Int,
+    before: GetterSnowFlake?,
+    actionType: AuditLogType?,
+  ): RestResult<AuditLog> {
+    val rest = yde.restApiManager
+
+    if (userId != null) {
+      rest.addQueryParameter("user_id", userId.asString)
     }
 
-    override suspend fun unbanUser(
-        guildId: Long,
-        userId: Long,
-        reason: String?
-    ): RestResult<NoResult> {
-        return yde.restApiManager
-            .delete(EndPoint.GuildEndpoint.BAN, guildId.toString(), userId.toString())
-            .addReason(reason)
-            .executeWithNoResult()
+    if (before != null) {
+      rest.addQueryParameter("before", before.asString)
     }
 
-    override suspend fun kickMember(
-        guildId: Long,
-        userId: Long,
-        reason: String?
-    ): RestResult<NoResult> {
-        return yde.restApiManager
-            .delete(EndPoint.GuildEndpoint.KICK, guildId.toString(), userId.toString())
-            .addReason(reason)
-            .executeWithNoResult()
+    if (actionType != null) {
+      rest.addQueryParameter("action_type", actionType.getType().toString())
     }
 
-    override suspend fun requestedBanList(guildId: Long): RestResult<List<Ban>> {
-        return yde.restApiManager
-            .get(EndPoint.GuildEndpoint.GET_BANS, guildId.toString())
-            .execute { it ->
-                val jsonBody = it.json(yde)
-                jsonBody.map { yde.entityInstanceBuilder.buildBan(it) }
-            }
-    }
+    return rest
+      .addQueryParameter("limit", limit.toString())
+      .get(EndPoint.GuildEndpoint.GET_AUDIT_LOGS, guildId.toString())
+      .execute {
+        val jsonBody = it.json(yde)
+        yde.entityInstanceBuilder.buildAuditLog(jsonBody)
+      }
+  }
 
-    override suspend fun requestedAuditLog(
-        guildId: Long,
-        userId: GetterSnowFlake?,
-        limit: Int,
-        before: GetterSnowFlake?,
-        actionType: AuditLogType?
-    ): RestResult<AuditLog> {
-        val rest = yde.restApiManager
-
-        if (userId != null) {
-            rest.addQueryParameter("user_id", userId.asString)
+  override suspend fun requestedMembers(guildId: Long, limit: Int?): RestResult<List<Member>> {
+    return yde.restApiManager
+      .addQueryParameter("limit", limit.toString())
+      .get(EndPoint.GuildEndpoint.GET_MEMBERS, guildId.toString())
+      .execute {
+        val jsonBody = it.json(yde)
+        val members: ArrayNode = jsonBody as ArrayNode
+        val memberList = mutableListOf<Member>()
+        for (member in members) {
+          memberList.add(yde.entityInstanceBuilder.buildMember(member, GetterSnowFlake.of(guildId)))
         }
+        memberList
+      }
+  }
 
-        if (before != null) {
-            rest.addQueryParameter("before", before.asString)
-        }
+  override suspend fun requestedGuild(guildId: Long): RestResult<Guild> {
+    return this.yde.restApiManager
+      .get(EndPoint.GuildEndpoint.GET_GUILD, guildId.toString())
+      .execute {
+        val jsonBody = it.json(yde)
+        yde.entityInstanceBuilder.buildGuild(jsonBody)
+      }
+  }
 
-        if (actionType != null) {
-            rest.addQueryParameter("action_type", actionType.getType().toString())
-        }
-
-        return rest
-            .addQueryParameter("limit", limit.toString())
-            .get(EndPoint.GuildEndpoint.GET_AUDIT_LOGS, guildId.toString())
-            .execute {
-                val jsonBody = it.json(yde)
-                yde.entityInstanceBuilder.buildAuditLog(jsonBody)
-            }
+  @Deprecated(
+    "Use requestedPartialGuilds instead",
+    replaceWith = ReplaceWith("requestedPartialGuilds()"),
+    level = DeprecationLevel.WARNING,
+  )
+  override suspend fun requestedGuilds(): RestResult<List<Guild>> {
+    return this.yde.restApiManager.get(EndPoint.GuildEndpoint.GET_GUILDS).execute { it ->
+      val jsonBody = it.json(yde)
+      jsonBody.map { yde.entityInstanceBuilder.buildGuild(it) }
     }
+  }
 
-    override suspend fun requestedMembers(guildId: Long, limit: Int?): RestResult<List<Member>> {
-        return yde.restApiManager
-            .addQueryParameter("limit", limit.toString())
-            .get(EndPoint.GuildEndpoint.GET_MEMBERS, guildId.toString())
-            .execute {
-                val jsonBody = it.json(yde)
-                val members: ArrayNode = jsonBody as ArrayNode
-                val memberList = mutableListOf<Member>()
-                for (member in members) {
-                    memberList.add(
-                        yde.entityInstanceBuilder.buildMember(member, GetterSnowFlake.of(guildId)))
-                }
-                memberList
-            }
-    }
-
-    override suspend fun requestedGuild(guildId: Long): RestResult<Guild> {
-        return this.yde.restApiManager
-            .get(EndPoint.GuildEndpoint.GET_GUILD, guildId.toString())
-            .execute {
-                val jsonBody = it.json(yde)
-                yde.entityInstanceBuilder.buildGuild(jsonBody)
-            }
-    }
-
-    @Deprecated(
-        "Use requestedPartialGuilds instead",
-        replaceWith = ReplaceWith("requestedPartialGuilds()"),
-        level = DeprecationLevel.WARNING)
-    override suspend fun requestedGuilds(): RestResult<List<Guild>> {
-        return this.yde.restApiManager.get(EndPoint.GuildEndpoint.GET_GUILDS).execute { it ->
-            val jsonBody = it.json(yde)
-            jsonBody.map { yde.entityInstanceBuilder.buildGuild(it) }
-        }
-    }
-
-    override suspend fun requestedPartialGuilds(limit: Int): RestResult<List<PartialGuild>> {
-        return this.yde.restApiManager
-            .addQueryParameter("limit", limit.toString())
-            .get(EndPoint.GuildEndpoint.GET_GUILDS)
-            .execute { it ->
-                val jsonBody = it.json(yde)
-                jsonBody.map { yde.entityInstanceBuilder.buildPartialGuild(it) }
-            }
-    }
+  override suspend fun requestedPartialGuilds(limit: Int): RestResult<List<PartialGuild>> {
+    return this.yde.restApiManager
+      .addQueryParameter("limit", limit.toString())
+      .get(EndPoint.GuildEndpoint.GET_GUILDS)
+      .execute { it ->
+        val jsonBody = it.json(yde)
+        jsonBody.map { yde.entityInstanceBuilder.buildPartialGuild(it) }
+      }
+  }
 }

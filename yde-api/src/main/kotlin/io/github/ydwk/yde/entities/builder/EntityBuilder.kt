@@ -24,18 +24,18 @@ import io.github.ydwk.yde.entities.builder.guild.GuildEntitiesBuilder
 /** Creates entities which are not guild specific. */
 interface EntityBuilder {
 
-    /**
-     * Creates a new guild.
-     *
-     * @param name the name of the guild
-     * @return a guild entity builder
-     */
-    fun createGuild(name: String): GuildBuilder
+  /**
+   * Creates a new guild.
+   *
+   * @param name the name of the guild
+   * @return a guild entity builder
+   */
+  fun createGuild(name: String): GuildBuilder
 
-    /**
-     * Creates entities which are guild specific.
-     *
-     * @return a guild entity builder
-     */
-    fun getGuildEntitiesBuilder(): GuildEntitiesBuilder
+  /**
+   * Creates entities which are guild specific.
+   *
+   * @return a guild entity builder
+   */
+  fun getGuildEntitiesBuilder(): GuildEntitiesBuilder
 }

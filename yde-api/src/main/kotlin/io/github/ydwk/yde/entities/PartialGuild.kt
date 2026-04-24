@@ -24,52 +24,52 @@ import io.github.ydwk.yde.util.SnowFlake
 
 interface PartialGuild : GenericEntity, SnowFlake {
 
-    /**
-     * The guild's icon hash.
-     *
-     * @return the guild's icon hash.
-     */
-    var icon: String
+  /**
+   * The guild's icon hash.
+   *
+   * @return the guild's icon hash.
+   */
+  var icon: String
 
-    /**
-     * The banner hash for the guild.
-     *
-     * @return the banner hash for the guild.
-     */
-    var banner: String
+  /**
+   * The banner hash for the guild.
+   *
+   * @return the banner hash for the guild.
+   */
+  var banner: String
 
-    /**
-     * Checks if this is user is owner of the guild.
-     *
-     * @return true if the user is owner of the guild.
-     */
-    var isOwner: Boolean
+  /**
+   * Checks if this is user is owner of the guild.
+   *
+   * @return true if the user is owner of the guild.
+   */
+  var isOwner: Boolean
 
-    /**
-     * The guild's permissions.
-     *
-     * @return the guild's permissions.
-     */
-    var permissions: String
+  /**
+   * The guild's permissions.
+   *
+   * @return the guild's permissions.
+   */
+  var permissions: String
 
-    /**
-     * The guild's features.
-     *
-     * @return the guild's features.
-     */
-    var features: Set<GuildFeature>
+  /**
+   * The guild's features.
+   *
+   * @return the guild's features.
+   */
+  var features: Set<GuildFeature>
 
-    /**
-     * The approximate member count for the guild.
-     *
-     * @return the approximate member count for the guild.
-     */
-    var approximateMemberCount: Int
+  /**
+   * The approximate member count for the guild.
+   *
+   * @return the approximate member count for the guild.
+   */
+  var approximateMemberCount: Int
 
-    /**
-     * The approximate presence count for the guild.
-     *
-     * @return the approximate presence count for the guild.
-     */
-    var approximatePresenceCount: Int
+  /**
+   * The approximate presence count for the guild.
+   *
+   * @return the approximate presence count for the guild.
+   */
+  var approximatePresenceCount: Int
 }

@@ -15,7 +15,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */ 
 package io.github.ydwk.yde.impl.entities.channel.guild
 
 import com.fasterxml.jackson.databind.JsonNode
@@ -25,14 +25,14 @@ import io.github.ydwk.yde.entities.guild.invite.InviteCreator
 import io.github.ydwk.yde.util.GetterSnowFlake
 
 internal class GuildThreadChannelImpl(
-    yde: YDE,
-    json: JsonNode,
-    idAsLong: Long,
-    guildId: GetterSnowFlake,
-    position: Int,
-    parentId: GetterSnowFlake?,
-    inviteCreator: InviteCreator,
-    name: String,
+  yde: YDE,
+  json: JsonNode,
+  idAsLong: Long,
+  guildId: GetterSnowFlake,
+  position: Int,
+  parentId: GetterSnowFlake?,
+  inviteCreator: InviteCreator,
+  name: String,
 ) :
-    GuildChannelImpl(yde, json, idAsLong, guildId, position, parentId, inviteCreator, name),
-    GuildThreadChannel
+  GuildChannelImpl(yde, json, idAsLong, guildId, position, parentId, inviteCreator, name),
+  GuildThreadChannel

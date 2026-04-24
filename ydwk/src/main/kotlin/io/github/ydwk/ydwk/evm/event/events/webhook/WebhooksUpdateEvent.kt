@@ -15,7 +15,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */ 
 package io.github.ydwk.ydwk.evm.event.events.webhook
 
 import io.github.ydwk.yde.entities.channel.GuildChannel
@@ -34,8 +34,8 @@ import io.github.ydwk.ydwk.evm.event.Event
  */
 @GuildEvent
 data class WebhooksUpdateEvent(
-    override val ydwk: YDWK,
-    val guildId: GetterSnowFlake,
-    val channelId: GetterSnowFlake,
-    val channel: GuildChannel?,
+  override val ydwk: YDWK,
+  val guildId: GetterSnowFlake,
+  val channelId: GetterSnowFlake,
+  val channel: GuildChannel?,
 ) : Event(ydwk)

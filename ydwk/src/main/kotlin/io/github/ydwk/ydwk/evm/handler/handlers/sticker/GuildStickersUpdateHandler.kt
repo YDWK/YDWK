@@ -15,7 +15,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */ 
 package io.github.ydwk.ydwk.evm.handler.handlers.sticker
 
 import com.fasterxml.jackson.databind.JsonNode
@@ -24,17 +24,17 @@ import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class GuildStickersUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override suspend fun start() {
-        val guildId = json.get("guild_id").asLong()
-        val guild =
-            ydwk.getGuildById(guildId)
-                ?: run {
-                    ydwk.logger.warn("GuildStickersUpdate: guild $guildId not in cache")
-                    return
-                }
-        val oldStickers = guild.stickers.toList()
-        val newStickers = json.get("stickers").map { ydwk.entityInstanceBuilder.buildSticker(it) }
-        guild.stickers = newStickers
-        ydwk.emitEvent(GuildStickersUpdateEvent(ydwk, guild, oldStickers, newStickers))
-    }
+  override suspend fun start() {
+    val guildId = json.get("guild_id").asLong()
+    val guild =
+      ydwk.getGuildById(guildId)
+        ?: run {
+          ydwk.logger.warn("GuildStickersUpdate: guild $guildId not in cache")
+          return
+        }
+    val oldStickers = guild.stickers.toList()
+    val newStickers = json.get("stickers").map { ydwk.entityInstanceBuilder.buildSticker(it) }
+    guild.stickers = newStickers
+    ydwk.emitEvent(GuildStickersUpdateEvent(ydwk, guild, oldStickers, newStickers))
+  }
 }

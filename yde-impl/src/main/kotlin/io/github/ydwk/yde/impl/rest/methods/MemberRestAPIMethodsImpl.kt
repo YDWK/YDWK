@@ -25,57 +25,59 @@ import io.github.ydwk.yde.rest.methods.MemberRestAPIMethods
 import io.github.ydwk.yde.rest.result.NoResult
 
 class MemberRestAPIMethodsImpl(val yde: YDE) : MemberRestAPIMethods {
-    override suspend fun addRoleToMember(
-        guildId: Long,
-        userId: Long,
-        roleId: Long
-    ): RestResult<NoResult> {
-        return yde.restApiManager
-            .put(
-                null,
-                EndPoint.GuildEndpoint.ADD_ROLE,
-                guildId.toString(),
-                userId.toString(),
-                roleId.toString())
-            .executeWithNoResult()
-    }
+  override suspend fun addRoleToMember(
+    guildId: Long,
+    userId: Long,
+    roleId: Long,
+  ): RestResult<NoResult> {
+    return yde.restApiManager
+      .put(
+        null,
+        EndPoint.GuildEndpoint.ADD_ROLE,
+        guildId.toString(),
+        userId.toString(),
+        roleId.toString(),
+      )
+      .executeWithNoResult()
+  }
 
-    override suspend fun addRolesToMember(
-        guildId: Long,
-        userId: Long,
-        roleIds: List<Long>
-    ): List<RestResult<NoResult>> {
-        val actions = mutableListOf<RestResult<NoResult>>()
-        for (roleId in roleIds) {
-            actions.add(addRoleToMember(guildId, userId, roleId))
-        }
-        return actions
+  override suspend fun addRolesToMember(
+    guildId: Long,
+    userId: Long,
+    roleIds: List<Long>,
+  ): List<RestResult<NoResult>> {
+    val actions = mutableListOf<RestResult<NoResult>>()
+    for (roleId in roleIds) {
+      actions.add(addRoleToMember(guildId, userId, roleId))
     }
+    return actions
+  }
 
-    override suspend fun removeRoleFromMember(
-        guildId: Long,
-        userId: Long,
-        roleId: Long
-    ): RestResult<NoResult> {
-        return yde.restApiManager
-            .delete(
-                null,
-                EndPoint.GuildEndpoint.REMOVE_ROLE,
-                guildId.toString(),
-                userId.toString(),
-                roleId.toString())
-            .executeWithNoResult()
-    }
+  override suspend fun removeRoleFromMember(
+    guildId: Long,
+    userId: Long,
+    roleId: Long,
+  ): RestResult<NoResult> {
+    return yde.restApiManager
+      .delete(
+        null,
+        EndPoint.GuildEndpoint.REMOVE_ROLE,
+        guildId.toString(),
+        userId.toString(),
+        roleId.toString(),
+      )
+      .executeWithNoResult()
+  }
 
-    override suspend fun removeRolesFromMember(
-        guildId: Long,
-        userId: Long,
-        roleIds: List<Long>
-    ): List<RestResult<NoResult>> {
-        val actions = mutableListOf<RestResult<NoResult>>()
-        for (roleId in roleIds) {
-            actions.add(removeRoleFromMember(guildId, userId, roleId))
-        }
-        return actions
+  override suspend fun removeRolesFromMember(
+    guildId: Long,
+    userId: Long,
+    roleIds: List<Long>,
+  ): List<RestResult<NoResult>> {
+    val actions = mutableListOf<RestResult<NoResult>>()
+    for (roleId in roleIds) {
+      actions.add(removeRoleFromMember(guildId, userId, roleId))
     }
+    return actions
+  }
 }

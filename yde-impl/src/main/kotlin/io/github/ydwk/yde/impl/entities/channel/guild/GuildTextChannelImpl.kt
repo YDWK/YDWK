@@ -23,10 +23,10 @@ import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.channel.guild.message.text.GuildTextChannel
 
 internal class GuildTextChannelImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val idAsLong: Long,
-    override var rateLimitPerUser: Int,
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val idAsLong: Long,
+  override var rateLimitPerUser: Int,
 ) :
-    GuildTextChannel,
-    GuildMessageChannelImpl(yde.entityInstanceBuilder.buildGuildMessageChannel(json))
+  GuildTextChannel,
+  GuildMessageChannelImpl(yde.entityInstanceBuilder.buildGuildMessageChannel(json))

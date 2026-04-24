@@ -15,7 +15,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */ 
 package io.github.ydwk.ydwk.evm.event.events.message
 
 import io.github.ydwk.yde.entities.Message
@@ -30,7 +30,7 @@ import io.github.ydwk.ydwk.evm.event.Event
  * @param newMessage The new message after the edit.
  */
 data class MessageUpdateEvent(
-    override val ydwk: YDWK,
-    val oldMessage: Message?,
-    val newMessage: Message,
+  override val ydwk: YDWK,
+  val oldMessage: Message?,
+  val newMessage: Message,
 ) : Event(ydwk)

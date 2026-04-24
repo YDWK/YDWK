@@ -27,75 +27,105 @@ import io.github.ydwk.ydwk.impl.YDWKImpl
 
 // TODO: Rewrite this class to mirror the new changes
 class MessageComponentHandler(
-    val type: ComponentType,
-    private val customId: String,
-    private val interactionComponent: ComponentInteractionImpl,
-    val ydwk: YDWKImpl,
+  val type: ComponentType,
+  private val customId: String,
+  private val interactionComponent: ComponentInteractionImpl,
+  val ydwk: YDWKImpl,
 ) {
-    fun handle() {
-        for (component in interactionComponent.components) {
-            // filter through and find the component that matches the customId and type
-            if (component.type == ComponentType.ACTION_ROW) {
-                when (type) {
-                    ComponentType.BUTTON -> {
-                        ydwk.emitEvent(
-                            ButtonClickEvent(
-                                ydwk,
-                                ydwk.entityInstanceBuilder.buildButtonInteraction(
-                                    interactionComponent.json, interactionComponent.interactionId)))
-                    }
-                    ComponentType.STRING_SELECT_MENU -> {
-                        ydwk.emitEvent(
-                            StringSelectMenuEvent(
-                                ydwk,
-                                ydwk.entityInstanceBuilder.buildStringSelectMenuInteraction(
-                                    interactionComponent.json, interactionComponent.interactionId)))
-                    }
-                    ComponentType.USER_SELECT_MENU -> {
-                        ydwk.emitEvent(
-                            UserSelectMenuEvent(
-                                ydwk,
-                                ydwk.entityInstanceBuilder.buildUserSelectMenuInteraction(
-                                    interactionComponent.json, interactionComponent.interactionId)))
-                    }
-                    ComponentType.ROLE_SELECT_MENU -> {
-                        ydwk.emitEvent(
-                            RoleSelectMenuEvent(
-                                ydwk,
-                                ydwk.entityInstanceBuilder.buildRoleSelectMenuInteraction(
-                                    interactionComponent.json, interactionComponent.interactionId)))
-                    }
-                    ComponentType.MENTIONABLE_SELECT_MENU ->
-                        ydwk.emitEvent(
-                            MemberSelectMenuEvent(
-                                ydwk,
-                                ydwk.entityInstanceBuilder.buildMemberSelectMenuInteraction(
-                                    interactionComponent.json, interactionComponent.interactionId)))
-                    ComponentType.CHANNEL_SELECT_MENU ->
-                        ydwk.emitEvent(
-                            ChannelSelectMenuEvent(
-                                ydwk,
-                                ydwk.entityInstanceBuilder.buildChannelSelectMenuInteraction(
-                                    interactionComponent.json, interactionComponent.interactionId)))
-                    ComponentType.TEXT_INPUT -> {
-                        ydwk.emitEvent(
-                            TextInputEvent(
-                                ydwk,
-                                ydwk.entityInstanceBuilder.buildTextInputInteraction(
-                                    interactionComponent.json, interactionComponent.interactionId)))
-                    }
-                    // else -> {
-                    // if action row, do nothing else warn
-                    ///  if (children.type != ComponentType.ACTION_ROW) {
-                    //   ydwk.logger.warn("Unknown component type: ${children.type}")
-                    // }
-                    // }
-                    ComponentType.ACTION_ROW -> { /* ACTION_ROW is a container, not an interactable component */ }
-                    ComponentType.UNKNOWN -> ydwk.logger.warn("New component type found: $type")
-                }
-            } else {
-                // do nothing
-            }
+  fun handle() {
+    for (component in interactionComponent.components) {
+      // filter through and find the component that matches the customId and type
+      if (component.type == ComponentType.ACTION_ROW) {
+        when (type) {
+          ComponentType.BUTTON -> {
+            ydwk.emitEvent(
+              ButtonClickEvent(
+                ydwk,
+                ydwk.entityInstanceBuilder.buildButtonInteraction(
+                  interactionComponent.json,
+                  interactionComponent.interactionId,
+                ),
+              )
+            )
+          }
+          ComponentType.STRING_SELECT_MENU -> {
+            ydwk.emitEvent(
+              StringSelectMenuEvent(
+                ydwk,
+                ydwk.entityInstanceBuilder.buildStringSelectMenuInteraction(
+                  interactionComponent.json,
+                  interactionComponent.interactionId,
+                ),
+              )
+            )
+          }
+          ComponentType.USER_SELECT_MENU -> {
+            ydwk.emitEvent(
+              UserSelectMenuEvent(
+                ydwk,
+                ydwk.entityInstanceBuilder.buildUserSelectMenuInteraction(
+                  interactionComponent.json,
+                  interactionComponent.interactionId,
+                ),
+              )
+            )
+          }
+          ComponentType.ROLE_SELECT_MENU -> {
+            ydwk.emitEvent(
+              RoleSelectMenuEvent(
+                ydwk,
+                ydwk.entityInstanceBuilder.buildRoleSelectMenuInteraction(
+                  interactionComponent.json,
+                  interactionComponent.interactionId,
+                ),
+              )
+            )
+          }
+          ComponentType.MENTIONABLE_SELECT_MENU ->
+            ydwk.emitEvent(
+              MemberSelectMenuEvent(
+                ydwk,
+                ydwk.entityInstanceBuilder.buildMemberSelectMenuInteraction(
+                  interactionComponent.json,
+                  interactionComponent.interactionId,
+                ),
+              )
+            )
+          ComponentType.CHANNEL_SELECT_MENU ->
+            ydwk.emitEvent(
+              ChannelSelectMenuEvent(
+                ydwk,
+                ydwk.entityInstanceBuilder.buildChannelSelectMenuInteraction(
+                  interactionComponent.json,
+                  interactionComponent.interactionId,
+                ),
+              )
+            )
+          ComponentType.TEXT_INPUT -> {
+            ydwk.emitEvent(
+              TextInputEvent(
+                ydwk,
+                ydwk.entityInstanceBuilder.buildTextInputInteraction(
+                  interactionComponent.json,
+                  interactionComponent.interactionId,
+                ),
+              )
+            )
+          }
+          // else -> {
+          // if action row, do nothing else warn
+          ///  if (children.type != ComponentType.ACTION_ROW) {
+          //   ydwk.logger.warn("Unknown component type: ${children.type}")
+          // }
+          // }
+          ComponentType.ACTION_ROW -> {
+            /* ACTION_ROW is a container, not an interactable component */
+          }
+          ComponentType.UNKNOWN -> ydwk.logger.warn("New component type found: $type")
         }
+      } else {
+        // do nothing
+      }
     }
+  }
 }

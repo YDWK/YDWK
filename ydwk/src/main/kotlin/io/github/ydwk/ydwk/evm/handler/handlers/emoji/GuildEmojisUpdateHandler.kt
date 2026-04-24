@@ -24,15 +24,17 @@ import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class GuildEmojisUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override suspend fun start() {
-        val guildId = json.get("guild_id").asLong()
-        val guild = ydwk.getGuildById(guildId) ?: run {
-            ydwk.logger.warn("GuildEmojisUpdate: guild $guildId not in cache")
-            return
+  override suspend fun start() {
+    val guildId = json.get("guild_id").asLong()
+    val guild =
+      ydwk.getGuildById(guildId)
+        ?: run {
+          ydwk.logger.warn("GuildEmojisUpdate: guild $guildId not in cache")
+          return
         }
-        val oldEmojis = guild.emojis.toList()
-        val newEmojis = json.get("emojis").map { ydwk.entityInstanceBuilder.buildEmoji(it) }
-        guild.emojis = newEmojis
-        ydwk.emitEvent(GuildEmojisUpdateEvent(ydwk, guild, oldEmojis, newEmojis))
-    }
+    val oldEmojis = guild.emojis.toList()
+    val newEmojis = json.get("emojis").map { ydwk.entityInstanceBuilder.buildEmoji(it) }
+    guild.emojis = newEmojis
+    ydwk.emitEvent(GuildEmojisUpdateEvent(ydwk, guild, oldEmojis, newEmojis))
+  }
 }

@@ -22,10 +22,10 @@ import io.github.ydwk.yde.entities.VoiceState
 import io.github.ydwk.yde.rest.RestResult
 
 interface VoiceRestAPIMethods {
-    /**
-     * Requests the voice region list from the Discord API.
-     *
-     * @return A [RestResult] that will contain a list of [VoiceState.VoiceRegion]s.
-     */
-    suspend fun requestVoiceRegions(): RestResult<List<VoiceState.VoiceRegion>>
+  /**
+   * Requests the voice region list from the Discord API.
+   *
+   * @return A [RestResult] that will contain a list of [VoiceState.VoiceRegion]s.
+   */
+  suspend fun requestVoiceRegions(): RestResult<List<VoiceState.VoiceRegion>>
 }

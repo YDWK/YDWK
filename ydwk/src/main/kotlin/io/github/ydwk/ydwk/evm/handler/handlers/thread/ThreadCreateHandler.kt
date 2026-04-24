@@ -25,9 +25,9 @@ import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class ThreadCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override suspend fun start() {
-        val thread = ydwk.entityInstanceBuilder.buildGuildThreadChannel(json)
-        ydwk.cache[thread.id, thread] = CacheIds.CHANNEL
-        ydwk.emitEvent(ThreadCreateEvent(ydwk, thread))
-    }
+  override suspend fun start() {
+    val thread = ydwk.entityInstanceBuilder.buildGuildThreadChannel(json)
+    ydwk.cache[thread.id, thread] = CacheIds.CHANNEL
+    ydwk.emitEvent(ThreadCreateEvent(ydwk, thread))
+  }
 }

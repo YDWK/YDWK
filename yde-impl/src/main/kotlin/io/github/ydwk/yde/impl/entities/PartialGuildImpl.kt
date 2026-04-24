@@ -25,14 +25,14 @@ import io.github.ydwk.yde.entities.guild.enums.GuildFeature
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
 internal class PartialGuildImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val idAsLong: Long,
-    override var icon: String,
-    override var banner: String,
-    override var isOwner: Boolean,
-    override var permissions: String,
-    override var features: Set<GuildFeature>,
-    override var approximateMemberCount: Int,
-    override var approximatePresenceCount: Int
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val idAsLong: Long,
+  override var icon: String,
+  override var banner: String,
+  override var isOwner: Boolean,
+  override var permissions: String,
+  override var features: Set<GuildFeature>,
+  override var approximateMemberCount: Int,
+  override var approximatePresenceCount: Int,
 ) : PartialGuild, ToStringEntityImpl<PartialGuild>(yde, PartialGuild::class.java)

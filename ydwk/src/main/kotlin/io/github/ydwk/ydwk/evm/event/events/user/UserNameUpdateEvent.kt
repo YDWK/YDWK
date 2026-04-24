@@ -32,8 +32,8 @@ import io.github.ydwk.ydwk.evm.annotations.UserEvent
  */
 @UserEvent
 data class UserNameUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: User,
-    val oldName: String,
-    val newName: String,
+  override val ydwk: YDWK,
+  override val entity: User,
+  val oldName: String,
+  val newName: String,
 ) : GenericUserUpdateEvent<String>(ydwk, entity, oldName, newName)

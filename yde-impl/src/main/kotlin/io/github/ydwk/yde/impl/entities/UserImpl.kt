@@ -29,76 +29,77 @@ import io.github.ydwk.yde.rest.RestResult
 import java.awt.Color
 
 internal open class UserImpl(
-    final override val json: JsonNode,
-    override val idAsLong: Long,
-    override val yde: YDE,
-    override var globalName: String,
-    override var avatarHash: String?,
-    override val avatar: Avatar,
-    override val hasDefaultAvatar: Boolean,
-    override val bot: Boolean?,
-    override var system: Boolean?,
-    override var mfaEnabled: Boolean?,
-    override var banner: String?,
-    override var accentColor: Color?,
-    override var locale: String?,
-    override var verified: Boolean?,
-    override var flags: Int?,
-    override var publicFlags: Int?,
-    override var name: String,
+  final override val json: JsonNode,
+  override val idAsLong: Long,
+  override val yde: YDE,
+  override var globalName: String,
+  override var avatarHash: String?,
+  override val avatar: Avatar,
+  override val hasDefaultAvatar: Boolean,
+  override val bot: Boolean?,
+  override var system: Boolean?,
+  override var mfaEnabled: Boolean?,
+  override var banner: String?,
+  override var accentColor: Color?,
+  override var locale: String?,
+  override var verified: Boolean?,
+  override var flags: Int?,
+  override var publicFlags: Int?,
+  override var name: String,
 ) : User, ToStringEntityImpl<User>(yde, User::class.java) {
 
-    constructor(
-        user: User
-    ) : this(
-        user.json,
-        user.idAsLong,
-        user.yde,
-        user.globalName,
-        user.avatarHash,
-        user.avatar,
-        user.hasDefaultAvatar,
-        user.bot,
-        user.system,
-        user.mfaEnabled,
-        user.banner,
-        user.accentColor,
-        user.locale,
-        user.verified,
-        user.flags,
-        user.publicFlags,
-        user.name)
+  constructor(
+    user: User
+  ) : this(
+    user.json,
+    user.idAsLong,
+    user.yde,
+    user.globalName,
+    user.avatarHash,
+    user.avatar,
+    user.hasDefaultAvatar,
+    user.bot,
+    user.system,
+    user.mfaEnabled,
+    user.banner,
+    user.accentColor,
+    user.locale,
+    user.verified,
+    user.flags,
+    user.publicFlags,
+    user.name,
+  )
 
-    override fun guildAvatarHash(guildId: Long): String? {
-        val guild = (yde as YDEImpl).getGuildById(guildId)
-        return if (guild != null) {
-            val member = guild.getMemberById(idAsLong)
-            if (member != null) {
-                member.guildAvatarHash
-            } else {
-                avatarHash
-            }
-        } else {
-            avatarHash
-        }
+  override fun guildAvatarHash(guildId: Long): String? {
+    val guild = (yde as YDEImpl).getGuildById(guildId)
+    return if (guild != null) {
+      val member = guild.getMemberById(idAsLong)
+      if (member != null) {
+        member.guildAvatarHash
+      } else {
+        avatarHash
+      }
+    } else {
+      avatarHash
     }
+  }
 
-    override fun guildAvatar(guildId: Long): Avatar? {
-        val ydeImpl = yde as YDEImpl
-        val guild = ydeImpl.getGuildById(guildId)
-        return if (guild != null) {
-            val member = guild.getMemberById(idAsLong)
-            if (member != null) {
-                member.guildAvatar
-            } else {
-                avatar
-            }
-        } else {
-            avatar
-        }
+  override fun guildAvatar(guildId: Long): Avatar? {
+    val ydeImpl = yde as YDEImpl
+    val guild = ydeImpl.getGuildById(guildId)
+    return if (guild != null) {
+      val member = guild.getMemberById(idAsLong)
+      if (member != null) {
+        member.guildAvatar
+      } else {
+        avatar
+      }
+    } else {
+      avatar
     }
+  }
 
-    override suspend fun createDmChannel(): RestResult<DmChannel> {
-        return yde.restAPIMethodGetters.getUserRestAPIMethods().createDm(idAsLong)
-    }
+  override suspend fun createDmChannel(): RestResult<DmChannel> {
+    return yde.restAPIMethodGetters.getUserRestAPIMethods().createDm(idAsLong)
+  }
 }

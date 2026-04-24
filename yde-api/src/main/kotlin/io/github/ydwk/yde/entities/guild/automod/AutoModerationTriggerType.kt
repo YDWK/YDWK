@@ -15,21 +15,21 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */ 
 package io.github.ydwk.yde.entities.guild.automod
 
 enum class AutoModerationTriggerType(private val value: Int) {
-    KEYWORD(1),
-    SPAM(3),
-    KEYWORD_PRESET(4),
-    MENTION_SPAM(5),
-    MEMBER_PROFILE(6),
-    UNKNOWN(-1);
+  KEYWORD(1),
+  SPAM(3),
+  KEYWORD_PRESET(4),
+  MENTION_SPAM(5),
+  MEMBER_PROFILE(6),
+  UNKNOWN(-1);
 
-    fun getValue(): Int = value
+  fun getValue(): Int = value
 
-    companion object {
-        fun fromValue(value: Int): AutoModerationTriggerType =
-            entries.firstOrNull { it.value == value } ?: UNKNOWN
-    }
+  companion object {
+    fun fromValue(value: Int): AutoModerationTriggerType =
+      entries.firstOrNull { it.value == value } ?: UNKNOWN
+  }
 }

@@ -26,10 +26,10 @@ import io.github.ydwk.yde.util.SnowFlake
  * the services can't access the data at the moment.
  */
 interface UnavailableGuild : SnowFlake, GenericEntity {
-    /**
-     * Weather the guild is unavailable or not.
-     *
-     * @return true if the guild is unavailable.
-     */
-    var unavailable: Boolean
+  /**
+   * Weather the guild is unavailable or not.
+   *
+   * @return true if the guild is unavailable.
+   */
+  var unavailable: Boolean
 }

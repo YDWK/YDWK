@@ -15,7 +15,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */ 
 package io.github.ydwk.ydwk.evm.event.events.thread
 
 import io.github.ydwk.yde.util.GetterSnowFlake
@@ -35,10 +35,10 @@ import io.github.ydwk.ydwk.evm.event.Event
  */
 @ChannelEvent
 data class ThreadMembersUpdateEvent(
-    override val ydwk: YDWK,
-    val threadId: GetterSnowFlake,
-    val guildId: GetterSnowFlake,
-    val memberCount: Int,
-    val addedMemberIds: List<GetterSnowFlake>,
-    val removedMemberIds: List<GetterSnowFlake>,
+  override val ydwk: YDWK,
+  val threadId: GetterSnowFlake,
+  val guildId: GetterSnowFlake,
+  val memberCount: Int,
+  val addedMemberIds: List<GetterSnowFlake>,
+  val removedMemberIds: List<GetterSnowFlake>,
 ) : Event(ydwk)

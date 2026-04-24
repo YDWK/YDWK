@@ -25,7 +25,7 @@ import io.github.ydwk.yde.entities.interaction.actionrow.ActionRow
 import io.github.ydwk.yde.impl.entities.interaction.ComponentImpl
 
 class ActionRowImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val components: List<Component>
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val components: List<Component>,
 ) : ActionRow, ComponentImpl(yde.entityInstanceBuilder.buildComponent(json))

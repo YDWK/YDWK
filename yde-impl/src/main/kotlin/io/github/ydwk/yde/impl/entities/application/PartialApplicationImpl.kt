@@ -24,8 +24,8 @@ import io.github.ydwk.yde.entities.application.PartialApplication
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
 internal class PartialApplicationImpl(
-    override val json: JsonNode,
-    override val idAsLong: Long,
-    override val yde: YDE,
-    override var flags: Int,
+  override val json: JsonNode,
+  override val idAsLong: Long,
+  override val yde: YDE,
+  override var flags: Int,
 ) : PartialApplication, ToStringEntityImpl<PartialApplication>(yde, PartialApplication::class.java)

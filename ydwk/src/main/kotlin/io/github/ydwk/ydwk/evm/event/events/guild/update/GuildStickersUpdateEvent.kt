@@ -34,8 +34,8 @@ import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
  */
 @GuildEvent
 data class GuildStickersUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: Guild,
-    val oldStickers: List<Sticker>,
-    val newStickers: List<Sticker>,
+  override val ydwk: YDWK,
+  override val entity: Guild,
+  val oldStickers: List<Sticker>,
+  val newStickers: List<Sticker>,
 ) : GenericGuildUpdateEvent<List<Sticker>>(ydwk, entity, oldStickers, newStickers)

@@ -26,20 +26,20 @@ import io.github.ydwk.ydwk.impl.YDWKImpl
 
 // Discord GUILD_ROLE_DELETE sends {"guild_id":"...","role_id":"..."} — no role object.
 class GuildRoleDeleteHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override suspend fun start() {
-        val guildId = json.get("guild_id").asLong()
-        val roleId = json.get("role_id").asText()
-        val guild = ydwk.getGuildById(guildId)
-        if (guild == null) {
-            ydwk.logger.warn("GuildRoleDelete: guild $guildId not in cache")
-            return
-        }
-        val role = guild.getRoleById(roleId)
-        ydwk.cache.remove(roleId, CacheIds.ROLE)
-        if (role != null) {
-            ydwk.emitEvent(GuildRoleDeleteEvent(ydwk, role))
-        } else {
-            ydwk.logger.debug("GuildRoleDelete: role $roleId was not cached, event skipped")
-        }
+  override suspend fun start() {
+    val guildId = json.get("guild_id").asLong()
+    val roleId = json.get("role_id").asText()
+    val guild = ydwk.getGuildById(guildId)
+    if (guild == null) {
+      ydwk.logger.warn("GuildRoleDelete: guild $guildId not in cache")
+      return
     }
+    val role = guild.getRoleById(roleId)
+    ydwk.cache.remove(roleId, CacheIds.ROLE)
+    if (role != null) {
+      ydwk.emitEvent(GuildRoleDeleteEvent(ydwk, role))
+    } else {
+      ydwk.logger.debug("GuildRoleDelete: role $roleId was not cached, event skipped")
+    }
+  }
 }

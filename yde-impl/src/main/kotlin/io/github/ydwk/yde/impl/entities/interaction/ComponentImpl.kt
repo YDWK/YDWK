@@ -25,19 +25,19 @@ import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.interaction.message.ComponentType
 
 open class ComponentImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val type: ComponentType,
-    override val messageCompatible: Boolean = type.isMessageCompatible(),
-    override val modalCompatible: Boolean = type.isModalCompatible(),
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val type: ComponentType,
+  override val messageCompatible: Boolean = type.isMessageCompatible(),
+  override val modalCompatible: Boolean = type.isModalCompatible(),
 ) : Component, ToStringEntityImpl<Component>(yde, Component::class.java) {
-    constructor(
-        component: Component
-    ) : this(
-        component.yde,
-        component.json,
-        component.type,
-        component.messageCompatible,
-        component.modalCompatible,
-    )
+  constructor(
+    component: Component
+  ) : this(
+    component.yde,
+    component.json,
+    component.type,
+    component.messageCompatible,
+    component.modalCompatible,
+  )
 }

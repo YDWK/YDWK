@@ -26,37 +26,37 @@ import io.github.ydwk.yde.impl.entities.guild.MemberImpl
 
 /** Discord's Member do not have a unique ID, so we need to use a combination of the user id */
 class MemberCacheImpl(allowedCache: Set<CacheIds>, yde: YDEImpl) :
-    MemberCache, ConcurrentCache(allowedCache, yde) {
-    override fun set(guildId: String, userId: String, value: Member) {
-        super.set(guildId + userId, value, CacheIds.MEMBER)
-    }
+  MemberCache, ConcurrentCache(allowedCache, yde) {
+  override fun set(guildId: String, userId: String, value: Member) {
+    super.set(guildId + userId, value, CacheIds.MEMBER)
+  }
 
-    override fun get(guildId: String, userId: String): Member? {
-        return super.get(guildId + userId, CacheIds.MEMBER) as Member?
-    }
+  override fun get(guildId: String, userId: String): Member? {
+    return super.get(guildId + userId, CacheIds.MEMBER) as Member?
+  }
 
-    override fun getOrPut(value: Member): Member {
-        return super.getOrPut(value.id, value, CacheIds.MEMBER) as Member
-    }
+  override fun getOrPut(value: Member): Member {
+    return super.getOrPut(value.id, value, CacheIds.MEMBER) as Member
+  }
 
-    override fun updateVoiceState(member: Member, voiceState: VoiceState, add: Boolean) {
-        val memberImpl = member as MemberImpl
-        if (add) {
-            memberImpl.voiceState = voiceState
-        } else {
-            memberImpl.voiceState = null
-        }
+  override fun updateVoiceState(member: Member, voiceState: VoiceState, add: Boolean) {
+    val memberImpl = member as MemberImpl
+    if (add) {
+      memberImpl.voiceState = voiceState
+    } else {
+      memberImpl.voiceState = null
     }
+  }
 
-    override fun remove(guildId: String, userId: String) {
-        super.remove(guildId + userId, CacheIds.MEMBER)
-    }
+  override fun remove(guildId: String, userId: String) {
+    super.remove(guildId + userId, CacheIds.MEMBER)
+  }
 
-    override fun contains(guildId: String, userId: String): Boolean {
-        return super.contains(guildId + userId, CacheIds.MEMBER)
-    }
+  override fun contains(guildId: String, userId: String): Boolean {
+    return super.contains(guildId + userId, CacheIds.MEMBER)
+  }
 
-    override fun values(): List<Member> {
-        return super.values(CacheIds.MEMBER).map { it as Member }
-    }
+  override fun values(): List<Member> {
+    return super.values(CacheIds.MEMBER).map { it as Member }
+  }
 }

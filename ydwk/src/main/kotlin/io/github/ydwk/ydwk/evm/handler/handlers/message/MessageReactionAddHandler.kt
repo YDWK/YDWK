@@ -21,25 +21,37 @@ package io.github.ydwk.ydwk.evm.handler.handlers.message
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.yde.cache.CacheIds
 import io.github.ydwk.yde.entities.Message
-import io.github.ydwk.yde.entities.User
-import io.github.ydwk.yde.entities.guild.Member
 import io.github.ydwk.yde.util.GetterSnowFlake
 import io.github.ydwk.ydwk.evm.event.events.message.MessageReactionAddEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class MessageReactionAddHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override suspend fun start() {
-        val userId = GetterSnowFlake.of(json.get("user_id").asLong())
-        val channelId = GetterSnowFlake.of(json.get("channel_id").asLong())
-        val messageId = GetterSnowFlake.of(json.get("message_id").asLong())
-        val guildId = if (json.has("guild_id")) GetterSnowFlake.of(json.get("guild_id").asLong()) else null
-        val emoji = ydwk.entityInstanceBuilder.buildEmoji(json.get("emoji"))
-        val member = if (json.has("member") && guildId != null)
-            ydwk.entityInstanceBuilder.buildMember(json.get("member"), guildId)
-        else null
-        val message = ydwk.cache[messageId.asString, CacheIds.MESSAGE] as? Message
-        val user = ydwk.getUserById(userId.asLong)
-        ydwk.emitEvent(MessageReactionAddEvent(ydwk, userId, channelId, messageId, guildId, member, emoji, message, user))
-    }
+  override suspend fun start() {
+    val userId = GetterSnowFlake.of(json.get("user_id").asLong())
+    val channelId = GetterSnowFlake.of(json.get("channel_id").asLong())
+    val messageId = GetterSnowFlake.of(json.get("message_id").asLong())
+    val guildId =
+      if (json.has("guild_id")) GetterSnowFlake.of(json.get("guild_id").asLong()) else null
+    val emoji = ydwk.entityInstanceBuilder.buildEmoji(json.get("emoji"))
+    val member =
+      if (json.has("member") && guildId != null)
+        ydwk.entityInstanceBuilder.buildMember(json.get("member"), guildId)
+      else null
+    val message = ydwk.cache[messageId.asString, CacheIds.MESSAGE] as? Message
+    val user = ydwk.getUserById(userId.asLong)
+    ydwk.emitEvent(
+      MessageReactionAddEvent(
+        ydwk,
+        userId,
+        channelId,
+        messageId,
+        guildId,
+        member,
+        emoji,
+        message,
+        user,
+      )
+    )
+  }
 }

@@ -30,7 +30,4 @@ import io.github.ydwk.ydwk.evm.event.Event
  * @param voiceState The new voice state of the member.
  */
 @VoiceEvent
-data class VoiceStateEvent(
-    override val ydwk: YDWK,
-    val voiceState: VoiceState,
-) : Event(ydwk)
+data class VoiceStateEvent(override val ydwk: YDWK, val voiceState: VoiceState) : Event(ydwk)

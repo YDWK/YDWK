@@ -25,11 +25,11 @@ import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenuOption
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
 class SelectMenuOptionImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val label: String,
-    override val value: String,
-    override val description: String?,
-    override val emoji: Emoji?,
-    override val default: Boolean,
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val label: String,
+  override val value: String,
+  override val description: String?,
+  override val emoji: Emoji?,
+  override val default: Boolean,
 ) : SelectMenuOption, ToStringEntityImpl<SelectMenuOption>(yde, SelectMenuOption::class.java)

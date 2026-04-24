@@ -22,17 +22,17 @@ import io.github.ydwk.yde.entities.message.activity.MessageActivityType
 import io.github.ydwk.yde.entities.util.GenericEntity
 
 interface MessageActivity : GenericEntity {
-    /**
-     * The type of the [MessageActivity].
-     *
-     * @return The type of the [MessageActivity].
-     */
-    val type: MessageActivityType
+  /**
+   * The type of the [MessageActivity].
+   *
+   * @return The type of the [MessageActivity].
+   */
+  val type: MessageActivityType
 
-    /**
-     * The party id of the [MessageActivity].
-     *
-     * @return The party id of the [MessageActivity].
-     */
-    val partyId: String?
+  /**
+   * The party id of the [MessageActivity].
+   *
+   * @return The party id of the [MessageActivity].
+   */
+  val partyId: String?
 }

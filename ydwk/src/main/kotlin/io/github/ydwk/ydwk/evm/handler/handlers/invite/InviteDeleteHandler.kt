@@ -25,11 +25,11 @@ import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class InviteDeleteHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override suspend fun start() {
-        val code = json.get("code").asText()
-        val guildId = GetterSnowFlake.of(json.get("guild_id").asLong())
-        val channelId = json.get("channel_id").asText()
-        val channel = ydwk.getGuildChannelById(channelId)
-        ydwk.emitEvent(InviteDeleteEvent(ydwk, code, guildId, channel))
-    }
+  override suspend fun start() {
+    val code = json.get("code").asText()
+    val guildId = GetterSnowFlake.of(json.get("guild_id").asLong())
+    val channelId = json.get("channel_id").asText()
+    val channel = ydwk.getGuildChannelById(channelId)
+    ydwk.emitEvent(InviteDeleteEvent(ydwk, code, guildId, channel))
+  }
 }

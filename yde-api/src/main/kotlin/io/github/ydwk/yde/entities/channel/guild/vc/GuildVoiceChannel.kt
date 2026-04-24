@@ -21,24 +21,24 @@ package io.github.ydwk.yde.entities.channel.guild.vc
 import io.github.ydwk.yde.entities.channel.GuildChannel
 
 interface GuildVoiceChannel : GuildChannel {
-    /**
-     * The bitrate (in bits) of the voice channel.
-     *
-     * @return the bitrate.
-     */
-    var bitrate: Int
+  /**
+   * The bitrate (in bits) of the voice channel.
+   *
+   * @return the bitrate.
+   */
+  var bitrate: Int
 
-    /**
-     * The user limit of the voice channel.
-     *
-     * @return the user limit.
-     */
-    var userLimit: Int
+  /**
+   * The user limit of the voice channel.
+   *
+   * @return the user limit.
+   */
+  var userLimit: Int
 
-    /**
-     * The rate limit per user of the voice channel.
-     *
-     * @return the rate limit per user.
-     */
-    var rateLimitPerUser: Int
+  /**
+   * The rate limit per user of the voice channel.
+   *
+   * @return the rate limit per user.
+   */
+  var rateLimitPerUser: Int
 }

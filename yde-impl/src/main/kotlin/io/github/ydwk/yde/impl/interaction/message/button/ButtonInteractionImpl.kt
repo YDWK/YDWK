@@ -15,7 +15,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */ 
 package io.github.ydwk.yde.impl.interaction.message.button
 
 import com.fasterxml.jackson.databind.JsonNode
@@ -28,21 +28,22 @@ import io.github.ydwk.yde.interaction.message.button.ButtonInteraction
 import io.github.ydwk.yde.util.GetterSnowFlake
 
 class ButtonInteractionImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val interactionId: GetterSnowFlake,
-    override val customId: String,
-    override val label: String?,
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val interactionId: GetterSnowFlake,
+  override val customId: String,
+  override val label: String?,
 ) :
-    ButtonInteraction,
-    ComponentInteractionImpl(
-        yde.entityInstanceBuilder.buildComponentInteraction(json, interactionId)) {
+  ButtonInteraction,
+  ComponentInteractionImpl(
+    yde.entityInstanceBuilder.buildComponentInteraction(json, interactionId)
+  ) {
 
-    override fun reply(content: String): Reply {
-        return ReplyImpl(yde, content, null, interactionId.asString, interactionToken)
-    }
+  override fun reply(content: String): Reply {
+    return ReplyImpl(yde, content, null, interactionId.asString, interactionToken)
+  }
 
-    override fun reply(embed: Embed): Reply {
-        return ReplyImpl(yde, null, embed, interactionId.asString, interactionToken)
-    }
+  override fun reply(embed: Embed): Reply {
+    return ReplyImpl(yde, null, embed, interactionId.asString, interactionToken)
+  }
 }

@@ -26,16 +26,17 @@ import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class ThreadListSyncHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override suspend fun start() {
-        val guildId = GetterSnowFlake.of(json.get("guild_id").asLong())
-        val channelIds = if (json.has("channel_ids"))
-            json.get("channel_ids").map { GetterSnowFlake.of(it.asLong()) }
-        else emptyList()
-        val threads = json.get("threads").map { threadJson ->
-            ydwk.entityInstanceBuilder.buildGuildThreadChannel(threadJson).also {
-                ydwk.cache[it.id, it] = CacheIds.CHANNEL
-            }
+  override suspend fun start() {
+    val guildId = GetterSnowFlake.of(json.get("guild_id").asLong())
+    val channelIds =
+      if (json.has("channel_ids")) json.get("channel_ids").map { GetterSnowFlake.of(it.asLong()) }
+      else emptyList()
+    val threads =
+      json.get("threads").map { threadJson ->
+        ydwk.entityInstanceBuilder.buildGuildThreadChannel(threadJson).also {
+          ydwk.cache[it.id, it] = CacheIds.CHANNEL
         }
-        ydwk.emitEvent(ThreadListSyncEvent(ydwk, guildId, channelIds, threads))
-    }
+      }
+    ydwk.emitEvent(ThreadListSyncEvent(ydwk, guildId, channelIds, threads))
+  }
 }

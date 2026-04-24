@@ -34,8 +34,8 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
  */
 @ChannelEvent
 data class ForumChannelChannelFlagsUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: GuildForumChannel,
-    val oldChannelFlags: ChannelFlag,
-    val newChannelFlags: ChannelFlag,
+  override val ydwk: YDWK,
+  override val entity: GuildForumChannel,
+  val oldChannelFlags: ChannelFlag,
+  val newChannelFlags: ChannelFlag,
 ) : GenericChannelUpdateEvent<ChannelFlag>(ydwk, entity, oldChannelFlags, newChannelFlags)

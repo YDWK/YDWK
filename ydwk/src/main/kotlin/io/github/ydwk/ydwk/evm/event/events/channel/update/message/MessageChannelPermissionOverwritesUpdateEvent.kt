@@ -34,10 +34,14 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
  */
 @ChannelEvent
 data class MessageChannelPermissionOverwritesUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: GuildMessageChannel,
-    val oldPermissionOverwrites: List<PermissionOverwrite>,
-    val newPermissionOverwrites: List<PermissionOverwrite>,
+  override val ydwk: YDWK,
+  override val entity: GuildMessageChannel,
+  val oldPermissionOverwrites: List<PermissionOverwrite>,
+  val newPermissionOverwrites: List<PermissionOverwrite>,
 ) :
-    GenericChannelUpdateEvent<List<PermissionOverwrite>>(
-        ydwk, entity, oldPermissionOverwrites, newPermissionOverwrites)
+  GenericChannelUpdateEvent<List<PermissionOverwrite>>(
+    ydwk,
+    entity,
+    oldPermissionOverwrites,
+    newPermissionOverwrites,
+  )

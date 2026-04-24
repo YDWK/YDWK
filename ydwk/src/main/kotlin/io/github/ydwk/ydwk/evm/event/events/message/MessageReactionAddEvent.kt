@@ -15,7 +15,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */ 
 package io.github.ydwk.ydwk.evm.event.events.message
 
 import io.github.ydwk.yde.entities.Emoji
@@ -40,13 +40,13 @@ import io.github.ydwk.ydwk.evm.event.Event
  * @param user The user who added the reaction (null if not cached).
  */
 data class MessageReactionAddEvent(
-    override val ydwk: YDWK,
-    val userId: GetterSnowFlake,
-    val channelId: GetterSnowFlake,
-    val messageId: GetterSnowFlake,
-    val guildId: GetterSnowFlake?,
-    val member: Member?,
-    val emoji: Emoji,
-    val message: Message?,
-    val user: User?,
+  override val ydwk: YDWK,
+  val userId: GetterSnowFlake,
+  val channelId: GetterSnowFlake,
+  val messageId: GetterSnowFlake,
+  val guildId: GetterSnowFlake?,
+  val member: Member?,
+  val emoji: Emoji,
+  val message: Message?,
+  val user: User?,
 ) : Event(ydwk)

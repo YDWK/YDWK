@@ -24,8 +24,8 @@ import io.github.ydwk.yde.entities.UnavailableGuild
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
 internal class UnavailableGuildImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val idAsLong: Long,
-    override var unavailable: Boolean,
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val idAsLong: Long,
+  override var unavailable: Boolean,
 ) : UnavailableGuild, ToStringEntityImpl<UnavailableGuild>(yde, UnavailableGuild::class.java)

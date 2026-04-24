@@ -23,52 +23,52 @@ import io.github.ydwk.yde.builders.user.UserCommandBuilder
 import io.github.ydwk.yde.impl.YDEImpl
 
 class IUserCommandBuilderImpl(
-    private val yde: YDEImpl,
-    private val guildIds: MutableList<String>,
-    private val applicationId: String
+  private val yde: YDEImpl,
+  private val guildIds: MutableList<String>,
+  private val applicationId: String,
 ) : IUserCommandBuilder {
-    private val userCommands: MutableList<UserCommandBuilder> = mutableListOf()
+  private val userCommands: MutableList<UserCommandBuilder> = mutableListOf()
 
-    override fun addUserCommand(name: String): IUserCommandBuilder {
-        userCommands.add(UserCommandBuilder(name))
-        return this
-    }
+  override fun addUserCommand(name: String): IUserCommandBuilder {
+    userCommands.add(UserCommandBuilder(name))
+    return this
+  }
 
-    override fun addUserCommand(userCommand: UserCommandBuilder): IUserCommandBuilder {
-        userCommands.add(userCommand)
-        return this
-    }
+  override fun addUserCommand(userCommand: UserCommandBuilder): IUserCommandBuilder {
+    userCommands.add(userCommand)
+    return this
+  }
 
-    override fun addUserCommands(userCommands: List<UserCommandBuilder>): IUserCommandBuilder {
-        this.userCommands.addAll(userCommands)
-        return this
-    }
+  override fun addUserCommands(userCommands: List<UserCommandBuilder>): IUserCommandBuilder {
+    this.userCommands.addAll(userCommands)
+    return this
+  }
 
-    override fun addUserCommands(vararg userCommands: UserCommandBuilder): IUserCommandBuilder {
-        this.userCommands.addAll(userCommands)
-        return this
-    }
+  override fun addUserCommands(vararg userCommands: UserCommandBuilder): IUserCommandBuilder {
+    this.userCommands.addAll(userCommands)
+    return this
+  }
 
-    override fun getUserCommands(): List<UserCommandBuilder> {
-        return userCommands
-    }
+  override fun getUserCommands(): List<UserCommandBuilder> {
+    return userCommands
+  }
 
-    override fun removeUserCommand(userCommand: UserCommandBuilder): IUserCommandBuilder {
-        userCommands.remove(userCommand)
-        return this
-    }
+  override fun removeUserCommand(userCommand: UserCommandBuilder): IUserCommandBuilder {
+    userCommands.remove(userCommand)
+    return this
+  }
 
-    override fun removeUserCommands(userCommands: List<UserCommandBuilder>): IUserCommandBuilder {
-        this.userCommands.removeAll(userCommands)
-        return this
-    }
+  override fun removeUserCommands(userCommands: List<UserCommandBuilder>): IUserCommandBuilder {
+    this.userCommands.removeAll(userCommands)
+    return this
+  }
 
-    override fun removeUserCommands(vararg userCommands: UserCommandBuilder): IUserCommandBuilder {
-        this.userCommands.removeAll(userCommands.toSet())
-        return this
-    }
+  override fun removeUserCommands(vararg userCommands: UserCommandBuilder): IUserCommandBuilder {
+    this.userCommands.removeAll(userCommands.toSet())
+    return this
+  }
 
-    override fun build() {
-        UserCommandSender(yde, guildIds, applicationId, userCommands)
-    }
+  override fun build() {
+    UserCommandSender(yde, guildIds, applicationId, userCommands)
+  }
 }

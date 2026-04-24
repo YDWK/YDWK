@@ -33,8 +33,8 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
  */
 @ChannelEvent
 data class ForumChannelNsfwUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: GuildForumChannel,
-    val oldNsfw: Boolean,
-    val newNsfw: Boolean,
+  override val ydwk: YDWK,
+  override val entity: GuildForumChannel,
+  val oldNsfw: Boolean,
+  val newNsfw: Boolean,
 ) : GenericChannelUpdateEvent<Boolean>(ydwk, entity, oldNsfw, newNsfw)

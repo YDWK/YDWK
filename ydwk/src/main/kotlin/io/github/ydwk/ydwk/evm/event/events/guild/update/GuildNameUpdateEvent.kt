@@ -33,8 +33,8 @@ import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
  */
 @GuildEvent
 data class GuildNameUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: Guild,
-    val oldName: String,
-    val newName: String,
+  override val ydwk: YDWK,
+  override val entity: Guild,
+  val oldName: String,
+  val newName: String,
 ) : GenericGuildUpdateEvent<String>(ydwk, entity, oldName, newName)

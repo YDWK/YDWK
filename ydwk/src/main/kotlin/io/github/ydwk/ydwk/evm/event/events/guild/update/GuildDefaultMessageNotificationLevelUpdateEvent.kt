@@ -34,13 +34,14 @@ import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
  */
 @GuildEvent
 data class GuildDefaultMessageNotificationLevelUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: Guild,
-    val oldMessageNotificationLevel: MessageNotificationLevel,
-    val newMessageNotificationLevel: MessageNotificationLevel,
+  override val ydwk: YDWK,
+  override val entity: Guild,
+  val oldMessageNotificationLevel: MessageNotificationLevel,
+  val newMessageNotificationLevel: MessageNotificationLevel,
 ) :
-    GenericGuildUpdateEvent<Int>(
-        ydwk,
-        entity,
-        oldMessageNotificationLevel.getValue(),
-        newMessageNotificationLevel.getValue())
+  GenericGuildUpdateEvent<Int>(
+    ydwk,
+    entity,
+    oldMessageNotificationLevel.getValue(),
+    newMessageNotificationLevel.getValue(),
+  )

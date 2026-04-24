@@ -24,15 +24,15 @@ import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class GuildRoleUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override suspend fun start() {
-        val role =
-            ydwk
-                .getGuildById(json.get("guild_id").asLong())
-                ?.getRoleById(json.get("role").get("id").asLong())
-        if (role == null) {
-            ydwk.logger.info("Role not found in cache, creating new role")
-            val roleImpl = ydwk.entityInstanceBuilder.buildRole(json)
-            ydwk.cache[roleImpl.id, roleImpl] = CacheIds.ROLE
-        }
+  override suspend fun start() {
+    val role =
+      ydwk
+        .getGuildById(json.get("guild_id").asLong())
+        ?.getRoleById(json.get("role").get("id").asLong())
+    if (role == null) {
+      ydwk.logger.info("Role not found in cache, creating new role")
+      val roleImpl = ydwk.entityInstanceBuilder.buildRole(json)
+      ydwk.cache[roleImpl.id, roleImpl] = CacheIds.ROLE
     }
+  }
 }

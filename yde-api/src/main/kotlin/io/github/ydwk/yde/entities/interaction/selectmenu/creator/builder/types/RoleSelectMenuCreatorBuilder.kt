@@ -24,4 +24,4 @@ import io.github.ydwk.yde.entities.interaction.selectmenu.creator.types.RoleSele
 import io.github.ydwk.yde.interaction.message.ComponentType
 
 data class RoleSelectMenuCreatorBuilder(override val yde: YDE, override val customId: String) :
-    RoleSelectMenuCreator, SelectMenuCreatorBuilder(customId, ComponentType.ROLE_SELECT_MENU, yde)
+  RoleSelectMenuCreator, SelectMenuCreatorBuilder(customId, ComponentType.ROLE_SELECT_MENU, yde)

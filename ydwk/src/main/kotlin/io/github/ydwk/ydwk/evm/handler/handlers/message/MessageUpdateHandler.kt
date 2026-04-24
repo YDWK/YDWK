@@ -25,11 +25,11 @@ import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class MessageUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override suspend fun start() {
-        val messageId = json.get("id").asText()
-        val oldMessage = ydwk.cache[messageId, CacheIds.MESSAGE] as? io.github.ydwk.yde.entities.Message
-        val newMessage = ydwk.entityInstanceBuilder.buildMessage(json)
-        ydwk.cache[messageId, newMessage] = CacheIds.MESSAGE
-        ydwk.emitEvent(MessageUpdateEvent(ydwk, oldMessage, newMessage))
-    }
+  override suspend fun start() {
+    val messageId = json.get("id").asText()
+    val oldMessage = ydwk.cache[messageId, CacheIds.MESSAGE] as? io.github.ydwk.yde.entities.Message
+    val newMessage = ydwk.entityInstanceBuilder.buildMessage(json)
+    ydwk.cache[messageId, newMessage] = CacheIds.MESSAGE
+    ydwk.emitEvent(MessageUpdateEvent(ydwk, oldMessage, newMessage))
+  }
 }

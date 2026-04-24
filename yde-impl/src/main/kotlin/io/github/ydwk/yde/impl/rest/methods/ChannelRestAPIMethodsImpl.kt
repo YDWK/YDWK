@@ -29,50 +29,50 @@ import io.github.ydwk.yde.rest.json
 import io.github.ydwk.yde.rest.methods.ChannelRestAPIMethods
 
 class ChannelRestAPIMethodsImpl(val yde: YDE) : ChannelRestAPIMethods {
-    override suspend fun requestChannel(channelId: Long): RestResult<Channel> {
-        return yde.restApiManager
-            .get(EndPoint.ChannelEndpoint.GET_CHANNEL, channelId.toString())
-            .execute { response ->
-                val jsonBody = response.json(yde)
-                buildChannelFromJson(jsonBody)
-            }
-    }
+  override suspend fun requestChannel(channelId: Long): RestResult<Channel> {
+    return yde.restApiManager
+      .get(EndPoint.ChannelEndpoint.GET_CHANNEL, channelId.toString())
+      .execute { response ->
+        val jsonBody = response.json(yde)
+        buildChannelFromJson(jsonBody)
+      }
+  }
 
-    override suspend fun requestGuildChannel(
-        guildId: Long,
-        channelId: Long
-    ): RestResult<GuildChannel> {
-        return yde.restApiManager
-            .get(EndPoint.ChannelEndpoint.GET_CHANNEL, channelId.toString())
-            .execute { response ->
-                val jsonBody = response.json(yde)
-                yde.entityInstanceBuilder.buildGuildChannel(jsonBody)
-            }
-    }
+  override suspend fun requestGuildChannel(
+    guildId: Long,
+    channelId: Long,
+  ): RestResult<GuildChannel> {
+    return yde.restApiManager
+      .get(EndPoint.ChannelEndpoint.GET_CHANNEL, channelId.toString())
+      .execute { response ->
+        val jsonBody = response.json(yde)
+        yde.entityInstanceBuilder.buildGuildChannel(jsonBody)
+      }
+  }
 
-    override suspend fun requestGuildChannels(guildId: Long): RestResult<List<GuildChannel>> {
-        return yde.restApiManager
-            .get(EndPoint.GuildEndpoint.GET_GUILD_CHANNELS, guildId.toString())
-            .execute { response ->
-                val jsonBody = response.json(yde)
-                buildGuildChannelsFromJson(jsonBody)
-            }
-    }
+  override suspend fun requestGuildChannels(guildId: Long): RestResult<List<GuildChannel>> {
+    return yde.restApiManager
+      .get(EndPoint.GuildEndpoint.GET_GUILD_CHANNELS, guildId.toString())
+      .execute { response ->
+        val jsonBody = response.json(yde)
+        buildGuildChannelsFromJson(jsonBody)
+      }
+  }
 
-    private fun buildChannelFromJson(jsonBody: JsonNode): Channel {
-        val channelType = ChannelType.getValue(jsonBody["type"].asInt())
-        return if (ChannelType.isGuildChannel(channelType)) {
-            yde.entityInstanceBuilder.buildGuildChannel(jsonBody)
-        } else {
-            yde.entityInstanceBuilder.buildDMChannel(jsonBody)
-        }
+  private fun buildChannelFromJson(jsonBody: JsonNode): Channel {
+    val channelType = ChannelType.getValue(jsonBody["type"].asInt())
+    return if (ChannelType.isGuildChannel(channelType)) {
+      yde.entityInstanceBuilder.buildGuildChannel(jsonBody)
+    } else {
+      yde.entityInstanceBuilder.buildDMChannel(jsonBody)
     }
+  }
 
-    private fun buildGuildChannelsFromJson(jsonBody: JsonNode): List<GuildChannel> {
-        val channels = mutableListOf<GuildChannel>()
-        for (i in 0 until jsonBody.size()) {
-            channels.add(yde.entityInstanceBuilder.buildGuildChannel(jsonBody[i]))
-        }
-        return channels
+  private fun buildGuildChannelsFromJson(jsonBody: JsonNode): List<GuildChannel> {
+    val channels = mutableListOf<GuildChannel>()
+    for (i in 0 until jsonBody.size()) {
+      channels.add(yde.entityInstanceBuilder.buildGuildChannel(jsonBody[i]))
     }
+    return channels
+  }
 }

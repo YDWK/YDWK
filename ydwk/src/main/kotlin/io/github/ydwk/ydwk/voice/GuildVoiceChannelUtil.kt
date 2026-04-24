@@ -34,33 +34,32 @@ import org.slf4j.LoggerFactory
  * @param deafen Whether the bot should be deafened
  */
 fun GuildVoiceChannel.joinVc(muted: Boolean, deafen: Boolean): CompletableFuture<VoiceConnection> {
-    val future = CompletableFuture<VoiceConnection>()
+  val future = CompletableFuture<VoiceConnection>()
 
-    fun createVoiceConnectionAsync(
-        connectFuture: CompletableFuture<VoiceConnection>,
-        guild: Guild,
-        voiceChannel: GuildVoiceChannel,
-        muted: Boolean,
-        deafen: Boolean
-    ): VoiceConnectionImpl {
-        return VoiceConnectionImpl(connectFuture, guild, voiceChannel, muted, deafen)
+  fun createVoiceConnectionAsync(
+    connectFuture: CompletableFuture<VoiceConnection>,
+    guild: Guild,
+    voiceChannel: GuildVoiceChannel,
+    muted: Boolean,
+    deafen: Boolean,
+  ): VoiceConnectionImpl {
+    return VoiceConnectionImpl(connectFuture, guild, voiceChannel, muted, deafen)
+  }
+
+  future
+    .completeAsync {
+      createVoiceConnectionAsync(future, yde.getGuildById(guildId.asLong)!!, this, muted, deafen)
+    }
+    .thenApply {
+      (yde.getGuildById(guildId.asLong)!!).setVoiceConnection(it as VoiceConnectionImpl)
+      it
+    }
+    .exceptionally {
+      (yde as YDEImpl).logger.error("Error creating voice connection for channel $name", it)
+      null
     }
 
-    future
-        .completeAsync {
-            createVoiceConnectionAsync(
-                future, yde.getGuildById(guildId.asLong)!!, this, muted, deafen)
-        }
-        .thenApply {
-            (yde.getGuildById(guildId.asLong)!!).setVoiceConnection(it as VoiceConnectionImpl)
-            it
-        }
-        .exceptionally {
-            (yde as YDEImpl).logger.error("Error creating voice connection for channel $name", it)
-            null
-        }
-
-    return future
+  return future
 }
 
 private var voiceConnection: VoiceConnectionImpl? = null
@@ -71,33 +70,31 @@ private var voiceConnection: VoiceConnectionImpl? = null
  * @param vc The voice connection.
  */
 fun Guild.setVoiceConnection(vc: VoiceConnectionImpl) {
-    voiceConnection = vc
+  voiceConnection = vc
 }
 
 /** Removes the voice connection from the guild. */
 fun Guild.removeVoiceConnection() {
-    voiceConnection = null
+  voiceConnection = null
 }
 
 /** Gets the voice connection. */
 fun Guild.getVoiceConnection(): VoiceConnectionImpl? {
-    return voiceConnection
+  return voiceConnection
 }
 
 fun Member.leaveVC(): CompletableFuture<Void> {
-    return CompletableFuture.runAsync {
-        if (this.voiceState != null) {
-            try {
-                voiceConnection?.disconnect().also {
-                    LoggerFactory.getLogger(Member::class.java).info("Disconnection successful.")
-                }
-                    ?: LoggerFactory.getLogger(Member::class.java).warn("voice connection is null")
-            } catch (e: Exception) {
-                LoggerFactory.getLogger(Member::class.java)
-                    .error("Error occurred while disconnecting.", e)
-            }
-        } else {
-            LoggerFactory.getLogger(Member::class.java).info("Voice state is null")
-        }
+  return CompletableFuture.runAsync {
+    if (this.voiceState != null) {
+      try {
+        voiceConnection?.disconnect().also {
+          LoggerFactory.getLogger(Member::class.java).info("Disconnection successful.")
+        } ?: LoggerFactory.getLogger(Member::class.java).warn("voice connection is null")
+      } catch (e: Exception) {
+        LoggerFactory.getLogger(Member::class.java).error("Error occurred while disconnecting.", e)
+      }
+    } else {
+      LoggerFactory.getLogger(Member::class.java).info("Voice state is null")
     }
+  }
 }

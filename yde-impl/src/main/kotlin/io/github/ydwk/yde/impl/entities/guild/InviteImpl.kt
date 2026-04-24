@@ -30,17 +30,17 @@ import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.util.GetterSnowFlake
 
 internal class InviteImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val code: String,
-    override val guildId: GetterSnowFlake,
-    override val channel: GuildChannel,
-    override val inviter: User?,
-    override val targetType: TargetType,
-    override val targetUser: User?,
-    override val targetApplication: Application?,
-    override val approximatePresenceCount: Int,
-    override val approximateMemberCount: Int,
-    override val expirationDate: String,
-    override val guildScheduledEvent: GuildScheduledEvent
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val code: String,
+  override val guildId: GetterSnowFlake,
+  override val channel: GuildChannel,
+  override val inviter: User?,
+  override val targetType: TargetType,
+  override val targetUser: User?,
+  override val targetApplication: Application?,
+  override val approximatePresenceCount: Int,
+  override val approximateMemberCount: Int,
+  override val expirationDate: String,
+  override val guildScheduledEvent: GuildScheduledEvent,
 ) : Invite, ToStringEntityImpl<Invite>(yde, Invite::class.java)

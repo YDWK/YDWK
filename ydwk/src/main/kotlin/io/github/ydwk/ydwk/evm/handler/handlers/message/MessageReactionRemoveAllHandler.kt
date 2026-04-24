@@ -27,11 +27,12 @@ import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class MessageReactionRemoveAllHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override suspend fun start() {
-        val channelId = GetterSnowFlake.of(json.get("channel_id").asLong())
-        val messageId = GetterSnowFlake.of(json.get("message_id").asLong())
-        val guildId = if (json.has("guild_id")) GetterSnowFlake.of(json.get("guild_id").asLong()) else null
-        val message = ydwk.cache[messageId.asString, CacheIds.MESSAGE] as? Message
-        ydwk.emitEvent(MessageReactionRemoveAllEvent(ydwk, channelId, messageId, guildId, message))
-    }
+  override suspend fun start() {
+    val channelId = GetterSnowFlake.of(json.get("channel_id").asLong())
+    val messageId = GetterSnowFlake.of(json.get("message_id").asLong())
+    val guildId =
+      if (json.has("guild_id")) GetterSnowFlake.of(json.get("guild_id").asLong()) else null
+    val message = ydwk.cache[messageId.asString, CacheIds.MESSAGE] as? Message
+    ydwk.emitEvent(MessageReactionRemoveAllEvent(ydwk, channelId, messageId, guildId, message))
+  }
 }

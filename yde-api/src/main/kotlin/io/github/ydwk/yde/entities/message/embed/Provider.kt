@@ -21,17 +21,17 @@ package io.github.ydwk.yde.entities.message.embed
 import io.github.ydwk.yde.entities.util.GenericEntity
 
 interface Provider : GenericEntity {
-    /**
-     * The name of this provider.
-     *
-     * @return The name of this provider.
-     */
-    val name: String?
+  /**
+   * The name of this provider.
+   *
+   * @return The name of this provider.
+   */
+  val name: String?
 
-    /**
-     * The url of this provider.
-     *
-     * @return The url of this provider.
-     */
-    val url: String?
+  /**
+   * The url of this provider.
+   *
+   * @return The url of this provider.
+   */
+  val url: String?
 }

@@ -19,42 +19,42 @@
 package io.github.ydwk.yde.entities.guild.enums
 
 enum class VerificationLevel(private val level: Int) {
-    /** Unrestricted. */
-    NONE(0),
+  /** Unrestricted. */
+  NONE(0),
 
-    /** Must have a verified email on their account. */
-    LOW(1),
+  /** Must have a verified email on their account. */
+  LOW(1),
 
-    /** Must be registered on Discord for longer than 5 minutes. */
-    MEDIUM(2),
+  /** Must be registered on Discord for longer than 5 minutes. */
+  MEDIUM(2),
 
-    /** Must be a member of the server for longer than 10 minutes. */
-    HIGH(3),
+  /** Must be a member of the server for longer than 10 minutes. */
+  HIGH(3),
 
-    /** Must have a verified phone number. */
-    VERY_HIGH(4),
+  /** Must have a verified phone number. */
+  VERY_HIGH(4),
 
-    /** An unknown verification level. */
-    UNKNOWN(-1);
+  /** An unknown verification level. */
+  UNKNOWN(-1);
 
-    companion object {
-        /**
-         * The [VerificationLevel] by the provided [level].
-         *
-         * @param level The level to get the [VerificationLevel] by.
-         * @return The [VerificationLevel] by the provided [level].
-         */
-        fun getValue(level: Int): VerificationLevel {
-            return entries.firstOrNull { it.level == level } ?: UNKNOWN
-        }
-    }
-
+  companion object {
     /**
-     * The level of the [VerificationLevel].
+     * The [VerificationLevel] by the provided [level].
      *
-     * @return The level of the [VerificationLevel].
+     * @param level The level to get the [VerificationLevel] by.
+     * @return The [VerificationLevel] by the provided [level].
      */
-    fun getLevel(): Int {
-        return level
+    fun getValue(level: Int): VerificationLevel {
+      return entries.firstOrNull { it.level == level } ?: UNKNOWN
     }
+  }
+
+  /**
+   * The level of the [VerificationLevel].
+   *
+   * @return The level of the [VerificationLevel].
+   */
+  fun getLevel(): Int {
+    return level
+  }
 }

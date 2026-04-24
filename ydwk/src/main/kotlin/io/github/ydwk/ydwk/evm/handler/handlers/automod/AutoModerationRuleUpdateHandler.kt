@@ -15,7 +15,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */ 
 package io.github.ydwk.ydwk.evm.handler.handlers.automod
 
 import com.fasterxml.jackson.databind.JsonNode
@@ -24,8 +24,8 @@ import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class AutoModerationRuleUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override suspend fun start() {
-        val rule = ydwk.entityInstanceBuilder.buildAutoModerationRule(json)
-        ydwk.emitEvent(AutoModerationRuleUpdateEvent(ydwk, rule))
-    }
+  override suspend fun start() {
+    val rule = ydwk.entityInstanceBuilder.buildAutoModerationRule(json)
+    ydwk.emitEvent(AutoModerationRuleUpdateEvent(ydwk, rule))
+  }
 }

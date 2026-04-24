@@ -33,8 +33,8 @@ import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
  */
 @GuildEvent
 data class GuildIconUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: Guild,
-    val oldIcon: String?,
-    val newIcon: String?,
+  override val ydwk: YDWK,
+  override val entity: Guild,
+  val oldIcon: String?,
+  val newIcon: String?,
 ) : GenericGuildUpdateEvent<String?>(ydwk, entity, oldIcon, newIcon)

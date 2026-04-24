@@ -15,20 +15,20 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */ 
 package io.github.ydwk.yde.entities.guild.automod
 
 enum class AutoModerationActionType(private val value: Int) {
-    BLOCK_MESSAGE(1),
-    SEND_ALERT_MESSAGE(2),
-    TIMEOUT(3),
-    BLOCK_MEMBER_INTERACTION(4),
-    UNKNOWN(-1);
+  BLOCK_MESSAGE(1),
+  SEND_ALERT_MESSAGE(2),
+  TIMEOUT(3),
+  BLOCK_MEMBER_INTERACTION(4),
+  UNKNOWN(-1);
 
-    fun getValue(): Int = value
+  fun getValue(): Int = value
 
-    companion object {
-        fun fromValue(value: Int): AutoModerationActionType =
-            entries.firstOrNull { it.value == value } ?: UNKNOWN
-    }
+  companion object {
+    fun fromValue(value: Int): AutoModerationActionType =
+      entries.firstOrNull { it.value == value } ?: UNKNOWN
+  }
 }

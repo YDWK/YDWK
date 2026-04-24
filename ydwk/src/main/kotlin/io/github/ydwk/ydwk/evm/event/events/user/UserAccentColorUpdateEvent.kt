@@ -33,8 +33,8 @@ import java.awt.Color
  */
 @UserEvent
 data class UserAccentColorUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: User,
-    val oldAccentColor: Color?,
-    val newAccentColor: Color?,
+  override val ydwk: YDWK,
+  override val entity: User,
+  val oldAccentColor: Color?,
+  val newAccentColor: Color?,
 ) : GenericUserUpdateEvent<Color?>(ydwk, entity, oldAccentColor, newAccentColor)

@@ -21,5 +21,5 @@ package io.github.ydwk.ydwk.evm.backend.event
 import io.github.ydwk.ydwk.YDWK
 
 interface GenericEvent {
-    val ydwk: YDWK
+  val ydwk: YDWK
 }

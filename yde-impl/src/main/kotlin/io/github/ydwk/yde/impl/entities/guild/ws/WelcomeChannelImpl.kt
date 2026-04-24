@@ -25,10 +25,10 @@ import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.util.GetterSnowFlake
 
 internal class WelcomeChannelImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val channelId: GetterSnowFlake,
-    override var description: String,
-    override val emojiId: GetterSnowFlake?,
-    override var emojiName: String?
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val channelId: GetterSnowFlake,
+  override var description: String,
+  override val emojiId: GetterSnowFlake?,
+  override var emojiName: String?,
 ) : WelcomeChannel, ToStringEntityImpl<WelcomeChannel>(yde, WelcomeChannel::class.java)

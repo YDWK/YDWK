@@ -15,7 +15,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */ 
 package io.github.ydwk.ydwk.evm.event.events.invite
 
 import io.github.ydwk.yde.entities.guild.Invite
@@ -29,5 +29,4 @@ import io.github.ydwk.ydwk.evm.event.Event
  * @param ydwk The [YDWK] instance.
  * @param invite The [Invite] that was created.
  */
-@GuildEvent
-data class InviteCreateEvent(override val ydwk: YDWK, val invite: Invite) : Event(ydwk)
+@GuildEvent data class InviteCreateEvent(override val ydwk: YDWK, val invite: Invite) : Event(ydwk)

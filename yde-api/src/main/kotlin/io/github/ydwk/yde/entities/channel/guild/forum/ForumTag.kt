@@ -25,26 +25,26 @@ import io.github.ydwk.yde.util.SnowFlake
 
 interface ForumTag : SnowFlake, GenericEntity, NameAbleEntity {
 
-    /**
-     * Whether this tag can only be added to or removed from threads by a member with the
-     * MANAGE_THREADS permission.
-     *
-     * @return whether this tag can only be added to or removed from threads by a member with the
-     *   MANAGE_THREADS permission.
-     */
-    val isManaged: Boolean
+  /**
+   * Whether this tag can only be added to or removed from threads by a member with the
+   * MANAGE_THREADS permission.
+   *
+   * @return whether this tag can only be added to or removed from threads by a member with the
+   *   MANAGE_THREADS permission.
+   */
+  val isManaged: Boolean
 
-    /**
-     * The emoji id of this tag.
-     *
-     * @return the emoji id of this tag.
-     */
-    val emojiId: GetterSnowFlake?
+  /**
+   * The emoji id of this tag.
+   *
+   * @return the emoji id of this tag.
+   */
+  val emojiId: GetterSnowFlake?
 
-    /**
-     * The emoji unicode characters of this tag.
-     *
-     * @return the emoji unicode characters of this tag.
-     */
-    val emojiName: String?
+  /**
+   * The emoji unicode characters of this tag.
+   *
+   * @return the emoji unicode characters of this tag.
+   */
+  val emojiName: String?
 }

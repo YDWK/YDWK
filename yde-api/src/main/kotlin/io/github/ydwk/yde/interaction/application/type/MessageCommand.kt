@@ -23,10 +23,10 @@ import io.github.ydwk.yde.interaction.application.ApplicationCommand
 import io.github.ydwk.yde.interaction.reply.Repliable
 
 interface MessageCommand : ApplicationCommand, Repliable {
-    /**
-     * The message that the app command was invoked for.
-     *
-     * @return The message that the app command was invoked for.
-     */
-    val targetMessage: Message
+  /**
+   * The message that the app command was invoked for.
+   *
+   * @return The message that the app command was invoked for.
+   */
+  val targetMessage: Message
 }

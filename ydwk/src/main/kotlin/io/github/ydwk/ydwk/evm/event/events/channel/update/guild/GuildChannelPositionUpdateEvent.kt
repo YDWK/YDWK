@@ -34,9 +34,9 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
  */
 @ChannelEvent
 data class GuildChannelPositionUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: GuildChannel,
-    val type: ChannelType,
-    val oldPosition: Int,
-    val newPosition: Int,
+  override val ydwk: YDWK,
+  override val entity: GuildChannel,
+  val type: ChannelType,
+  val oldPosition: Int,
+  val newPosition: Int,
 ) : GenericChannelUpdateEvent<Int>(ydwk, entity, oldPosition, newPosition)

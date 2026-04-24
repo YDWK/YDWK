@@ -23,32 +23,32 @@ import com.fasterxml.jackson.databind.ObjectMapper
 
 class SlashSubCommand(val name: String, val description: String) {
 
-    private var options: MutableList<SlashOption> = mutableListOf()
+  private var options: MutableList<SlashOption> = mutableListOf()
 
-    fun addOption(option: SlashOption): SlashSubCommand {
-        options.add(option)
-        return this
-    }
+  fun addOption(option: SlashOption): SlashSubCommand {
+    options.add(option)
+    return this
+  }
 
-    fun addOptions(options: List<SlashOption>): SlashSubCommand {
-        this.options.addAll(options)
-        return this
-    }
+  fun addOptions(options: List<SlashOption>): SlashSubCommand {
+    this.options.addAll(options)
+    return this
+  }
 
-    fun addOptions(vararg options: SlashOption): SlashSubCommand {
-        this.options.addAll(options)
-        return this
-    }
+  fun addOptions(vararg options: SlashOption): SlashSubCommand {
+    this.options.addAll(options)
+    return this
+  }
 
-    fun toJson(): JsonNode {
-        val mapper = ObjectMapper()
-        val node = mapper.createObjectNode()
-        node.put("name", name)
-        node.put("description", description)
-        node.put("type", SlashOptionType.SUB_COMMAND.toInt())
-        val optionsNode = mapper.createArrayNode()
-        options.forEach { optionsNode.add(it.toJson()) }
-        node.set<JsonNode>("options", optionsNode)
-        return node
-    }
+  fun toJson(): JsonNode {
+    val mapper = ObjectMapper()
+    val node = mapper.createObjectNode()
+    node.put("name", name)
+    node.put("description", description)
+    node.put("type", SlashOptionType.SUB_COMMAND.toInt())
+    val optionsNode = mapper.createArrayNode()
+    options.forEach { optionsNode.add(it.toJson()) }
+    node.set<JsonNode>("options", optionsNode)
+    return node
+  }
 }

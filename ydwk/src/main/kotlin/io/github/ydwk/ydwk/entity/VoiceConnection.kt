@@ -22,64 +22,64 @@ import io.github.ydwk.ydwk.voice.VoiceSource
 import java.util.concurrent.CompletableFuture
 
 interface VoiceConnection {
-    /**
-     * Sets the bot as deafened.
-     *
-     * @param deafened Whether the bot should be deafened.
-     * @return The [VoiceConnection] object.
-     */
-    fun setDeafened(deafened: Boolean): VoiceConnection
+  /**
+   * Sets the bot as deafened.
+   *
+   * @param deafened Whether the bot should be deafened.
+   * @return The [VoiceConnection] object.
+   */
+  fun setDeafened(deafened: Boolean): VoiceConnection
 
-    /**
-     * Sets the bot as muted.
-     *
-     * @param muted Whether the bot should be muted.
-     * @return The [VoiceConnection] object.
-     */
-    fun setMuted(muted: Boolean): VoiceConnection
+  /**
+   * Sets the bot as muted.
+   *
+   * @param muted Whether the bot should be muted.
+   * @return The [VoiceConnection] object.
+   */
+  fun setMuted(muted: Boolean): VoiceConnection
 
-    /**
-     * Whether the bot is priority speaker.
-     *
-     * @return Whether the bot is priority speaker.
-     */
-    fun isPrioritySpeaker(): Boolean
+  /**
+   * Whether the bot is priority speaker.
+   *
+   * @return Whether the bot is priority speaker.
+   */
+  fun isPrioritySpeaker(): Boolean
 
-    /**
-     * Set as the priority speaker.
-     *
-     * @param priority Whether the bot should be the priority speaker.
-     * @return The [VoiceConnection] object.
-     */
-    fun setPriority(priority: Boolean): VoiceConnection
+  /**
+   * Set as the priority speaker.
+   *
+   * @param priority Whether the bot should be the priority speaker.
+   * @return The [VoiceConnection] object.
+   */
+  fun setPriority(priority: Boolean): VoiceConnection
 
-    /**
-     * Whether the bot is currently speaking.
-     *
-     * @return Whether the bot is currently speaking.
-     */
-    fun isSpeaking(): Boolean
+  /**
+   * Whether the bot is currently speaking.
+   *
+   * @return Whether the bot is currently speaking.
+   */
+  fun isSpeaking(): Boolean
 
-    /**
-     * Sets the bot as speaking.
-     *
-     * @param speaking Whether the bot should be speaking.
-     * @return The [VoiceConnection] object.
-     */
-    fun setSpeaking(speaking: Boolean): VoiceConnection
+  /**
+   * Sets the bot as speaking.
+   *
+   * @param speaking Whether the bot should be speaking.
+   * @return The [VoiceConnection] object.
+   */
+  fun setSpeaking(speaking: Boolean): VoiceConnection
 
-    /**
-     * Sets the VoiceSource for the bot to use.
-     *
-     * @param source The [VoiceSource] to use.
-     * @return The [VoiceConnection] object.
-     */
-    fun setSource(source: VoiceSource): VoiceConnection
+  /**
+   * Sets the VoiceSource for the bot to use.
+   *
+   * @param source The [VoiceSource] to use.
+   * @return The [VoiceConnection] object.
+   */
+  fun setSource(source: VoiceSource): VoiceConnection
 
-    /**
-     * Disconnects from the voice channel.
-     *
-     * @return A CompletableFuture that represents the asynchronous operation.
-     */
-    fun disconnect(): CompletableFuture<Void>
+  /**
+   * Disconnects from the voice channel.
+   *
+   * @return A CompletableFuture that represents the asynchronous operation.
+   */
+  fun disconnect(): CompletableFuture<Void>
 }

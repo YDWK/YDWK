@@ -25,11 +25,11 @@ import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.util.GetterSnowFlake
 
 internal class ForumTagImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val idAsLong: Long,
-    override val isManaged: Boolean,
-    override val emojiId: GetterSnowFlake?,
-    override val emojiName: String?,
-    override var name: String,
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val idAsLong: Long,
+  override val isManaged: Boolean,
+  override val emojiId: GetterSnowFlake?,
+  override val emojiName: String?,
+  override var name: String,
 ) : ForumTag, ToStringEntityImpl<ForumTag>(yde, ForumTag::class.java)

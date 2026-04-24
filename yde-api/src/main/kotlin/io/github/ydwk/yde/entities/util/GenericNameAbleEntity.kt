@@ -21,7 +21,7 @@ package io.github.ydwk.yde.entities.util
 import io.github.ydwk.yde.util.NameAbleEntity
 
 interface GenericNameAbleEntity : GenericEntity, NameAbleEntity {
-    override var name: String
-        get() = json["name"].asText()
-        set(value) {}
+  override var name: String
+    get() = json["name"].asText()
+    set(value) {}
 }

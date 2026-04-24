@@ -35,52 +35,51 @@ import io.github.ydwk.ydwk.impl.YDWKImpl
 import io.github.ydwk.ydwk.util.emitEvent
 
 class InteractionCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override suspend fun start() {
-        val interaction: Interaction = ydwk.entityInstanceBuilder.buildInteraction(json)
-        when (interaction.type) {
-            InteractionType.APPLICATION_COMMAND -> {
-                val dataJson = json["data"]
-                when (ApplicationCommandType.getValue(dataJson["type"].asInt())) {
-                    ApplicationCommandType.CHAT_INPUT -> {
-                        val slashCommand =
-                            ydwk.entityInstanceBuilder.buildSlashCommand(json, interaction)
-                        val event = SlashCommandEvent(ydwk, slashCommand)
-                        event.emitEvent()
-                    }
-                    ApplicationCommandType.USER -> {
-                        val userCommand =
-                            ydwk.entityInstanceBuilder.buildUserCommand(json, interaction)
-                        UserCommandEvent(ydwk, userCommand).emitEvent()
-                    }
-                    ApplicationCommandType.MESSAGE -> {
-                        val messageCommand =
-                            ydwk.entityInstanceBuilder.buildMessageCommand(json, interaction)
-                        MessageCommandEvent(ydwk, messageCommand).emitEvent()
-                    }
-                    else -> throw IllegalArgumentException("Unknown command type")
-                }
-            }
-            InteractionType.MESSAGE_COMPONENT -> {
-                val interactionComponent =
-                    ydwk.entityInstanceBuilder.buildComponentInteraction(
-                        json, GetterSnowFlake.of(json["id"].asLong())) as ComponentInteractionImpl
-                val data = interactionComponent.data
-                val type = data.componentType
-                val customId = data.customId
-                MessageComponentHandler(type, customId, interactionComponent, ydwk).handle()
-            }
-            InteractionType.APPLICATION_COMMAND_AUTOCOMPLETE -> {
-                AutoCompleteSlashCommandEvent(ydwk, interaction).emitEvent()
-            }
-            InteractionType.MODAL_SUBMIT -> {
-                ModelEvent(ydwk, interaction).emitEvent()
-            }
-            InteractionType.PING -> {
-                PingEvent(ydwk, interaction).emitEvent()
-            }
-            InteractionType.UNKNOWN -> {
-                ydwk.logger.warn("Unknown interaction type: ${json["type"].asInt()}")
-            }
+  override suspend fun start() {
+    val interaction: Interaction = ydwk.entityInstanceBuilder.buildInteraction(json)
+    when (interaction.type) {
+      InteractionType.APPLICATION_COMMAND -> {
+        val dataJson = json["data"]
+        when (ApplicationCommandType.getValue(dataJson["type"].asInt())) {
+          ApplicationCommandType.CHAT_INPUT -> {
+            val slashCommand = ydwk.entityInstanceBuilder.buildSlashCommand(json, interaction)
+            val event = SlashCommandEvent(ydwk, slashCommand)
+            event.emitEvent()
+          }
+          ApplicationCommandType.USER -> {
+            val userCommand = ydwk.entityInstanceBuilder.buildUserCommand(json, interaction)
+            UserCommandEvent(ydwk, userCommand).emitEvent()
+          }
+          ApplicationCommandType.MESSAGE -> {
+            val messageCommand = ydwk.entityInstanceBuilder.buildMessageCommand(json, interaction)
+            MessageCommandEvent(ydwk, messageCommand).emitEvent()
+          }
+          else -> throw IllegalArgumentException("Unknown command type")
         }
+      }
+      InteractionType.MESSAGE_COMPONENT -> {
+        val interactionComponent =
+          ydwk.entityInstanceBuilder.buildComponentInteraction(
+            json,
+            GetterSnowFlake.of(json["id"].asLong()),
+          ) as ComponentInteractionImpl
+        val data = interactionComponent.data
+        val type = data.componentType
+        val customId = data.customId
+        MessageComponentHandler(type, customId, interactionComponent, ydwk).handle()
+      }
+      InteractionType.APPLICATION_COMMAND_AUTOCOMPLETE -> {
+        AutoCompleteSlashCommandEvent(ydwk, interaction).emitEvent()
+      }
+      InteractionType.MODAL_SUBMIT -> {
+        ModelEvent(ydwk, interaction).emitEvent()
+      }
+      InteractionType.PING -> {
+        PingEvent(ydwk, interaction).emitEvent()
+      }
+      InteractionType.UNKNOWN -> {
+        ydwk.logger.warn("Unknown interaction type: ${json["type"].asInt()}")
+      }
     }
+  }
 }

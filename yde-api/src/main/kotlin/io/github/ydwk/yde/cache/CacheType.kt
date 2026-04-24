@@ -19,25 +19,25 @@
 package io.github.ydwk.yde.cache
 
 enum class CacheType(private val ids: CacheIds) {
-    GUILD(CacheIds.GUILD),
-    CHANNEL(CacheIds.CHANNEL),
-    USER(CacheIds.USER),
-    MEMBER(CacheIds.MEMBER),
-    ROLE(CacheIds.ROLE),
-    MESSAGE(CacheIds.MESSAGE),
-    EMOJI(CacheIds.EMOJI),
-    STICKER(CacheIds.STICKER),
-    ATTACHMENT(CacheIds.ATTACHMENT),
-    APPLICATION(CacheIds.APPLICATION),
-    UNKNOWN(CacheIds.UNKNOWN);
+  GUILD(CacheIds.GUILD),
+  CHANNEL(CacheIds.CHANNEL),
+  USER(CacheIds.USER),
+  MEMBER(CacheIds.MEMBER),
+  ROLE(CacheIds.ROLE),
+  MESSAGE(CacheIds.MESSAGE),
+  EMOJI(CacheIds.EMOJI),
+  STICKER(CacheIds.STICKER),
+  ATTACHMENT(CacheIds.ATTACHMENT),
+  APPLICATION(CacheIds.APPLICATION),
+  UNKNOWN(CacheIds.UNKNOWN);
 
-    companion object {
-        fun fromCacheIds(ids: CacheIds): CacheType {
-            return entries.firstOrNull { it.ids == ids } ?: UNKNOWN
-        }
+  companion object {
+    fun fromCacheIds(ids: CacheIds): CacheType {
+      return entries.firstOrNull { it.ids == ids } ?: UNKNOWN
     }
+  }
 
-    fun getCacheIds(): CacheIds {
-        return ids
-    }
+  fun getCacheIds(): CacheIds {
+    return ids
+  }
 }

@@ -15,7 +15,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */ 
 package io.github.ydwk.ydwk.evm.event.events.ban
 
 import io.github.ydwk.yde.entities.Guild
@@ -33,4 +33,4 @@ import io.github.ydwk.ydwk.evm.event.Event
  */
 @GuildModerationEvent
 data class GuildBanRemoveEvent(override val ydwk: YDWK, val guild: Guild, val user: User) :
-    Event(ydwk)
+  Event(ydwk)

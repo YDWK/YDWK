@@ -27,31 +27,31 @@ import io.github.ydwk.ydwk.util.emitEvent
 import io.github.ydwk.ydwk.voice.getVoiceConnection
 
 class VoiceStateUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override suspend fun start() {
-        val voiceState: VoiceState = ydwk.entityInstanceBuilder.buildVoiceState(json)
+  override suspend fun start() {
+    val voiceState: VoiceState = ydwk.entityInstanceBuilder.buildVoiceState(json)
 
-        val member = voiceState.member
-        val channel = voiceState.channel
+    val member = voiceState.member
+    val channel = voiceState.channel
 
-        if (member == null) {
-            ydwk.logger.debug("Voice member is null")
-        } else {
-            val botAsMember = voiceState.guild?.getBotAsMember()
+    if (member == null) {
+      ydwk.logger.debug("Voice member is null")
+    } else {
+      val botAsMember = voiceState.guild?.getBotAsMember()
 
-            if (botAsMember == null) {
-                ydwk.logger.debug("Bot as member is null")
-            } else if (member.idAsLong == botAsMember.idAsLong) {
-                botAsMember.voiceState = if (channel != null) voiceState else null
-            } else {
-                val action = if (channel != null) "save" else "remove"
-                ydwk.logger.debug("No need to $action i think")
-            }
-        }
-
-        ydwk.logger.debug("Setting voice state")
-
-        (voiceState.guild)?.getVoiceConnection()?.setVoiceState(voiceState)
-
-        VoiceStateEvent(ydwk, voiceState).emitEvent()
+      if (botAsMember == null) {
+        ydwk.logger.debug("Bot as member is null")
+      } else if (member.idAsLong == botAsMember.idAsLong) {
+        botAsMember.voiceState = if (channel != null) voiceState else null
+      } else {
+        val action = if (channel != null) "save" else "remove"
+        ydwk.logger.debug("No need to $action i think")
+      }
     }
+
+    ydwk.logger.debug("Setting voice state")
+
+    (voiceState.guild)?.getVoiceConnection()?.setVoiceState(voiceState)
+
+    VoiceStateEvent(ydwk, voiceState).emitEvent()
+  }
 }

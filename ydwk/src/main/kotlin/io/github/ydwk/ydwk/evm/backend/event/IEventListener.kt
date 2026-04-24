@@ -21,10 +21,10 @@ package io.github.ydwk.ydwk.evm.backend.event
 /** Listens to events */
 @FunctionalInterface
 interface IEventListener {
-    /**
-     * Triggers the event
-     *
-     * @param event The event to be triggered
-     */
-    suspend fun onEvent(event: GenericEvent)
+  /**
+   * Triggers the event
+   *
+   * @param event The event to be triggered
+   */
+  suspend fun onEvent(event: GenericEvent)
 }

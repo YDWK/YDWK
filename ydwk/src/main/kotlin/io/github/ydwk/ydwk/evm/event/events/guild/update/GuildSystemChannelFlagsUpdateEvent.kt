@@ -34,10 +34,14 @@ import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
  */
 @GuildEvent
 data class GuildSystemChannelFlagsUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: Guild,
-    val oldSystemChannelFlags: SystemChannelFlag,
-    val newSystemChannelFlags: SystemChannelFlag,
+  override val ydwk: YDWK,
+  override val entity: Guild,
+  val oldSystemChannelFlags: SystemChannelFlag,
+  val newSystemChannelFlags: SystemChannelFlag,
 ) :
-    GenericGuildUpdateEvent<Int>(
-        ydwk, entity, oldSystemChannelFlags.getValue(), newSystemChannelFlags.getValue())
+  GenericGuildUpdateEvent<Int>(
+    ydwk,
+    entity,
+    oldSystemChannelFlags.getValue(),
+    newSystemChannelFlags.getValue(),
+  )

@@ -24,13 +24,15 @@ import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class GuildBanRemoveHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override suspend fun start() {
-        val guildId = json.get("guild_id").asLong()
-        val guild = ydwk.getGuildById(guildId) ?: run {
-            ydwk.logger.warn("GuildBanRemove: guild $guildId not in cache")
-            return
+  override suspend fun start() {
+    val guildId = json.get("guild_id").asLong()
+    val guild =
+      ydwk.getGuildById(guildId)
+        ?: run {
+          ydwk.logger.warn("GuildBanRemove: guild $guildId not in cache")
+          return
         }
-        val user = ydwk.entityInstanceBuilder.buildUser(json.get("user"))
-        ydwk.emitEvent(GuildBanRemoveEvent(ydwk, guild, user))
-    }
+    val user = ydwk.entityInstanceBuilder.buildUser(json.get("user"))
+    ydwk.emitEvent(GuildBanRemoveEvent(ydwk, guild, user))
+  }
 }

@@ -34,8 +34,8 @@ import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
  */
 @GuildEvent
 data class GuildFeaturesUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: Guild,
-    val oldFeatures: Set<GuildFeature>,
-    val newFeatures: Set<GuildFeature>,
+  override val ydwk: YDWK,
+  override val entity: Guild,
+  val oldFeatures: Set<GuildFeature>,
+  val newFeatures: Set<GuildFeature>,
 ) : GenericGuildUpdateEvent<Set<GuildFeature>>(ydwk, entity, oldFeatures, newFeatures)

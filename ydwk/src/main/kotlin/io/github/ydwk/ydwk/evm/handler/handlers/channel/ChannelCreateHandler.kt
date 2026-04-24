@@ -26,19 +26,19 @@ import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class ChannelCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override suspend fun start() {
-        val channelType = ChannelType.getValue(json.get("type").asInt())
-        when {
-            channelType.isGuildChannel -> {
-                val channel = ydwk.entityInstanceBuilder.buildGuildChannel(json)
-                ydwk.cache[json.get("id").asText(), channel] = CacheIds.CHANNEL
-                ydwk.emitEvent(ChannelCreateEvent(ydwk, channel))
-            }
-            channelType.isNonGuildChannel -> {
-                val channel = ydwk.entityInstanceBuilder.buildChannel(json, false, true)
-                ydwk.cache[json.get("id").asText(), channel] = CacheIds.CHANNEL
-                ydwk.emitEvent(ChannelCreateEvent(ydwk, channel))
-            }
-        }
+  override suspend fun start() {
+    val channelType = ChannelType.getValue(json.get("type").asInt())
+    when {
+      channelType.isGuildChannel -> {
+        val channel = ydwk.entityInstanceBuilder.buildGuildChannel(json)
+        ydwk.cache[json.get("id").asText(), channel] = CacheIds.CHANNEL
+        ydwk.emitEvent(ChannelCreateEvent(ydwk, channel))
+      }
+      channelType.isNonGuildChannel -> {
+        val channel = ydwk.entityInstanceBuilder.buildChannel(json, false, true)
+        ydwk.cache[json.get("id").asText(), channel] = CacheIds.CHANNEL
+        ydwk.emitEvent(ChannelCreateEvent(ydwk, channel))
+      }
     }
+  }
 }

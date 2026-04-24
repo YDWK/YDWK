@@ -15,7 +15,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */ 
 package io.github.ydwk.ydwk.evm.event.events.thread
 
 import io.github.ydwk.yde.entities.channel.guild.thread.GuildThreadChannel
@@ -34,8 +34,8 @@ import io.github.ydwk.ydwk.evm.event.Event
  */
 @ChannelEvent
 data class ThreadListSyncEvent(
-    override val ydwk: YDWK,
-    val guildId: GetterSnowFlake,
-    val channelIds: List<GetterSnowFlake>,
-    val threads: List<GuildThreadChannel>,
+  override val ydwk: YDWK,
+  val guildId: GetterSnowFlake,
+  val channelIds: List<GetterSnowFlake>,
+  val threads: List<GuildThreadChannel>,
 ) : Event(ydwk)

@@ -31,43 +31,43 @@ import io.github.ydwk.yde.util.EntityToStringBuilder
 import io.github.ydwk.yde.util.GetterSnowFlake
 
 class InteractionImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val idAsLong: Long,
-    override val applicationId: GetterSnowFlake,
-    override val type: InteractionType,
-    override val guildId: GetterSnowFlake?,
-    override val channelId: GetterSnowFlake?,
-    override val member: Member?,
-    override val user: User,
-    override val token: String,
-    override val version: Int,
-    override val message: Message?,
-    override val permissions: Long?,
-    override val locale: String?,
-    override val guildLocale: String?,
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val idAsLong: Long,
+  override val applicationId: GetterSnowFlake,
+  override val type: InteractionType,
+  override val guildId: GetterSnowFlake?,
+  override val channelId: GetterSnowFlake?,
+  override val member: Member?,
+  override val user: User,
+  override val token: String,
+  override val version: Int,
+  override val message: Message?,
+  override val permissions: Long?,
+  override val locale: String?,
+  override val guildLocale: String?,
 ) : Interaction {
 
-    override val data: GenericCommandData? =
-        when (type) {
-            InteractionType.APPLICATION_COMMAND -> {
-                // get type
-                when (ApplicationCommandType.getValue(json["data"]["type"].asInt())) {
-                    ApplicationCommandType.CHAT_INPUT ->
-                        yde.entityInstanceBuilder.buildSlashCommand(json, this)
-                    ApplicationCommandType.USER ->
-                        yde.entityInstanceBuilder.buildUserCommand(json, this)
-                    ApplicationCommandType.MESSAGE ->
-                        yde.entityInstanceBuilder.buildMessageCommand(json, this)
-                    else ->
-                        throw IllegalStateException(
-                            "Unknown ApplicationCommandType ${json["data"]["type"].asInt()}")
-                }
-            }
-            else -> null
+  override val data: GenericCommandData? =
+    when (type) {
+      InteractionType.APPLICATION_COMMAND -> {
+        // get type
+        when (ApplicationCommandType.getValue(json["data"]["type"].asInt())) {
+          ApplicationCommandType.CHAT_INPUT ->
+            yde.entityInstanceBuilder.buildSlashCommand(json, this)
+          ApplicationCommandType.USER -> yde.entityInstanceBuilder.buildUserCommand(json, this)
+          ApplicationCommandType.MESSAGE ->
+            yde.entityInstanceBuilder.buildMessageCommand(json, this)
+          else ->
+            throw IllegalStateException(
+              "Unknown ApplicationCommandType ${json["data"]["type"].asInt()}"
+            )
         }
-
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).toString()
+      }
+      else -> null
     }
+
+  override fun toString(): String {
+    return EntityToStringBuilder(yde, this).toString()
+  }
 }

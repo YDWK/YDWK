@@ -25,8 +25,8 @@ import io.github.ydwk.yde.entities.guild.ws.WelcomeChannel
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
 internal class WelcomeScreenImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override var description: String?,
-    override var welcomeChannels: List<WelcomeChannel>
+  override val yde: YDE,
+  override val json: JsonNode,
+  override var description: String?,
+  override var welcomeChannels: List<WelcomeChannel>,
 ) : WelcomeScreen, ToStringEntityImpl<WelcomeScreen>(yde, WelcomeScreen::class.java)

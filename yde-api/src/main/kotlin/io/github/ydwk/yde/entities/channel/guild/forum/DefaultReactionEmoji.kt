@@ -23,10 +23,10 @@ import io.github.ydwk.yde.util.GetterSnowFlake
 import io.github.ydwk.yde.util.NameAbleEntity
 
 interface DefaultReactionEmoji : GenericEntity, NameAbleEntity {
-    /**
-     * The id of the emoji.
-     *
-     * @return the id of the emoji.
-     */
-    val emojiId: GetterSnowFlake?
+  /**
+   * The id of the emoji.
+   *
+   * @return the id of the emoji.
+   */
+  val emojiId: GetterSnowFlake?
 }

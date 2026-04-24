@@ -24,12 +24,14 @@ import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class GuildIntegrationsUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override suspend fun start() {
-        val guildId = json.get("guild_id").asLong()
-        val guild = ydwk.getGuildById(guildId) ?: run {
-            ydwk.logger.warn("GuildIntegrationsUpdate: guild $guildId not in cache")
-            return
+  override suspend fun start() {
+    val guildId = json.get("guild_id").asLong()
+    val guild =
+      ydwk.getGuildById(guildId)
+        ?: run {
+          ydwk.logger.warn("GuildIntegrationsUpdate: guild $guildId not in cache")
+          return
         }
-        ydwk.emitEvent(GuildIntegrationsUpdateEvent(ydwk, guild))
-    }
+    ydwk.emitEvent(GuildIntegrationsUpdateEvent(ydwk, guild))
+  }
 }

@@ -24,9 +24,9 @@ import io.github.ydwk.yde.entities.interaction.button.PartialEmoji
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
 class PartialEmojiImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val idAsLong: Long,
-    override val name: String,
-    override val animated: Boolean
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val idAsLong: Long,
+  override val name: String,
+  override val animated: Boolean,
 ) : PartialEmoji, ToStringEntityImpl<PartialEmoji>(yde, PartialEmoji::class.java)

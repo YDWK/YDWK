@@ -26,38 +26,38 @@ import io.github.ydwk.yde.util.Checks
 
 interface ActionRow : Component {
 
+  /**
+   * Gets all the components in this action row.
+   *
+   * @return All the components in this action row.
+   */
+  val components: List<Component>
+
+  companion object {
     /**
-     * Gets all the components in this action row.
+     * Creates a new action row with the given components. max 5 components per action row.
      *
-     * @return All the components in this action row.
+     * Example:
+     * ```
+     *
+     * val actionRow = ActionRow.createActionRow(Button.createButton(ButtonStyle.PRIMARY, "1", "Primary"))
+     *
+     * it.slash
+     *        .reply("This is a button test!")
+     *        .addActionRow(actionRow)
+     *        .reply()
+     * ```
+     *
+     * @param components The components to add to the action row.
+     * @return [ActionRowCreator] used to create the action row.
      */
-    val components: List<Component>
-
-    companion object {
-        /**
-         * Creates a new action row with the given components. max 5 components per action row.
-         *
-         * Example:
-         * ```
-         *
-         * val actionRow = ActionRow.createActionRow(Button.createButton(ButtonStyle.PRIMARY, "1", "Primary"))
-         *
-         * it.slash
-         *        .reply("This is a button test!")
-         *        .addActionRow(actionRow)
-         *        .reply()
-         * ```
-         *
-         * @param components The components to add to the action row.
-         * @return [ActionRowCreator] used to create the action row.
-         */
-        fun createActionRow(yde: YDE, vararg components: Component): ActionRowCreator {
-            return createActionRow(yde, components.toList())
-        }
-
-        fun createActionRow(yde: YDE, components: List<Component>): ActionRowCreator {
-            Checks.customCheck(components.size <= 5, "Action row can only have 5 components.")
-            return ActionRowCreatorBuilder(yde, components)
-        }
+    fun createActionRow(yde: YDE, vararg components: Component): ActionRowCreator {
+      return createActionRow(yde, components.toList())
     }
+
+    fun createActionRow(yde: YDE, components: List<Component>): ActionRowCreator {
+      Checks.customCheck(components.size <= 5, "Action row can only have 5 components.")
+      return ActionRowCreatorBuilder(yde, components)
+    }
+  }
 }
