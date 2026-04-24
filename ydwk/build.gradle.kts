@@ -8,9 +8,6 @@ plugins {
 repositories {
     mavenCentral()
     maven("https://jitpack.io")
-    // Jitsi Maven repository for libjitsi
-    maven("https://github.com/jitsi/jitsi-maven-repository/raw/master/releases/")
-    maven("https://github.com/jitsi/jitsi-maven-repository/raw/master/snapshots/")
 }
 
 apply(from = "gradle/tasks/generateEvents.gradle.kts")
@@ -30,7 +27,7 @@ dependencies {
     api("com.codahale:xsalsa20poly1305:" + properties["xsalsa20poly1305Version"])
 
     // New voice encryption (Discord Nov 2024+)
-    api("com.github.terl:lazysodium-java:" + properties["lazysodiumVersion"])
+    api("com.goterl:lazysodium-java:" + properties["lazysodiumVersion"])
     api("net.java.dev.jna:jna:" + properties["jnaVersion"])
 
     // decode Opus
