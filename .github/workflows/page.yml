@@ -38,7 +38,7 @@ jobs:
         run: find build/dokka -type f | head -30 || echo "build/dokka not found"
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           path: ./build/dokka/html
 
