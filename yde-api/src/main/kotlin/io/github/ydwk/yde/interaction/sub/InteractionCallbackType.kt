@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,44 +19,44 @@
 package io.github.ydwk.yde.interaction.sub
 
 enum class InteractionCallbackType(private val type: Int) {
-    /** ACK a `Ping` */
-    PONG(1),
-    /** Respond to an interaction with a message */
-    CHANNEL_MESSAGE_WITH_SOURCE(4),
-    /** ACK an interaction and edit a response later, the user sees a loading state */
-    DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE(5),
-    /**
-     * For components, ACK an interaction and edit the original message later; the user does not see
-     * a loading state
-     */
-    DEFERRED_UPDATE_MESSAGE(6),
-    /** For components, edit the message the component was attached to */
-    UPDATE_MESSAGE(7),
-    /** Respond to an autocomplete interaction with suggested choices */
-    APPLICATION_COMMAND_AUTOCOMPLETE_RESULT(8),
-    /** Respond to an interaction with a popup modal */
-    MODAL(9),
-    /** An unknown type */
-    UNKNOWN(-1);
+  /** ACK a `Ping` */
+  PONG(1),
+  /** Respond to an interaction with a message */
+  CHANNEL_MESSAGE_WITH_SOURCE(4),
+  /** ACK an interaction and edit a response later, the user sees a loading state */
+  DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE(5),
+  /**
+   * For components, ACK an interaction and edit the original message later; the user does not see a
+   * loading state
+   */
+  DEFERRED_UPDATE_MESSAGE(6),
+  /** For components, edit the message the component was attached to */
+  UPDATE_MESSAGE(7),
+  /** Respond to an autocomplete interaction with suggested choices */
+  APPLICATION_COMMAND_AUTOCOMPLETE_RESULT(8),
+  /** Respond to an interaction with a popup modal */
+  MODAL(9),
+  /** An unknown type */
+  UNKNOWN(-1);
 
-    companion object {
-        /**
-         * Get the [InteractionCallbackType] from the [type] integer
-         *
-         * @param type The type integer
-         * @return The [InteractionCallbackType] from the given [type]
-         */
-        fun getValue(type: Int): InteractionCallbackType {
-            return entries.firstOrNull { it.type == type } ?: UNKNOWN
-        }
-    }
-
+  companion object {
     /**
-     * Get the integer type of the [InteractionCallbackType]
+     * Get the [InteractionCallbackType] from the [type] integer
      *
-     * @return The integer type of the [InteractionCallbackType]
+     * @param type The type integer
+     * @return The [InteractionCallbackType] from the given [type]
      */
-    fun getType(): Int {
-        return type
+    fun getValue(type: Int): InteractionCallbackType {
+      return entries.firstOrNull { it.type == type } ?: UNKNOWN
     }
+  }
+
+  /**
+   * Get the integer type of the [InteractionCallbackType]
+   *
+   * @return The integer type of the [InteractionCallbackType]
+   */
+  fun getType(): Int {
+    return type
+  }
 }

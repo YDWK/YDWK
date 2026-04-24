@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,10 +26,10 @@ import io.github.ydwk.yde.util.SnowFlake
  * the services can't access the data at the moment.
  */
 interface UnavailableGuild : SnowFlake, GenericEntity {
-    /**
-     * Weather the guild is unavailable or not.
-     *
-     * @return true if the guild is unavailable.
-     */
-    var unavailable: Boolean
+  /**
+   * Weather the guild is unavailable or not.
+   *
+   * @return true if the guild is unavailable.
+   */
+  var unavailable: Boolean
 }

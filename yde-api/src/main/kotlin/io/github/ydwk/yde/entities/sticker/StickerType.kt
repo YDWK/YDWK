@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,33 +19,33 @@
 package io.github.ydwk.yde.entities.sticker
 
 enum class StickerType(private val value: Int) {
-    /** An official sticker in a pack, part of Nitro or in a removed purchasable pack. */
-    STANDARD(1),
+  /** An official sticker in a pack, part of Nitro or in a removed purchasable pack. */
+  STANDARD(1),
 
-    /** A sticker uploaded to a guild for the guild's members. */
-    GUILD(2),
+  /** A sticker uploaded to a guild for the guild's members. */
+  GUILD(2),
 
-    /** An unknown sticker type. */
-    UNKNOWN(-1);
+  /** An unknown sticker type. */
+  UNKNOWN(-1);
 
-    companion object {
-        /**
-         * The [StickerType] from the provided [value].
-         *
-         * @param value The value to get the [StickerType] from.
-         * @return The [StickerType] from the provided [value].
-         */
-        fun getValue(value: Int): StickerType {
-            return entries.firstOrNull { it.value == value } ?: UNKNOWN
-        }
-    }
-
+  companion object {
     /**
-     * The value of the [StickerType].
+     * The [StickerType] from the provided [value].
      *
-     * @return The value of the [StickerType].
+     * @param value The value to get the [StickerType] from.
+     * @return The [StickerType] from the provided [value].
      */
-    fun getValue(): Int {
-        return value
+    fun getValue(value: Int): StickerType {
+      return entries.firstOrNull { it.value == value } ?: UNKNOWN
     }
+  }
+
+  /**
+   * The value of the [StickerType].
+   *
+   * @return The value of the [StickerType].
+   */
+  fun getValue(): Int {
+    return value
+  }
 }

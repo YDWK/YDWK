@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,8 +25,8 @@ import io.github.ydwk.yde.entities.guild.Ban
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
 internal class BanImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val reason: String?,
-    override val user: User
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val reason: String?,
+  override val user: User,
 ) : Ban, ToStringEntityImpl<Ban>(yde, Ban::class.java)

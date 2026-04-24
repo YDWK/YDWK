@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,26 +22,26 @@ import io.github.ydwk.yde.entities.guild.enums.GuildPermission
 import java.util.*
 
 interface PermissionEntity {
-    /**
-     * The permissions of this member.
-     *
-     * @return The permissions of this member.
-     */
-    val permissions: EnumSet<GuildPermission>
+  /**
+   * The permissions of this member.
+   *
+   * @return The permissions of this member.
+   */
+  val permissions: EnumSet<GuildPermission>
 
-    /**
-     * Checks if the member has a specific permission.
-     *
-     * @param permission The permission to check.
-     * @return True if the member has the permission, false otherwise.
-     */
-    fun hasPermission(vararg permission: GuildPermission): Boolean
+  /**
+   * Checks if the member has a specific permission.
+   *
+   * @param permission The permission to check.
+   * @return True if the member has the permission, false otherwise.
+   */
+  fun hasPermission(vararg permission: GuildPermission): Boolean
 
-    /**
-     * Checks if the member has a specific permission.
-     *
-     * @param permission The permission to check.
-     * @return True if the member has the permission, false otherwise.
-     */
-    fun hasPermission(permission: Collection<GuildPermission>): Boolean
+  /**
+   * Checks if the member has a specific permission.
+   *
+   * @param permission The permission to check.
+   * @return True if the member has the permission, false otherwise.
+   */
+  fun hasPermission(permission: Collection<GuildPermission>): Boolean
 }

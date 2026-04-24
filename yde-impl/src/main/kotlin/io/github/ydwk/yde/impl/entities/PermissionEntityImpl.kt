@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,19 +26,19 @@ import io.github.ydwk.yde.impl.util.getPermissions
 import java.util.*
 
 internal class PermissionEntityImpl(
-    private val guild: Guild,
-    private val isOwner: Boolean,
-    private val roles: List<Role>,
-    private val isTimedOut: Boolean?,
-    override val permissions: EnumSet<GuildPermission> =
-        GuildPermission.getValues(getPermissions(guild, isOwner, roles, isTimedOut ?: false))
+  private val guild: Guild,
+  private val isOwner: Boolean,
+  private val roles: List<Role>,
+  private val isTimedOut: Boolean?,
+  override val permissions: EnumSet<GuildPermission> =
+    GuildPermission.getValues(getPermissions(guild, isOwner, roles, isTimedOut ?: false)),
 ) : PermissionEntity {
 
-    override fun hasPermission(vararg permission: GuildPermission): Boolean {
-        return permissions.containsAll(permission.toList())
-    }
+  override fun hasPermission(vararg permission: GuildPermission): Boolean {
+    return permissions.containsAll(permission.toList())
+  }
 
-    override fun hasPermission(permission: Collection<GuildPermission>): Boolean {
-        return permissions.containsAll(permission)
-    }
+  override fun hasPermission(permission: Collection<GuildPermission>): Boolean {
+    return permissions.containsAll(permission)
+  }
 }

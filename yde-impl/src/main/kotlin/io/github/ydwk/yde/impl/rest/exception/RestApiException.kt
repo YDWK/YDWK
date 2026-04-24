@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,7 @@
 package io.github.ydwk.yde.impl.rest.exception
 
 class RestApiException(val name: String) : RuntimeException(name) {
-    constructor(name: String, cause: Throwable) : this(name) {
-        initCause(cause)
-    }
+  constructor(name: String, cause: Throwable) : this(name) {
+    initCause(cause)
+  }
 }

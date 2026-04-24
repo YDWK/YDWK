@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,21 +23,19 @@ import io.github.ydwk.yde.interaction.application.sub.Reply
 
 /** Indicates that this interaction has the ability to reply to the user. */
 interface Repliable {
-    /**
-     * Replies to an interaction.
-     *
-     * @param content The content of the reply.
-     * @return The reply.
-     */
-    fun reply(content: String): Reply
+  /**
+   * Replies to an interaction.
+   *
+   * @param content The content of the reply.
+   * @return The reply.
+   */
+  fun reply(content: String): Reply
 
-    /**
-     * Replies to an interaction.
-     *
-     * @param embed The embed of the reply.
-     * @return The reply.
-     */
-    fun reply(
-        embed: Embed,
-    ): Reply
+  /**
+   * Replies to an interaction.
+   *
+   * @param embed The embed of the reply.
+   * @return The reply.
+   */
+  fun reply(embed: Embed): Reply
 }

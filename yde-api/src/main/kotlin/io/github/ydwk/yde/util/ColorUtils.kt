@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,13 +21,13 @@ package io.github.ydwk.yde.util
 import java.awt.Color
 
 fun Color.getColourHex(): String {
-    return String.format("#%02x%02x%02x", this.red, this.green, this.blue)
+  return String.format("#%02x%02x%02x", this.red, this.green, this.blue)
 }
 
 fun Color.getColourRGB(): String {
-    return String.format("rgb(%d, %d, %d)", this.red, this.green, this.blue)
+  return String.format("rgb(%d, %d, %d)", this.red, this.green, this.blue)
 }
 
 fun Color.getColourANSIEscape(): String {
-    return String.format("\u001B[38;2;%d;%d;%dm", this.red, this.green, this.blue)
+  return String.format("\u001B[38;2;%d;%d;%dm", this.red, this.green, this.blue)
 }

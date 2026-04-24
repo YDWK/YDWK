@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,12 +20,12 @@ package io.github.ydwk.ydwk.ws.util
 
 interface LoggedIn {
 
-    /** Weather the bot is logged in or not. */
-    val loggedIn: Boolean
+  /** Weather the bot is logged in or not. */
+  val loggedIn: Boolean
 
-    /** If the bot is logged in, this will return the time when the bot logged in. */
-    var loggedInTime: String?
+  /** If the bot is logged in, this will return the time when the bot logged in. */
+  var loggedInTime: String?
 
-    /** If the bot disconnected, this will return the time when the bot disconnected. */
-    var disconnectionTime: String?
+  /** If the bot disconnected, this will return the time when the bot disconnected. */
+  var disconnectionTime: String?
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,9 +25,9 @@ import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class MessageDeleteHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override suspend fun start() {
-        val message = ydwk.entityInstanceBuilder.buildMessage(json)
-        ydwk.cache.remove(json.get("id").asText(), CacheIds.MESSAGE)
-        ydwk.emitEvent(MessageDeleteEvent(ydwk, message))
-    }
+  override suspend fun start() {
+    val message = ydwk.entityInstanceBuilder.buildMessage(json)
+    ydwk.cache.remove(json.get("id").asText(), CacheIds.MESSAGE)
+    ydwk.emitEvent(MessageDeleteEvent(ydwk, message))
+  }
 }

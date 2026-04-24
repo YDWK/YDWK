@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,10 +23,10 @@ import io.github.ydwk.yde.interaction.application.ApplicationCommand
 import io.github.ydwk.yde.interaction.reply.Repliable
 
 interface MessageCommand : ApplicationCommand, Repliable {
-    /**
-     * The message that the app command was invoked for.
-     *
-     * @return The message that the app command was invoked for.
-     */
-    val targetMessage: Message
+  /**
+   * The message that the app command was invoked for.
+   *
+   * @return The message that the app command was invoked for.
+   */
+  val targetMessage: Message
 }

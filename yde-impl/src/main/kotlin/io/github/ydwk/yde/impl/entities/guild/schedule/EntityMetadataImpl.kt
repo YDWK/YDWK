@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,9 +27,9 @@ import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.util.GetterSnowFlake
 
 internal class EntityMetadataImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val scheduledEventId: GetterSnowFlake,
-    override val user: User,
-    override val member: Member?
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val scheduledEventId: GetterSnowFlake,
+  override val user: User,
+  override val member: Member?,
 ) : EntityMetadata, ToStringEntityImpl<EntityMetadata>(yde, EntityMetadata::class.java)

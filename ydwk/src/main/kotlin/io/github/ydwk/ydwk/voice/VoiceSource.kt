@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,69 +18,83 @@
  */ 
 package io.github.ydwk.ydwk.voice
 
-import java.io.ByteArrayOutputStream
+import io.github.ydwk.ydwk.voice.opus.VoiceOpusHandler
 import java.io.File
 import java.io.FileInputStream
+import java.util.Arrays
 
-/** Represents a source of voice data. */
+/** Provides audio frames for a Discord voice connection. */
 interface VoiceSource {
 
-    /**
-     * Retrieves the audio data.
-     *
-     * @return the audio data as a byte array.
-     */
-    fun getAudioData(): ByteArray
+  /**
+   * Returns one 20-ms audio frame.
+   *
+   * If [isOpusEncoded] is `false`, the caller expects raw signed 16-bit little-endian stereo PCM at
+   * 48 kHz ([VoiceOpusHandler.PCM_FRAME_BYTES] bytes). If [isOpusEncoded] is `true`, the bytes are
+   * already an Opus packet.
+   *
+   * When the source is exhausted, return silence (zero-filled PCM frame or empty array).
+   */
+  fun getAudioData(): ByteArray
 
-    /**
-     * Indicates whether the audio has finished playing.
-     *
-     * @return true if the audio has finished, false otherwise.
-     */
-    val isFinished: Boolean
+  /** Returns `true` once no more audio frames are available. */
+  val isFinished: Boolean
 
-    /**
-     * Builds a VoiceSource object.
-     *
-     * @return a VoiceSource object representing the built voice source.
-     */
-    fun build(): VoiceSource
+  /**
+   * Performs any necessary initialisation (e.g. opens file handles, seeks to the beginning). Must
+   * be called before the first [getAudioData] call.
+   */
+  fun build(): VoiceSource
 
-    class ConvertVoiceSource(val file: File) : VoiceSource {
+  /**
+   * `true` if [getAudioData] returns already-encoded Opus packets; `false` (default) if it returns
+   * raw PCM that must be encoded by [VoiceOpusHandler].
+   */
+  val isOpusEncoded: Boolean
+    get() = false
 
-        private val outputStream = ByteArrayOutputStream()
-        private val inputStream = FileInputStream(file)
+  /**
+   * A [VoiceSource] that streams raw PCM from a file.
+   *
+   * The file must contain signed 16-bit little-endian stereo PCM audio at 48 000 Hz (the exact
+   * format Discord's voice server expects after Opus decoding). Each [getAudioData] call returns
+   * exactly [VoiceOpusHandler.PCM_FRAME_BYTES] bytes (3 840 bytes, covering 20 ms). The last frame
+   * is zero-padded with silence if the file does not end on a frame boundary.
+   */
+  class ConvertVoiceSource(val file: File) : VoiceSource {
 
-        private lateinit var audioData: ByteArray
+    private val frameBytes = VoiceOpusHandler.PCM_FRAME_BYTES
+    private lateinit var inputStream: FileInputStream
+    private var finished = false
 
-        override fun getAudioData(): ByteArray {
-            val data = outputStream.toByteArray()
-            outputStream.reset() // Clear output stream
+    override val isOpusEncoded: Boolean = false
 
-            return data
-        }
-
-        override val isFinished: Boolean
-            get() =
-                with(inputStream) {
-                    if (available() == 0) {
-                        close()
-                        true
-                    } else {
-                        false
-                    }
-                }
-
-        override fun build(): VoiceSource {
-            val buffer = ByteArray(1024)
-            var bytesRead: Int
-            while (inputStream.read(buffer).also { bytesRead = it } != -1) {
-                outputStream.write(buffer, 0, bytesRead)
-            }
-
-            audioData = outputStream.toByteArray()
-
-            return this
-        }
+    override fun build(): VoiceSource {
+      inputStream = FileInputStream(file)
+      finished = false
+      return this
     }
+
+    override fun getAudioData(): ByteArray {
+      if (finished) return silence()
+      val frame = ByteArray(frameBytes)
+      var offset = 0
+      while (offset < frameBytes) {
+        val read = inputStream.read(frame, offset, frameBytes - offset)
+        if (read == -1) {
+          // Pad remainder with silence and mark as finished on next call
+          Arrays.fill(frame, offset, frameBytes, 0)
+          finished = true
+          break
+        }
+        offset += read
+      }
+      return frame
+    }
+
+    override val isFinished: Boolean
+      get() = finished
+
+    private fun silence(): ByteArray = ByteArray(frameBytes)
+  }
 }

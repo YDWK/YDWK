@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,60 +27,57 @@ import java.net.URL
 
 interface Button : Component {
 
-    /**
-     * The button style of this button.
-     *
-     * @return The button style of this button.
-     */
-    val style: ButtonStyle
+  /**
+   * The button style of this button.
+   *
+   * @return The button style of this button.
+   */
+  val style: ButtonStyle
 
-    /**
-     * The label of this button.
-     *
-     * @return The label of this button.
-     */
-    val label: String?
+  /**
+   * The label of this button.
+   *
+   * @return The label of this button.
+   */
+  val label: String?
 
-    /**
-     * The custom id of this button.
-     *
-     * @return The custom id of this button.
-     */
-    val customId: String?
+  /**
+   * The custom id of this button.
+   *
+   * @return The custom id of this button.
+   */
+  val customId: String?
 
-    /**
-     * The partial emoji of this button (name, id, and animated).
-     *
-     * @return The emoji of this button.
-     */
-    val emoji: PartialEmoji?
+  /**
+   * The partial emoji of this button (name, id, and animated).
+   *
+   * @return The emoji of this button.
+   */
+  val emoji: PartialEmoji?
 
-    /**
-     * The url of this button if it is a link button.
-     *
-     * @return The url of this button if it is a link button.
-     */
-    val url: URL?
+  /**
+   * The url of this button if it is a link button.
+   *
+   * @return The url of this button if it is a link button.
+   */
+  val url: URL?
 
-    /**
-     * The disabled state of this button.
-     *
-     * @return The disabled state of this button.
-     */
-    val disabled: Boolean
+  /**
+   * The disabled state of this button.
+   *
+   * @return The disabled state of this button.
+   */
+  val disabled: Boolean
 
-    companion object {
-        /**
-         * Creates a [ButtonCreator] for a button with the given [style].
-         *
-         * @param style The style of the button.
-         * @return The [ButtonCreator] for chaining.
-         */
-        fun createButton(
-            yde: YDE,
-            style: ButtonStyle,
-        ): ButtonCreator {
-            return ButtonCreatorBuilder(style, yde)
-        }
+  companion object {
+    /**
+     * Creates a [ButtonCreator] for a button with the given [style].
+     *
+     * @param style The style of the button.
+     * @return The [ButtonCreator] for chaining.
+     */
+    fun createButton(yde: YDE, style: ButtonStyle): ButtonCreator {
+      return ButtonCreatorBuilder(style, yde)
     }
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,122 +37,124 @@ import kotlinx.coroutines.delay
 import org.slf4j.LoggerFactory
 
 open class RestApiImpl(
-    private val builder: HttpRequestBuilder,
-    private val client: HttpClient,
-    private val requestType: RequestType
+  private val builder: HttpRequestBuilder,
+  private val client: HttpClient,
+  private val requestType: RequestType,
 ) : SimilarRestApi {
-    private val logger = LoggerFactory.getLogger(RestApiImpl::class.java)
+  private val logger = LoggerFactory.getLogger(RestApiImpl::class.java)
 
-    override fun header(name: String, value: String): SimilarRestApi {
-        builder.headers[name] = value
-        return this
+  override fun header(name: String, value: String): SimilarRestApi {
+    builder.headers[name] = value
+    return this
+  }
+
+  override fun addHeader(name: String, value: String): SimilarRestApi {
+    builder.headers.append(name, value)
+    return this
+  }
+
+  override fun removeHeader(name: String): SimilarRestApi {
+    builder.headers.remove(name)
+    return this
+  }
+
+  override fun headers(headers: Headers): SimilarRestApi {
+    builder.headers.appendAll(headers)
+    return this
+  }
+
+  override fun addReason(reason: String?): SimilarRestApi {
+    if (reason != null) {
+      addHeader(
+        "X-Audit-Log-Reason",
+        URLEncoder.encode(reason, StandardCharsets.UTF_8.name()).replace("+", " "),
+      )
     }
+    return this
+  }
 
-    override fun addHeader(name: String, value: String): SimilarRestApi {
-        builder.headers.append(name, value)
-        return this
+  override suspend fun execute(): RestResult<HttpResponse> {
+    return try {
+      val response = client.request(builder = builder)
+      RestResult.Success(response)
+    } catch (e: Exception) {
+      logger.error("Error while executing request", e)
+      RestResult.Error(RestAPIException("Error while executing request: ${e.message}"))
     }
+  }
 
-    override fun removeHeader(name: String): SimilarRestApi {
-        builder.headers.remove(name)
-        return this
-    }
+  override suspend fun <T : Any> execute(function: suspend (HttpResponse) -> T): RestResult<T> {
+    val response = executeRequest(builder)
 
-    override fun headers(headers: Headers): SimilarRestApi {
-        builder.headers.appendAll(headers)
-        return this
-    }
-
-    override fun addReason(reason: String?): SimilarRestApi {
-        if (reason != null) {
-            addHeader(
-                "X-Audit-Log-Reason",
-                URLEncoder.encode(reason, StandardCharsets.UTF_8.name()).replace("+", " "))
+    return try {
+      checkRateLimit(response).let {
+        if (it) {
+          handleRateLimitForResult(response, function)
+        } else {
+          RestResult.Success(function(response))
         }
-        return this
+      }
+    } catch (e: Exception) {
+      // discord error is encoded in the response body
+      val error = ObjectMapper().readTree(response.body<String>())
+      logger.error("Error while executing request, discord error: $error", e)
+      RestResult.Error(
+        RestAPIException("Error while executing request: ${e.message} - discord error: $error")
+      )
     }
+  }
 
-    override suspend fun execute(): RestResult<HttpResponse> {
-        return try {
-            val response = client.request(builder = builder)
-            RestResult.Success(response)
-        } catch (e: Exception) {
-            logger.error("Error while executing request", e)
-            RestResult.Error(RestAPIException("Error while executing request: ${e.message}"))
+  override suspend fun executeWithNoResult(): RestResult<NoResult> {
+    return try {
+      val response = executeRequest(builder)
+
+      checkRateLimit(response).let {
+        if (it) {
+          handleRateLimitForNoResult(response)
+        } else {
+          RestResult.Success(NoResult(Instant.now().toString()))
         }
+      }
+    } catch (e: Exception) {
+      logger.error("Error while executing request", e)
+      RestResult.Error(RestAPIException("Error while executing request: ${e.message}"))
     }
+  }
 
-    override suspend fun <T : Any> execute(function: suspend (HttpResponse) -> T): RestResult<T> {
-        val response = executeRequest(builder)
+  private fun checkRateLimit(response: HttpResponse): Boolean {
+    return response.status.value == HttpResponseCode.TOO_MANY_REQUESTS.getCode()
+  }
 
-        return try {
-            checkRateLimit(response).let {
-                if (it) {
-                    handleRateLimitForResult(response, function)
-                } else {
-                    RestResult.Success(function(response))
-                }
-            }
-        } catch (e: Exception) {
-            // discord error is encoded in the response body
-            val error = ObjectMapper().readTree(response.body<String>())
-            logger.error("Error while executing request, discord error: $error", e)
-            RestResult.Error(
-                RestAPIException(
-                    "Error while executing request: ${e.message} - discord error: $error"))
-        }
+  private suspend fun handleRateLimitForNoResult(response: HttpResponse): RestResult<NoResult> {
+    val retryAfter = response.headers["Retry-After"]?.toIntOrNull() ?: 0
+    delay(retryAfter.toLong())
+    return executeWithNoResult()
+  }
+
+  private suspend fun executeRequest(builder: HttpRequestBuilder): HttpResponse {
+    return when (requestType) {
+      RequestType.GET -> client.get(builder = builder)
+      RequestType.POST -> client.post(builder = builder)
+      RequestType.PUT -> client.put(builder = builder)
+      RequestType.DELETE -> client.delete(builder = builder)
+      RequestType.PATCH -> client.patch(builder = builder)
     }
+  }
 
-    override suspend fun executeWithNoResult(): RestResult<NoResult> {
-        return try {
-            val response = executeRequest(builder)
-
-            checkRateLimit(response).let {
-                if (it) {
-                    handleRateLimitForNoResult(response)
-                } else {
-                    RestResult.Success(NoResult(Instant.now().toString()))
-                }
-            }
-        } catch (e: Exception) {
-            logger.error("Error while executing request", e)
-            RestResult.Error(RestAPIException("Error while executing request: ${e.message}"))
-        }
+  private suspend fun <T> handleRateLimitForResult(
+    response: HttpResponse,
+    function: suspend (HttpResponse) -> T,
+  ): RestResult<T> {
+    val retryAfter = response.headers["Retry-After"]?.toIntOrNull() ?: 0
+    delay(retryAfter.toLong())
+    return try {
+      val result = function(response)
+      RestResult.Success(result)
+    } catch (e: Exception) {
+      logger.error("Error while executing request after rate limit", e)
+      RestResult.Error(
+        RestAPIException("Error while executing request after rate limit: ${e.message}")
+      )
     }
-
-    private fun checkRateLimit(response: HttpResponse): Boolean {
-        return response.status.value == HttpResponseCode.TOO_MANY_REQUESTS.getCode()
-    }
-
-    private suspend fun handleRateLimitForNoResult(response: HttpResponse): RestResult<NoResult> {
-        val retryAfter = response.headers["Retry-After"]?.toIntOrNull() ?: 0
-        delay(retryAfter.toLong())
-        return executeWithNoResult()
-    }
-
-    private suspend fun executeRequest(builder: HttpRequestBuilder): HttpResponse {
-        return when (requestType) {
-            RequestType.GET -> client.get(builder = builder)
-            RequestType.POST -> client.post(builder = builder)
-            RequestType.PUT -> client.put(builder = builder)
-            RequestType.DELETE -> client.delete(builder = builder)
-            RequestType.PATCH -> client.patch(builder = builder)
-        }
-    }
-
-    private suspend fun <T> handleRateLimitForResult(
-        response: HttpResponse,
-        function: suspend (HttpResponse) -> T
-    ): RestResult<T> {
-        val retryAfter = response.headers["Retry-After"]?.toIntOrNull() ?: 0
-        delay(retryAfter.toLong())
-        return try {
-            val result = function(response)
-            RestResult.Success(result)
-        } catch (e: Exception) {
-            logger.error("Error while executing request after rate limit", e)
-            RestResult.Error(
-                RestAPIException("Error while executing request after rate limit: ${e.message}"))
-        }
-    }
+  }
 }

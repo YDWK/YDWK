@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,19 +28,19 @@ import java.awt.Color
 import java.net.URL
 
 internal class EmbedImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val title: String?,
-    override val type: EmbedType?,
-    override val description: String?,
-    override val url: URL?,
-    override val timestamp: String?,
-    override val color: Color?,
-    override val footer: Footer?,
-    override val image: Image?,
-    override val thumbnail: Thumbnail?,
-    override val video: Video?,
-    override val provider: Provider?,
-    override val author: Author?,
-    override val fields: List<Field>
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val title: String?,
+  override val type: EmbedType?,
+  override val description: String?,
+  override val url: URL?,
+  override val timestamp: String?,
+  override val color: Color?,
+  override val footer: Footer?,
+  override val image: Image?,
+  override val thumbnail: Thumbnail?,
+  override val video: Video?,
+  override val provider: Provider?,
+  override val author: Author?,
+  override val fields: List<Field>,
 ) : Embed, ToStringEntityImpl<Embed>(yde, Embed::class.java)

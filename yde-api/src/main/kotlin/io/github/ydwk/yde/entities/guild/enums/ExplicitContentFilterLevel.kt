@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,36 +19,36 @@
 package io.github.ydwk.yde.entities.guild.enums
 
 enum class ExplicitContentFilterLevel(private val value: Int) {
-    /** Media content will not be scanned. */
-    DISABLED(0),
+  /** Media content will not be scanned. */
+  DISABLED(0),
 
-    /** Media content sent by members without roles will be scanned. */
-    MEMBERS_WITHOUT_ROLES(1),
+  /** Media content sent by members without roles will be scanned. */
+  MEMBERS_WITHOUT_ROLES(1),
 
-    /** Media content sent by all members will be scanned. */
-    ALL_MEMBERS(2),
+  /** Media content sent by all members will be scanned. */
+  ALL_MEMBERS(2),
 
-    /** An unknown explicit content filter level. */
-    UNKNOWN(-1);
+  /** An unknown explicit content filter level. */
+  UNKNOWN(-1);
 
-    companion object {
-        /**
-         * The [ExplicitContentFilterLevel] for the given [value].
-         *
-         * @param value The value to get the [ExplicitContentFilterLevel] for.
-         * @return The [ExplicitContentFilterLevel] for the given [value].
-         */
-        fun getValue(value: Int): ExplicitContentFilterLevel {
-            return entries.firstOrNull { it.value == value } ?: UNKNOWN
-        }
-    }
-
+  companion object {
     /**
-     * The value of the [ExplicitContentFilterLevel].
+     * The [ExplicitContentFilterLevel] for the given [value].
      *
-     * @return The value of the [ExplicitContentFilterLevel].
+     * @param value The value to get the [ExplicitContentFilterLevel] for.
+     * @return The [ExplicitContentFilterLevel] for the given [value].
      */
-    fun getValue(): Int {
-        return value
+    fun getValue(value: Int): ExplicitContentFilterLevel {
+      return entries.firstOrNull { it.value == value } ?: UNKNOWN
     }
+  }
+
+  /**
+   * The value of the [ExplicitContentFilterLevel].
+   *
+   * @return The value of the [ExplicitContentFilterLevel].
+   */
+  fun getValue(): Int {
+    return value
+  }
 }

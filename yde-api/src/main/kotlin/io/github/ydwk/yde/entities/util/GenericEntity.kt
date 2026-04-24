@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,9 +24,9 @@ import io.github.ydwk.yde.YDE
 /** A generic entity that can be used to represent any discord entity. */
 interface GenericEntity : ToStringEntity {
 
-    /** The main YDE instance. */
-    val yde: YDE
+  /** The main YDE instance. */
+  val yde: YDE
 
-    /** The json representation of this entity. */
-    val json: JsonNode
+  /** The json representation of this entity. */
+  val json: JsonNode
 }

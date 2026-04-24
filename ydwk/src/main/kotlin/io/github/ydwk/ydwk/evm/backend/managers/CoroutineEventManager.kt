@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,52 +28,49 @@ import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
 
 class CoroutineEventManager : IEventManager, CoroutineScope by CoroutineScope(Dispatchers.Default) {
-    private val listeners: MutableList<CoroutineEventListener> = ArrayList()
-    private val logger = LoggerFactory.getLogger(CoroutineEventManager::class.java)
+  private val listeners: MutableList<CoroutineEventListener> = ArrayList()
+  private val logger = LoggerFactory.getLogger(CoroutineEventManager::class.java)
 
-    override suspend fun emitEvent(event: GenericEvent) {
-        coroutineScope {
-            launch {
-                for (listener in listeners) {
-                    try {
-                        listener.onEvent(event)
-                    } catch (e: Throwable) {
-                        logger.error(
-                            "Error while emitting event ${event.javaClass.simpleName} to ${listener.javaClass.simpleName}",
-                            e)
-                        if (e is Error) {
-                            throw e
-                        }
-                    }
-                }
+  override suspend fun emitEvent(event: GenericEvent) {
+    coroutineScope {
+      launch {
+        for (listener in listeners) {
+          try {
+            listener.onEvent(event)
+          } catch (e: Throwable) {
+            logger.error(
+              "Error while emitting event ${event.javaClass.simpleName} to ${listener.javaClass.simpleName}",
+              e,
+            )
+            if (e is Error) {
+              throw e
             }
+          }
         }
+      }
     }
+  }
 
-    override fun addEvent(event: Any) {
-        if (event is CoroutineEventListener) {
-            listeners.add(event)
-        } else {
-            require(event !is CoroutineEventListener) {
-                "Event must be an instance of EventListener"
-            }
-        }
+  override fun addEvent(event: Any) {
+    if (event is CoroutineEventListener) {
+      listeners.add(event)
+    } else {
+      require(event !is CoroutineEventListener) { "Event must be an instance of EventListener" }
     }
+  }
 
-    override fun removeEvent(event: Any) {
-        if (event is CoroutineEventListener) {
-            listeners.remove(event)
-        } else {
-            require(event !is CoroutineEventListener) {
-                "Event must be an instance of EventListener"
-            }
-        }
+  override fun removeEvent(event: Any) {
+    if (event is CoroutineEventListener) {
+      listeners.remove(event)
+    } else {
+      require(event !is CoroutineEventListener) { "Event must be an instance of EventListener" }
     }
+  }
 
-    override fun removeAllEvents() {
-        listeners.clear()
-    }
+  override fun removeAllEvents() {
+    listeners.clear()
+  }
 
-    override val events: MutableList<Any>
-        get() = Collections.unmodifiableList(ArrayList(listeners))
+  override val events: MutableList<Any>
+    get() = Collections.unmodifiableList(ArrayList(listeners))
 }

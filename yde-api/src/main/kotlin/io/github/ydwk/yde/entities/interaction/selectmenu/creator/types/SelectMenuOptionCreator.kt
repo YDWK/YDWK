@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,50 +23,50 @@ import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenuOption
 
 interface SelectMenuOptionCreator {
 
-    /**
-     * Sets the label for the select menu option.
-     *
-     * @param label the label for the select menu option
-     * @return the [SelectMenuOptionCreator]
-     */
-    fun setLabel(label: String): SelectMenuOptionCreator
+  /**
+   * Sets the label for the select menu option.
+   *
+   * @param label the label for the select menu option
+   * @return the [SelectMenuOptionCreator]
+   */
+  fun setLabel(label: String): SelectMenuOptionCreator
 
-    /**
-     * Sets the value for the select menu option.
-     *
-     * @param value the value for the select menu option
-     * @return the [SelectMenuOptionCreator]
-     */
-    fun setValue(value: String): SelectMenuOptionCreator
+  /**
+   * Sets the value for the select menu option.
+   *
+   * @param value the value for the select menu option
+   * @return the [SelectMenuOptionCreator]
+   */
+  fun setValue(value: String): SelectMenuOptionCreator
 
-    /**
-     * Sets the description for the select menu option.
-     *
-     * @param description the description for the select menu option
-     * @return the [SelectMenuOptionCreator]
-     */
-    fun setDescription(description: String): SelectMenuOptionCreator
+  /**
+   * Sets the description for the select menu option.
+   *
+   * @param description the description for the select menu option
+   * @return the [SelectMenuOptionCreator]
+   */
+  fun setDescription(description: String): SelectMenuOptionCreator
 
-    /**
-     * Sets the emoji for the select menu option.
-     *
-     * @param emoji the emoji for the select menu option
-     * @return the [SelectMenuOptionCreator]
-     */
-    fun setEmoji(emoji: Emoji): SelectMenuOptionCreator
+  /**
+   * Sets the emoji for the select menu option.
+   *
+   * @param emoji the emoji for the select menu option
+   * @return the [SelectMenuOptionCreator]
+   */
+  fun setEmoji(emoji: Emoji): SelectMenuOptionCreator
 
-    /**
-     * Sets this select menu option as the default.
-     *
-     * @param default whether this select menu option is the default
-     * @return the [SelectMenuOptionCreator]
-     */
-    fun setDefault(default: Boolean): SelectMenuOptionCreator
+  /**
+   * Sets this select menu option as the default.
+   *
+   * @param default whether this select menu option is the default
+   * @return the [SelectMenuOptionCreator]
+   */
+  fun setDefault(default: Boolean): SelectMenuOptionCreator
 
-    /**
-     * Creates the select menu option.
-     *
-     * @return the created select menu option
-     */
-    fun create(): SelectMenuOption
+  /**
+   * Creates the select menu option.
+   *
+   * @return the created select menu option
+   */
+  fun create(): SelectMenuOption
 }

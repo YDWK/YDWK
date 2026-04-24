@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,21 +28,21 @@ import io.github.ydwk.yde.util.EntityToStringBuilder
 import io.github.ydwk.yde.util.GetterSnowFlake
 
 internal class StickerImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val idAsLong: Long,
-    override val packId: GetterSnowFlake?,
-    override var description: String?,
-    override var tags: List<String>,
-    override var type: StickerType,
-    override var formatType: StickerFormatType,
-    override var available: Boolean,
-    override val guildId: GetterSnowFlake?,
-    override var user: User?,
-    override var sortvarue: Int?,
-    override var name: String,
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val idAsLong: Long,
+  override val packId: GetterSnowFlake?,
+  override var description: String?,
+  override var tags: List<String>,
+  override var type: StickerType,
+  override var formatType: StickerFormatType,
+  override var available: Boolean,
+  override val guildId: GetterSnowFlake?,
+  override var user: User?,
+  override var sortvarue: Int?,
+  override var name: String,
 ) : Sticker {
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).name(this.name).toString()
-    }
+  override fun toString(): String {
+    return EntityToStringBuilder(yde, this).name(this.name).toString()
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,10 +25,9 @@ import io.github.ydwk.yde.rest.methods.MessageRestAPIMethods
 import io.github.ydwk.yde.rest.result.NoResult
 
 class MessageRestAPIMethodsImpl(val yde: YDE) : MessageRestAPIMethods {
-    override suspend fun deleteMessage(messageId: Long, channelId: Long): RestResult<NoResult> {
-        return yde.restApiManager
-            .delete(
-                EndPoint.MessageEndpoint.DELETE_MESSAGE, channelId.toString(), messageId.toString())
-            .executeWithNoResult()
-    }
+  override suspend fun deleteMessage(messageId: Long, channelId: Long): RestResult<NoResult> {
+    return yde.restApiManager
+      .delete(EndPoint.MessageEndpoint.DELETE_MESSAGE, channelId.toString(), messageId.toString())
+      .executeWithNoResult()
+  }
 }

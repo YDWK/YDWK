@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,19 +26,19 @@ import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class ChannelCreateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override suspend fun start() {
-        val channelType = ChannelType.getValue(json.get("type").asInt())
-        when {
-            channelType.isGuildChannel -> {
-                val channel = ydwk.entityInstanceBuilder.buildGuildChannel(json)
-                ydwk.cache[json.get("id").asText(), channel] = CacheIds.CHANNEL
-                ydwk.emitEvent(ChannelCreateEvent(ydwk, channel))
-            }
-            channelType.isNonGuildChannel -> {
-                val channel = ydwk.entityInstanceBuilder.buildChannel(json, false, true)
-                ydwk.cache[json.get("id").asText(), channel] = CacheIds.CHANNEL
-                ydwk.emitEvent(ChannelCreateEvent(ydwk, channel))
-            }
-        }
+  override suspend fun start() {
+    val channelType = ChannelType.getValue(json.get("type").asInt())
+    when {
+      channelType.isGuildChannel -> {
+        val channel = ydwk.entityInstanceBuilder.buildGuildChannel(json)
+        ydwk.cache[json.get("id").asText(), channel] = CacheIds.CHANNEL
+        ydwk.emitEvent(ChannelCreateEvent(ydwk, channel))
+      }
+      channelType.isNonGuildChannel -> {
+        val channel = ydwk.entityInstanceBuilder.buildChannel(json, false, true)
+        ydwk.cache[json.get("id").asText(), channel] = CacheIds.CHANNEL
+        ydwk.emitEvent(ChannelCreateEvent(ydwk, channel))
+      }
     }
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,23 +31,23 @@ import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.util.GetterSnowFlake
 
 internal class GuildScheduledEventImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val idAsLong: Long,
-    override val guildId: GetterSnowFlake,
-    override val channel: GuildChannel?,
-    override val creator: User?,
-    override val description: String?,
-    override val scheduledStart: String,
-    override val scheduledEnd: String?,
-    override val privacyLevel: PrivacyLevel,
-    override val status: ScheduledEventStatus,
-    override val entityType: EntityType,
-    override val entityId: GetterSnowFlake?,
-    override val entityMetadata: EntityMetadata?,
-    override val subscriberCount: Int,
-    override val coverImage: String?,
-    override var name: String,
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val idAsLong: Long,
+  override val guildId: GetterSnowFlake,
+  override val channel: GuildChannel?,
+  override val creator: User?,
+  override val description: String?,
+  override val scheduledStart: String,
+  override val scheduledEnd: String?,
+  override val privacyLevel: PrivacyLevel,
+  override val status: ScheduledEventStatus,
+  override val entityType: EntityType,
+  override val entityId: GetterSnowFlake?,
+  override val entityMetadata: EntityMetadata?,
+  override val subscriberCount: Int,
+  override val coverImage: String?,
+  override var name: String,
 ) :
-    GuildScheduledEvent,
-    ToStringEntityImpl<GuildScheduledEvent>(yde, GuildScheduledEvent::class.java)
+  GuildScheduledEvent,
+  ToStringEntityImpl<GuildScheduledEvent>(yde, GuildScheduledEvent::class.java)

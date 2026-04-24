@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,8 +33,8 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
  */
 @ChannelEvent
 data class ForumChannelNsfwUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: GuildForumChannel,
-    val oldNsfw: Boolean,
-    val newNsfw: Boolean,
+  override val ydwk: YDWK,
+  override val entity: GuildForumChannel,
+  val oldNsfw: Boolean,
+  val newNsfw: Boolean,
 ) : GenericChannelUpdateEvent<Boolean>(ydwk, entity, oldNsfw, newNsfw)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,102 +24,102 @@ import io.github.ydwk.yde.entities.interaction.textinput.builder.TextInputCreato
 import io.github.ydwk.yde.entities.interaction.textinput.creator.TextInputCreator
 
 interface TextInput : Component {
-    /**
-     * The custom id of the select menu.
-     *
-     * @return the custom id of the select menu
-     */
-    val customId: String
+  /**
+   * The custom id of the select menu.
+   *
+   * @return the custom id of the select menu
+   */
+  val customId: String
 
-    /**
-     * The text input style.
-     *
-     * @return the text input style
-     */
-    val style: TextInputStyle
+  /**
+   * The text input style.
+   *
+   * @return the text input style
+   */
+  val style: TextInputStyle
 
-    /**
-     * The label of the text input.
-     *
-     * @return the label of the text input
-     */
-    val label: String
+  /**
+   * The label of the text input.
+   *
+   * @return the label of the text input
+   */
+  val label: String
 
-    /**
-     * The minimum length of the text input.
-     *
-     * @return the minimum length of the text input
-     */
-    val minLength: Int?
+  /**
+   * The minimum length of the text input.
+   *
+   * @return the minimum length of the text input
+   */
+  val minLength: Int?
 
-    /**
-     * The maximum length of the text input.
-     *
-     * @return the maximum length of the text input
-     */
-    val maxLength: Int?
+  /**
+   * The maximum length of the text input.
+   *
+   * @return the maximum length of the text input
+   */
+  val maxLength: Int?
 
-    /**
-     * Whether the text input is required.
-     *
-     * @return whether the text input is required
-     */
-    val required: Boolean?
+  /**
+   * Whether the text input is required.
+   *
+   * @return whether the text input is required
+   */
+  val required: Boolean?
 
-    /**
-     * The pre-filled value for this component.
-     *
-     * @return the pre-filled value for this component
-     */
-    val initialValue: String?
+  /**
+   * The pre-filled value for this component.
+   *
+   * @return the pre-filled value for this component
+   */
+  val initialValue: String?
 
-    /**
-     * The placeholder for this component.
-     *
-     * @return the placeholder for this component
-     */
-    val placeholder: String?
+  /**
+   * The placeholder for this component.
+   *
+   * @return the placeholder for this component
+   */
+  val placeholder: String?
 
-    enum class TextInputStyle(private val value: Int) {
-        /** A single-line text input. */
-        SHORT(1),
+  enum class TextInputStyle(private val value: Int) {
+    /** A single-line text input. */
+    SHORT(1),
 
-        /** A multi-line text input. */
-        PARAGRAPH(2);
-
-        companion object {
-            /**
-             * Gets the [TextInputStyle] from the provided value.
-             *
-             * @param value the value of the style
-             * @return the [TextInputStyle] from the provided value
-             */
-            fun getValue(value: Int): TextInputStyle {
-                return entries.first { it.value == value }
-            }
-        }
-
-        fun getValue(): Int {
-            return value
-        }
-    }
+    /** A multi-line text input. */
+    PARAGRAPH(2);
 
     companion object {
-        /**
-         * Create a new [TextInput].
-         *
-         * @param customId the custom id of the text input
-         * @param style the text input style
-         * @param label the label of the text input
-         * @return [TextInputCreator] to construct the text input
-         */
-        fun createTextInput(
-            yde: YDE,
-            customId: String,
-            style: TextInputStyle,
-            label: String
-        ): TextInputCreator {
-            return TextInputCreatorBuilder(customId, style, label, yde)
-        }
+      /**
+       * Gets the [TextInputStyle] from the provided value.
+       *
+       * @param value the value of the style
+       * @return the [TextInputStyle] from the provided value
+       */
+      fun getValue(value: Int): TextInputStyle {
+        return entries.first { it.value == value }
+      }
     }
+
+    fun getValue(): Int {
+      return value
+    }
+  }
+
+  companion object {
+    /**
+     * Create a new [TextInput].
+     *
+     * @param customId the custom id of the text input
+     * @param style the text input style
+     * @param label the label of the text input
+     * @return [TextInputCreator] to construct the text input
+     */
+    fun createTextInput(
+      yde: YDE,
+      customId: String,
+      style: TextInputStyle,
+      label: String,
+    ): TextInputCreator {
+      return TextInputCreatorBuilder(customId, style, label, yde)
+    }
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,11 +27,11 @@ import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.interaction.sub.InteractionType
 
 internal class MessageInteractionImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val idAsLong: Long,
-    override val type: InteractionType,
-    override val name: String,
-    override val user: User,
-    override val member: Member?,
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val idAsLong: Long,
+  override val type: InteractionType,
+  override val name: String,
+  override val user: User,
+  override val member: Member?,
 ) : MessageInteraction, ToStringEntityImpl<MessageInteraction>(yde, MessageInteraction::class.java)

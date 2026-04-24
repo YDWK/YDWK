@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,10 +23,9 @@ import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildStageChannel
 
 internal class GuildStageChannelImpl(
-    yde: YDE,
-    override val json: JsonNode,
-    idAsLong: Long,
-    override var topic: String?
+  yde: YDE,
+  override val json: JsonNode,
+  idAsLong: Long,
+  override var topic: String?,
 ) :
-    GuildStageChannel,
-    GuildVoiceChannelImpl(yde.entityInstanceBuilder.buildGuildVoiceChannel(json))
+  GuildStageChannel, GuildVoiceChannelImpl(yde.entityInstanceBuilder.buildGuildVoiceChannel(json))

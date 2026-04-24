@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,8 +34,8 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
  */
 @ChannelEvent
 data class ForumChannelChannelFlagsUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: GuildForumChannel,
-    val oldChannelFlags: ChannelFlag,
-    val newChannelFlags: ChannelFlag,
+  override val ydwk: YDWK,
+  override val entity: GuildForumChannel,
+  val oldChannelFlags: ChannelFlag,
+  val newChannelFlags: ChannelFlag,
 ) : GenericChannelUpdateEvent<ChannelFlag>(ydwk, entity, oldChannelFlags, newChannelFlags)

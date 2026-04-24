@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,4 +19,4 @@
 package io.github.ydwk.ydwk.exceptions
 
 class ApplicationIdNotSetException :
-    RuntimeException("Application Id is null, please re run the application")
+  RuntimeException("Application Id is null, please re run the application")

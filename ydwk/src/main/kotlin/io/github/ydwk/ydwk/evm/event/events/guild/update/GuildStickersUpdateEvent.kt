@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,8 +34,8 @@ import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
  */
 @GuildEvent
 data class GuildStickersUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: Guild,
-    val oldStickers: List<Sticker>,
-    val newStickers: List<Sticker>,
+  override val ydwk: YDWK,
+  override val entity: Guild,
+  val oldStickers: List<Sticker>,
+  val newStickers: List<Sticker>,
 ) : GenericGuildUpdateEvent<List<Sticker>>(ydwk, entity, oldStickers, newStickers)

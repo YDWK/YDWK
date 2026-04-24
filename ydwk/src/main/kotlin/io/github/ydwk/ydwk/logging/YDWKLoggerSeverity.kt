@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,56 +21,56 @@ package io.github.ydwk.ydwk.logging
 import java.awt.Color
 
 enum class YDWKLoggerSeverity(private var colour: Color) {
-    /** The [INFO] severity. */
-    INFO(Color(0, 0, 0)),
+  /** The [INFO] severity. */
+  INFO(Color(0, 0, 0)),
 
-    /** The [DEBUG] severity. */
-    DEBUG(Color(0, 255, 0)),
+  /** The [DEBUG] severity. */
+  DEBUG(Color(0, 255, 0)),
 
-    /** The [WARN] severity. */
-    WARN(Color(255, 0, 0)),
+  /** The [WARN] severity. */
+  WARN(Color(255, 0, 0)),
 
-    /** The [ERROR] severity. */
-    ERROR(Color(255, 0, 255)),
+  /** The [ERROR] severity. */
+  ERROR(Color(255, 0, 255)),
 
-    /** The [FATAL] severity. */
-    FATAL(Color(255, 255, 255));
+  /** The [FATAL] severity. */
+  FATAL(Color(255, 255, 255));
 
-    companion object {
-        /**
-         * Gets the [YDWKLoggerSeverity] from the [String] value.
-         *
-         * @param value The [String] value.
-         * @return The [YDWKLoggerSeverity] or [INFO] if the [String] value is not a valid
-         *   [YDWKLoggerSeverity].
-         */
-        fun get(value: String): YDWKLoggerSeverity =
-            when (value) {
-                "INFO" -> INFO
-                "DEBUG" -> DEBUG
-                "WARN" -> WARN
-                "ERROR" -> ERROR
-                "FATAL" -> FATAL
-                else -> INFO
-            }
-    }
-
-    fun getSeverity(): String {
-        return this.name
-    }
-
-    fun getColour(): Color {
-        return this.colour
-    }
-
+  companion object {
     /**
-     * Sets the colour of the [YDWKLoggerSeverity].
+     * Gets the [YDWKLoggerSeverity] from the [String] value.
      *
-     * @param colour The colour of the [YDWKLoggerSeverity].
-     * @return The [YDWKLoggerSeverity] with the new colour.
+     * @param value The [String] value.
+     * @return The [YDWKLoggerSeverity] or [INFO] if the [String] value is not a valid
+     *   [YDWKLoggerSeverity].
      */
-    fun setColour(colour: Color): Color {
-        this.colour = colour
-        return this.colour
-    }
+    fun get(value: String): YDWKLoggerSeverity =
+      when (value) {
+        "INFO" -> INFO
+        "DEBUG" -> DEBUG
+        "WARN" -> WARN
+        "ERROR" -> ERROR
+        "FATAL" -> FATAL
+        else -> INFO
+      }
+  }
+
+  fun getSeverity(): String {
+    return this.name
+  }
+
+  fun getColour(): Color {
+    return this.colour
+  }
+
+  /**
+   * Sets the colour of the [YDWKLoggerSeverity].
+   *
+   * @param colour The colour of the [YDWKLoggerSeverity].
+   * @return The [YDWKLoggerSeverity] with the new colour.
+   */
+  fun setColour(colour: Color): Color {
+    this.colour = colour
+    return this.colour
+  }
 }

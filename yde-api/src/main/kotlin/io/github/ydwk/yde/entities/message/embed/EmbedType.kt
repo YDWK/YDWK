@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,40 +19,40 @@
 package io.github.ydwk.yde.entities.message.embed
 
 enum class EmbedType(private val type: String) {
-    /** A generic embed rendered from embed attributes. */
-    RICH("rich"),
+  /** A generic embed rendered from embed attributes. */
+  RICH("rich"),
 
-    /** An image embed. */
-    IMAGE("image"),
+  /** An image embed. */
+  IMAGE("image"),
 
-    /** A video embed. */
-    VIDEO("video"),
+  /** A video embed. */
+  VIDEO("video"),
 
-    /** An animated gif image embed rendered as a video embed. */
-    GIFV("gifv"),
+  /** An animated gif image embed rendered as a video embed. */
+  GIFV("gifv"),
 
-    /** An article embed. */
-    ARTICLE("article"),
+  /** An article embed. */
+  ARTICLE("article"),
 
-    /** A link embed. */
-    LINK("link"),
+  /** A link embed. */
+  LINK("link"),
 
-    /** An unknown embed type. */
-    UNKNOWN("unknown");
+  /** An unknown embed type. */
+  UNKNOWN("unknown");
 
-    companion object {
-        /**
-         * The [EmbedType] from the given [type].
-         *
-         * @param type The type to get the [EmbedType] from.
-         * @return The [EmbedType] from the given [type].
-         */
-        fun getValue(type: String): EmbedType {
-            return entries.firstOrNull { it.type == type } ?: UNKNOWN
-        }
+  companion object {
+    /**
+     * The [EmbedType] from the given [type].
+     *
+     * @param type The type to get the [EmbedType] from.
+     * @return The [EmbedType] from the given [type].
+     */
+    fun getValue(type: String): EmbedType {
+      return entries.firstOrNull { it.type == type } ?: UNKNOWN
     }
+  }
 
-    override fun toString(): String {
-        return type
-    }
+  override fun toString(): String {
+    return type
+  }
 }

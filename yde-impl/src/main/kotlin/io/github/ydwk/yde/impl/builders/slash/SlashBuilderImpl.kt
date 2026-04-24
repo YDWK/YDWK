@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,57 +23,57 @@ import io.github.ydwk.yde.builders.slash.SlashCommandBuilder
 import io.github.ydwk.yde.impl.YDEImpl
 
 class SlashBuilderImpl(
-    private val yde: YDEImpl,
-    private val guildIds: MutableList<String>,
-    private val applicationId: String
+  private val yde: YDEImpl,
+  private val guildIds: MutableList<String>,
+  private val applicationId: String,
 ) : ISlashCommandBuilder {
-    private val slashCommands: MutableList<SlashCommandBuilder> = mutableListOf()
+  private val slashCommands: MutableList<SlashCommandBuilder> = mutableListOf()
 
-    override fun addSlashCommand(name: String, description: String): ISlashCommandBuilder {
-        slashCommands.add(SlashCommandBuilder(name, description))
-        return this
-    }
+  override fun addSlashCommand(name: String, description: String): ISlashCommandBuilder {
+    slashCommands.add(SlashCommandBuilder(name, description))
+    return this
+  }
 
-    override fun addSlashCommand(slash: SlashCommandBuilder): ISlashCommandBuilder {
-        slashCommands.add(slash)
-        return this
-    }
+  override fun addSlashCommand(slash: SlashCommandBuilder): ISlashCommandBuilder {
+    slashCommands.add(slash)
+    return this
+  }
 
-    override fun addSlashCommands(slashes: List<SlashCommandBuilder>): ISlashCommandBuilder {
-        slashCommands.addAll(slashes)
-        return this
-    }
+  override fun addSlashCommands(slashes: List<SlashCommandBuilder>): ISlashCommandBuilder {
+    slashCommands.addAll(slashes)
+    return this
+  }
 
-    override fun addSlashCommands(vararg slashes: SlashCommandBuilder): ISlashCommandBuilder {
-        slashCommands.addAll(slashes)
-        return this
-    }
+  override fun addSlashCommands(vararg slashes: SlashCommandBuilder): ISlashCommandBuilder {
+    slashCommands.addAll(slashes)
+    return this
+  }
 
-    override fun getSlashCommands(): List<SlashCommandBuilder> {
-        return slashCommands
-    }
+  override fun getSlashCommands(): List<SlashCommandBuilder> {
+    return slashCommands
+  }
 
-    override fun removeSlashCommand(slash: SlashCommandBuilder): ISlashCommandBuilder {
-        slashCommands.remove(slash)
-        return this
-    }
+  override fun removeSlashCommand(slash: SlashCommandBuilder): ISlashCommandBuilder {
+    slashCommands.remove(slash)
+    return this
+  }
 
-    override fun removeSlashCommands(slashes: List<SlashCommandBuilder>): ISlashCommandBuilder {
-        slashCommands.removeAll(slashes)
-        return this
-    }
+  override fun removeSlashCommands(slashes: List<SlashCommandBuilder>): ISlashCommandBuilder {
+    slashCommands.removeAll(slashes)
+    return this
+  }
 
-    override fun removeSlashCommands(vararg slashes: SlashCommandBuilder): ISlashCommandBuilder {
-        slashCommands.removeAll(slashes.toSet())
-        return this
-    }
+  override fun removeSlashCommands(vararg slashes: SlashCommandBuilder): ISlashCommandBuilder {
+    slashCommands.removeAll(slashes.toSet())
+    return this
+  }
 
-    override fun removeAllSlashCommands(): ISlashCommandBuilder {
-        slashCommands.clear()
-        return this
-    }
+  override fun removeAllSlashCommands(): ISlashCommandBuilder {
+    slashCommands.clear()
+    return this
+  }
 
-    override fun build() {
-        SlashInfoSender(yde, guildIds, applicationId, slashCommands)
-    }
+  override fun build() {
+    SlashInfoSender(yde, guildIds, applicationId, slashCommands)
+  }
 }

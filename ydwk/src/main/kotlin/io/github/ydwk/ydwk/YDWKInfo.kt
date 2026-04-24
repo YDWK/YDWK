@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,19 +19,19 @@
 package io.github.ydwk.ydwk
 
 enum class YDWKInfo(private val url: String) {
-    DISCORD_GATEWAY_URL("wss://gateway.discord.gg/"),
-    DISCORD_GATEWAY_VERSION("?v=10"),
-    JSON_ENCODING("&encoding=json"),
-    VOICE_GATEWAY_VERSION("/?v=4"),
-    GITHUB_URL("https://github.com/ydwk/ydwk"),
-    YDWK_VERSION("2.0.0.alpha.1");
+  DISCORD_GATEWAY_URL("wss://gateway.discord.gg/"),
+  DISCORD_GATEWAY_VERSION("?v=10"),
+  JSON_ENCODING("&encoding=json"),
+  VOICE_GATEWAY_VERSION("/?v=4"),
+  GITHUB_URL("https://github.com/ydwk/ydwk"),
+  YDWK_VERSION("2.0.0.alpha.1");
 
-    /**
-     * The url of the [YDWKInfo].
-     *
-     * @return The url of the [YDWKInfo].
-     */
-    fun getUrl(): String {
-        return url
-    }
+  /**
+   * The url of the [YDWKInfo].
+   *
+   * @return The url of the [YDWKInfo].
+   */
+  fun getUrl(): String {
+    return url
+  }
 }

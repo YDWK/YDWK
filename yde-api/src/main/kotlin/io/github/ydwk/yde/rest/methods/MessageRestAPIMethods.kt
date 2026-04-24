@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,12 +23,12 @@ import io.github.ydwk.yde.rest.result.NoResult
 
 interface MessageRestAPIMethods {
 
-    /**
-     * Delete a message.
-     *
-     * @param messageId The id of the message to delete.
-     * @param channelId The id of the channel the message is in.
-     * @return A [RestResult] that will contain the result of the request.
-     */
-    suspend fun deleteMessage(messageId: Long, channelId: Long): RestResult<NoResult>
+  /**
+   * Delete a message.
+   *
+   * @param messageId The id of the message to delete.
+   * @param channelId The id of the channel the message is in.
+   * @return A [RestResult] that will contain the result of the request.
+   */
+  suspend fun deleteMessage(messageId: Long, channelId: Long): RestResult<NoResult>
 }

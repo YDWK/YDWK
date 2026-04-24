@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,51 +19,51 @@
 package io.github.ydwk.ydwk.ws.util
 
 enum class ActivityType(private val activity: Int) {
-    /** Playing {name} e.g. Playing Minecraft */
-    PLAYING(0),
+  /** Playing {name} e.g. Playing Minecraft */
+  PLAYING(0),
 
-    /** Streaming {details} e.g. Streaming Minecraft on Twitch */
-    STREAMING(1),
+  /** Streaming {details} e.g. Streaming Minecraft on Twitch */
+  STREAMING(1),
 
-    /** Listening to {name} e.g. Listening to Spotify. */
-    LISTENING(2),
+  /** Listening to {name} e.g. Listening to Spotify. */
+  LISTENING(2),
 
-    /** Watching {name} e.g. Watching lfc tv. */
-    WATCHING(3),
+  /** Watching {name} e.g. Watching lfc tv. */
+  WATCHING(3),
 
-    /** {emoji} {name} e.g. :smiley: LFC are the best. */
-    CUSTOM(4),
+  /** {emoji} {name} e.g. :smiley: LFC are the best. */
+  CUSTOM(4),
 
-    /** Competing in {name} e.g. Competing in the world cup. */
-    COMPETING(5),
+  /** Competing in {name} e.g. Competing in the world cup. */
+  COMPETING(5),
 
-    /** For future use or not implemented yet. */
-    UNKNOWN(-1);
+  /** For future use or not implemented yet. */
+  UNKNOWN(-1);
 
-    companion object {
-
-        /**
-         * The activity from the provided id.
-         *
-         * @param id The id of the activity.
-         * @return The activity.
-         */
-        fun getValue(id: Int): ActivityType {
-            for (activity in entries) {
-                if (activity.activity == id) {
-                    return activity
-                }
-            }
-            return UNKNOWN
-        }
-    }
+  companion object {
 
     /**
-     * The id of the activity.
+     * The activity from the provided id.
      *
-     * @return The id of the activity.
+     * @param id The id of the activity.
+     * @return The activity.
      */
-    fun getActivity(): Int {
-        return activity
+    fun getValue(id: Int): ActivityType {
+      for (activity in entries) {
+        if (activity.activity == id) {
+          return activity
+        }
+      }
+      return UNKNOWN
     }
+  }
+
+  /**
+   * The id of the activity.
+   *
+   * @return The id of the activity.
+   */
+  fun getActivity(): Int {
+    return activity
+  }
 }

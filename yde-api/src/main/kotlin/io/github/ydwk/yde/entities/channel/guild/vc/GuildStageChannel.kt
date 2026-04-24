@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,10 +19,10 @@
 package io.github.ydwk.yde.entities.channel.guild.vc
 
 interface GuildStageChannel : GuildVoiceChannel {
-    /**
-     * The topic of the stage channel.
-     *
-     * @return The topic of the stage channel.
-     */
-    var topic: String?
+  /**
+   * The topic of the stage channel.
+   *
+   * @return The topic of the stage channel.
+   */
+  var topic: String?
 }

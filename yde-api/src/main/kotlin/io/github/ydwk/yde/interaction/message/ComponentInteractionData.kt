@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,63 +22,63 @@ import io.github.ydwk.yde.entities.Emoji
 import io.github.ydwk.yde.interaction.sub.GenericCommandData
 
 interface ComponentInteractionData : GenericCommandData {
+  /**
+   * The custom id of this component.
+   *
+   * @return The custom id of this component.
+   */
+  val customId: String
+
+  /**
+   * The component type of this component.
+   *
+   * @return The component type of this component.
+   */
+  val componentType: ComponentType
+
+  /**
+   * Gets an array of select option values, if the component is a select menu of type
+   * [ComponentType.SELECT_MENU].
+   *
+   * @return An array of select option values, if the component is a select menu of type
+   *   [ComponentType.SELECT_MENU].
+   */
+  val values: List<SelectOptionValue>?
+
+  interface SelectOptionValue : GenericCommandData {
     /**
-     * The custom id of this component.
+     * The label of this select option value.
      *
-     * @return The custom id of this component.
+     * @return The label of this select option value.
      */
-    val customId: String
+    val label: String
 
     /**
-     * The component type of this component.
+     * The value of this select option value.
      *
-     * @return The component type of this component.
+     * @return The value of this select option value.
      */
-    val componentType: ComponentType
+    val value: String
 
     /**
-     * Gets an array of select option values, if the component is a select menu of type
-     * [ComponentType.SELECT_MENU].
+     * The description of this select option value.
      *
-     * @return An array of select option values, if the component is a select menu of type
-     *   [ComponentType.SELECT_MENU].
+     * @return The description of this select option value.
      */
-    val values: List<SelectOptionValue>?
+    val description: String?
 
-    interface SelectOptionValue : GenericCommandData {
-        /**
-         * The label of this select option value.
-         *
-         * @return The label of this select option value.
-         */
-        val label: String
+    /**
+     * The emoji of this select option value.
+     *
+     * @return The emoji of this select option value.
+     */
+    val emoji: Emoji?
 
-        /**
-         * The value of this select option value.
-         *
-         * @return The value of this select option value.
-         */
-        val value: String
-
-        /**
-         * The description of this select option value.
-         *
-         * @return The description of this select option value.
-         */
-        val description: String?
-
-        /**
-         * The emoji of this select option value.
-         *
-         * @return The emoji of this select option value.
-         */
-        val emoji: Emoji?
-
-        /**
-         * The default value of this select option value.
-         *
-         * @return The default value of this select option value.
-         */
-        val default: Boolean?
-    }
+    /**
+     * The default value of this select option value.
+     *
+     * @return The default value of this select option value.
+     */
+    val default: Boolean?
+  }
 }

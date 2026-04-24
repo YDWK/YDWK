@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,17 +26,17 @@ import io.github.ydwk.yde.util.SnowFlake
 
 interface MentionedChannel : GenericEntity, SnowFlake, NameAbleEntity {
 
-    /**
-     * The guild id of the channel.
-     *
-     * @return The guild id of the channel.
-     */
-    val guildId: GetterSnowFlake
+  /**
+   * The guild id of the channel.
+   *
+   * @return The guild id of the channel.
+   */
+  val guildId: GetterSnowFlake
 
-    /**
-     * The channel type.
-     *
-     * @return The channel type.
-     */
-    val type: ChannelType
+  /**
+   * The channel type.
+   *
+   * @return The channel type.
+   */
+  val type: ChannelType
 }

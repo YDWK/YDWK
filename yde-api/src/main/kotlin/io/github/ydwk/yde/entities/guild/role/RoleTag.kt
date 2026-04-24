@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,17 +22,17 @@ import io.github.ydwk.yde.entities.util.GenericEntity
 import io.github.ydwk.yde.util.GetterSnowFlake
 
 interface RoleTag : GenericEntity {
-    /**
-     * The id of the bot this role belongs to.
-     *
-     * @return The id of the bot this role belongs to.
-     */
-    val botId: GetterSnowFlake?
+  /**
+   * The id of the bot this role belongs to.
+   *
+   * @return The id of the bot this role belongs to.
+   */
+  val botId: GetterSnowFlake?
 
-    /**
-     * The id of the integration this role belongs to.
-     *
-     * @return The id of the integration this role belongs to.
-     */
-    val integrationId: GetterSnowFlake?
+  /**
+   * The id of the integration this role belongs to.
+   *
+   * @return The id of the integration this role belongs to.
+   */
+  val integrationId: GetterSnowFlake?
 }

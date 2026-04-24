@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,10 +21,10 @@ package io.github.ydwk.yde.entities.channel.guild.message.text
 import io.github.ydwk.yde.entities.channel.guild.message.GuildMessageChannel
 
 interface GuildTextChannel : GuildMessageChannel {
-    /**
-     * The rate limit per user of this channel.
-     *
-     * @return the rate limit per user of this channel.
-     */
-    var rateLimitPerUser: Int
+  /**
+   * The rate limit per user of this channel.
+   *
+   * @return the rate limit per user of this channel.
+   */
+  var rateLimitPerUser: Int
 }

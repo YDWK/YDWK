@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,60 +19,60 @@
 package io.github.ydwk.ydwk.ws.util
 
 enum class OpCode(
-    val code: Int,
-    private val send: Boolean = true,
-    private val receive: Boolean = false,
+  val code: Int,
+  private val send: Boolean = true,
+  private val receive: Boolean = false,
 ) {
-    /** An event was dispatched. */
-    DISPATCH(0, false),
+  /** An event was dispatched. */
+  DISPATCH(0, false),
 
-    /** Fired periodically by the client to keep the connection alive. */
-    HEARTBEAT(1, true, false),
+  /** Fired periodically by the client to keep the connection alive. */
+  HEARTBEAT(1, true, false),
 
-    /** Starts a new session during the initial handshake. */
-    IDENTIFY(2),
+  /** Starts a new session during the initial handshake. */
+  IDENTIFY(2),
 
-    /** Update the client's presence. */
-    PRESENCE(3),
+  /** Update the client's presence. */
+  PRESENCE(3),
 
-    /** Joins/leaves or moves between voice channels. */
-    VOICE_STATE(4),
+  /** Joins/leaves or moves between voice channels. */
+  VOICE_STATE(4),
 
-    /** Resume a previous session that was disconnected. */
-    RESUME(6),
+  /** Resume a previous session that was disconnected. */
+  RESUME(6),
 
-    /** You should attempt to reconnect and resume immediately. */
-    RECONNECT(7, false),
+  /** You should attempt to reconnect and resume immediately. */
+  RECONNECT(7, false),
 
-    /** Request information about offline guild members in a large guild. */
-    REQUEST_GUILD_MEMBERS(8),
+  /** Request information about offline guild members in a large guild. */
+  REQUEST_GUILD_MEMBERS(8),
 
-    /** The session has been invalidated. You should reconnect and identify/resume accordingl */
-    INVALID_SESSION(9, false),
+  /** The session has been invalidated. You should reconnect and identify/resume accordingl */
+  INVALID_SESSION(9, false),
 
-    /** Sent immediately after connecting, contains the heartbeat_interval to use. */
-    HELLO(10, false),
+  /** Sent immediately after connecting, contains the heartbeat_interval to use. */
+  HELLO(10, false),
 
-    /** Sent in response to receiving a heartbeat to acknowledge that it has been received. */
-    HEARTBEAT_ACK(11, false),
+  /** Sent in response to receiving a heartbeat to acknowledge that it has been received. */
+  HEARTBEAT_ACK(11, false),
 
-    /** For future use or unknown opcodes. */
-    UNKNOWN(-1, false, false);
+  /** For future use or unknown opcodes. */
+  UNKNOWN(-1, false, false);
 
-    companion object {
-        /**
-         * Get the [OpCode] from the given [code].
-         *
-         * @param code The code to get the [OpCode] from.
-         * @return The [OpCode] from the given [code].
-         */
-        fun getValue(code: Int): OpCode {
-            for (opCode in entries) {
-                if (opCode.code == code) {
-                    return opCode
-                }
-            }
-            return UNKNOWN
+  companion object {
+    /**
+     * Get the [OpCode] from the given [code].
+     *
+     * @param code The code to get the [OpCode] from.
+     * @return The [OpCode] from the given [code].
+     */
+    fun getValue(code: Int): OpCode {
+      for (opCode in entries) {
+        if (opCode.code == code) {
+          return opCode
         }
+      }
+      return UNKNOWN
     }
+  }
 }

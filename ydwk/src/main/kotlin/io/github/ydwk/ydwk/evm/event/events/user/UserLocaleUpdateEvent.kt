@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,8 +32,8 @@ import io.github.ydwk.ydwk.evm.annotations.UserEvent
  */
 @UserEvent
 data class UserLocaleUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: User,
-    val oldLocale: String?,
-    val newLocale: String?,
+  override val ydwk: YDWK,
+  override val entity: User,
+  val oldLocale: String?,
+  val newLocale: String?,
 ) : GenericUserUpdateEvent<String?>(ydwk, entity, oldLocale, newLocale)

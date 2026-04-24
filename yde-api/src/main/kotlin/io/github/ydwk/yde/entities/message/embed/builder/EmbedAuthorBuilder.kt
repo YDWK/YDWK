@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,8 +21,8 @@ package io.github.ydwk.yde.entities.message.embed.builder
 import java.net.URL
 
 class EmbedAuthorBuilder(
-    var name: String,
-    var url: URL? = null,
-    var iconUrl: URL? = null,
-    var proxyIconUrl: URL? = null,
+  var name: String,
+  var url: URL? = null,
+  var iconUrl: URL? = null,
+  var proxyIconUrl: URL? = null,
 )

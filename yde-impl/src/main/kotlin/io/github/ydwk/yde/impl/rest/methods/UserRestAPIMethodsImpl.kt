@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,44 +29,39 @@ import io.github.ydwk.yde.rest.methods.UserRestAPIMethods
 import io.github.ydwk.yde.rest.toTextContent
 
 class UserRestAPIMethodsImpl(val yde: YDE) : UserRestAPIMethods {
-    private val restApiManager = yde.restApiManager
+  private val restApiManager = yde.restApiManager
 
-    override suspend fun createDm(id: Long): RestResult<DmChannel> {
-        return restApiManager
-            .post(
-                yde.objectMapper
-                    .createObjectNode()
-                    .put("recipient_id", id)
-                    .toString()
-                    .toTextContent(),
-                EndPoint.UserEndpoint.CREATE_DM)
-            .execute { response ->
-                val jsonBody =
-                    response.json(yde) ?: throw IllegalStateException("json body is null")
-                yde.entityInstanceBuilder.buildDMChannel(jsonBody)
-            }
-    }
+  override suspend fun createDm(id: Long): RestResult<DmChannel> {
+    return restApiManager
+      .post(
+        yde.objectMapper.createObjectNode().put("recipient_id", id).toString().toTextContent(),
+        EndPoint.UserEndpoint.CREATE_DM,
+      )
+      .execute { response ->
+        val jsonBody = response.json(yde) ?: throw IllegalStateException("json body is null")
+        yde.entityInstanceBuilder.buildDMChannel(jsonBody)
+      }
+  }
 
-    override suspend fun requestUser(id: Long): RestResult<User> {
-        return restApiManager.get(EndPoint.UserEndpoint.GET_USER, id.toString()).execute { response
-            ->
-            val jsonBody = response.json(yde)
-            yde.entityInstanceBuilder.buildUser(jsonBody)
-        }
+  override suspend fun requestUser(id: Long): RestResult<User> {
+    return restApiManager.get(EndPoint.UserEndpoint.GET_USER, id.toString()).execute { response ->
+      val jsonBody = response.json(yde)
+      yde.entityInstanceBuilder.buildUser(jsonBody)
     }
+  }
 
-    override suspend fun requestUsers(): RestResult<List<User>> {
-        return restApiManager.get(EndPoint.UserEndpoint.GET_USERS).execute { response ->
-            val jsonBody = response.json(yde)
-            buildUsersFromJson(jsonBody)
-        }
+  override suspend fun requestUsers(): RestResult<List<User>> {
+    return restApiManager.get(EndPoint.UserEndpoint.GET_USERS).execute { response ->
+      val jsonBody = response.json(yde)
+      buildUsersFromJson(jsonBody)
     }
+  }
 
-    private fun buildUsersFromJson(jsonBody: JsonNode): List<User> {
-        val users = mutableListOf<User>()
-        for (i in 0 until jsonBody.size()) {
-            users.add(yde.entityInstanceBuilder.buildUser(jsonBody[i]))
-        }
-        return users
+  private fun buildUsersFromJson(jsonBody: JsonNode): List<User> {
+    val users = mutableListOf<User>()
+    for (i in 0 until jsonBody.size()) {
+      users.add(yde.entityInstanceBuilder.buildUser(jsonBody[i]))
     }
+    return users
+  }
 }

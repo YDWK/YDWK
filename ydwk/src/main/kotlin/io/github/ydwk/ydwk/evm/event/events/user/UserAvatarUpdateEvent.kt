@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,8 +33,8 @@ import io.github.ydwk.ydwk.evm.annotations.UserEvent
  */
 @UserEvent
 data class UserAvatarUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: User,
-    val oldAvatar: Avatar?,
-    val newAvatar: Avatar?,
+  override val ydwk: YDWK,
+  override val entity: User,
+  val oldAvatar: Avatar?,
+  val newAvatar: Avatar?,
 ) : GenericUserUpdateEvent<Avatar?>(ydwk, entity, oldAvatar, newAvatar)

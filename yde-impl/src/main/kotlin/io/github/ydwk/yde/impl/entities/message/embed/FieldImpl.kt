@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,9 +24,9 @@ import io.github.ydwk.yde.entities.message.embed.Field
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
 internal class FieldImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val name: String,
-    override val value: String,
-    override val inline: Boolean?
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val name: String,
+  override val value: String,
+  override val inline: Boolean?,
 ) : Field, ToStringEntityImpl<Field>(yde, Field::class.java)

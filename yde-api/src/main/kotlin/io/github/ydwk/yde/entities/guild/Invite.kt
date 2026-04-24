@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,80 +27,80 @@ import io.github.ydwk.yde.util.GetterSnowFlake
 
 interface Invite : GenericEntity {
 
-    /**
-     * The invite code (unique ID).
-     *
-     * @return the invite code.
-     */
-    val code: String
+  /**
+   * The invite code (unique ID).
+   *
+   * @return the invite code.
+   */
+  val code: String
 
-    /**
-     * The guildId this invite is for.
-     *
-     * @return the guild id.
-     */
-    val guildId: GetterSnowFlake
+  /**
+   * The guildId this invite is for.
+   *
+   * @return the guild id.
+   */
+  val guildId: GetterSnowFlake
 
-    /**
-     * The channel this invite is for.
-     *
-     * @return the channel.
-     */
-    val channel: GuildChannel
+  /**
+   * The channel this invite is for.
+   *
+   * @return the channel.
+   */
+  val channel: GuildChannel
 
-    /**
-     * The inviter of the invite.
-     *
-     * @return the inviter.
-     */
-    val inviter: User?
+  /**
+   * The inviter of the invite.
+   *
+   * @return the inviter.
+   */
+  val inviter: User?
 
-    /**
-     * The target type of the invite.
-     *
-     * @return the target type.
-     */
-    val targetType: TargetType
+  /**
+   * The target type of the invite.
+   *
+   * @return the target type.
+   */
+  val targetType: TargetType
 
-    /**
-     * The target user of the invite.
-     *
-     * @return the target user.
-     */
-    val targetUser: User?
+  /**
+   * The target user of the invite.
+   *
+   * @return the target user.
+   */
+  val targetUser: User?
 
-    /**
-     * The target application of the invite.
-     *
-     * @return the target application.
-     */
-    val targetApplication: Application?
+  /**
+   * The target application of the invite.
+   *
+   * @return the target application.
+   */
+  val targetApplication: Application?
 
-    /**
-     * The approximate presence count of the invite.
-     *
-     * @return the approximate presence count.
-     */
-    val approximatePresenceCount: Int
+  /**
+   * The approximate presence count of the invite.
+   *
+   * @return the approximate presence count.
+   */
+  val approximatePresenceCount: Int
 
-    /**
-     * The approximate number of members in the guild.
-     *
-     * @return the approximate number of members.
-     */
-    val approximateMemberCount: Int
+  /**
+   * The approximate number of members in the guild.
+   *
+   * @return the approximate number of members.
+   */
+  val approximateMemberCount: Int
 
-    /**
-     * The expiration date of the invite.
-     *
-     * @return the expiration date.
-     */
-    val expirationDate: String
+  /**
+   * The expiration date of the invite.
+   *
+   * @return the expiration date.
+   */
+  val expirationDate: String
 
-    /**
-     * The guild scheduled event this invite is for.
-     *
-     * @return the guild scheduled event.
-     */
-    val guildScheduledEvent: GuildScheduledEvent
+  /**
+   * The guild scheduled event this invite is for.
+   *
+   * @return the guild scheduled event.
+   */
+  val guildScheduledEvent: GuildScheduledEvent
 }

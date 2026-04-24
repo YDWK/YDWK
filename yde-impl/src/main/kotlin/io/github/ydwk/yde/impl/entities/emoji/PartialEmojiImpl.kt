@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,9 +24,9 @@ import io.github.ydwk.yde.entities.interaction.button.PartialEmoji
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
 class PartialEmojiImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val idAsLong: Long,
-    override val name: String,
-    override val animated: Boolean
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val idAsLong: Long,
+  override val name: String,
+  override val animated: Boolean,
 ) : PartialEmoji, ToStringEntityImpl<PartialEmoji>(yde, PartialEmoji::class.java)

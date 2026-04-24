@@ -1,16 +1,10 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-import java.net.URL
-import org.jetbrains.dokka.base.DokkaBase
-import org.jetbrains.dokka.base.DokkaBaseConfiguration
-import org.jetbrains.dokka.gradle.DokkaTask
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 buildscript {
     repositories { mavenCentral() }
 
     dependencies {
-        classpath("org.jetbrains.dokka:dokka-base:1.9.10")
-        classpath("io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.30.0")
         classpath("com.squareup:kotlinpoet:" + properties["kotlinPoetVersion"])
     }
 }
@@ -31,9 +25,7 @@ group = "io.github.realyusufismail" // used for publishing. DON'T CHANGE
 
 val releaseVersion by extra(!version.toString().endsWith("-SNAPSHOT"))
 
-apply(plugin = "io.codearte.nexus-staging")
 apply(from = "gradle/tasks/incrementVersion.gradle.kts")
-apply(from = "gradle/tasks/Nexus.gradle")
 
 allprojects {
     repositories { mavenCentral() }
@@ -87,6 +79,7 @@ subprojects {
         compilerOptions {
             apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.DEFAULT)
             languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.DEFAULT)
+            jvmTarget.set(JvmTarget.JVM_21)
 
             java.targetCompatibility = JavaVersion.VERSION_21
             java.sourceCompatibility = JavaVersion.VERSION_21
@@ -109,11 +102,11 @@ subprojects {
         kotlin {
             // Excludes build folder since it contains generated java classes.
             targetExclude("build/**")
-            ktfmt("0.42").dropboxStyle()
+            ktfmt("0.52").googleStyle()
 
             licenseHeader(
                 """/*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -134,9 +127,8 @@ subprojects {
 
         kotlinGradle {
             target("**/*.gradle.kts")
-            ktfmt("0.42").dropboxStyle()
+            ktfmt("0.52").googleStyle()
             trimTrailingWhitespace()
-            indentWithSpaces()
             endWithNewline()
         }
     }
@@ -145,15 +137,15 @@ subprojects {
         manifest {
             attributes(
                 "Implementation-Title" to project.name,
-                "Implementation-Version" to project.version,
-                "Implementation-Vendor" to project.extra.properties["dev_organization"],
-                "Implementation-Vendor-Id" to project.extra.properties["dev_id"],
-                "Implementation-Vendor-Name" to project.extra.properties["dev_name"],
-                "Implementation-Vendor-Email" to project.extra.properties["dev_email"],
-                "Implementation-Vendor-Organization" to project.extra.properties["dev_organization"],
-                "Implementation-Vendor-Organization-Url" to project.extra.properties["dev_organization_url"],
-                "Implementation-License" to project.extra.properties["gpl_name"],
-                "Implementation-License-Url" to project.extra.properties["gpl_url"],
+                "Implementation-Version" to project.version.toString(),
+                "Implementation-Vendor" to (project.extra.properties["dev_organization"] ?: ""),
+                "Implementation-Vendor-Id" to (project.extra.properties["dev_id"] ?: ""),
+                "Implementation-Vendor-Name" to (project.extra.properties["dev_name"] ?: ""),
+                "Implementation-Vendor-Email" to (project.extra.properties["dev_email"] ?: ""),
+                "Implementation-Vendor-Organization" to (project.extra.properties["dev_organization"] ?: ""),
+                "Implementation-Vendor-Organization-Url" to (project.extra.properties["dev_organization_url"] ?: ""),
+                "Implementation-License" to (project.extra.properties["gpl_name"] ?: ""),
+                "Implementation-License-Url" to (project.extra.properties["gpl_url"] ?: ""),
             )
         }
     }
@@ -207,13 +199,15 @@ subprojects {
         }
 
         repositories {
+            // Sonatype Central Portal (OSSRH was shut down June 2025)
+            // For automated publishing, use the com.gradleup.nmcp plugin with Central Portal.
+            // The credentials below map to your Central Portal user token (username/password).
             maven {
-                name = "ossrh"
-                val releaseRepo = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-                val snapshotRepo = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+                name = "MavenCentral"
+                val releaseRepo = "https://central.sonatype.com/api/v1/publisher/upload"
+                val snapshotRepo = "https://central.sonatype.com/api/v1/publisher/upload"
                 url = uri(if (isReleaseVersion) releaseRepo else snapshotRepo)
 
-                // Using new token system
                 credentials {
                     username = project.findProperty("mavenUsername") as String? ?: run {
                         println("mavenUsername not found, publishing will fail")
@@ -256,19 +250,18 @@ tasks.named<DependencyUpdatesTask>("dependencyUpdates").configure {
     reportfileName = "report"
 }
 
-tasks.getByName("dokkaHtml", DokkaTask::class) {
+dokka {
     dokkaSourceSets.configureEach {
         includes.from("Package.md")
         jdkVersion.set(21)
         sourceLink {
             localDirectory.set(file("ydwk/src/main/kotlin"))
-            remoteUrl.set(URL("https://github.com/YDWK/YDWK/tree/master/src/main/kotlin"))
+            remoteUrl("https://github.com/YDWK/YDWK/tree/master/src/main/kotlin")
             remoteLineSuffix.set("#L")
         }
-
-        pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
-            footerMessage = "Copyright © 2024 YDWK inc."
-        }
+    }
+    pluginsConfiguration.html {
+        footerMessage = "Copyright © 2024-2026 YDWK inc."
     }
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,37 +32,38 @@ import io.github.ydwk.yde.interaction.message.ComponentType
 import io.github.ydwk.yde.util.GetterSnowFlake
 
 open class ComponentInteractionImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val interactionId: GetterSnowFlake,
-    override val type: ComponentType,
-    override val interactionToken: String,
-    override val message: Message,
-    override val member: Member?,
-    override val user: User?,
-    override val guildId: GetterSnowFlake?,
-    override val channel: TextChannel?,
-    override val applicationId: GetterSnowFlake?,
-    override val components: List<Component>,
-    override val data: ComponentInteractionData,
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val interactionId: GetterSnowFlake,
+  override val type: ComponentType,
+  override val interactionToken: String,
+  override val message: Message,
+  override val member: Member?,
+  override val user: User?,
+  override val guildId: GetterSnowFlake?,
+  override val channel: TextChannel?,
+  override val applicationId: GetterSnowFlake?,
+  override val components: List<Component>,
+  override val data: ComponentInteractionData,
 ) :
-    ComponentInteraction,
-    ToStringEntityImpl<ComponentInteraction>(yde, ComponentInteraction::class.java) {
+  ComponentInteraction,
+  ToStringEntityImpl<ComponentInteraction>(yde, ComponentInteraction::class.java) {
 
-    constructor(
-        componentInteractionImpl: ComponentInteraction
-    ) : this(
-        componentInteractionImpl.yde,
-        componentInteractionImpl.json,
-        componentInteractionImpl.interactionId,
-        componentInteractionImpl.type,
-        componentInteractionImpl.interactionToken,
-        componentInteractionImpl.message,
-        componentInteractionImpl.member,
-        componentInteractionImpl.user,
-        componentInteractionImpl.guildId,
-        componentInteractionImpl.channel,
-        componentInteractionImpl.applicationId,
-        componentInteractionImpl.components,
-        componentInteractionImpl.data)
+  constructor(
+    componentInteractionImpl: ComponentInteraction
+  ) : this(
+    componentInteractionImpl.yde,
+    componentInteractionImpl.json,
+    componentInteractionImpl.interactionId,
+    componentInteractionImpl.type,
+    componentInteractionImpl.interactionToken,
+    componentInteractionImpl.message,
+    componentInteractionImpl.member,
+    componentInteractionImpl.user,
+    componentInteractionImpl.guildId,
+    componentInteractionImpl.channel,
+    componentInteractionImpl.applicationId,
+    componentInteractionImpl.components,
+    componentInteractionImpl.data,
+  )
 }

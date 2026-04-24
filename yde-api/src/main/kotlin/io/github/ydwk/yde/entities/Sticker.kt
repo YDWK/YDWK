@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,66 +27,66 @@ import io.github.ydwk.yde.util.SnowFlake
 
 /** This class is used to represent a discord sticker object. */
 interface Sticker : GenericEntity, SnowFlake, NameAbleEntity {
-    /**
-     * The ID of the pack this sticker is from.
-     *
-     * @return The ID of the pack this sticker is from.
-     */
-    val packId: GetterSnowFlake?
+  /**
+   * The ID of the pack this sticker is from.
+   *
+   * @return The ID of the pack this sticker is from.
+   */
+  val packId: GetterSnowFlake?
 
-    /**
-     * The description of this sticker.
-     *
-     * @return The description of this sticker.
-     */
-    var description: String?
+  /**
+   * The description of this sticker.
+   *
+   * @return The description of this sticker.
+   */
+  var description: String?
 
-    /**
-     * The autocomplete/suggestion tags for the sticker (max 200 characters).
-     *
-     * @return The autocomplete/suggestion tags for the sticker (max 200 characters).
-     */
-    var tags: List<String>
+  /**
+   * The autocomplete/suggestion tags for the sticker (max 200 characters).
+   *
+   * @return The autocomplete/suggestion tags for the sticker (max 200 characters).
+   */
+  var tags: List<String>
 
-    /**
-     * The type of sticker.
-     *
-     * @return The type of sticker.
-     */
-    var type: StickerType
+  /**
+   * The type of sticker.
+   *
+   * @return The type of sticker.
+   */
+  var type: StickerType
 
-    /**
-     * The format type of sticker.
-     *
-     * @return The format type of sticker.
-     */
-    var formatType: StickerFormatType
+  /**
+   * The format type of sticker.
+   *
+   * @return The format type of sticker.
+   */
+  var formatType: StickerFormatType
 
-    /**
-     * Gets weather this sticker can be used, may be false due to loss of Server Boosts.
-     *
-     * @return weather this sticker can be used, may be false due to loss of Server Boosts.
-     */
-    var available: Boolean
+  /**
+   * Gets weather this sticker can be used, may be false due to loss of Server Boosts.
+   *
+   * @return weather this sticker can be used, may be false due to loss of Server Boosts.
+   */
+  var available: Boolean
 
-    /**
-     * The guild id that owns this sticker.
-     *
-     * @return The guild id that owns this sticker.
-     */
-    val guildId: GetterSnowFlake?
+  /**
+   * The guild id that owns this sticker.
+   *
+   * @return The guild id that owns this sticker.
+   */
+  val guildId: GetterSnowFlake?
 
-    /**
-     * The user that uploaded the sticker.
-     *
-     * @return The user that uploaded the sticker.
-     */
-    var user: User?
+  /**
+   * The user that uploaded the sticker.
+   *
+   * @return The user that uploaded the sticker.
+   */
+  var user: User?
 
-    /**
-     * The standard sticker's sort order within its pack.
-     *
-     * @return The standard sticker's sort order within its pack
-     */
-    var sortvarue: Int?
+  /**
+   * The standard sticker's sort order within its pack.
+   *
+   * @return The standard sticker's sort order within its pack
+   */
+  var sortvarue: Int?
 }

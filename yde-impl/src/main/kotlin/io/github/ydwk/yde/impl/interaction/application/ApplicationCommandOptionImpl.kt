@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,13 +25,13 @@ import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.interaction.application.ApplicationCommandOption
 
 class ApplicationCommandOptionImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override var name: String,
-    override val type: SlashOptionType,
-    override val value: JsonNode,
-    override val options: List<ApplicationCommandOption>,
-    override val focused: Boolean?
+  override val yde: YDE,
+  override val json: JsonNode,
+  override var name: String,
+  override val type: SlashOptionType,
+  override val value: JsonNode,
+  override val options: List<ApplicationCommandOption>,
+  override val focused: Boolean?,
 ) :
-    ApplicationCommandOption,
-    ToStringEntityImpl<ApplicationCommandOption>(yde, ApplicationCommandOption::class.java)
+  ApplicationCommandOption,
+  ToStringEntityImpl<ApplicationCommandOption>(yde, ApplicationCommandOption::class.java)

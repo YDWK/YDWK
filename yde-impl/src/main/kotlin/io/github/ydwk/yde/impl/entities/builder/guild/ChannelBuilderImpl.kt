@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,12 +26,12 @@ import io.github.ydwk.yde.impl.entities.builder.guild.channel.MessageChannelBuil
 import io.github.ydwk.yde.impl.entities.builder.guild.channel.VoiceChannelBuilderImpl
 
 internal class ChannelBuilderImpl(val yde: YDE, val guildId: String?, val name: String) :
-    ChannelBuilder {
-    override fun createMessageChannel(): MessageChannelBuilder {
-        return MessageChannelBuilderImpl(yde, guildId, name)
-    }
+  ChannelBuilder {
+  override fun createMessageChannel(): MessageChannelBuilder {
+    return MessageChannelBuilderImpl(yde, guildId, name)
+  }
 
-    override fun createVoiceChannel(): VoiceChannelBuilder {
-        return VoiceChannelBuilderImpl(yde, guildId, name)
-    }
+  override fun createVoiceChannel(): VoiceChannelBuilder {
+    return VoiceChannelBuilderImpl(yde, guildId, name)
+  }
 }

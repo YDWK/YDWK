@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,34 +32,35 @@ import org.mockito.Mockito.mock
 
 class EmbedTest {
 
-    @Mock lateinit var ydwk: YDWKImpl
+  @Mock lateinit var ydwk: YDWKImpl
 
-    @Mock lateinit var client: HttpClient
+  @Mock lateinit var client: HttpClient
 
-    @BeforeEach
-    fun setUp() {
-        client = mock(HttpClient::class.java)
-        ydwk = YDWKImpl(client)
-    }
+  @BeforeEach
+  fun setUp() {
+    client = mock(HttpClient::class.java)
+    ydwk = YDWKImpl(client)
+  }
 
-    @Test
-    fun testEmbed() {
-        val embed =
-            EmbedBuilderImpl(ydwk)
-                .setTitle("test")
-                .setDescription("test")
-                .setUrl(@Suppress("DEPRECATION") URL("https://www.google.com"))
-                .setTimestamp(Instant.now())
-                .setImage(EmbedImageBuilder(@Suppress("DEPRECATION") URL("https://www.google.com")))
-                .setAuthor(
-                    "test",
-                    @Suppress("DEPRECATION") URL("https://www.google.com"),
-                    @Suppress("DEPRECATION") URL("https://www.google.com"))
-                .setFooter("test", @Suppress("DEPRECATION") URL("https://www.google.com"))
-                .addField("test", "test", true)
-                .build()
+  @Test
+  fun testEmbed() {
+    val embed =
+      EmbedBuilderImpl(ydwk)
+        .setTitle("test")
+        .setDescription("test")
+        .setUrl(@Suppress("DEPRECATION") URL("https://www.google.com"))
+        .setTimestamp(Instant.now())
+        .setImage(EmbedImageBuilder(@Suppress("DEPRECATION") URL("https://www.google.com")))
+        .setAuthor(
+          "test",
+          @Suppress("DEPRECATION") URL("https://www.google.com"),
+          @Suppress("DEPRECATION") URL("https://www.google.com"),
+        )
+        .setFooter("test", @Suppress("DEPRECATION") URL("https://www.google.com"))
+        .addField("test", "test", true)
+        .build()
 
-        assertEquals("test", embed.title)
-        assertEquals("test", embed.description)
-    }
+    assertEquals("test", embed.title)
+    assertEquals("test", embed.description)
+  }
 }

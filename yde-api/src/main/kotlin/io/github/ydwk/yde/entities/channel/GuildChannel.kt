@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,38 +25,38 @@ import io.github.ydwk.yde.util.GetterSnowFlake
 import io.github.ydwk.yde.util.NameAbleEntity
 
 interface GuildChannel : Channel, NameAbleEntity {
-    /**
-     * The guild id of this channel.
-     *
-     * @return the guild id of this channel.
-     */
-    val guildId: GetterSnowFlake
+  /**
+   * The guild id of this channel.
+   *
+   * @return the guild id of this channel.
+   */
+  val guildId: GetterSnowFlake
 
-    /**
-     * The position of this channel.
-     *
-     * @return the position of this channel.
-     */
-    var position: Int
+  /**
+   * The position of this channel.
+   *
+   * @return the position of this channel.
+   */
+  var position: Int
 
-    /**
-     * The parent id of this channel.
-     *
-     * @return the parent id of this channel.
-     */
-    var parentId: GetterSnowFlake?
+  /**
+   * The parent id of this channel.
+   *
+   * @return the parent id of this channel.
+   */
+  var parentId: GetterSnowFlake?
 
-    /**
-     * The channel getter which gives access to the channels of this guild.
-     *
-     * @return the channel getter which gives access to the channels of this guild.
-     */
-    val guildChannelGetter: GuildChannelGetter
+  /**
+   * The channel getter which gives access to the channels of this guild.
+   *
+   * @return the channel getter which gives access to the channels of this guild.
+   */
+  val guildChannelGetter: GuildChannelGetter
 
-    /**
-     * Creates an invitation for this channel.
-     *
-     * @return the invite creator which can be used to create the invite.
-     */
-    val inviteCreator: InviteCreator
+  /**
+   * Creates an invitation for this channel.
+   *
+   * @return the invite creator which can be used to create the invite.
+   */
+  val inviteCreator: InviteCreator
 }

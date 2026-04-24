@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,19 +26,19 @@ import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import java.net.URL
 
 internal class AttachmentImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val idAsLong: Long,
-    override val description: String?,
-    override val mediaType: String?,
-    override val url: URL,
-    override val proxyUrl: URL,
-    override val size: Int,
-    override val height: Int?,
-    override val width: Int?,
-    override val isEphemeral: Boolean,
-    override val duration: Float?,
-    override val waveForm: String?,
-    override val flags: AttachmentFlags?,
-    override var name: String,
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val idAsLong: Long,
+  override val description: String?,
+  override val mediaType: String?,
+  override val url: URL,
+  override val proxyUrl: URL,
+  override val size: Int,
+  override val height: Int?,
+  override val width: Int?,
+  override val isEphemeral: Boolean,
+  override val duration: Float?,
+  override val waveForm: String?,
+  override val flags: AttachmentFlags?,
+  override var name: String,
 ) : Attachment, ToStringEntityImpl<Attachment>(yde, Attachment::class.java)

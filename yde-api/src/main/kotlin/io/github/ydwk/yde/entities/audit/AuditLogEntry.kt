@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,38 +23,38 @@ import io.github.ydwk.yde.entities.util.GenericEntity
 import io.github.ydwk.yde.util.SnowFlake
 
 interface AuditLogEntry : SnowFlake, GenericEntity {
-    /**
-     * The targetId of this audit log entry.
-     *
-     * @return The targetId of this audit log entry.
-     */
-    val targetId: String?
+  /**
+   * The targetId of this audit log entry.
+   *
+   * @return The targetId of this audit log entry.
+   */
+  val targetId: String?
 
-    /**
-     * The changes of this audit log entry.
-     *
-     * @return The changes of this audit log entry.
-     */
-    val changes: List<AuditLogChange>
+  /**
+   * The changes of this audit log entry.
+   *
+   * @return The changes of this audit log entry.
+   */
+  val changes: List<AuditLogChange>
 
-    /**
-     * The user who made this audit log entry.
-     *
-     * @return The user who made this audit log entry.
-     */
-    val user: User?
+  /**
+   * The user who made this audit log entry.
+   *
+   * @return The user who made this audit log entry.
+   */
+  val user: User?
 
-    /**
-     * The type of this audit log entry.
-     *
-     * @return The type of this audit log entry.
-     */
-    val type: AuditLogType
+  /**
+   * The type of this audit log entry.
+   *
+   * @return The type of this audit log entry.
+   */
+  val type: AuditLogType
 
-    /**
-     * The reason of this audit log entry.
-     *
-     * @return The reason of this audit log entry.
-     */
-    val reason: String?
+  /**
+   * The reason of this audit log entry.
+   *
+   * @return The reason of this audit log entry.
+   */
+  val reason: String?
 }

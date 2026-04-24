@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,10 +22,10 @@ import io.github.ydwk.yde.entities.util.GenericEntity
 
 interface Bot : User, GenericEntity {
 
-    /**
-     * The user's email.
-     *
-     * @return the user's email.
-     */
-    var email: String
+  /**
+   * The user's email.
+   *
+   * @return the user's email.
+   */
+  var email: String
 }

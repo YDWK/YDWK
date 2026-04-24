@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,17 +19,17 @@
 package io.github.ydwk.yde.entities.message
 
 enum class AttachmentFlags(private val value: Int) {
-    /** This attachment has been edited using the remix feature on mobile. */
-    IS_REMIX(1 shl 2),
-    /** An unknown flag. */
-    UNKNOWN(-1);
+  /** This attachment has been edited using the remix feature on mobile. */
+  IS_REMIX(1 shl 2),
+  /** An unknown flag. */
+  UNKNOWN(-1);
 
-    companion object {
-        fun getValue(value: Int): AttachmentFlags {
-            return when (value) {
-                4 -> IS_REMIX
-                else -> UNKNOWN
-            }
-        }
+  companion object {
+    fun getValue(value: Int): AttachmentFlags {
+      return when (value) {
+        4 -> IS_REMIX
+        else -> UNKNOWN
+      }
     }
+  }
 }

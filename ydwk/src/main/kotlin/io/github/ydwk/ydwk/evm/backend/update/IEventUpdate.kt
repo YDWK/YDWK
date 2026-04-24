@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,9 +22,9 @@ import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
 
 interface IEventUpdate<E, V> : GenericEvent {
 
-    val entity: E
+  val entity: E
 
-    val oldValue: V
+  val oldValue: V
 
-    val newValue: V
+  val newValue: V
 }

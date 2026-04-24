@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,9 +23,6 @@ import io.github.ydwk.yde.entities.interaction.selectmenu.creator.builder.Select
 import io.github.ydwk.yde.entities.interaction.selectmenu.creator.types.MemberSelectMenuCreator
 import io.github.ydwk.yde.interaction.message.ComponentType
 
-data class MemberSelectMenuCreatorBuilder(
-    override val yde: YDE,
-    override val customId: String,
-) :
-    MemberSelectMenuCreator,
-    SelectMenuCreatorBuilder(customId, ComponentType.MENTIONABLE_SELECT_MENU, yde)
+data class MemberSelectMenuCreatorBuilder(override val yde: YDE, override val customId: String) :
+  MemberSelectMenuCreator,
+  SelectMenuCreatorBuilder(customId, ComponentType.MENTIONABLE_SELECT_MENU, yde)

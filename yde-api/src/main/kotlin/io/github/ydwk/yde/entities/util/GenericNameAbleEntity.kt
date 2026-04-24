@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,7 +21,7 @@ package io.github.ydwk.yde.entities.util
 import io.github.ydwk.yde.util.NameAbleEntity
 
 interface GenericNameAbleEntity : GenericEntity, NameAbleEntity {
-    override var name: String
-        get() = json["name"].asText()
-        set(value) {}
+  override var name: String
+    get() = json["name"].asText()
+    set(value) {}
 }

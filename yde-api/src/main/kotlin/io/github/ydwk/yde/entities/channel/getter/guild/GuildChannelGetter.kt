@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,38 +26,38 @@ import io.github.ydwk.yde.entities.channel.guild.vc.GuildVoiceChannel
 
 interface GuildChannelGetter {
 
-    /**
-     * The channel as a text channel.
-     *
-     * @return the channel as a text channel.
-     */
-    fun asGuildMessageChannel(): GuildMessageChannel?
+  /**
+   * The channel as a text channel.
+   *
+   * @return the channel as a text channel.
+   */
+  fun asGuildMessageChannel(): GuildMessageChannel?
 
-    /**
-     * The channel as a guild voice channel.
-     *
-     * @return the channel as a guild voice channel.
-     */
-    fun asGuildVoiceChannel(): GuildVoiceChannel?
+  /**
+   * The channel as a guild voice channel.
+   *
+   * @return the channel as a guild voice channel.
+   */
+  fun asGuildVoiceChannel(): GuildVoiceChannel?
 
-    /**
-     * The channel as a guild stage channel.
-     *
-     * @return the channel as a guild stage channel.
-     */
-    fun asGuildStageChannel(): GuildStageChannel?
+  /**
+   * The channel as a guild stage channel.
+   *
+   * @return the channel as a guild stage channel.
+   */
+  fun asGuildStageChannel(): GuildStageChannel?
 
-    /**
-     * The channel as a guild category.
-     *
-     * @return the channel as a guild category.
-     */
-    fun asGuildCategory(): GuildCategory?
+  /**
+   * The channel as a guild category.
+   *
+   * @return the channel as a guild category.
+   */
+  fun asGuildCategory(): GuildCategory?
 
-    /**
-     * The channel as a guild forum channel.
-     *
-     * @return the channel as a guild forum channel.
-     */
-    fun asGuildForumChannel(): GuildForumChannel?
+  /**
+   * The channel as a guild forum channel.
+   *
+   * @return the channel as a guild forum channel.
+   */
+  fun asGuildForumChannel(): GuildForumChannel?
 }

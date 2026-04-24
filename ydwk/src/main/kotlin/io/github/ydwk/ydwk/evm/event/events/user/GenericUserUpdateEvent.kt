@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,8 +31,8 @@ import io.github.ydwk.ydwk.evm.backend.update.IEventUpdate
  * @param newValue The user's new value.
  */
 open class GenericUserUpdateEvent<T>(
-    override val ydwk: YDWK,
-    override val entity: User,
-    override val oldValue: T,
-    override val newValue: T,
+  override val ydwk: YDWK,
+  override val entity: User,
+  override val oldValue: T,
+  override val newValue: T,
 ) : IEventUpdate<User, T>

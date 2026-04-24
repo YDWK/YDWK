@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,42 +19,42 @@
 package io.github.ydwk.yde.interaction.sub
 
 enum class InteractionType(private val value: Int) {
-    /** Ping interaction */
-    PING(1),
+  /** Ping interaction */
+  PING(1),
 
-    /** Application command interaction */
-    APPLICATION_COMMAND(2),
+  /** Application command interaction */
+  APPLICATION_COMMAND(2),
 
-    /** Message component interaction */
-    MESSAGE_COMPONENT(3),
+  /** Message component interaction */
+  MESSAGE_COMPONENT(3),
 
-    /** An Autocomplete interaction */
-    APPLICATION_COMMAND_AUTOCOMPLETE(4),
+  /** An Autocomplete interaction */
+  APPLICATION_COMMAND_AUTOCOMPLETE(4),
 
-    /** A submission of a model */
-    MODAL_SUBMIT(5),
+  /** A submission of a model */
+  MODAL_SUBMIT(5),
 
-    /** Unknown interaction type */
-    UNKNOWN(-1);
+  /** Unknown interaction type */
+  UNKNOWN(-1);
 
-    companion object {
-        /**
-         * Get the [InteractionType] from the value
-         *
-         * @param value The value to get the [InteractionType] from.
-         * @return The [InteractionType] from the given [value].
-         */
-        fun getValue(value: Int): InteractionType {
-            return entries.firstOrNull { it.value == value } ?: UNKNOWN
-        }
-    }
-
+  companion object {
     /**
-     * Get the value of the [InteractionType].
+     * Get the [InteractionType] from the value
      *
-     * @return The value of the [InteractionType].
+     * @param value The value to get the [InteractionType] from.
+     * @return The [InteractionType] from the given [value].
      */
-    fun getValue(): Int {
-        return value
+    fun getValue(value: Int): InteractionType {
+      return entries.firstOrNull { it.value == value } ?: UNKNOWN
     }
+  }
+
+  /**
+   * Get the value of the [InteractionType].
+   *
+   * @return The value of the [InteractionType].
+   */
+  fun getValue(): Int {
+    return value
+  }
 }

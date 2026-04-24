@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,10 +34,9 @@ import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
  */
 @GuildEvent
 data class GuildVerificationLevelUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: Guild,
-    val oldVerificationLevel: Int,
-    val newVerificationLevel: VerificationLevel,
+  override val ydwk: YDWK,
+  override val entity: Guild,
+  val oldVerificationLevel: Int,
+  val newVerificationLevel: VerificationLevel,
 ) :
-    GenericGuildUpdateEvent<Int>(
-        ydwk, entity, oldVerificationLevel, newVerificationLevel.getLevel())
+  GenericGuildUpdateEvent<Int>(ydwk, entity, oldVerificationLevel, newVerificationLevel.getLevel())

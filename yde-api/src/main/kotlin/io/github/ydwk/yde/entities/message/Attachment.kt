@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,80 +24,80 @@ import io.github.ydwk.yde.util.SnowFlake
 import java.net.URL
 
 interface Attachment : SnowFlake, NameAbleEntity, GenericEntity {
-    /**
-     * The description of this attachment.
-     *
-     * @return The description of this attachment.
-     */
-    val description: String?
+  /**
+   * The description of this attachment.
+   *
+   * @return The description of this attachment.
+   */
+  val description: String?
 
-    /**
-     * The media type of this attachment.
-     *
-     * @return The media type of this attachment.
-     */
-    val mediaType: String?
+  /**
+   * The media type of this attachment.
+   *
+   * @return The media type of this attachment.
+   */
+  val mediaType: String?
 
-    /**
-     * The url of this attachment.
-     *
-     * @return The url of this attachment.
-     */
-    val url: URL
+  /**
+   * The url of this attachment.
+   *
+   * @return The url of this attachment.
+   */
+  val url: URL
 
-    /**
-     * The proxy url of this attachment.
-     *
-     * @return The proxy url of this attachment.
-     */
-    val proxyUrl: URL
+  /**
+   * The proxy url of this attachment.
+   *
+   * @return The proxy url of this attachment.
+   */
+  val proxyUrl: URL
 
-    /**
-     * The size of this attachment.
-     *
-     * @return The size of this attachment.
-     */
-    val size: Int
+  /**
+   * The size of this attachment.
+   *
+   * @return The size of this attachment.
+   */
+  val size: Int
 
-    /**
-     * The height of this attachment.
-     *
-     * @return The height of this attachment.
-     */
-    val height: Int?
+  /**
+   * The height of this attachment.
+   *
+   * @return The height of this attachment.
+   */
+  val height: Int?
 
-    /**
-     * The width of this attachment.
-     *
-     * @return The width of this attachment.
-     */
-    val width: Int?
+  /**
+   * The width of this attachment.
+   *
+   * @return The width of this attachment.
+   */
+  val width: Int?
 
-    /**
-     * Whether this attachment is ephemeral.
-     *
-     * @return Whether this attachment is ephemeral.
-     */
-    val isEphemeral: Boolean
+  /**
+   * Whether this attachment is ephemeral.
+   *
+   * @return Whether this attachment is ephemeral.
+   */
+  val isEphemeral: Boolean
 
-    /**
-     * The duration of the audio file in seconds.
-     *
-     * @return The duration of the audio file in seconds.
-     */
-    val duration: Float?
+  /**
+   * The duration of the audio file in seconds.
+   *
+   * @return The duration of the audio file in seconds.
+   */
+  val duration: Float?
 
-    /**
-     * The base64 encoded bytearray representing a sampled waveform.
-     *
-     * @return The base64 encoded bytearray representing a sampled waveform.
-     */
-    val waveForm: String?
+  /**
+   * The base64 encoded bytearray representing a sampled waveform.
+   *
+   * @return The base64 encoded bytearray representing a sampled waveform.
+   */
+  val waveForm: String?
 
-    /**
-     * The attachment flags combined as a bitfield.
-     *
-     * @return The attachment flags combined as a bitfield.
-     */
-    val flags: AttachmentFlags?
+  /**
+   * The attachment flags combined as a bitfield.
+   *
+   * @return The attachment flags combined as a bitfield.
+   */
+  val flags: AttachmentFlags?
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,10 +33,14 @@ import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
  */
 @GuildEvent
 data class GuildApproximatePresenceCountUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: Guild,
-    val oldApproximatePresenceCount: Int?,
-    val newApproximatePresenceCount: Int?,
+  override val ydwk: YDWK,
+  override val entity: Guild,
+  val oldApproximatePresenceCount: Int?,
+  val newApproximatePresenceCount: Int?,
 ) :
-    GenericGuildUpdateEvent<Int?>(
-        ydwk, entity, oldApproximatePresenceCount, newApproximatePresenceCount)
+  GenericGuildUpdateEvent<Int?>(
+    ydwk,
+    entity,
+    oldApproximatePresenceCount,
+    newApproximatePresenceCount,
+  )

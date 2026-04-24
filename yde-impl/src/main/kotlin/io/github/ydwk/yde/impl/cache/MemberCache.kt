@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,66 +23,66 @@ import io.github.ydwk.yde.entities.guild.Member
 
 /** Discord's Member do not have a unique ID, so we need to use a combination of the user id */
 interface MemberCache {
-    /**
-     * Adds a new item to the cache
-     *
-     * @param guildId The guild id of the member
-     * @param userId The user id of the member
-     * @param value The value of the item
-     */
-    operator fun set(guildId: String, userId: String, value: Member)
+  /**
+   * Adds a new item to the cache
+   *
+   * @param guildId The guild id of the member
+   * @param userId The user id of the member
+   * @param value The value of the item
+   */
+  operator fun set(guildId: String, userId: String, value: Member)
 
-    /**
-     * Gets an item from the cache
-     *
-     * @param guildId The guild id of the member
-     * @param userId The user id of the member
-     * @return The value of the item
-     */
-    operator fun get(guildId: String, userId: String): Member?
+  /**
+   * Gets an item from the cache
+   *
+   * @param guildId The guild id of the member
+   * @param userId The user id of the member
+   * @return The value of the item
+   */
+  operator fun get(guildId: String, userId: String): Member?
 
-    /**
-     * Gets an item from the cache but adds it if it doesn't exist
-     *
-     * @param value The value of the item
-     * @return The value of the item
-     */
-    fun getOrPut(value: Member): Member
+  /**
+   * Gets an item from the cache but adds it if it doesn't exist
+   *
+   * @param value The value of the item
+   * @return The value of the item
+   */
+  fun getOrPut(value: Member): Member
 
-    /**
-     * updates the member's voice state
-     *
-     * @param member The member which voice state is to be updated
-     * @param voiceState The new voice state
-     * @param add If true, the voice state will be added to the member's voice states, otherwise it
-     *   will be removed
-     */
-    fun updateVoiceState(member: Member, voiceState: VoiceState, add: Boolean)
+  /**
+   * updates the member's voice state
+   *
+   * @param member The member which voice state is to be updated
+   * @param voiceState The new voice state
+   * @param add If true, the voice state will be added to the member's voice states, otherwise it
+   *   will be removed
+   */
+  fun updateVoiceState(member: Member, voiceState: VoiceState, add: Boolean)
 
-    /**
-     * Removes an item from the cache
-     *
-     * @param guildId The guild id of the member
-     * @param userId The user id of the member
-     */
-    fun remove(guildId: String, userId: String)
+  /**
+   * Removes an item from the cache
+   *
+   * @param guildId The guild id of the member
+   * @param userId The user id of the member
+   */
+  fun remove(guildId: String, userId: String)
 
-    /**
-     * Check's if this properties exists in the cache and value exists
-     *
-     * @param key The key of the item
-     * @param cacheType The type of the item
-     * @return True if the item exists, false otherwise
-     */
-    fun contains(guildId: String, userId: String): Boolean
+  /**
+   * Check's if this properties exists in the cache and value exists
+   *
+   * @param key The key of the item
+   * @param cacheType The type of the item
+   * @return True if the item exists, false otherwise
+   */
+  fun contains(guildId: String, userId: String): Boolean
 
-    /** Clears the cache */
-    fun clear()
+  /** Clears the cache */
+  fun clear()
 
-    /**
-     * Gets a list of members in the cache
-     *
-     * @return A list of members in the cache
-     */
-    fun values(): List<Member>
+  /**
+   * Gets a list of members in the cache
+   *
+   * @return A list of members in the cache
+   */
+  fun values(): List<Member>
 }

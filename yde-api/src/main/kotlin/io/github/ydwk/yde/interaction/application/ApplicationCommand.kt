@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,125 +27,125 @@ import io.github.ydwk.yde.util.GetterSnowFlake
 import io.github.ydwk.yde.util.SnowFlake
 
 interface ApplicationCommand : SnowFlake, GenericCommandData {
-    /**
-     * The type of the command.
-     *
-     * @return The type of the command.
-     */
-    val type: ApplicationCommandType
+  /**
+   * The type of the command.
+   *
+   * @return The type of the command.
+   */
+  val type: ApplicationCommandType
 
-    /**
-     * The Id of the application that this interaction is for.
-     *
-     * @return The Id of the application that this interaction is for.
-     */
-    val applicationId: GetterSnowFlake
+  /**
+   * The Id of the application that this interaction is for.
+   *
+   * @return The Id of the application that this interaction is for.
+   */
+  val applicationId: GetterSnowFlake
 
-    /**
-     * The guild id where the interaction occurred.
-     *
-     * @return The guild id where the interaction occurred.
-     */
-    val guildId: GetterSnowFlake?
+  /**
+   * The guild id where the interaction occurred.
+   *
+   * @return The guild id where the interaction occurred.
+   */
+  val guildId: GetterSnowFlake?
 
-    /**
-     * The name of the command.
-     *
-     * @return The name of the command.
-     */
-    val name: String
+  /**
+   * The name of the command.
+   *
+   * @return The name of the command.
+   */
+  val name: String
 
-    /**
-     * The description for CHAT_INPUT commands, 1-100 characters. Empty string for USER and MESSAGE
-     * commands.
-     *
-     * @return The description for CHAT_INPUT commands, 1-100 characters. Empty string for USER and
-     *   MESSAGE commands.
-     */
-    val description: String
+  /**
+   * The description for CHAT_INPUT commands, 1-100 characters. Empty string for USER and MESSAGE
+   * commands.
+   *
+   * @return The description for CHAT_INPUT commands, 1-100 characters. Empty string for USER and
+   *   MESSAGE commands.
+   */
+  val description: String
 
-    /**
-     * Whether the command is available in DMs with the app, only for globally-scoped commands. By
-     * default, commands are visible.
-     *
-     * @return Indicates whether the command is available in DMs with the app, only for
-     *   globally-scoped commands. By default, commands are visible.
-     */
-    val isDmPermissions: Boolean?
+  /**
+   * Whether the command is available in DMs with the app, only for globally-scoped commands. By
+   * default, commands are visible.
+   *
+   * @return Indicates whether the command is available in DMs with the app, only for
+   *   globally-scoped commands. By default, commands are visible.
+   */
+  val isDmPermissions: Boolean?
 
-    /**
-     * Whether the command is 'Not Safe For Work' (NSFW), only for globally-scoped commands. By
-     * default, commands are not NSFW.
-     *
-     * @return Indicates whether the command is 'Not Safe For Work' (NSFW), only for globally-scoped
-     *   commands. By default, commands are not NSFW.
-     */
-    val isNsfw: Boolean?
+  /**
+   * Whether the command is 'Not Safe For Work' (NSFW), only for globally-scoped commands. By
+   * default, commands are not NSFW.
+   *
+   * @return Indicates whether the command is 'Not Safe For Work' (NSFW), only for globally-scoped
+   *   commands. By default, commands are not NSFW.
+   */
+  val isNsfw: Boolean?
 
-    /**
-     * The version of this interaction.
-     *
-     * @return The version of this interaction.
-     */
-    val version: Int
+  /**
+   * The version of this interaction.
+   *
+   * @return The version of this interaction.
+   */
+  val version: Int
 
-    // Interaction related
+  // Interaction related
 
-    /**
-     * The id of the user or message targeted by a user or message command
-     *
-     * @return The id of the user or message targeted by a user or message command
-     */
-    val targetId: GetterSnowFlake?
+  /**
+   * The id of the user or message targeted by a user or message command
+   *
+   * @return The id of the user or message targeted by a user or message command
+   */
+  val targetId: GetterSnowFlake?
 
-    /**
-     * The user who invoked the command.
-     *
-     * @return The user who invoked the command.
-     */
-    val user: User
+  /**
+   * The user who invoked the command.
+   *
+   * @return The user who invoked the command.
+   */
+  val user: User
 
-    /**
-     * The member who invoked the command.
-     *
-     * @return The member who invoked the command.
-     */
-    val member: Member?
+  /**
+   * The member who invoked the command.
+   *
+   * @return The member who invoked the command.
+   */
+  val member: Member?
 
-    /**
-     * The type of this interaction.
-     *
-     * @return The type of this interaction.
-     */
-    val interactionType: InteractionType
+  /**
+   * The type of this interaction.
+   *
+   * @return The type of this interaction.
+   */
+  val interactionType: InteractionType
 
-    /**
-     * The channel id that this interaction is for.
-     *
-     * @return The channel id that this interaction is for.
-     */
-    val channelId: GetterSnowFlake?
+  /**
+   * The channel id that this interaction is for.
+   *
+   * @return The channel id that this interaction is for.
+   */
+  val channelId: GetterSnowFlake?
 
-    /**
-     * The token of this interaction.
-     *
-     * @return The token of this interaction.
-     */
-    val token: String
+  /**
+   * The token of this interaction.
+   *
+   * @return The token of this interaction.
+   */
+  val token: String
 
-    /**
-     * The message of this interaction.
-     *
-     * @return The message of this interaction.
-     */
-    val message: Message?
+  /**
+   * The message of this interaction.
+   *
+   * @return The message of this interaction.
+   */
+  val message: Message?
 
-    /**
-     * Gets bitwise set of permissions the app or bot has within the channel the interaction was
-     * sent from
-     *
-     * @return bitwise set of permissions the app or bot has within the channel the interaction was
-     *   sent from
-     */
-    val permissions: Long?
+  /**
+   * Gets bitwise set of permissions the app or bot has within the channel the interaction was sent
+   * from
+   *
+   * @return bitwise set of permissions the app or bot has within the channel the interaction was
+   *   sent from
+   */
+  val permissions: Long?
 }

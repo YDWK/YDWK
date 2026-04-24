@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,127 +31,119 @@ import kotlin.time.Duration
 
 interface GuildRestAPIMethods {
 
-    //////////////////// Moderation Actions ////////////////////////
-    /**
-     * Bans a user from the guild.
-     *
-     * @param guildId The id of the guild.
-     * @param userId The id of the user.
-     * @param deleteMessageDuration The duration of the messages to delete.
-     * @param reason The reason for the ban.
-     * @return A [RestResult] that will contain [NoResult] confirming the ban.
-     */
-    suspend fun banUser(
-        guildId: Long,
-        userId: Long,
-        deleteMessageDuration: Duration = Duration.ZERO,
-        reason: String? = null,
-    ): RestResult<NoResult>
+  //////////////////// Moderation Actions ////////////////////////
+  /**
+   * Bans a user from the guild.
+   *
+   * @param guildId The id of the guild.
+   * @param userId The id of the user.
+   * @param deleteMessageDuration The duration of the messages to delete.
+   * @param reason The reason for the ban.
+   * @return A [RestResult] that will contain [NoResult] confirming the ban.
+   */
+  suspend fun banUser(
+    guildId: Long,
+    userId: Long,
+    deleteMessageDuration: Duration = Duration.ZERO,
+    reason: String? = null,
+  ): RestResult<NoResult>
 
-    /**
-     * Unbans a user from the guild.
-     *
-     * @param guildId The id of the guild.
-     * @param userId The id of the user.
-     * @param reason The reason for the unban.
-     * @return A [RestResult] that will contain [NoResult] confirming the unban.
-     */
-    suspend fun unbanUser(
-        guildId: Long,
-        userId: Long,
-        reason: String? = null,
-    ): RestResult<NoResult>
+  /**
+   * Unbans a user from the guild.
+   *
+   * @param guildId The id of the guild.
+   * @param userId The id of the user.
+   * @param reason The reason for the unban.
+   * @return A [RestResult] that will contain [NoResult] confirming the unban.
+   */
+  suspend fun unbanUser(guildId: Long, userId: Long, reason: String? = null): RestResult<NoResult>
 
-    /**
-     * Kicks a member from the guild.
-     *
-     * @param guildId The id of the guild.
-     * @param userId The id of the user.
-     * @param reason The reason for the kick.
-     * @return A [RestResult] that will contain [NoResult] confirming the kick.
-     */
-    suspend fun kickMember(
-        guildId: Long,
-        userId: Long,
-        reason: String? = null
-    ): RestResult<NoResult>
+  /**
+   * Kicks a member from the guild.
+   *
+   * @param guildId The id of the guild.
+   * @param userId The id of the user.
+   * @param reason The reason for the kick.
+   * @return A [RestResult] that will contain [NoResult] confirming the kick.
+   */
+  suspend fun kickMember(guildId: Long, userId: Long, reason: String? = null): RestResult<NoResult>
 
-    /**
-     * Requests the ban list for the guild.
-     *
-     * @param guildId The id of the guild.
-     * @return A [RestResult] that will contain a list of [Ban]s.
-     */
-    suspend fun requestedBanList(guildId: Long): RestResult<List<Ban>>
+  /**
+   * Requests the ban list for the guild.
+   *
+   * @param guildId The id of the guild.
+   * @return A [RestResult] that will contain a list of [Ban]s.
+   */
+  suspend fun requestedBanList(guildId: Long): RestResult<List<Ban>>
 
-    //////////////// Guild Request Methods ///////////////////////
+  //////////////// Guild Request Methods ///////////////////////
 
-    /**
-     * Request the audit log for the guild.
-     *
-     * @param userId The id of the user.
-     * @param limit Maximum number of entries (between 1-100) to return, defaults to 50
-     * @param before Entries that preceded a specific audit log entry ID.
-     * @param actionType The type of action to filter by.
-     * @return A [RestResult] that will contain the [AuditLog].
-     */
-    suspend fun requestedAuditLog(
-        guildId: Long,
-        userId: GetterSnowFlake? = null,
-        limit: Int = 50,
-        before: GetterSnowFlake? = null,
-        actionType: AuditLogType? = null,
-    ): RestResult<AuditLog>
+  /**
+   * Request the audit log for the guild.
+   *
+   * @param userId The id of the user.
+   * @param limit Maximum number of entries (between 1-100) to return, defaults to 50
+   * @param before Entries that preceded a specific audit log entry ID.
+   * @param actionType The type of action to filter by.
+   * @return A [RestResult] that will contain the [AuditLog].
+   */
+  suspend fun requestedAuditLog(
+    guildId: Long,
+    userId: GetterSnowFlake? = null,
+    limit: Int = 50,
+    before: GetterSnowFlake? = null,
+    actionType: AuditLogType? = null,
+  ): RestResult<AuditLog>
 
-    /**
-     * Request to get all the members within the guild.
-     *
-     * @param guildId The id of the guild.
-     * @return A [RestResult] that will contain a list of [Member]s.
-     */
-    suspend fun requestedMembers(guildId: Long): RestResult<List<Member>> =
-        requestedMembers(guildId, null)
+  /**
+   * Request to get all the members within the guild.
+   *
+   * @param guildId The id of the guild.
+   * @return A [RestResult] that will contain a list of [Member]s.
+   */
+  suspend fun requestedMembers(guildId: Long): RestResult<List<Member>> =
+    requestedMembers(guildId, null)
 
-    /**
-     * Request to get the amount of members specified by the limit.
-     *
-     * @param limit The amount of members to retrieve.
-     * @return A [RestResult] that will contain a list of [Member]s.
-     */
-    suspend fun requestedMembers(guildId: Long, limit: Int?): RestResult<List<Member>>
+  /**
+   * Request to get the amount of members specified by the limit.
+   *
+   * @param limit The amount of members to retrieve.
+   * @return A [RestResult] that will contain a list of [Member]s.
+   */
+  suspend fun requestedMembers(guildId: Long, limit: Int?): RestResult<List<Member>>
 
-    /**
-     * Request to get a guild by its id.
-     *
-     * @param guildId The id of the guild.
-     * @return A [RestResult] that will contain the requested [Guild].
-     */
-    suspend fun requestedGuild(guildId: Long): RestResult<Guild>
+  /**
+   * Request to get a guild by its id.
+   *
+   * @param guildId The id of the guild.
+   * @return A [RestResult] that will contain the requested [Guild].
+   */
+  suspend fun requestedGuild(guildId: Long): RestResult<Guild>
 
-    /**
-     * Request to get all the guilds the bot is in.
-     *
-     * @return A [RestResult] that will contain a list of [Guild]s.
-     */
-    @Deprecated(
-        "Use requestedPartialGuilds instead",
-        ReplaceWith("requestedPartialGuilds()"),
-        level = DeprecationLevel.WARNING)
-    suspend fun requestedGuilds(): RestResult<List<Guild>>
+  /**
+   * Request to get all the guilds the bot is in.
+   *
+   * @return A [RestResult] that will contain a list of [Guild]s.
+   */
+  @Deprecated(
+    "Use requestedPartialGuilds instead",
+    ReplaceWith("requestedPartialGuilds()"),
+    level = DeprecationLevel.WARNING,
+  )
+  suspend fun requestedGuilds(): RestResult<List<Guild>>
 
-    /**
-     * Request to get the guilds the bot is in.
-     *
-     * @param limit The amount of guilds to retrieve.
-     * @return A [RestResult] that will contain a list of [PartialGuild]s.
-     */
-    suspend fun requestedPartialGuilds(limit: Int): RestResult<List<PartialGuild>>
+  /**
+   * Request to get the guilds the bot is in.
+   *
+   * @param limit The amount of guilds to retrieve.
+   * @return A [RestResult] that will contain a list of [PartialGuild]s.
+   */
+  suspend fun requestedPartialGuilds(limit: Int): RestResult<List<PartialGuild>>
 
-    /**
-     * Request to get the guilds the bot is in.
-     *
-     * @return A [RestResult] that will contain a list of [PartialGuild]s.
-     */
-    suspend fun requestedPartialGuilds(): RestResult<List<PartialGuild>> =
-        requestedPartialGuilds(200)
+  /**
+   * Request to get the guilds the bot is in.
+   *
+   * @return A [RestResult] that will contain a list of [PartialGuild]s.
+   */
+  suspend fun requestedPartialGuilds(): RestResult<List<PartialGuild>> = requestedPartialGuilds(200)
 }

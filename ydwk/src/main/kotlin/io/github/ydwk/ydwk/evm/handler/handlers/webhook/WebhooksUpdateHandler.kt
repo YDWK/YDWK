@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,11 +19,16 @@
 package io.github.ydwk.ydwk.evm.handler.handlers.webhook
 
 import com.fasterxml.jackson.databind.JsonNode
+import io.github.ydwk.yde.util.GetterSnowFlake
+import io.github.ydwk.ydwk.evm.event.events.webhook.WebhooksUpdateEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class WebhooksUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override suspend fun start() {
-        TODO("Not yet implemented")
-    }
+  override suspend fun start() {
+    val guildId = GetterSnowFlake.of(json.get("guild_id").asLong())
+    val channelId = GetterSnowFlake.of(json.get("channel_id").asLong())
+    val channel = ydwk.getGuildChannelById(channelId.asLong)
+    ydwk.emitEvent(WebhooksUpdateEvent(ydwk, guildId, channelId, channel))
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,21 +26,21 @@ import io.github.ydwk.yde.entities.interaction.selectmenu.creator.types.StringSe
 import io.github.ydwk.yde.interaction.message.ComponentType
 
 data class StringSelectMenuCreatorBuilder(
-    override val yde: YDE,
-    override val customId: String,
-    val options: List<SelectMenuOption>
+  override val yde: YDE,
+  override val customId: String,
+  val options: List<SelectMenuOption>,
 ) :
-    StringSelectMenuCreator,
-    SelectMenuCreatorBuilder(customId, ComponentType.STRING_SELECT_MENU, yde) {
-    init {
-        for (option in options) {
-            json.putArray("options").addObject().apply {
-                put("label", option.label)
-                put("value", option.value)
-                put("description", option.description)
-                set<JsonNode>("emoji", option.emoji?.json)
-                put("default", option.default)
-            }
-        }
+  StringSelectMenuCreator,
+  SelectMenuCreatorBuilder(customId, ComponentType.STRING_SELECT_MENU, yde) {
+  init {
+    for (option in options) {
+      json.putArray("options").addObject().apply {
+        put("label", option.label)
+        put("value", option.value)
+        put("description", option.description)
+        set<JsonNode>("emoji", option.emoji?.json)
+        put("default", option.default)
+      }
     }
+  }
 }

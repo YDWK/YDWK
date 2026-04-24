@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,17 +21,17 @@ package io.github.ydwk.yde.entities.channel.guild
 import io.github.ydwk.yde.entities.channel.GuildChannel
 
 interface GuildCategory : GuildChannel {
-    /**
-     * Gets all the channels in this category.
-     *
-     * @return all the channels in this category.
-     */
-    val channels: List<GuildChannel>
+  /**
+   * Gets all the channels in this category.
+   *
+   * @return all the channels in this category.
+   */
+  val channels: List<GuildChannel>
 
-    /**
-     * Weather this category is nsfw.
-     *
-     * @return true if this category is nsfw.
-     */
-    val nsfw: Boolean
+  /**
+   * Weather this category is nsfw.
+   *
+   * @return true if this category is nsfw.
+   */
+  val nsfw: Boolean
 }

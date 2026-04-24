@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,9 +35,9 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
  */
 @ChannelEvent
 data class GuildChannelParentUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: GuildChannel,
-    val type: ChannelType,
-    val oldParentId: GetterSnowFlake?,
-    val newParentId: GetterSnowFlake?,
+  override val ydwk: YDWK,
+  override val entity: GuildChannel,
+  val type: ChannelType,
+  val oldParentId: GetterSnowFlake?,
+  val newParentId: GetterSnowFlake?,
 ) : GenericChannelUpdateEvent<GetterSnowFlake?>(ydwk, entity, oldParentId, newParentId)

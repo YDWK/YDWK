@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,24 +21,24 @@ package io.github.ydwk.yde.entities.audit
 import io.github.ydwk.yde.entities.util.GenericEntity
 
 interface AuditLogChange : GenericEntity {
-    /**
-     * The new value of the change.
-     *
-     * @return The new value of the change.
-     */
-    val newValue: Any?
+  /**
+   * The new value of the change.
+   *
+   * @return The new value of the change.
+   */
+  val newValue: Any?
 
-    /**
-     * The old value of the change.
-     *
-     * @return The old value of the change.
-     */
-    val oldValue: Any?
+  /**
+   * The old value of the change.
+   *
+   * @return The old value of the change.
+   */
+  val oldValue: Any?
 
-    /**
-     * The key of the change.
-     *
-     * @return The key of the change.
-     */
-    val key: String
+  /**
+   * The key of the change.
+   *
+   * @return The key of the change.
+   */
+  val key: String
 }

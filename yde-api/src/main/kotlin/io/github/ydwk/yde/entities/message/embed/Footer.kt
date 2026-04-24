@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,24 +21,24 @@ package io.github.ydwk.yde.entities.message.embed
 import io.github.ydwk.yde.entities.util.GenericEntity
 
 interface Footer : GenericEntity {
-    /**
-     * The text of this footer.
-     *
-     * @return The text of this footer.
-     */
-    val text: String
+  /**
+   * The text of this footer.
+   *
+   * @return The text of this footer.
+   */
+  val text: String
 
-    /**
-     * The icon url of this footer.
-     *
-     * @return The icon url of this footer.
-     */
-    val iconUrl: String?
+  /**
+   * The icon url of this footer.
+   *
+   * @return The icon url of this footer.
+   */
+  val iconUrl: String?
 
-    /**
-     * The proxy icon url of this footer.
-     *
-     * @return The proxy icon url of this footer.
-     */
-    val proxyIconUrl: String?
+  /**
+   * The proxy icon url of this footer.
+   *
+   * @return The proxy icon url of this footer.
+   */
+  val proxyIconUrl: String?
 }

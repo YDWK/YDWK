@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,4 +32,4 @@ import io.github.ydwk.ydwk.evm.event.Event
  */
 @InteractionEvent
 data class TextInputEvent(override val ydwk: YDWK, val textInput: TextInputInteraction) :
-    Event(ydwk)
+  Event(ydwk)

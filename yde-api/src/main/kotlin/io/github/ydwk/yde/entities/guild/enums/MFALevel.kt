@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,33 +19,33 @@
 package io.github.ydwk.yde.entities.guild.enums
 
 enum class MFALevel(private val value: Int) {
-    /** Guild has no MFA/2FA requirement for moderation actions. */
-    NONE(0),
+  /** Guild has no MFA/2FA requirement for moderation actions. */
+  NONE(0),
 
-    /** Guild has a 2FA requirement for moderation actions. */
-    ELEVATED(1),
+  /** Guild has a 2FA requirement for moderation actions. */
+  ELEVATED(1),
 
-    /** An unknown MFA level was returned. */
-    UNKNOWN(-1);
+  /** An unknown MFA level was returned. */
+  UNKNOWN(-1);
 
-    companion object {
-        /**
-         * The [MFALevel] for the given [value].
-         *
-         * @param value The value to get the [MFALevel] for.
-         * @return The [MFALevel] for the given [value].
-         */
-        fun getValue(value: Int): MFALevel {
-            return entries.firstOrNull { it.value == value } ?: UNKNOWN
-        }
-    }
-
+  companion object {
     /**
-     * The value of the [MFALevel].
+     * The [MFALevel] for the given [value].
      *
-     * @return The value of the [MFALevel].
+     * @param value The value to get the [MFALevel] for.
+     * @return The [MFALevel] for the given [value].
      */
-    fun getValue(): Int {
-        return value
+    fun getValue(value: Int): MFALevel {
+      return entries.firstOrNull { it.value == value } ?: UNKNOWN
     }
+  }
+
+  /**
+   * The value of the [MFALevel].
+   *
+   * @return The value of the [MFALevel].
+   */
+  fun getValue(): Int {
+    return value
+  }
 }

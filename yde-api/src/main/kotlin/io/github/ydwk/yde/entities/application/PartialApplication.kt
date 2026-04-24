@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,6 +22,6 @@ import io.github.ydwk.yde.entities.util.GenericEntity
 import io.github.ydwk.yde.util.SnowFlake
 
 interface PartialApplication : SnowFlake, GenericEntity {
-    /** The application's public flags. */
-    var flags: Int
+  /** The application's public flags. */
+  var flags: Int
 }

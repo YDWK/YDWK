@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,17 +23,17 @@ import io.github.ydwk.yde.entities.builder.guild.channel.VoiceChannelBuilder
 
 interface ChannelBuilder {
 
-    /**
-     * Creates a new message channel (text channel or announcement channel).
-     *
-     * @return a new channel builder
-     */
-    fun createMessageChannel(): MessageChannelBuilder
+  /**
+   * Creates a new message channel (text channel or announcement channel).
+   *
+   * @return a new channel builder
+   */
+  fun createMessageChannel(): MessageChannelBuilder
 
-    /**
-     * Creates a new voice channel.
-     *
-     * @return a new channel builder
-     */
-    fun createVoiceChannel(): VoiceChannelBuilder
+  /**
+   * Creates a new voice channel.
+   *
+   * @return a new channel builder
+   */
+  fun createVoiceChannel(): VoiceChannelBuilder
 }

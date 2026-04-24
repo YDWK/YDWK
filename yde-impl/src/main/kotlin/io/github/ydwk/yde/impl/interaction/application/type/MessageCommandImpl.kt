@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,21 +30,25 @@ import io.github.ydwk.yde.interaction.application.sub.Reply
 import io.github.ydwk.yde.interaction.application.type.MessageCommand
 
 class MessageCommandImpl(
-    yde: YDE,
-    json: JsonNode,
-    interaction: Interaction,
-    override val targetMessage: Message
+  yde: YDE,
+  json: JsonNode,
+  interaction: Interaction,
+  override val targetMessage: Message,
 ) :
-    ApplicationCommandImpl(
-        yde.entityInstanceBuilder.buildApplicationCommand(
-            json, ApplicationCommandType.MESSAGE, interaction),
-        interaction),
-    MessageCommand {
-    override fun reply(content: String): Reply {
-        return ReplyImpl(yde, content, null, interaction.id, token)
-    }
+  ApplicationCommandImpl(
+    yde.entityInstanceBuilder.buildApplicationCommand(
+      json,
+      ApplicationCommandType.MESSAGE,
+      interaction,
+    ),
+    interaction,
+  ),
+  MessageCommand {
+  override fun reply(content: String): Reply {
+    return ReplyImpl(yde, content, null, interaction.id, token)
+  }
 
-    override fun reply(embed: Embed): Reply {
-        return ReplyImpl(yde, null, embed, interaction.id, token)
-    }
+  override fun reply(embed: Embed): Reply {
+    return ReplyImpl(yde, null, embed, interaction.id, token)
+  }
 }

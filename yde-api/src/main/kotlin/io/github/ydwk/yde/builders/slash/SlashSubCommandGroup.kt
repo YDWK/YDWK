@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,36 +21,33 @@ package io.github.ydwk.yde.builders.slash
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 
-class SlashSubCommandGroup(
-    val name: String,
-    val description: String,
-) {
-    private val subCommands: MutableList<SlashSubCommand> = mutableListOf()
+class SlashSubCommandGroup(val name: String, val description: String) {
+  private val subCommands: MutableList<SlashSubCommand> = mutableListOf()
 
-    fun addSubCommand(subCommand: SlashSubCommand): SlashSubCommandGroup {
-        subCommands.add(subCommand)
-        return this
-    }
+  fun addSubCommand(subCommand: SlashSubCommand): SlashSubCommandGroup {
+    subCommands.add(subCommand)
+    return this
+  }
 
-    fun addSubCommands(subCommands: List<SlashSubCommand>): SlashSubCommandGroup {
-        this.subCommands.addAll(subCommands)
-        return this
-    }
+  fun addSubCommands(subCommands: List<SlashSubCommand>): SlashSubCommandGroup {
+    this.subCommands.addAll(subCommands)
+    return this
+  }
 
-    fun addSubCommands(vararg subCommands: SlashSubCommand): SlashSubCommandGroup {
-        this.subCommands.addAll(subCommands)
-        return this
-    }
+  fun addSubCommands(vararg subCommands: SlashSubCommand): SlashSubCommandGroup {
+    this.subCommands.addAll(subCommands)
+    return this
+  }
 
-    fun toJson(): JsonNode {
-        val mapper = ObjectMapper()
-        val node = mapper.createObjectNode()
-        node.put("name", name)
-        node.put("description", description)
-        node.put("type", SlashOptionType.SUB_COMMAND_GROUP.toInt())
-        val subCommandsNode = mapper.createArrayNode()
-        subCommands.forEach { subCommandsNode.add(it.toJson()) }
-        node.set<JsonNode>("options", subCommandsNode)
-        return node
-    }
+  fun toJson(): JsonNode {
+    val mapper = ObjectMapper()
+    val node = mapper.createObjectNode()
+    node.put("name", name)
+    node.put("description", description)
+    node.put("type", SlashOptionType.SUB_COMMAND_GROUP.toInt())
+    val subCommandsNode = mapper.createArrayNode()
+    subCommands.forEach { subCommandsNode.add(it.toJson()) }
+    node.set<JsonNode>("options", subCommandsNode)
+    return node
+  }
 }

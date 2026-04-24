@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,92 +28,92 @@ import io.github.ydwk.yde.util.GetterSnowFlake
 import io.github.ydwk.yde.util.SnowFlake
 
 interface Interaction : SnowFlake, GenericEntity {
-    /**
-     * The Id of the application that this interaction is for.
-     *
-     * @return The Id of the application that this interaction is for.
-     */
-    val applicationId: GetterSnowFlake
+  /**
+   * The Id of the application that this interaction is for.
+   *
+   * @return The Id of the application that this interaction is for.
+   */
+  val applicationId: GetterSnowFlake
 
-    /**
-     * The type of this interaction.
-     *
-     * @return The type of this interaction.
-     */
-    val type: InteractionType
+  /**
+   * The type of this interaction.
+   *
+   * @return The type of this interaction.
+   */
+  val type: InteractionType
 
-    /**
-     * The data of this interaction.
-     *
-     * @return The data of this interaction.
-     */
-    val data: GenericCommandData?
+  /**
+   * The data of this interaction.
+   *
+   * @return The data of this interaction.
+   */
+  val data: GenericCommandData?
 
-    /**
-     * The guild id that this interaction is for.
-     *
-     * @return The guild id that this interaction is for.
-     */
-    val guildId: GetterSnowFlake?
+  /**
+   * The guild id that this interaction is for.
+   *
+   * @return The guild id that this interaction is for.
+   */
+  val guildId: GetterSnowFlake?
 
-    /**
-     * The channel id that this interaction is for.
-     *
-     * @return The channel id that this interaction is for.
-     */
-    val channelId: GetterSnowFlake?
+  /**
+   * The channel id that this interaction is for.
+   *
+   * @return The channel id that this interaction is for.
+   */
+  val channelId: GetterSnowFlake?
 
-    /**
-     * The member who invoked this interaction.
-     *
-     * @return The member who invoked this interaction.
-     */
-    val member: Member?
+  /**
+   * The member who invoked this interaction.
+   *
+   * @return The member who invoked this interaction.
+   */
+  val member: Member?
 
-    /**
-     * The user who invoked this interaction.
-     *
-     * @return The user who invoked this interaction.
-     */
-    val user: User
+  /**
+   * The user who invoked this interaction.
+   *
+   * @return The user who invoked this interaction.
+   */
+  val user: User
 
-    /**
-     * The token of this interaction.
-     *
-     * @return The token of this interaction.
-     */
-    val token: String
+  /**
+   * The token of this interaction.
+   *
+   * @return The token of this interaction.
+   */
+  val token: String
 
-    /**
-     * The version of this interaction.
-     *
-     * @return The version of this interaction.
-     */
-    val version: Int
+  /**
+   * The version of this interaction.
+   *
+   * @return The version of this interaction.
+   */
+  val version: Int
 
-    /**
-     * The message of this interaction.
-     *
-     * @return The message of this interaction.
-     */
-    val message: Message?
+  /**
+   * The message of this interaction.
+   *
+   * @return The message of this interaction.
+   */
+  val message: Message?
 
-    /**
-     * Gets bitwise set of permissions the app or bot has within the channel the interaction was
-     * sent from
-     *
-     * @return bitwise set of permissions the app or bot has within the channel the interaction was
-     *   sent from
-     */
-    val permissions: Long?
+  /**
+   * Gets bitwise set of permissions the app or bot has within the channel the interaction was sent
+   * from
+   *
+   * @return bitwise set of permissions the app or bot has within the channel the interaction was
+   *   sent from
+   */
+  val permissions: Long?
 
-    /**
-     * The selected language of the invoking user
-     *
-     * @return the selected language of the invoking user
-     */
-    val locale: String?
+  /**
+   * The selected language of the invoking user
+   *
+   * @return the selected language of the invoking user
+   */
+  val locale: String?
 
-    /** The Guild's preferred locale, if invoked in a guild */
-    val guildLocale: String?
+  /** The Guild's preferred locale, if invoked in a guild */
+  val guildLocale: String?
 }

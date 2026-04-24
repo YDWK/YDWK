@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,27 +19,27 @@
 package io.github.ydwk.yde.entities.guild.invite
 
 enum class TargetType(private val value: Int) {
-    STREAM(1),
-    EMBEDDED_APPLICATION(2);
+  STREAM(1),
+  EMBEDDED_APPLICATION(2);
 
-    companion object {
-        /**
-         * The [TargetType] by its value.
-         *
-         * @param value the value.
-         * @return the [TargetType].
-         */
-        fun getValue(value: Int): TargetType {
-            return entries.first { it.value == value }
-        }
-    }
-
+  companion object {
     /**
-     * The value of the [TargetType].
+     * The [TargetType] by its value.
      *
-     * @return the value.
+     * @param value the value.
+     * @return the [TargetType].
      */
-    fun getValue(): Int {
-        return value
+    fun getValue(value: Int): TargetType {
+      return entries.first { it.value == value }
     }
+  }
+
+  /**
+   * The value of the [TargetType].
+   *
+   * @return the value.
+   */
+  fun getValue(): Int {
+    return value
+  }
 }

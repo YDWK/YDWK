@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,30 +21,30 @@ package io.github.ydwk.ydwk.evm.backend.managers
 import io.github.ydwk.ydwk.evm.backend.event.GenericEvent
 
 interface IEventManager {
-    /**
-     * Handels the event when it is called
-     *
-     * @param event The event that is called
-     */
-    suspend fun emitEvent(event: GenericEvent)
+  /**
+   * Handels the event when it is called
+   *
+   * @param event The event that is called
+   */
+  suspend fun emitEvent(event: GenericEvent)
 
-    /**
-     * Adds the event to the event handler
-     *
-     * @param event The event that is called
-     */
-    fun addEvent(event: Any)
+  /**
+   * Adds the event to the event handler
+   *
+   * @param event The event that is called
+   */
+  fun addEvent(event: Any)
 
-    /**
-     * Removes the event from the event handler
-     *
-     * @param event The event that is called
-     */
-    fun removeEvent(event: Any)
+  /**
+   * Removes the event from the event handler
+   *
+   * @param event The event that is called
+   */
+  fun removeEvent(event: Any)
 
-    /** Removes all the events from the event handler */
-    fun removeAllEvents()
+  /** Removes all the events from the event handler */
+  fun removeAllEvents()
 
-    /** The registered event listeners */
-    val events: MutableList<Any>
+  /** The registered event listeners */
+  val events: MutableList<Any>
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,8 +34,8 @@ import io.github.ydwk.ydwk.evm.event.events.guild.GenericGuildUpdateEvent
  */
 @GuildEvent
 data class GuildEmojisUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: Guild,
-    val oldEmojis: List<Emoji>,
-    val newEmojis: List<Emoji>,
+  override val ydwk: YDWK,
+  override val entity: Guild,
+  val oldEmojis: List<Emoji>,
+  val newEmojis: List<Emoji>,
 ) : GenericGuildUpdateEvent<List<Emoji>>(ydwk, entity, oldEmojis, newEmojis)

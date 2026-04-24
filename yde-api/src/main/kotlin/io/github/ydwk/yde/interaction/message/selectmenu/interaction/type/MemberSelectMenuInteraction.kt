@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,10 +22,10 @@ import io.github.ydwk.yde.entities.guild.Member
 import io.github.ydwk.yde.interaction.message.selectmenu.SelectMenuInteraction
 
 interface MemberSelectMenuInteraction : SelectMenuInteraction {
-    /**
-     * The selected members.
-     *
-     * @return the selected members
-     */
-    val selectedMembers: List<Member>
+  /**
+   * The selected members.
+   *
+   * @return the selected members
+   */
+  val selectedMembers: List<Member>
 }

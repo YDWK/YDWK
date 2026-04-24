@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,134 +31,135 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 class HeartBeat(
-    private val ydwk: YDWK,
-    private val webSocket: WebSocket,
-    var heartbeatJob: Job? = null,
+  private val ydwk: YDWK,
+  private val webSocket: WebSocket,
+  var heartbeatJob: Job? = null,
 ) {
-    private var heartbeatsMissed: Int = 0
-    private var heartbeatStartTime: Long = 0
-    private val wsScheduler: ExecutorCoroutineDispatcher = ydwk.defaultExecutorCoroutineDispatcher
-    private val voiceWsScheduler: ExecutorCoroutineDispatcher =
-        ydwk.defaultExecutorCoroutineDispatcher
-    private val logger: Logger = LoggerFactory.getLogger(HeartBeat::class.java)
+  private var heartbeatsMissed: Int = 0
+  private var heartbeatStartTime: Long = 0
+  private val wsScheduler: ExecutorCoroutineDispatcher = ydwk.defaultExecutorCoroutineDispatcher
+  private val voiceWsScheduler: ExecutorCoroutineDispatcher =
+    ydwk.defaultExecutorCoroutineDispatcher
+  private val logger: Logger = LoggerFactory.getLogger(HeartBeat::class.java)
 
-    fun startGateWayHeartbeat(heartbeatInterval: Long, connected: Boolean, seq: Int?) {
-        tryWebSocket(heartbeatInterval)
+  fun startGateWayHeartbeat(heartbeatInterval: Long, connected: Boolean, seq: Int?) {
+    tryWebSocket(heartbeatInterval)
 
-        val heartbeat: JsonNode =
-            ydwk.objectMapper.createObjectNode().put("op", OpCode.HEARTBEAT.code).put("d", seq)
+    val heartbeat: JsonNode =
+      ydwk.objectMapper.createObjectNode().put("op", OpCode.HEARTBEAT.code).put("d", seq)
 
-        heartbeatJob =
-            heartbeatThread(
-                heartbeatInterval,
-                connected,
-                heartbeat,
-                CloseCode.MISSED_HEARTBEAT.getCode(),
-                CloseCode.MISSED_HEARTBEAT.getReason())
+    heartbeatJob =
+      heartbeatThread(
+        heartbeatInterval,
+        connected,
+        heartbeat,
+        CloseCode.MISSED_HEARTBEAT.getCode(),
+        CloseCode.MISSED_HEARTBEAT.getReason(),
+      )
+  }
+
+  fun startVoiceHeartbeat(
+    heartbeatInterval: Long,
+    connected: Boolean,
+    voiceConnection: VoiceConnectionImpl,
+  ) {
+    tryWebSocket(heartbeatInterval)
+
+    heartbeatJob =
+      voiceHeartbeatThread(
+        heartbeatInterval,
+        connected,
+        VoiceCloseCode.MISSED_HEARTBEAT.code,
+        VoiceCloseCode.MISSED_HEARTBEAT.reason,
+        voiceConnection,
+      )
+  }
+
+  private fun tryWebSocket(heartbeatInterval: Long) {
+    try {
+      val rawSocket: Socket = webSocket.socket
+      rawSocket.soTimeout = (heartbeatInterval + 10000).toInt() // setup a timeout when we miss
+      // heartbeats
+    } catch (ex: SocketException) {
+      logger.warn("Failed to setup timeout for socket", ex)
     }
+  }
 
-    fun startVoiceHeartbeat(
-        heartbeatInterval: Long,
-        connected: Boolean,
-        voiceConnection: VoiceConnectionImpl,
-    ) {
-        tryWebSocket(heartbeatInterval)
-
-        heartbeatJob =
-            voiceHeartbeatThread(
-                heartbeatInterval,
-                connected,
-                VoiceCloseCode.MISSED_HEARTBEAT.code,
-                VoiceCloseCode.MISSED_HEARTBEAT.reason,
-                voiceConnection)
-    }
-
-    private fun tryWebSocket(heartbeatInterval: Long) {
-        try {
-            val rawSocket: Socket = webSocket.socket
-            rawSocket.soTimeout =
-                (heartbeatInterval + 10000).toInt() // setup a timeout when we miss
-            // heartbeats
-        } catch (ex: SocketException) {
-            logger.warn("Failed to setup timeout for socket", ex)
-        }
-    }
-
-    private fun heartbeatThread(
-        heartbeatInterval: Long,
-        connected: Boolean,
-        heartbeat: JsonNode,
-        closeCode: Int,
-        closeReason: String,
-    ): Job {
-        return CoroutineScope(wsScheduler).launch {
-            while (isActive) {
-                delay(heartbeatInterval)
-                if (connected) {
-                    sendHeartBeat(heartbeat, closeCode, closeReason)
-                } else {
-                    logger.info("Not sending heartbeat because not connected")
-                }
-            }
-        }
-    }
-
-    private fun voiceHeartbeatThread(
-        heartbeatInterval: Long,
-        connected: Boolean,
-        closeCode: Int,
-        closeReason: String,
-        voiceConnection: VoiceConnectionImpl,
-    ): Job {
-        return CoroutineScope(voiceWsScheduler).launch {
-            while (isActive) {
-                delay(heartbeatInterval)
-                if (connected) {
-                    handleVoiceConnection(closeCode, closeReason, voiceConnection)
-                } else {
-                    logger.info("Not sending heartbeat because not connected")
-                }
-            }
-        }
-    }
-
-    private fun handleVoiceConnection(
-        closeCode: Int,
-        closeReason: String,
-        voiceConnection: VoiceConnectionImpl,
-    ) {
-
-        if (webSocket.isOpen) {
-            val keepAlive =
-                ydwk.objectMapper
-                    .createObjectNode()
-                    .put("op", VoiceOpcode.HEARTBEAT.code)
-                    .put("d", System.currentTimeMillis())
-            sendHeartBeat(keepAlive, closeCode, closeReason)
-        }
-    }
-
-    private fun sendHeartBeat(json: JsonNode, closeCode: Int, closeReason: String) {
-
-        if (heartbeatsMissed >= 2) {
-            heartbeatsMissed = 0
-            logger.warn("Heartbeat missed, will attempt to reconnect")
-            webSocket.sendClose(closeCode, closeReason)
+  private fun heartbeatThread(
+    heartbeatInterval: Long,
+    connected: Boolean,
+    heartbeat: JsonNode,
+    closeCode: Int,
+    closeReason: String,
+  ): Job {
+    return CoroutineScope(wsScheduler).launch {
+      while (isActive) {
+        delay(heartbeatInterval)
+        if (connected) {
+          sendHeartBeat(heartbeat, closeCode, closeReason)
         } else {
-            heartbeatsMissed += 1
-            webSocket.sendText(json.toString())
-            heartbeatStartTime = System.currentTimeMillis()
+          logger.info("Not sending heartbeat because not connected")
         }
+      }
     }
+  }
 
-    fun stopVoiceHeartbeat() {
-        heartbeatJob?.cancel(CancellationException("Voice heartbeat stopped"))
-        heartbeatJob = null
+  private fun voiceHeartbeatThread(
+    heartbeatInterval: Long,
+    connected: Boolean,
+    closeCode: Int,
+    closeReason: String,
+    voiceConnection: VoiceConnectionImpl,
+  ): Job {
+    return CoroutineScope(voiceWsScheduler).launch {
+      while (isActive) {
+        delay(heartbeatInterval)
+        if (connected) {
+          handleVoiceConnection(closeCode, closeReason, voiceConnection)
+        } else {
+          logger.info("Not sending heartbeat because not connected")
+        }
+      }
     }
+  }
 
-    fun receivedHeartbeatAck() {
-        heartbeatsMissed = 0
-        val heartbeatTime = System.currentTimeMillis() - heartbeatStartTime
-        logger.debug("Heartbeat acknowledged, took {} ms", heartbeatTime)
+  private fun handleVoiceConnection(
+    closeCode: Int,
+    closeReason: String,
+    voiceConnection: VoiceConnectionImpl,
+  ) {
+
+    if (webSocket.isOpen) {
+      val keepAlive =
+        ydwk.objectMapper
+          .createObjectNode()
+          .put("op", VoiceOpcode.HEARTBEAT.code)
+          .put("d", System.currentTimeMillis())
+      sendHeartBeat(keepAlive, closeCode, closeReason)
     }
+  }
+
+  private fun sendHeartBeat(json: JsonNode, closeCode: Int, closeReason: String) {
+
+    if (heartbeatsMissed >= 2) {
+      heartbeatsMissed = 0
+      logger.warn("Heartbeat missed, will attempt to reconnect")
+      webSocket.sendClose(closeCode, closeReason)
+    } else {
+      heartbeatsMissed += 1
+      webSocket.sendText(json.toString())
+      heartbeatStartTime = System.currentTimeMillis()
+    }
+  }
+
+  fun stopVoiceHeartbeat() {
+    heartbeatJob?.cancel(CancellationException("Voice heartbeat stopped"))
+    heartbeatJob = null
+  }
+
+  fun receivedHeartbeatAck() {
+    heartbeatsMissed = 0
+    val heartbeatTime = System.currentTimeMillis() - heartbeatStartTime
+    logger.debug("Heartbeat acknowledged, took {} ms", heartbeatTime)
+  }
 }

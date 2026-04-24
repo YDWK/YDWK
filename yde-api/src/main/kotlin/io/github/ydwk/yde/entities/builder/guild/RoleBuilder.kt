@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,59 +26,59 @@ import java.util.*
 
 interface RoleBuilder : GenericEntityBuilder<Role> {
 
-    /**
-     * Sets the color of the role.
-     *
-     * @param color the color of the role.
-     * @return this builder.
-     */
-    fun setColor(color: Color): RoleBuilder
+  /**
+   * Sets the color of the role.
+   *
+   * @param color the color of the role.
+   * @return this builder.
+   */
+  fun setColor(color: Color): RoleBuilder
 
-    /**
-     * Weather if this role is pinned in the user listing.
-     *
-     * @param pinned if this role is pinned in the user listing.
-     * @return this builder
-     */
-    fun setPinned(pinned: Boolean): RoleBuilder
+  /**
+   * Weather if this role is pinned in the user listing.
+   *
+   * @param pinned if this role is pinned in the user listing.
+   * @return this builder
+   */
+  fun setPinned(pinned: Boolean): RoleBuilder
 
-    /**
-     * Sets the icon hash of the role.
-     *
-     * @param iconHash the icon hash of the role.
-     * @return this builder.
-     */
-    fun setIconHash(iconHash: String): RoleBuilder
+  /**
+   * Sets the icon hash of the role.
+   *
+   * @param iconHash the icon hash of the role.
+   * @return this builder.
+   */
+  fun setIconHash(iconHash: String): RoleBuilder
 
-    /**
-     * Sets the position of the role.
-     *
-     * @param position the position of the role.
-     * @return this builder.
-     */
-    fun setPosition(position: Int): RoleBuilder
+  /**
+   * Sets the position of the role.
+   *
+   * @param position the position of the role.
+   * @return this builder.
+   */
+  fun setPosition(position: Int): RoleBuilder
 
-    /**
-     * Sets the permissions of the role.
-     *
-     * @param permissions the permissions of the role.
-     * @return this builder.
-     */
-    fun setPermissions(permissions: EnumSet<GuildPermission>): RoleBuilder
+  /**
+   * Sets the permissions of the role.
+   *
+   * @param permissions the permissions of the role.
+   * @return this builder.
+   */
+  fun setPermissions(permissions: EnumSet<GuildPermission>): RoleBuilder
 
-    /**
-     * Whether this role is managed by an integration.
-     *
-     * @param managed whether this role is managed by an integration.
-     * @return this builder.
-     */
-    fun setManaged(managed: Boolean): RoleBuilder
+  /**
+   * Whether this role is managed by an integration.
+   *
+   * @param managed whether this role is managed by an integration.
+   * @return this builder.
+   */
+  fun setManaged(managed: Boolean): RoleBuilder
 
-    /**
-     * Whether this role is mentionable.
-     *
-     * @param mentionable whether this role is mentionable.
-     * @return this builder.
-     */
-    fun setMentionable(mentionable: Boolean): RoleBuilder
+  /**
+   * Whether this role is mentionable.
+   *
+   * @param mentionable whether this role is mentionable.
+   * @return this builder.
+   */
+  fun setMentionable(mentionable: Boolean): RoleBuilder
 }

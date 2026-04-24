@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,41 +21,41 @@ package io.github.ydwk.yde.entities.builder.guild
 /** Creates entities which are guild specific. */
 interface GuildEntitiesBuilder {
 
-    /**
-     * Creates a new role. This is used when creating a new guild as you don't need to specify a
-     * guild id.
-     *
-     * @param name the name of the role
-     * @return a new role builder
-     * @see RoleBuilder
-     */
-    fun createRole(name: String): RoleBuilder
+  /**
+   * Creates a new role. This is used when creating a new guild as you don't need to specify a guild
+   * id.
+   *
+   * @param name the name of the role
+   * @return a new role builder
+   * @see RoleBuilder
+   */
+  fun createRole(name: String): RoleBuilder
 
-    /**
-     * Creates a new role for a specific guild.
-     *
-     * @param name the name of the role
-     * @param guildId the id of the guild
-     * @return a new role builder
-     */
-    fun createRole(name: String, guildId: String): RoleBuilder
+  /**
+   * Creates a new role for a specific guild.
+   *
+   * @param name the name of the role
+   * @param guildId the id of the guild
+   * @return a new role builder
+   */
+  fun createRole(name: String, guildId: String): RoleBuilder
 
-    /**
-     * Creates a new channel. This is used when creating a new guild as you don't need to specify a
-     * guild id.
-     *
-     * @param name the name of the channel
-     * @return a new channel builder
-     * @see ChannelBuilder
-     */
-    fun createChannel(name: String): ChannelBuilder
+  /**
+   * Creates a new channel. This is used when creating a new guild as you don't need to specify a
+   * guild id.
+   *
+   * @param name the name of the channel
+   * @return a new channel builder
+   * @see ChannelBuilder
+   */
+  fun createChannel(name: String): ChannelBuilder
 
-    /**
-     * Creates a new channel for a specific guild.
-     *
-     * @param name the name of the channel
-     * @param guildId the id of the guild
-     * @return a new channel builder
-     */
-    fun createChannel(name: String, guildId: String): ChannelBuilder
+  /**
+   * Creates a new channel for a specific guild.
+   *
+   * @param name the name of the channel
+   * @param guildId the id of the guild
+   * @return a new channel builder
+   */
+  fun createChannel(name: String, guildId: String): ChannelBuilder
 }

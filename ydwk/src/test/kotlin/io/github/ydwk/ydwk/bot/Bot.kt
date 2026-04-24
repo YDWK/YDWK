@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,51 +29,47 @@ import io.github.ydwk.ydwk.util.ydwk
 import kotlinx.coroutines.runBlocking
 
 fun main() {
-    val jConfig = JConfig.build()
+  val jConfig = JConfig.build()
 
-    val tokenAsNode = jConfig["token"]
+  val tokenAsNode = jConfig["token"]
 
-    val token = tokenAsNode?.asText() ?: throw LoginException("Token not found!")
+  val token = tokenAsNode?.asText() ?: throw LoginException("Token not found!")
 
-    val ydwk =
-        buildBot(token)
-            .activity(Activity.playing("YDWK"))
-            .etfInsteadOfJson(true)
-            .build()
-            .buildYDWK()
+  val ydwk =
+    buildBot(token).activity(Activity.playing("YDWK")).etfInsteadOfJson(true).build().buildYDWK()
 
-    runBlocking {
-        ydwk.awaitReady().slashBuilder.addSlashCommand(SlashCommandBuilder("ping", "Pong!")).build()
+  runBlocking {
+    ydwk.awaitReady().slashBuilder.addSlashCommand(SlashCommandBuilder("ping", "Pong!")).build()
+  }
+
+  ydwk onSlashCommandEvent
+    {
+      when (it.slash.name) {
+        "ping" -> {
+          val string = "Pong!"
+          val guilds = it.slash.ydwk.requestPartialGuilds().getOrNull()
+
+          if (guilds != null) {
+            string + " " + guilds.size
+          }
+
+          it.slash.reply(string).setEphemeral(true).send()
+        }
+      }
     }
 
-    ydwk onSlashCommandEvent
-        {
-            when (it.slash.name) {
-                "ping" -> {
-                    val string = "Pong!"
-                    val guilds = it.slash.ydwk.requestPartialGuilds().getOrNull()
+  ydwk onReadyEvent
+    { it ->
+      println("Ready! ${it.ydwk.bot?.name}")
 
-                    if (guilds != null) {
-                        string + " " + guilds.size
-                    }
-
-                    it.slash.reply(string).setEphemeral(true).send()
-                }
-            }
-        }
-
-    ydwk onReadyEvent
-        { it ->
-            println("Ready! ${it.ydwk.bot?.name}")
-
-            it.ydwk
-                .requestChannelById("938122131949097055")
-                .getOrNull()
-                ?.channelGetter
-                ?.asGuildChannel()
-                ?.guildChannelGetter
-                ?.asGuildMessageChannel()
-                ?.sendMessage("Ready!")
-                ?.mapBoth({ println("Sent!") }, { println("Failed! ${it.message}") })
-        }
+      it.ydwk
+        .requestChannelById("938122131949097055")
+        .getOrNull()
+        ?.channelGetter
+        ?.asGuildChannel()
+        ?.guildChannelGetter
+        ?.asGuildMessageChannel()
+        ?.sendMessage("Ready!")
+        ?.mapBoth({ println("Sent!") }, { println("Failed! ${it.message}") })
+    }
 }

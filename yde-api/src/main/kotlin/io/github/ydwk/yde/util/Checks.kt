@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,39 +22,39 @@ import java.util.regex.Pattern
 
 object Checks {
 
-    fun checkLength(obj: String, length: Int, message: String) {
-        if (obj.length >= length) {
-            throw IllegalArgumentException(message)
-        }
+  fun checkLength(obj: String, length: Int, message: String) {
+    if (obj.length >= length) {
+      throw IllegalArgumentException(message)
     }
+  }
 
-    fun checkLength(obj: CharSequence, length: Int, message: String) {
-        if (obj.length >= length) {
-            throw IllegalArgumentException(message)
-        }
+  fun checkLength(obj: CharSequence, length: Int, message: String) {
+    if (obj.length >= length) {
+      throw IllegalArgumentException(message)
     }
+  }
 
-    fun checkLength(obj: String, min: Int, max: Int, message: String) {
-        if (obj.length < min || obj.length > max) {
-            throw IllegalArgumentException(message)
-        }
+  fun checkLength(obj: String, min: Int, max: Int, message: String) {
+    if (obj.length < min || obj.length > max) {
+      throw IllegalArgumentException(message)
     }
+  }
 
-    fun checkIfCapital(name: String, s: String) {
-        if (name[0].isUpperCase()) {
-            throw IllegalArgumentException(s)
-        }
+  fun checkIfCapital(name: String, s: String) {
+    if (name[0].isUpperCase()) {
+      throw IllegalArgumentException(s)
     }
+  }
 
-    fun checkUrl(url: String, pattern: Pattern) {
-        if (!pattern.matcher(url).matches()) {
-            throw IllegalArgumentException("Invalid url")
-        }
+  fun checkUrl(url: String, pattern: Pattern) {
+    if (!pattern.matcher(url).matches()) {
+      throw IllegalArgumentException("Invalid url")
     }
+  }
 
-    fun customCheck(b: Boolean, s: String) {
-        if (!b) {
-            throw IllegalArgumentException(s)
-        }
+  fun customCheck(b: Boolean, s: String) {
+    if (!b) {
+      throw IllegalArgumentException(s)
     }
+  }
 }

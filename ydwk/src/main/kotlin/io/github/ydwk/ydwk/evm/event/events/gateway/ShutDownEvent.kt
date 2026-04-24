@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,4 +33,4 @@ import java.time.Instant
  */
 @GatewayEvent
 data class ShutDownEvent(override val ydwk: YDWK, val closeCode: CloseCode, val instant: Instant) :
-    Event(ydwk)
+  Event(ydwk)

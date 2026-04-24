@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,10 +25,10 @@ import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import java.net.URL
 
 internal class ThumbnailImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val url: URL,
-    override val proxyUrl: String?,
-    override val height: Int?,
-    override val width: Int?
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val url: URL,
+  override val proxyUrl: String?,
+  override val height: Int?,
+  override val width: Int?,
 ) : Thumbnail, ToStringEntityImpl<Thumbnail>(yde, Thumbnail::class.java)

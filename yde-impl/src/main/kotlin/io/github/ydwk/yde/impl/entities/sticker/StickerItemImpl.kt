@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,13 +25,13 @@ import io.github.ydwk.yde.entities.sticker.StickerType
 import io.github.ydwk.yde.util.EntityToStringBuilder
 
 internal class StickerItemImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val idAsLong: Long,
-    override val name: String,
-    override val type: StickerType,
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val idAsLong: Long,
+  override val name: String,
+  override val type: StickerType,
 ) : StickerItem {
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).name(this.name).toString()
-    }
+  override fun toString(): String {
+    return EntityToStringBuilder(yde, this).name(this.name).toString()
+  }
 }

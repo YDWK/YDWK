@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,47 +25,47 @@ import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenuOption
 import io.github.ydwk.yde.entities.interaction.selectmenu.creator.types.SelectMenuOptionCreator
 
 class SelectMenuOptionCreatorBuilder(val yde: YDE) : SelectMenuOptionCreator {
-    private var label: String? = null
-    private var value: String? = null
-    private var description: String? = null
-    private var emoji: Emoji? = null
-    private var default: Boolean = false
+  private var label: String? = null
+  private var value: String? = null
+  private var description: String? = null
+  private var emoji: Emoji? = null
+  private var default: Boolean = false
 
-    override fun setLabel(label: String): SelectMenuOptionCreator {
-        this.label = label
-        return this
+  override fun setLabel(label: String): SelectMenuOptionCreator {
+    this.label = label
+    return this
+  }
+
+  override fun setValue(value: String): SelectMenuOptionCreator {
+    this.value = value
+    return this
+  }
+
+  override fun setDescription(description: String): SelectMenuOptionCreator {
+    this.description = description
+    return this
+  }
+
+  override fun setEmoji(emoji: Emoji): SelectMenuOptionCreator {
+    this.emoji = emoji
+    return this
+  }
+
+  override fun setDefault(default: Boolean): SelectMenuOptionCreator {
+    this.default = default
+    return this
+  }
+
+  override fun create(): SelectMenuOption {
+    val json = yde.objectNode.objectNode()
+    json.put("label", label)
+    json.put("value", value)
+    json.put("description", description)
+    if (emoji != null) {
+      json.set<ObjectNode>("emoji", emoji!!.json)
     }
+    json.put("default", default)
 
-    override fun setValue(value: String): SelectMenuOptionCreator {
-        this.value = value
-        return this
-    }
-
-    override fun setDescription(description: String): SelectMenuOptionCreator {
-        this.description = description
-        return this
-    }
-
-    override fun setEmoji(emoji: Emoji): SelectMenuOptionCreator {
-        this.emoji = emoji
-        return this
-    }
-
-    override fun setDefault(default: Boolean): SelectMenuOptionCreator {
-        this.default = default
-        return this
-    }
-
-    override fun create(): SelectMenuOption {
-        val json = yde.objectNode.objectNode()
-        json.put("label", label)
-        json.put("value", value)
-        json.put("description", description)
-        if (emoji != null) {
-            json.set<ObjectNode>("emoji", emoji!!.json)
-        }
-        json.put("default", default)
-
-        return yde.entityInstanceBuilder.buildSelectMenuOption(json)
-    }
+    return yde.entityInstanceBuilder.buildSelectMenuOption(json)
+  }
 }

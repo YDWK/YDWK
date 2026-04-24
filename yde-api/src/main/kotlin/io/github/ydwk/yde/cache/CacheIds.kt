@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,48 +19,48 @@
 package io.github.ydwk.yde.cache
 
 enum class CacheIds(private val value: String, private val cacheType: CacheType) {
-    GUILD("guild", CacheType.GUILD),
-    USER("user", CacheType.USER),
-    CHANNEL("channel", CacheType.CHANNEL),
-    ROLE("role", CacheType.ROLE),
-    EMOJI("emoji", CacheType.EMOJI),
-    MESSAGE("message", CacheType.MESSAGE),
-    STICKER("sticker", CacheType.STICKER),
-    MEMBER("member", CacheType.MEMBER),
-    ATTACHMENT("attachment", CacheType.ATTACHMENT),
-    APPLICATION("application", CacheType.APPLICATION),
-    UNKNOWN("unknown", CacheType.UNKNOWN);
+  GUILD("guild", CacheType.GUILD),
+  USER("user", CacheType.USER),
+  CHANNEL("channel", CacheType.CHANNEL),
+  ROLE("role", CacheType.ROLE),
+  EMOJI("emoji", CacheType.EMOJI),
+  MESSAGE("message", CacheType.MESSAGE),
+  STICKER("sticker", CacheType.STICKER),
+  MEMBER("member", CacheType.MEMBER),
+  ATTACHMENT("attachment", CacheType.ATTACHMENT),
+  APPLICATION("application", CacheType.APPLICATION),
+  UNKNOWN("unknown", CacheType.UNKNOWN);
 
-    companion object {
-        /** Get the [CacheIds] from a [String] type. */
-        fun fromString(string: String): CacheIds {
-            return entries.firstOrNull { it.value == string } ?: UNKNOWN
-        }
-
-        fun getDefaultCache(): Set<CacheIds> {
-            return setOf(GUILD, USER, CHANNEL, MESSAGE, MEMBER, ATTACHMENT, ROLE, APPLICATION)
-        }
-
-        fun getAllCache(): Set<CacheIds> {
-            return entries.toSet()
-        }
+  companion object {
+    /** Get the [CacheIds] from a [String] type. */
+    fun fromString(string: String): CacheIds {
+      return entries.firstOrNull { it.value == string } ?: UNKNOWN
     }
 
-    /**
-     * The value of the [CacheIds].
-     *
-     * @return The value of the [CacheIds].
-     */
-    fun getValue(): String {
-        return value
+    fun getDefaultCache(): Set<CacheIds> {
+      return setOf(GUILD, USER, CHANNEL, MESSAGE, MEMBER, ATTACHMENT, ROLE, APPLICATION)
     }
 
-    /**
-     * The [CacheType] of the [CacheIds].
-     *
-     * @return The [CacheType] of the [CacheIds].
-     */
-    fun getCacheType(): CacheType {
-        return cacheType
+    fun getAllCache(): Set<CacheIds> {
+      return entries.toSet()
     }
+  }
+
+  /**
+   * The value of the [CacheIds].
+   *
+   * @return The value of the [CacheIds].
+   */
+  fun getValue(): String {
+    return value
+  }
+
+  /**
+   * The [CacheType] of the [CacheIds].
+   *
+   * @return The [CacheType] of the [CacheIds].
+   */
+  fun getCacheType(): CacheType {
+    return cacheType
+  }
 }

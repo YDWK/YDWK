@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,22 +26,23 @@ import io.github.ydwk.ydwk.ws.voice.payload.VoiceServerUpdatePayload
 
 class VoiceServerUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
 
-    override suspend fun start() {
-        val guildId = json.get("guild_id").asLong()
-        val guild = ydwk.getGuildById(guildId) ?: throw IllegalStateException("Guild not found")
-        val voiceServerUpdatePayload =
-            VoiceServerUpdatePayload(
-                json.get("token").asText(),
-                guild,
-                if (json.has("endpoint")) json.get("endpoint").asText() else null)
+  override suspend fun start() {
+    val guildId = json.get("guild_id").asLong()
+    val guild = ydwk.getGuildById(guildId) ?: throw IllegalStateException("Guild not found")
+    val voiceServerUpdatePayload =
+      VoiceServerUpdatePayload(
+        json.get("token").asText(),
+        guild,
+        if (json.has("endpoint")) json.get("endpoint").asText() else null,
+      )
 
-        ydwk.logger.debug("Setting voice server payload")
-        (guild).getVoiceConnection()?.setVoiceServerUpdatePayload(voiceServerUpdatePayload)
+    ydwk.logger.debug("Setting voice server payload")
+    (guild).getVoiceConnection()?.setVoiceServerUpdatePayload(voiceServerUpdatePayload)
 
-        try {
-            guild.getVoiceConnection()?.connect()
-        } catch (e: IllegalStateException) {
-            throw IllegalStateException("Failed to connect to voice server", e)
-        }
+    try {
+      guild.getVoiceConnection()?.connect()
+    } catch (e: IllegalStateException) {
+      throw IllegalStateException("Failed to connect to voice server", e)
     }
+  }
 }

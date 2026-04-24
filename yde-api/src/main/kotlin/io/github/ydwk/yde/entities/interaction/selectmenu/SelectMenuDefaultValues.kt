@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,33 +21,33 @@ package io.github.ydwk.yde.entities.interaction.selectmenu
 import io.github.ydwk.yde.entities.util.GenericEntity
 
 interface SelectMenuDefaultValues : GenericEntity {
-    /**
-     * The type of value that id represents. Either "user", "role", or "channel"
-     *
-     * @return the type of value that id represents
-     */
-    val type: Type
+  /**
+   * The type of value that id represents. Either "user", "role", or "channel"
+   *
+   * @return the type of value that id represents
+   */
+  val type: Type
 
-    enum class Type(val value: String) {
-        USER("user"),
-        ROLE("role"),
-        CHANNEL("channel");
+  enum class Type(val value: String) {
+    USER("user"),
+    ROLE("role"),
+    CHANNEL("channel");
 
-        companion object {
-            /**
-             * Get the enum value from the string value.
-             *
-             * @param value the string value
-             * @return the enum value
-             */
-            fun getValue(value: String): Type {
-                return when (value) {
-                    "user" -> USER
-                    "role" -> ROLE
-                    "channel" -> CHANNEL
-                    else -> throw IllegalArgumentException("Unknown type: $value")
-                }
-            }
+    companion object {
+      /**
+       * Get the enum value from the string value.
+       *
+       * @param value the string value
+       * @return the enum value
+       */
+      fun getValue(value: String): Type {
+        return when (value) {
+          "user" -> USER
+          "role" -> ROLE
+          "channel" -> CHANNEL
+          else -> throw IllegalArgumentException("Unknown type: $value")
         }
+      }
     }
+  }
 }

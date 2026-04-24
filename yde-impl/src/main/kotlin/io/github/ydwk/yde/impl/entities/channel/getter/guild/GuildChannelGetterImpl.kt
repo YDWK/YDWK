@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,44 +29,44 @@ import io.github.ydwk.yde.entities.channel.guild.vc.GuildVoiceChannel
 import io.github.ydwk.yde.impl.entities.channel.guild.*
 
 internal class GuildChannelGetterImpl(guildChannel: GuildChannel) :
-    GuildChannelImpl(guildChannel), GuildChannelGetter {
-    override fun asGuildMessageChannel(): GuildMessageChannel? {
-        return if (type == ChannelType.TEXT || type == ChannelType.NEWS) {
-            yde.entityInstanceBuilder.buildGuildMessageChannel(json)
-        } else {
-            null
-        }
+  GuildChannelImpl(guildChannel), GuildChannelGetter {
+  override fun asGuildMessageChannel(): GuildMessageChannel? {
+    return if (type == ChannelType.TEXT || type == ChannelType.NEWS) {
+      yde.entityInstanceBuilder.buildGuildMessageChannel(json)
+    } else {
+      null
     }
+  }
 
-    override fun asGuildVoiceChannel(): GuildVoiceChannel? {
-        return if (type == ChannelType.VOICE) {
-            yde.entityInstanceBuilder.buildGuildVoiceChannel(json)
-        } else {
-            null
-        }
+  override fun asGuildVoiceChannel(): GuildVoiceChannel? {
+    return if (type == ChannelType.VOICE) {
+      yde.entityInstanceBuilder.buildGuildVoiceChannel(json)
+    } else {
+      null
     }
+  }
 
-    override fun asGuildStageChannel(): GuildStageChannel? {
-        return if (type == ChannelType.STAGE_VOICE) {
-            yde.entityInstanceBuilder.buildGuildStageChannel(json)
-        } else {
-            null
-        }
+  override fun asGuildStageChannel(): GuildStageChannel? {
+    return if (type == ChannelType.STAGE_VOICE) {
+      yde.entityInstanceBuilder.buildGuildStageChannel(json)
+    } else {
+      null
     }
+  }
 
-    override fun asGuildCategory(): GuildCategory? {
-        return if (type == ChannelType.CATEGORY) {
-            yde.entityInstanceBuilder.buildGuildCategory(json)
-        } else {
-            null
-        }
+  override fun asGuildCategory(): GuildCategory? {
+    return if (type == ChannelType.CATEGORY) {
+      yde.entityInstanceBuilder.buildGuildCategory(json)
+    } else {
+      null
     }
+  }
 
-    override fun asGuildForumChannel(): GuildForumChannel? {
-        return if (type == ChannelType.FORUM) {
-            yde.entityInstanceBuilder.buildGuildForumChannel(json)
-        } else {
-            null
-        }
+  override fun asGuildForumChannel(): GuildForumChannel? {
+    return if (type == ChannelType.FORUM) {
+      yde.entityInstanceBuilder.buildGuildForumChannel(json)
+    } else {
+      null
     }
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,25 +23,25 @@ import io.github.ydwk.yde.interaction.reply.Repliable
 
 interface TextInputInteraction : ComponentInteraction, Repliable {
 
-    /**
-     * The custom id of the text input.
-     *
-     * @return the custom id of the text input
-     */
-    val customId: String
+  /**
+   * The custom id of the text input.
+   *
+   * @return the custom id of the text input
+   */
+  val customId: String
 
-    /**
-     * The values of each text input.
-     *
-     * @return the values of each text input
-     */
-    val values: List<String>
+  /**
+   * The values of each text input.
+   *
+   * @return the values of each text input
+   */
+  val values: List<String>
 
-    /**
-     * The value of the text input by its custom id.
-     *
-     * @param customId The custom id of the text input.
-     * @return the value of the text input by its custom id
-     */
-    fun getValue(customId: String): String?
+  /**
+   * The value of the text input by its custom id.
+   *
+   * @param customId The custom id of the text input.
+   * @return the value of the text input by its custom id
+   */
+  fun getValue(customId: String): String?
 }

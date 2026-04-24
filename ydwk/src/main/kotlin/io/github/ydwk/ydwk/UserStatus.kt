@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,42 +20,42 @@ package io.github.ydwk.ydwk
 
 /** Sets the user status. */
 enum class UserStatus(private val status: String) {
-    ONLINE("online"),
+  ONLINE("online"),
 
-    /** Do not disturb. */
-    DND("dnd"),
+  /** Do not disturb. */
+  DND("dnd"),
 
-    /** Afk. */
-    IDLE("idle"),
+  /** Afk. */
+  IDLE("idle"),
 
-    /** Invisible and shown as offline. */
-    INVISIBLE("invisible"),
-    OFFLINE("offline");
+  /** Invisible and shown as offline. */
+  INVISIBLE("invisible"),
+  OFFLINE("offline");
 
-    companion object {
-        /**
-         * The UserStatus from the status string.
-         *
-         * @param status The status string.
-         * @return The UserStatus.
-         */
-        fun fromString(status: String): UserStatus {
-            return when (status) {
-                "online" -> ONLINE
-                "dnd" -> DND
-                "idle" -> IDLE
-                "invisible" -> INVISIBLE
-                else -> OFFLINE
-            }
-        }
-    }
-
+  companion object {
     /**
-     * The status string.
+     * The UserStatus from the status string.
      *
-     * @return The status string.
+     * @param status The status string.
+     * @return The UserStatus.
      */
-    fun getStatus(): String {
-        return status
+    fun fromString(status: String): UserStatus {
+      return when (status) {
+        "online" -> ONLINE
+        "dnd" -> DND
+        "idle" -> IDLE
+        "invisible" -> INVISIBLE
+        else -> OFFLINE
+      }
     }
+  }
+
+  /**
+   * The status string.
+   *
+   * @return The status string.
+   */
+  fun getStatus(): String {
+    return status
+  }
 }

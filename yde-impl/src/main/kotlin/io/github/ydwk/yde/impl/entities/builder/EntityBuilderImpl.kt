@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,11 +25,11 @@ import io.github.ydwk.yde.entities.builder.guild.GuildEntitiesBuilder
 import io.github.ydwk.yde.impl.entities.builder.guild.GuildEntitiesBuilderImpl
 
 internal class EntityBuilderImpl(val yde: YDE) : EntityBuilder {
-    override fun createGuild(name: String): GuildBuilder {
-        return GuildBuilderImpl(yde, name)
-    }
+  override fun createGuild(name: String): GuildBuilder {
+    return GuildBuilderImpl(yde, name)
+  }
 
-    override fun getGuildEntitiesBuilder(): GuildEntitiesBuilder {
-        return GuildEntitiesBuilderImpl(yde)
-    }
+  override fun getGuildEntitiesBuilder(): GuildEntitiesBuilder {
+    return GuildEntitiesBuilderImpl(yde)
+  }
 }

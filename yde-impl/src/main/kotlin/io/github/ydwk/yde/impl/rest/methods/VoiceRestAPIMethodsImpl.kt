@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,14 +26,14 @@ import io.github.ydwk.yde.rest.json
 import io.github.ydwk.yde.rest.methods.VoiceRestAPIMethods
 
 class VoiceRestAPIMethodsImpl(val yde: YDE) : VoiceRestAPIMethods {
-    override suspend fun requestVoiceRegions(): RestResult<List<VoiceState.VoiceRegion>> {
-        return yde.restApiManager.get(EndPoint.VoiceEndpoint.GET_VOICE_REGIONS).execute {
-            val voiceRegions: MutableList<VoiceState.VoiceRegion> = mutableListOf()
-            val jsonBody = it.json(yde)
-            jsonBody.forEach { json ->
-                voiceRegions.add(yde.entityInstanceBuilder.buildVoiceRegion(json))
-            }
-            voiceRegions
-        }
+  override suspend fun requestVoiceRegions(): RestResult<List<VoiceState.VoiceRegion>> {
+    return yde.restApiManager.get(EndPoint.VoiceEndpoint.GET_VOICE_REGIONS).execute {
+      val voiceRegions: MutableList<VoiceState.VoiceRegion> = mutableListOf()
+      val jsonBody = it.json(yde)
+      jsonBody.forEach { json ->
+        voiceRegions.add(yde.entityInstanceBuilder.buildVoiceRegion(json))
+      }
+      voiceRegions
     }
+  }
 }

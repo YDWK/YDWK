@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,24 +22,24 @@ import io.github.ydwk.yde.entities.util.GenericEntity
 import io.github.ydwk.yde.util.GetterSnowFlake
 
 interface MessageReference : GenericEntity {
-    /**
-     * The id of the message.
-     *
-     * @return The id of the message.
-     */
-    val messageId: GetterSnowFlake
+  /**
+   * The id of the message.
+   *
+   * @return The id of the message.
+   */
+  val messageId: GetterSnowFlake
 
-    /**
-     * The id of the channel.
-     *
-     * @return The id of the channel.
-     */
-    val channelId: GetterSnowFlake
+  /**
+   * The id of the channel.
+   *
+   * @return The id of the channel.
+   */
+  val channelId: GetterSnowFlake
 
-    /**
-     * The id of the guild.
-     *
-     * @return The id of the guild.
-     */
-    val guildId: GetterSnowFlake
+  /**
+   * The id of the guild.
+   *
+   * @return The id of the guild.
+   */
+  val guildId: GetterSnowFlake
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,12 +27,12 @@ import io.github.ydwk.yde.entities.audit.AuditLogType
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
 internal class AuditLogEntryImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val idAsLong: Long,
-    override val targetId: String?,
-    override val changes: List<AuditLogChange>,
-    override val user: User?,
-    override val type: AuditLogType,
-    override val reason: String?,
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val idAsLong: Long,
+  override val targetId: String?,
+  override val changes: List<AuditLogChange>,
+  override val user: User?,
+  override val type: AuditLogType,
+  override val reason: String?,
 ) : AuditLogEntry, ToStringEntityImpl<AuditLogEntry>(yde, AuditLogEntry::class.java)

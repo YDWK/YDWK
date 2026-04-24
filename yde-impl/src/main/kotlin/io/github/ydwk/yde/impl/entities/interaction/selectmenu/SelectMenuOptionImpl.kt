@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,11 +25,11 @@ import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenuOption
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
 class SelectMenuOptionImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val label: String,
-    override val value: String,
-    override val description: String?,
-    override val emoji: Emoji?,
-    override val default: Boolean,
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val label: String,
+  override val value: String,
+  override val description: String?,
+  override val emoji: Emoji?,
+  override val default: Boolean,
 ) : SelectMenuOption, ToStringEntityImpl<SelectMenuOption>(yde, SelectMenuOption::class.java)

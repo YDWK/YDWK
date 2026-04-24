@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,25 +24,24 @@ import io.github.ydwk.yde.entities.util.GenericEntity
 import io.github.ydwk.yde.util.GetterSnowFlake
 
 interface EntityMetadata : GenericEntity {
-    /**
-     * The scheduled event id which the user subscribed to.
-     *
-     * @return the scheduled event id which the user subscribed to.
-     */
-    val scheduledEventId: GetterSnowFlake
+  /**
+   * The scheduled event id which the user subscribed to.
+   *
+   * @return the scheduled event id which the user subscribed to.
+   */
+  val scheduledEventId: GetterSnowFlake
 
-    /**
-     * The user which subscribed to an event.
-     *
-     * @return the user which subscribed to an event.
-     */
-    val user: User
+  /**
+   * The user which subscribed to an event.
+   *
+   * @return the user which subscribed to an event.
+   */
+  val user: User
 
-    /**
-     * The guild member data for this user for the guild which this event belongs to, if any.
-     *
-     * @return the guild member data for this user for the guild which this event belongs to, if
-     *   any.
-     */
-    val member: Member?
+  /**
+   * The guild member data for this user for the guild which this event belongs to, if any.
+   *
+   * @return the guild member data for this user for the guild which this event belongs to, if any.
+   */
+  val member: Member?
 }

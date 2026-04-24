@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,10 +34,14 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
  */
 @ChannelEvent
 data class MessageChannelDefaultAutoArchiveDurationUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: GuildMessageChannel,
-    val oldDefaultAutoArchiveDuration: Int,
-    val newDefaultAutoArchiveDuration: Int,
+  override val ydwk: YDWK,
+  override val entity: GuildMessageChannel,
+  val oldDefaultAutoArchiveDuration: Int,
+  val newDefaultAutoArchiveDuration: Int,
 ) :
-    GenericChannelUpdateEvent<Int>(
-        ydwk, entity, oldDefaultAutoArchiveDuration, newDefaultAutoArchiveDuration)
+  GenericChannelUpdateEvent<Int>(
+    ydwk,
+    entity,
+    oldDefaultAutoArchiveDuration,
+    newDefaultAutoArchiveDuration,
+  )

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,17 +23,17 @@ import io.github.ydwk.yde.entities.util.GenericEntity
 
 /** This class is used to represent a guild welcome screen object. */
 interface WelcomeScreen : GenericEntity {
-    /**
-     * The description of the Welcome Screen, if the guild has it enabled.
-     *
-     * @return The description of the Welcome Screen, if the guild has it enabled.
-     */
-    var description: String?
+  /**
+   * The description of the Welcome Screen, if the guild has it enabled.
+   *
+   * @return The description of the Welcome Screen, if the guild has it enabled.
+   */
+  var description: String?
 
-    /**
-     * The channels shown in the Welcome Screen, if the guild has it enabled.
-     *
-     * @return The channels shown in the Welcome Screen, if the guild has it enabled.
-     */
-    var welcomeChannels: List<WelcomeChannel>
+  /**
+   * The channels shown in the Welcome Screen, if the guild has it enabled.
+   *
+   * @return The channels shown in the Welcome Screen, if the guild has it enabled.
+   */
+  var welcomeChannels: List<WelcomeChannel>
 }

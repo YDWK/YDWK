@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,10 +22,10 @@ import io.github.ydwk.yde.entities.interaction.actionrow.ActionRow
 
 interface ActionRowCreator {
 
-    /**
-     * Creates an action row.
-     *
-     * @return The created action row.
-     */
-    fun create(): ActionRow
+  /**
+   * Creates an action row.
+   *
+   * @return The created action row.
+   */
+  fun create(): ActionRow
 }

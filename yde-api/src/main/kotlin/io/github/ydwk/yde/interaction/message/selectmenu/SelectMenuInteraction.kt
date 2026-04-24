@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,31 +23,31 @@ import io.github.ydwk.yde.interaction.reply.Repliable
 
 interface SelectMenuInteraction : ComponentInteraction, Repliable {
 
-    /**
-     * The custom id of the select menu.
-     *
-     * @return the custom id of the select menu
-     */
-    val customId: String
+  /**
+   * The custom id of the select menu.
+   *
+   * @return the custom id of the select menu
+   */
+  val customId: String
 
-    /**
-     * The placeholder of the select menu.
-     *
-     * @return the placeholder of the select menu
-     */
-    val placeholder: String
+  /**
+   * The placeholder of the select menu.
+   *
+   * @return the placeholder of the select menu
+   */
+  val placeholder: String
 
-    /**
-     * The minimum number of options that must be selected.
-     *
-     * @return the minimum number of options that must be selected
-     */
-    val minValues: Int
+  /**
+   * The minimum number of options that must be selected.
+   *
+   * @return the minimum number of options that must be selected
+   */
+  val minValues: Int
 
-    /**
-     * The maximum number of options that can be selected.
-     *
-     * @return the maximum number of options that can be selected
-     */
-    val maxValues: Int
+  /**
+   * The maximum number of options that can be selected.
+   *
+   * @return the maximum number of options that can be selected
+   */
+  val maxValues: Int
 }

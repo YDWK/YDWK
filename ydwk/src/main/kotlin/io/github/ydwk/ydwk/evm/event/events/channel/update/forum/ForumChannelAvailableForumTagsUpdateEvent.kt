@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,10 +34,14 @@ import io.github.ydwk.ydwk.evm.event.events.channel.GenericChannelUpdateEvent
  */
 @ChannelEvent
 data class ForumChannelAvailableForumTagsUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: GuildForumChannel,
-    val oldAvailableForumTags: List<ForumTag>,
-    val newAvailableForumTags: List<ForumTag>,
+  override val ydwk: YDWK,
+  override val entity: GuildForumChannel,
+  val oldAvailableForumTags: List<ForumTag>,
+  val newAvailableForumTags: List<ForumTag>,
 ) :
-    GenericChannelUpdateEvent<List<ForumTag>>(
-        ydwk, entity, oldAvailableForumTags, newAvailableForumTags)
+  GenericChannelUpdateEvent<List<ForumTag>>(
+    ydwk,
+    entity,
+    oldAvailableForumTags,
+    newAvailableForumTags,
+  )

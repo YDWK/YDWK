@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,24 +26,26 @@ import io.github.ydwk.yde.interaction.message.ComponentInteractionData
 import io.github.ydwk.yde.interaction.message.ComponentType
 
 class ComponentInteractionDataImpl(
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val customId: String,
+  override val componentType: ComponentType,
+  override val values: List<ComponentInteractionData.SelectOptionValue>?,
+) :
+  ComponentInteractionData,
+  ToStringEntityImpl<ComponentInteractionData>(yde, ComponentInteractionData::class.java) {
+  class SelectOptionValueImpl(
     override val yde: YDE,
     override val json: JsonNode,
-    override val customId: String,
-    override val componentType: ComponentType,
-    override val values: List<ComponentInteractionData.SelectOptionValue>?
-) :
-    ComponentInteractionData,
-    ToStringEntityImpl<ComponentInteractionData>(yde, ComponentInteractionData::class.java) {
-    class SelectOptionValueImpl(
-        override val yde: YDE,
-        override val json: JsonNode,
-        override val label: String,
-        override val value: String,
-        override val description: String?,
-        override val emoji: Emoji?,
-        override val default: Boolean?
-    ) :
-        ComponentInteractionData.SelectOptionValue,
-        ToStringEntityImpl<ComponentInteractionData.SelectOptionValue>(
-            yde, ComponentInteractionData.SelectOptionValue::class.java)
+    override val label: String,
+    override val value: String,
+    override val description: String?,
+    override val emoji: Emoji?,
+    override val default: Boolean?,
+  ) :
+    ComponentInteractionData.SelectOptionValue,
+    ToStringEntityImpl<ComponentInteractionData.SelectOptionValue>(
+      yde,
+      ComponentInteractionData.SelectOptionValue::class.java,
+    )
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,19 +24,19 @@ import io.github.ydwk.yde.entities.builder.guild.GuildEntitiesBuilder
 import io.github.ydwk.yde.entities.builder.guild.RoleBuilder
 
 internal class GuildEntitiesBuilderImpl(val yde: YDE) : GuildEntitiesBuilder {
-    override fun createRole(name: String): RoleBuilder {
-        return RoleBuilderImpl(yde, null, name)
-    }
+  override fun createRole(name: String): RoleBuilder {
+    return RoleBuilderImpl(yde, null, name)
+  }
 
-    override fun createRole(name: String, guildId: String): RoleBuilder {
-        return RoleBuilderImpl(yde, guildId, name)
-    }
+  override fun createRole(name: String, guildId: String): RoleBuilder {
+    return RoleBuilderImpl(yde, guildId, name)
+  }
 
-    override fun createChannel(name: String): ChannelBuilder {
-        return ChannelBuilderImpl(yde, null, name)
-    }
+  override fun createChannel(name: String): ChannelBuilder {
+    return ChannelBuilderImpl(yde, null, name)
+  }
 
-    override fun createChannel(name: String, guildId: String): ChannelBuilder {
-        return ChannelBuilderImpl(yde, guildId, name)
-    }
+  override fun createChannel(name: String, guildId: String): ChannelBuilder {
+    return ChannelBuilderImpl(yde, guildId, name)
+  }
 }

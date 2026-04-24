@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,220 +40,219 @@ import kotlinx.coroutines.*
 import org.slf4j.LoggerFactory
 
 class YDWKImpl(
-    override var client: HttpClient,
-    override var token: String? = null,
-    override var guildIdList: MutableList<String> = mutableListOf(),
-    applicationId: String? = null,
+  override var client: HttpClient,
+  override var token: String? = null,
+  override var guildIdList: MutableList<String> = mutableListOf(),
+  applicationId: String? = null,
 ) :
-    YDWK,
-    YDEImpl(
-        token,
-        applicationId,
-        client,
-        guildIdList,
-        YDWKInfo.GITHUB_URL.getUrl(),
-        YDWKInfo.YDWK_VERSION.getUrl()) {
+  YDWK,
+  YDEImpl(
+    token,
+    applicationId,
+    client,
+    guildIdList,
+    YDWKInfo.GITHUB_URL.getUrl(),
+    YDWKInfo.YDWK_VERSION.getUrl(),
+  ) {
 
-    private val simpleEventManager: SampleEventManager = SampleEventManager()
-    private val coroutineEventManager: CoroutineEventManager = CoroutineEventManager()
-    private val ydwkLogger = LoggerFactory.getLogger(YDWK::class.java)
+  private val simpleEventManager: SampleEventManager = SampleEventManager()
+  private val coroutineEventManager: CoroutineEventManager = CoroutineEventManager()
+  private val ydwkLogger = LoggerFactory.getLogger(YDWK::class.java)
 
-    override val defaultExecutorCoroutineDispatcher: ExecutorCoroutineDispatcher =
-        Executors.newVirtualThreadPerTaskExecutor().asCoroutineDispatcher()
+  override val defaultExecutorCoroutineDispatcher: ExecutorCoroutineDispatcher =
+    Executors.newVirtualThreadPerTaskExecutor().asCoroutineDispatcher()
 
-    override val eventListener: EventListeners
-        get() = EventListeners(this)
+  override val eventListener: EventListeners
+    get() = EventListeners(this)
 
-    override var webSocketManager: WebSocketManager? = null
-        private set
+  override var webSocketManager: WebSocketManager? = null
+    private set
 
-    override fun shutdownAPI() {
-        val oneToFiveSecondTimeout = Random.nextLong(1000, 5000)
-        shutDownRestApi()
-        ydwkLogger.info("Timeout for $oneToFiveSecondTimeout then shutting down")
+  override fun shutdownAPI() {
+    val oneToFiveSecondTimeout = Random.nextLong(1000, 5000)
+    shutDownRestApi()
+    ydwkLogger.info("Timeout for $oneToFiveSecondTimeout then shutting down")
 
+    try {
+      Thread.sleep(oneToFiveSecondTimeout)
+    } catch (e: InterruptedException) {
+      ydwkLogger.error("Error while sleeping" + e.message)
+    }
+
+    try {
+      webSocketManager?.triggerShutdown()
+    } catch (e: Exception) {
+      ydwkLogger.error("Error while shutting down websocket" + e.message)
+    }
+  }
+
+  private fun shutDownRestApi() {
+    try {
+      client.close()
+    } catch (e: Exception) {
+      ydwkLogger.error("Error while shutting down rest api" + e.message)
+    }
+  }
+
+  fun enableShutDownHook() {
+    Runtime.getRuntime()
+      .addShutdownHook(
+        Thread {
+          ydwkLogger.info("Received shutdown code triggered by user or API, shutting down")
+          shutdownAPI()
+        }
+      )
+  }
+
+  override val uptime: Instant
+    get() = webSocketManager!!.upTime ?: throw IllegalStateException("Bot is not logged in")
+
+  override fun setGuildIds(vararg guildIds: String) {
+    guildIds.forEach { this.guildIdList.add(it) }
+  }
+
+  override var bot: Bot? = null
+    get() {
+      while (field == null) {
         try {
-            Thread.sleep(oneToFiveSecondTimeout)
+          Thread.sleep(1000)
         } catch (e: InterruptedException) {
-            ydwkLogger.error("Error while sleeping" + e.message)
+          e.printStackTrace()
         }
+      } // wait for bot to be set
+      return field
+    }
 
+  override var partialApplication: PartialApplication? = null
+    get() {
+      while (field == null) {
         try {
-            webSocketManager?.triggerShutdown()
-        } catch (e: Exception) {
-            ydwkLogger.error("Error while shutting down websocket" + e.message)
+          Thread.sleep(1000)
+        } catch (e: InterruptedException) {
+          e.printStackTrace()
+        } finally {
+          if (field == null) {
+            error("Partial Application is null")
+          }
         }
+      } // wait for application to be set
+      return field
     }
 
-    private fun shutDownRestApi() {
+  override var application: Application? = null
+    get() {
+      while (field == null) {
         try {
-            client.close()
-        } catch (e: Exception) {
-            ydwkLogger.error("Error while shutting down rest api" + e.message)
+          Thread.sleep(1000)
+        } catch (e: InterruptedException) {
+          e.printStackTrace()
+        } finally {
+          if (field == null) {
+            error("Application is null")
+          }
         }
+      } // wait for application to be set
+      return field
     }
 
-    fun enableShutDownHook() {
-        Runtime.getRuntime()
-            .addShutdownHook(
-                Thread {
-                    ydwkLogger.info(
-                        "Received shutdown code triggered by user or API, shutting down")
-                    shutdownAPI()
-                })
-    }
+  override var loggedInStatus: LoggedIn? = null
+    private set
 
-    override val uptime: Instant
-        get() = webSocketManager!!.upTime ?: throw IllegalStateException("Bot is not logged in")
+  override suspend fun awaitReady(): YDWK {
+    val ws = webSocketManager ?: throw IllegalStateException("Bot is not logged in")
+    while (!ws.ready) {
+      delay(1000)
+      ydwkLogger.debug("Waiting for bot to be ready")
+    } // wait for bot to be ready
+    return this
+  }
 
-    override fun setGuildIds(vararg guildIds: String) {
-        guildIds.forEach { this.guildIdList.add(it) }
-    }
-
-    override var bot: Bot? = null
-        get() {
-            while (field == null) {
-                try {
-                    Thread.sleep(1000)
-                } catch (e: InterruptedException) {
-                    e.printStackTrace()
-                }
-            } // wait for bot to be set
-            return field
+  override fun addEventListeners(vararg eventListeners: Any) {
+    for (eventListener in eventListeners) {
+      when (eventListener) {
+        is IEventListener -> {
+          simpleEventManager.addEvent(eventListener)
         }
-
-    override var partialApplication: PartialApplication? = null
-        get() {
-            while (field == null) {
-                try {
-                    Thread.sleep(1000)
-                } catch (e: InterruptedException) {
-                    e.printStackTrace()
-                } finally {
-                    if (field == null) {
-                        error("Partial Application is null")
-                    }
-                }
-            } // wait for application to be set
-            return field
+        is CoroutineEventListener -> {
+          coroutineEventManager.addEvent(eventListener)
         }
-
-    override var application: Application? = null
-        get() {
-            while (field == null) {
-                try {
-                    Thread.sleep(1000)
-                } catch (e: InterruptedException) {
-                    e.printStackTrace()
-                } finally {
-                    if (field == null) {
-                        error("Application is null")
-                    }
-                }
-            } // wait for application to be set
-            return field
+        else -> {
+          error("Event listener is not an instance of EventListener or CoroutineEventListener")
         }
-
-    override var loggedInStatus: LoggedIn? = null
-        private set
-
-    override suspend fun awaitReady(): YDWK {
-        val ws = webSocketManager ?: throw IllegalStateException("Bot is not logged in")
-        while (!ws.ready) {
-            delay(1000)
-            ydwkLogger.debug("Waiting for bot to be ready")
-        } // wait for bot to be ready
-        return this
+      }
     }
+  }
 
-    override fun addEventListeners(vararg eventListeners: Any) {
-        for (eventListener in eventListeners) {
-            when (eventListener) {
-                is IEventListener -> {
-                    simpleEventManager.addEvent(eventListener)
-                }
-                is CoroutineEventListener -> {
-                    coroutineEventManager.addEvent(eventListener)
-                }
-                else -> {
-                    error(
-                        "Event listener is not an instance of EventListener or CoroutineEventListener")
-                }
-            }
+  override fun removeEventListeners(vararg eventListeners: Any) {
+    for (eventListener in eventListeners) {
+      when (eventListener) {
+        is IEventListener -> {
+          simpleEventManager.removeEvent(eventListener)
         }
-    }
-
-    override fun removeEventListeners(vararg eventListeners: Any) {
-        for (eventListener in eventListeners) {
-            when (eventListener) {
-                is IEventListener -> {
-                    simpleEventManager.removeEvent(eventListener)
-                }
-                is CoroutineEventListener -> {
-                    coroutineEventManager.removeEvent(eventListener)
-                }
-                else -> {
-                    error(
-                        "Event listener is not an instance of EventListener or CoroutineEventListener")
-                }
-            }
+        is CoroutineEventListener -> {
+          coroutineEventManager.removeEvent(eventListener)
         }
-    }
-
-    override fun emitEvent(event: GenericEvent) {
-        try {
-            CoroutineScope(coroutineDispatcher)
-                .launch {
-                    simpleEventManager.emitEvent(event)
-                    coroutineEventManager.emitEvent(event)
-                }
-                .invokeOnCompletion {
-                    if (it != null) {
-                        ydwkLogger.error("Error while emitting event" + it.message)
-                    }
-                }
-        } catch (e: Exception) {
-            ydwkLogger.error("Error while emitting event" + e.message)
+        else -> {
+          error("Event listener is not an instance of EventListener or CoroutineEventListener")
         }
+      }
     }
+  }
 
-    /**
-     * Starts the websocket manager
-     *
-     * @param token The token of the bot which is used to authenticate the bot.
-     * @param intents The gateway intent which will decide what events are sent by discord.
-     * @param userStatus The status of the bot.
-     * @param activity The activity of the bot.
-     * @param etfInsteadOfJson Whether to use ETF instead of JSON.
-     */
-    fun setWebSocketManager(
-        token: String,
-        intents: List<GateWayIntent>,
-        userStatus: UserStatus? = null,
-        activity: ActivityPayload? = null,
-        etfInsteadOfJson: Boolean,
-    ) {
-        val ws: WebSocketManager?
-        ws = WebSocketManager(this, token, intents, userStatus, activity, etfInsteadOfJson)
-        this.webSocketManager = ws.connect()
-        // this.webSocketManager!!.deleteMessageCachePast14Days()
-        this.token = token
+  override fun emitEvent(event: GenericEvent) {
+    try {
+      CoroutineScope(coroutineDispatcher)
+        .launch {
+          simpleEventManager.emitEvent(event)
+          coroutineEventManager.emitEvent(event)
+        }
+        .invokeOnCompletion {
+          if (it != null) {
+            ydwkLogger.error("Error while emitting event" + it.message)
+          }
+        }
+    } catch (e: Exception) {
+      ydwkLogger.error("Error while emitting event" + e.message)
     }
+  }
 
-    /**
-     * Sets the logged in status
-     *
-     * @param loggedIn The logged in status which is used to send messages to discord.
-     */
-    fun setLoggedIn(loggedIn: LoggedIn) {
-        this.loggedInStatus = loggedIn
-    }
+  /**
+   * Starts the websocket manager
+   *
+   * @param token The token of the bot which is used to authenticate the bot.
+   * @param intents The gateway intent which will decide what events are sent by discord.
+   * @param userStatus The status of the bot.
+   * @param activity The activity of the bot.
+   * @param etfInsteadOfJson Whether to use ETF instead of JSON.
+   */
+  fun setWebSocketManager(
+    token: String,
+    intents: List<GateWayIntent>,
+    userStatus: UserStatus? = null,
+    activity: ActivityPayload? = null,
+    etfInsteadOfJson: Boolean,
+  ) {
+    val ws: WebSocketManager?
+    ws = WebSocketManager(this, token, intents, userStatus, activity, etfInsteadOfJson)
+    this.webSocketManager = ws.connect()
+    // this.webSocketManager!!.deleteMessageCachePast14Days()
+    this.token = token
+  }
 
-    override fun toString(): String {
-        return EntityToStringBuilder(this, this)
-            .add("token", token)
-            .add("applicationId", applicationId)
-            .add("uptime", uptime)
-            .toString()
-    }
+  /**
+   * Sets the logged in status
+   *
+   * @param loggedIn The logged in status which is used to send messages to discord.
+   */
+  fun setLoggedIn(loggedIn: LoggedIn) {
+    this.loggedInStatus = loggedIn
+  }
+
+  override fun toString(): String {
+    return EntityToStringBuilder(this, this)
+      .add("token", token)
+      .add("applicationId", applicationId)
+      .add("uptime", uptime)
+      .toString()
+  }
 }

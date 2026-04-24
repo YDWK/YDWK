@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,26 +23,26 @@ import io.github.ydwk.yde.entities.channel.DmChannel
 import io.github.ydwk.yde.rest.RestResult
 
 interface UserRestAPIMethods {
-    /**
-     * Creates a direct message channel with this user.
-     *
-     * @param id the id of the user.
-     * @return A [RestResult] that will contain the created [DmChannel].
-     */
-    suspend fun createDm(id: Long): RestResult<DmChannel>
+  /**
+   * Creates a direct message channel with this user.
+   *
+   * @param id the id of the user.
+   * @return A [RestResult] that will contain the created [DmChannel].
+   */
+  suspend fun createDm(id: Long): RestResult<DmChannel>
 
-    /**
-     * Request a user by its id.
-     *
-     * @param id the id of the user.
-     * @return A [RestResult] that will contain the requested [User].
-     */
-    suspend fun requestUser(id: Long): RestResult<User>
+  /**
+   * Request a user by its id.
+   *
+   * @param id the id of the user.
+   * @return A [RestResult] that will contain the requested [User].
+   */
+  suspend fun requestUser(id: Long): RestResult<User>
 
-    /**
-     * Request to get a list of all the users that are visible to the bot.
-     *
-     * @return A [RestResult] that will contain a list of [User]s.
-     */
-    suspend fun requestUsers(): RestResult<List<User>>
+  /**
+   * Request to get a list of all the users that are visible to the bot.
+   *
+   * @return A [RestResult] that will contain a list of [User]s.
+   */
+  suspend fun requestUsers(): RestResult<List<User>>
 }

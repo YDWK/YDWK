@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,51 +35,51 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
 internal class MessageImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val idAsLong: Long,
-    override val channelId: GetterSnowFlake,
-    override val author: User,
-    override val content: String,
-    override val time: String,
-    override val editedTime: String?,
-    override val tts: Boolean,
-    override val mentionEveryone: Boolean,
-    override val mentionedUsers: List<User>,
-    override val mentionedRoleIds: List<GetterSnowFlake>,
-    override val mentionedChannels: List<MentionedChannel>,
-    override val attachments: List<Attachment>,
-    override val embeds: List<Embed>,
-    override val reactions: List<Reaction>,
-    override val nonce: String?,
-    override val pinned: Boolean,
-    override val webhookId: GetterSnowFlake?,
-    override val type: MessageType,
-    override val activity: MessageActivity?,
-    override val application: PartialApplication?,
-    override val messageReference: MessageReference?,
-    override val flags: MessageFlag?,
-    override val referencedMessage: Message?,
-    override val interaction: MessageInteraction?,
-    override val thread: Channel?,
-    override val components: List<Component>,
-    override val stickerItems: List<StickerItem>,
-    override val position: Long?,
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val idAsLong: Long,
+  override val channelId: GetterSnowFlake,
+  override val author: User,
+  override val content: String,
+  override val time: String,
+  override val editedTime: String?,
+  override val tts: Boolean,
+  override val mentionEveryone: Boolean,
+  override val mentionedUsers: List<User>,
+  override val mentionedRoleIds: List<GetterSnowFlake>,
+  override val mentionedChannels: List<MentionedChannel>,
+  override val attachments: List<Attachment>,
+  override val embeds: List<Embed>,
+  override val reactions: List<Reaction>,
+  override val nonce: String?,
+  override val pinned: Boolean,
+  override val webhookId: GetterSnowFlake?,
+  override val type: MessageType,
+  override val activity: MessageActivity?,
+  override val application: PartialApplication?,
+  override val messageReference: MessageReference?,
+  override val flags: MessageFlag?,
+  override val referencedMessage: Message?,
+  override val interaction: MessageInteraction?,
+  override val thread: Channel?,
+  override val components: List<Component>,
+  override val stickerItems: List<StickerItem>,
+  override val position: Long?,
 ) : Message {
-    override suspend fun delete(): RestResult<NoResult> {
-        return yde.restAPIMethodGetters
-            .getMessageRestAPIMethods()
-            .deleteMessage(channelId.asLong, idAsLong)
-    }
+  override suspend fun delete(): RestResult<NoResult> {
+    return yde.restAPIMethodGetters
+      .getMessageRestAPIMethods()
+      .deleteMessage(channelId.asLong, idAsLong)
+  }
 
-    override suspend fun deleteAfter(time: Long): RestResult<NoResult> {
-        return withContext(yde.coroutineDispatcher) {
-            delay(time)
-            delete()
-        }
+  override suspend fun deleteAfter(time: Long): RestResult<NoResult> {
+    return withContext(yde.coroutineDispatcher) {
+      delay(time)
+      delete()
     }
+  }
 
-    override fun toString(): String {
-        return EntityToStringBuilder(yde, this).toString()
-    }
+  override fun toString(): String {
+    return EntityToStringBuilder(yde, this).toString()
+  }
 }

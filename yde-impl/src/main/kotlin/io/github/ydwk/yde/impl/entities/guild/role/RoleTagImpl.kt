@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,8 +25,8 @@ import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 import io.github.ydwk.yde.util.GetterSnowFlake
 
 internal class RoleTagImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val botId: GetterSnowFlake?,
-    override val integrationId: GetterSnowFlake?
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val botId: GetterSnowFlake?,
+  override val integrationId: GetterSnowFlake?,
 ) : RoleTag, ToStringEntityImpl<RoleTag>(yde, RoleTag::class.java)

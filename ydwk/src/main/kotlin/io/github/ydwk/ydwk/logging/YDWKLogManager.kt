@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,20 +24,21 @@ import java.awt.Color
 import java.time.Instant
 
 class YDWKLogManager(
-    private val enabledLoggerStatus: List<YDWKLoggerStatus> = YDWKLoggerStatus.ALL,
+  private val enabledLoggerStatus: List<YDWKLoggerStatus> = YDWKLoggerStatus.ALL
 ) {
-    fun getEnabledLoggerStatus(): List<YDWKLoggerStatus> {
-        return enabledLoggerStatus
-    }
+  fun getEnabledLoggerStatus(): List<YDWKLoggerStatus> {
+    return enabledLoggerStatus
+  }
 
-    fun print(message: String, colour: Color, now: Instant, severity: String, classToLog: String?) {
-        // message will be in the format of: [21:00] [severity] message(in colour)
-        printWithColour(
-            colour,
-            "${formatInstant(now)} [$severity] ${if (classToLog != null) "[$classToLog] " else null} $message")
-    }
+  fun print(message: String, colour: Color, now: Instant, severity: String, classToLog: String?) {
+    // message will be in the format of: [21:00] [severity] message(in colour)
+    printWithColour(
+      colour,
+      "${formatInstant(now)} [$severity] ${if (classToLog != null) "[$classToLog] " else null} $message",
+    )
+  }
 
-    private fun printWithColour(colour: Color, message: String) {
-        println(colour.getColourANSIEscape() + message + colour.getColourANSIEscape())
-    }
+  private fun printWithColour(colour: Color, message: String) {
+    println(colour.getColourANSIEscape() + message + colour.getColourANSIEscape())
+  }
 }

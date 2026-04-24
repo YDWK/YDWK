@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,11 +19,19 @@
 package io.github.ydwk.ydwk.evm.handler.handlers.intergration
 
 import com.fasterxml.jackson.databind.JsonNode
+import io.github.ydwk.ydwk.evm.event.events.integration.GuildIntegrationsUpdateEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class GuildIntegrationsUpdateHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override suspend fun start() {
-        TODO("Not yet implemented")
-    }
+  override suspend fun start() {
+    val guildId = json.get("guild_id").asLong()
+    val guild =
+      ydwk.getGuildById(guildId)
+        ?: run {
+          ydwk.logger.warn("GuildIntegrationsUpdate: guild $guildId not in cache")
+          return
+        }
+    ydwk.emitEvent(GuildIntegrationsUpdateEvent(ydwk, guild))
+  }
 }

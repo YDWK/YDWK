@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,8 +33,8 @@ import io.github.ydwk.ydwk.impl.YDWKImpl
  */
 @GuildEvent
 data class GuildSplashUpdateEvent(
-    override val ydwk: YDWKImpl,
-    override val entity: Guild,
-    val oldSplash: String?,
-    val newSplash: String?,
+  override val ydwk: YDWKImpl,
+  override val entity: Guild,
+  val oldSplash: String?,
+  val newSplash: String?,
 ) : GenericGuildUpdateEvent<String?>(ydwk, entity, oldSplash, newSplash)

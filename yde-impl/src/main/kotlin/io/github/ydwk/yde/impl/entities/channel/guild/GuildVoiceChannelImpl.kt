@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,20 +23,21 @@ import io.github.ydwk.yde.YDE
 import io.github.ydwk.yde.entities.channel.guild.vc.GuildVoiceChannel
 
 internal open class GuildVoiceChannelImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val idAsLong: Long,
-    override var bitrate: Int,
-    override var userLimit: Int,
-    override var rateLimitPerUser: Int
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val idAsLong: Long,
+  override var bitrate: Int,
+  override var userLimit: Int,
+  override var rateLimitPerUser: Int,
 ) : GuildVoiceChannel, GuildChannelImpl(yde.entityInstanceBuilder.buildGuildChannel(json)) {
-    constructor(
-        guildVoiceChannel: GuildVoiceChannel
-    ) : this(
-        guildVoiceChannel.yde,
-        guildVoiceChannel.json,
-        guildVoiceChannel.idAsLong,
-        guildVoiceChannel.bitrate,
-        guildVoiceChannel.userLimit,
-        guildVoiceChannel.rateLimitPerUser)
+  constructor(
+    guildVoiceChannel: GuildVoiceChannel
+  ) : this(
+    guildVoiceChannel.yde,
+    guildVoiceChannel.json,
+    guildVoiceChannel.idAsLong,
+    guildVoiceChannel.bitrate,
+    guildVoiceChannel.userLimit,
+    guildVoiceChannel.rateLimitPerUser,
+  )
 }

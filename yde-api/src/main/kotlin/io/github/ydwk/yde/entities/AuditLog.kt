@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,17 +23,17 @@ import io.github.ydwk.yde.entities.util.GenericEntity
 import io.github.ydwk.yde.interaction.application.type.SlashCommand
 
 interface AuditLog : GenericEntity {
-    /**
-     * Gets a list of application commands referenced in the audit log.
-     *
-     * @return A list of application commands referenced in the audit log.
-     */
-    val applicationCommands: List<SlashCommand>
+  /**
+   * Gets a list of application commands referenced in the audit log.
+   *
+   * @return A list of application commands referenced in the audit log.
+   */
+  val applicationCommands: List<SlashCommand>
 
-    /**
-     * Gets a list of audit log entries, sorted from most to least recent.
-     *
-     * @return A list of audit log entries, sorted from most to least recent.
-     */
-    val entries: List<AuditLogEntry>
+  /**
+   * Gets a list of audit log entries, sorted from most to least recent.
+   *
+   * @return A list of audit log entries, sorted from most to least recent.
+   */
+  val entries: List<AuditLogEntry>
 }

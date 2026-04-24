@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,86 +33,86 @@ import kotlinx.coroutines.ExecutorCoroutineDispatcher
  * contains many things such as the embed builder for example.
  */
 interface YDWK : YDE {
-    /** This is where the websocket is created. */
-    val webSocketManager: WebSocketManager?
+  /** This is where the websocket is created. */
+  val webSocketManager: WebSocketManager?
 
-    /**
-     * Gets some application properties sent by discord's Ready event.
-     *
-     * @return the [PartialApplication] object
-     */
-    var partialApplication: PartialApplication?
+  /**
+   * Gets some application properties sent by discord's Ready event.
+   *
+   * @return the [PartialApplication] object
+   */
+  var partialApplication: PartialApplication?
 
-    /**
-     * The properties of the application.
-     *
-     * @return the [Application] object
-     */
-    val application: Application?
+  /**
+   * The properties of the application.
+   *
+   * @return the [Application] object
+   */
+  val application: Application?
 
-    /**
-     * Gets information about when the bot logged in.
-     *
-     * @return the [LoggedIn] object
-     */
-    val loggedInStatus: LoggedIn?
+  /**
+   * Gets information about when the bot logged in.
+   *
+   * @return the [LoggedIn] object
+   */
+  val loggedInStatus: LoggedIn?
 
-    /**
-     * A suspend function that waits for the READY gateway event to be received.
-     *
-     * @return The [YDWK] instance.
-     */
-    suspend fun awaitReady(): YDWK
+  /**
+   * A suspend function that waits for the READY gateway event to be received.
+   *
+   * @return The [YDWK] instance.
+   */
+  suspend fun awaitReady(): YDWK
 
-    /**
-     * Adds an event listener.
-     *
-     * @param eventListeners The event listeners to be added.
-     */
-    fun addEventListeners(vararg eventListeners: Any)
+  /**
+   * Adds an event listener.
+   *
+   * @param eventListeners The event listeners to be added.
+   */
+  fun addEventListeners(vararg eventListeners: Any)
 
-    /**
-     * Removes an event listener.
-     *
-     * @param eventListeners The event listeners to be removed.
-     */
-    fun removeEventListeners(vararg eventListeners: Any)
+  /**
+   * Removes an event listener.
+   *
+   * @param eventListeners The event listeners to be removed.
+   */
+  fun removeEventListeners(vararg eventListeners: Any)
 
-    /**
-     * Emits an event
-     *
-     * @param event The event to be emitted.
-     */
-    fun emitEvent(event: GenericEvent)
+  /**
+   * Emits an event
+   *
+   * @param event The event to be emitted.
+   */
+  fun emitEvent(event: GenericEvent)
 
-    /** Shuts down the websocket manager */
-    fun shutdownAPI()
+  /** Shuts down the websocket manager */
+  fun shutdownAPI()
 
-    /**
-     * The bot's uptime.
-     *
-     * @return The bot's uptime.
-     */
-    val uptime: Instant
+  /**
+   * The bot's uptime.
+   *
+   * @return The bot's uptime.
+   */
+  val uptime: Instant
 
-    /**
-     * The default [ExecutorCoroutineDispatcher] object.
-     *
-     * @return The [ExecutorCoroutineDispatcher] object.
-     */
-    val defaultExecutorCoroutineDispatcher: ExecutorCoroutineDispatcher
+  /**
+   * The default [ExecutorCoroutineDispatcher] object.
+   *
+   * @return The [ExecutorCoroutineDispatcher] object.
+   */
+  val defaultExecutorCoroutineDispatcher: ExecutorCoroutineDispatcher
 
-    /**
-     * A shortcut to listening to events.
-     *
-     * @return The [EventListeners] object.
-     */
-    val eventListener: EventListeners
+  /**
+   * A shortcut to listening to events.
+   *
+   * @return The [EventListeners] object.
+   */
+  val eventListener: EventListeners
 
-    /**
-     * Overrides the custom to string method.
-     *
-     * @return The string representation of the object.
-     */
-    override fun toString(): String
+  /**
+   * Overrides the custom to string method.
+   *
+   * @return The string representation of the object.
+   */
+  override fun toString(): String
 }

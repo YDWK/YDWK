@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,118 +27,118 @@ import io.github.ydwk.yde.util.SnowFlake
 
 interface VoiceState : GenericEntity {
 
-    /**
-     * The guild this voice state is for.
-     *
-     * @return The guild this voice state is for.
-     */
-    val guild: Guild?
+  /**
+   * The guild this voice state is for.
+   *
+   * @return The guild this voice state is for.
+   */
+  val guild: Guild?
+
+  /**
+   * The channel this voice state is for.
+   *
+   * @return The channel this voice state is for.
+   */
+  val channel: GuildVoiceChannel?
+
+  /**
+   * The user this voice state is for.
+   *
+   * @return The user this voice state is for.
+   */
+  val user: User?
+
+  /**
+   * The guild member this voice state is for.
+   *
+   * @return The guild member this voice state is for.
+   */
+  val member: Member?
+
+  /**
+   * The session id of this voice state.
+   *
+   * @return The session id of this voice state.
+   */
+  val sessionId: String
+
+  /**
+   * Whether this voice state is deafened.
+   *
+   * @return Whether this voice state is deafened.
+   */
+  val isDeafened: Boolean
+
+  /**
+   * Whether this voice state is muted.
+   *
+   * @return Whether this voice state is muted.
+   */
+  val isMuted: Boolean
+
+  /**
+   * Whether this voice state is self deafened.
+   *
+   * @return Whether this voice state is self deafened.
+   */
+  val isSelfDeafened: Boolean
+
+  /**
+   * Whether this voice state is self muted.
+   *
+   * @return Whether this voice state is self muted.
+   */
+  val isSelfMuted: Boolean
+
+  /**
+   * Whether this voice state is streaming.
+   *
+   * @return Whether this voice state is streaming.
+   */
+  val isStreaming: Boolean
+
+  /**
+   * Whether this voice state is suppressed.
+   *
+   * @return Whether this voice state is suppressed.
+   */
+  val isSuppressed: Boolean
+
+  /**
+   * The time at which the user requested to speak.
+   *
+   * @return The time at which the user requested to speak.
+   */
+  val requestToSpeakTimestamp: String?
+
+  /**
+   * Requests the voice region of this voice state.
+   *
+   * @return A [RestResult] containing a list of [VoiceRegion]s.
+   */
+  suspend fun requestVoiceRegion(): RestResult<List<VoiceRegion>>
+
+  interface VoiceRegion : GenericEntity, SnowFlake, NameAbleEntity {
 
     /**
-     * The channel this voice state is for.
+     * Whether the single server in this voice region is optimal.
      *
-     * @return The channel this voice state is for.
+     * @return true for a single server that is closest to the current user's client.
      */
-    val channel: GuildVoiceChannel?
+    val isOptimal: Boolean
 
     /**
-     * The user this voice state is for.
+     * Whether this voice region is deprecated.
      *
-     * @return The user this voice state is for.
+     * @return Whether this voice region is deprecated.
      */
-    val user: User?
+    val isDeprecated: Boolean
 
     /**
-     * The guild member this voice state is for.
+     * Whether this voice region is custom.
      *
-     * @return The guild member this voice state is for.
+     * @return Whether this voice region is custom.
      */
-    val member: Member?
-
-    /**
-     * The session id of this voice state.
-     *
-     * @return The session id of this voice state.
-     */
-    val sessionId: String
-
-    /**
-     * Whether this voice state is deafened.
-     *
-     * @return Whether this voice state is deafened.
-     */
-    val isDeafened: Boolean
-
-    /**
-     * Whether this voice state is muted.
-     *
-     * @return Whether this voice state is muted.
-     */
-    val isMuted: Boolean
-
-    /**
-     * Whether this voice state is self deafened.
-     *
-     * @return Whether this voice state is self deafened.
-     */
-    val isSelfDeafened: Boolean
-
-    /**
-     * Whether this voice state is self muted.
-     *
-     * @return Whether this voice state is self muted.
-     */
-    val isSelfMuted: Boolean
-
-    /**
-     * Whether this voice state is streaming.
-     *
-     * @return Whether this voice state is streaming.
-     */
-    val isStreaming: Boolean
-
-    /**
-     * Whether this voice state is suppressed.
-     *
-     * @return Whether this voice state is suppressed.
-     */
-    val isSuppressed: Boolean
-
-    /**
-     * The time at which the user requested to speak.
-     *
-     * @return The time at which the user requested to speak.
-     */
-    val requestToSpeakTimestamp: String?
-
-    /**
-     * Requests the voice region of this voice state.
-     *
-     * @return A [RestResult] containing a list of [VoiceRegion]s.
-     */
-    suspend fun requestVoiceRegion(): RestResult<List<VoiceRegion>>
-
-    interface VoiceRegion : GenericEntity, SnowFlake, NameAbleEntity {
-
-        /**
-         * Whether the single server in this voice region is optimal.
-         *
-         * @return true for a single server that is closest to the current user's client.
-         */
-        val isOptimal: Boolean
-
-        /**
-         * Whether this voice region is deprecated.
-         *
-         * @return Whether this voice region is deprecated.
-         */
-        val isDeprecated: Boolean
-
-        /**
-         * Whether this voice region is custom.
-         *
-         * @return Whether this voice region is custom.
-         */
-        val isCustom: Boolean
-    }
+    val isCustom: Boolean
+  }
 }

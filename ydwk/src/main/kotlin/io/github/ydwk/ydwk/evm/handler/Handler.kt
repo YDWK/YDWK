@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,5 +22,5 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 abstract class Handler(val ydwk: YDWKImpl, val json: JsonNode) {
-    abstract suspend fun start()
+  abstract suspend fun start()
 }

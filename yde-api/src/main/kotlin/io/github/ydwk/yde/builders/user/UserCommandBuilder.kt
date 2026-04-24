@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,10 +23,10 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.ydwk.yde.interaction.application.ApplicationCommandType
 
 class UserCommandBuilder(val name: String, val specificGuildOnly: Boolean = false) {
-    fun toJson(): JsonNode {
-        val json = ObjectMapper().createObjectNode()
-        json.put("name", name)
-        json.put("type", ApplicationCommandType.USER.toInt())
-        return json
-    }
+  fun toJson(): JsonNode {
+    val json = ObjectMapper().createObjectNode()
+    json.put("name", name)
+    json.put("type", ApplicationCommandType.USER.toInt())
+    return json
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,8 +32,8 @@ import io.github.ydwk.ydwk.evm.event.Event
  */
 @GatewayEvent
 data class ReadyEvent(
-    override val ydwk: YDWK,
-    val amountOfAvailableGuilds: Int,
-    val amountOfUnavailableGuilds: Int,
-    val totalGuildsAmount: Int = amountOfAvailableGuilds + amountOfUnavailableGuilds,
+  override val ydwk: YDWK,
+  val amountOfAvailableGuilds: Int,
+  val amountOfUnavailableGuilds: Int,
+  val totalGuildsAmount: Int = amountOfAvailableGuilds + amountOfUnavailableGuilds,
 ) : Event(ydwk)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,31 +24,31 @@ import io.github.ydwk.yde.entities.util.GenericEntity
 import io.github.ydwk.yde.util.SnowFlake
 
 interface Channel : SnowFlake, GenericEntity {
-    /**
-     * Get the channel type.
-     *
-     * @return the channel type.
-     */
-    val type: ChannelType
+  /**
+   * Get the channel type.
+   *
+   * @return the channel type.
+   */
+  val type: ChannelType
 
-    /**
-     * Weather the channel is a guild channel.
-     *
-     * @return true if the channel is a guild channel.
-     */
-    val isGuildChannel: Boolean
+  /**
+   * Weather the channel is a guild channel.
+   *
+   * @return true if the channel is a guild channel.
+   */
+  val isGuildChannel: Boolean
 
-    /**
-     * Weather the channel is a dm channel.
-     *
-     * @return true if the channel is a dm channel.
-     */
-    val isDmChannel: Boolean
+  /**
+   * Weather the channel is a dm channel.
+   *
+   * @return true if the channel is a dm channel.
+   */
+  val isDmChannel: Boolean
 
-    /**
-     * The channel getter which gives access to the channels.
-     *
-     * @return the channel getter which gives access to the channels.
-     */
-    val channelGetter: ChannelGetter
+  /**
+   * The channel getter which gives access to the channels.
+   *
+   * @return the channel getter which gives access to the channels.
+   */
+  val channelGetter: ChannelGetter
 }

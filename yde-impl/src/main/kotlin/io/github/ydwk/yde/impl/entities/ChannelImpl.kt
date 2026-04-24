@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,24 +27,24 @@ import io.github.ydwk.yde.impl.entities.channel.getter.ChannelGetterImpl
 import io.github.ydwk.yde.impl.entities.util.ToStringEntityImpl
 
 internal open class ChannelImpl(
-    override val yde: YDE,
-    override val json: JsonNode,
-    override val idAsLong: Long,
-    override val isGuildChannel: Boolean,
-    override val isDmChannel: Boolean,
-    override val type: ChannelType,
+  override val yde: YDE,
+  override val json: JsonNode,
+  override val idAsLong: Long,
+  override val isGuildChannel: Boolean,
+  override val isDmChannel: Boolean,
+  override val type: ChannelType,
 ) : Channel, ToStringEntityImpl<Channel>(yde, Channel::class.java) {
-    constructor(
-        channel: Channel
-    ) : this(
-        channel.yde,
-        channel.json,
-        channel.idAsLong,
-        channel.isGuildChannel,
-        channel.isDmChannel,
-        channel.type,
-    )
+  constructor(
+    channel: Channel
+  ) : this(
+    channel.yde,
+    channel.json,
+    channel.idAsLong,
+    channel.isGuildChannel,
+    channel.isDmChannel,
+    channel.type,
+  )
 
-    override val channelGetter: ChannelGetter
-        get() = ChannelGetterImpl(this)
+  override val channelGetter: ChannelGetter
+    get() = ChannelGetterImpl(this)
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,31 +25,31 @@ import io.github.ydwk.yde.interaction.sub.InteractionType
 import io.github.ydwk.yde.util.SnowFlake
 
 interface MessageInteraction : GenericEntity, SnowFlake {
-    /**
-     * The type of interaction.
-     *
-     * @return The type of interaction.
-     */
-    val type: InteractionType
+  /**
+   * The type of interaction.
+   *
+   * @return The type of interaction.
+   */
+  val type: InteractionType
 
-    /**
-     * The name of the interaction command.
-     *
-     * @return The name of the interaction command.
-     */
-    val name: String
+  /**
+   * The name of the interaction command.
+   *
+   * @return The name of the interaction command.
+   */
+  val name: String
 
-    /**
-     * The user who invoked the interaction.
-     *
-     * @return The user who invoked the interaction.
-     */
-    val user: User
+  /**
+   * The user who invoked the interaction.
+   *
+   * @return The user who invoked the interaction.
+   */
+  val user: User
 
-    /**
-     * The member who invoked the interaction.
-     *
-     * @return The member who invoked the interaction.
-     */
-    val member: Member?
+  /**
+   * The member who invoked the interaction.
+   *
+   * @return The member who invoked the interaction.
+   */
+  val member: Member?
 }

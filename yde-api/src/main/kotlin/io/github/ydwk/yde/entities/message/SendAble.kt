@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,31 +24,31 @@ import io.github.ydwk.yde.rest.RestResult
 
 /** Represents an object that can be used to send a message to a discord text channel. */
 interface SendAble {
-    /**
-     * Sends a message.
-     *
-     * @param message The content of the message.
-     * @return The [RestResult] of the message.
-     */
-    suspend fun sendMessage(message: String): RestResult<Message> {
-        return messageBuilder.setContent(message).send(this)
-    }
+  /**
+   * Sends a message.
+   *
+   * @param message The content of the message.
+   * @return The [RestResult] of the message.
+   */
+  suspend fun sendMessage(message: String): RestResult<Message> {
+    return messageBuilder.setContent(message).send(this)
+  }
 
-    /**
-     * Sends an embed message.
-     *
-     * @param embed The embed message.
-     * @return The [RestResult] of the message.
-     */
-    suspend fun sendEmbed(embed: Embed): RestResult<Message> {
-        return messageBuilder.setEmbed(embed).send(this)
-    }
+  /**
+   * Sends an embed message.
+   *
+   * @param embed The embed message.
+   * @return The [RestResult] of the message.
+   */
+  suspend fun sendEmbed(embed: Embed): RestResult<Message> {
+    return messageBuilder.setEmbed(embed).send(this)
+  }
 
-    /**
-     * The actual message builder instance.
-     *
-     * @return The message builder instance.
-     */
-    val messageBuilder: MessageBuilder
-        get() = MessageBuilder()
+  /**
+   * The actual message builder instance.
+   *
+   * @return The message builder instance.
+   */
+  val messageBuilder: MessageBuilder
+    get() = MessageBuilder()
 }

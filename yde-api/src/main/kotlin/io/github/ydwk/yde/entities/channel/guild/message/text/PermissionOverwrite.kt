@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,24 +22,24 @@ import io.github.ydwk.yde.entities.util.GenericEntity
 import io.github.ydwk.yde.util.SnowFlake
 
 interface PermissionOverwrite : GenericEntity, SnowFlake {
-    /**
-     * The type of this permission overwrite.
-     *
-     * @return the type of this permission overwrite.
-     */
-    val type: Int
+  /**
+   * The type of this permission overwrite.
+   *
+   * @return the type of this permission overwrite.
+   */
+  val type: Int
 
-    /**
-     * Gets to allow of this permission overwrite.
-     *
-     * @return the allow of this permission overwrite.
-     */
-    val allow: String
+  /**
+   * Gets to allow of this permission overwrite.
+   *
+   * @return the allow of this permission overwrite.
+   */
+  val allow: String
 
-    /**
-     * The deny of this permission overwrite.
-     *
-     * @return the deny of this permission overwrite.
-     */
-    val deny: String
+  /**
+   * The deny of this permission overwrite.
+   *
+   * @return the deny of this permission overwrite.
+   */
+  val deny: String
 }

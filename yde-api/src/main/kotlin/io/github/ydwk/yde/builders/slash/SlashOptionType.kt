@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,37 +19,37 @@
 package io.github.ydwk.yde.builders.slash
 
 enum class SlashOptionType(private val value: Int) {
-    SUB_COMMAND(1),
-    SUB_COMMAND_GROUP(2),
-    STRING(3),
-    INTEGER(4),
-    BOOLEAN(5),
-    USER(6),
-    CHANNEL(7),
-    ROLE(8),
-    MENTIONABLE(9),
-    NUMBER(10),
-    ATTACHMENT(11),
-    UNKNOWN(-1);
+  SUB_COMMAND(1),
+  SUB_COMMAND_GROUP(2),
+  STRING(3),
+  INTEGER(4),
+  BOOLEAN(5),
+  USER(6),
+  CHANNEL(7),
+  ROLE(8),
+  MENTIONABLE(9),
+  NUMBER(10),
+  ATTACHMENT(11),
+  UNKNOWN(-1);
 
-    companion object {
-        /**
-         * Get the [SlashOptionType] from the value
-         *
-         * @param value The value to get the [SlashOptionType] from.
-         * @return The [SlashOptionType] from the given [value].
-         */
-        fun getValue(value: Int): SlashOptionType {
-            return entries.firstOrNull { it.value == value } ?: UNKNOWN
-        }
-    }
-
+  companion object {
     /**
-     * Get the value of the [SlashOptionType].
+     * Get the [SlashOptionType] from the value
      *
-     * @return The value of the [SlashOptionType].
+     * @param value The value to get the [SlashOptionType] from.
+     * @return The [SlashOptionType] from the given [value].
      */
-    fun toInt(): Int {
-        return value
+    fun getValue(value: Int): SlashOptionType {
+      return entries.firstOrNull { it.value == value } ?: UNKNOWN
     }
+  }
+
+  /**
+   * Get the value of the [SlashOptionType].
+   *
+   * @return The value of the [SlashOptionType].
+   */
+  fun toInt(): Int {
+    return value
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,21 +26,21 @@ import io.github.ydwk.yde.entities.channel.guild.message.text.GuildTextChannel
 import io.github.ydwk.yde.impl.entities.channel.guild.GuildMessageChannelImpl
 
 internal class GuildMessageChannelGetterImpl(guildMessageChannel: GuildMessageChannel) :
-    GuildMessageChannelImpl(guildMessageChannel), GuildMessageChannelGetter {
+  GuildMessageChannelImpl(guildMessageChannel), GuildMessageChannelGetter {
 
-    override fun asGuildTextChannel(): GuildTextChannel? {
-        return if (type == ChannelType.TEXT) {
-            yde.entityInstanceBuilder.buildGuildTextChannel(json)
-        } else {
-            null
-        }
+  override fun asGuildTextChannel(): GuildTextChannel? {
+    return if (type == ChannelType.TEXT) {
+      yde.entityInstanceBuilder.buildGuildTextChannel(json)
+    } else {
+      null
     }
+  }
 
-    override fun asGuildNewsChannel(): GuildNewsChannel? {
-        return if (type == ChannelType.NEWS) {
-            yde.entityInstanceBuilder.buildGuildNewsChannel(json)
-        } else {
-            null
-        }
+  override fun asGuildNewsChannel(): GuildNewsChannel? {
+    return if (type == ChannelType.NEWS) {
+      yde.entityInstanceBuilder.buildGuildNewsChannel(json)
+    } else {
+      null
     }
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,10 +23,10 @@ import io.github.ydwk.yde.util.EntityToStringBuilder
 /** An entity that can be converted to a string using the [EntityToStringBuilder]. */
 interface ToStringEntity {
 
-    /**
-     * Converts this entity to a string using the [EntityToStringBuilder].
-     *
-     * @return The string representation of this entity.
-     */
-    override fun toString(): String
+  /**
+   * Converts this entity to a string using the [EntityToStringBuilder].
+   *
+   * @return The string representation of this entity.
+   */
+  override fun toString(): String
 }

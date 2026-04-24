@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,7 @@
 package io.github.ydwk.yde.impl.cache.exception
 
 class CacheException(override val message: String) : RuntimeException(message) {
-    constructor(message: String, cause: Throwable) : this(message) {
-        initCause(cause)
-    }
+  constructor(message: String, cause: Throwable) : this(message) {
+    initCause(cause)
+  }
 }

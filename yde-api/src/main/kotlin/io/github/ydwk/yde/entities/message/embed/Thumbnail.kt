@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,31 +22,31 @@ import io.github.ydwk.yde.entities.util.GenericEntity
 import java.net.URL
 
 interface Thumbnail : GenericEntity {
-    /**
-     * The url of this thumbnail.
-     *
-     * @return The url of this thumbnail.
-     */
-    val url: URL
+  /**
+   * The url of this thumbnail.
+   *
+   * @return The url of this thumbnail.
+   */
+  val url: URL
 
-    /**
-     * The proxy url of this thumbnail.
-     *
-     * @return The proxy url of this thumbnail.
-     */
-    val proxyUrl: String?
+  /**
+   * The proxy url of this thumbnail.
+   *
+   * @return The proxy url of this thumbnail.
+   */
+  val proxyUrl: String?
 
-    /**
-     * The height of this thumbnail.
-     *
-     * @return The height of this thumbnail.
-     */
-    val height: Int?
+  /**
+   * The height of this thumbnail.
+   *
+   * @return The height of this thumbnail.
+   */
+  val height: Int?
 
-    /**
-     * The width of this thumbnail.
-     *
-     * @return The width of this thumbnail.
-     */
-    val width: Int?
+  /**
+   * The width of this thumbnail.
+   *
+   * @return The width of this thumbnail.
+   */
+  val width: Int?
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,8 +22,8 @@ import com.fasterxml.jackson.databind.JsonNode
 import io.github.ydwk.ydwk.cache.DummyUser
 
 class DummyUserImpl(private val json: JsonNode) : DummyUser {
-    override val idAsLong: Long
-        get() = json.get("id").asLong()
+  override val idAsLong: Long
+    get() = json.get("id").asLong()
 
-    override var name: String = json.get("name").asText()
+  override var name: String = json.get("name").asText()
 }

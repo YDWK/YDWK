@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,11 +19,17 @@
 package io.github.ydwk.ydwk.evm.handler.handlers.schedule
 
 import com.fasterxml.jackson.databind.JsonNode
+import io.github.ydwk.yde.util.GetterSnowFlake
+import io.github.ydwk.ydwk.evm.event.events.schedule.GuildScheduledEventUserAddEvent
 import io.github.ydwk.ydwk.evm.handler.Handler
 import io.github.ydwk.ydwk.impl.YDWKImpl
 
 class GuildScheduledEventUserAddHandler(ydwk: YDWKImpl, json: JsonNode) : Handler(ydwk, json) {
-    override suspend fun start() {
-        TODO("Not yet implemented")
-    }
+  override suspend fun start() {
+    val scheduledEventId = GetterSnowFlake.of(json.get("guild_scheduled_event_id").asLong())
+    val guildId = GetterSnowFlake.of(json.get("guild_id").asLong())
+    val userId = json.get("user_id").asLong()
+    val user = ydwk.getUserById(userId)
+    ydwk.emitEvent(GuildScheduledEventUserAddEvent(ydwk, scheduledEventId, guildId, user, null))
+  }
 }

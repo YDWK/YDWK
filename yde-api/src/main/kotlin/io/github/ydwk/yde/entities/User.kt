@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,119 +28,118 @@ import io.github.ydwk.yde.util.SnowFlake
 import java.awt.Color
 
 interface User : SnowFlake, GenericEntity, NameAbleEntity, SendAble {
-    /**
-     * The global name of the user.
-     *
-     * @return the global name of the user.
-     */
-    var globalName: String
+  /**
+   * The global name of the user.
+   *
+   * @return the global name of the user.
+   */
+  var globalName: String
 
-    /**
-     * The user's avatar hash.
-     *
-     * @return the user's avatar hash.
-     */
-    var avatarHash: String?
+  /**
+   * The user's avatar hash.
+   *
+   * @return the user's avatar hash.
+   */
+  var avatarHash: String?
 
-    /**
-     * The user's guild specific avatar hash.
-     *
-     * @param guildId the guild id.
-     * @return the user's guild specific avatar hash.
-     */
-    fun guildAvatarHash(guildId: Long): String?
+  /**
+   * The user's guild specific avatar hash.
+   *
+   * @param guildId the guild id.
+   * @return the user's guild specific avatar hash.
+   */
+  fun guildAvatarHash(guildId: Long): String?
 
-    /**
-     * The user's avatar.
-     *
-     * @return the user's avatar.
-     */
-    val avatar: Avatar
+  /**
+   * The user's avatar.
+   *
+   * @return the user's avatar.
+   */
+  val avatar: Avatar
 
-    /**
-     * The user's guild specific avatar.
-     *
-     * @param guildId the guild id.
-     * @return the user's guild specific avatar.
-     */
-    fun guildAvatar(guildId: Long): Avatar?
+  /**
+   * The user's guild specific avatar.
+   *
+   * @param guildId the guild id.
+   * @return the user's guild specific avatar.
+   */
+  fun guildAvatar(guildId: Long): Avatar?
 
-    /**
-     * Whether the user has a default avatar.
-     *
-     * @return whether the user has a default avatar.
-     */
-    val hasDefaultAvatar: Boolean
+  /**
+   * Whether the user has a default avatar.
+   *
+   * @return whether the user has a default avatar.
+   */
+  val hasDefaultAvatar: Boolean
 
-    /**
-     * Whether the user belongs to an OAuth2 application.
-     *
-     * @return whether the user belongs to an OAuth2 application
-     */
-    val bot: Boolean?
+  /**
+   * Whether the user belongs to an OAuth2 application.
+   *
+   * @return whether the user belongs to an OAuth2 application
+   */
+  val bot: Boolean?
 
-    /**
-     * Whether the user is an Official Discord System user (part of the urgent message system).
-     *
-     * @return whether the user is an Official Discord System user (part of the urgent message
-     *   system).
-     */
-    var system: Boolean?
+  /**
+   * Whether the user is an Official Discord System user (part of the urgent message system).
+   *
+   * @return whether the user is an Official Discord System user (part of the urgent message
+   *   system).
+   */
+  var system: Boolean?
 
-    /**
-     * Whether the user has two factor enabled on their account.
-     *
-     * @return whether the user has two factor enabled on their account.
-     */
-    var mfaEnabled: Boolean?
+  /**
+   * Whether the user has two factor enabled on their account.
+   *
+   * @return whether the user has two factor enabled on their account.
+   */
+  var mfaEnabled: Boolean?
 
-    /**
-     * The user's banner hash.
-     *
-     * @return the user's banner hash.
-     */
-    var banner: String?
+  /**
+   * The user's banner hash.
+   *
+   * @return the user's banner hash.
+   */
+  var banner: String?
 
-    /**
-     * The user's banner color encoded as an integer representation of hexadecimal color code.
-     *
-     * @return the user's banner color encoded as an integer representation of hexadecimal color
-     *   code.
-     */
-    var accentColor: Color?
+  /**
+   * The user's banner color encoded as an integer representation of hexadecimal color code.
+   *
+   * @return the user's banner color encoded as an integer representation of hexadecimal color code.
+   */
+  var accentColor: Color?
 
-    /**
-     * The user's chosen language option.
-     *
-     * @return the user's chosen language option.
-     */
-    var locale: String?
+  /**
+   * The user's chosen language option.
+   *
+   * @return the user's chosen language option.
+   */
+  var locale: String?
 
-    /**
-     * Whether the email on this account has been verified.
-     *
-     * @return whether the email on this account has been verified.
-     */
-    var verified: Boolean?
+  /**
+   * Whether the email on this account has been verified.
+   *
+   * @return whether the email on this account has been verified.
+   */
+  var verified: Boolean?
 
-    /**
-     * The flags on a user's account.
-     *
-     * @return the flags on a user's account.
-     */
-    var flags: Int?
+  /**
+   * The flags on a user's account.
+   *
+   * @return the flags on a user's account.
+   */
+  var flags: Int?
 
-    /**
-     * The public flags on a user's account.
-     *
-     * @return the public flags on a user's account.
-     */
-    var publicFlags: Int?
+  /**
+   * The public flags on a user's account.
+   *
+   * @return the public flags on a user's account.
+   */
+  var publicFlags: Int?
 
-    /**
-     * Creates a dm channel with this user.
-     *
-     * @return A [RestResult] with the [DmChannel].
-     */
-    suspend fun createDmChannel(): RestResult<DmChannel>
+  /**
+   * Creates a dm channel with this user.
+   *
+   * @return A [RestResult] with the [DmChannel].
+   */
+  suspend fun createDmChannel(): RestResult<DmChannel>
 }

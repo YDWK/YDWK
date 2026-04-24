@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,17 +24,17 @@ import io.github.ydwk.yde.interaction.application.ApplicationCommand
 import io.github.ydwk.yde.interaction.reply.Repliable
 
 interface UserCommand : ApplicationCommand, Repliable {
-    /**
-     * The user who the app command was invoked for.
-     *
-     * @return The user who the app command was invoked for.
-     */
-    val targetUser: User
+  /**
+   * The user who the app command was invoked for.
+   *
+   * @return The user who the app command was invoked for.
+   */
+  val targetUser: User
 
-    /**
-     * The member who the app command was invoked for.
-     *
-     * @return The member who the app command was invoked for.
-     */
-    val targetMember: Member
+  /**
+   * The member who the app command was invoked for.
+   *
+   * @return The member who the app command was invoked for.
+   */
+  val targetMember: Member
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,51 +25,51 @@ package io.github.ydwk.yde.util
  */
 interface SnowFlake {
 
-    /**
-     * The id of this snowflake as a String.
-     *
-     * @return the id of this snowflake as a [String]
-     */
-    val id: String
-        get() = idAsLong.toString()
+  /**
+   * The id of this snowflake as a String.
+   *
+   * @return the id of this snowflake as a [String]
+   */
+  val id: String
+    get() = idAsLong.toString()
 
-    /**
-     * The id of this snowflake as a Long.
-     *
-     * @return the id of this snowflake as a [Long]
-     */
-    val idAsLong: Long
+  /**
+   * The id of this snowflake as a Long.
+   *
+   * @return the id of this snowflake as a [Long]
+   */
+  val idAsLong: Long
 
-    /**
-     * The timestamp of this snowflake. (Milliseconds since Discord Epoch, the first second of 2015
-     * or 1420070400000.)
-     *
-     * @return the timestamp of this snowflake.
-     */
-    val asTimestamp: Long
-        get() = (idAsLong shr 22) + 1420070400000
+  /**
+   * The timestamp of this snowflake. (Milliseconds since Discord Epoch, the first second of 2015 or
+   * 1420070400000.)
+   *
+   * @return the timestamp of this snowflake.
+   */
+  val asTimestamp: Long
+    get() = (idAsLong shr 22) + 1420070400000
 
-    /**
-     * The worker id of this snowflake.
-     *
-     * @return the worker id of this snowflake.
-     */
-    val asWorkerId: Long
-        get() = (idAsLong and 0x3E0000) shr 17
+  /**
+   * The worker id of this snowflake.
+   *
+   * @return the worker id of this snowflake.
+   */
+  val asWorkerId: Long
+    get() = (idAsLong and 0x3E0000) shr 17
 
-    /**
-     * The process id of this snowflake.
-     *
-     * @return the process id of this snowflake.
-     */
-    val asProcessId: Long
-        get() = (idAsLong and 0x1F000) shr 12
+  /**
+   * The process id of this snowflake.
+   *
+   * @return the process id of this snowflake.
+   */
+  val asProcessId: Long
+    get() = (idAsLong and 0x1F000) shr 12
 
-    /**
-     * The increment of this snowflake.
-     *
-     * @return the increment of this snowflake.
-     */
-    val asIncrement: Long
-        get() = idAsLong and 0xFFF
+  /**
+   * The increment of this snowflake.
+   *
+   * @return the increment of this snowflake.
+   */
+  val asIncrement: Long
+    get() = idAsLong and 0xFFF
 }

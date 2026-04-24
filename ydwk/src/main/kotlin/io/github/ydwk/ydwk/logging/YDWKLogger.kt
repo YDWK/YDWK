@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,14 +19,14 @@
 package io.github.ydwk.ydwk.logging
 
 interface YDWKLogger {
-    /**
-     * Sets the [YDWKLoggerSeverity] to be used.
-     *
-     * @param severity The [YDWKLoggerSeverity] to be used.
-     * @return The [YDWKLogger] instance.
-     */
-    fun setSeverity(severity: YDWKLoggerSeverity): YDWKLogger
+  /**
+   * Sets the [YDWKLoggerSeverity] to be used.
+   *
+   * @param severity The [YDWKLoggerSeverity] to be used.
+   * @return The [YDWKLogger] instance.
+   */
+  fun setSeverity(severity: YDWKLoggerSeverity): YDWKLogger
 
-    /** Logs the message. */
-    fun log()
+  /** Logs the message. */
+  fun log()
 }

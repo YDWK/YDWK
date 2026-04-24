@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,31 +22,31 @@ import io.github.ydwk.yde.entities.util.GenericEntity
 import java.net.URL
 
 interface Video : GenericEntity {
-    /**
-     * The url of this video.
-     *
-     * @return The url of this video.
-     */
-    val url: URL?
+  /**
+   * The url of this video.
+   *
+   * @return The url of this video.
+   */
+  val url: URL?
 
-    /**
-     * The proxy url of this video.
-     *
-     * @return The proxy url of this video.
-     */
-    val proxyUrl: String?
+  /**
+   * The proxy url of this video.
+   *
+   * @return The proxy url of this video.
+   */
+  val proxyUrl: String?
 
-    /**
-     * The height of this video.
-     *
-     * @return The height of this video.
-     */
-    val height: Int?
+  /**
+   * The height of this video.
+   *
+   * @return The height of this video.
+   */
+  val height: Int?
 
-    /**
-     * The width of this video.
-     *
-     * @return The width of this video.
-     */
-    val width: Int?
+  /**
+   * The width of this video.
+   *
+   * @return The width of this video.
+   */
+  val width: Int?
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,38 +21,38 @@ package io.github.ydwk.yde.entities.interaction.selectmenu.creator
 import io.github.ydwk.yde.entities.interaction.selectmenu.SelectMenu
 
 interface SelectMenuCreator {
-    /**
-     * Sets the placeholder of the select menu.
-     *
-     * @param placeholder the placeholder of the select menu
-     */
-    fun setPlaceholder(placeholder: String): SelectMenuCreator
+  /**
+   * Sets the placeholder of the select menu.
+   *
+   * @param placeholder the placeholder of the select menu
+   */
+  fun setPlaceholder(placeholder: String): SelectMenuCreator
 
-    /**
-     * Sets the minimum number of values.
-     *
-     * @param minValues the minimum number of values
-     */
-    fun setMinValues(minValues: Int): SelectMenuCreator
+  /**
+   * Sets the minimum number of values.
+   *
+   * @param minValues the minimum number of values
+   */
+  fun setMinValues(minValues: Int): SelectMenuCreator
 
-    /**
-     * Sets the maximum number of values.
-     *
-     * @param maxValues the maximum number of values
-     */
-    fun setMaxValues(maxValues: Int): SelectMenuCreator
+  /**
+   * Sets the maximum number of values.
+   *
+   * @param maxValues the maximum number of values
+   */
+  fun setMaxValues(maxValues: Int): SelectMenuCreator
 
-    /**
-     * Sets whether the select menu is disabled.
-     *
-     * @param disabled whether the select menu is disabled
-     */
-    fun setDisabled(disabled: Boolean): SelectMenuCreator
+  /**
+   * Sets whether the select menu is disabled.
+   *
+   * @param disabled whether the select menu is disabled
+   */
+  fun setDisabled(disabled: Boolean): SelectMenuCreator
 
-    /**
-     * Creates the select menu.
-     *
-     * @return the select menu
-     */
-    fun create(): SelectMenu
+  /**
+   * Creates the select menu.
+   *
+   * @return the select menu
+   */
+  fun create(): SelectMenu
 }

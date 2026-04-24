@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,17 +23,17 @@ import io.github.ydwk.yde.entities.channel.guild.message.text.GuildTextChannel
 
 interface GuildMessageChannelGetter {
 
-    /**
-     * The message channel as a guild text channel.
-     *
-     * @return the message channel as a guild text channel.
-     */
-    fun asGuildTextChannel(): GuildTextChannel?
+  /**
+   * The message channel as a guild text channel.
+   *
+   * @return the message channel as a guild text channel.
+   */
+  fun asGuildTextChannel(): GuildTextChannel?
 
-    /**
-     * The message channel as a guild news channel.
-     *
-     * @return the message channel as a guild news channel.
-     */
-    fun asGuildNewsChannel(): GuildNewsChannel?
+  /**
+   * The message channel as a guild news channel.
+   *
+   * @return the message channel as a guild news channel.
+   */
+  fun asGuildNewsChannel(): GuildNewsChannel?
 }

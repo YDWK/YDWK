@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,8 +32,8 @@ import io.github.ydwk.ydwk.evm.annotations.UserEvent
  */
 @UserEvent
 data class UserSystemUpdateEvent(
-    override val ydwk: YDWK,
-    override val entity: User,
-    val oldSystem: Boolean,
-    val newSystem: Boolean,
+  override val ydwk: YDWK,
+  override val entity: User,
+  val oldSystem: Boolean,
+  val newSystem: Boolean,
 ) : GenericUserUpdateEvent<Boolean>(ydwk, entity, oldSystem, newSystem)

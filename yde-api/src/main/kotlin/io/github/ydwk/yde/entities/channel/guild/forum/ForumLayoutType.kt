@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,36 +19,36 @@
 package io.github.ydwk.yde.entities.channel.guild.forum
 
 enum class ForumLayoutType(private val value: Int) {
-    /** No default has been set for forum channel. */
-    NOT_SET(0),
+  /** No default has been set for forum channel. */
+  NOT_SET(0),
 
-    /** Display posts as a list. */
-    LIST_VIEW(1),
+  /** Display posts as a list. */
+  LIST_VIEW(1),
 
-    /** Display posts as a collection of tiles. */
-    GALLERY_VIEW(2),
+  /** Display posts as a collection of tiles. */
+  GALLERY_VIEW(2),
 
-    /** An unknown layout type. */
-    UNKNOWN(-1);
+  /** An unknown layout type. */
+  UNKNOWN(-1);
 
-    companion object {
-        /**
-         * Gets the [ForumLayoutType] from the provided [value].
-         *
-         * @param value The value to get the [ForumLayoutType] from.
-         * @return The [ForumLayoutType] from the provided [value].
-         */
-        fun getValue(value: Int): ForumLayoutType {
-            return entries.firstOrNull { it.value == value } ?: UNKNOWN
-        }
-    }
-
+  companion object {
     /**
-     * The value of this [ForumLayoutType].
+     * Gets the [ForumLayoutType] from the provided [value].
      *
-     * @return The value of this [ForumLayoutType].
+     * @param value The value to get the [ForumLayoutType] from.
+     * @return The [ForumLayoutType] from the provided [value].
      */
-    fun getValue(): Int {
-        return value
+    fun getValue(value: Int): ForumLayoutType {
+      return entries.firstOrNull { it.value == value } ?: UNKNOWN
     }
+  }
+
+  /**
+   * The value of this [ForumLayoutType].
+   *
+   * @return The value of this [ForumLayoutType].
+   */
+  fun getValue(): Int {
+    return value
+  }
 }

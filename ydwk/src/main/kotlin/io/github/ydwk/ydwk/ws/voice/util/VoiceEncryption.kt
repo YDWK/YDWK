@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,44 +18,44 @@
  */ 
 package io.github.ydwk.ydwk.ws.voice.util
 
-enum class VoiceEncryption {
-    XSALSA20_POLY1305_LITE,
-    XSALSA20_POLY1305_SUFFIX,
-    XSALSA20_POLY1305;
+/**
+ * Discord voice encryption modes.
+ *
+ * The `aead_*` modes are required as of Discord's November 2024 voice encryption update. The legacy
+ * `xsalsa20_poly1305*` modes were removed by Discord in November 2024.
+ */
+enum class VoiceEncryption(val modeName: String) {
+  // New modes (Discord Nov 2024+) — preferred first
+  AEAD_AES256_GCM_RTPSIZE("aead_aes256_gcm_rtpsize"),
+  AEAD_XCHACHA20_POLY1305_RTPSIZE("aead_xchacha20_poly1305_rtpsize"),
+  // Legacy modes (removed by Discord Nov 2024 — kept for any remaining compatibility)
+  XSALSA20_POLY1305_LITE("xsalsa20_poly1305_lite"),
+  XSALSA20_POLY1305_SUFFIX("xsalsa20_poly1305_suffix"),
+  XSALSA20_POLY1305("xsalsa20_poly1305");
 
-    fun getPreferredMode(): String {
-        return when (this) {
-            XSALSA20_POLY1305_LITE -> "xsalsa20_poly1305_lite"
-            XSALSA20_POLY1305_SUFFIX -> "xsalsa20_poly1305_suffix"
-            XSALSA20_POLY1305 -> "xsalsa20_poly1305"
+  fun getPreferredMode(): String = modeName
+
+  companion object {
+    private val PREFERENCE_ORDER =
+      listOf(
+        "aead_aes256_gcm_rtpsize",
+        "aead_xchacha20_poly1305_rtpsize",
+        "xsalsa20_poly1305_lite",
+        "xsalsa20_poly1305_suffix",
+        "xsalsa20_poly1305",
+      )
+
+    fun getPreferred(modes: List<String>): VoiceEncryption {
+      for (preferred in PREFERENCE_ORDER) {
+        if (modes.contains(preferred)) {
+          return values().first { it.modeName == preferred }
         }
+      }
+      throw IllegalArgumentException("No supported voice encryption mode in: $modes")
     }
 
-    companion object {
-        /**
-         * Gets the preferred encryption method for the current platform.
-         *
-         * @return The preferred encryption method for the current platform.
-         */
-        fun getPreferred(modes: List<String>): VoiceEncryption {
-            var encryption: VoiceEncryption? = null
-            for (a in modes) {
-                when (a) {
-                    "xsalsa20_poly1305_lite" -> {
-                        encryption = XSALSA20_POLY1305_LITE
-                        break
-                    }
-                    "xsalsa20_poly1305_suffix" -> {
-                        encryption = XSALSA20_POLY1305_SUFFIX
-                        break
-                    }
-                    "xsalsa20_poly1305" -> {
-                        encryption = XSALSA20_POLY1305
-                        break
-                    }
-                }
-            }
-            return encryption!!
-        }
-    }
+    fun fromMode(mode: String): VoiceEncryption =
+      values().find { it.modeName == mode }
+        ?: throw IllegalArgumentException("Unknown voice encryption mode: $mode")
+  }
 }

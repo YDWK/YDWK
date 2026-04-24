@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,35 +19,35 @@
 package io.github.ydwk.yde.entities.interaction
 
 enum class ButtonStyle(private val type: Int) {
-    /** Creates a primary button with the color purple. */
-    PRIMARY(1),
-    /** Creates a secondary button with the color grey. */
-    SECONDARY(2),
-    /** Creates a success button with the color green. */
-    SUCCESS(3),
-    /** Creates a danger button with the color red. */
-    DANGER(4),
-    /** Creates a link button with the color grey and the sign of a link. */
-    LINK(5);
+  /** Creates a primary button with the color purple. */
+  PRIMARY(1),
+  /** Creates a secondary button with the color grey. */
+  SECONDARY(2),
+  /** Creates a success button with the color green. */
+  SUCCESS(3),
+  /** Creates a danger button with the color red. */
+  DANGER(4),
+  /** Creates a link button with the color grey and the sign of a link. */
+  LINK(5);
 
-    companion object {
-        /**
-         * The [ButtonStyle] with the specified [type].
-         *
-         * @param type The type of the button.
-         * @return The [ButtonStyle] with the specified [type].
-         */
-        fun getValue(type: Int): ButtonStyle {
-            return entries.first { it.type == type }
-        }
-    }
-
+  companion object {
     /**
-     * The type of the button.
+     * The [ButtonStyle] with the specified [type].
      *
-     * @return The type of the button.
+     * @param type The type of the button.
+     * @return The [ButtonStyle] with the specified [type].
      */
-    fun getType(): Int {
-        return type
+    fun getValue(type: Int): ButtonStyle {
+      return entries.first { it.type == type }
     }
+  }
+
+  /**
+   * The type of the button.
+   *
+   * @return The type of the button.
+   */
+  fun getType(): Int {
+    return type
+  }
 }

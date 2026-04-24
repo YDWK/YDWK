@@ -13,10 +13,6 @@ pluginManagement {
         id("com.diffplug.spotless") version spotlessVersion
         id("org.jetbrains.dokka") version dokkaVersion
         id("com.github.ben-manes.versions") version benManesVersion
-        application
-        `maven-publish`
-        signing
-        jacoco // code coverage reports
     }
 }
 

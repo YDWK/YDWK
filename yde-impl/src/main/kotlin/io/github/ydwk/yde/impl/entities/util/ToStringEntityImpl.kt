@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,26 +23,26 @@ import io.github.ydwk.yde.entities.util.ToStringEntity
 import io.github.ydwk.yde.util.EntityToStringBuilder
 
 open class ToStringEntityImpl<T : Any>(
-    private val yde: YDE,
-    private val clazz: Class<T>,
-    private val fields: List<Any>? = null
+  private val yde: YDE,
+  private val clazz: Class<T>,
+  private val fields: List<Any>? = null,
 ) : ToStringEntity {
 
-    override fun toString(): String {
-        val entity = EntityToStringBuilder(yde, clazz)
+  override fun toString(): String {
+    val entity = EntityToStringBuilder(yde, clazz)
 
-        if (fields != null) {
-            for (field in fields) {
-                entity.add(field.toString(), field)
-            }
-        }
-
-        return entity.toString()
+    if (fields != null) {
+      for (field in fields) {
+        entity.add(field.toString(), field)
+      }
     }
 
-    fun buildString(builderAction: EntityToStringBuilder.() -> Unit): String {
-        val entity = EntityToStringBuilder(yde, clazz)
-        entity.builderAction()
-        return entity.toString()
-    }
+    return entity.toString()
+  }
+
+  fun buildString(builderAction: EntityToStringBuilder.() -> Unit): String {
+    val entity = EntityToStringBuilder(yde, clazz)
+    entity.builderAction()
+    return entity.toString()
+  }
 }

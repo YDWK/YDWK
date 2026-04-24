@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 YDWK inc.
+ * Copyright 2024-2026 YDWK inc.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,33 +19,33 @@
 package io.github.ydwk.yde.entities.guild.enums
 
 enum class MessageNotificationLevel(private val value: Int) {
-    /** Members will receive notifications for all messages by default. */
-    ALL_MESSAGES(0),
+  /** Members will receive notifications for all messages by default. */
+  ALL_MESSAGES(0),
 
-    /** Members will receive notifications only for messages that @mention them by default. */
-    ONLY_MENTIONS(1),
+  /** Members will receive notifications only for messages that @mention them by default. */
+  ONLY_MENTIONS(1),
 
-    /** An unknown value. */
-    UNKNOWN(-1);
+  /** An unknown value. */
+  UNKNOWN(-1);
 
-    companion object {
-        /**
-         * The [MessageNotificationLevel] by its [value].
-         *
-         * @param value The value to get the [MessageNotificationLevel] by.
-         * @return The [MessageNotificationLevel] by the given [value].
-         */
-        fun getValue(value: Int): MessageNotificationLevel {
-            return entries.firstOrNull { it.value == value } ?: UNKNOWN
-        }
-    }
-
+  companion object {
     /**
-     * The value of the [MessageNotificationLevel].
+     * The [MessageNotificationLevel] by its [value].
      *
-     * @return The value of the [MessageNotificationLevel].
+     * @param value The value to get the [MessageNotificationLevel] by.
+     * @return The [MessageNotificationLevel] by the given [value].
      */
-    fun getValue(): Int {
-        return value
+    fun getValue(value: Int): MessageNotificationLevel {
+      return entries.firstOrNull { it.value == value } ?: UNKNOWN
     }
+  }
+
+  /**
+   * The value of the [MessageNotificationLevel].
+   *
+   * @return The value of the [MessageNotificationLevel].
+   */
+  fun getValue(): Int {
+    return value
+  }
 }
