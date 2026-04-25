@@ -40,15 +40,15 @@ private constructor(
   private val dispatcher: CoroutineDispatcher? = null,
 ) {
   companion object {
-    private const val MAX_LENGTH = 100 // Maximum length allowed for the JWT token
-    private const val MIN_LENGTH = 50 // Minimum length allowed for the JWT token
+    private const val MAX_LENGTH = 200 // Maximum length allowed for the Discord bot token
+    private const val MIN_LENGTH = 50 // Minimum length allowed for the Discord bot token
 
     fun buildBot(token: String): Builder {
       when {
         token.isEmpty() -> {
           throw LoginException("Token cannot be null or empty")
         }
-        token.contains("/n") -> {
+        token.contains("\n") -> {
           throw LoginException("Token cannot contain a new line")
         }
         token.length < MIN_LENGTH -> {

@@ -6,6 +6,12 @@ pluginManagement {
     val spotlessVersion: String by settings
     val dokkaVersion: String by settings
     val benManesVersion: String by settings
+    val nmcpVersion: String by settings
+
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+    }
 
     plugins {
         kotlin("jvm") version jvmVersion
@@ -13,6 +19,7 @@ pluginManagement {
         id("com.diffplug.spotless") version spotlessVersion
         id("org.jetbrains.dokka") version dokkaVersion
         id("com.github.ben-manes.versions") version benManesVersion
+        id("com.gradleup.nmcp") version nmcpVersion
     }
 }
 

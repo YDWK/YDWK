@@ -15,6 +15,7 @@ plugins {
     id("com.diffplug.spotless")
     id("org.jetbrains.dokka")
     id("com.github.ben-manes.versions")
+    id("com.gradleup.nmcp.settings")
     application
     `maven-publish`
     signing
@@ -39,17 +40,11 @@ tasks.test {
 tasks.build {
     dependsOn(tasks.test) // run tests before building
 
-    // check if version is not snapshot
-    if (releaseVersion) {
-        // check if MAVEN_PASSWORD is set
-        if (System.getenv("mavenToken") != null) {
-            // run publishYdwkPublicationToMavenCentralRepository
-            dependsOn(tasks.getByName("publishYdwkPublicationToMavenCentralRepository"))
-            // then increment version
-            dependsOn(tasks.getByName("incrementVersion"))
-        } else {
-            // ignore
-        }
+    // Publishing is now done explicitly via nmcp:
+    //   ./gradlew publishAllPublicationsToCentralPortal
+    // Only auto-bump the version on a release build when credentials are present.
+    if (releaseVersion && System.getenv("mavenToken") != null) {
+        dependsOn(tasks.getByName("incrementVersion"))
     }
 }
 
@@ -200,26 +195,11 @@ subprojects {
         }
 
         repositories {
-            // Sonatype Central Portal (OSSRH was shut down June 2025)
-            // For automated publishing, use the com.gradleup.nmcp plugin with Central Portal.
-            // The credentials below map to your Central Portal user token (username/password).
+            // Publish to a local staging directory; nmcp (configured at root) will bundle
+            // and upload the signed artifacts to Sonatype Central Portal.
             maven {
-                name = "MavenCentral"
-                val releaseRepo = "https://central.sonatype.com/api/v1/publisher/upload"
-                val snapshotRepo = "https://central.sonatype.com/api/v1/publisher/upload"
-                url = uri(if (isReleaseVersion) releaseRepo else snapshotRepo)
-
-                credentials {
-                    username = project.findProperty("mavenUsername") as String? ?: run {
-                        println("mavenUsername not found, publishing will fail")
-                        null
-                    }
-
-                    password = project.findProperty("mavenToken") as String? ?: run {
-                        println("mavenToken not found, publishing will fail")
-                        null
-                    }
-                }
+                name = "stagingDir"
+                url = uri(layout.buildDirectory.dir("staging-deploy"))
             }
         }
     }
@@ -269,6 +249,20 @@ dokka {
     }
     pluginsConfiguration.html {
         footerMessage = "Copyright © 2024-2026 YDWK inc."
+    }
+}
+
+// Sonatype Central Portal publisher (replaces the retired OSSRH/Nexus workflow).
+// Run: ./gradlew publishAllPublicationsToCentralPortal
+// Credentials are read from ~/.gradle/gradle.properties:
+//   mavenUsername=<Central Portal user token username>
+//   mavenToken=<Central Portal user token password>
+nmcp {
+    publishAllProjectsProbablyBreakingProjectIsolation {
+        username = project.findProperty("mavenUsername") as String? ?: ""
+        password = project.findProperty("mavenToken") as String? ?: ""
+        // AUTOMATIC releases the bundle immediately; USER_MANAGED lets you review on the portal first.
+        publicationType = "AUTOMATIC"
     }
 }
 

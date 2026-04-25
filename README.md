@@ -79,6 +79,65 @@ Example: `getGuildById(...)` vs `requestGuildById(...)`.
 - Rate limit handling (gateway + REST)
 - Voice support is actively evolving
 
+## Bot templates
+
+Ready-to-copy bot templates with pluggable database support (SQLite / PostgreSQL / MongoDB):
+
+| Template | Description |
+|---|---|
+| [Moderation bot](examples/moderation-bot.md) | warn, ban, auto-ban at warn threshold, warn records in DB |
+| [Ticket bot](examples/ticket-bot.md) | panel-style ticket open/close, transcript-ready, per-guild DB |
+
+Each template separates the database layer into a single file so you can swap the backend by
+changing one `Database.connect(...)` call.
+
 ## Documentation
 
 See the full docs at [ydwk.org](https://www.ydwk.org/).
+
+## Releasing to Maven Central
+
+OSSRH (s01.oss.sonatype.org) was shut down in June 2025. Publishing now goes through
+**Sonatype Central Portal** (`central.sonatype.com`) using the `com.gradleup.nmcp` plugin.
+
+### One-time setup
+
+1. Create an account at [central.sonatype.com](https://central.sonatype.com).
+2. Claim the namespace `io.github.realyusufismail` (verify via GitHub).
+3. Generate a **user token** (Account → Generate Token).
+4. Add the credentials to `~/.gradle/gradle.properties` (never commit these):
+
+```properties
+mavenUsername=<token-username>
+mavenToken=<token-password>
+```
+
+5. Set up GPG signing keys and add them to `~/.gradle/gradle.properties`:
+
+```properties
+signing.keyId=<last-8-chars-of-key-id>
+signing.password=<key-passphrase>
+signing.secretKeyRingFile=/path/to/secring.gpg
+```
+
+### Publishing a release
+
+```bash
+# 1. Ensure version in gradle.properties does NOT end with -SNAPSHOT
+#    e.g.  version = 2.0.0-alpha.2
+
+# 2. Build and sign all subproject artifacts into their local staging dirs
+./gradlew :yde-api:publishYde-apiPublicationToStagingDirRepository \
+          :yde-impl:publishYde-implPublicationToStagingDirRepository \
+          :ydwk:publishYdwkPublicationToStagingDirRepository
+
+# 3. Bundle and upload everything to Central Portal in one shot
+./gradlew publishAllPublicationsToCentralPortal
+```
+
+With `publicationType = "AUTOMATIC"` (the default in this project) the bundle is released
+automatically. Switch to `"USER_MANAGED"` if you want to review the deployment on the portal
+before it goes live.
+
+> **Snapshot releases** — Central Portal does not support snapshots the same way OSSRH did.
+> For snapshot testing use a local Maven repo (`mavenLocal()`) or GitHub Packages.
