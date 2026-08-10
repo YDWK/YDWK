@@ -42,7 +42,7 @@ dependencies {
 
   // test
   testImplementation("org.jetbrains.kotlin:kotlin-test:" + properties["kotlinTestVersion"])
-  testImplementation("org.junit.jupiter:junit-jupiter-params:5.13.4")
+  testImplementation("org.junit.jupiter:junit-jupiter-params:6.1.3")
   testImplementation("org.mockito:mockito-core:" + properties["mockitoCoreVersion"])
 }
 
